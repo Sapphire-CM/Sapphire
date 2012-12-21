@@ -1,5 +1,5 @@
 Sapphire::Application.routes.draw do
-  get '/:action', :controller => :static
+  get '/:action', :controller => :static, :as => :static
 
   root :to => 'static#index'
 

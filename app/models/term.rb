@@ -6,12 +6,8 @@ class Term < ActiveRecord::Base
   attr_accessible :active, :course, :title
   
   validates_uniqueness_of :active, :scope => :course_id, :if => lambda {|term| term.active? }
-  
   after_create :make_active!
-  
-  
-  
-  
+    
   def self.active
     where(:active => true).first
   end

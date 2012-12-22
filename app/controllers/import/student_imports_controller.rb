@@ -1,5 +1,4 @@
 class Import::StudentImportsController < CourseBaseController
-  
   def index
     @student_imports = Import::StudentImportDecorator.decorate Import::StudentImport.with_terms
   end
@@ -11,7 +10,8 @@ class Import::StudentImportsController < CourseBaseController
   def new
     @student_import = Import::StudentImport.new
     @student_import.term = current_term
-    @terms = @course.terms
+    
+    @terms = current_course.terms
   end
   
   def create

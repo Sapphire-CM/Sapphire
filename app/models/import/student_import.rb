@@ -2,30 +2,35 @@ require "csv"
 
 class Import::StudentImport < ActiveRecord::Base
   IMPORTABLE_ATTRIBUTES = [:tutorial_group, :email, :forename, :surname, :matriculum_number, :registered_at].freeze
-   
+  STATES = ["pending", "imported"].freeze
+  FORMATS = ["csv"].freeze
+  
+  # associations
   belongs_to :term
   
+  
+  # attributes
+  attr_accessible :format, :term_id, :file, :file_cache, :import_options, :import_mapping
   mount_uploader :file, Import::StudentImportsUploader
   serialize :import_options, Hash
   serialize :import_mapping, Import::ImportMapping
   
-  attr_accessible :format, :term_id, :file, :file_cache, :import_options, :import_mapping
-  
+  # callbacks
   before_validation :determine_format, :if => lambda {|student_import| student_import.format.blank? && student_import.file.identifier.present? }
   before_validation :fill_status, :on => :create
-    
-  STATES = ["pending", "imported"].freeze
-  FORMATS = ["csv"].freeze
   
+  #validations
   validates_presence_of :file, :term_id
   validates_inclusion_of :status, :in => STATES
   # validates_inclusion_of :format, :in => FORMATS
   
+  #scopes
   scope :for_course, lambda {|course| joins(:term).where {term.course_id == course} }
   scope :for_term, lambda {|term| where {term_id == term} }
   scope :with_terms, joins(:term).includes(:term)
   
-  def initialize
+  def initialize(*args)
+    super *args
     @parsed = false
     @parsing_error = false
   end
@@ -58,8 +63,6 @@ class Import::StudentImport < ActiveRecord::Base
   def import!
     values = parsed_file
     
-    Rails.logger.info import_mapping.lookup_table
-    
     values.each do |row|
       matriculum_number = row[import_mapping.matriculum_number.to_i]
       
@@ -76,9 +79,11 @@ class Import::StudentImport < ActiveRecord::Base
       registration = student.term_registrations.where(:term_id => term).first || student.term_registrations.new
       registration.term = term
       registration.tutorial_group = tutorial_group
-      # registration.registered_at = Date.parse(row[import_mapping[:registration_date].to_i].gsub(/,/, " "))
+      registration.registered_at = Date.parse(row[import_mapping.registered_at.to_i].gsub(/,/, " "))
       registration.save
     end
+    self.status = "imported"
+    self.save    
   end
   
   def parsed?

@@ -13,7 +13,7 @@
 	<!-- Set the viewport width to device width for mobile -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
-	<title><%= content_for?(:title) ? yield(:title) : "Untitled" %></title>
+	<title>Sapphire - <%= content_for?(:title) ? yield(:title) : "Untitled" %></title>
   
 	<!-- Included CSS Files -->
 	<%= stylesheet_link_tag    "application" %>
@@ -24,9 +24,22 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <div class='contain-to-grid'>
-    <%= render "navigation" %>
+  
+  <%= render "navigation" %>
+  
+  
+  <%= render "flashes" if flash.any? %>
+  
+  <div class='row'>
+    <div class='column twelve'>
+      <%= yield %>
+    </div>
   </div>
-  <%= yield %>
+  
+  <footer class='row'>
+    <div class='six columns'>
+      Sapphire &copy; 2012-2013 - proudly presented by IICM of TUGraz
+    </div>
+  </footer>
 </body>
 </html>

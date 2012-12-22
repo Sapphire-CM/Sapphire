@@ -2,7 +2,7 @@
   <ul>
     <li class='name'>
       <h1>
-        <a href='#'>Sapphire</a>
+        <%= link_to "Sapphire", root_path %>
       </h1>
     </li>
     <li class='toggle-topbar'><a href='#'></a></li>
@@ -11,11 +11,46 @@
     <ul class='left'>
       <li class='divider'></li>
       <li class='has-dropdown'>
-        <%= link_to "Import", import_static_path %>
+        <%= link_to "Students", '#' %>
         <ul class='dropdown'>
-          <li><%= link_to "Import Students", import_students_path %></li>
+          <li><%= link_to "View your Students", "#" %></li>
+          <li><%= link_to "All Students", "#" %></li>
+        </ul>
+      </li>
+      <li class='has-dropdown'>
+        <%= link_to "Exercises", '#' %>
+        <ul class='dropdown'>
+          <li><%= link_to "Exercise 1", "#" %></li>
+          <li><%= link_to "Exercise 2", "#" %></li>
+          <li><%= link_to "Exercise 3.1", "#" %></li>
+          <li><%= link_to "Exercise 3.2", "#" %></li>
+          <li><%= link_to "Exercise 4", "#" %></li>
+          <li><%= link_to "Exercise 5", "#" %></li>
+        </ul>
+      </li>
+      <li>
+        <%= link_to "Statistics", '#' %>
+      </li>
+      <li class='divider'></li>
+      <li class='has-dropdown'>
+        <%= link_to "Import/Export", import_root_path %>
+        <ul class='dropdown'>
+          <li><%= link_to "Import Students", import_student_imports_path %></li>
+        </ul>
+      </li>
+
+    </ul> 
+      
+    <ul class='right'>
+      <li><%= link_to "My Account", '#' %></li>
+      <li class='divider'></li>
+      <li class='has-dropdown'>
+        <a href='#'><%= current_course_term_title %></a>
+        <ul class='dropdown'>
+          <li><a href='#'>Choose another course or term</a></li>
         </ul>
       </li>
     </ul>
+    
   </section>
 </nav>

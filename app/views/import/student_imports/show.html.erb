@@ -1,0 +1,25 @@
+<% title "Student Import" %>
+
+<div class='row'>
+  <div class='nine columns'>
+    <h1>Student Import</h1>
+    
+  </div>
+  
+  <div class='three columns'>
+    <p>
+      <%= link_to "Edit", edit_import_student_import_path(@student_import), :class => "small button" %>
+      <%= link_to "Import em all", import_import_student_import_path(@student_import), :class => "small success button", :method => :put %>
+    </p>
+  </div>
+</div>
+
+<p>File: <%= @student_import.file.to_s %></p>
+
+<%= @student_import.mapping_table %>
+
+
+
+
+
+

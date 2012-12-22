@@ -1,0 +1,35 @@
+<% title "All Student Imports" %>
+
+
+<h1>Student Imports for <%= @course.title %></h1>
+
+<table>
+  <thead>
+    <th>Term</th>
+    <th>Filename</th>
+    <th>Imported Students</th>
+    <th>Created At</th>
+    <th>Status</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <% @student_imports.each do |student_import| %>
+      <tr>
+        <td><%= student_import.term_title %></td>
+        <td><%= student_import.filename %></td>
+        <td><%= student_import.students_count %></td>
+        <td><%= student_import.created_at %></td>
+        <td><%= student_import.status %></td>
+        <td>
+          <%= link_to "View", import_student_import_path(student_import), :class => 'button tiny' %>
+          <%= link_to "Edit", edit_import_student_import_path(student_import), :class => 'button tiny' %>
+          <%= link_to "Delete", import_student_import_path(student_import), :method => :delete, :class => "button tiny alert" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p>
+  <%= link_to "New Student Import", new_import_student_import_path, :class => "button" %>
+</p>

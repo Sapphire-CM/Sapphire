@@ -1,0 +1,25 @@
+<%= simple_form_for student_import do |f| %>
+  <p>
+    <%= f.submit "Save new mappings", :class => "button" %>
+  </p>
+  <%= f.fields_for :import_mapping do |fb| %>
+  <table class='mapping_table'>
+    <thead>
+      <tr>
+      <% column_count.times do |i| %>
+        <td><%= mapping_table_header i, importable_attributes, mapping, fb %></td>
+      <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% values.each do |row| %>
+      <tr>
+        <% row.each do |cell| %>
+        <td><%= cell %></td>
+        <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% end %>
+<% end %>

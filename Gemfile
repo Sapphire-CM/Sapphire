@@ -6,7 +6,18 @@ gem 'rails', '3.2.9'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
+gem 'jquery-rails'
 
+gem "simple-navigation"
+gem 'simple_form'       # forms
+gem 'carrierwave'       # fileuploads
+gem 'squeel'            # easy DSL
+gem 'draper'            # decorators
+gem 'kaminari'          # pagination
+
+group :development do
+  gem 'thin'
+end
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -25,13 +36,13 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails'
 
 group :development, :test do
   gem 'rspec-rails'
   gem 'capybara'
   gem 'factory_girl'
 end
+
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -48,5 +59,3 @@ end
 # To use debugger
 # gem 'debugger'
 
-gem "simple-navigation"
-gem "thin", :group => :development

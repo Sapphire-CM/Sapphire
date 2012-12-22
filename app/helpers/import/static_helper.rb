@@ -1,0 +1,2 @@
+module Import::StaticHelper
+end

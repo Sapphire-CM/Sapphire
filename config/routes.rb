@@ -1,7 +1,18 @@
 Sapphire::Application.routes.draw do
-  get '/:action', :controller => :static, :as => :static
 
+  
+
+  namespace :import do
+    resources :student_imports do
+      put :import, :on => :member
+    end
+    
+    root :to => 'static#index'
+  end
+  
+  get '/:action', :controller => :static, :as => :static
   root :to => 'static#index'
+  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

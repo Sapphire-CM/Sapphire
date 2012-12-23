@@ -1,0 +1,32 @@
+<% title "Listing all avaliable Students" %>
+
+<h1>Listing all avaliable Students</h1>
+
+<p>
+  <%= form_tag students_path, :method => :get do |f| %>
+  
+  <div class='row'>
+    <div class='six columns'><%= search_field_tag :q, params[:q] %></div>
+    <div class='six columns'>
+      <%= submit_tag "search!", :class => "tiny button" %>
+    </div>
+  </div>
+  <% end %>
+</p>
+
+<table class='twelve'>
+  <thead>
+    <th>Forename</th>
+    <th>Surname</th>
+    <th>Matriculum Number</th>
+  </thead>
+  <tbody>
+    <% @students.each do |student|  %>
+    <tr>
+      <td><%= student.forename %></td>
+      <td><%= student.surname %></td>
+      <td><%= student.matriculum_number %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

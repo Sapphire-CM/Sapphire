@@ -7,4 +7,15 @@ class Student < ActiveRecord::Base
   has_many :tutorial_groups, :through => :term_registrations
   
   scope :for_term, lambda {|term| joins(:term_registrations).where{term_registrations.term_id == term}}
+  
+  def self.search(query)
+    rel = scoped 
+    
+    query.split(/\s+/).each do |part|
+      part = "%#{part}%"
+      rel = rel.where {(forename =~ part) | (surname =~ part) | (matriculum_number=~ part)}
+    end
+    
+    rel
+  end
 end

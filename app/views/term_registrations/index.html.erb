@@ -1,0 +1,43 @@
+<% title "Students for #{current_course.title} #{current_term.title}" %>
+
+
+<% if params[:view] == "mine" %>
+
+<% else %>
+  <h1>Registrations for <%= current_term.title %></h1>
+<% end %>
+
+<% if @term_registrations.any? %>
+  <% @grouped_term_registrations.each do |tutorial_group, term_registrations| %>
+    <h3><%= tutorial_group.title %></h3>
+  
+    <table class='twelve'>
+      <thead>
+        <tr>
+          <th>Forename</th>
+          <th>Surname</th>
+          <th>Matriculum Number</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% term_registrations.each do |term_registration| %>
+          <tr>
+            <td><%= term_registration.student.forename %></td>
+            <td><%= term_registration.student.surname %></td>
+            <td><%= term_registration.student.matriculum_number %></td>
+            <td><%= link_to "View", term_registration, :class => "tiny button" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+  
+  <div class='row'>
+    <div class='twelve columns'>
+      <%#= paginate @term_registrations %>
+    </div>
+  </div>
+<% else %>
+  <p>There are no term registrations.</p>
+<% end %>

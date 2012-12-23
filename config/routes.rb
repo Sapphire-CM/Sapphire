@@ -1,5 +1,5 @@
 Sapphire::Application.routes.draw do
-
+  resources :term_registrations
   
 
   namespace :import do

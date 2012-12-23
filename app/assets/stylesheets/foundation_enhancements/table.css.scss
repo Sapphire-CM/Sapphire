@@ -1,3 +1,11 @@
 table span.grey {
   color: #777;
 }
+
+table {
+  td, th {
+    &.right-aligned {
+      text-align: right;
+    }
+  }
+}

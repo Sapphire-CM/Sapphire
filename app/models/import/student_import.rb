@@ -79,7 +79,7 @@ class Import::StudentImport < ActiveRecord::Base
       registration = student.term_registrations.where(:term_id => term).first || student.term_registrations.new
       registration.term = term
       registration.tutorial_group = tutorial_group
-      registration.registered_at = Date.parse(row[import_mapping.registered_at.to_i].gsub(/,/, " "))
+      registration.registered_at = DateTime.parse(row[import_mapping.registered_at.to_i].gsub(/,/, " "))
       registration.save
     end
     self.status = "imported"

@@ -51,7 +51,6 @@ class Import::StudentImportsController < CourseBaseController
     @student_import.import!
     
     redirect_to import_student_import_path(@student_import), :notice => "Import finished!"
-    
   end
   
   def destroy

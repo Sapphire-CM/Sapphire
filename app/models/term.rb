@@ -8,7 +8,9 @@ class Term < ActiveRecord::Base
   
   validates_uniqueness_of :active, :scope => :course_id, :if => lambda {|term| term.active? }
   after_create :make_active!
-    
+  
+  scope :with_courses, joins(:course).includes(:course)
+  
   def self.active
     where(:active => true).first
   end

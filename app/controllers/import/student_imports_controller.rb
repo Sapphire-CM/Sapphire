@@ -1,6 +1,6 @@
 class Import::StudentImportsController < CourseBaseController
   def index
-    @student_imports = Import::StudentImportDecorator.decorate Import::StudentImport.with_terms
+    @student_imports = Import::StudentImportDecorator.decorate Import::StudentImport.with_terms.for_course(current_course)
   end
   
   def show

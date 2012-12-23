@@ -3,7 +3,9 @@ Sapphire::Application.routes.draw do
     get :mine, :on => :collection, :action => :index, :view => "mine", :as => :mine
   end
   resources :students
-
+  
+  resources :context
+  
   namespace :import do
     resources :student_imports do
       put :import, :on => :member

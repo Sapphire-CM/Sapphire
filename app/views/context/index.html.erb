@@ -1,0 +1,29 @@
+<% title "Switch your context" %>
+
+<h1>Courses</h1>
+
+<% @grouped_terms.each do |course, terms| %>
+  <h2><%= course.title %></h2>
+  
+  <table>
+    <thead>
+      <th>Term</th>
+      <th></th>
+    </thead>
+    <tbody>
+    <% terms.each do |term| %>
+    <tr>
+      <td><%= term.title %></td>
+      <td>
+        <% if current_term != term %>
+          <%= link_to "Switch", context_path(term), :method => :put, :class => "tiny button" %>          
+        <% else %>
+          Current
+        <% end %>
+      </td>
+    </tr>
+  
+    <% end %>
+    </tbody>
+  </table>
+<% end %>

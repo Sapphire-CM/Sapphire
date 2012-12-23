@@ -2,6 +2,7 @@ class Term < ActiveRecord::Base
   belongs_to :course
   has_many :tutorial_groups, :dependent => :destroy
   has_many :term_registrations, :dependent => :destroy
+  has_many :student_imports, :dependent => :destroy, :class_name => "Import::StudentImport"
   has_many :students, :through => :term_registrations
   
   attr_accessible :active, :course, :title

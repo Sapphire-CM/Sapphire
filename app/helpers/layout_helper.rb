@@ -18,7 +18,11 @@ module LayoutHelper
   end
   
   def current_course_term_title
-    course_term_title(current_course, current_term)
+    if current_term && current_course
+      course_term_title(current_course, current_term)
+    else
+      "-- no course selected --"
+    end
   end
   
   def course_term_title(course, term)

@@ -4,7 +4,6 @@ class Course < ActiveRecord::Base
   belongs_to :course_leader
 
   has_many :terms, :dependent => :destroy
-  has_many :student_imports, :dependent => :destroy
   
   validates_presence_of :title, :course_leader_id
   

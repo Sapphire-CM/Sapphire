@@ -14,7 +14,8 @@
         <%= link_to "Students", term_registrations_path(:view => "mine") %>
         <ul class='dropdown'>
           <li><%= link_to "View your Students", term_registrations_path(:view => "mine") %></li>
-          <li><%= link_to "All Students", term_registrations_path  %></li>
+          <li><%= link_to "All Students for this term", term_registrations_path  %></li>
+          <li><%= link_to "All avaliable Students", students_path  %></li>
         </ul>
       </li>
       <li class='has-dropdown'>

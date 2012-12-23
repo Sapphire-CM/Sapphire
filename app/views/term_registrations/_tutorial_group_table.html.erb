@@ -1,0 +1,22 @@
+<table class='twelve'>
+  <thead>
+    <tr>
+      <th>Forename</th>
+      <th>Surname</th>
+      <th>Matriculum Number</th>
+      <th>Email</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% term_registrations.each do |term_registration| %>
+      <tr>
+        <td><%= term_registration.student.forename %></td>
+        <td><%= term_registration.student.surname %></td>
+        <td><%= term_registration.student.matriculum_number %></td>
+        <td><%= term_registration.student.email %></td>
+        <td class='right-aligned'><%= link_to "View", term_registration, :class => "tiny button" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

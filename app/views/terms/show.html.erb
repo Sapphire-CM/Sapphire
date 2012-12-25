@@ -1,0 +1,30 @@
+<% title "#{@term.title}" %>
+
+
+<h1><%= @term.title %> of <%= @course.title %></h1>
+
+<div class='row'>
+  <div class='three columns'>
+    <h2>Tutorials</h2>
+    <table class='twelve'>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Tutor</th>
+          <th>Students</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @tutorial_groups.each do |tutorial_group| %>
+          <tr>
+            <td><%= tutorial_group.title %></td>
+            <td></td>
+            <td><%= tutorial_group.students.count %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    </ul>
+  </div>
+</div>

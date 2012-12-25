@@ -10,4 +10,9 @@ class ContextController < ApplicationController
     session[:context][:current_term] = params[:id]
     redirect_to :back, :notice => "You switched to #{current_course.title} (#{current_term.title})"
   end
+  
+  def destroy
+    session[:context] = {}
+    redirect_to context_index_path, :notice => "You left your current context"
+  end
 end

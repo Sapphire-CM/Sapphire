@@ -1,10 +1,11 @@
 class Import::StudentImportsController < CourseBaseController
   def index
-    @student_imports = Import::StudentImportDecorator.decorate Import::StudentImport.with_terms.for_course(current_course)
+    @course = current_course
+    @student_imports = Import::StudentImportDecorator.decorate Import::StudentImport.with_terms.for_course(@course)
   end
   
   def show
-    @student_import = Import::StudentImportDecorator.decorate Import::StudentImport.for_course(@course).find(params[:id])
+    @student_import = Import::StudentImportDecorator.decorate Import::StudentImport.for_course(current_course).find(params[:id])
   end
   
   def new
@@ -30,14 +31,14 @@ class Import::StudentImportsController < CourseBaseController
   
   def edit
     @student_import = Import::StudentImport.find(params[:id])
-    @terms = @course.terms
+    @terms = current_course.terms
   end
   
   def update
     @student_import = Import::StudentImport.find(params[:id])
     
     @term = @student_import.term
-    @terms = @course.terms
+    @terms = current_course.terms
       
     if @student_import.update_attributes(params[:import_student_import])
       redirect_to import_student_import_path(@student_import), :notice => "Your changes have been saved"

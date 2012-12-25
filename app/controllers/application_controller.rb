@@ -16,4 +16,16 @@ class ApplicationController < ActionController::Base
     current_context.current_term
   end
   helper_method :current_term
+  
+  def term_context?
+    !current_term.nil?
+  end
+  helper_method :term_context?
+  
+  # used as before_filter
+  def term_context_needed!
+    redirect_to context_index_path, :notice => "Please choose a term in order to proceed" unless term_context?
+  end
+  
+  
 end

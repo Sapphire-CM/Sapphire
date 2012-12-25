@@ -4,11 +4,10 @@ class Context
   end
   
   def current_term
-    # Term.active.first worx for now - but must be fixed later!
-    @current_term ||= Term.where(:id => @session[:current_term]).first || Term.active
+    @current_term ||= Term.where(:id => @session[:current_term]).first
   end
   
   def current_course
-    @current_course ||= current_term.course
+    @current_course ||= current_term.try(:course)
   end
 end

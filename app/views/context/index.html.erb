@@ -1,5 +1,9 @@
 <% title "Switch your context" %>
 
+<% if term_context? %>
+  <%= link_to "Leave current context", context_path(current_term), :method => :delete, :class => "alert button" %>
+<% end %>
+
 <h1>Courses</h1>
 
 <% @grouped_terms.each do |course, terms| %>

@@ -1,4 +1,4 @@
-class StudentsController < ApplicationController
+class StudentsController < ApplicationController  
   def index
     @students = Student.scoped.page(params[:page]).per(100)
     
@@ -22,10 +22,6 @@ class StudentsController < ApplicationController
     @tutorial_groups = current_term.tutorial_groups
     if @student.save
       redirect_to @student, :notice => "Student successfully created"
-      
-      if params[:add_to_current_term] == "1"
-        
-      end
     else
       render :new
     end

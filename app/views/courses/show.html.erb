@@ -1,0 +1,33 @@
+<% title @course.title %>
+
+<h1><%= @course.title %></h1>
+
+<dl class='tabs'>
+  <dd class='active'><a href='#terms'>Terms</a></dd>
+</dl>
+
+<ul class='tabs-content'>
+  <li class='active' id='termsTab'>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Tutorials</th>
+          <th>Registered Students</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @terms.each do |term| %>
+        <tr>
+          <th><%= term.title %></th>
+          <td><%= pluralize term.tutorial_groups.count, "Tutorial" %></td>
+          <td><%= term.students.count %></td>
+          <td><%= link_to "View", [@course, term], :class => "tiny button" %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <%= link_to "Add Term", new_course_term_path(@course), :class => "button" %>
+  </li>
+</ul>

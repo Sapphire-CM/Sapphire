@@ -1,0 +1,29 @@
+<% title "" %>
+
+<div class='row'>
+  <div class='nine columns'><h1>Courses</h1></div>
+  <div class='three right-aligned columns'>
+    <%= link_to "New Course", new_course_path, :class => "button" %>
+  </div>
+</div>
+<table class='twelve'>
+  <thead>
+    <tr>
+    <th>Title</th>
+    <th>Terms</th>
+    <th>Course Leader</th>
+    <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @courses.each do |course| %>
+      <tr>
+        <td><%= course.title %></td>
+        <td><%= course.terms.count %></td>
+        <td>Keith Andrews</td>
+        <td class='right-aligned'><%= link_to "View", course, :class => "tiny button" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

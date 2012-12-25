@@ -1,4 +1,6 @@
 class TermRegistrationsController < ApplicationController
+  before_filter :term_context_needed!
+  
   def index
     @term_registrations = current_term.term_registrations
     

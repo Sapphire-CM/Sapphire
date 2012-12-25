@@ -31,10 +31,7 @@ module LayoutHelper
   
   # Todo: scope this appropriatly for the current_user
   def navigation_context_selector
-    lis = ""
-    Term.with_courses.each do |term|
-      lis << "<li>#{link_to(course_term_title(term.course, term), context_path(term), :method => :put).html_safe}</li>"
-    end
-    lis.html_safe
+    terms = Term.where {id != my{current_term.id} }. with_courses.all 
+    render "application/navigation_context_selector", :terms => terms
   end
 end

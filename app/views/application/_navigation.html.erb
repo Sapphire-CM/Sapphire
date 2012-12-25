@@ -45,13 +45,7 @@
     <ul class='right'>
       <li><%= link_to "My Account", '#' %></li>
       <li class='divider'></li>
-      <li class='has-dropdown'>
-        <%= link_to current_course_term_title, context_index_path %>
-        <ul class='dropdown'>
-          <li><label>Choose another course</label></li>
-          <%= navigation_context_selector %>
-        </ul>
-      </li>
+      <%= navigation_context_selector %>
     </ul>
     
   </section>

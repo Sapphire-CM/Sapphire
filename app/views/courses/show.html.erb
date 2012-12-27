@@ -4,6 +4,8 @@
 
 <dl class='tabs'>
   <dd class='active'><a href='#terms'>Terms</a></dd>
+  <dd><a href='#description'>Description</a></dd>
+  <dd><a href='#tutors'>Tutors</a></dd>
 </dl>
 
 <ul class='tabs-content'>
@@ -23,11 +25,22 @@
           <th><%= term.title %></th>
           <td><%= pluralize term.tutorial_groups.count, "Tutorial" %></td>
           <td><%= term.students.count %></td>
-          <td><%= link_to "View", [@course, term], :class => "tiny button" %></td>
+          <td><%= link_to "View", term, :class => "tiny button" %></td>
         </tr>
       <% end %>
       </tbody>
     </table>
-    <%= link_to "Add Term", new_course_term_path(@course), :class => "button" %>
+    <%= link_to "Add Term", new_term_path(:course_id => @course), :class => "button" %>
+  </li>
+  <li id='descriptionTab'>
+    <div class='panel'>
+      should we support textile or markdown?
+    </div>
+    <%= simple_format @course.description %>
+  </li>
+  <li id='tutorsTab'>
+    <div class='panel'>
+      Dummy Data
+    </div>
   </li>
 </ul>

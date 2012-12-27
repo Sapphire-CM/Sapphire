@@ -19,8 +19,7 @@ class Import::StudentImportsController < CourseBaseController
     @student_import = Import::StudentImport.new(params[:import_student_import])
     @term = @student_import.term
     
-    @terms = @course.terms
-    
+    @terms = current_course.terms
     
     if @student_import.save
       redirect_to import_student_import_path(@student_import), :notice => "Import created - wanna start it?"

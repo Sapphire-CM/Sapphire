@@ -14,12 +14,11 @@ class StudentsController < ApplicationController
   
   def new
     @student = Student.new
-    @tutorial_groups = current_term.tutorial_groups
+
   end
   
   def create
     @student = Student.new(params[:student])
-    @tutorial_groups = current_term.tutorial_groups
     if @student.save
       redirect_to @student, :notice => "Student successfully created"
     else

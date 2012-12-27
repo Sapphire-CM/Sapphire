@@ -21,7 +21,7 @@ module LayoutHelper
     if current_term && current_course
       course_term_title(current_course, current_term)
     else
-      "-- no course selected --"
+      "<em>-- no term selected --</em>".html_safe
     end
   end
   

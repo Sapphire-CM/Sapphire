@@ -1,30 +1,69 @@
 <% title "#{@term.title}" %>
 
 
-<h1><%= @term.title %> of <%= @course.title %></h1>
-
 <div class='row'>
-  <div class='three columns'>
-    <h2>Tutorials</h2>
-    <table class='twelve'>
+<h1 class='nine columns'><%= @term.title %> of <%= @course.title %></h1>
+<div class='three columns'>
+  <%= link_to "Switch to this term context", context_path(@term, :return_to => my_term_registrations_path), :method => :put, :class => "button" %>
+</div>
+</div>
+
+<dl class='tabs'>
+  <dd class='active'>
+    <a href='#tutorials'>Tutorials</a>
+  </dd>
+  <dd><a href='#exercises'>Exercises</a></dd>
+</dl>
+
+<ul class='tabs-content'>
+  <li id='tutorialsTab' class='active'>
+    <div class='row'>
+      <div class='three columns'>
+        <table class='twelve'>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Tutor</th>
+              <th>Students</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @tutorial_groups.each do |tutorial_group| %>
+              <tr>
+                <td><%= tutorial_group.title %></td>
+                <td></td>
+                <td><%= tutorial_group.students.count %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </li>
+  <li id='exercisesTab'>
+    <div class='panel'>Dummy Data</div>
+    
+    <table>
       <thead>
         <tr>
-          <th>Title</th>
-          <th>Tutor</th>
-          <th>Students</th>
+          <th>Exercise</th>
+          <th>Description</th>
+          <th>Announce</th>
+          <th>Deadline</th>
+          <th>Points</th>
+          <th>Percent</th>
         </tr>
       </thead>
       <tbody>
-        <% @tutorial_groups.each do |tutorial_group| %>
-          <tr>
-            <td><%= tutorial_group.title %></td>
-            <td></td>
-            <td><%= tutorial_group.students.count %></td>
-          </tr>
-        <% end %>
+        <tr>
+          <td>1</td>
+          <td>Newsgroup New Thread</td>
+          <td>Fri 05 Oct 2012 lecture</td>
+          <td>Wed 10 Oct 2012 23:59</td>
+          <td>25</td>
+          <td>11.3%</td>
+        </tr>
       </tbody>
     </table>
-
-    </ul>
-  </div>
-</div>
+  </li>
+</ul>

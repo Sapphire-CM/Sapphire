@@ -1,28 +1,28 @@
 class TermsController < ApplicationController
-  before_filter :fetch_course
-  
   def show
-    @term = @course.terms.find(params[:id])
+    @term = Term.find(params[:id])
+    @course = @term.course
     @tutorial_groups = @term.tutorial_groups
   end
   
   def new
-    @term = @course.terms.new
+    @term = Term.new
+    @term.course = Course.find(params[:course_id])
+    @course = @term.course
   end
   
   
   def create
-    @term = @course.terms.new(params[:term])
+    @term = Term.new(params[:term])
+    @course = @term.course
     
     if @term.save
-      redirect_to [@course, @term], :notice => "Term has been created"
+      redirect_to @term, :notice => "Term has been created"
     else
-      
+      render :new
     end
   end
   
   private
-  def fetch_course
-    @course = Course.find(params[:course_id])
-  end
+
 end

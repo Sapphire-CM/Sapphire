@@ -5,10 +5,8 @@ Sapphire::Application.routes.draw do
   
   resources :students
   resources :context
-  
-  resources :courses do
-    resources :terms
-  end
+  resources :terms
+  resources :courses
   
   namespace :import do
     resources :student_imports do

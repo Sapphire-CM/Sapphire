@@ -8,7 +8,13 @@ class ContextController < ApplicationController
   def update
     session[:context] ||= {}
     session[:context][:current_term] = params[:id]
-    redirect_to :back, :notice => "You switched to #{current_course.title} (#{current_term.title})"
+    
+    destination = if params[:return_to].present? && params[:return_to] =~ /^\//
+      params[:return_to] 
+    else
+      :back
+    end
+    redirect_to destination, :notice => "You switched to #{current_course.title} (#{current_term.title})"
   end
   
   def destroy

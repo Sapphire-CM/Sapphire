@@ -21,4 +21,18 @@ class CoursesController < ApplicationController
       render :new
     end
   end
+  
+  def edit
+    @course = Course.find(params[:id])
+  end
+  
+  def update
+    @course = Course.find(params[:id])
+    
+    if @course.update_attributes(params[:course])
+      redirect_to @course, :notice => "Course has been updated"
+    else
+      render :edit
+    end
+  end
 end

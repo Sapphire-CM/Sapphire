@@ -66,7 +66,7 @@ class Import::StudentImport < ActiveRecord::Base
     values.each do |row|
       matriculum_number = row[import_mapping.matriculum_number.to_i]
       
-      student = Student.where(:matriculum_number => matriculum_number).first || Student.new
+      student = Student.find_or_initialize_by_matriculum_number(matriculum_number)
       student.forename = row[import_mapping.forename.to_i]
       student.surname = row[import_mapping.surname.to_i]
       student.email = row[import_mapping.email.to_i]
@@ -74,7 +74,7 @@ class Import::StudentImport < ActiveRecord::Base
       student.save
       
       group_title = row[import_mapping.tutorial_group.to_i]
-      tutorial_group = term.tutorial_groups.where(:title => group_title).first || term.tutorial_groups.create(:title => group_title)
+      tutorial_group = term.tutorial_groups.find_or_initialize_by_title(group_title)
             
       registration = student.term_registrations.where(:term_id => term).first || student.term_registrations.new
       registration.term = term

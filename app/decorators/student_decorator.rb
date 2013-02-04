@@ -1,6 +1,6 @@
-class StudentDecorator < Draper::Base
+class StudentDecorator < Draper::Decorator
   decorates :student
-
+  delegate_all
   def fullname
     "#{model.forename} #{model.surname}"
   end

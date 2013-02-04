@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.9'
+gem 'rails', '3.2.11'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -17,6 +17,8 @@ gem 'kaminari'          # pagination
 
 group :development do
   gem 'thin'
+  gem 'better_errors'
+  gem "binding_of_caller"
 end
 
 # Gems used only for assets and not required

@@ -1,0 +1,2 @@
+module TermResourceHelper
+end

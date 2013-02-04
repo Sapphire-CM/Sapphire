@@ -1,21 +1,27 @@
 Sapphire::Application.routes.draw do
-  resources :term_registrations do
-    get :mine, :on => :collection, :action => :index, :view => "mine", :as => :my
-  end
-  
   resources :students
-  resources :context
-  resources :terms
-  resources :courses
   
-  namespace :import do
-    resources :student_imports do
-      put :import, :on => :member
+  resources :courses do
+    resources :terms do
+      get :meeting
+      
+      resources :exercises
+      resources :registrations
+      resources :evaluations
+      
+      namespace :admin do
+        # admin 
+      end
+      
+      namespace :import do
+        resources :student_imports do
+          put :import, :on => :member
+        end
+      end
     end
-    
-    root :to => 'static#index'
+    resources :tutors
   end
-  
+    
   get '/:action', :controller => :static, :as => :static
   root :to => 'static#index'
   

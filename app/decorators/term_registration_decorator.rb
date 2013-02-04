@@ -1,4 +1,4 @@
-class TermRegistrationDecorator < Draper::Base
+class TermRegistrationDecorator < Draper::Decorator
   decorates :term_registration
   decorates_association :student
 

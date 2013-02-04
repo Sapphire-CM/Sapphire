@@ -10,7 +10,6 @@ class TermRegistrationsController < ApplicationController
     
     
     @term_registrations = @term_registrations.with_students.with_tutorial_groups
-    
     @term_registrations = @term_registrations.search(params[:q]) if params[:q]
 
     
@@ -18,6 +17,6 @@ class TermRegistrationsController < ApplicationController
   end
   
   def show
-    @term_registration = TermRegistrationDecorator.decorate current_term.term_registrations.find(params[:id])
+    @term_registration = current_term.term_registrations.find(params[:id]).decorate
   end
 end

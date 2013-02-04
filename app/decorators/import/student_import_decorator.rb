@@ -1,6 +1,7 @@
-class Import::StudentImportDecorator < Draper::Base
+class Import::StudentImportDecorator < Draper::Decorator
   decorates :"import/student_import"
-
+  
+  delegate_all
 
   def term_title
     model.term.title

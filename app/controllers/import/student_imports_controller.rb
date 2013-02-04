@@ -1,11 +1,11 @@
 class Import::StudentImportsController < CourseBaseController
   def index
     @course = current_course
-    @student_imports = Import::StudentImportDecorator.decorate Import::StudentImport.with_terms.for_course(@course)
+    @student_imports = Import::StudentImport.with_terms.for_course(@course).decorate
   end
   
   def show
-    @student_import = Import::StudentImportDecorator.decorate Import::StudentImport.for_course(current_course).find(params[:id])
+    @student_import = Import::StudentImport.for_course(current_course).find(params[:id]).decorate
   end
   
   def new

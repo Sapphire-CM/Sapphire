@@ -1,4 +1,4 @@
-class StudentDecorator < Draper::Base
+class StudentDecorator < Draper::Decorator
   decorates :student
 
   def fullname

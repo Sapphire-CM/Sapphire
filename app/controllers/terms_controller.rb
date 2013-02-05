@@ -11,13 +11,12 @@ class TermsController < ApplicationController
     @course = @term.course
   end
   
-  
   def create
     @term = Term.new(params[:term])
     @course = @term.course
     
     if @term.save
-      redirect_to @term, :notice => "Term has been created"
+      redirect_to @course, :notice => "Term has been created"
     else
       render :new
     end

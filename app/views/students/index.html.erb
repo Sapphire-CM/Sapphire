@@ -42,9 +42,9 @@
 <% else %>
 <p>
   <% if params[:q].present? %>
-    No Students found for "<%= params[:q] %>"
+    <p>No students found for "<%= params[:q] %>".</p>
   <% else %>
-    No Students in DB
+    <p>There are no students present.</p>
   <% end %>
 </p>
 <% end %>

@@ -15,6 +15,7 @@
 
 <ul class='tabs-content'>
   <li class='active' id='termsTab'>
+    <% if @terms.any? %>
     <table>
       <thead>
         <tr>
@@ -30,12 +31,15 @@
           <th><%= term.title %></th>
           <td><%= pluralize term.tutorial_groups.count, "Tutorial" %></td>
           <td><%= term.students.count %></td>
-          <td><%= link_to "View", term, :class => "tiny button" %></td>
+          <td><%= link_to "View", course_term_path(:course_id => @course, :id => term.id), :class => "tiny button" %></td>
         </tr>
       <% end %>
       </tbody>
     </table>
-    <%= link_to "Add Term", new_term_path(:course_id => @course), :class => "button" %>
+    <% else %>
+      <p>There are no terms present.</p>
+    <% end %>
+    <%= link_to "Add Term", new_course_term_path(:course_id => @course), :class => "button" %>
   </li>
   <li id='descriptionTab'>
     <div class='panel'>

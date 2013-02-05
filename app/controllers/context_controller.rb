@@ -1,7 +1,6 @@
 class ContextController < ApplicationController
   def index
     @terms = Term.with_courses
-    
     @grouped_terms = @terms.group_by(&:course)
   end
   

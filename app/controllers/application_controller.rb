@@ -26,6 +26,5 @@ class ApplicationController < ActionController::Base
   def term_context_needed!
     redirect_to context_index_path, :notice => "Please choose a term in order to proceed" unless term_context?
   end
-  
-  
+
 end

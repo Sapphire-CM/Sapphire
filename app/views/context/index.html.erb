@@ -21,7 +21,7 @@
         <td><%= term.title %></td>
         <td>
           <% if current_term != term %>
-            <%= link_to "Switch", context_path(term), :method => :put, :class => "tiny button" %>          
+            <%= link_to "Switch", context_path(term), :method => :put, :class => "tiny button" %>
           <% else %>
             Current
           <% end %>

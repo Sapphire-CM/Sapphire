@@ -1,4 +1,6 @@
 Sapphire::Application.routes.draw do
+
+  resources :context
   resources :students
   
   resources :courses do

@@ -1,4 +1,4 @@
-<%= simple_form_for student_import do |f| %>
+<%= simple_form_for [@course, @term, student_import] do |f| %>
   <p>
     <%= f.submit "Save new mappings", :class => "button" %>
   </p>

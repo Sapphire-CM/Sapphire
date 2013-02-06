@@ -1,6 +1,5 @@
-class Import::StudentImportsController < CourseBaseController
+class Import::StudentImportsController < TermResourceController
   def index
-    @course = current_course
     @student_imports = Import::StudentImport.with_terms.for_course(@course).decorate
   end
   
@@ -9,7 +8,7 @@ class Import::StudentImportsController < CourseBaseController
   end
   
   def new
-    @student_import = Import::StudentImport.new
+    @student_import = @term.student_imports.new
     @student_import.term = current_term
 
     @student_import.import_options[:col_seperator] = ";"
@@ -21,10 +20,7 @@ class Import::StudentImportsController < CourseBaseController
   end
   
   def create
-    @student_import = Import::StudentImport.new(params[:import_student_import])
-    @term = @student_import.term
-    
-    @terms = current_course.terms
+    @student_import = @term.student_imports.new(params[:import_student_import])
     
     if @student_import.save
       redirect_to import_student_import_path(@student_import), :notice => "Import created - wanna start it?"

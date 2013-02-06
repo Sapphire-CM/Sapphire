@@ -8,8 +8,8 @@
   
   <div class='three columns'>
     <p>
-      <%= link_to "Edit", edit_import_student_import_path(@student_import), :class => "small button" %>
-      <%= link_to "Import em all", import_import_student_import_path(@student_import), :class => "small success button", :method => :put %>
+      <%= link_to "Edit", edit_course_term_import_student_import_path(@course, @term, @student_import), :class => "small button" %>
+      <%= link_to "Import em all", import_course_term_import_student_import_path(@course, @term, @student_import), :class => "small success button", :method => :put %>
     </p>
   </div>
 </div>

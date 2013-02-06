@@ -1,4 +1,4 @@
-<%= simple_form_for @term, :url => course_terms_path do |f| %>
+<%= simple_form_for [@course, @term] do |f| %>
   <%= f.input :title %>
   <%= f.input :course_id, :as => :hidden %>
   <%= f.submit :class => "button" %>

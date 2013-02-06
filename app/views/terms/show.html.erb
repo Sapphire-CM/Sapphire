@@ -1,7 +1,7 @@
 <% title "#{@term.title}" %>
 
 <div class='row'>
-<h1 class='nine columns'><%= @course.title %>: <%= @term.title %></h1>
+<h1 class='nine columns'>course_term_title(@course, @term)</h1>
 <div class='three columns'>
   <% if current_term == @term %>
     <%= link_to "Leave term context", context_path(current_term), :method => :delete, :class => "alert button"  %>

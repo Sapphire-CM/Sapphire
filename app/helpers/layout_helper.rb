@@ -26,7 +26,7 @@ module LayoutHelper
   end
   
   def course_term_title(course, term)
-    "#{course.title} (#{term.title})"
+    "#{course.title}: #{term.title}"
   end
   
   # Todo: scope this appropriatly for the current_user

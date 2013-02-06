@@ -1,6 +1,11 @@
 <%= simple_form_for @student_import, :html => {:class => "custom"} do |f| %>
-  <%= f.association :term, :as => :select, :collection => @terms, :include_blank => false %>
-  
+
+  <% if term_context? %>
+    <%= f.input :term, :as => :hidden %>
+  <% else %>
+    <%= f.association :term, :as => :select, :collection => @terms, :include_blank => false %>
+  <% end %>
+
   <div class='row'>
     <div class='five columns'>
       <%= f.input :file %>
@@ -17,15 +22,13 @@
       <%= f.input :format, :as => :select, :collection => Import::StudentImport::FORMATS, :include_blank => "-- determine automatically --" %>
     </div>
   </div>
-  <p></p>
+  
   <dl class='tabs contained'>
     <dd class='active'><a href='#csvSettings'>CSV-Settings</a></dd>
   </dl>
   <ul class='tabs-content contained'>
     <li id='csvSettingsTab' class='active'>
-      <%# Todo: Refactor this part - this is pretty ugly! %>
       <%= f.simple_fields_for :import_options do |b| %>
-        <%#= debug @student_import.import_options.to_s %>
         <div class='row'>
           <div class='two columns'>
             <%= b.label :col_seperator, :class => "right" %>
@@ -34,6 +37,15 @@
             <%= b.input_field :col_seperator, :value => @student_import.import_options[:col_seperator], :class => "inline" %>
           </div>
           <div class='one column'></div>
+        
+          <div class='two columns'>
+            <%= b.label :quote_char, :class => "right" %>
+          </div>
+          <div class='one column'>
+            <%= b.input_field :quote_char, :value => @student_import.import_options[:quote_char], :class => "inline" %>
+          </div>
+          <div class='one column'></div>
+
           <div class='two columns'>
             <%= b.label :headers_on_first_line, :class => "right" %>
           </div>
@@ -41,17 +53,7 @@
             <%= b.check_box :headers_on_first_line, :checked => (@student_import.import_options[:headers_on_first_line].to_s == "1"), :class => "inline" %>
           </div>
           <div class='one column'></div>
-          <div class='eight columns'></div>
-        </div>
-        
-        <div class='row'>
-          <div class='two columns'>
-            <%= b.label :quote_char, :class => "right" %>
-          </div>
-          <div class='one column'>
-            <%= b.input_field :quote_char, :value => @student_import.import_options[:quote_char], :class => "inline" %>
-          </div>
-          <div class='nine columns'></div>
+
         </div>
       <% end %>
     </li>

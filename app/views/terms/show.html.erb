@@ -1,16 +1,20 @@
 <% title "#{@term.title}" %>
 
-
 <div class='row'>
-<h1 class='nine columns'><%= @term.title %> of <%= @course.title %></h1>
+<h1 class='nine columns'><%= @course.title %>: <%= @term.title %></h1>
 <div class='three columns'>
-  <%= link_to "Switch to this term context", context_path(@term, :return_to => my_term_registrations_path), :method => :put, :class => "button" %>
+  <% if current_term == @term %>
+    <%= link_to "Leave term context", context_path(current_term), :method => :delete, :class => "alert button"  %>
+  <% else %>
+    <%= link_to "Switch to this term context", context_path(@term, :return_to => course_term_path), :method => :put, :class => "button" %>
+  <% end %>
+
 </div>
 </div>
 
 <dl class='tabs'>
   <dd class='active'>
-    <a href='#tutorials'>Tutorials</a>
+    <a href='#tutorials'>Tutorial groups</a>
   </dd>
   <dd><a href='#exercises'>Exercises</a></dd>
 </dl>
@@ -19,6 +23,7 @@
   <li id='tutorialsTab' class='active'>
     <div class='row'>
       <div class='three columns'>
+        <% if @tutorial_groups.any? %>
         <table class='twelve'>
           <thead>
             <tr>
@@ -37,6 +42,9 @@
             <% end %>
           </tbody>
         </table>
+        <% else %>
+          <p>No tutorial groups present.</p>
+        <% end %>
       </div>
     </div>
   </li>

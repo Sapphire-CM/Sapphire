@@ -5,7 +5,7 @@ class Term < ActiveRecord::Base
   has_many :student_imports, :dependent => :destroy, :class_name => "Import::StudentImport"
   has_many :students, :through => :term_registrations
   
-  attr_accessible :active, :course_id, :title
+  attr_accessible :active, :course_id, :title, :course
   
   validates_presence_of :title, :course_id
   validates_uniqueness_of :active, :scope => :course_id, :if => lambda {|term| term.active? }

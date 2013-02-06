@@ -11,6 +11,11 @@ class Import::StudentImportsController < CourseBaseController
   def new
     @student_import = Import::StudentImport.new
     @student_import.term = current_term
+
+    @student_import.import_options[:col_seperator] = ";"
+    @student_import.import_options[:quote_char] = "\""
+    @student_import.import_options[:headers_on_first_line] = "1"
+
     
     @terms = current_course.terms
   end

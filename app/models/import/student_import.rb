@@ -7,8 +7,7 @@ class Import::StudentImport < ActiveRecord::Base
   
   # associations
   belongs_to :term
-  
-  
+    
   # attributes
   attr_accessible :format, :term_id, :file, :file_cache, :import_options, :import_mapping
   mount_uploader :file, Import::StudentImportsUploader
@@ -107,15 +106,16 @@ class Import::StudentImport < ActiveRecord::Base
   
   def parsed_csv_file
     options = {}
-    options[:col_sep] = import_options[:col_seperator] || ","
+    options[:col_sep] = import_options[:col_seperator] || ";"
     options[:quote_char] = import_options[:quote_char] || "\""
-    
+    options[:headers_on_first_line] = import_options[:headers_on_first_line] || "1"
+
     records = []
     text = File.open(self.file.to_s, "r").read
     text = text.force_encoding("UTF-8").gsub("\xEF\xBB\xBF".force_encoding("UTF-8"), '')
     text.split(/\n/).each_with_index do |line, index|
       
-      next if index == 0 && import_options[:headers_on_first_line] == "1"
+      next if index == 0 && options[:headers_on_first_line] == "1"
       line.strip!
       begin
         records << CSV.parse_line(line, options).keep_if {|cell| cell.present?}

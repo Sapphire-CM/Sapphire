@@ -15,6 +15,9 @@
   </div>
 <% end %></section>
 
+<%= link_to "Import students", new_course_term_import_student_import_path(current_course, current_term), :class => "button" %>
+
+
 <% if @term_registrations.any? %>
 
   <% @grouped_term_registrations.each do |tutorial_group, term_registrations| %>

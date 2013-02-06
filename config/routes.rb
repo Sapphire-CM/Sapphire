@@ -11,16 +11,21 @@ Sapphire::Application.routes.draw do
       resources :registrations
       resources :evaluations
       
+      resources :term_registrations do
+        get :mine, :on => :collection, :action => :index, :view => "mine", :as => :my
+      end
+      
       namespace :admin do
         # admin 
       end
-      
+
       namespace :import do
         resources :student_imports do
           put :import, :on => :member
         end
       end
     end
+    
     resources :tutors
   end
     

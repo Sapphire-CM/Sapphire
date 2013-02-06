@@ -39,7 +39,7 @@ class Import::StudentImportsController < TermResourceController
     @terms = current_course.terms
       
     if @student_import.update_attributes(params[:import_student_import])
-      redirect_to import_student_import_path(@student_import), :notice => "Your changes have been saved"
+      redirect_to course_term_import_student_import_path(@course, @term, @student_import), :notice => "Your changes have been saved"
     else
       render :edit
     end
@@ -49,13 +49,13 @@ class Import::StudentImportsController < TermResourceController
     @student_import = Import::StudentImport.find(params[:id])
     @student_import.import!
     
-    redirect_to import_student_import_path(@student_import), :notice => "Import finished!"
+    redirect_to course_term_import_student_import_path(@course, @term, @student_import), :notice => "Import finished!"
   end
   
   def destroy
     @student_import = Import::StudentImport.find(params[:id])
     
     @student_import.destroy
-    redirect_to import_student_imports_path
+    redirect_to course_term_import_student_import_path(@course, @term)
   end
 end

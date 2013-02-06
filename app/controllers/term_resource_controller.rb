@@ -1,9 +1,15 @@
 class TermResourceController < ApplicationController
-  before_filter :fetch_course_and_term
+
   
   private
-  def fetch_course_and_term
-    @course = Course.find(params[:course_id])
-    @term = @course.terms.find(params[:term_id])
+  def current_course
+    @current_course ||= Course.find(params[:course_id])
   end
+  helper_method :current_course
+  
+  
+  def current_term
+    @current_term ||= current_course.terms.find(params[:term_id])
+  end
+  helper_method :current_term
 end

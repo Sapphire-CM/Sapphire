@@ -1,13 +1,11 @@
-<% title "Students for #{current_course.title} #{current_term.title}" %>
-
-
 <% if params[:view] == "mine" %>
-  <h1>Registered Students for your tutorial group</h1>
+  <% title "Registered Students for your tutorial group" %>
 <% else %>
-  <h1>Registered Students for <%= current_term.title %></h1>
+  <% title "Registered Students for #{current_term.title}" %>
 <% end %>
 
-<section><%= form_tag course_term_term_registrations_path, :method => :get do %>
+
+<section><%= form_tag course_term_term_registrations_path(current_course, current_term), :method => :get do %>
   <%= hidden_field_tag :view, params[:view] %>
   <div class='row'>
     <div class='eleven columns'><%= search_field_tag :q, params[:q] %></div>

@@ -1,5 +1,5 @@
 <li class='has-dropdown'>
-  <%= link_to current_course_term_title, context_index_path %>
+  <%= link_to_current_term %>
   <ul class='dropdown'>
     <% if term_context? %>
       <li><%#= link_to "Exit term", context_path(current_term), :method => :delete %></li>

@@ -14,21 +14,21 @@ class TermsController < ApplicationController
     @term = @course.terms.new(params[:term])
     
     if @term.save
-      redirect_to @course, :notice => "Term has been created"
+      redirect_to course_term_path(@course, @term), :notice => "Term has been created"
     else
       render :new
     end
   end
     
   def edit
-    @term = @course.term.find(params[:term])
+    @term = @course.terms.find(params[:id])
   end
   
   def update
-    @term = @course.terms.find(params[:term])
+    @term = @course.terms.find(params[:id])
     
-    if @term.update_attributes(params[:course])
-      redirect_to course_terms_path(@course), :notice => "Term has been updated"
+    if @term.update_attributes(params[:term])
+      redirect_to course_term_path(@course, @term), :notice => "Term has been updated"
     else
       render :edit
     end
@@ -44,4 +44,14 @@ class TermsController < ApplicationController
   def fetch_course
     @course = Course.find(params[:course_id])
   end
+  
+  def current_term
+    @term
+  end
+  helper_method :current_term
+  
+  def current_course
+    @course
+  end
+  helper_method :current_course
 end

@@ -1,8 +1,8 @@
 <% title @course.title %>
 <% sidebar do %>
-  <%= link_to "Edit course", edit_course_path(@course), :class => "button" %>
+  <%= link_to "Edit", edit_course_path(@course), :class => "small button" %>
+  <%= link_to "Delete", course_path(@course), :method => :delete, :class => "small alert button", :confirm => "Are you sure?" %>
 <% end %>
-
 
 <dl class='tabs'>
   <dd class='active'><a href='#terms'>Terms</a></dd>

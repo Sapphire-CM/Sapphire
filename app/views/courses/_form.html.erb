@@ -2,5 +2,6 @@
   <%= f.input :title %>
   <%= f.input :description %>
   
+  <%= link_to "Cancel", (@course.new_record? ? courses_path : course_path(@course)), :class => "secondary button" %>
   <%= f.submit :class => "button" %>
 <% end %>

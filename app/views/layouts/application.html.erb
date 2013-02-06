@@ -27,7 +27,16 @@
   <%= render "navigation" %>
   
   <%= render "flashes" if flash.any? %>
-
+  
+  <% if @show_title %>
+  <div class='row'>
+    <div class='twelve columns'>
+      <h1><%= yield :title %></h1>
+      <hr />
+    </div>
+  </div>
+  <% end %>
+  
   <div class='row'>
     <% if content_for? :sidebar %>
       <div class='nine columns'>

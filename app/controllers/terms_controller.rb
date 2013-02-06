@@ -1,19 +1,16 @@
 class TermsController < ApplicationController
+  before_filter :fetch_course
+  
   def show
-    @term = Term.find(params[:id])
-    @course = @term.course
-    @tutorial_groups = @term.tutorial_groups
+    @term = @course.terms.find(params[:id])
   end
   
   def new
-    @term = Term.new
-    @term.course = Course.find(params[:course_id])
-    @course = @term.course
+    @term = @course.terms.new
   end
   
   def create
-    @term = Term.new(params[:term])
-    @course = @term.course
+    @term = @course.terms.new(params[:term])
     
     if @term.save
       redirect_to @course, :notice => "Term has been created"
@@ -23,12 +20,11 @@ class TermsController < ApplicationController
   end
     
   def edit
-    @term = Term.new(params[:term])
+    @term = @course.term.find(params[:term])
   end
   
   def update
-    @term = Term.new(params[:term])
-    @course = @term.course
+    @term = @course.terms.find(params[:term])
     
     if @term.update_attributes(params[:course])
       redirect_to course_terms_path(@course), :notice => "Term has been updated"
@@ -38,9 +34,13 @@ class TermsController < ApplicationController
   end
 
   def destroy
-    @term = Term.find(params[:id])
-    @course = @term.course
+    @term = @course.terms.find(params[:id])
     @term.destroy
     redirect_to course_path(@course), :notice => "Term has been deleted"
+  end
+  
+  private
+  def fetch_course
+    @course = Course.find(params[:id])
   end
 end

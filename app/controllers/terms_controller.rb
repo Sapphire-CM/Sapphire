@@ -41,6 +41,6 @@ class TermsController < ApplicationController
   
   private
   def fetch_course
-    @course = Course.find(params[:id])
+    @course = Course.find(params[:course_id])
   end
 end

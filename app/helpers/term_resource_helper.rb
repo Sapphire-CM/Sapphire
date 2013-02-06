@@ -9,6 +9,6 @@ module TermResourceHelper
   end
   
   def current_controller
-    (params[:controller].capitalize + "Controller").constantize
+    (params[:controller]+"_controller").camelize.constantize
   end
 end

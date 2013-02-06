@@ -1,8 +1,8 @@
-class TermRegistrationsController < ApplicationController
+class TermRegistrationsController < TermResourceController
   before_filter :term_context_needed!
   
   def index
-    @term_registrations = current_term.term_registrations
+    @term_registrations = @term.term_registrations
     
     if params[:view] == "mine"
       @term_registrations = @term_registrations.for_tutorial_group(current_term.tutorial_groups.where(:title => "T2").first)

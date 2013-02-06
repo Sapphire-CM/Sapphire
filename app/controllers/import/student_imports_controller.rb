@@ -9,8 +9,6 @@ class Import::StudentImportsController < TermResourceController
   
   def new
     @student_import = @term.student_imports.new
-    @student_import.term = current_term
-
     @student_import.import_options[:col_seperator] = ";"
     @student_import.import_options[:quote_char] = "\""
     @student_import.import_options[:headers_on_first_line] = "1"
@@ -23,7 +21,7 @@ class Import::StudentImportsController < TermResourceController
     @student_import = @term.student_imports.new(params[:import_student_import])
     
     if @student_import.save
-      redirect_to import_student_import_path(@student_import), :notice => "Import created - wanna start it?"
+      redirect_to course_term_import_student_import_path(@course, @term, @student_import), :notice => "Import created - wanna start it?"
     else
       render :new
     end

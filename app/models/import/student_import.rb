@@ -115,6 +115,7 @@ class Import::StudentImport < ActiveRecord::Base
     text.split(/\n/).each_with_index do |line, index|
       # ignore first line
       next if index == 0 && import_options[:headers_on_first_line] == "1"
+
       line.strip!
       begin
         records << CSV.parse_line(line, options).keep_if {|cell| cell.present?}

@@ -1,11 +1,4 @@
 <%= simple_form_for [@course, @term, @student_import], :html => {:class => "custom"} do |f| %>
-
-  <% if term_context? %>
-    <%= f.input :term, :as => :hidden %>
-  <% else %>
-    <%= f.association :term, :as => :select, :collection => @terms, :include_blank => false %>
-  <% end %>
-
   <div class='row'>
     <div class='five columns'>
       <%= f.input :file %>

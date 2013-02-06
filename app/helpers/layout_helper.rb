@@ -4,7 +4,15 @@ module LayoutHelper
     @show_title = show_title
   end
   
+  def sidebar(text = "", &block)
+    if block_given?
+      content_for :sidebar, capture(&block)
+    else
+      content_for :sidebar, text
+    end
+  end
   
+
   def flash_class_for(key)
     classes = ["alert-box"]
     
@@ -18,11 +26,11 @@ module LayoutHelper
   end
   
   def current_course_term_title
-    if current_term && current_course
-      course_term_title(current_course, current_term)
-    else
+    # if current_term && current_course
+      # course_term_title(current_course, current_term)
+    # else
       "<em>-- no term selected --</em>".html_safe
-    end
+    # end
   end
   
   def course_term_title(course, term)
@@ -32,7 +40,7 @@ module LayoutHelper
   # Todo: scope this appropriatly for the current_user
   def navigation_context_selector
     terms = Term.with_courses
-    terms = terms.where {id != my{current_term.id} } if current_term
+    # terms = terms.where {id != my{current_term.id} } if current_term
     
     render "application/navigation_context_selector", :terms => terms.all
   end

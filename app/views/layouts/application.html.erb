@@ -24,16 +24,23 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  
   <%= render "navigation" %>
   
-  
   <%= render "flashes" if flash.any? %>
-  
+
   <div class='row'>
-    <div class='column twelve'>
-      <%= yield %>
-    </div>
+    <% if content_for? :sidebar %>
+      <div class='nine columns'>
+        <%= yield %>
+      </div>
+      <div class='three columns'>
+        <%= yield :sidebar %>
+      </div>
+    <% else %>
+      <div class='column twelve'>
+        <%= yield %>
+      </div>
+    <% end %>
   </div>
   
   <footer class='row'>

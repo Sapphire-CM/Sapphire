@@ -1,4 +1,4 @@
-<%= simple_form_for @student_import, :html => {:class => "custom"} do |f| %>
+<%= simple_form_for [@course, @term, @student_import], :html => {:class => "custom"} do |f| %>
 
   <% if term_context? %>
     <%= f.input :term, :as => :hidden %>

@@ -7,7 +7,7 @@
   <h1>Registered Students for <%= current_term.title %></h1>
 <% end %>
 
-<section><%= form_tag term_registrations_path, :method => :get do %>
+<section><%= form_tag course_term_term_registrations_path, :method => :get do %>
   <%= hidden_field_tag :view, params[:view] %>
   <div class='row'>
     <div class='eleven columns'><%= search_field_tag :q, params[:q] %></div>

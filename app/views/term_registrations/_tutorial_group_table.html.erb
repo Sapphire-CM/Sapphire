@@ -16,8 +16,8 @@
         <td><%= term_registration.student.surname %></td>
         <td><%= term_registration.student.matriculum_number %></td>
         <td><%= term_registration.student.email %></td>
-        <td><%= l term_registration.registered_at, :format => :long %></td>
-        <td class='right-aligned'><%= link_to "View", course_term_term_registrations_path(current_course, current_term, term_registration), :class => "tiny button" %></td>
+        <td><%= l term_registration.registered_at, :format => :short %></td>
+        <td class='right-aligned'><%= link_to "View", course_term_term_registration_path(current_course, current_term, term_registration), :class => "tiny button" %></td>
       </tr>
     <% end %>
   </tbody>

@@ -13,7 +13,6 @@ class Import::StudentImportsController < TermResourceController
     @student_import.import_options[:quote_char] = "\""
     @student_import.import_options[:headers_on_first_line] = "1"
 
-    
     @terms = current_course.terms
   end
   

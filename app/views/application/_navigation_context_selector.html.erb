@@ -2,13 +2,15 @@
   <%= link_to current_course_term_title, context_index_path %>
   <ul class='dropdown'>
     <% if term_context? %>
-      <li><%= link_to "Exit term", context_path(current_term), :method => :delete %></li>
+      <li><%#= link_to "Exit term", context_path(current_term), :method => :delete %></li>
     <% end %>
     <% if terms.any? %>
       <li><label>Choose another course:</label></li>
       <% terms.each do |term| %>
-        <li><%= link_to(course_term_title(term.course, term), context_path(term), :method => :put).html_safe %></li>
+        <li><%= link_to(course_term_title(term.course, term), course_term_path(term.course, term)).html_safe %></li>
       <% end %>
+    <% else %>
+      <p>No terms present.</p>
     <% end %>
   </ul>
   

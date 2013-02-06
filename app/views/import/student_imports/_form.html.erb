@@ -51,6 +51,6 @@
       <% end %>
     </li>
   </ul>
-  
+  <%= link_to "Cancel", (@student_import.new_record? ? course_term_import_student_imports_path(current_course, current_term) : course_term_import_student_import_path(current_course, current_term, @student_import)), :class => "secondary button" %>
   <%= f.submit "Save", :class => "button" %>
 <% end %>

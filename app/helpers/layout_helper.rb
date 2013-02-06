@@ -1,7 +1,13 @@
 module LayoutHelper
-  def title(title, show_title = true)
+  def title(title, subtitle=nil)
     content_for :title, title
-    @show_title = show_title
+    @show_title = true
+    
+    if subtitle.is_a? String
+      content_for :subtitle, subtitle
+    elsif subtitle.is_a? FalseClass
+      @show_title = false
+    end
   end
   
   def link_to_current_term

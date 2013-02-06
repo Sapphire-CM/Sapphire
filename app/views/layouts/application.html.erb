@@ -31,7 +31,12 @@
   <% if @show_title %>
   <div class='row'>
     <div class='twelve columns'>
-      <h1><%= yield :title %></h1>
+      <h1>
+        <%= yield(:title) %>
+        <% if content_for(:subtitle) %>
+          <small><%= yield(:subtitle) %></small>
+        <% end %>
+      </h1>
       <hr />
     </div>
   </div>

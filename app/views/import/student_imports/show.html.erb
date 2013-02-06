@@ -1,25 +1,12 @@
 <% title "Student Import" %>
 
 <div class='row'>
-  <div class='nine columns'>
-    <h1>Student Import</h1>
-    
-  </div>
-  
-  <div class='three columns'>
+  <div class='twelve columns right-aligned'>
     <p>
-      <%= link_to "Edit", edit_course_term_import_student_import_path(@course, @term, @student_import), :class => "small button" %>
-      <%= link_to "Import em all", import_course_term_import_student_import_path(@course, @term, @student_import), :class => "small success button", :method => :put %>
+      <%= link_to "Edit", edit_course_term_import_student_import_path(current_course, current_term, @student_import), :class => "small button" %>
+      <%= link_to "Import em all", import_course_term_import_student_import_path(current_course, current_term, @student_import), :class => "small success button", :method => :put %>
     </p>
   </div>
 </div>
 
-<p>File: <%= @student_import.file.to_s %></p>
-
 <%= @student_import.mapping_table %>
-
-
-
-
-
-

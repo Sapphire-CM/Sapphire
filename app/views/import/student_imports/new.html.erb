@@ -1,9 +1,4 @@
-<% title "Import Students" %>
+<% title "Import students into #{course_term_title(current_course, current_term)}" %>
 
-<% if term_context? %>
-  <h1>Import Students into <%= @student_import.term.course.title %>: <%= @student_import.term.title %></h1>
-<% else %>
-  <h1>Import Students</h1>
-<% end %>
 
 <%= render "form" %>

@@ -1,4 +1,4 @@
-<%= simple_form_for [@course, @term, @student_import], :html => {:class => "custom"} do |f| %>
+<%= simple_form_for [current_course, current_term, @student_import], :html => {:class => "custom"} do |f| %>
   <div class='row'>
     <div class='five columns'>
       <%= f.input :file %>

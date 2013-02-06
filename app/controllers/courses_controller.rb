@@ -35,4 +35,10 @@ class CoursesController < ApplicationController
       render :edit
     end
   end
+
+  def destroy
+    @course = Course.find(params[:id])
+    @course.destroy
+    redirect_to courses_path, :notice => "Course has been deleted"
+  end
 end

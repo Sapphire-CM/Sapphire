@@ -28,15 +28,19 @@
           <th><%= term.title %></th>
           <td><%= pluralize term.tutorial_groups.count, "Tutorial" %></td>
           <td><%= term.students.count %></td>
-          <td><%= link_to "View", course_term_path(:course_id => @course, :id => term.id), :class => "tiny button" %></td>
+          <td>
+            <%= link_to "View", course_term_path(@course, term), :class => "tiny button" %>
+            <%= link_to "Edit", edit_course_term_path(@course, term), :class => "tiny button" %>
+            <%= link_to "Delete", course_term_path(@course, term), :class => "tiny alert button", :method => :delete, :confirm => "Are you sure?" %>
+          </td>
         </tr>
       <% end %>
       </tbody>
     </table>
     <% else %>
-      <p>There are no terms present.</p>
+      <p>No terms present.</p>
     <% end %>
-    <%= link_to "Add Term", new_course_term_path(:course_id => @course), :class => "button" %>
+    <%= link_to "Add Term", new_course_term_path(@course), :class => "button" %>
   </li>
   <li id='descriptionTab'>
     <%= simple_format @course.description %>

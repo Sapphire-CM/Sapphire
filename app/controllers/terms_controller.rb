@@ -21,7 +21,26 @@ class TermsController < ApplicationController
       render :new
     end
   end
+    
+  def edit
+    @term = Term.new(params[:term])
+  end
   
-  private
+  def update
+    @term = Term.new(params[:term])
+    @course = @term.course
+    
+    if @term.update_attributes(params[:course])
+      redirect_to course_terms_path(@course), :notice => "Term has been updated"
+    else
+      render :edit
+    end
+  end
 
+  def destroy
+    @term = Term.find(params[:id])
+    @course = @term.course
+    @term.destroy
+    redirect_to course_path(@course), :notice => "Term has been deleted"
+  end
 end

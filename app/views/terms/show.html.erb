@@ -1,16 +1,6 @@
 <% title @term.title %>
 
-<div class='row'>
-<h1 class='nine columns'><%= course_term_title(@course, @term) %></h1>
-<div class='three columns'>
-  <% if current_term == @term %>
-    <%= link_to "Leave term context", context_path(current_term), :method => :delete, :class => "alert button"  %>
-  <% else %>
-    <%= link_to "Switch to this term context", context_path(@term, :return_to => course_term_path), :method => :put, :class => "button" %>
-  <% end %>
-
-</div>
-</div>
+<h1><%= course_term_title(@course, @term) %></h1>
 
 <dl class='tabs'>
   <dd class='active'>

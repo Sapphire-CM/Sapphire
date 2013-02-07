@@ -20,14 +20,16 @@
           <tr>
             <th>Title</th>
             <th>Points</th>
+            <th>Ratings</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
         <% @exercise.rating_groups.each do |rating_group| %>
           <tr>
-            <th><%= rating_group.title %></th>
+            <td><%= rating_group.title %></td>
             <td><%= rating_group.points %></td>
+            <td><%= rating_group.ratings.count %></td>
             <td>
               <%= link_to "View", course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), :class => "tiny button" %>
               <%= link_to "Edit", edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), :class => "tiny button" %>

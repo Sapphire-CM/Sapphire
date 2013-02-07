@@ -1,5 +1,6 @@
 <%= simple_form_for [current_course, current_term, @exercise, @rating_group] do |f| %>
   <%= f.input :title %>
+  <%= f.input :points %>
   
   <%= link_to "Cancel", (@rating_group.new_record? ? course_term_exercise_rating_groups_path(current_course, current_term, @exercise) : course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group)), :class => "secondary button" %>
   <%= f.submit :class => "button" %>

@@ -29,6 +29,7 @@ class RatingGroupsController < TermResourceController
     if @rating_group.update_attributes(params[:rating_group])
       redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), :notice => "RatingGroup was successfully updated."
     else
+      raise
       render :edit
     end
   end

@@ -1,0 +1,2 @@
+module RatingGroupsHelper
+end

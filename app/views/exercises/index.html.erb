@@ -1,0 +1,30 @@
+<% title "Exercises" %>
+
+<% sidebar do %>
+  <%= link_to 'New Exercise', new_course_term_exercise_path(current_course, current_term), :class => "small button"  %>
+<% end %>
+
+<% if @exercises.any? %>
+  <table class='twelve'>
+    <thead>
+      <tr>
+      <th>Title</th>
+      <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @exercises.each do |exercise| %>
+        <tr>
+          <td><%= exercise.title %></td>
+          <td class='right-aligned'>
+            <%= link_to "View", course_term_exercise_path(current_course, current_term, exercise), :class => "tiny button" %>
+            <%= link_to "Edit", edit_course_term_exercise_path(current_course, current_term, exercise), :class => "tiny button" %>
+            <%= link_to "Delete", course_term_exercise_path(current_course, current_term, exercise), :class => "tiny alert button", :method => :delete, :confirm => "Are you sure?" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>There are no exercises present.</p>
+<% end %>

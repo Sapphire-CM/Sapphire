@@ -1,0 +1,8 @@
+<%= simple_form_for [current_course, current_term, @exercise] do |f| %>
+  <%= f.input :title %>
+  
+  <%= link_to "Cancel", (@exercise.new_record? ? 
+    course_term_exercises_path(current_course, current_term) : 
+    course_term_exercise_path(current_course, current_term, @exercise)), :class => "secondary button" %>
+  <%= f.submit :class => "button" %>
+<% end %>

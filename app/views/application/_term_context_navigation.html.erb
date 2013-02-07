@@ -10,11 +10,11 @@
   <li class='has-dropdown'>
     <%= link_to "Evaluation", '#' %>
     <ul class='dropdown'>
-      <%# if current_term.exercises.any? %>
-        <%# @current_term.exercises.each do |exercise| %>
-        <li><%# link_to exercise.name, course_term_evaluation_path() %></li>
-        <%# end %>
-      <%# end %>
+      <% if current_term.exercises.any? %>
+        <% @current_term.exercises.each do |exercise| %>
+        <li>Ex...<%# link_to exercise.name, course_term_evaluation_path() %></li>
+        <% end %>
+      <% end %>
     </ul>
   </li>
 </ul>

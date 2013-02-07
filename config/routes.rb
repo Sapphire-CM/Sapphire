@@ -4,18 +4,17 @@ Sapphire::Application.routes.draw do
     resources :terms do
       get :meeting
       
-      resources :exercises
-      resources :registrations
-      resources :evaluations
-      
+      resources :exercises do
+        resources :rating_groups
+        resources :ratings
+      end
+
       resources :term_registrations do
         get :mine, :on => :collection, :action => :index, :view => "mine", :as => :my
       end
       
-      namespace :admin do
-        # admin 
-      end
-
+      resources :evaluations
+      
       namespace :import do
         resources :student_imports do
           put :import, :on => :member

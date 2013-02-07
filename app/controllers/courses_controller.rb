@@ -16,7 +16,7 @@ class CoursesController < ApplicationController
     @course = Course.new(params[:course])
     
     if @course.save
-      redirect_to @course, :notice => "Course has been created"
+      redirect_to course_path(@course), :notice => "Course was successfully created."
     else
       render :new
     end
@@ -30,7 +30,7 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
     
     if @course.update_attributes(params[:course])
-      redirect_to @course, :notice => "Course has been updated"
+      redirect_to course_path(@course), :notice => "Course was successfully updated."
     else
       render :edit
     end
@@ -39,6 +39,6 @@ class CoursesController < ApplicationController
   def destroy
     @course = Course.find(params[:id])
     @course.destroy
-    redirect_to courses_path, :notice => "Course has been deleted"
+    redirect_to courses_path(), :notice => "Course was successfully deleted."
   end
 end

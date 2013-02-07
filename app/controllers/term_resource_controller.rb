@@ -1,5 +1,4 @@
 class TermResourceController < ApplicationController
-
   
   private
   def current_course

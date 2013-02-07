@@ -1,6 +1,7 @@
 <% title "Courses" %>
+
 <% sidebar do %>
-<%= link_to "New Course", new_course_path, :class => "small button" %>
+  <%= link_to "New Course", new_course_path, :class => "small button" %>
 <% end %>
 
 <% if @courses.any? %>

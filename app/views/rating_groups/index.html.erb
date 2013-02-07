@@ -1,0 +1,21 @@
+<h1>Listing rating_groups</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @rating_groups.each do |rating_group| %>
+  <tr>
+    <td><%= link_to 'Show', rating_group %></td>
+    <td><%= link_to 'Edit', edit_rating_group_path(rating_group) %></td>
+    <td><%= link_to 'Destroy', rating_group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Rating group', new_rating_group_path %>

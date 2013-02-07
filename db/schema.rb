@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121223020434) do
+ActiveRecord::Schema.define(:version => 20130207111407) do
 
   create_table "courses", :force => true do |t|
     t.string   "title"
@@ -22,6 +22,15 @@ ActiveRecord::Schema.define(:version => 20121223020434) do
   end
 
   add_index "courses", ["course_leader_id"], :name => "index_courses_on_course_leader_id"
+
+  create_table "exercises", :force => true do |t|
+    t.integer  "term_id"
+    t.string   "title"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "exercises", ["term_id"], :name => "index_exercises_on_term_id"
 
   create_table "import_student_imports", :force => true do |t|
     t.integer  "term_id"
@@ -36,6 +45,26 @@ ActiveRecord::Schema.define(:version => 20121223020434) do
   end
 
   add_index "import_student_imports", ["term_id"], :name => "index_import_student_imports_on_semester_id"
+
+  create_table "rating_groups", :force => true do |t|
+    t.integer  "exercise_id"
+    t.string   "title"
+    t.integer  "points"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "rating_groups", ["exercise_id"], :name => "index_rating_groups_on_exercise_id"
+
+  create_table "ratings", :force => true do |t|
+    t.integer  "rating_group_id"
+    t.string   "title"
+    t.integer  "points"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "ratings", ["rating_group_id"], :name => "index_ratings_on_rating_group_id"
 
   create_table "students", :force => true do |t|
     t.string   "forename"

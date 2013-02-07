@@ -1,6 +1,8 @@
 class TermsController < ApplicationController
   before_filter :fetch_course
   
+  # index action not needed
+
   def show
     @term = @course.terms.find(params[:id])
     @tutorial_groups = @term.tutorial_groups
@@ -14,7 +16,7 @@ class TermsController < ApplicationController
     @term = @course.terms.new(params[:term])
     
     if @term.save
-      redirect_to course_term_path(@course, @term), :notice => "Term has been created"
+      redirect_to course_term_path(@course, @term), :notice => "Term was successfully created."
     else
       render :new
     end
@@ -28,7 +30,7 @@ class TermsController < ApplicationController
     @term = @course.terms.find(params[:id])
     
     if @term.update_attributes(params[:term])
-      redirect_to course_term_path(@course, @term), :notice => "Term has been updated"
+      redirect_to course_term_path(@course, @term), :notice => "Term was successfully updated."
     else
       render :edit
     end
@@ -37,7 +39,7 @@ class TermsController < ApplicationController
   def destroy
     @term = @course.terms.find(params[:id])
     @term.destroy
-    redirect_to course_path(@course), :notice => "Term has been deleted"
+    redirect_to course_path(@course), :notice => "Term was successfully deleted."
   end
   
   private

@@ -1,7 +1,7 @@
 module TermResourceHelper
   def term_context?
     if @term_context.nil?
-      @term_context = current_controller < TermResourceController || (params[:controller] == "terms" && params[:action] != "index")
+      @term_context = current_controller < TermResourceController || (params[:controller] == "terms" && params[:action] == "show")
     end
     
     @term_context

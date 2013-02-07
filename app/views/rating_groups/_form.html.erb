@@ -1,10 +1,6 @@
-<%= simple_form_for(@rating_group) do |f| %>
-  <%= f.error_notification %>
-
-  <div class="form-inputs">
-  </div>
-
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
+<%= simple_form_for [current_course, current_term, @exercise, @rating_group] do |f| %>
+  <%= f.input :title %>
+  
+  <%= link_to "Cancel", (@rating_group.new_record? ? course_term_exercise_rating_groups_path(current_course, current_term, @exercise) : course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group)), :class => "secondary button" %>
+  <%= f.submit :class => "button" %>
 <% end %>

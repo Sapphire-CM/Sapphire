@@ -6,7 +6,7 @@ class Term < ActiveRecord::Base
   has_many :students, :through => :term_registrations
   has_many :exercises, :dependent => :destroy
   
-  attr_accessible :active, :course_id, :title, :course
+  attr_accessible :active, :course_id, :title, :course, :exercises
   
   validates_presence_of :title, :course_id
   validates_uniqueness_of :active, :scope => :course_id, :if => lambda {|term| term.active? }

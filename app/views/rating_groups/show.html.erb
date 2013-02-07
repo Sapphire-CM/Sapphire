@@ -1,5 +1,48 @@
-<p id="notice"><%= notice %></p>
+<% title @rating_group.title, @rating_group.points %>
+<%# title @rating_group.title, @rating_group.points + " " + (@rating_group.points > 1 ? "points" : "point") %>
 
+<% sidebar do %>
+  <%= link_to "Edit", edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), :class => "small button" %>
+  <%= link_to "Delete", course_term_exercise_path(current_course, current_term, @exercise), :method => :delete, :confirm => "Are you sure?", :class => "small alert button" %>
+<% end %>
 
-<%= link_to 'Edit', edit_rating_group_path(@rating_group) %> |
-<%= link_to 'Back', rating_groups_path %>
+<dl class='tabs'>
+  <dd class='active'>
+    <a href='#ratings'>Ratings</a>
+  </dd>
+</dl>
+
+<ul class='tabs-content'>
+  <li id='ratingsTab' class='active'>
+
+    <% if @rating_group.ratings.any? %>
+      <table class='twelve'>
+        <thead>
+          <tr>
+          <th>Title</th>
+          <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @rating_group.ratings.each do |rating| %>
+            <tr>
+              <td><%= rating.title %></td>
+              <td class='right-aligned'>
+                <%= link_to "View", course_term_exercise_path(current_course, current_term, @exercise, @rating_group), :class => "tiny button" %>
+                <%= link_to "Edit", edit_course_term_exercise_path(current_course, current_term, @exercise, @rating_group), :class => "tiny button" %>
+                <%= link_to "Delete", course_term_exercise_path(current_course, current_term, @exercise, @rating_group), :class => "tiny alert button", :method => :delete, :confirm => "Are you sure?" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>There are no ratings present.</p>
+    <% end %>
+
+    <p>
+      <%= link_to 'New Rating', new_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating_group), :class => "small button"  %>
+    </p>
+
+  </li>
+</ul>

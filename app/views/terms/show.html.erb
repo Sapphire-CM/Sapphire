@@ -1,15 +1,17 @@
-<% title course_term_title(@course, @term) %>
+<% title course_term_title(current_course, current_term) %>
 
 <% sidebar do %>
-  <%= link_to "Edit", edit_course_term_path(@course, @term), :class => "small button" %>
-  <%= link_to "Delete", course_term_path(@course, @term), :method => :delete, :confirm => "Are you sure?", :class => "small alert button" %>
+  <%= link_to "Edit", edit_course_term_path(current_course, current_term), :class => "small button" %>
+  <%= link_to "Delete", course_term_path(current_course, current_term), :method => :delete, :confirm => "Are you sure?", :class => "small alert button" %>
 <% end %>
 
 <dl class='tabs'>
   <dd class='active'>
     <a href='#tutorials'>Tutorial groups</a>
   </dd>
-  <dd><a href='#exercises'>Exercises</a></dd>
+  <dd>
+    <a href='#exercises'>Exercises</a>
+  </dd>
 </dl>
 
 <ul class='tabs-content'>
@@ -38,29 +40,38 @@
     <% end %>
   </li>
   <li id='exercisesTab'>
-    <div class='panel'>Dummy Data</div>
+
+    <% if current_term.exercises.any? %>
+      <table class='twelve'>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>RatingGroups</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% current_term.exercises.each do |exercise| %>
+            <tr>
+              <td><%= exercise.title %></td>
+              <td><%= exercise.rating_groups.count %></td>
+              <td class='right-aligned'>
+                <%= link_to "View", course_term_exercise_path(current_course, current_term, exercise), :class => "tiny button" %>
+                <%= link_to "Edit", edit_course_term_exercise_path(current_course, current_term, exercise), :class => "tiny button" %>
+                <%= link_to "Delete", course_term_exercise_path(current_course, current_term, exercise), :class => "tiny alert button", :method => :delete, :confirm => "Are you sure?" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>There are no exercises present.</p>
+    <% end %>
+
+    <p>
+      <%= link_to 'New Exercise', new_course_term_exercise_path(current_course, current_term), :class => "small button"  %>
+    </p>
+
     
-    <table>
-      <thead>
-        <tr>
-          <th>Exercise</th>
-          <th>Description</th>
-          <th>Announce</th>
-          <th>Deadline</th>
-          <th>Points</th>
-          <th>Percent</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Newsgroup New Thread</td>
-          <td>Fri 05 Oct 2012 lecture</td>
-          <td>Wed 10 Oct 2012 23:59</td>
-          <td>25</td>
-          <td>11.3%</td>
-        </tr>
-      </tbody>
-    </table>
   </li>
 </ul>

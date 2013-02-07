@@ -1,10 +1,6 @@
 class RatingGroupsController < TermResourceController
   before_filter :fetch_exercise
 
-  def index
-    @rating_groups = @exercise.rating_groups.all
-  end
-
   def show
     @rating_group = @exercise.rating_groups.find(params[:id])
   end
@@ -46,7 +42,7 @@ class RatingGroupsController < TermResourceController
 
   private
   def fetch_exercise
-    @exercise = @term.exercises.find(params[:exercise_id])
+    @exercise = current_term.exercises.find(params[:exercise_id])
   end
 
 end

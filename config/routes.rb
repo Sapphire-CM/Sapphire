@@ -5,8 +5,9 @@ Sapphire::Application.routes.draw do
       get :meeting
       
       resources :exercises do
-        resources :rating_groups
-        resources :ratings
+        resources :rating_groups do
+          resources :ratings
+        end
       end
 
       resources :term_registrations do

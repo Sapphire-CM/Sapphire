@@ -1,7 +1,4 @@
 class ExercisesController < TermResourceController
-  def index
-    @exercises = current_term.exercises.all
-  end
 
   def show
     @exercise = current_term.exercises.find(params[:id])

@@ -8,13 +8,18 @@
     </ul>
   </li>
   <li class='has-dropdown'>
-    <%= link_to "Evaluation", '#' %>
+    <%= link_to "Exercises", course_term_exercises_path(current_course, current_term) %>
     <ul class='dropdown'>
       <% if current_term.exercises.any? %>
-        <% @current_term.exercises.each do |exercise| %>
-        <li>Ex...<%# link_to exercise.name, course_term_evaluation_path() %></li>
+        <% current_term.exercises.where { course_id != nil && term_id != nil }.each do |exercise| %>
+          <li><%= link_to exercise.title, course_term_exercise_path(current_course, current_term, exercise) %></li>
         <% end %>
+      <% else %>
+        <li><%= link_to "Ex Dummy", '#' %></li>
       <% end %>
     </ul>
   </li>
+  <li class='divider'></li>
+
+  <li><% link_to "Exercises", course_term_exercises_path(current_course, current_term) %></li>
 </ul>

@@ -1,5 +1,46 @@
-<p id="notice"><%= notice %></p>
+<% title @exercise.title %>
 
+<% sidebar do %>
+  <%= link_to "Edit", edit_course_term_exercise_path(current_course, current_term, @exercise), :class => "small button" %>
+  <%= link_to "Delete", course_term_exercise_path(current_course, current_term, @exercise), :method => :delete, :class => "small alert button", :confirm => "Are you sure?" %>
+<% end %>
 
-<%= link_to 'Edit', edit_exercise_path(@exercise) %> |
-<%= link_to 'Back', exercises_path %>
+<dl class='tabs'>
+  <dd class='active'><a href='#ratinggroups'>RatingGroups</a></dd>
+  <dd><a href='#evaluations'>Evaluations</a></dd>
+  <dd><a href='#submissions'>Submissions</a></dd>
+</dl>
+
+<ul class='tabs-content'>
+  <li class='active' id='termsTab'>
+    <% if @exercise.rating_groups.any? %>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Tutorials</th>
+          <th>Registered Students</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @terms.each do |term| %>
+        <tr>
+          <th><%= term.title %></th>
+          <td><%= pluralize term.tutorial_groups.count, "Tutorial" %></td>
+          <td><%= term.students.count %></td>
+          <td>
+            <%= link_to "View", course_term_path(@course, term), :class => "tiny button" %>
+            <%= link_to "Edit", edit_course_term_path(@course, term), :class => "tiny button" %>
+            <%= link_to "Delete", course_term_path(@course, term), :class => "tiny alert button", :method => :delete, :confirm => "Are you sure?" %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <% else %>
+      <p>No RatingGroups present.</p>
+    <% end %>
+    <%= link_to "Add RatingGroup", new_course_term_exercise_rating_group_path(current_course, current_term, @exercise), :class => "button" %>
+  </li>
+</ul>

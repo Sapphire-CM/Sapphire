@@ -19,7 +19,7 @@ class ExercisesController < TermResourceController
     @exercise = current_term.exercises.new(params[:exercise])
 
     if @exercise.save
-      redirect_to course_term_exercise_path(@course, @term, @exercise), :notice => "Exercise was successfully created."
+      redirect_to course_term_exercise_path(current_course, current_term, @exercise), :notice => "Exercise was successfully created."
     else
       render :new
     end
@@ -29,7 +29,7 @@ class ExercisesController < TermResourceController
     @exercise = current_term.exercises.find(params[:id])
 
     if @exercise.update_attributes(params[:exercise])
-      redirect_to @exercise, :notice =>  "Exercise was successfully updated."
+      redirect_to course_term_exercise_path(current_course, current_term, @exercise), :notice =>  "Exercise was successfully updated."
     else
       render :edit
     end
@@ -39,6 +39,6 @@ class ExercisesController < TermResourceController
     @exercise = current_term.exercises.find(params[:id])
     @exercise.destroy
 
-    redirect_to course_term_exercises_path(@course, @term), :notice => "Exercise was successfully deleted."
+    redirect_to course_term_exercises_path(current_course, current_term), :notice => "Exercise was successfully deleted."
   end
 end

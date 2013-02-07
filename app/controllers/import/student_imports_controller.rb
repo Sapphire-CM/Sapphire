@@ -9,6 +9,8 @@ class Import::StudentImportsController < TermResourceController
   
   def new
     @student_import = current_term.student_imports.new
+
+    # default values
     @student_import.import_options[:col_seperator] = ";"
     @student_import.import_options[:quote_char] = "\""
     @student_import.import_options[:headers_on_first_line] = "1"
@@ -18,7 +20,7 @@ class Import::StudentImportsController < TermResourceController
     @student_import = current_term.student_imports.new(params[:import_student_import])
     
     if @student_import.save
-      redirect_to course_term_import_student_import_path(current_course, current_term, @student_import), :notice => "Import created - wanna start it?"
+      redirect_to course_term_import_student_import_path(current_course, current_term, @student_import)
     else
       render :new
     end
@@ -32,7 +34,7 @@ class Import::StudentImportsController < TermResourceController
     @student_import = Import::StudentImport.find(params[:id])
           
     if @student_import.update_attributes(params[:import_student_import])
-      redirect_to course_term_import_student_import_path(current_course, current_term, @student_import), :notice => "Your changes have been saved"
+      redirect_to course_term_import_student_import_path(current_course, current_term, @student_import), :notice => "Mappings successfully saved."
     else
       render :edit
     end
@@ -42,7 +44,7 @@ class Import::StudentImportsController < TermResourceController
     @student_import = Import::StudentImport.find(params[:id])
     @student_import.import!
     
-    redirect_to course_term_import_student_import_path(current_course, current_term, @student_import), :notice => "Import finished!"
+    redirect_to course_term_term_registrations_path(current_course, current_term), :notice => "Import successfully finished!"
   end
   
   def destroy

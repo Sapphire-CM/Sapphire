@@ -16,30 +16,36 @@
   <li class='active' id='ratinggroupsTab'>
 
     <% if @exercise.rating_groups.any? %>
-      <table class='twelve'>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Points</th>
-            <th>Ratings</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-        <% @exercise.rating_groups.each do |rating_group| %>
-          <tr>
-            <td><%= rating_group.title %></td>
-            <td><%= rating_group.points %></td>
-            <td><%= rating_group.ratings.count %></td>
-            <td class='right-aligned'>
-              <%= link_to "View", course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), :class => "tiny button" %>
-              <%= link_to "Edit", edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), :class => "tiny button" %>
-              <%= link_to "Delete", course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), :class => "tiny alert button", :method => :delete, :confirm => "Are you sure?" %>
-            </td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
+      <% @exercise.rating_groups.each do |rating_group| %>
+        <div>
+          <div>
+            <h3><%= link_to "#{rating_group.title}: #{rating_group.points}", course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group) %></h3>
+          </div>
+
+          <% if rating_group.ratings.any? %>
+            <table class='six'>
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Points</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% rating_group.ratings.each do |rating| %>
+                  <tr>
+                    <td><%= rating.title %></td>
+                    <td><%= rating.points %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            <p>There are no ratings present.</p>
+          <% end %>
+        </div>
+      <% end %>
+
+      
     <% else %>
       <p>No RatingGroups present.</p>
     <% end %>

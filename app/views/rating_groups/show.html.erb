@@ -10,6 +10,7 @@
   <dd class='active'>
     <a href='#ratings'>Ratings</a>
   </dd>
+  <dd>Description</dd>
 </dl>
 
 <ul class='tabs-content'>
@@ -19,9 +20,9 @@
       <table class='twelve'>
         <thead>
           <tr>
-          <th>Title</th>
-          <th>Points</th>
-          <th></th>
+            <th>Title</th>
+            <th>Points</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -45,5 +46,8 @@
       <%= link_to 'New Rating', new_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating_group), :class => "small button"  %>
     </p>
 
+  </li>
+
+  <li id='descriptionTab'>
   </li>
 </ul>

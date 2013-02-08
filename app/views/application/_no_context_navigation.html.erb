@@ -1,7 +1,26 @@
 <ul class='left'>
   <li class='divider'></li>
-  <li>
+  <li class='has-dropdown'>
     <%= link_to "Courses", courses_path %>
+    <ul class='dropdown'>
+      <% if Course.any? %>
+        <% Course.all.each do |course| %>
+          <li class='has-dropdown'><%= link_to course.title, course_path(course) %>
+            <ul class='dropdown'>
+            <% if course.terms.any? %>
+              <% course.terms.each do |term| %>
+                <li><%= link_to term.title, course_term_path(course, term) %></li>
+              <% end %>
+            <% else %>
+              <li><%= link_to "(no courses)", '#' %></li>
+            <% end %>
+            </ul>
+          </li>
+        <% end %>
+      <% else %>
+        <li><%= link_to "(no courses)", '#' %></li>
+      <% end %>
+    </ul>
   </li>
   <li>
     <%= link_to "Students", admin_students_path %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130208102322) do
+ActiveRecord::Schema.define(:version => 20130208105903) do
 
   create_table "courses", :force => true do |t|
     t.string   "title"
@@ -103,5 +103,10 @@ ActiveRecord::Schema.define(:version => 20130208102322) do
 
 # Could not dump table "tutorial_groups" because of following StandardError
 #   Unknown type 'id' for column 'tutor_id'
+
+  create_table "tutors", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
 end

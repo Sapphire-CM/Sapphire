@@ -4,3 +4,11 @@
  *= require_tree .
  *= require_self
 */
+
+footer {
+  display: block;
+  position: fixed;
+  text-align: center;
+  bottom: 0;
+  padding-bottom: 1em;
+}

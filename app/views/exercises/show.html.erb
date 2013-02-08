@@ -9,10 +9,11 @@
   <dd class='active'><a href='#ratinggroups'>RatingGroups</a></dd>
   <dd><a href='#evaluations'>Evaluations</a></dd>
   <dd><a href='#submissions'>Submissions</a></dd>
+  <dd><a href='#description'>Description</a></dd>
 </dl>
 
 <ul class='tabs-content'>
-  <li class='active' id='termsTab'>
+  <li class='active' id='ratinggroupsTab'>
 
     <% if @exercise.rating_groups.any? %>
       <table class='twelve'>
@@ -47,5 +48,17 @@
       <%= link_to "Add RatingGroup", new_course_term_exercise_rating_group_path(current_course, current_term, @exercise), :class => "small button" %>
     </p>
     
+  </li>
+
+  <li id='evaluationsTab'>
+    <p>No Evaluations present.</p>
+  </li>
+
+  <li id='submissionsTab'>
+    <p>No Submissions present.</p>
+  </li>
+
+  <li id='descriptionTab'>
+    <p><%= @exercise.description %></p>
   </li>
 </ul>

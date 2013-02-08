@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130208083338) do
+ActiveRecord::Schema.define(:version => 20130208094113) do
 
   create_table "courses", :force => true do |t|
     t.string   "title"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(:version => 20130208083338) do
     t.integer  "points"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.text     "description"
   end
 
   add_index "rating_groups", ["exercise_id"], :name => "index_rating_groups_on_exercise_id"
@@ -63,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20130208083338) do
     t.integer  "points"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+    t.text     "description"
   end
 
   add_index "ratings", ["rating_group_id"], :name => "index_ratings_on_rating_group_id"

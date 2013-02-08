@@ -4,5 +4,5 @@ class RatingGroup < ActiveRecord::Base
   has_many :ratings, :dependent => :destroy
   validates_presence_of :title, :points
 
-  attr_accessible :title, :points, :exercise
+  attr_accessible :title, :description, :points, :exercise
 end

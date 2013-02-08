@@ -3,5 +3,5 @@ class Rating < ActiveRecord::Base
 
   validates_presence_of :title, :points
 
-  attr_accessible :title, :points, :rating_group
+  attr_accessible :title, :description, :points, :rating_group
 end

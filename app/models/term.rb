@@ -1,5 +1,6 @@
 class Term < ActiveRecord::Base
   belongs_to :course
+  
   has_many :tutorial_groups, :dependent => :destroy
   has_many :term_registrations, :dependent => :destroy
   has_many :student_imports, :dependent => :destroy, :class_name => "Import::StudentImport"

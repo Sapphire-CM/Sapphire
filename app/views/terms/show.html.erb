@@ -29,7 +29,7 @@
           <% @tutorial_groups.each do |tutorial_group| %>
             <tr>
               <td><%= tutorial_group.title %></td>
-              <td></td>
+              <td><%= (tutorial_group.tutor_id != nil ? tutorial_group.tutor.fullname : "-") %></td>
               <td><%= tutorial_group.students.count %></td>
             </tr>
           <% end %>

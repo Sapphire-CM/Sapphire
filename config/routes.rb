@@ -8,13 +8,13 @@ Sapphire::Application.routes.draw do
         resources :rating_groups do
           resources :ratings
         end
+    
+        resources :evaluations
       end
 
       resources :term_registrations do
         get :mine, :on => :collection, :action => :index, :view => "mine", :as => :my
       end
-      
-      resources :evaluations
       
       namespace :import do
         resources :student_imports do

@@ -1,0 +1,58 @@
+<% title "Evaluation for #{@exercise.title}" %>
+
+
+<div style="overflow-x: scroll; width: 100%;">
+<table>
+  <tr>
+    <th></th>
+    <% @students.each do |student| %>
+      <th><%= "#{student.matriculum_number}" %></th>
+    <% end %>
+  </tr>
+
+  <% @rating_groups.each do |rating_group| %>
+    <tr>
+      <td><b><%= "#{rating_group.title}" %></b></td>
+      <% @students.each do |student| %>
+        <td></td>
+      <% end %>
+    </tr>
+    
+    <% rating_group.ratings.each do |rating| %>
+      <tr>
+        <td><%= "#{rating.title}" %></td>
+        <% @students.each do |student| %>
+          <td>
+            <%= check_box_tag "evaluation_#{student.id}_#{rating.id}", true, false, :data => { :student_id => student.id, :rating_id => rating.id } %>
+
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  <% end %>
+
+
+</table>
+</div>
+
+<script type="text/javascript">
+
+$('input[type=checkbox]').bind('click', function() {
+  student_id = $(this).data('student-id');
+  rating_id = $(this).data('rating-id');
+
+  var type;
+  var evaluation_url;
+  if ($(this).checked) {
+    type = 'DELETE'
+    url = "<%= course_term_exercise_evaluation_path(current_course, current_term, @exercise, ) %>"
+  } else {
+    type = 'POST'
+    url = "<%= new_course_term_exercise_evaluation_path(current_course, current_term, @exercise) %>"
+  }
+
+  $.ajax(type: type, url: evaluation_url);
+});
+
+</script>
+

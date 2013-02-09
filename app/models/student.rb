@@ -5,6 +5,7 @@ class Student < ActiveRecord::Base
   
   has_many :term_registrations, :dependent => :destroy
   has_many :tutorial_groups, :through => :term_registrations
+  has_many :evalutions, :dependent => :destroy
   
   validates_presence_of :forename, :surname, :email, :matriculum_number
   validates_uniqueness_of :matriculum_number, :email, :message => "is already present"

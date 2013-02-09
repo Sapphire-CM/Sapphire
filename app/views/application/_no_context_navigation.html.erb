@@ -5,27 +5,21 @@
     <ul class='dropdown'>
       <% if Course.any? %>
         <% Course.all.each do |course| %>
-          <li class='has-dropdown'><%= link_to course.title, course_path(course) %>
-            <ul class='dropdown'>
+          <li class='<%= course.terms.any? ? "has-dropdown" : "" %>'>
+            <%= link_to course.title, course_path(course) %>
+
             <% if course.terms.any? %>
-              <% course.terms.each do |term| %>
-                <li><%= link_to term.title, course_term_path(course, term) %></li>
-              <% end %>
-            <% else %>
-              <li><%= link_to "(no courses)", '#' %></li>
+              <ul class='dropdown'>
+                <% course.terms.each do |term| %>
+                  <li><%= link_to term.title, course_term_path(course, term) %></li>
+                <% end %>
+              </ul>
             <% end %>
-            </ul>
           </li>
         <% end %>
       <% else %>
         <li><%= link_to "(no courses)", '#' %></li>
       <% end %>
     </ul>
-  </li>
-  <li>
-    <%= link_to "Students", admin_students_path %>
-  </li>
-  <li>
-    <%#= link_to "Students Imports", admin_students_imports_path %>
   </li>
 </ul>

@@ -22,29 +22,19 @@ class Import::StudentImportsController < TermResourceController
     if @student_import.save
       redirect_to course_term_import_student_import_path(current_course, current_term, @student_import)
     else
-      render :new
+      render :new, :notice => "Error during saving!"
     end
-  end
-  
-  def edit
-    @student_import = Import::StudentImport.find(params[:id])
   end
   
   def update
     @student_import = Import::StudentImport.find(params[:id])
           
-    if @student_import.update_attributes(params[:import_student_import])
-      redirect_to course_term_import_student_import_path(current_course, current_term, @student_import), :notice => "Mappings successfully saved."
+    if @student_import.update_attributes(params[:import_student_import]) && @student_import.import!
+      redirect_to course_term_term_registrations_path(current_course, current_term), :notice => "Import successfully finished!"
     else
-      render :edit
+      @student_import = Import::StudentImport.for_course(current_course).find(params[:id]).decorate
+      render :show, :notice => "Error during importing studentes!"
     end
-  end
-  
-  def import
-    @student_import = Import::StudentImport.find(params[:id])
-    @student_import.import!
-    
-    redirect_to course_term_term_registrations_path(current_course, current_term), :notice => "Import successfully finished!"
   end
   
   def destroy

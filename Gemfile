@@ -14,11 +14,13 @@ gem 'carrierwave'       # fileuploads
 gem 'squeel'            # easy DSL
 gem 'draper'            # decorators
 gem 'kaminari'          # pagination
+gem 'flash_render'
 
 group :development do
   gem 'thin'
   gem 'better_errors'
   gem "binding_of_caller"
+  gem 'sextant'
 end
 
 # Gems used only for assets and not required

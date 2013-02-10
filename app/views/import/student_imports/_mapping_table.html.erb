@@ -1,6 +1,6 @@
 <%= simple_form_for [current_course, current_term, @student_import] do |f| %>
   <p>
-    <%= f.submit "Save new mappings", :class => "button" %>
+    <%= f.submit "Import", :class => "button" %>
   </p>
   <%= f.fields_for :import_mapping do |fb| %>
   <table class='mapping_table'>

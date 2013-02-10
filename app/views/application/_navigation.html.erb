@@ -1,12 +1,13 @@
 <nav class='top-bar'>
   <ul>
     <li class='name'>
-      <h1>
-        <%= link_to "Sapphire", root_path %>
-      </h1>
+      <h1><%= link_to "Sapphire", root_path %></h1>
     </li>
-    <li class='toggle-topbar'><a href='#'></a></li>
+    <li class='toggle-topbar'>
+      <a href='#'></a>
+    </li>
   </ul>
+
   <section>
     <% if term_context? %>
       <%= render "term_context_navigation" %>
@@ -14,12 +15,11 @@
       <%= render "no_context_navigation" %>
     <% end %>
   </section>
+
   <section>
     <ul class='right'>
-      <li><%= link_to "My Account", '#' %></li>
       <li class='divider'></li>
-      <%= navigation_context_selector %>
-    </ul>
-    
+      <li><%= link_to "My Account", '#' %></li>
+    </ul>    
   </section>
 </nav>

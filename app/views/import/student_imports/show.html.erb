@@ -1,12 +1,3 @@
 <% title "Student Import" %>
 
-<div class='row'>
-  <div class='twelve columns right-aligned'>
-    <p>
-      <%= link_to "Edit", edit_course_term_import_student_import_path(current_course, current_term, @student_import), :class => "small button" %>
-      <%= link_to "Import em all", import_course_term_import_student_import_path(current_course, current_term, @student_import), :class => "small success button", :method => :put %>
-    </p>
-  </div>
-</div>
-
 <%= @student_import.mapping_table %>

@@ -62,27 +62,32 @@ class Import::StudentImport < ActiveRecord::Base
   def import!
     values = parsed_file
     
-    values.each do |row|
-      matriculum_number = row[import_mapping.matriculum_number.to_i]
-      
-      student = Student.find_or_initialize_by_matriculum_number(matriculum_number)
-      student.forename = row[import_mapping.forename.to_i]
-      student.surname = row[import_mapping.surname.to_i]
-      student.email = row[import_mapping.email.to_i]
-      student.matriculum_number = row[import_mapping.matriculum_number.to_i]
-      student.save
-      
-      group_title = row[import_mapping.tutorial_group.to_i]
-      tutorial_group = term.tutorial_groups.find_or_initialize_by_title(group_title)
-            
-      registration = student.term_registrations.where(:term_id => term).first || student.term_registrations.new
-      registration.term = term
-      registration.tutorial_group = tutorial_group
-      registration.registered_at = DateTime.parse(row[import_mapping.registered_at.to_i].gsub(/,/, " "))
-      registration.save
+    begin
+      values.each do |row|
+        matriculum_number = row[import_mapping.matriculum_number.to_i]
+        
+        student = Student.find_or_initialize_by_matriculum_number(matriculum_number)
+        student.forename = row[import_mapping.forename.to_i]
+        student.surname = row[import_mapping.surname.to_i]
+        student.email = row[import_mapping.email.to_i]
+        student.matriculum_number = row[import_mapping.matriculum_number.to_i]
+        student.save
+        
+        group_title = row[import_mapping.tutorial_group.to_i]
+        tutorial_group = term.tutorial_groups.find_or_initialize_by_title(group_title)
+              
+        registration = student.term_registrations.where(:term_id => term).first || student.term_registrations.new
+        registration.term = term
+        registration.tutorial_group = tutorial_group
+        registration.registered_at = DateTime.parse(row[import_mapping.registered_at.to_i].gsub(/,/, " "))
+        registration.save
+      end
+      self.status = "imported"
+      self.save
+
+    rescue
+      false
     end
-    self.status = "imported"
-    self.save    
   end
   
   def parsed?

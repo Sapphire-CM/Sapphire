@@ -25,3 +25,22 @@ exercises = Exercise.create([
   { title: 'Ex 3.2: Research', term: terms[0] },
   { title: 'Ex 4: Website', term: terms[0] },
   { title: 'Ex 5: CSS', term: terms[0] }])
+
+rating_groups = RatingGroup.create([
+  { title: 'Identity', points: 7, exercise: exercises[0] },
+  { title: 'Format', points: 7, exercise: exercises[0] },
+  { title: 'Content', points: 11, exercise: exercises[0] },
+  { title: 'Miscellaneous', exercise: exercises[0] }])
+
+ratings = Rating.create([
+  { title: 'no realname', points: -3, rating_group: rating_groups[0] },
+  { title: 'wrong or missing TUG or previously disclosed email address', points: -3, rating_group: rating_groups[0] },
+  { title: 'redundant Reply-To (same as From)', points: -1, rating_group: rating_groups[0] },
+  { title: 'no signature', points: -4, rating_group: rating_groups[0] },
+  { title: 'not 100% plain text', points: -5, rating_group: rating_groups[1] },
+  { title: 'broken message id', points: -2, rating_group: rating_groups[1] },
+  { title: 'headers not 7bit ASCII', points: -2, rating_group: rating_groups[1] },
+  { title: 'lines too long', points: -3, rating_group: rating_groups[1]} ])
+
+
+

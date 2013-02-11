@@ -23,7 +23,7 @@
     <ul class='dropdown'>
       <% if current_term.tutorial_groups.any? %>
         <% current_term.tutorial_groups.where { course_id != nil && term_id != nil }.each do |tutorial_group| %>
-          <li><%= link_to "#{tutorial_group.title}" + (tutorial_group.tutor.nil? ? " (no tutor)" : "(#{tutorial_group.tutor.fullname})"), '#' %></li>
+          <li><%= link_to "#{tutorial_group.title} #{tutorial_group.tutor.nil? ? "(no tutor)" : "(#{tutorial_group.tutor.fullname})" }", '#' %></li>
           <li><%#= link_to tutorial_group.title, course_term_tutorial_group_path(current_course, current_term, tutorial_group) %></li>
         <% end %>
       <% else %>

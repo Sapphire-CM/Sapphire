@@ -1,5 +1,7 @@
 Sapphire::Application.routes.draw do
 
+  devise_for :accounts
+
   resources :courses do
     resources :terms do
       get :meeting

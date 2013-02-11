@@ -30,7 +30,7 @@ rating_groups = RatingGroup.create([
   { title: 'Identity', points: 7, exercise: exercises[0] },
   { title: 'Format', points: 7, exercise: exercises[0] },
   { title: 'Content', points: 11, exercise: exercises[0] },
-  { title: 'Miscellaneous', exercise: exercises[0] }])
+  { title: 'Miscellaneous', points: 0, exercise: exercises[0] }])
 
 ratings = Rating.create([
   { title: 'no realname', points: -3, rating_group: rating_groups[0] },

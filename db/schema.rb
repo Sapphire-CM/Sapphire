@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130211114913) do
+ActiveRecord::Schema.define(:version => 20130211115609) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -26,8 +26,11 @@ ActiveRecord::Schema.define(:version => 20130211114913) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
+    t.string   "accountable_type"
+    t.integer  "accountable_id"
   end
 
+  add_index "accounts", ["accountable_id", "accountable_type"], :name => "index_accounts_on_accountable_id_and_accountable_type", :unique => true
   add_index "accounts", ["email"], :name => "index_accounts_on_email", :unique => true
   add_index "accounts", ["reset_password_token"], :name => "index_accounts_on_reset_password_token", :unique => true
 

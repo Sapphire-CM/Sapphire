@@ -8,4 +8,9 @@ class Account < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
   # attr_accessible :title, :body
+  
+  belongs_to :accountable, :polymorphic => true
+  
+  validates_uniqueness_of :accountable_id, :scope => :accountable_type
+  
 end

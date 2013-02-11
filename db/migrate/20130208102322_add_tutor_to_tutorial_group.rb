@@ -1,5 +1,5 @@
 class AddTutorToTutorialGroup < ActiveRecord::Migration
   def change
-    add_index :tutorial_group, :tutor_id
+    add_column :tutorial_groups, :tutor_id, :integer
   end
 end

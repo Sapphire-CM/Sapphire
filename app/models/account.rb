@@ -13,4 +13,5 @@ class Account < ActiveRecord::Base
   
   validates_uniqueness_of :accountable_id, :scope => :accountable_type
   
+  delegate :fullname, :to => :accountable
 end

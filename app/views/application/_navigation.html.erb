@@ -9,17 +9,22 @@
   </ul>
 
   <section>
-    <% if term_context? %>
-      <%= render "term_context_navigation" %>
+    <% if account_signed_in? %>
+      <% if term_context? %>
+        <%= render "term_context_navigation" %>
+      <% else %>
+        <%= render "no_context_navigation" %>
+      <% end %>
     <% else %>
-      <%= render "no_context_navigation" %>
+      <%= render "public_navigation" %>
     <% end %>
   </section>
-
-  <section>
-    <ul class='right'>
-      <li class='divider'></li>
-      <li><%= link_to "My Account", '#' %></li>
-    </ul>    
-  </section>
+  <% if account_signed_in? %>
+    <section>
+      <ul class='right'>
+        <li class='divider'></li>
+        <li><%= link_to "My Account", '#' %></li>
+      </ul>
+    </section>
+  <% end %>
 </nav>

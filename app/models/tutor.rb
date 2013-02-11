@@ -6,4 +6,6 @@ class Tutor < ActiveRecord::Base
   has_one :account, :as => :accountable
   has_many :tutorial_groups
   
+  has_many :courses, :through => :tutorial_groups, :uniq => true
+  
 end

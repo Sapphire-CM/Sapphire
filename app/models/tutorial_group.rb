@@ -8,5 +8,5 @@ class TutorialGroup < ActiveRecord::Base
 
   has_many :term_registrations, :dependent => :destroy
   has_many :students, :through => :term_registrations
-  
+  has_one :course, :through => :term
 end

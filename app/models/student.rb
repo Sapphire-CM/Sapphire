@@ -1,8 +1,13 @@
 class Student < ActiveRecord::Base
-  belongs_to :tutorial_group
-  belongs_to :submission_group
+  include Naming
   attr_accessible :email, :forename, :matriculum_number, :surname
   
+  
+  belongs_to :tutorial_group
+  belongs_to :submission_group
+  
+  has_one :account, :as => :accountable
+    
   has_many :term_registrations, :dependent => :destroy
   has_many :tutorial_groups, :through => :term_registrations
   has_many :evalutions, :dependent => :destroy
@@ -23,4 +28,6 @@ class Student < ActiveRecord::Base
     
     rel
   end
+  
+
 end

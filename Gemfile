@@ -15,6 +15,7 @@ gem 'squeel'            # easy DSL
 gem 'draper'            # decorators
 gem 'kaminari'          # pagination
 gem 'flash_render'
+gem 'devise'            # user authentication
 
 group :development do
   gem 'thin'

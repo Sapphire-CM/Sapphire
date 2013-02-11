@@ -114,8 +114,15 @@ ActiveRecord::Schema.define(:version => 20130209180900) do
 
   add_index "terms", ["course_id"], :name => "index_terms_on_course_id"
 
-# Could not dump table "tutorial_groups" because of following StandardError
-#   Unknown type 'id' for column 'tutor_id'
+  create_table "tutorial_groups", :force => true do |t|
+    t.string   "title"
+    t.integer  "term_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "tutor_id"
+  end
+
+  add_index "tutorial_groups", ["term_id"], :name => "index_tutorial_groups_on_term_id"
 
   create_table "tutors", :force => true do |t|
     t.datetime "created_at", :null => false

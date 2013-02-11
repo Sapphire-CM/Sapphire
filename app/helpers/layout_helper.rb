@@ -52,4 +52,18 @@ module LayoutHelper
     
     render "application/navigation_context_selector", :terms => terms.all
   end
+  
+  
+  def side_navigation_item(title, path, options = {})
+    classes = []
+    
+    if options[:active].nil?
+      classes << "active" if current_page?(path)
+    else
+      classes << "active" if options[:active]
+      options = options.except(:active)
+    end
+    
+    content_tag :li, link_to(title, path, options), class: classes.join(" ")
+  end
 end

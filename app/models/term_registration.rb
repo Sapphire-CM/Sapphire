@@ -23,6 +23,10 @@ class TermRegistration < ActiveRecord::Base
   #   rel
   # end
   
+  def points
+    5
+  end
+  
   def self.search(query)
     scoped.merge(Student.search(query))
   end

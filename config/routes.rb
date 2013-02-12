@@ -5,7 +5,7 @@ Sapphire::Application.routes.draw do
   resources :courses do
     resources :terms do
       get :meeting
-      
+      resources :tutorial_groups
       resources :exercises do
         resources :rating_groups do
           resources :ratings

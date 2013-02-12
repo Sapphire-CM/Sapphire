@@ -6,6 +6,7 @@ class TermsController < ApplicationController
   def show
     @term = @course.terms.find(params[:id])
     @tutorial_groups = @term.tutorial_groups
+    @exercises = @term.exercises
   end
   
   def new

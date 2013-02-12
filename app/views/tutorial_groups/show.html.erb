@@ -1,0 +1,41 @@
+<% title tutorial_group_title @tutorial_group %>
+
+<% sidebar do %>
+  <%= link_to "Edit", edit_course_term_tutorial_group_path(current_course, current_term, @tutorial_group), :class => "small button" %>
+  <%= link_to "Delete", course_term_tutorial_group_path(current_course, current_term, @tutorial_group), :class => "small alert button", :method => :delete, :confirm => "Are you sure?" %>
+<% end %>
+
+<dl class='tabs'>
+  <dd class='active'><a href='#students'>Students</a></dd>
+  <dd><a href='#submissions'>Submissions</a></dd>
+</dl>
+
+<ul class='tabs-content'>
+  <li class='active' id='studentsTab'>
+    <table class='twelve'>
+      <thead>
+        <th>Forename</th>
+        <th>Surname</th>
+        <th>Matriculum Number</th>
+        <th>Current Points</th>
+        <th>Submissions</th>
+        <th></th>
+      </thead>
+      <tbody>
+        <% @term_registrations.each do |term_registration|  %>
+        <tr>
+          <td><%= term_registration.student.forename %></td>
+          <td><%= term_registration.student.surname %></td>
+          <td><%= term_registration.student.matriculum_number %></td>
+          <td><%= term_registration.points %></td>
+          <td><%= 3 %></td>
+          <td class='right-aligned'><%= link_to "View", course_term_term_registration_path(current_course, current_term, term_registration), :class => "tiny button" %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </li>
+  <li id='submissionsTab'>
+    
+  </li>
+</ul>

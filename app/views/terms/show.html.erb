@@ -23,14 +23,20 @@
             <th>Title</th>
             <th>Tutor</th>
             <th>Students</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <% @tutorial_groups.each do |tutorial_group| %>
             <tr>
               <td><%= tutorial_group.title %></td>
-              <td><%= (tutorial_group.tutor.nil? ? "(no tutor)" : tutorial_group.tutor.fullname) %></td>
+              <td><%= tutor_name tutorial_group.tutor %></td>
               <td><%= tutorial_group.students.count %></td>
+              <td>
+                <%= link_to "View", course_term_tutorial_group_path(current_course, current_term, tutorial_group), :class => "small button" %>
+                <%= link_to "Edit", edit_course_term_tutorial_group_path(current_course, current_term, tutorial_group), :class => "small button" %>
+                <%= link_to "Delete", course_term_tutorial_group_path(current_course, current_term, tutorial_group), :method => :delete, :confirm => "Are you sure?", :class => "small alert button" %>
+              </td>
             </tr>
           <% end %>
         </tbody>
@@ -42,7 +48,7 @@
   </li>
   <li id='exercisesTab'>
 
-    <% if current_term.exercises.any? %>
+    <% if @exercises.any? %>
       <table class='twelve'>
         <thead>
           <tr>
@@ -52,7 +58,7 @@
           </tr>
         </thead>
         <tbody>
-          <% current_term.exercises.each do |exercise| %>
+          <% @exercises.each do |exercise| %>
             <tr>
               <td><%= exercise.title %></td>
               <td><%= exercise.rating_groups.count %></td>

@@ -4,6 +4,7 @@ class Course < ActiveRecord::Base
   belongs_to :course_leader
 
   has_many :terms, :dependent => :destroy
+  has_many :tutors, :through => :terms, :uniq => true
   
   validates_presence_of :title
   validates_uniqueness_of :title

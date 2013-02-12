@@ -47,8 +47,25 @@
     <%= simple_format @course.description %>
   </li>
   <li id='tutorsTab'>
-    <div class='panel'>
-      Dummy Data
-    </div>
+    <% if @tutors.any? %>
+      <table>
+        <thead>
+          <tr>
+            <th>Forename</th>
+            <th>Surname</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @tutors.each do |tutor| %>
+          <tr>
+            <td><%= tutor.forename %></td>
+            <td><%= tutor.surname %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>No tutors present</p>
+    <% end %>
   </li>
 </ul>

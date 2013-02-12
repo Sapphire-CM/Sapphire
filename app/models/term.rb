@@ -7,6 +7,8 @@ class Term < ActiveRecord::Base
   has_many :students, :through => :term_registrations
   has_many :exercises, :dependent => :destroy
   
+  has_many :tutors, :through => :tutorial_groups
+  
   attr_accessible :active, :course_id, :title, :course, :exercises
   
   validates_presence_of :title, :course_id

@@ -2,7 +2,7 @@ class TutorialGroup < ActiveRecord::Base
   belongs_to :term
   belongs_to :tutor
 
-  attr_accessible :title, :tutor
+  attr_accessible :title, :tutor_id
   
   validates_presence_of :title
 

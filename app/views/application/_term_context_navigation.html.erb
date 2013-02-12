@@ -8,8 +8,8 @@
   <li class='has-dropdown'>
     <%= link_to "Exercises", '#' %>
     <ul class='dropdown'>
-      <% if current_term.exercises.any? %>
-        <% current_term.exercises.where { course_id != nil && term_id != nil }.each do |exercise| %>
+      <% if current_term.exercises(true).any? %>
+        <% current_term.exercises.each do |exercise| %>
           <li><%= link_to exercise.title, course_term_exercise_path(current_course, current_term, exercise) %></li>
         <% end %>
       <% else %>
@@ -21,7 +21,7 @@
   <li class='has-dropdown'>
     <%= link_to "Tutorial Groups", '#' %>
     <ul class='dropdown'>
-      <% if current_term.tutorial_groups.any? %>
+      <% if current_term.tutorial_groups(true).any? %>
         <% current_term.tutorial_groups.where { course_id != nil && term_id != nil }.each do |tutorial_group| %>
           <li><%= link_to "#{tutorial_group.title} #{tutorial_group.tutor.nil? ? "(no tutor)" : "(#{tutorial_group.tutor.fullname})" }", '#' %></li>
           <li><%#= link_to tutorial_group.title, course_term_tutorial_group_path(current_course, current_term, tutorial_group) %></li>

@@ -14,7 +14,7 @@ class Student < ActiveRecord::Base
   
   validates_presence_of :forename, :surname, :email, :matriculum_number
   validates_uniqueness_of :matriculum_number, :email, :message => "is already present"
-  validates_format_of :matriculum_number, :with => /^[\d]{7}$/
+  validates_format_of :matriculum_number, :with => /\A[\d]{7}\z/
   
   scope :for_term, lambda {|term| joins(:term_registrations).where{term_registrations.term_id == term}}
   

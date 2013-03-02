@@ -3,7 +3,7 @@ class TutorialGroup < ActiveRecord::Base
 
   has_one :course, :through => :term
   
-  attr_accessible :title
+  attr_accessible :title, :description
   
   validates_presence_of :title
   validates_uniqueness_of :title

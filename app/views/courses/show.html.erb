@@ -43,6 +43,10 @@
     <%= link_to "Add Term", new_course_term_path(@course), :class => "button" %>
   </li>
   <li id='descriptionTab'>
-    <%= simple_format @course.description %>
+    <% if @course.description? %>
+      <%= simple_format @course.description %>
+    <% else %>
+      <p>No description present</p>
+    <% end %>
   </li>
 </ul>

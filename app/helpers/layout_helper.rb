@@ -47,7 +47,7 @@ module LayoutHelper
   
   # Todo: scope this appropriatly for the current_user
   def navigation_context_selector
-    terms = Term.with_courses
+    terms = Term
     terms = terms.where {id != my{current_term.id} } if term_context?
     
     render "application/navigation_context_selector", :terms => terms.all

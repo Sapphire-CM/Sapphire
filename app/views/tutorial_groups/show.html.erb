@@ -8,6 +8,7 @@
 <dl class='tabs'>
   <dd class='active'><a href='#students'>Students</a></dd>
   <dd><a href='#submissions'>Submissions</a></dd>
+  <dd><a href='#description'>Description</a></dd>
 </dl>
 
 <ul class='tabs-content'>
@@ -21,19 +22,26 @@
         <th></th>
       </thead>
       <tbody>
-        <% @term_registrations.each do |term_registration|  %>
+        <% @tutorial_group.students.each do |student|  %>
         <tr>
-          <td><%= term_registration.student.forename %></td>
-          <td><%= term_registration.student.surname %></td>
-          <td><%= term_registration.student.matriculum_number %></td>
+          <td><%= student.forename %></td>
+          <td><%= student.surname %></td>
+          <td><%= student.matriculum_number %></td>
           <td><%= 3 %></td>
-          <td class='right-aligned'><%= link_to "View", course_term_term_registration_path(current_course, current_term, term_registration), :class => "tiny button" %></td>
+          <td class='right-aligned'><div class='tiny button'>SOME</div><div class='tiny alert button'>BUTTONS</div></td>
         </tr>
         <% end %>
       </tbody>
     </table>
   </li>
   <li id='submissionsTab'>
-    
+    <p>No submissions present</p>
+  </li>
+  <li id='descriptionTab'>
+    <% if @tutorial_group.description? %>
+      <%= simple_format @tutorial_group.description %>
+    <% else %>
+      <p>No description present</p>
+    <% end %>
   </li>
 </ul>

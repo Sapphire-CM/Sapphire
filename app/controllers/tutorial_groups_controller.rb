@@ -1,7 +1,6 @@
 class TutorialGroupsController < TermResourceController
   def show
     @tutorial_group = current_term.tutorial_groups.find(params[:id])
-    @term_registrations = @tutorial_group.term_registrations.includes(:student)
   end
   
   def new

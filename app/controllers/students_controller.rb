@@ -7,7 +7,7 @@ class StudentsController < ApplicationController
   
   def show
     @student = StudentDecorator.decorate Student.find(params[:id])
-    @term_registrations = @student.term_registrations.with_terms.with_tutorial_groups.with_courses
+    @term_registrations = @student.term_registrations
     
     @grouped_term_registrations = @term_registrations.group_by(&:course)
   end

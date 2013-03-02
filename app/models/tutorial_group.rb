@@ -12,7 +12,6 @@ class TutorialGroup < ActiveRecord::Base
   delegate :tutor, :to => :tutor_term_registration, :allow_nil => true
 
   has_many :student_term_registrations, :dependent => :destroy
-  # delegate :students, :to => :student_term_registrations, :allow_nil => true
   
   def students
     tmp = []

@@ -12,6 +12,9 @@
   <dd>
     <a href='#exercises'>Exercises</a>
   </dd>
+  <dd>
+    <a href="#tutors">Tutors</a>
+  </dd>
 </dl>
 
 <ul class='tabs-content'>
@@ -78,7 +81,28 @@
     <p>
       <%= link_to 'New Exercise', new_course_term_exercise_path(current_course, current_term), :class => "small button"  %>
     </p>
+  </li>
 
-    
+  <li id='tutorsTab'>
+    <% if @term.tutors.any? %>
+      <table>
+        <thead>
+          <tr>
+            <th>Forename</th>
+            <th>Surname</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @term.tutors.each do |tutor| %>
+          <tr>
+            <td><%= tutor.forename %></td>
+            <td><%= tutor.surname %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>No tutors present</p>
+    <% end %>
   </li>
 </ul>

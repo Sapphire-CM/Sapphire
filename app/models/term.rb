@@ -4,9 +4,9 @@ class Term < ActiveRecord::Base
   has_many :exercises, :dependent => :destroy
   has_many :tutorial_groups, :dependent => :destroy
 
-  has_many :course_leader_term_registrations, :dependent => :destroy
-  has_many :tutor_term_registrations, :dependent => :destroy
-  has_many :student_term_registrations, :dependent => :destroy
+  has_one :course_leader_term_registrations, :dependent => :destroy
+  # has_many :tutor_term_registrations, :dependent => :destroy
+  # has_many :student_term_registrations, :dependent => :destroy
 
   delegate :lecturer, :to => :lecturer_term_registrations
   delegate :tutors, :to => :tutor_term_registrations
@@ -17,8 +17,19 @@ class Term < ActiveRecord::Base
   validates_presence_of :title, :course_id
   validates_uniqueness_of :title
   
-  scope :with_courses, joins(:course).includes(:course)
+  # scope :with_courses, joins(:course).includes(:course)
 
   has_many :student_imports, :dependent => :destroy, :class_name => "Import::StudentImport"
 
+  def students
+    tmp = []
+
+    tutorial_groups.each do |tutorial_group|
+      tutorial_group.student_term_registrations.each do |registration|
+        tmp << registration.student
+      end
+    end
+
+    tmp
+  end
 end

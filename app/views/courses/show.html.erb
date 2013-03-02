@@ -8,7 +8,6 @@
 <dl class='tabs'>
   <dd class='active'><a href='#terms'>Terms</a></dd>
   <dd><a href='#description'>Description</a></dd>
-  <dd><a href='#tutors'>Tutors</a></dd>
 </dl>
 
 <ul class='tabs-content'>
@@ -45,27 +44,5 @@
   </li>
   <li id='descriptionTab'>
     <%= simple_format @course.description %>
-  </li>
-  <li id='tutorsTab'>
-    <% if @tutors.any? %>
-      <table>
-        <thead>
-          <tr>
-            <th>Forename</th>
-            <th>Surname</th>
-          </tr>
-        </thead>
-        <tbody>
-        <% @tutors.each do |tutor| %>
-          <tr>
-            <td><%= tutor.forename %></td>
-            <td><%= tutor.surname %></td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
-    <% else %>
-      <p>No tutors present</p>
-    <% end %>
   </li>
 </ul>

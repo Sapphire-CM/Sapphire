@@ -21,7 +21,6 @@ class Import::StudentImport < ActiveRecord::Base
   #validations
   validates_presence_of :file, :term_id
   validates_inclusion_of :status, :in => STATES
-  # validates_inclusion_of :format, :in => FORMATS
   
   #scopes
   scope :for_course, lambda {|course| joins(:term).where {term.course_id == course} }
@@ -57,7 +56,6 @@ class Import::StudentImport < ActiveRecord::Base
   def imported?
     self.status == "imported"
   end
-  
   
   def import!
     values = parsed_file
@@ -107,7 +105,6 @@ class Import::StudentImport < ActiveRecord::Base
   end
   
   
-  
   private
   
   def parsed_csv_file
@@ -136,7 +133,6 @@ class Import::StudentImport < ActiveRecord::Base
   def parsed_xml_file
     
   end
-  
   
   def fill_status
     self.status = "pending"

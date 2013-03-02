@@ -1,5 +1,5 @@
 class TutorTermRegistration < ActiveRecord::Base
-  belongs_to :account
+  belongs_to :tutor, :class_name => "Account", :foreign_key => "account_id"
   belongs_to :tutorial_group
   
   has_one :term, :through => :tutorial_group
@@ -7,7 +7,4 @@ class TutorTermRegistration < ActiveRecord::Base
   
   attr_accessible :registered_at
 
-  def tutor
-    account
-  end
 end

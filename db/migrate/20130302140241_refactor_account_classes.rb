@@ -11,7 +11,6 @@ class RefactorAccountClasses < ActiveRecord::Migration
     remove_column :courses, :course_leader_id
     
     remove_column :terms, :active
-    remove_column :terms, :course_id
     add_column    :terms, :description, :string
 
     remove_column :tutorial_groups, :tutor_id
@@ -36,12 +35,12 @@ class RefactorAccountClasses < ActiveRecord::Migration
 
     create_table :student_term_registrations do |t|
       t.integer  :account_id
-      t.integer  :term_id
+      t.integer  :tutorial_group_id
       t.datetime :registered_at
       t.timestamps
     end
     add_index :student_term_registrations, ["account_id"], :name => "index_student_term_registrations_on_account_id"
-    add_index :student_term_registrations, ["term_id"], :name => "index_student_term_registrations_on_term_id"
+    add_index :student_term_registrations, ["tutorial_group_id"], :name => "index_student_term_registrations_on_tutorial_group_id"
 
   end
 

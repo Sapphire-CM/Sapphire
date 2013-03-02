@@ -7,9 +7,7 @@ class Account < ActiveRecord::Base
 
   attr_accessible :email, :password, :password_confirmation, :remember_me, :forename, :surname, :matriculum_number
   
-  belongs_to :accountable, :polymorphic => true
-  
-  validates_uniqueness_of :accountable_id
+  # validates_uniqueness_of :accountable_id
   validates_uniqueness_of :email
   validates_presence_of :forename
   validates_presence_of :surname

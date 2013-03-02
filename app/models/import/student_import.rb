@@ -64,29 +64,33 @@ class Import::StudentImport < ActiveRecord::Base
     
     begin
       values.each do |row|
+        email = row[import_mapping.email.to_i]
         matriculum_number = row[import_mapping.matriculum_number.to_i]
-        
-        student = Student.find_or_initialize_by_matriculum_number(matriculum_number)
+        student = Account.find_or_initialize_by_email(email)
         student.forename = row[import_mapping.forename.to_i]
         student.surname = row[import_mapping.surname.to_i]
-        student.email = row[import_mapping.email.to_i]
+        student.email = email
         student.matriculum_number = row[import_mapping.matriculum_number.to_i]
-        student.save
+        student.password = "123456" # TODO change default password
+        student.password_confirmation = "123456"
+        student.save!
         
         group_title = row[import_mapping.tutorial_group.to_i]
         tutorial_group = term.tutorial_groups.find_or_initialize_by_title(group_title)
+        tutorial_group.save!
               
-        registration = student.term_registrations.where(:term_id => term).first || student.term_registrations.new
-        registration.term = term
-        registration.tutorial_group = tutorial_group
+        registration = tutorial_group.student_term_registrations.find_or_initialize_by_account_id(student.id)
         registration.registered_at = DateTime.parse(row[import_mapping.registered_at.to_i].gsub(/,/, " "))
-        registration.save
+        # registration = student.term_registrations.where(:term_id => term).first || student.term_registrations.new
+        # registration.term = term
+        # registration.tutorial_group = tutorial_group
+        registration.save!
       end
       self.status = "imported"
       self.save
 
-    rescue
-      false
+    # rescue
+    #   false
     end
   end
   

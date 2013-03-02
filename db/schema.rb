@@ -116,21 +116,24 @@ ActiveRecord::Schema.define(:version => 20130302140241) do
 
   create_table "student_term_registrations", :force => true do |t|
     t.integer  "account_id"
-    t.integer  "term_id"
+    t.integer  "tutorial_group_id"
     t.datetime "registered_at"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   add_index "student_term_registrations", ["account_id"], :name => "index_student_term_registrations_on_account_id"
-  add_index "student_term_registrations", ["term_id"], :name => "index_student_term_registrations_on_term_id"
+  add_index "student_term_registrations", ["tutorial_group_id"], :name => "index_student_term_registrations_on_tutorial_group_id"
 
   create_table "terms", :force => true do |t|
     t.string   "title"
+    t.integer  "course_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.string   "description"
   end
+
+  add_index "terms", ["course_id"], :name => "index_terms_on_course_id"
 
   create_table "tutor_term_registrations", :force => true do |t|
     t.integer  "account_id"

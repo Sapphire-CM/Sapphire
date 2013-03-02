@@ -1,29 +1,24 @@
 class Term < ActiveRecord::Base
   belongs_to :course
   
-  has_many :tutorial_groups, :dependent => :destroy
-  has_many :term_registrations, :dependent => :destroy
-  has_many :student_imports, :dependent => :destroy, :class_name => "Import::StudentImport"
-  has_many :students, :through => :term_registrations
   has_many :exercises, :dependent => :destroy
+  has_many :tutorial_groups, :dependent => :destroy
+
+  has_many :course_leader_term_registrations, :dependent => :destroy
+  has_many :tutor_term_registrations, :dependent => :destroy
+  has_many :student_term_registrations, :dependent => :destroy
+
+  delegate :lecturer, :to => :lecturer_term_registrations
+  delegate :tutors, :to => :tutor_term_registrations
+  delegate :students, :to => :student_term_registrations
   
-  has_many :tutors, :through => :tutorial_groups
-  
-  attr_accessible :active, :course_id, :title, :course, :exercises
+  attr_accessible :title, :description, :course, :course_id, :exercises
   
   validates_presence_of :title, :course_id
-  validates_uniqueness_of :active, :scope => :course_id, :if => lambda {|term| term.active? }
-  after_create :make_active!
+  validates_uniqueness_of :title
   
   scope :with_courses, joins(:course).includes(:course)
-  
-  def self.active
-    where(:active => true).first
-  end
-  
-  def make_active!
-    self.class.where(:course_id => self.course_id).update_all(:active => false)
-    self.active = true
-    save! unless new_record?
-  end
+
+  has_many :student_imports, :dependent => :destroy, :class_name => "Import::StudentImport"
+
 end

@@ -17,7 +17,6 @@
         <th>Forename</th>
         <th>Surname</th>
         <th>Matriculum Number</th>
-        <th>Current Points</th>
         <th>Submissions</th>
         <th></th>
       </thead>
@@ -27,7 +26,6 @@
           <td><%= term_registration.student.forename %></td>
           <td><%= term_registration.student.surname %></td>
           <td><%= term_registration.student.matriculum_number %></td>
-          <td><%= term_registration.points %></td>
           <td><%= 3 %></td>
           <td class='right-aligned'><%= link_to "View", course_term_term_registration_path(current_course, current_term, term_registration), :class => "tiny button" %></td>
         </tr>

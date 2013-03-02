@@ -21,8 +21,8 @@ group :development do
   gem 'thin'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'sextant'
-  gem 'brakeman'
+  gem 'sextant'            # /rails/routes for displaying all routes
+  gem 'brakeman'           # common security problems checker
 end
 
 group :assets do

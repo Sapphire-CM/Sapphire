@@ -13,10 +13,6 @@ Sapphire::Application.routes.draw do
     
         resources :evaluations
       end
-
-      resources :term_registrations do
-        get :mine, :on => :collection, :action => :index, :view => "mine", :as => :my
-      end
       
       namespace :import do
         resources :student_imports do
@@ -24,16 +20,7 @@ Sapphire::Application.routes.draw do
         end
       end
     end
-
-    resources :tutors
   end
-
-  namespace :admin do
-    # accounts
-    resources :students
-    resources :student_imports
-  end
-
 
   get '/:action', :controller => :static, :as => :static
   root :to => 'static#index'

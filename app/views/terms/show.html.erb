@@ -6,13 +6,24 @@
 <% end %>
 
 <dl class='tabs'>
-  <dd class='active'><a href='#tutorials'>Tutorial groups</a></dd>
+  <dd class='active'><a href='#dashboard'>Dashboard</a></dd>
+  <dd><a href='#tutorials'>Tutorial groups</a></dd>
   <dd><a href='#exercises'>Exercises</a></dd>
   <dd><a href="#tutors">Tutors</a></dd>
 </dl>
 
 <ul class='tabs-content'>
-  <li id='tutorialsTab' class='active'>
+  <li id='dashboardTab' class='active'>
+
+    <%#= DO SOMETHING USEFULL HERE %>
+    <div class='big button'>Current evaluation</div>
+    <div class='big button'>Current submissions</div>
+    <div class='big button'>Meeting time</div>
+    <div class='big alert button'>Get help!</div>
+    <%#= DO SOMETHING USEFULL HERE %>
+
+  </li>
+  <li id='tutorialsTab'>
     <% if @tutorial_groups.any? %>
       <table>
         <thead>

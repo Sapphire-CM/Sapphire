@@ -1,9 +1,6 @@
 <li class='has-dropdown'>
   <%= link_to_current_term %>
   <ul class='dropdown'>
-    <% if term_context? %>
-      <li><%#= link_to "Exit term", context_path(current_term), :method => :delete %></li>
-    <% end %>
     <% if terms.any? %>
       <li><label>Choose another course:</label></li>
       <% terms.each do |term| %>

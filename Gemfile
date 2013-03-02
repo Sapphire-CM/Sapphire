@@ -23,6 +23,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'sextant'            # /rails/routes for displaying all routes
   gem 'brakeman'           # common security problems checker
+  gem 'awesome_print'      # nicley formatted object inspection
 end
 
 group :assets do

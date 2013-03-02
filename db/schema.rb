@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130302140241) do
+ActiveRecord::Schema.define(:version => 20130302191325) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -26,14 +25,11 @@ ActiveRecord::Schema.define(:version => 20130302140241) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
-    t.string   "accountable_type"
-    t.integer  "accountable_id"
     t.string   "forename"
     t.string   "surname"
     t.string   "matriculum_number"
   end
 
-  add_index "accounts", ["accountable_id", "accountable_type"], :name => "index_accounts_on_accountable_id_and_accountable_type", :unique => true
   add_index "accounts", ["email"], :name => "index_accounts_on_email", :unique => true
   add_index "accounts", ["reset_password_token"], :name => "index_accounts_on_reset_password_token", :unique => true
 

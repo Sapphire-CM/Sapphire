@@ -4,8 +4,8 @@ class Term < ActiveRecord::Base
   has_many :exercises, :dependent => :destroy
   has_many :tutorial_groups, :dependent => :destroy
 
-  has_one :course_leader_term_registrations, :dependent => :destroy
-  delegate :lecturer, :to => :lecturer_term_registrations
+  has_one :lecturer_registrations, :dependent => :destroy
+  delegate :lecturer, :to => :lecturer_registrations
   
   attr_accessible :title, :description, :course, :course_id, :exercises
   
@@ -28,7 +28,7 @@ class Term < ActiveRecord::Base
     tmp = []
 
     tutorial_groups.each do |tutorial_group|
-      tutorial_group.student_term_registrations.each do |registration|
+      tutorial_group.student_registrations.each do |registration|
         tmp << registration.student
       end
     end

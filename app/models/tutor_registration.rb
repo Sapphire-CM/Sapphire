@@ -1,4 +1,4 @@
-class TutorTermRegistration < ActiveRecord::Base
+class TutorRegistration < ActiveRecord::Base
   belongs_to :tutor, :class_name => "Account", :foreign_key => "account_id"
   belongs_to :tutorial_group
   

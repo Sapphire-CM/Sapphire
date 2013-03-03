@@ -1,4 +1,4 @@
-class LecturerTermRegistration < ActiveRecord::Base
+class LecturerRegistration < ActiveRecord::Base
   belongs_to :lecturer, :class_name => "Account", :foreign_key => "account_id"
   belongs_to :term
 

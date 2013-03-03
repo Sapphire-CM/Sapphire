@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130302200946) do
+ActiveRecord::Schema.define(:version => 20130303094601) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(:version => 20130302200946) do
 
   add_index "import_student_imports", ["term_id"], :name => "index_import_student_imports_on_semester_id"
 
-  create_table "lecturer_term_registrations", :force => true do |t|
+  create_table "lecturer_registrations", :force => true do |t|
     t.integer  "account_id"
     t.integer  "term_id"
     t.datetime "registered_at"
@@ -86,8 +86,8 @@ ActiveRecord::Schema.define(:version => 20130302200946) do
     t.datetime "updated_at",    :null => false
   end
 
-  add_index "lecturer_term_registrations", ["account_id"], :name => "index_lecturer_term_registrations_on_account_id"
-  add_index "lecturer_term_registrations", ["term_id"], :name => "index_lecturer_term_registrations_on_term_id"
+  add_index "lecturer_registrations", ["account_id"], :name => "index_lecturer_term_registrations_on_account_id"
+  add_index "lecturer_registrations", ["term_id"], :name => "index_lecturer_term_registrations_on_term_id"
 
   create_table "rating_groups", :force => true do |t|
     t.integer  "exercise_id"
@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(:version => 20130302200946) do
 
   add_index "ratings", ["rating_group_id"], :name => "index_ratings_on_rating_group_id"
 
-  create_table "student_term_registrations", :force => true do |t|
+  create_table "student_registrations", :force => true do |t|
     t.integer  "account_id"
     t.integer  "tutorial_group_id"
     t.datetime "registered_at"
@@ -119,8 +119,8 @@ ActiveRecord::Schema.define(:version => 20130302200946) do
     t.datetime "updated_at",        :null => false
   end
 
-  add_index "student_term_registrations", ["account_id"], :name => "index_student_term_registrations_on_account_id"
-  add_index "student_term_registrations", ["tutorial_group_id"], :name => "index_student_term_registrations_on_tutorial_group_id"
+  add_index "student_registrations", ["account_id"], :name => "index_student_term_registrations_on_account_id"
+  add_index "student_registrations", ["tutorial_group_id"], :name => "index_student_term_registrations_on_tutorial_group_id"
 
   create_table "terms", :force => true do |t|
     t.string   "title"
@@ -132,7 +132,7 @@ ActiveRecord::Schema.define(:version => 20130302200946) do
 
   add_index "terms", ["course_id"], :name => "index_terms_on_course_id"
 
-  create_table "tutor_term_registrations", :force => true do |t|
+  create_table "tutor_registrations", :force => true do |t|
     t.integer  "account_id"
     t.integer  "tutorial_group_id"
     t.datetime "registered_at"
@@ -140,8 +140,8 @@ ActiveRecord::Schema.define(:version => 20130302200946) do
     t.datetime "updated_at",        :null => false
   end
 
-  add_index "tutor_term_registrations", ["account_id"], :name => "index_tutor_term_registrations_on_account_id"
-  add_index "tutor_term_registrations", ["tutorial_group_id"], :name => "index_tutor_term_registrations_on_tutorial_group_id"
+  add_index "tutor_registrations", ["account_id"], :name => "index_tutor_term_registrations_on_account_id"
+  add_index "tutor_registrations", ["tutorial_group_id"], :name => "index_tutor_term_registrations_on_tutorial_group_id"
 
   create_table "tutorial_groups", :force => true do |t|
     t.string   "title"

@@ -1,7 +1,4 @@
-class StudentTermRegistration < ActiveRecord::Base
-  
-  # TODO rename this to StudentTutorialGroupRegistration
-
+class StudentRegistration < ActiveRecord::Base
   belongs_to :student, :class_name => "Account", :foreign_key => "account_id"
   belongs_to :tutorial_group
   

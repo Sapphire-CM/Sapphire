@@ -77,7 +77,7 @@ class Import::StudentImport < ActiveRecord::Base
         tutorial_group = term.tutorial_groups.find_or_initialize_by_title(group_title)
         tutorial_group.save!
               
-        registration = tutorial_group.student_term_registrations.find_or_initialize_by_account_id(student.id)
+        registration = tutorial_group.student_registrations.find_or_initialize_by_account_id(student.id)
         registration.registered_at = DateTime.parse(row[import_mapping.registered_at.to_i].gsub(/,/, " "))
         registration.save!
       end

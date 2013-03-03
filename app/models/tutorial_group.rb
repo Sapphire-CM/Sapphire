@@ -8,14 +8,14 @@ class TutorialGroup < ActiveRecord::Base
   validates_presence_of :title
   validates_uniqueness_of :title
 
-  has_one :tutor_term_registration
-  delegate :tutor, :to => :tutor_term_registration, :allow_nil => true
+  has_one :tutor_registration
+  delegate :tutor, :to => :tutor_registration, :allow_nil => true
 
-  has_many :student_term_registrations, :dependent => :destroy
+  has_many :student_registrations, :dependent => :destroy
   
   def students
     tmp = []
-    student_term_registrations.each do |registration|
+    student_registrations.each do |registration|
       tmp << registration.student
     end
     tmp

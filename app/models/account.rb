@@ -19,15 +19,14 @@ class Account < ActiveRecord::Base
     "#{forename} #{surname}"
   end
 
+  def self.search(query)
+    rel = scoped 
+    
+    query.split(/\s+/).each do |part|
+      part = "%#{part}%"
+      rel = rel.where {(forename =~ part) | (surname =~ part) | (matriculum_number=~ part) | (email=~ part)}
+    end
+    
+    rel
+  end
 end
-
-  # def self.search(query)
-  #   rel = scoped 
-    
-  #   query.split(/\s+/).each do |part|
-  #     part = "%#{part}%"
-  #     rel = rel.where {(forename =~ part) | (surname =~ part) | (matriculum_number=~ part) | (email=~ part)}
-  #   end
-    
-  #   rel
-  # end

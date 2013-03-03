@@ -1,0 +1,48 @@
+<% title "Listing all accounts" %>
+
+<p>
+  <%= form_tag accounts_path, :method => :get do |f| %>
+  
+  <div class='row'>
+    <div class='nine columns'><%= search_field_tag :q, params[:q] %></div>
+    <div class='one column'>
+      <%= submit_tag "search!", :class => "tiny button" %>
+    </div>
+    <div class='two right-aligned columns'>
+      <%= link_to "Add account", new_account_registration_path, :class => 'tiny button' %>
+    </div>
+  </div>
+  <% end %>
+</p>
+
+<% if @accounts.any? %>
+  <table class='twelve'>
+    <thead>
+      <th>Forename</th>
+      <th>Surname</th>
+      <th>Matriculum Number</th>
+      <th>Email</th>
+      <th></th>
+    </thead>
+    <tbody>
+      <% @accounts.each do |account|  %>
+      <tr>
+        <td><%= account.forename %></td>
+        <td><%= account.surname %></td>
+        <td><%= account.matriculum_number %></td>
+        <td><%= account.email %></td>
+        
+        <td class='right-aligned'><%= link_to "View", account, :class => 'tiny button' %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= paginate @accounts %>
+<% else %>
+  <% if params[:q].present? %>
+    <p>No accounts found for "<%= params[:q] %>".</p>
+  <% else %>
+    <p>No accounts present.</p>
+  <% end %>
+<% end %>

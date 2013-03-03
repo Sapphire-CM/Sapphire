@@ -21,16 +21,6 @@ class Account < ActiveRecord::Base
 
 end
 
-  # has_many :tutorial_groups  
-  # has_many :courses, :through => :tutorial_groups, :uniq => true
-
-  # belongs_to :tutorial_group
-  # belongs_to :submission_group
-  
-  # has_many :term_registrations, :dependent => :destroy
-  # has_many :tutorial_groups, :through => :term_registrations
-  # has_many :evalutions, :dependent => :destroy
-  
   # def self.search(query)
   #   rel = scoped 
     

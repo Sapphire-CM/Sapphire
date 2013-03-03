@@ -6,7 +6,7 @@ class Account < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   attr_accessible :email, :password, :password_confirmation, :remember_me, :forename, :surname, :matriculum_number
-  
+
   validates_uniqueness_of :email
   validates_presence_of :forename
   validates_presence_of :surname
@@ -23,13 +23,13 @@ class Account < ActiveRecord::Base
   end
 
   def self.search(query)
-    rel = scoped 
-    
+    rel = scoped
+
     query.split(/\s+/).each do |part|
       part = "%#{part}%"
       rel = rel.where {(forename =~ part) | (surname =~ part) | (matriculum_number=~ part) | (email=~ part)}
     end
-    
+
     rel
   end
 end

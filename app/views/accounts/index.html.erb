@@ -32,7 +32,7 @@
         <td><%= account.matriculum_number %></td>
         <td><%= account.email %></td>
         
-        <td class='right-aligned'><%= link_to "View", account, :class => 'tiny button' %></td>
+        <td class='right-aligned'><%= link_to "View", account_path(account), :class => 'tiny button' %></td>
       </tr>
       <% end %>
     </tbody>

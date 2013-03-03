@@ -2,8 +2,9 @@ Sapphire::Application.routes.draw do
 
   devise_for :accounts # , skip: [ :registrations ]
   as :user do
-    get 'accounts'     => 'accounts#index'
-    get 'accounts/:id' => 'accounts#show', :as => "account"
+    get 'accounts'        => 'accounts#index'
+    get 'accounts/:id'    => 'accounts#show', :as => "account"
+    delete 'accounts/:id' => 'accounts#destroy'
   end
 
   resources :courses do

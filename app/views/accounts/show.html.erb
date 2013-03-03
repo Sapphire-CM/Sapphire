@@ -1,1 +1,33 @@
-<%= @account.fullname %>
+<% title "#{@account.fullname}", "#{@account.matriculum_number}" %>
+
+<% sidebar do %>
+  <%= link_to "Edit", edit_account_registration_path(@account), :class => "small button" %>
+  <%= link_to "Delete", account_path(@account), :method => :delete, :class => "small alert button", :confirm => "Are you sure?" %>
+<% end %>
+
+<dl class='tabs'>
+  <dd class='active'><a href='#overview'>Overview</a></dd>
+  <dd><a href='#registrations'>Registrations</a></dd>
+</dl>
+<ul class='tabs-content'>
+  <li class='active' id='overviewTab'>
+    Quick overview of the account
+  </li>
+  <li id='registrationsTab'>
+    <% if @registrations.any? %>
+      <% @gregistrations.each do |registration| %>
+      <h3><%= course.title %></h3>
+    
+      <ul>
+      <% term_registrations.each do |term_registration| %>
+        <li><%= term_registration.term.title %> (<%= term_registration.tutorial_group.title %>)</li>
+      <% end %>
+      </ul>
+      <% end %>
+    <% else %>
+      <p>Student hasn't attended in any courses</p>      
+    <% end %>
+  </li>
+</ul>
+
+<p><%= link_to "Back", accounts_path, :class => "tiny button" %></p>

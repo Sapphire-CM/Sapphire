@@ -16,6 +16,7 @@ Sapphire::Application.routes.draw do
         get :new_student_registration
         post :create_tutor_registriation
         post :create_student_registration
+        delete :clear_tutor_registration
       end
 
       resources :exercises do

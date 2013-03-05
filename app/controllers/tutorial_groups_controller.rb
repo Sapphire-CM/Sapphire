@@ -75,6 +75,13 @@ class TutorialGroupsController < TermResourceController
     save_and_redirect registration
   end
 
+  def clear_tutor_registration
+    @tutorial_group = current_term.tutorial_groups.find(params[:tutorial_group_id])
+    @tutorial_group.tutor_registration.destroy
+
+    redirect_to course_term_tutorial_group_path(current_course, current_term, @tutorial_group), notice: "Tutor registration cleared!"
+  end
+
   private
 
   def save_and_redirect(registration)

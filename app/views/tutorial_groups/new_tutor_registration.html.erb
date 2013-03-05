@@ -1,4 +1,12 @@
-<% title "New registration for #{tutorial_group_title @tutorial_group}"  %>
+<% title "Set tutor for #{@tutorial_group.title}"  %>
+
+<% if ! @tutorial_group.tutor.blank? %>
+  <p>
+    Current Tutor: <%= @tutorial_group.tutor.fullname %>
+    <%= link_to "Clear", course_term_tutorial_group_clear_tutor_registration_path(current_course, current_term, @tutorial_group), :class => "tiny alert button", :method => :delete, :confirm => "Are you sure?" %>
+    <%= link_to "Cancel", course_term_tutorial_group_path(current_course, current_term, @tutorial_group), :class => "tiny button" %>
+  </p>
+<% end %>
 
 <p>
   <%= form_tag course_term_tutorial_group_new_tutor_registration_path, :method => :get do |f| %>

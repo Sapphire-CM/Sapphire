@@ -1,0 +1,50 @@
+<% title "New registration for #{tutorial_group_title @tutorial_group}"  %>
+
+<p>
+  <%= form_tag course_term_tutorial_group_new_tutor_registration_path, :method => :get do |f| %>
+
+  <div class='row'>
+    <div class='eleven columns'><%= search_field_tag :q, params[:q] %></div>
+    <div class='one column'>
+      <%= submit_tag "search!", :class => "tiny button" %>
+    </div>
+  </div>
+  <% end %>
+</p>
+
+<% if @accounts.any? %>
+  <table class='twelve'>
+    <thead>
+      <th>Forename</th>
+      <th>Surname</th>
+      <th>Matriculum Number</th>
+      <th>Email</th>
+      <th></th>
+    </thead>
+    <tbody>
+      <% @accounts.each do |account|  %>
+      <tr>
+        <td><%= account.forename %></td>
+        <td><%= account.surname %></td>
+        <td><%= account.matriculum_number %></td>
+        <td><%= account.email %></td>
+
+        <td class='right-aligned'>
+          <%= form_tag course_term_tutorial_group_create_tutor_registriation_path(current_course, current_term, @tutorial_group), :html => {:class => "custom"} do |f| %>
+
+            <%= hidden_field_tag(:account_id, account.id) %>
+            <%= submit_tag "Select", :class => "tiny button" %>
+          <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= paginate @accounts %>
+<% else %>
+  <% if params[:q].present? %>
+    <p>No accounts found for "<%= params[:q] %>".</p>
+  <% else %>
+    <p>No accounts present.</p>
+  <% end %>
+<% end %>

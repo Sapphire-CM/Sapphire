@@ -10,15 +10,22 @@ Sapphire::Application.routes.draw do
   resources :courses do
     resources :terms do
       get :meeting
-      resources :tutorial_groups
+
+      resources :tutorial_groups do
+        get :new_tutor_registration
+        get :new_student_registration
+        post :create_tutor_registriation
+        post :create_student_registration
+      end
+
       resources :exercises do
         resources :rating_groups do
           resources :ratings
         end
-    
+
         resources :evaluations
       end
-      
+
       namespace :import do
         resources :student_imports do
           put :import, :on => :member
@@ -29,5 +36,5 @@ Sapphire::Application.routes.draw do
 
   get '/:action', :controller => :static, :as => :static
   root :to => 'static#index'
-  
+
 end

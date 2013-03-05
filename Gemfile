@@ -16,6 +16,7 @@ gem 'draper'            # decorators
 gem 'kaminari'          # pagination
 gem 'flash_render'      # render method with notice/alerts
 gem 'devise'            # user authentication
+gem 'turbolinks'        # ajax replacement links
 
 group :development do
   gem 'thin'
@@ -30,7 +31,7 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
-  
+
   gem 'compass-rails'
   gem 'zurb-foundation', '< 4.0'
   gem 'foundation-icons-sass-rails'

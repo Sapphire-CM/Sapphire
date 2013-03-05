@@ -3,7 +3,7 @@ class TutorialGroupsController < TermResourceController
     @tutorial_group = current_term.tutorial_groups.find(params[:id])
 
     if @tutorial_group.tutor.blank?
-      render :alert => 'You have not set a tutor yet! Edit this tutorial group to select one.'
+      render :alert => 'You have not set a tutor yet!'
     end
   end
 
@@ -60,7 +60,7 @@ class TutorialGroupsController < TermResourceController
     registration = TutorRegistration.find_or_initialize_by_tutorial_group_id(@tutorial_group.id)
     registration.tutor = @account
 
-    save_and_redirect registration
+    save_registration_and_redirect registration
   end
 
   def create_student_registration
@@ -72,19 +72,19 @@ class TutorialGroupsController < TermResourceController
     registration.tutorial_group = @tutorial_group
     registration.student = @account
 
-    save_and_redirect registration
+    save_registration_and_redirect registration
   end
 
   def clear_tutor_registration
     @tutorial_group = current_term.tutorial_groups.find(params[:tutorial_group_id])
     @tutorial_group.tutor_registration.destroy
 
-    redirect_to course_term_tutorial_group_path(current_course, current_term, @tutorial_group), notice: "Tutor registration cleared!"
+    redirect_to course_term_tutorial_group_path(current_course, current_term, @tutorial_group), notice: "Tutor registration successfully cleared!"
   end
 
   private
 
-  def save_and_redirect(registration)
+  def save_registration_and_redirect(registration)
     registration.registered_at = DateTime.now
     if registration.save
       redirect_to course_term_tutorial_group_path(current_course, current_term, @tutorial_group), notice: "New registration successfully added."

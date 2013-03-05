@@ -19,8 +19,6 @@ class Term < ActiveRecord::Base
   
   def tutors
     Account.joins(:tutor_registrations => {:tutorial_group => :term}).where{ tutor_registrations.tutorial_group.term.id == my{id}}
-    
-    tutorial_groups.student_registrations.students
   end
 
   def students

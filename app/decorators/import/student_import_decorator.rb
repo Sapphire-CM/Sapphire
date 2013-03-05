@@ -1,6 +1,6 @@
 class Import::StudentImportDecorator < Draper::Decorator
   decorates :"import/student_import"
-  
+
   delegate_all
 
   def term_title
@@ -10,11 +10,11 @@ class Import::StudentImportDecorator < Draper::Decorator
   def filename
     File.basename model.file.to_s
   end
-  
+
   def created_at
     h.localize model.created_at, :format => :long
   end
-  
+
   def students_count
     if model.imported?
       200
@@ -22,16 +22,15 @@ class Import::StudentImportDecorator < Draper::Decorator
       h.content_tag :span, "?", :class => "grey"
     end
   end
-  
-  
+
   def mapping_table
     values = model.parsed_file
-    
+
     mapping = model.import_mapping
-    
+
     h.render "import/student_imports/mapping_table", :mapping => mapping, :column_count => values.first.length, :values => values, :importable_attributes => model.class::IMPORTABLE_ATTRIBUTES, :student_import => model
   end
-  
+
   # Accessing Helpers
   #   You can access any helper via a proxy
   #

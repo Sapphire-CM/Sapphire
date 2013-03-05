@@ -15,17 +15,9 @@
   </li>
   <li id='registrationsTab'>
     <% if @registrations.any? %>
-      <% @gregistrations.each do |registration| %>
-      <h3><%= course.title %></h3>
-    
-      <ul>
-      <% term_registrations.each do |term_registration| %>
-        <li><%= term_registration.term.title %> (<%= term_registration.tutorial_group.title %>)</li>
-      <% end %>
-      </ul>
-      <% end %>
+      <p>TODO something</p>
     <% else %>
-      <p>Student hasn't attended in any courses</p>      
+      <p>Student hasn't attended in any courses</p>
     <% end %>
   </li>
 </ul>

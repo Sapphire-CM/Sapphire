@@ -6,18 +6,10 @@ class TutorialGroup < ActiveRecord::Base
   attr_accessible :title, :description
 
   validates_presence_of :title
-  validates_uniqueness_of :title
-
+  validates_uniqueness_of :title, :scope => :term_id
   has_one :tutor_registration
   delegate :tutor, :to => :tutor_registration, :allow_nil => true
 
   has_many :student_registrations, :dependent => :destroy
-
-  def students
-    tmp = []
-    student_registrations.each do |registration|
-      tmp << registration.student
-    end
-    tmp
-  end
+  has_many :students, :through => :student_registrations, :class_name => "Account", :foreign_key => :account_id
 end

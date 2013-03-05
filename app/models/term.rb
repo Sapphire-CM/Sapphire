@@ -3,7 +3,10 @@ class Term < ActiveRecord::Base
 
   has_many :exercises, :dependent => :destroy
   has_many :tutorial_groups, :dependent => :destroy
-
+  
+  # has_many :tutors, :through => :tutorial_groups, :uniq => true, :include
+  # has_many :tutors, :through => :tutorial_groups, :uniq => true
+  
   has_one :lecturer_registrations, :dependent => :destroy
   delegate :lecturer, :to => :lecturer_registrations
 
@@ -13,26 +16,14 @@ class Term < ActiveRecord::Base
   validates_uniqueness_of :title
 
   has_many :student_imports, :dependent => :destroy, :class_name => "Import::StudentImport"
-
+  
   def tutors
-    tmp = []
-
-    tutorial_groups.each do |tutorial_group|
-      tmp << tutorial_group.tutor
-    end
-
-    tmp
+    Account.joins(:tutor_registrations => {:tutorial_group => :term}).where{ tutor_registrations.tutorial_group.term.id == my{id}}
+    
+    tutorial_groups.student_registrations.students
   end
 
   def students
-    tmp = []
-
-    tutorial_groups.each do |tutorial_group|
-      tutorial_group.student_registrations.each do |registration|
-        tmp << registration.student
-      end
-    end
-
-    tmp
+    Account.joins(:student_registrations => {:tutorial_group => :term}).where{ student_registrations.tutorial_group.term.id == my{id}}
   end
 end

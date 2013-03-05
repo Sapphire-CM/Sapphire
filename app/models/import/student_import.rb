@@ -64,6 +64,7 @@ class Import::StudentImport < ActiveRecord::Base
       values.each do |row|
         email = row[import_mapping.email.to_i]
         matriculum_number = row[import_mapping.matriculum_number.to_i]
+        
         student = Account.find_or_initialize_by_email(email)
         student.forename = row[import_mapping.forename.to_i]
         student.surname = row[import_mapping.surname.to_i]
@@ -85,6 +86,7 @@ class Import::StudentImport < ActiveRecord::Base
       self.save
 
     rescue
+      puts $!
       false
     end
   end

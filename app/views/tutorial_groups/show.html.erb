@@ -1,7 +1,7 @@
 <% title tutorial_group_title @tutorial_group %>
 
 <% sidebar do %>
-  <%= link_to "Set tutor", course_term_tutorial_group_new_tutor_registration_path(current_course, current_term, @tutorial_group), :class => "small button" %>
+  <%= link_to set_tutor_label, course_term_tutorial_group_new_tutor_registration_path(current_course, current_term, @tutorial_group), :class => "small button" %>
 
   <%= link_to "Add student", course_term_tutorial_group_new_student_registration_path(current_course, current_term, @tutorial_group), :class => "small button" %>
 

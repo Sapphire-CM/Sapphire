@@ -4,7 +4,7 @@
     <%= link_to "Courses", courses_path %>
     <ul class='dropdown'>
       <% if Course.any? %>
-        <% Course.all.each do |course| %>
+        <% Course.includes(:terms).all.each do |course| %>
           <li class='<%= course.terms.any? ? "has-dropdown" : "" %>'>
             <%= link_to course.title, course_path(course) %>
 

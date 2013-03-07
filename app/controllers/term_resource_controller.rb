@@ -6,7 +6,6 @@ class TermResourceController < ApplicationController
   end
   helper_method :current_course
 
-
   def current_term
     @current_term ||= current_course.terms.find(params[:term_id])
   end

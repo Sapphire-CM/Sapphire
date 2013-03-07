@@ -16,6 +16,7 @@ gem 'draper'            # decorators
 gem 'kaminari'          # pagination
 gem 'flash_render'      # render method with notice/alerts
 gem 'devise'            # user authentication
+gem 'cancan'            # role based ability management for users
 gem 'turbolinks'        # ajax replacement links
 
 group :development do

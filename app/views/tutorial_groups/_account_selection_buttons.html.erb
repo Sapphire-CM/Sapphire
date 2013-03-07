@@ -1,5 +1,4 @@
-<%= form_tag course_term_tutorial_group_create_tutor_registration_path(current_course, current_term, @tutorial_group), :html => {:class => "custom"} do |f| %>
-
+<%= form_tag @create_path, :html => {:class => "custom"} do |f| %>
   <%= hidden_field_tag(:account_id, account.id) %>
   <%= submit_tag "Select", :class => "small button" %>
 <% end %>

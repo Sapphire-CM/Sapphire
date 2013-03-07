@@ -49,6 +49,9 @@ class TutorialGroupsController < TermResourceController
 
   def new_student_registration
     @tutorial_group = current_term.tutorial_groups.find(params[:tutorial_group_id])
+
+    # TODO filter to only those, who are not already registered
+
     @accounts = Account.scoped.page(params[:page]).per(50)
     @accounts = @accounts.search(params[:q]) if params[:q].present?
   end

@@ -1,13 +1,15 @@
 <% title tutorial_group_title @tutorial_group %>
 
 <% sidebar do %>
-  <%= link_to set_tutor_label, course_term_tutorial_group_new_tutor_registration_path(current_course, current_term, @tutorial_group), :class => "small button" %>
+  <div>
+  <%= link_to "Add student", course_term_tutorial_group_new_student_registration_path(current_course, current_term, @tutorial_group), :class => "small button twelve columns" %>
 
-  <%= link_to "Add student", course_term_tutorial_group_new_student_registration_path(current_course, current_term, @tutorial_group), :class => "small button" %>
+  <%= link_to set_tutor_label, course_term_tutorial_group_new_tutor_registration_path(current_course, current_term, @tutorial_group), :class => "small button twelve columns" %>
 
-  <%= link_to "Edit", edit_course_term_tutorial_group_path(current_course, current_term, @tutorial_group), :class => "small button" %>
+  <%= link_to "Edit", edit_course_term_tutorial_group_path(current_course, current_term, @tutorial_group), :class => "small button twelve columns" %>
 
-  <%= link_to "Delete", course_term_tutorial_group_path(current_course, current_term, @tutorial_group), :class => "small alert button", :method => :delete, :confirm => "Are you sure?" %>
+  <%= link_to "Delete", course_term_tutorial_group_path(current_course, current_term, @tutorial_group), :class => "small alert button twelve columns", :method => :delete, :confirm => "Are you sure?" %>
+  </div>
 <% end %>
 
 <dl class='tabs'>

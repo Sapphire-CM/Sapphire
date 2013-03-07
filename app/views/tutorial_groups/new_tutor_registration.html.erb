@@ -8,4 +8,6 @@
   </p>
 <% end %>
 
+<% @create_path = course_term_tutorial_group_create_tutor_registration_path(current_course, current_term, @tutorial_group) %>
+
 <%= render 'accounts/accounts_list', { buttons_partial_view: 'account_selection_buttons', search_path: course_term_tutorial_group_new_tutor_registration_path(current_course, current_term, @tutorial_group) } %>

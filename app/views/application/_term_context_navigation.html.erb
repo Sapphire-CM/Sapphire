@@ -1,10 +1,22 @@
 <ul class='left'>
   <li class='divider'></li>
 
-  <%= navigation_context_selector %>
+  <li class='has-dropdown'>
+    <%= link_to_current_term %>
+    <ul class='dropdown'>
+      <% if Term.all.any? %>
+        <li><label>Choose another course:</label></li>
+        <% Term.all.each do |term| %>
+          <li><%= link_to(course_term_title(term.course, term), course_term_path(term.course, term)).html_safe %></li>
+        <% end %>
+      <% else %>
+        <p>No terms present.</p>
+      <% end %>
+    </ul>
+  </li>
 
   <li class='divider'></li>
-  
+
   <li class='has-dropdown'>
     <%= link_to "Exercises", '#' %>
     <ul class='dropdown'>

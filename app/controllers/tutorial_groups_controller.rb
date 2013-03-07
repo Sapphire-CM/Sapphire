@@ -53,7 +53,7 @@ class TutorialGroupsController < TermResourceController
     @accounts = @accounts.search(params[:q]) if params[:q].present?
   end
 
-  def create_tutor_registriation
+  def create_tutor_registration
     @tutorial_group = current_term.tutorial_groups.find(params[:tutorial_group_id])
     @account = Account.find(params[:account_id])
 

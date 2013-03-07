@@ -1,5 +1,5 @@
 <p>
-  <%= form_tag @search_path, :method => :get do |f| %>
+  <%= form_tag search_path, :method => :get do |f| %>
 
   <div class='row'>
     <div class='eleven columns'><%= search_field_tag :q, params[:q] %></div>
@@ -28,7 +28,7 @@
         <td><%= account.email %></td>
 
         <td class='right-aligned'>
-          <%= render 'account_selection_buttons', :account => account %>
+          <%= render buttons_partial_view, :account => account %>
       </tr>
       <% end %>
     </tbody>

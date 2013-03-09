@@ -19,11 +19,12 @@
       <%= render "public_navigation" %>
     <% end %>
   </section>
+  
   <% if account_signed_in? %>
     <section>
       <ul class='right'>
         <li class='divider'></li>
-        <li><%= link_to account_title, edit_account_registration_path %></li>
+        <li><%= link_to current_account.email, edit_account_registration_path %></li>
       </ul>
     </section>
   <% end %>

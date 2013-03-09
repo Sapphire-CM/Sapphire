@@ -1,21 +1,32 @@
 <% title course_term_title(current_course, current_term) %>
 
 <% sidebar do %>
-  <%= link_to "Edit", edit_course_term_path(current_course, current_term), :class => "small button" %>
-  <%= link_to "Delete", course_term_path(current_course, current_term), :method => :delete, :confirm => "Are you sure?", :class => "small alert button" %>
+  <%= link_to set_lecturer_label, course_term_new_lecturer_registration_path(current_course, current_term), :class => "small button twelve columns" %>
+
+  <%= link_to "Edit", edit_course_term_path(current_course, current_term), :class => "small button twelve columns" %>
+
+  <%= link_to "Delete", course_term_path(current_course, current_term), :method => :delete, :confirm => "Are you sure?", :class => "small alert button twelve columns" %>
 <% end %>
 
 <dl class='tabs'>
-  <dd class='active'>
-    <a href='#tutorials'>Tutorial groups</a>
-  </dd>
-  <dd>
-    <a href='#exercises'>Exercises</a>
-  </dd>
+  <dd class='active'><a href='#dashboard'>Dashboard</a></dd>
+  <dd><a href='#tutorials'>Tutorial groups</a></dd>
+  <dd><a href='#exercises'>Exercises</a></dd>
+  <dd><a href="#staff">Staff</a></dd>
 </dl>
 
 <ul class='tabs-content'>
-  <li id='tutorialsTab' class='active'>
+  <li id='dashboardTab' class='active'>
+
+    <%#= DO SOMETHING USEFULL HERE %>
+    <div class='big button'>Current evaluation</div>
+    <div class='big button'>Current submissions</div>
+    <div class='big button'>Meeting time</div>
+    <div class='big alert button'>Get help!</div>
+    <%#= DO SOMETHING USEFULL HERE %>
+
+  </li>
+  <li id='tutorialsTab'>
     <% if @tutorial_groups.any? %>
       <table>
         <thead>
@@ -27,7 +38,7 @@
           </tr>
         </thead>
         <tbody>
-          <% @tutorial_groups.each do |tutorial_group| %>
+          <%  @tutorial_groups.each do |tutorial_group| %>
             <tr>
               <td><%= tutorial_group.title %></td>
               <td><%= tutor_name tutorial_group.tutor %></td>
@@ -78,7 +89,38 @@
     <p>
       <%= link_to 'New Exercise', new_course_term_exercise_path(current_course, current_term), :class => "small button"  %>
     </p>
+  </li>
 
-    
+  <li id='staffTab'>
+    <% if @term.tutors.any? || @term.lecturer %>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Forename</th>
+            <th>Surname</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% if @term.lecturer %>
+          <tr>
+            <td>Lecturer</td>
+            <td><%= @term.lecturer.forename %></td>
+            <td><%= @term.lecturer.surname %></td>
+          </tr>
+        <% end %>
+
+        <% @term.tutors.each do |tutor| %>
+          <tr>
+            <td>Tutor</td>
+            <td><%= tutor.forename %></td>
+            <td><%= tutor.surname %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>No staff present.</p>
+    <% end %>
   </li>
 </ul>

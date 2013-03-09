@@ -1,0 +1,13 @@
+<% title "#{set_lecturer_label} for #{@term.title}"  %>
+
+<% if ! @term.lecturer.blank? %>
+  <p>
+    Current Lecturer: <%= @term.lecturer.fullname %>
+    <%= link_to "Clear", course_term_clear_lecturer_registration_path(current_course, current_term), :class => "small alert button", :method => :delete, :confirm => "Are you sure?" %>
+    <%= link_to "Cancel", course_term_path(current_course, current_term), :class => "small button" %>
+  </p>
+<% end %>
+
+<% @create_path = course_term_create_lecturer_registration_path(current_course, current_term) %>
+
+<%= render 'accounts/accounts_list', { buttons_partial_view: 'account_selection_buttons', search_path: course_term_new_lecturer_registration_path(current_course, current_term) } %>

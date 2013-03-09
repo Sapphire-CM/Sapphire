@@ -8,7 +8,6 @@
 <dl class='tabs'>
   <dd class='active'><a href='#terms'>Terms</a></dd>
   <dd><a href='#description'>Description</a></dd>
-  <dd><a href='#tutors'>Tutors</a></dd>
 </dl>
 
 <ul class='tabs-content'>
@@ -44,28 +43,10 @@
     <%= link_to "Add Term", new_course_term_path(@course), :class => "button" %>
   </li>
   <li id='descriptionTab'>
-    <%= simple_format @course.description %>
-  </li>
-  <li id='tutorsTab'>
-    <% if @tutors.any? %>
-      <table>
-        <thead>
-          <tr>
-            <th>Forename</th>
-            <th>Surname</th>
-          </tr>
-        </thead>
-        <tbody>
-        <% @tutors.each do |tutor| %>
-          <tr>
-            <td><%= tutor.forename %></td>
-            <td><%= tutor.surname %></td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
+    <% if @course.description? %>
+      <%= simple_format @course.description %>
     <% else %>
-      <p>No tutors present</p>
+      <p>No description present.</p>
     <% end %>
   </li>
 </ul>

@@ -1,12 +1,15 @@
-class TermsController < ApplicationController
-  before_filter :fetch_course
+class TermsController < TermResourceController
+  before_filter :fetch_course_term
 
   # index action not needed
 
   def show
-    @term = @course.terms.find(params[:id])
     @tutorial_groups = @term.tutorial_groups
     @exercises = @term.exercises
+
+    if @term.lecturer.blank?
+      render :alert => 'You have not set a lecturer yet!'
+    end
   end
 
   def new
@@ -24,12 +27,10 @@ class TermsController < ApplicationController
   end
 
   def edit
-    @term = @course.terms.find(params[:id])
+    # term is fetched with before_filter
   end
 
   def update
-    @term = @course.terms.find(params[:id])
-
     if @term.update_attributes(params[:term])
       redirect_to course_term_path(@course, @term), :notice => "Term was successfully updated."
     else
@@ -38,23 +39,39 @@ class TermsController < ApplicationController
   end
 
   def destroy
-    @term = @course.terms.find(params[:id])
     @term.destroy
     redirect_to course_path(@course), :notice => "Term was successfully deleted."
   end
 
+  def new_lecturer_registration
+    @accounts = Account.scoped.page(params[:page]).per(50)
+    @accounts = @accounts.search(params[:q]) if params[:q].present?
+  end
+
+  def create_lecturer_registration
+    @account = Account.find(params[:account_id])
+
+    registration = LecturerRegistration.find_or_initialize_by_term_id(@term.id)
+    registration.lecturer = @account
+    registration.registered_at = DateTime.now
+
+    if registration.save
+      redirect_to course_term_path(current_course, current_term), notice: "Lecturer registration successfully added."
+    else
+      redirect_to course_term_path(current_course, current_term), alert: "Lecturer registration failed!"
+    end
+  end
+
+  def clear_lecturer_registration
+    @term.lecturer_registration.destroy
+
+    redirect_to course_term_path(current_course, current_term), notice: "Lecturer registration successfully cleared!"
+  end
+
   private
-  def fetch_course
-    @course = Course.find(params[:course_id])
-  end
 
-  def current_term
-    @term
+  def fetch_course_term
+    @course = current_course
+    @term = current_term
   end
-  helper_method :current_term
-
-  def current_course
-    @course
-  end
-  helper_method :current_course
 end

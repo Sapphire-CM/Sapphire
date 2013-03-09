@@ -1,4 +1,7 @@
 class TutorialGroupsController < TermResourceController
+
+  # index action not needed
+
   def show
     @tutorial_group = current_term.tutorial_groups.find(params[:id])
 

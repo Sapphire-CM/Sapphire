@@ -2,12 +2,13 @@ class TermResourceController < ApplicationController
 
   private
   def current_course
-    @current_course ||= Course.find(params[:course_id])
+    @current_course ||= Course.find(params[:course_id]) if params[:course_id]
   end
   helper_method :current_course
 
   def current_term
-    @current_term ||= current_course.terms.find(params[:term_id])
+    id = params[:term_id] || params[:id]
+    @current_term ||= current_course.terms.find(id)
   end
   helper_method :current_term
 end

@@ -9,6 +9,10 @@ Sapphire::Application.routes.draw do
 
   resources :courses do
     resources :terms do
+      get :new_lecturer_registration
+      post :create_lecturer_registration
+      delete :clear_lecturer_registration
+
       get :meeting
 
       resources :tutorial_groups do

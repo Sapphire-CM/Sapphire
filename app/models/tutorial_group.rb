@@ -7,7 +7,8 @@ class TutorialGroup < ActiveRecord::Base
 
   validates_presence_of :title
   validates_uniqueness_of :title, :scope => :term_id
-  has_one :tutor_registration
+
+  has_one :tutor_registration, :dependent => :destroy
   delegate :tutor, :to => :tutor_registration, :allow_nil => true
 
   has_many :student_registrations, :dependent => :destroy

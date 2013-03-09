@@ -5,7 +5,7 @@
     <%= link_to_current_term %>
     <ul class='dropdown'>
       <% if Term.all.any? %>
-        <li><label>Choose another course:</label></li>
+        <li><label>Choose:</label></li>
         <% Term.all.each do |term| %>
           <li><%= link_to(course_term_title(term.course, term), course_term_path(term.course, term)).html_safe %></li>
         <% end %>

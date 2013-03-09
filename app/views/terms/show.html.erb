@@ -1,15 +1,18 @@
 <% title course_term_title(current_course, current_term) %>
 
 <% sidebar do %>
-  <%= link_to "Edit", edit_course_term_path(current_course, current_term), :class => "small button" %>
-  <%= link_to "Delete", course_term_path(current_course, current_term), :method => :delete, :confirm => "Are you sure?", :class => "small alert button" %>
+  <%= link_to set_lecturer_label, course_term_new_lecturer_registration_path(current_course, current_term), :class => "small button twelve columns" %>
+
+  <%= link_to "Edit", edit_course_term_path(current_course, current_term), :class => "small button twelve columns" %>
+
+  <%= link_to "Delete", course_term_path(current_course, current_term), :method => :delete, :confirm => "Are you sure?", :class => "small alert button twelve columns" %>
 <% end %>
 
 <dl class='tabs'>
   <dd class='active'><a href='#dashboard'>Dashboard</a></dd>
   <dd><a href='#tutorials'>Tutorial groups</a></dd>
   <dd><a href='#exercises'>Exercises</a></dd>
-  <dd><a href="#tutors">Tutors</a></dd>
+  <dd><a href="#staff">Staff</a></dd>
 </dl>
 
 <ul class='tabs-content'>
@@ -88,18 +91,28 @@
     </p>
   </li>
 
-  <li id='tutorsTab'>
-    <% if @term.tutors.any? %>
+  <li id='staffTab'>
+    <% if @term.tutors.any? || @term.lecturer %>
       <table>
         <thead>
           <tr>
+            <th></th>
             <th>Forename</th>
             <th>Surname</th>
           </tr>
         </thead>
         <tbody>
+        <% if @term.lecturer %>
+          <tr>
+            <td>Lecturer</td>
+            <td><%= @term.lecturer.forename %></td>
+            <td><%= @term.lecturer.surname %></td>
+          </tr>
+        <% end %>
+
         <% @term.tutors.each do |tutor| %>
           <tr>
+            <td>Tutor</td>
             <td><%= tutor.forename %></td>
             <td><%= tutor.surname %></td>
           </tr>
@@ -107,7 +120,7 @@
         </tbody>
       </table>
     <% else %>
-      <p>No tutors present.</p>
+      <p>No staff present.</p>
     <% end %>
   </li>
 </ul>

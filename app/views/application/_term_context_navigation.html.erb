@@ -1,10 +1,22 @@
 <ul class='left'>
   <li class='divider'></li>
 
-  <%= navigation_context_selector %>
+  <li class='has-dropdown'>
+    <%= link_to_current_term %>
+    <ul class='dropdown'>
+      <% if Term.all.any? %>
+        <li><label>Choose:</label></li>
+        <% Term.all.each do |term| %>
+          <li><%= link_to(course_term_title(term.course, term), course_term_path(term.course, term)).html_safe %></li>
+        <% end %>
+      <% else %>
+        <p>No terms present.</p>
+      <% end %>
+    </ul>
+  </li>
 
   <li class='divider'></li>
-  
+
   <li class='has-dropdown'>
     <%= link_to "Exercises", '#' %>
     <ul class='dropdown'>
@@ -28,14 +40,6 @@
       <% else %>
         <li><%= link_to "(no tutorial groups)", '#' %></li>
       <% end %>
-    </ul>
-  </li>
-
-  <li class='has-dropdown'>
-    <%= link_to "Student registrations", course_term_term_registrations_path(current_course, current_term) %>
-    <ul class='dropdown'>
-      <li><%= link_to "View your Students", my_course_term_term_registrations_path(current_course, current_term) %></li>
-      <li><%= link_to "All Students for this term", course_term_term_registrations_path(current_course, current_term)  %></li>
     </ul>
   </li>
 </ul>

@@ -1,29 +1,25 @@
 class Term < ActiveRecord::Base
   belongs_to :course
-  
-  has_many :tutorial_groups, :dependent => :destroy
-  has_many :term_registrations, :dependent => :destroy
-  has_many :student_imports, :dependent => :destroy, :class_name => "Import::StudentImport"
-  has_many :students, :through => :term_registrations
+
   has_many :exercises, :dependent => :destroy
-  
-  has_many :tutors, :through => :tutorial_groups
-  
-  attr_accessible :active, :course_id, :title, :course, :exercises
-  
+  has_many :tutorial_groups, :dependent => :destroy
+
+  has_one :lecturer_registration, :dependent => :destroy
+  delegate :lecturer, :to => :lecturer_registration, :allow_nil => true
+
+  attr_accessible :title, :description, :course, :course_id, :exercises
+
   validates_presence_of :title, :course_id
-  validates_uniqueness_of :active, :scope => :course_id, :if => lambda {|term| term.active? }
-  after_create :make_active!
-  
-  scope :with_courses, joins(:course).includes(:course)
-  
-  def self.active
-    where(:active => true).first
+  validates_uniqueness_of :title
+
+  has_many :student_imports, :dependent => :destroy, :class_name => "Import::StudentImport"
+
+  def tutors
+    Account.joins(:tutor_registrations => {:tutorial_group => :term}).where{ tutor_registrations.tutorial_group.term.id == my{id}}
   end
-  
-  def make_active!
-    self.class.where(:course_id => self.course_id).update_all(:active => false)
-    self.active = true
-    save! unless new_record?
+
+  def students
+    Account.joins(:student_registrations => {:tutorial_group => :term}).where{ student_registrations.tutorial_group.term.id == my{id}}
   end
+
 end

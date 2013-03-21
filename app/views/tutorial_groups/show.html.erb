@@ -1,13 +1,21 @@
 <% title tutorial_group_title @tutorial_group %>
 
 <% sidebar do %>
-  <%= link_to "Edit", edit_course_term_tutorial_group_path(current_course, current_term, @tutorial_group), :class => "small button" %>
-  <%= link_to "Delete", course_term_tutorial_group_path(current_course, current_term, @tutorial_group), :class => "small alert button", :method => :delete, :confirm => "Are you sure?" %>
+  <div>
+  <%= link_to "Add student", course_term_tutorial_group_new_student_registration_path(current_course, current_term, @tutorial_group), :class => "small button twelve columns" %>
+
+  <%= link_to set_tutor_label, course_term_tutorial_group_new_tutor_registration_path(current_course, current_term, @tutorial_group), :class => "small button twelve columns" %>
+
+  <%= link_to "Edit", edit_course_term_tutorial_group_path(current_course, current_term, @tutorial_group), :class => "small button twelve columns" %>
+
+  <%= link_to "Delete", course_term_tutorial_group_path(current_course, current_term, @tutorial_group), :class => "small alert button twelve columns", :method => :delete, :confirm => "Are you sure?" %>
+  </div>
 <% end %>
 
 <dl class='tabs'>
   <dd class='active'><a href='#students'>Students</a></dd>
   <dd><a href='#submissions'>Submissions</a></dd>
+  <dd><a href='#description'>Description</a></dd>
 </dl>
 
 <ul class='tabs-content'>
@@ -17,25 +25,30 @@
         <th>Forename</th>
         <th>Surname</th>
         <th>Matriculum Number</th>
-        <th>Current Points</th>
         <th>Submissions</th>
         <th></th>
       </thead>
       <tbody>
-        <% @term_registrations.each do |term_registration|  %>
+        <% @tutorial_group.students.each do |student|  %>
         <tr>
-          <td><%= term_registration.student.forename %></td>
-          <td><%= term_registration.student.surname %></td>
-          <td><%= term_registration.student.matriculum_number %></td>
-          <td><%= term_registration.points %></td>
+          <td><%= student.forename %></td>
+          <td><%= student.surname %></td>
+          <td><%= student.matriculum_number %></td>
           <td><%= 3 %></td>
-          <td class='right-aligned'><%= link_to "View", course_term_term_registration_path(current_course, current_term, term_registration), :class => "tiny button" %></td>
+          <td class='right-aligned'><div class='tiny button'>SOME</div><div class='tiny alert button'>BUTTONS</div></td>
         </tr>
         <% end %>
       </tbody>
     </table>
   </li>
   <li id='submissionsTab'>
-    
+    <p>No submissions present.</p>
+  </li>
+  <li id='descriptionTab'>
+    <% if @tutorial_group.description? %>
+      <%= simple_format @tutorial_group.description %>
+    <% else %>
+      <p>No description present.</p>
+    <% end %>
   </li>
 </ul>

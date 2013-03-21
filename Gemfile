@@ -16,22 +16,25 @@ gem 'draper'            # decorators
 gem 'kaminari'          # pagination
 gem 'flash_render'      # render method with notice/alerts
 gem 'devise'            # user authentication
+gem 'cancan'            # role based ability management for users
+gem 'turbolinks'        # ajax replacement links
 
 group :development do
   gem 'thin'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'sextant'
-  gem 'brakeman'
+  gem 'sextant'            # /rails/routes for displaying all routes
+  gem 'brakeman'           # common security problems checker
+  gem 'awesome_print'      # nicley formatted object inspection
 end
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
-  
+
   gem 'compass-rails'
-  gem 'zurb-foundation'
+  gem 'zurb-foundation', '< 4.0'
   gem 'foundation-icons-sass-rails'
 end
 

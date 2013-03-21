@@ -22,6 +22,10 @@ gem 'turbolinks'        # ajax replacement links
 gem 'date-input-rails'  # input-tag for date type
 gem 'modernizr'         # needed for date-input-rails
 
+group :production do
+  gem 'therubyracer'
+end
+
 group :development do
   gem 'thin'
   gem 'better_errors'
@@ -29,6 +33,7 @@ group :development do
   gem 'sextant'            # /rails/routes for displaying all routes
   gem 'brakeman'           # common security problems checker
   gem 'awesome_print'      # nicley formatted object inspection
+  gem 'capistrano'         # deployment
 end
 
 group :assets do

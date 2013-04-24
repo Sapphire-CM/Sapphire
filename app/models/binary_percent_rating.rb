@@ -1,0 +1,3 @@
+class BinaryPercentRating < Rating
+
+end

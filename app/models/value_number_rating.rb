@@ -1,0 +1,3 @@
+class ValueNumberRating < Rating
+
+end

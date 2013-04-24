@@ -1,0 +1,3 @@
+class ValuePercentRating < Rating
+
+end

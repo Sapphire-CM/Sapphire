@@ -1,0 +1,3 @@
+class BinaryNumberRating < Rating
+
+end

@@ -65,4 +65,21 @@ module LayoutHelper
 
     content_tag :li, link_to(title, path, options), class: classes.join(" ")
   end
+
+
+  def rating_description(rating)
+    if rating.is_a? BinaryNumberRating
+      if rating.value.abs == 1
+        "#{rating.value} point"
+      else
+        "#{rating.value} points"
+      end
+    elsif rating.is_a? BinaryPercentRating
+      "#{rating.value} %"
+    elsif rating.is_a? ValueNumberRating
+      "#{rating.min_value} to #{rating.max_value} points"
+    elsif rating.is_a? ValuePercentRating
+      "#{rating.min_value} to #{rating.max_value} %"
+    end
+  end
 end

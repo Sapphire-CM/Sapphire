@@ -23,18 +23,21 @@
           </div>
 
           <% if rating_group.ratings.any? %>
-            <table class='six'>
+            <table class='eight'>
               <thead>
                 <tr>
                   <th>Title</th>
-                  <th>Points</th>
+                  <th class='four'>Value</th>
                 </tr>
               </thead>
               <tbody>
                 <% rating_group.ratings.each do |rating| %>
                   <tr>
                     <td><%= rating.title %></td>
-                    <td><%= rating.points %></td>
+
+                    <td class='right-aligned'>
+                      <%= rating_description rating %>
+                    </td>
                   </tr>
                 <% end %>
               </tbody>
@@ -45,7 +48,7 @@
         </div>
       <% end %>
 
-      
+
     <% else %>
       <p>No RatingGroups present.</p>
     <% end %>
@@ -53,7 +56,7 @@
     <p>
       <%= link_to "Add RatingGroup", new_course_term_exercise_rating_group_path(current_course, current_term, @exercise), :class => "small button" %>
     </p>
-    
+
   </li>
 
   <li id='evaluationsTab'>

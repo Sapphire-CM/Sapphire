@@ -29,7 +29,11 @@
           <% @rating_group.ratings.each do |rating| %>
             <tr>
               <td><%= rating.title %></td>
-              <td><%= rating.points %></td>
+
+              <td class='right-aligned'>
+                <%= rating_description rating %>
+              </td>
+
               <td class='right-aligned'>
                 <%= link_to "View", course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating_group, rating), :class => "tiny button" %>
                 <%= link_to "Edit", edit_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating_group, rating), :class => "tiny button" %>

@@ -5,7 +5,7 @@ class ValueNumberRating < Rating
 
   def all_values_range
     if max_value && min_value && max_value < min_value
-      self.errors.add_to_base("maximum value must be greater than minimum value")
+      errors.add :base, 'maximum value must be greater than minimum value'
     end
   end
 end

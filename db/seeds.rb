@@ -30,6 +30,8 @@ rating_groups = RatingGroup.create([
   { title: 'Identity', points: 7, exercise: exercises[0] },
   { title: 'Format', points: 7, exercise: exercises[0] },
   { title: 'Content', points: 11, exercise: exercises[0] },
+  { title: 'General stuff', global: true, exercise: exercises[0] },
+  { title: 'General stuff 2', points: 11, exercise: exercises[0] },
   { title: 'Miscellaneous', points: 0, exercise: exercises[0] }])
 
 ratings = BinaryNumberRating.create([

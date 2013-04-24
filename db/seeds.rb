@@ -42,5 +42,15 @@ ratings = BinaryNumberRating.create([
   { title: 'headers not 7bit ASCII', value: -2, rating_group: rating_groups[1] },
   { title: 'lines too long', value: -3, rating_group: rating_groups[1]} ])
 
+ratings = BinaryPercentRating.create([
+  { title: 'late deadline', value: -50, rating_group: rating_groups[0] },
+  { title: 'plagiarism', value: -50, rating_group: rating_groups[0] },
+  { title: 'very well', value: 30, rating_group: rating_groups[0] },
+  { title: 'general stupidity', value: -25, rating_group: rating_groups[0] } ])
 
+ratings = ValueNumberRating.create([
+  { title: 'content of summary', rating_group: rating_groups[0] },
+  { title: 'plagiarism', value: -50, rating_group: rating_groups[0] },
+  { title: 'very well', value: 30, rating_group: rating_groups[0] },
+  { title: 'general stupidity', value: -25, rating_group: rating_groups[0] } ])
 

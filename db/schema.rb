@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130424094611) do
+ActiveRecord::Schema.define(:version => 20130424115038) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -102,6 +102,8 @@ ActiveRecord::Schema.define(:version => 20130424094611) do
     t.datetime "updated_at",      :null => false
     t.text     "description"
     t.string   "type"
+    t.integer  "max_value"
+    t.integer  "min_value"
   end
 
   add_index "ratings", ["rating_group_id"], :name => "index_ratings_on_rating_group_id"

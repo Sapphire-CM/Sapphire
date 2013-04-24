@@ -7,7 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 courses = Course.create([
-  { title: 'INM' }, 
+  { title: 'INM' },
   { title: 'HCI' },
   { title: 'Bakk-Proj' }])
 
@@ -32,15 +32,15 @@ rating_groups = RatingGroup.create([
   { title: 'Content', points: 11, exercise: exercises[0] },
   { title: 'Miscellaneous', points: 0, exercise: exercises[0] }])
 
-ratings = Rating.create([
-  { title: 'no realname', points: -3, rating_group: rating_groups[0] },
-  { title: 'wrong or missing TUG or previously disclosed email address', points: -3, rating_group: rating_groups[0] },
-  { title: 'redundant Reply-To (same as From)', points: -1, rating_group: rating_groups[0] },
-  { title: 'no signature', points: -4, rating_group: rating_groups[0] },
-  { title: 'not 100% plain text', points: -5, rating_group: rating_groups[1] },
-  { title: 'broken message id', points: -2, rating_group: rating_groups[1] },
-  { title: 'headers not 7bit ASCII', points: -2, rating_group: rating_groups[1] },
-  { title: 'lines too long', points: -3, rating_group: rating_groups[1]} ])
+ratings = BinaryNumberRating.create([
+  { title: 'no realname', value: -3, rating_group: rating_groups[0] },
+  { title: 'wrong or missing TUG or previously disclosed email address', value: -3, rating_group: rating_groups[0] },
+  { title: 'redundant Reply-To (same as From)', value: -1, rating_group: rating_groups[0] },
+  { title: 'no signature', value: -4, rating_group: rating_groups[0] },
+  { title: 'not 100% plain text', value: -5, rating_group: rating_groups[1] },
+  { title: 'broken message id', value: -2, rating_group: rating_groups[1] },
+  { title: 'headers not 7bit ASCII', value: -2, rating_group: rating_groups[1] },
+  { title: 'lines too long', value: -3, rating_group: rating_groups[1]} ])
 
 
 

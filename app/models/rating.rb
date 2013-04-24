@@ -4,9 +4,9 @@ class Rating < ActiveRecord::Base
 
   validates_presence_of :title, :type
 
-  attr_accessible :title, :description, :value
+  attr_accessible :title, :description, :value, :rating_group
 
-  def initialize(args = nil)
+  def initialize(*args)
     raise "Cannot directly instantiate a Rating" if self.class == Rating
     super
   end

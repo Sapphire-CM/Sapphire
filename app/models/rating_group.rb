@@ -3,9 +3,9 @@ class RatingGroup < ActiveRecord::Base
   has_many :ratings, :dependent => :destroy
 
   validates_presence_of :title
-  validates_presence_of :points, :unless => Proc.new do |rating_group|
+  validates_presence_of :points, :unless => Proc.new { |rating_group|
     rating_group.global == true
-  end
+  }
 
   attr_accessible :title, :description, :points, :exercise, :global
 

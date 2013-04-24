@@ -1,6 +1,6 @@
 class ChangeEvalutations < ActiveRecord::Migration
   def change
-    add_column :evalutions, :type, :string
-    add_column :evalutions, :value, :integer
+    add_column :evaluations, :type, :string
+    add_column :evaluations, :value, :integer
   end
 end

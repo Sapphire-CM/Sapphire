@@ -91,8 +91,17 @@ ActiveRecord::Schema.define(:version => 20130424115038) do
   add_index "lecturer_registrations", ["account_id"], :name => "index_lecturer_term_registrations_on_account_id"
   add_index "lecturer_registrations", ["term_id"], :name => "index_lecturer_term_registrations_on_term_id"
 
-# Could not dump table "rating_groups" because of following StandardError
-#   Unknown type 'bool' for column 'global'
+  create_table "rating_groups", :force => true do |t|
+    t.integer  "exercise_id"
+    t.string   "title"
+    t.integer  "points"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.text     "description"
+    t.boolean  "global"
+  end
+
+  add_index "rating_groups", ["exercise_id"], :name => "index_rating_groups_on_exercise_id"
 
   create_table "ratings", :force => true do |t|
     t.integer  "rating_group_id"

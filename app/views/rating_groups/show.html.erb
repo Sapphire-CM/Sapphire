@@ -2,8 +2,8 @@
 <%# title @rating_group.title, @rating_group.points + " " + (@rating_group.points > 1 ? "points" : "point") %>
 
 <% sidebar do %>
-  <%= link_to "Edit", edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), :class => "small button" %>
-  <%= link_to "Delete", course_term_exercise_path(current_course, current_term, @exercise), :method => :delete, :confirm => "Are you sure?", :class => "small alert button" %>
+  <%= link_to "Edit", edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), class: "small button" %>
+  <%= link_to "Delete", course_term_exercise_path(current_course, current_term, @exercise), method: :delete, confirm: "Are you sure?", class: "small alert button" %>
 <% end %>
 
 <dl class='tabs'>
@@ -35,9 +35,9 @@
               </td>
 
               <td class='right-aligned'>
-                <%= link_to "View", course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating_group, rating), :class => "tiny button" %>
-                <%= link_to "Edit", edit_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating_group, rating), :class => "tiny button" %>
-                <%= link_to "Delete", course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating_group, rating), :class => "tiny alert button", :method => :delete, :confirm => "Are you sure?" %>
+                <%= link_to "View", course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating_group, rating), class: "tiny button" %>
+                <%= link_to "Edit", edit_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating_group, rating), class: "tiny button" %>
+                <%= link_to "Delete", course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating_group, rating), class: "tiny alert button", method: :delete, confirm: "Are you sure?" %>
               </td>
             </tr>
           <% end %>
@@ -48,7 +48,7 @@
     <% end %>
 
     <p>
-      <%= link_to 'New Rating', new_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating_group), :class => "small button"  %>
+      <%= link_to 'New Rating', new_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating_group), class: "small button"  %>
     </p>
 
   </li>

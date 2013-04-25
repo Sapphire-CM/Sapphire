@@ -1,8 +1,8 @@
 <% title "#{@account.fullname}", "#{@account.matriculum_number}" %>
 
 <% sidebar do %>
-  <%= link_to "Edit", edit_account_registration_path(@account), :class => "small button" %>
-  <%= link_to "Delete", account_path(@account), :method => :delete, :class => "small alert button", :confirm => "Are you sure?" %>
+  <%= link_to "Edit", edit_account_registration_path(@account), class: "small button" %>
+  <%= link_to "Delete", account_path(@account), method: :delete, class: "small alert button", confirm: "Are you sure?" %>
 <% end %>
 
 <dl class='tabs'>
@@ -22,4 +22,4 @@
   </li>
 </ul>
 
-<p><%= link_to "Back", accounts_path, :class => "tiny button" %></p>
+<p><%= link_to "Back", accounts_path, class: "tiny button" %></p>

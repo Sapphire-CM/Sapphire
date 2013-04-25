@@ -1,8 +1,8 @@
 <% title @exercise.title %>
 
 <% sidebar do %>
-  <%= link_to "Edit", edit_course_term_exercise_path(current_course, current_term, @exercise), :class => "small button" %>
-  <%= link_to "Delete", course_term_exercise_path(current_course, current_term, @exercise), :method => :delete, :class => "small alert button", :confirm => "Are you sure?" %>
+  <%= link_to "Edit", edit_course_term_exercise_path(current_course, current_term, @exercise), class: "small button" %>
+  <%= link_to "Delete", course_term_exercise_path(current_course, current_term, @exercise), method: :delete, class: "small alert button", confirm: "Are you sure?" %>
 <% end %>
 
 <dl class='tabs'>
@@ -54,7 +54,7 @@
     <% end %>
 
     <p>
-      <%= link_to "Add RatingGroup", new_course_term_exercise_rating_group_path(current_course, current_term, @exercise), :class => "small button" %>
+      <%= link_to "Add RatingGroup", new_course_term_exercise_rating_group_path(current_course, current_term, @exercise), class: "small button" %>
     </p>
 
   </li>

@@ -1,8 +1,8 @@
 <% title @course.title %>
 
 <% sidebar do %>
-  <%= link_to "Edit", edit_course_path(@course), :class => "small button" %>
-  <%= link_to "Delete", course_path(@course), :method => :delete, :class => "small alert button", :confirm => "Are you sure?" %>
+  <%= link_to "Edit", edit_course_path(@course), class: "small button" %>
+  <%= link_to "Delete", course_path(@course), method: :delete, class: "small alert button", confirm: "Are you sure?" %>
 <% end %>
 
 <dl class='tabs'>
@@ -29,9 +29,9 @@
           <td><%= pluralize term.tutorial_groups.count, "Tutorial" %></td>
           <td><%= term.students.count %></td>
           <td>
-            <%= link_to "View", course_term_path(@course, term), :class => "tiny button" %>
-            <%= link_to "Edit", edit_course_term_path(@course, term), :class => "tiny button" %>
-            <%= link_to "Delete", course_term_path(@course, term), :class => "tiny alert button", :method => :delete, :confirm => "Are you sure?" %>
+            <%= link_to "View", course_term_path(@course, term), class: "tiny button" %>
+            <%= link_to "Edit", edit_course_term_path(@course, term), class: "tiny button" %>
+            <%= link_to "Delete", course_term_path(@course, term), class: "tiny alert button", method: :delete, confirm: "Are you sure?" %>
           </td>
         </tr>
       <% end %>
@@ -40,7 +40,7 @@
     <% else %>
       <p>No terms present.</p>
     <% end %>
-    <%= link_to "Add Term", new_course_term_path(@course), :class => "button" %>
+    <%= link_to "Add Term", new_course_term_path(@course), class: "button" %>
   </li>
   <li id='descriptionTab'>
     <% if @course.description? %>

@@ -1,7 +1,7 @@
 <% title "Courses" %>
 
 <% sidebar do %>
-  <%= link_to "New Course", new_course_path, :class => "small button" %>
+  <%= link_to "New Course", new_course_path, class: "small button" %>
 <% end %>
 
 <% if @courses.any? %>
@@ -21,9 +21,9 @@
           <td><%= course.terms.count %></td>
           <td>Keith Andrews</td>
           <td class='right-aligned'>
-            <%= link_to "View", course_path(course), :class => "tiny button" %>
-            <%= link_to "Edit", edit_course_path(course), :class => "tiny button" %>
-            <%= link_to "Delete", course_path(course), :class => "tiny alert button", :method => :delete, :confirm => "Are you sure?" %>
+            <%= link_to "View", course_path(course), class: "tiny button" %>
+            <%= link_to "Edit", edit_course_path(course), class: "tiny button" %>
+            <%= link_to "Delete", course_path(course), class: "tiny alert button", method: :delete, confirm: "Are you sure?" %>
           </td>
         </tr>
       <% end %>

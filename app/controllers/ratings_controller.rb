@@ -6,7 +6,7 @@ class RatingsController < TermResourceController
   end
 
   def new
-    @rating = @rating_group.ratings.new
+    @rating = @rating_group.ratings.new(false)
   end
 
   def edit

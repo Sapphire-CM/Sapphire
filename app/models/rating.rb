@@ -7,7 +7,10 @@ class Rating < ActiveRecord::Base
   attr_accessible :title, :description, :rating_group
 
   def initialize(*args)
-    raise "Cannot directly instantiate a Rating" if self.class == Rating
+    unless args[0] == false
+      raise "Cannot directly instantiate a Rating" if self.class == Rating
+    end
+
     super
   end
 end

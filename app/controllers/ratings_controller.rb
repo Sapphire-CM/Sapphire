@@ -14,7 +14,14 @@ class RatingsController < TermResourceController
   end
 
   def create
-    @rating = @rating_group.ratings.new(params[:rating])
+    unless params[:rating][:type] || Object.const_defined?(params[:rating][:type])
+      @rating = @rating_group.ratings.new(false)
+      render :new, alert: 'Invalid type!'
+      raise
+    end
+
+    @rating = params[:rating][:type].constantize.new(params[:rating].except(:type))
+    @rating.rating_group = @rating_group
 
     if @rating.save
       redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), notice: "Rating was successfully created."

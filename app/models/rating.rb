@@ -9,6 +9,7 @@ class Rating < ActiveRecord::Base
   def initialize(*args)
     unless args[0] == false
       raise "Cannot directly instantiate a Rating" if self.class == Rating
+      super
     end
 
     super

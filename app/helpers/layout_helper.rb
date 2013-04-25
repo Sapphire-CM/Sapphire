@@ -67,7 +67,7 @@ module LayoutHelper
   end
 
 
-  def rating_description(rating)
+  def rating_points_description(rating)
     if rating.is_a? BinaryNumberRating
       if rating.value.abs == 1
         "#{rating.value} point"

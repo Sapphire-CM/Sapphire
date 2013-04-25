@@ -3,7 +3,7 @@ Sapphire::Application.routes.draw do
   devise_for :accounts # , skip: [ :registrations ]
   as :user do
     get 'accounts'        => 'accounts#index'
-    get 'accounts/:id'    => 'accounts#show', :as => "account"
+    get 'accounts/:id'    => 'accounts#show', as: "account"
     delete 'accounts/:id' => 'accounts#destroy'
   end
 
@@ -33,13 +33,13 @@ Sapphire::Application.routes.draw do
 
       namespace :import do
         resources :student_imports do
-          put :import, :on => :member
+          put :import, on: :member
         end
       end
     end
   end
 
-  get '/:action', :controller => :static, :as => :static
-  root :to => 'static#index'
+  get '/:action', controller: :static, as: :static
+  root to: 'static#index'
 
 end

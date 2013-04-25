@@ -49,7 +49,7 @@ module LayoutHelper
     terms = Term
     terms = terms.where {id != my{current_term.id} } if term_context?
 
-    render "application/navigation_context_selector", :terms => terms.all
+    render "application/navigation_context_selector", terms: terms.all
   end
 
 

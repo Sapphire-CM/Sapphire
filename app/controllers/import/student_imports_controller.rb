@@ -22,7 +22,7 @@ class Import::StudentImportsController < TermResourceController
     if @student_import.save
       redirect_to course_term_import_student_import_path(current_course, current_term, @student_import)
     else
-      render :new, :notice => "Error during saving!"
+      render :new, notice: "Error during saving!"
     end
   end
 
@@ -30,10 +30,10 @@ class Import::StudentImportsController < TermResourceController
     @student_import = Import::StudentImport.find(params[:id])
 
     if @student_import.update_attributes(params[:import_student_import]) && @student_import.import!
-      redirect_to course_term_path(current_course, current_term), :notice => "Import successfully finished!"
+      redirect_to course_term_path(current_course, current_term), notice: "Import successfully finished!"
     else
       @student_import = Import::StudentImport.for_course(current_course).find(params[:id]).decorate
-      render :show, :alert => "Error during importing studentes!"
+      render :show, alert: "Error during importing studentes!"
     end
   end
 

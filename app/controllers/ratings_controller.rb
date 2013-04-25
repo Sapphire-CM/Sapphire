@@ -17,7 +17,7 @@ class RatingsController < TermResourceController
     @rating = @rating_group.ratings.new(params[:rating])
 
     if @rating.save
-      redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), :notice => "Rating was successfully created."
+      redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), notice: "Rating was successfully created."
     else
       render :new
     end
@@ -27,7 +27,7 @@ class RatingsController < TermResourceController
     @rating = @rating_group.ratings.find(params[:id])
 
     if @rating.update_attributes(params[:rating])
-      redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), :notice => "Rating was successfully updated."
+      redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), notice: "Rating was successfully updated."
     else
       render :edit
     end
@@ -37,7 +37,7 @@ class RatingsController < TermResourceController
     @rating = @rating_group.ratings.find(params[:id])
     @rating.destroy
 
-    redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), :notice => "Rating was successfully deleted."
+    redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), notice: "Rating was successfully deleted."
   end
 
   private

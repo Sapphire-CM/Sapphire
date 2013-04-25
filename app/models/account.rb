@@ -11,12 +11,12 @@ class Account < ActiveRecord::Base
   validates_presence_of :forename
   validates_presence_of :surname
 
-  validates_uniqueness_of :matriculum_number, :if => :matriculum_number?
-  validates_format_of :matriculum_number, :with => /\A[\d]{7}\z/, :if => :matriculum_number?
+  validates_uniqueness_of :matriculum_number, if: :matriculum_number?
+  validates_format_of :matriculum_number, with: /\A[\d]{7}\z/, if: :matriculum_number?
 
-  has_many :lecturer_registrations, :dependent => :destroy
-  has_many :tutor_registrations, :dependent => :destroy
-  has_many :student_registrations, :dependent => :destroy
+  has_many :lecturer_registrations, dependent: :destroy
+  has_many :tutor_registrations, dependent: :destroy
+  has_many :student_registrations, dependent: :destroy
 
   def fullname
     "#{forename} #{surname}"

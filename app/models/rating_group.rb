@@ -1,9 +1,9 @@
 class RatingGroup < ActiveRecord::Base
   belongs_to :exercise
-  has_many :ratings, :dependent => :destroy
+  has_many :ratings, dependent: :destroy
 
   validates_presence_of :title
-  validates_presence_of :points, :unless => Proc.new { |rating_group|
+  validates_presence_of :points, unless: Proc.new { |rating_group|
     rating_group.global == true
   }
 

@@ -128,6 +128,46 @@ ActiveRecord::Schema.define(:version => 20130424115038) do
   add_index "student_registrations", ["account_id"], :name => "index_student_term_registrations_on_account_id"
   add_index "student_registrations", ["tutorial_group_id"], :name => "index_student_term_registrations_on_tutorial_group_id"
 
+  create_table "students", :force => true do |t|
+    t.string   "forename"
+    t.string   "surname"
+    t.string   "matriculum_number"
+    t.string   "email"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  create_table "submission_attachments", :force => true do |t|
+    t.string   "content_type"
+    t.string   "file"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "submissions", :force => true do |t|
+    t.integer  "exercise_id"
+    t.integer  "student_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.datetime "submitted_at"
+  end
+
+  add_index "submissions", ["exercise_id"], :name => "index_submissions_on_exercise_id"
+  add_index "submissions", ["student_id"], :name => "index_submissions_on_student_id"
+
+  create_table "term_registrations", :force => true do |t|
+    t.datetime "registered_at"
+    t.integer  "tutorial_group_id"
+    t.integer  "term_id"
+    t.integer  "student_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "term_registrations", ["student_id"], :name => "index_term_registrations_on_student_id"
+  add_index "term_registrations", ["term_id"], :name => "index_term_registrations_on_term_id"
+  add_index "term_registrations", ["tutorial_group_id"], :name => "index_term_registrations_on_tutorial_group_id"
+
   create_table "terms", :force => true do |t|
     t.string   "title"
     t.integer  "course_id"
@@ -158,5 +198,12 @@ ActiveRecord::Schema.define(:version => 20130424115038) do
   end
 
   add_index "tutorial_groups", ["term_id"], :name => "index_tutorial_groups_on_term_id"
+
+  create_table "tutors", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "forename"
+    t.string   "surname"
+  end
 
 end

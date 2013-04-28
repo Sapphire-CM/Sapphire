@@ -3,7 +3,9 @@ class Term < ActiveRecord::Base
 
   has_many :exercises, dependent: :destroy
   has_many :tutorial_groups, dependent: :destroy
-
+  
+  has_many :submissions, through: :exercises
+  
   has_one :lecturer_registration, dependent: :destroy
   delegate :lecturer, to: :lecturer_registration, allow_nil: true
 

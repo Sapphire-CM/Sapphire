@@ -4,7 +4,9 @@ class TutorialGroupsController < TermResourceController
 
   def show
     @tutorial_group = current_term.tutorial_groups.find(params[:id])
-
+    
+    @submissions = @tutorial_group.submissions.order(:submitted_at)
+    
     if @tutorial_group.tutor.blank?
       render alert: 'You have not set a tutor yet!'
     end

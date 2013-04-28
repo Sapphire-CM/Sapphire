@@ -2,9 +2,7 @@
 
 <% sidebar do %>
   <%= link_to set_lecturer_label, course_term_new_lecturer_registration_path(current_course, current_term), class: "small button twelve columns" %>
-
   <%= link_to "Edit", edit_course_term_path(current_course, current_term), class: "small button twelve columns" %>
-
   <%= link_to "Delete", course_term_path(current_course, current_term), method: :delete, confirm: "Are you sure?", class: "small alert button twelve columns" %>
 <% end %>
 
@@ -38,7 +36,7 @@
           </tr>
         </thead>
         <tbody>
-          <%  @tutorial_groups.each do |tutorial_group| %>
+          <% @tutorial_groups.each do |tutorial_group| %>
             <tr>
               <td><%= tutorial_group.title %></td>
               <td><%= tutor_name tutorial_group.tutor %></td>
@@ -65,6 +63,7 @@
           <tr>
             <th>Title</th>
             <th>RatingGroups</th>
+            <th>Submissions</th>
             <th></th>
           </tr>
         </thead>
@@ -73,6 +72,8 @@
             <tr>
               <td><%= exercise.title %></td>
               <td><%= exercise.rating_groups.count %></td>
+              <td><%= exercise.submissions.count %></td>
+              
               <td class='right-aligned'>
                 <%= link_to "View", course_term_exercise_path(current_course, current_term, exercise), class: "tiny button" %>
                 <%= link_to "Edit", edit_course_term_exercise_path(current_course, current_term, exercise), class: "tiny button" %>

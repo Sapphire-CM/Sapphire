@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130424115038) do
+ActiveRecord::Schema.define(:version => 20130427174243) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -43,16 +42,16 @@ ActiveRecord::Schema.define(:version => 20130424115038) do
 
   create_table "evaluations", :force => true do |t|
     t.boolean  "checked"
-    t.integer  "student_id"
     t.integer  "rating_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
     t.string   "type"
     t.integer  "value"
+    t.integer  "submission_evaluation_id"
   end
 
   add_index "evaluations", ["rating_id"], :name => "index_evaluations_on_rating_id"
-  add_index "evaluations", ["student_id"], :name => "index_evaluations_on_student_id"
+  add_index "evaluations", ["submission_evaluation_id"], :name => "index_evaluations_on_submission_evaluation_id"
 
   create_table "exercises", :force => true do |t|
     t.integer  "term_id"
@@ -127,6 +126,30 @@ ActiveRecord::Schema.define(:version => 20130424115038) do
 
   add_index "student_registrations", ["account_id"], :name => "index_student_term_registrations_on_account_id"
   add_index "student_registrations", ["tutorial_group_id"], :name => "index_student_term_registrations_on_tutorial_group_id"
+
+  create_table "submission_evaluations", :force => true do |t|
+    t.integer  "submission_id"
+    t.integer  "evaluator_id"
+    t.string   "evaluator_type"
+    t.datetime "evaluated_at"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.integer  "evaluation_result"
+  end
+
+  add_index "submission_evaluations", ["evaluator_id"], :name => "index_submission_evaluations_on_evaluator_id"
+  add_index "submission_evaluations", ["submission_id"], :name => "index_submission_evaluations_on_submission_id"
+
+  create_table "submissions", :force => true do |t|
+    t.integer  "exercise_id"
+    t.integer  "student_registration_id"
+    t.datetime "submitted_at"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+  end
+
+  add_index "submissions", ["exercise_id"], :name => "index_submissions_on_exercise_id"
+  add_index "submissions", ["student_registration_id"], :name => "index_submissions_on_student_registration_id"
 
   create_table "terms", :force => true do |t|
     t.string   "title"

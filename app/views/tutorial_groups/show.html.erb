@@ -42,7 +42,7 @@
     </table>
   </li>
   <li id='submissionsTab'>
-    <p>No submissions present.</p>
+    <%= render "submissions/submissions_list", submissions: @submissions %>
   </li>
   <li id='descriptionTab'>
     <% if @tutorial_group.description? %>

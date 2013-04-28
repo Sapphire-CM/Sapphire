@@ -64,7 +64,7 @@
   </li>
 
   <li id='submissionsTab'>
-    <p>No Submissions present.</p>
+    <%= render "submissions/submissions_list", submissions: @exercise.submissions %>
   </li>
 
   <li id='descriptionTab'>

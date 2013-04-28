@@ -13,4 +13,5 @@ class TutorialGroup < ActiveRecord::Base
 
   has_many :student_registrations, dependent: :destroy
   has_many :students, through: :student_registrations, class_name: "Account", foreign_key: :account_id
+  has_many :submissions, through: :student_registrations
 end

@@ -14,4 +14,16 @@ class Rating < ActiveRecord::Base
 
     super
   end
+  
+  def build_evaluation
+    evaluation = if self.is_a? BinaryRating
+      BinaryEvaluation.new
+    else
+      ValueEvaluation.new
+    end
+    
+    evaluation.rating = self
+    
+    evaluation
+  end
 end

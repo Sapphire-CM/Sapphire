@@ -7,8 +7,22 @@ class RatingGroup < ActiveRecord::Base
     rating_group.global == true
   }
 
-  attr_accessible :title, :description, :points, :exercise, :global
+  attr_accessible :title, :description, :points, :exercise, :global, :min_points, :max_points
+  
+  
+  validate :min_max_points_range, :points_in_range
+  
+  
+  
+  def points_in_range
+    errors.add :points, 'must be between minimum points and maximum points' if self.points < self.min_points && self.points > self.max_points
+  end
+  
+  def min_max_points_range
+    errors.add :min_points, 'minimum points must be less than maximum points'  if self.max_points && self.min_points && self.max_points < self.min_points
+  end
 
+  
   # global: true     if there is no maximum points for this group, therefore all
   #                  ratings count directly to the whole exercise
   #         false    if the ratings only can substract from the specified maximum

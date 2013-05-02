@@ -36,34 +36,41 @@ class SubmissionEvaluation < ActiveRecord::Base
   
   def calc_evaluation_result
     final_sum = 0
-    percent = 100
+    
+    
+    percent = 1
     self.evaluations.joins(rating: :rating_group).includes(rating: :rating_group).group_by { |ev| ev.rating_group}.each do |rating_group, evaluations|
       group_sum = rating_group.points
       evaluations.each do |evaluation|
         rating = evaluation.rating
+        
         if evaluation.is_a? BinaryEvaluation
           if evaluation.value == 1
             if rating.is_a? BinaryNumberRating
               group_sum += rating.value
             elsif rating.is_a? BinaryPercentRating
-              percent += rating.value
+              percent = 1 + rating.value.to_f/100.0
             end
           end
         else
           if rating.is_a? ValueNumberRating
             group_sum += evaluation.value
           elsif rating.is_a? ValuePercentRating
-            percent += evaluation.value
+            percent*= 1 + evaluation.value.to_f/100.0
           end
         end
       end
       
-      group_sum = 0 if group_sum < 0
+      if group_sum < rating_group.min_points
+        group_sum = rating_group.min_points
+      elsif group_sum > rating_group.max_points
+        group_sum = rating_group.max_points
+      end
       
       final_sum += group_sum
     end
-        
-    final_sum = final_sum.to_f * (percent.to_f/100.0)
+    
+    final_sum = final_sum.to_f * percent
     final_sum = 0 if final_sum < 0
     
     final_sum

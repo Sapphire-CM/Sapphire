@@ -7,7 +7,7 @@
         <th>Submitted at</th>
         <th>Evaluation Result</th>
         <th>Evaluated at</th>
-        <th colspan='2'></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -31,8 +31,10 @@
             <em>Not evaluated yet</em>
           <% end %>
         </td>
-        <td><%= link_to "Show", course_term_submission_path(current_course, current_term, submission), class: "small button" %></td>
-        <td><%= link_to "Evaluate", course_term_submission_evaluation_path(current_course, current_term, submission), class: "small button" %></td>
+        <td>
+          <%= link_to "Show", course_term_submission_path(current_course, current_term, submission), class: "small button" %>
+          <%= link_to "Evaluate", course_term_submission_evaluation_path(current_course, current_term, submission), class: "small button" %>
+        </td>
       </tr>
       <% end %>
     </tbody>

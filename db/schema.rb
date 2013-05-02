@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130427174243) do
+ActiveRecord::Schema.define(:version => 20130502114026) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -98,6 +98,8 @@ ActiveRecord::Schema.define(:version => 20130427174243) do
     t.datetime "updated_at",  :null => false
     t.text     "description"
     t.boolean  "global"
+    t.integer  "min_points"
+    t.integer  "max_points"
   end
 
   add_index "rating_groups", ["exercise_id"], :name => "index_rating_groups_on_exercise_id"

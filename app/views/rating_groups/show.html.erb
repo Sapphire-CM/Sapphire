@@ -1,4 +1,4 @@
-<% title @rating_group.title, @rating_group.points %>
+<% title @rating_group.title, "#{pluralize @rating_group.points, "point"} (#{@rating_group.min_points}...#{@rating_group.max_points})" %>
 <%# title @rating_group.title, @rating_group.points + " " + (@rating_group.points > 1 ? "points" : "point") %>
 
 <% sidebar do %>
@@ -12,7 +12,6 @@
   </dd>
   <dd><a href='#description'>Description</a></dd>
 </dl>
-
 <ul class='tabs-content'>
   <li id='ratingsTab' class='active'>
 

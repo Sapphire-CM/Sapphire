@@ -7,6 +7,7 @@ gem 'rails', '3.2.13'
 
 gem 'sqlite3'
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 
 gem "simple-navigation"
 gem 'simple_form'       # forms
@@ -18,6 +19,8 @@ gem 'flash_render'      # render method with notice/alerts
 gem 'devise'            # user authentication
 gem 'cancan'            # role based ability management for users
 gem 'turbolinks'        # ajax replacement links
+gem 'date-input-rails'  # input-tag for date type
+gem 'modernizr'         # needed for date-input-rails
 
 group :development do
   gem 'thin'

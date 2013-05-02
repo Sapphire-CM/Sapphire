@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130502151051) do
+ActiveRecord::Schema.define(:version => 20130502185148) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -57,11 +57,14 @@ ActiveRecord::Schema.define(:version => 20130502151051) do
   create_table "exercises", :force => true do |t|
     t.integer  "term_id"
     t.string   "title"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.text     "description"
     t.datetime "deadline"
     t.datetime "late_deadline"
+    t.boolean  "enable_max_points"
+    t.integer  "max_points"
+    t.time     "submission_time"
   end
 
   add_index "exercises", ["term_id"], :name => "index_exercises_on_term_id"

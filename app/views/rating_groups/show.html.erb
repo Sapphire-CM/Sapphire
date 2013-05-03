@@ -1,4 +1,4 @@
-<% title @rating_group.title, subtitle_points(@rating_group) %>
+<% title @rating_group.title, rating_group_subtitle_points(@rating_group) %>
 
 <% sidebar do %>
   <%= link_to "Edit", edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), class: "small button" %>

@@ -14,7 +14,7 @@ class RatingsController < TermResourceController
   end
 
   def create
-    unless params[:rating][:type] || Object.const_defined?(params[:rating][:type])
+    unless (params[:rating] && params[:rating][:type]) || Object.const_defined?(params[:rating][:type])
       @rating = @rating_group.ratings.new(false)
       render :new, alert: 'Invalid type!'
       raise
@@ -26,7 +26,8 @@ class RatingsController < TermResourceController
     if @rating.save
       redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), notice: "Rating was successfully created."
     else
-      render :new
+      raise
+      render :new, alert: 'Error saving!'
     end
   end
 

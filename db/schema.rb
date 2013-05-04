@@ -105,10 +105,7 @@ ActiveRecord::Schema.define(:version => 20130502185148) do
     t.boolean  "global"
     t.integer  "min_points"
     t.integer  "max_points"
-<<<<<<< HEAD
-=======
     t.boolean  "enable_range_points"
->>>>>>> 27041802854de9338b2955fec4f069a83749d271
   end
 
   add_index "rating_groups", ["exercise_id"], :name => "index_rating_groups_on_exercise_id"

@@ -18,6 +18,12 @@ class Account < ActiveRecord::Base
   has_many :tutor_registrations, dependent: :destroy
   has_many :student_registrations, dependent: :destroy
 
+  has_many :submissions, through: :student_registrations
+  
+  def submissions_for_term(term)
+    submissions.for_term term
+  end
+
   def fullname
     "#{forename} #{surname}"
   end

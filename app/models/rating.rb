@@ -1,5 +1,7 @@
 class Rating < ActiveRecord::Base
   belongs_to :rating_group
+  
+  has_one :exercise, through: :rating_group
   has_many :evalutions
 
   validates_presence_of :title, :type

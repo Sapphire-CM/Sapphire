@@ -33,7 +33,7 @@
               <tbody>
                 <% rating_group.ratings.each do |rating| %>
                   <tr>
-                    <td><%= rating.title %></td>
+                    <td><%= link_to_rating rating.title, rating %></td>
 
                     <td class='right-aligned'>
                       <%= rating_points_description rating %>

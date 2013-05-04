@@ -1,12 +1,34 @@
-<%= simple_form_for [current_course, current_term, @exercise, @rating_group] do |f| %>
-  <%= f.input :title %>
-  <%= f.input :global %>
-  <%= f.input :points %>
-  <%= f.input :enable_range_points %>
-  <%= f.input :max_points %>
-  <%= f.input :min_points %>
-  <%= f.input :description, input_html: { rows: 3 } %>
-
-  <%= link_to "Cancel", (@rating_group.new_record? ? course_term_exercise_rating_groups_path(current_course, current_term, @exercise) : course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group)), class: "secondary button" %>
-  <%= f.submit class: "button" %>
+<%= simple_form_for [current_course, current_term, @exercise, @rating_group], html: {id: "rating_group_form"} do |f| %>
+  <div class='row'>
+    <div class='twelve columns'>
+      <%= f.input :title %>
+      <%= f.input :global %>
+      <%= f.input :points %>
+      <%= link_to_function "Change Pointrange", 'window.toggle_point_range_fields(this)', :id => "point_range_toggle_button" %>
+    </div>
+  </div>
+  
+  
+  <div class='row' id='point_range_fields'>
+    <div class='twelve columns'>
+      <div class='radius panel point_range_fields'>
+        <%= f.input :enable_range_points, as: :hidden %>
+        <%= f.input :min_points %>
+        <%= f.input :max_points %>
+      </div>
+    </div>
+  </div>
+    
+  <div class='row'>
+    <div class='twelve columns'>
+      <%= f.input :description, input_html: { rows: 5 } %>
+    </div>
+  </div>
+  
+  <div class='row'>
+    <div class='twelve columns'>
+      <%= link_to "Cancel", (@rating_group.new_record? ? course_term_exercise_rating_groups_path(current_course, current_term, @exercise) : course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group)), class: "secondary button" %>
+      <%= f.submit class: "button" %>
+    </div>
+  </div>
 <% end %>

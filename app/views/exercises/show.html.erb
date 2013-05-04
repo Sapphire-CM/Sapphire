@@ -19,7 +19,7 @@
       <% @exercise.rating_groups.each do |rating_group| %>
         <div>
           <div>
-            <h3><%= link_to "#{rating_group.title}: #{rating_group.points}", course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group) %></h3>
+            <h3><%= link_to rating_group_full_title(rating_group), course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group) %></h3>
           </div>
 
           <% if rating_group.ratings.any? %>

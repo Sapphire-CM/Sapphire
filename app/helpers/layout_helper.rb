@@ -66,7 +66,6 @@ module LayoutHelper
     content_tag :li, link_to(title, path, options), class: classes.join(" ")
   end
 
-
   def rating_points_description(rating)
     if rating.is_a? BinaryNumberRating
       if rating.value.abs == 1
@@ -82,4 +81,19 @@ module LayoutHelper
       "#{rating.min_value} to #{rating.max_value} %"
     end
   end
+
+  def rating_group_full_title(rating_group)
+    full_title = rating_group.title
+    full_title += ": #{rating_group_subtitle_points(rating_group)}" if not rating_group.global
+
+    full_title
+  end
+
+  def rating_group_subtitle_points(rating_group)
+    subtitle = "#{pluralize rating_group.points, "point"}"
+    subtitle += " (#{rating_group.min_points} ... #{rating_group.max_points})" if rating_group.enable_range_points
+
+    subtitle
+  end
+
 end

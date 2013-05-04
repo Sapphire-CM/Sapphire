@@ -34,7 +34,7 @@
           <td><%= student.forename %></td>
           <td><%= student.surname %></td>
           <td><%= student.matriculum_number %></td>
-          <td><%= 3 %></td>
+          <td><%= student.submissions_for_term(current_term).count %></td>
           <td class='right-aligned'><div class='tiny button'>SOME</div><div class='tiny alert button'>BUTTONS</div></td>
         </tr>
         <% end %>

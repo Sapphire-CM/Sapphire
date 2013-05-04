@@ -10,4 +10,6 @@ class Submission < ActiveRecord::Base
   validates_presence_of :submitted_at
   validates_uniqueness_of :exercise_id, scope: :student_registration_id
   
+  
+  scope :for_term, lambda {|term| joins(:exercise).where(exercise: {term_id: term.id})}
 end

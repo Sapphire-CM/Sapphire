@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130303094601) do
+ActiveRecord::Schema.define(:version => 20130502185148) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -43,23 +43,28 @@ ActiveRecord::Schema.define(:version => 20130303094601) do
 
   create_table "evaluations", :force => true do |t|
     t.boolean  "checked"
-    t.integer  "student_id"
     t.integer  "rating_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.string   "type"
+    t.integer  "value"
+    t.integer  "submission_evaluation_id"
   end
 
   add_index "evaluations", ["rating_id"], :name => "index_evaluations_on_rating_id"
-  add_index "evaluations", ["student_id"], :name => "index_evaluations_on_student_id"
+  add_index "evaluations", ["submission_evaluation_id"], :name => "index_evaluations_on_submission_evaluation_id"
 
   create_table "exercises", :force => true do |t|
     t.integer  "term_id"
     t.string   "title"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.text     "description"
     t.datetime "deadline"
     t.datetime "late_deadline"
+    t.boolean  "enable_max_points"
+    t.integer  "max_points"
+    t.time     "submission_time"
   end
 
   add_index "exercises", ["term_id"], :name => "index_exercises_on_term_id"
@@ -93,9 +98,13 @@ ActiveRecord::Schema.define(:version => 20130303094601) do
     t.integer  "exercise_id"
     t.string   "title"
     t.integer  "points"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.text     "description"
+    t.boolean  "global"
+    t.integer  "min_points"
+    t.integer  "max_points"
+    t.boolean  "enable_range_points"
   end
 
   add_index "rating_groups", ["exercise_id"], :name => "index_rating_groups_on_exercise_id"
@@ -103,10 +112,13 @@ ActiveRecord::Schema.define(:version => 20130303094601) do
   create_table "ratings", :force => true do |t|
     t.integer  "rating_group_id"
     t.string   "title"
-    t.integer  "points"
+    t.integer  "value"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
     t.text     "description"
+    t.string   "type"
+    t.integer  "max_value"
+    t.integer  "min_value"
   end
 
   add_index "ratings", ["rating_group_id"], :name => "index_ratings_on_rating_group_id"
@@ -121,6 +133,30 @@ ActiveRecord::Schema.define(:version => 20130303094601) do
 
   add_index "student_registrations", ["account_id"], :name => "index_student_term_registrations_on_account_id"
   add_index "student_registrations", ["tutorial_group_id"], :name => "index_student_term_registrations_on_tutorial_group_id"
+
+  create_table "submission_evaluations", :force => true do |t|
+    t.integer  "submission_id"
+    t.integer  "evaluator_id"
+    t.string   "evaluator_type"
+    t.datetime "evaluated_at"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.integer  "evaluation_result"
+  end
+
+  add_index "submission_evaluations", ["evaluator_id"], :name => "index_submission_evaluations_on_evaluator_id"
+  add_index "submission_evaluations", ["submission_id"], :name => "index_submission_evaluations_on_submission_id"
+
+  create_table "submissions", :force => true do |t|
+    t.integer  "exercise_id"
+    t.integer  "student_registration_id"
+    t.datetime "submitted_at"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+  end
+
+  add_index "submissions", ["exercise_id"], :name => "index_submissions_on_exercise_id"
+  add_index "submissions", ["student_registration_id"], :name => "index_submissions_on_student_registration_id"
 
   create_table "terms", :force => true do |t|
     t.string   "title"

@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
   def destroy
     @account = Account.find(params[:id])
     @account.destroy
-    redirect_to accounts_path(), :notice => "Account was successfully deleted."
+    redirect_to accounts_path(), notice: "Account was successfully deleted."
   end
 
 end

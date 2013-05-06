@@ -15,12 +15,12 @@ class Import::StudentImport < ActiveRecord::Base
   serialize :import_mapping, Import::ImportMapping
 
   # callbacks
-  before_validation :determine_format, :if => lambda {|student_import| student_import.format.blank? && student_import.file.identifier.present? }
-  before_validation :fill_status, :on => :create
+  before_validation :determine_format, if: lambda {|student_import| student_import.format.blank? && student_import.file.identifier.present? }
+  before_validation :fill_status, on: :create
 
   #validations
   validates_presence_of :file, :term_id
-  validates_inclusion_of :status, :in => STATES
+  validates_inclusion_of :status, in: STATES
 
   #scopes
   scope :for_course, lambda {|course| joins(:term).where {term.course_id == course} }

@@ -1,8 +1,8 @@
 <% title @exercise.title %>
 
 <% sidebar do %>
-  <%= link_to "Edit", edit_course_term_exercise_path(current_course, current_term, @exercise), :class => "small button" %>
-  <%= link_to "Delete", course_term_exercise_path(current_course, current_term, @exercise), :method => :delete, :class => "small alert button", :confirm => "Are you sure?" %>
+  <%= link_to "Edit", edit_course_term_exercise_path(current_course, current_term, @exercise), class: "small button" %>
+  <%= link_to "Delete", course_term_exercise_path(current_course, current_term, @exercise), method: :delete, class: "small alert button", confirm: "Are you sure?" %>
 <% end %>
 
 <dl class='tabs'>
@@ -19,22 +19,25 @@
       <% @exercise.rating_groups.each do |rating_group| %>
         <div>
           <div>
-            <h3><%= link_to "#{rating_group.title}: #{rating_group.points}", course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group) %></h3>
+            <h3><%= link_to rating_group_full_title(rating_group), course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group) %></h3>
           </div>
 
           <% if rating_group.ratings.any? %>
-            <table class='six'>
+            <table class='eight'>
               <thead>
                 <tr>
                   <th>Title</th>
-                  <th>Points</th>
+                  <th class='four'>Value</th>
                 </tr>
               </thead>
               <tbody>
                 <% rating_group.ratings.each do |rating| %>
                   <tr>
-                    <td><%= rating.title %></td>
-                    <td><%= rating.points %></td>
+                    <td><%= link_to_rating rating.title, rating %></td>
+
+                    <td class='right-aligned'>
+                      <%= rating_points_description rating %>
+                    </td>
                   </tr>
                 <% end %>
               </tbody>
@@ -45,15 +48,15 @@
         </div>
       <% end %>
 
-      
+
     <% else %>
       <p>No RatingGroups present.</p>
     <% end %>
 
     <p>
-      <%= link_to "Add RatingGroup", new_course_term_exercise_rating_group_path(current_course, current_term, @exercise), :class => "small button" %>
+      <%= link_to "Add RatingGroup", new_course_term_exercise_rating_group_path(current_course, current_term, @exercise), class: "small button" %>
     </p>
-    
+
   </li>
 
   <li id='evaluationsTab'>
@@ -61,7 +64,7 @@
   </li>
 
   <li id='submissionsTab'>
-    <p>No Submissions present.</p>
+    <%= render "submissions/submissions_list", submissions: @exercise.submissions %>
   </li>
 
   <li id='descriptionTab'>

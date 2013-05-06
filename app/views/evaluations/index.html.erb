@@ -23,7 +23,7 @@
         <td><%= "#{rating.title}" %></td>
         <% @students.each do |student| %>
           <td>
-            <%= check_box_tag "evaluation_#{student.id}_#{rating.id}", true, false, :data => { :student_id => student.id, :rating_id => rating.id } %>
+            <%= check_box_tag "evaluation_#{student.id}_#{rating.id}", true, false, data: { student_id: student.id, rating_id: rating.id } %>
 
           </td>
         <% end %>

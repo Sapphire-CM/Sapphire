@@ -1,9 +1,12 @@
 Sapphire::Application.routes.draw do
 
+  resources :submission_evaluations
+
+
   devise_for :accounts # , skip: [ :registrations ]
   as :user do
     get 'accounts'        => 'accounts#index'
-    get 'accounts/:id'    => 'accounts#show', :as => "account"
+    get 'accounts/:id'    => 'accounts#show', as: "account"
     delete 'accounts/:id' => 'accounts#destroy'
   end
 
@@ -12,7 +15,12 @@ Sapphire::Application.routes.draw do
       get :new_lecturer_registration
       post :create_lecturer_registration
       delete :clear_lecturer_registration
-
+      
+      resources :submissions do
+        resource :evaluation, controller: "SubmissionEvaluations"
+      end
+      
+      
       get :meeting
 
       resources :tutorial_groups do
@@ -33,13 +41,13 @@ Sapphire::Application.routes.draw do
 
       namespace :import do
         resources :student_imports do
-          put :import, :on => :member
+          put :import, on: :member
         end
       end
     end
   end
 
-  get '/:action', :controller => :static, :as => :static
-  root :to => 'static#index'
+  get '/:action', controller: :static, as: :static
+  root to: 'static#index'
 
 end

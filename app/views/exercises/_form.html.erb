@@ -1,11 +1,19 @@
 <%= simple_form_for [current_course, current_term, @exercise] do |f| %>
   <%= f.input :title %>
-  <%= f.input :description %>
-  <%= f.input :deadline %>
-  <%= f.input :late_deadline %>
+  <%= f.input :description, input_html: { rows: 3 } %>
+  <%= f.input :enable_max_points %>
+  <%= f.input :max_points %>
 
-  <%= link_to "Cancel", (@exercise.new_record? ? 
-    course_term_exercises_path(current_course, current_term) : 
-    course_term_exercise_path(current_course, current_term, @exercise)), :class => "secondary button" %>
-  <%= f.submit :class => "button" %>
+  <%= f.label 'Deadline'  %>
+  <%= f.date_field :deadline %>
+
+  <%= f.label 'Late Deadline'  %>
+  <%= f.date_field :late_deadline %>
+
+  <%= f.input :submission_time %>
+
+  <%= link_to "Cancel", (@exercise.new_record? ?
+    course_term_exercises_path(current_course, current_term) :
+    course_term_exercise_path(current_course, current_term, @exercise)), class: "secondary button" %>
+  <%= f.submit class: "button" %>
 <% end %>

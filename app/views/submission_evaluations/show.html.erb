@@ -1,0 +1,46 @@
+<% title "Evaluation \"#{current_submission.exercise.title}\" of #{current_submission.student.fullname}" %>
+<% sidebar do %>
+<%= link_to "Edit", edit_course_term_submission_evaluation_path(current_course, current_term, current_submission), class: "small button" %>
+
+<%= render "sidebar" %>
+<% end %>
+
+
+<h2>RESULT: <%= pluralize @submission_evaluation.evaluation_result, "point" %></h2>
+
+
+
+<% if prepared_evaluations.any? %>
+
+<% prepared_evaluations.each do |rating_group, evaluations| %>
+  <h4><%= rating_group.title %> (max. <%= pluralize rating_group.points, "point" %>)</h4>
+  
+  <table class='twelve'>
+    <thead>
+      <tr>
+        <th>Ratings</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% evaluations.each do |evaluation| %>
+      <tr>
+        <td><%= evaluation.rating.title %></td>
+        <td class='two'>
+          <% if evaluation.is_a? BinaryEvaluation %>
+            <%= rating_points_description evaluation.rating if evaluation.value == 1 %>
+          <% elsif evaluation.is_a? ValueEvaluation %>
+            <% if evaluation.rating.is_a? ValueNumberRating %>
+              <%= pluralize evaluation.value, "point" %>
+            <% elsif evaluation.rating.is_a? ValuePercentRating %>
+              <%= evaluation.value %> %
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% end %>
+<% end %>

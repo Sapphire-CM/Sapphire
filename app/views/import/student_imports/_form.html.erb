@@ -1,8 +1,8 @@
-<%= simple_form_for [current_course, current_term, @student_import], :html => {:class => "custom"} do |f| %>
+<%= simple_form_for [current_course, current_term, @student_import], html: {class: "custom"} do |f| %>
   <div class='row'>
     <div class='five columns'>
       <%= f.input :file %>
-      <%= f.input :file_cache, :as => :hidden %>
+      <%= f.input :file_cache, as: :hidden %>
       
       <% if @student_import.file.to_s.present? %>
         <p>
@@ -12,7 +12,7 @@
       
     </div>
     <div class='four columns'>
-      <%= f.input :format, :as => :select, :collection => Import::StudentImport::FORMATS, :include_blank => "-- determine automatically --" %>
+      <%= f.input :format, as: :select, collection: Import::StudentImport::FORMATS, include_blank: "-- determine automatically --" %>
     </div>
   </div>
   
@@ -24,26 +24,26 @@
       <%= f.simple_fields_for :import_options do |b| %>
         <div class='row'>
           <div class='two columns'>
-            <%= b.label :col_seperator, :class => "right" %>
+            <%= b.label :col_seperator, class: "right" %>
           </div>
           <div class='one column'>
-            <%= b.input_field :col_seperator, :value => @student_import.import_options[:col_seperator], :class => "inline" %>
+            <%= b.input_field :col_seperator, value: @student_import.import_options[:col_seperator], class: "inline" %>
           </div>
           <div class='one column'></div>
         
           <div class='two columns'>
-            <%= b.label :quote_char, :class => "right" %>
+            <%= b.label :quote_char, class: "right" %>
           </div>
           <div class='one column'>
-            <%= b.input_field :quote_char, :value => @student_import.import_options[:quote_char], :class => "inline" %>
+            <%= b.input_field :quote_char, value: @student_import.import_options[:quote_char], class: "inline" %>
           </div>
           <div class='one column'></div>
 
           <div class='two columns'>
-            <%= b.label :headers_on_first_line, :class => "right" %>
+            <%= b.label :headers_on_first_line, class: "right" %>
           </div>
           <div class='one column'>
-            <%= b.check_box :headers_on_first_line, :checked => (@student_import.import_options[:headers_on_first_line].to_s == "1"), :class => "inline" %>
+            <%= b.check_box :headers_on_first_line, checked: (@student_import.import_options[:headers_on_first_line].to_s == "1"), class: "inline" %>
           </div>
           <div class='one column'></div>
 
@@ -51,6 +51,6 @@
       <% end %>
     </li>
   </ul>
-  <%= link_to "Cancel", (@student_import.new_record? ? course_term_import_student_imports_path(current_course, current_term) : course_term_import_student_import_path(current_course, current_term, @student_import)), :class => "secondary button" %>
-  <%= f.submit "Save", :class => "button" %>
+  <%= link_to "Cancel", (@student_import.new_record? ? course_term_import_student_imports_path(current_course, current_term) : course_term_import_student_import_path(current_course, current_term, @student_import)), class: "secondary button" %>
+  <%= f.submit "Save", class: "button" %>
 <% end %>

@@ -2,13 +2,13 @@
 
 <% sidebar do %>
   <div>
-  <%= link_to "Add student", course_term_tutorial_group_new_student_registration_path(current_course, current_term, @tutorial_group), :class => "small button twelve columns" %>
+  <%= link_to "Add student", course_term_tutorial_group_new_student_registration_path(current_course, current_term, @tutorial_group), class: "small button twelve columns" %>
 
-  <%= link_to set_tutor_label, course_term_tutorial_group_new_tutor_registration_path(current_course, current_term, @tutorial_group), :class => "small button twelve columns" %>
+  <%= link_to set_tutor_label, course_term_tutorial_group_new_tutor_registration_path(current_course, current_term, @tutorial_group), class: "small button twelve columns" %>
 
-  <%= link_to "Edit", edit_course_term_tutorial_group_path(current_course, current_term, @tutorial_group), :class => "small button twelve columns" %>
+  <%= link_to "Edit", edit_course_term_tutorial_group_path(current_course, current_term, @tutorial_group), class: "small button twelve columns" %>
 
-  <%= link_to "Delete", course_term_tutorial_group_path(current_course, current_term, @tutorial_group), :class => "small alert button twelve columns", :method => :delete, :confirm => "Are you sure?" %>
+  <%= link_to "Delete", course_term_tutorial_group_path(current_course, current_term, @tutorial_group), class: "small alert button twelve columns", method: :delete, confirm: "Are you sure?" %>
   </div>
 <% end %>
 
@@ -34,7 +34,7 @@
           <td><%= student.forename %></td>
           <td><%= student.surname %></td>
           <td><%= student.matriculum_number %></td>
-          <td><%= 3 %></td>
+          <td><%= student.submissions_for_term(current_term).count %></td>
           <td class='right-aligned'><div class='tiny button'>SOME</div><div class='tiny alert button'>BUTTONS</div></td>
         </tr>
         <% end %>
@@ -42,7 +42,7 @@
     </table>
   </li>
   <li id='submissionsTab'>
-    <p>No submissions present.</p>
+    <%= render "submissions/submissions_list", submissions: @submissions %>
   </li>
   <li id='descriptionTab'>
     <% if @tutorial_group.description? %>

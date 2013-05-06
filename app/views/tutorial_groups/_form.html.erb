@@ -1,7 +1,7 @@
-<%= simple_form_for [current_course, current_term, @tutorial_group], :html => {:class => "custom"} do |f| %>
+<%= simple_form_for [current_course, current_term, @tutorial_group], html: {class: "custom"} do |f| %>
   <%= f.input :title %>
-  <%= f.input :description %>
+  <%= f.input :description, input_html: { rows: 3 } %>
 
-  <%= link_to "Cancel", (@tutorial_group.new_record? ? course_term_path(current_course, current_term) : course_term_term_registrations_path(current_course, current_term, @tutorial_group)), :class => "secondary button" %>
-  <%= f.submit :class => "button"%>
+  <%= link_to "Cancel", (@tutorial_group.new_record? ? course_term_path(current_course, current_term) : course_term_term_registrations_path(current_course, current_term, @tutorial_group)), class: "secondary button" %>
+  <%= f.submit class: "button"%>
 <% end %>

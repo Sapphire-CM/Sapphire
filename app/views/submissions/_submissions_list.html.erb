@@ -1,0 +1,44 @@
+<% if submissions.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Exercise</th>
+        <th>Submitted at</th>
+        <th>Evaluation Result</th>
+        <th>Evaluated at</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% submissions.each do |submission| %>
+      <tr>
+        <td><%= submission.student.fullname %> (<%= submission.student.matriculum_number %>)</td>
+        <td><%= submission.exercise.title %></td>
+        <td><%= l submission.submitted_at, format: :long %></td>
+        <td>
+          <% if submission.submission_evaluation.present? %>
+            <%= pluralize submission.submission_evaluation.evaluation_result, "point" %>
+          <% else %>
+          <em>Not evaluated yet</em>
+              
+          <% end %>
+        </td>
+        <td>
+          <% if submission.submission_evaluation.present? %>
+            <%= l submission.submission_evaluation.evaluated_at, format: :long %>
+          <% else %>
+            <em>Not evaluated yet</em>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to "Show", course_term_submission_path(current_course, current_term, submission), class: "small button" %>
+          <%= link_to "Evaluate", course_term_submission_evaluation_path(current_course, current_term, submission), class: "small button" %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No submissions present.</p>
+<% end %>

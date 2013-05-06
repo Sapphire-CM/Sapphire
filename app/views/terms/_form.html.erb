@@ -1,7 +1,8 @@
 <%= simple_form_for [@course, @term] do |f| %>
   <%= f.input :title %>
-  <%= f.input :course_id, :as => :hidden %>
-  
-  <%= link_to "Cancel", (@term.new_record? ? course_path(@course) : course_term_path(@course, @term)), :class => "secondary button" %>
-  <%= f.submit :class => "button" %>
+  <%= f.input :description, input_html: { rows: 3 } %>
+  <%= f.input :course_id, as: :hidden %>
+
+  <%= link_to "Cancel", (@term.new_record? ? course_path(@course) : course_term_path(@course, @term)), class: "secondary button" %>
+  <%= f.submit class: "button" %>
 <% end %>

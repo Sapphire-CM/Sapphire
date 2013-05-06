@@ -18,9 +18,9 @@
         <td><%= student_import.created_at %></td>
         <td><%= student_import.status %></td>
         <td>
-          <%= link_to "View", course_term_import_student_import_path(current_course, current_term, student_import), :class => 'button tiny' %>
-          <%#= link_to "Edit", edit_import_student_import_path(student_import), :class => 'button tiny' %>
-          <%#= link_to "Delete", import_student_import_path(student_import), :method => :delete, :class => "button tiny alert" %>
+          <%= link_to "View", course_term_import_student_import_path(current_course, current_term, student_import), class: 'button tiny' %>
+          <%#= link_to "Edit", edit_import_student_import_path(student_import), class: 'button tiny' %>
+          <%#= link_to "Delete", import_student_import_path(student_import), method: :delete, class: "button tiny alert" %>
         </td>
       </tr>
     <% end %>
@@ -28,5 +28,5 @@
 </table>
 
 <p>
-  <%#= link_to "New Student Import", new_import_student_import_path, :class => "button" %>
+  <%#= link_to "New Student Import", new_import_student_import_path, class: "button" %>
 </p>

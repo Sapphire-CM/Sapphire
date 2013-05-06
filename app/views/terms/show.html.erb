@@ -1,11 +1,9 @@
 <% title course_term_title(current_course, current_term) %>
 
 <% sidebar do %>
-  <%= link_to set_lecturer_label, course_term_new_lecturer_registration_path(current_course, current_term), :class => "small button twelve columns" %>
-
-  <%= link_to "Edit", edit_course_term_path(current_course, current_term), :class => "small button twelve columns" %>
-
-  <%= link_to "Delete", course_term_path(current_course, current_term), :method => :delete, :confirm => "Are you sure?", :class => "small alert button twelve columns" %>
+  <%= link_to set_lecturer_label, course_term_new_lecturer_registration_path(current_course, current_term), class: "small button twelve columns" %>
+  <%= link_to "Edit", edit_course_term_path(current_course, current_term), class: "small button twelve columns" %>
+  <%= link_to "Delete", course_term_path(current_course, current_term), method: :delete, confirm: "Are you sure?", class: "small alert button twelve columns" %>
 <% end %>
 
 <dl class='tabs'>
@@ -38,15 +36,15 @@
           </tr>
         </thead>
         <tbody>
-          <%  @tutorial_groups.each do |tutorial_group| %>
+          <% @tutorial_groups.each do |tutorial_group| %>
             <tr>
               <td><%= tutorial_group.title %></td>
               <td><%= tutor_name tutorial_group.tutor %></td>
               <td><%= tutorial_group.students.count %></td>
               <td>
-                <%= link_to "View", course_term_tutorial_group_path(current_course, current_term, tutorial_group), :class => "small button" %>
-                <%= link_to "Edit", edit_course_term_tutorial_group_path(current_course, current_term, tutorial_group), :class => "small button" %>
-                <%= link_to "Delete", course_term_tutorial_group_path(current_course, current_term, tutorial_group), :method => :delete, :confirm => "Are you sure?", :class => "small alert button" %>
+                <%= link_to "View", course_term_tutorial_group_path(current_course, current_term, tutorial_group), class: "small button" %>
+                <%= link_to "Edit", edit_course_term_tutorial_group_path(current_course, current_term, tutorial_group), class: "small button" %>
+                <%= link_to "Delete", course_term_tutorial_group_path(current_course, current_term, tutorial_group), method: :delete, confirm: "Are you sure?", class: "small alert button" %>
               </td>
             </tr>
           <% end %>
@@ -54,7 +52,7 @@
       </table>
     <% else %>
       <p>No tutorial groups present.</p>
-      <%= link_to "Import Students", new_course_term_import_student_import_path(current_course, current_term), :class => 'small button' %>
+      <%= link_to "Import Students", new_course_term_import_student_import_path(current_course, current_term), class: 'small button' %>
     <% end %>
   </li>
   <li id='exercisesTab'>
@@ -65,6 +63,7 @@
           <tr>
             <th>Title</th>
             <th>RatingGroups</th>
+            <th>Submissions</th>
             <th></th>
           </tr>
         </thead>
@@ -73,10 +72,12 @@
             <tr>
               <td><%= exercise.title %></td>
               <td><%= exercise.rating_groups.count %></td>
+              <td><%= exercise.submissions.count %></td>
+              
               <td class='right-aligned'>
-                <%= link_to "View", course_term_exercise_path(current_course, current_term, exercise), :class => "tiny button" %>
-                <%= link_to "Edit", edit_course_term_exercise_path(current_course, current_term, exercise), :class => "tiny button" %>
-                <%= link_to "Delete", course_term_exercise_path(current_course, current_term, exercise), :class => "tiny alert button", :method => :delete, :confirm => "Are you sure?" %>
+                <%= link_to "View", course_term_exercise_path(current_course, current_term, exercise), class: "tiny button" %>
+                <%= link_to "Edit", edit_course_term_exercise_path(current_course, current_term, exercise), class: "tiny button" %>
+                <%= link_to "Delete", course_term_exercise_path(current_course, current_term, exercise), class: "tiny alert button", method: :delete, confirm: "Are you sure?" %>
               </td>
             </tr>
           <% end %>
@@ -87,7 +88,7 @@
     <% end %>
 
     <p>
-      <%= link_to 'New Exercise', new_course_term_exercise_path(current_course, current_term), :class => "small button"  %>
+      <%= link_to 'New Exercise', new_course_term_exercise_path(current_course, current_term), class: "small button"  %>
     </p>
   </li>
 

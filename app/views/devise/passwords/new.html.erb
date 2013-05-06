@@ -1,10 +1,10 @@
 <% title "Forgot your password?" %>
 
-<%= simple_form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
+<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :email, :required => true %>
+    <%= f.input :email, required: true %>
   </div>
 
   <div class="form-actions">

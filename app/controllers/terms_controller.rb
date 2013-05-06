@@ -8,7 +8,7 @@ class TermsController < TermResourceController
     @exercises = @term.exercises
 
     if @term.lecturer.blank?
-      render :alert => 'You have not set a lecturer yet!'
+      render alert: 'You have not set a lecturer yet!'
     end
   end
 
@@ -20,7 +20,7 @@ class TermsController < TermResourceController
     @term = @course.terms.new(params[:term])
 
     if @term.save
-      redirect_to course_term_path(@course, @term), :notice => "Term was successfully created."
+      redirect_to course_term_path(@course, @term), notice: "Term was successfully created."
     else
       render :new
     end
@@ -32,7 +32,7 @@ class TermsController < TermResourceController
 
   def update
     if @term.update_attributes(params[:term])
-      redirect_to course_term_path(@course, @term), :notice => "Term was successfully updated."
+      redirect_to course_term_path(@course, @term), notice: "Term was successfully updated."
     else
       render :edit
     end
@@ -40,7 +40,7 @@ class TermsController < TermResourceController
 
   def destroy
     @term.destroy
-    redirect_to course_path(@course), :notice => "Term was successfully deleted."
+    redirect_to course_path(@course), notice: "Term was successfully deleted."
   end
 
   def new_lecturer_registration

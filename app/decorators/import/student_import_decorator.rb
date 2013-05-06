@@ -12,14 +12,14 @@ class Import::StudentImportDecorator < Draper::Decorator
   end
 
   def created_at
-    h.localize model.created_at, :format => :long
+    h.localize model.created_at, format: :long
   end
 
   def students_count
     if model.imported?
       200
     else
-      h.content_tag :span, "?", :class => "grey"
+      h.content_tag :span, "?", class: "grey"
     end
   end
 
@@ -28,7 +28,7 @@ class Import::StudentImportDecorator < Draper::Decorator
 
     mapping = model.import_mapping
 
-    h.render "import/student_imports/mapping_table", :mapping => mapping, :column_count => values.first.length, :values => values, :importable_attributes => model.class::IMPORTABLE_ATTRIBUTES, :student_import => model
+    h.render "import/student_imports/mapping_table", mapping: mapping, column_count: values.first.length, values: values, importable_attributes: model.class::IMPORTABLE_ATTRIBUTES, student_import: model
   end
 
   # Accessing Helpers
@@ -57,6 +57,6 @@ class Import::StudentImportDecorator < Draper::Decorator
   #
   #   def created_at
   #     h.content_tag :span, attributes["created_at"].strftime("%a %m/%d/%y"),
-  #                   :class => 'timestamp'
+  #                   class: 'timestamp'
   #   end
 end

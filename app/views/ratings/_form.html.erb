@@ -1,14 +1,19 @@
-<%= simple_form_for @rating, url: course_term_exercise_rating_group_ratings_path(current_course, current_term, @exercise, @rating_group, @rating) do |f| %>
+<%= simple_form_for @rating, url: course_term_exercise_rating_group_ratings_path(current_course, current_term, @exercise, @rating_group, @rating), html: {id: "rating_form"} do |f| %>
   <%= f.input :title %>
   <%= f.input :description, input_html: { rows: 3 } %>
   <%= f.input :type,
     label: "Type",
-    collection: [['Yes/No Value',       BinaryNumberRating.name],
-                 ['Yes/No Percentage',  BinaryPercentRating.name],
-                 ['Min/Max Value',      ValueNumberRating.name],
-                 ['Min/Max Percentage', ValuePercentRating.name]],
-    as: :radio_buttons,
-    item_wrapper_class: 'inline' %>
+    collection: ratings_form_collection,
+    as: :select,
+    item_wrapper_class: 'inline',
+    include_blank: false
+    %>
+
+    <div class='rating_value_fields'>
+      <%= f.input :value %>
+      <%= f.input :min_value %>
+      <%= f.input :max_value %>
+    </div>
 
   <%= link_to "Cancel", course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), class: "secondary button" %>
   <%= f.submit class: "button" %>

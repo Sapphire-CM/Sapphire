@@ -20,7 +20,7 @@ class RatingsController < TermResourceController
       raise
     end
 
-    @rating = params[:rating][:type].constantize.new(params[:rating].except(:type))
+    @rating = Rating.new(params[:rating])
     @rating.rating_group = @rating_group
 
     if @rating.save

@@ -6,7 +6,7 @@ class Rating < ActiveRecord::Base
 
   validates_presence_of :title, :type
 
-  attr_accessible :title, :description, :rating_group
+  attr_accessible :title, :description, :rating_group, :value, :min_value, :max_value, :type
 
   def initialize(*args)
     unless args[0] == false

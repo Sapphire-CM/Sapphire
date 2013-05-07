@@ -1,4 +1,4 @@
-<%= simple_form_for @rating, url: course_term_exercise_rating_group_ratings_path(current_course, current_term, @exercise, @rating_group, @rating), html: {id: "rating_form"} do |f| %>
+<%= simple_form_for @rating,:as => :rating, url: course_term_exercise_rating_group_rating_path(current_course, current_term, @rating.exercise, @rating.rating_group, @rating), html: {id: "rating_form"} do |f| %>
   <%= f.input :title %>
   <%= f.input :description, input_html: { rows: 3 } %>
   <%= f.input :type,

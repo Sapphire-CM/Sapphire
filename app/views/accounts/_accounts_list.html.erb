@@ -2,16 +2,18 @@
   <%= form_tag search_path, method: :get do |f| %>
 
   <div class='row'>
-    <div class='eleven columns'><%= search_field_tag :q, params[:q] %></div>
-    <div class='one column'>
-      <%= submit_tag "search!", class: "tiny button" %>
+    <div class='large-11 columns'>
+      <%= search_field_tag :q, params[:q] %>
+    </div>
+    <div class='large-1 columns'>
+      <%= submit_tag "search!", class: "small button" %>
     </div>
   </div>
   <% end %>
 </p>
 
 <% if @accounts.any? %>
-  <table class='twelve'>
+  <table class='large-12'>
     <thead>
       <th>Forename</th>
       <th>Surname</th>

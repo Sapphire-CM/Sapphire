@@ -1,7 +1,11 @@
+accounts = Account.create([
+  { email: 'thomas.kriechbaumer@student.tugraz.at', forename: 'Thomas', surname: 'Kriechbaumer', password: '123456', password_confirmation: '123456'},
+  { email: 'matthias.link@student.tugraz.at', forename: 'Matthias', surname: 'Link', password: '654321', password_confirmation: '654321'} ])
+
 courses = Course.create([
   { title: 'INM' },
   { title: 'HCI' },
-  { title: 'IAWEB' }])
+  { title: 'IAWEB' } ])
 
 terms = Term.create([
   { title: 'WS 2013', course: courses[0] },

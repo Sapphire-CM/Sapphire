@@ -5,69 +5,76 @@
   <%= link_to "Delete", course_term_exercise_path(current_course, current_term, @exercise), method: :delete, class: "small alert button", confirm: "Are you sure?" %>
 <% end %>
 
-<dl class='tabs'>
-  <dd class='active'><a href='#ratinggroups'>RatingGroups</a></dd>
-  <dd><a href='#evaluations'>Evaluations</a></dd>
-  <dd><a href='#submissions'>Submissions</a></dd>
-  <dd><a href='#description'>Description</a></dd>
-</dl>
-
-<ul class='tabs-content'>
-  <li class='active' id='ratinggroupsTab'>
-
-    <% if @exercise.rating_groups.any? %>
-      <% @exercise.rating_groups.each do |rating_group| %>
-        <div>
+<div class="section-container tabs" data-section="tabs">
+  <section>
+    <p class="title" data-section-title><a href="#">Rating Groups</a></p>
+    <div class="content" data-section-content>
+      <% if @exercise.rating_groups.any? %>
+        <% @exercise.rating_groups.each do |rating_group| %>
           <div>
-            <h3><%= link_to rating_group_full_title(rating_group), course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group) %></h3>
-          </div>
+            <div>
+              <h3><%= link_to rating_group_full_title(rating_group), course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group) %></h3>
+            </div>
 
-          <% if rating_group.ratings.any? %>
-            <table class='eight'>
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th class='four'>Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% rating_group.ratings.each do |rating| %>
+            <% if rating_group.ratings.any? %>
+              <table class='large-12'>
+                <thead>
                   <tr>
-                    <td><%= link_to_rating rating.title, rating %></td>
-
-                    <td class='right-aligned'>
-                      <%= rating_points_description rating %>
-                    </td>
+                    <th class='large-10'>Title</th>
+                    <th class='large-2 columns'>Value</th>
                   </tr>
-                <% end %>
-              </tbody>
-            </table>
-          <% else %>
-            <p>There are no ratings present.</p>
-          <% end %>
-        </div>
+                </thead>
+                <tbody>
+                  <% rating_group.ratings.each do |rating| %>
+                    <tr>
+                      <td><%= link_to_rating rating.title, rating %></td>
+
+                      <td class='right-aligned'>
+                        <%= rating_points_description rating %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <% else %>
+              <p>No ratings present.</p>
+            <% end %>
+          </div>
+        <% end %>
+
+
+      <% else %>
+        <p>No rating groups present.</p>
       <% end %>
 
+      <p>
+        <%= link_to "Add Rating Group", new_course_term_exercise_rating_group_path(current_course, current_term, @exercise), class: "small button" %>
+      </p>
+    </div>
+  </section>
 
-    <% else %>
-      <p>No RatingGroups present.</p>
-    <% end %>
+  <section>
+    <p class="title" data-section-title><a href="#">Evaluations</a></p>
+    <div class="content" data-section-content>
+      <p>No evaluations present.</p>
+    </div>
+  </section>
 
-    <p>
-      <%= link_to "Add RatingGroup", new_course_term_exercise_rating_group_path(current_course, current_term, @exercise), class: "small button" %>
-    </p>
+  <section>
+    <p class="title" data-section-title><a href="#">Submissions</a></p>
+    <div class="content" data-section-content>
+      <%= render "submissions/submissions_list", submissions: @exercise.submissions %>
+    </div>
+  </section>
 
-  </li>
-
-  <li id='evaluationsTab'>
-    <p>No Evaluations present.</p>
-  </li>
-
-  <li id='submissionsTab'>
-    <%= render "submissions/submissions_list", submissions: @exercise.submissions %>
-  </li>
-
-  <li id='descriptionTab'>
-    <p><%= @exercise.description %></p>
-  </li>
-</ul>
+  <section>
+    <p class="title" data-section-title><a href="#">Description</a></p>
+    <div class="content" data-section-content>
+      <% if @exercise.description? %>
+        <%= simple_format @exercise.description %>
+      <% else %>
+        <p>No description present.</p>
+      <% end %>
+    </div>
+  </section>
+</div>

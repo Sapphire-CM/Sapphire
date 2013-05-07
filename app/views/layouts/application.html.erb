@@ -6,33 +6,34 @@
 <!--[if (gte IE 9)|!(IE)]><!--> <html lang="en"> <!--<![endif]-->
 <head>
 	<meta charset="utf-8" />
-	
+
 	<!-- Uncomment to make IE8 render like IE7 -->
 	<!-- <meta http-equiv="X-UA-Compatible" content="IE=7" /> -->
-	
+
 	<!-- Set the viewport width to device width for mobile -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	
+
 	<title>Sapphire - <%= content_for?(:title) ? yield(:title) : "Untitled" %></title>
-  
+
 	<!-- Included CSS Files -->
 	<%= stylesheet_link_tag    "application" %>
-	
+
 	<!-- Included JS Files  -->
 	<%= javascript_include_tag "application" %>
-  
+
+  <!-- Included Modernizr Files  -->
+  <%= javascript_include_tag "vendor/custom.modernizr" %>
+
   <%= csrf_meta_tags %>
 </head>
 <body>
   <%= render "navigation" %>
-  
+
   <%= render "flashes" if flash.any? %>
 
-  <!-- <p>Some breadcrumbs > would be nice > if term_context? holds</p> -->
-  
   <% if @show_title %>
   <div class='row'>
-    <div class='twelve columns'>
+    <div class='large-12'>
       <h1>
         <%= yield(:title) %>
         <% if content_for(:subtitle) %>
@@ -43,24 +44,24 @@
     </div>
   </div>
   <% end %>
-  
+
   <div class='row'>
     <% if content_for? :sidebar %>
-      <div class='nine columns'>
+      <div class='large-9 columns'>
         <%= yield %>
       </div>
-      <div class='three columns'>
+      <div class='large-3 columns'>
         <%= yield :sidebar %>
       </div>
     <% else %>
-      <div class='column twelve'>
+      <div class='large-12'>
         <%= yield %>
       </div>
     <% end %>
   </div>
-  
+
   <footer class='row'>
-    <div class='twelve columns'>
+    <div class='large-12'>
       Sapphire &copy; 2012-<%= Date.today.strftime("%Y") %> - proudly presented by IICM of TUGraz
     </div>
   </footer>

@@ -12,43 +12,52 @@
   </div>
 <% end %>
 
-<dl class='tabs'>
-  <dd class='active'><a href='#students'>Students</a></dd>
-  <dd><a href='#submissions'>Submissions</a></dd>
-  <dd><a href='#description'>Description</a></dd>
-</dl>
+<div class="section-container tabs" data-section="tabs">
+    <section>
+      <p class="title" data-section-title><a href="#">Students</a></p>
+      <div class="content" data-section-content>
+        <table class='large-12'>
+          <thead>
+            <th>Forename</th>
+            <th>Surname</th>
+            <th>Matriculum Number</th>
+            <th>Submissions</th>
+            <th></th>
+          </thead>
+          <tbody>
+            <% @tutorial_group.students.each do |student|  %>
+            <tr>
+              <td><%= student.forename %></td>
+              <td><%= student.surname %></td>
+              <td><%= student.matriculum_number %></td>
+              <td><%= student.submissions_for_term(current_term).count %></td>
 
-<ul class='tabs-content'>
-  <li class='active' id='studentsTab'>
-    <table class='twelve'>
-      <thead>
-        <th>Forename</th>
-        <th>Surname</th>
-        <th>Matriculum Number</th>
-        <th>Submissions</th>
-        <th></th>
-      </thead>
-      <tbody>
-        <% @tutorial_group.students.each do |student|  %>
-        <tr>
-          <td><%= student.forename %></td>
-          <td><%= student.surname %></td>
-          <td><%= student.matriculum_number %></td>
-          <td><%= student.submissions_for_term(current_term).count %></td>
-          <td class='right-aligned'><div class='tiny button'>SOME</div><div class='tiny alert button'>BUTTONS</div></td>
-        </tr>
+              <td class='right-aligned'>
+                <a href='#' class='tiny button'>SOME</a>
+                <a href='#' class='tiny alert button'>BUTTONS</a>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <p class="title" data-section-title><a href="#">Submissions</a></p>
+      <div class="content" data-section-content>
+        <%= render "submissions/submissions_list", submissions: @submissions %>
+      </div>
+    </section>
+
+    <section>
+      <p class="title" data-section-title><a href="#">Description</a></p>
+      <div class="content" data-section-content>
+        <% if @tutorial_group.description? %>
+          <%= simple_format @tutorial_group.description %>
+        <% else %>
+          <p>No description present.</p>
         <% end %>
-      </tbody>
-    </table>
-  </li>
-  <li id='submissionsTab'>
-    <%= render "submissions/submissions_list", submissions: @submissions %>
-  </li>
-  <li id='descriptionTab'>
-    <% if @tutorial_group.description? %>
-      <%= simple_format @tutorial_group.description %>
-    <% else %>
-      <p>No description present.</p>
-    <% end %>
-  </li>
-</ul>
+      </div>
+    </section>
+</div>

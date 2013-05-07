@@ -34,6 +34,8 @@ module LayoutHelper
       classes << "success"
     elsif key == :error || key == :alert
       classes << "alert"
+    elsif key == :secondary
+      classes << "secondary"
     end
 
     classes.join(" ")

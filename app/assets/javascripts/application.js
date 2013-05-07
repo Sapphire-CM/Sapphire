@@ -18,3 +18,5 @@
 //= require foundation
 //= require vendor
 //= require_tree .
+
+$(function(){ $(document).foundation(); });

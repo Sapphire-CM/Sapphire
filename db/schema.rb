@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130502185148) do
+ActiveRecord::Schema.define(:version => 20130508090745) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -163,7 +163,7 @@ ActiveRecord::Schema.define(:version => 20130502185148) do
     t.integer  "course_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
-    t.string   "description"
+    t.text     "description"
   end
 
   add_index "terms", ["course_id"], :name => "index_terms_on_course_id"

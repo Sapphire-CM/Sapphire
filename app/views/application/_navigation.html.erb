@@ -1,31 +1,33 @@
-<nav class='top-bar'>
-  <ul>
-    <li class='name'>
-      <h1><%= link_to "Sapphire", root_path %></h1>
-    </li>
-    <li class='toggle-topbar'>
-      <a href='#'></a>
-    </li>
-  </ul>
+<div class='sticky'>
+  <nav class='top-bar'>
+    <ul class='title-area'>
+      <li class='name'>
+        <h1><%= link_to "Sapphire", root_path %></h1>
+      </li>
+      <li class='toggle-topbar menu'>
+        <a href='#'></a>
+      </li>
+    </ul>
 
-  <section>
-    <% if account_signed_in? %>
-      <% if term_context? %>
-        <%= render "term_context_navigation" %>
+    <section class='top-bar-section'>
+      <% if account_signed_in? %>
+        <% if term_context? %>
+          <%= render "term_context_navigation" %>
+        <% else %>
+          <%= render "no_context_navigation" %>
+        <% end %>
       <% else %>
-        <%= render "no_context_navigation" %>
+        <%= render "public_navigation" %>
       <% end %>
-    <% else %>
-      <%= render "public_navigation" %>
-    <% end %>
-  </section>
-  
-  <% if account_signed_in? %>
-    <section>
-      <ul class='right'>
-        <li class='divider'></li>
-        <li><%= link_to current_account.email, edit_account_registration_path %></li>
-      </ul>
     </section>
-  <% end %>
-</nav>
+
+    <% if account_signed_in? %>
+      <section class='top-bar-section'>
+        <ul class='right'>
+          <li class='divider'></li>
+          <li><%= link_to current_account.email, edit_account_registration_path %></li>
+        </ul>
+      </section>
+    <% end %>
+  </nav>
+</div>

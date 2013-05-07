@@ -42,7 +42,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 
   gem 'compass-rails'
-  gem 'zurb-foundation', '< 4.0'
+  gem 'zurb-foundation', '>= 4.0'
   gem 'foundation-icons-sass-rails'
 end
 

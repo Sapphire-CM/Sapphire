@@ -17,7 +17,7 @@ class RatingsController < TermResourceController
     unless (params[:rating] && params[:rating][:type]) || Object.const_defined?(params[:rating][:type])
       @rating = @rating_group.ratings.new(false)
       render :new, alert: 'Invalid type!'
-      raise
+      return
     end
 
     @rating = Rating.new(params[:rating])

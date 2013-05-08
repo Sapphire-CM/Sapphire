@@ -5,10 +5,6 @@ class RatingGroupsController < TermResourceController
     @rating_group = @exercise.rating_groups.find(params[:id])
   end
 
-  def new
-    @rating_group = @exercise.rating_groups.new
-  end
-
   def edit
     @rating_group = @exercise.rating_groups.find(params[:id])
   end

@@ -58,6 +58,11 @@ is_using_default_values = (points_input, min_points_input, max_points_input) ->
   using_default_values 
 
 $ ->
+  $(document).on 'click', '#new_rating_group_modal a.secondary.button', (e)->
+    $('#new_rating_group_modal').foundation('reveal', 'close');
+    e.preventDefault();
+    e.stopPropagation();
+  
   $form = $('#rating_group_form')
   
   if $form.length > 0

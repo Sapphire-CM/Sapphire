@@ -50,6 +50,9 @@
       <p>
         <%= link_to "Add Rating Group", new_course_term_exercise_rating_group_path(current_course, current_term, @exercise), class: "small button" %>
       </p>
+
+      <p><a href="#" data-reveal-id="new_rating_group_modal" class='button'>SHOW ME</a></p>
+
     </div>
   </section>
 
@@ -77,4 +80,10 @@
       <% end %>
     </div>
   </section>
+</div>
+
+
+<div class='reveal-modal' id='new_rating_group_modal'>
+  <%= render 'rating_groups/form', { rating_group: RatingGroup.new } %>
+  <a class="close-reveal-modal">&#215;</a>
 </div>

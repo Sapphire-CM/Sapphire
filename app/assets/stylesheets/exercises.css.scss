@@ -1,0 +1,15 @@
+// Place all the styles related to the exercises controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#new_rating_group_modal {
+  margin-bottom: 0em;
+
+  form {
+    margin-bottom: 0;
+
+    .button {
+      margin-bottom: 0;
+    }
+  }
+}

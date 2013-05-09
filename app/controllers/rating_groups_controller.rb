@@ -13,7 +13,8 @@ class RatingGroupsController < TermResourceController
     @rating_group = @exercise.rating_groups.new(params[:rating_group])
 
     if @rating_group.save
-      redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), notice: "RatingGroup was successfully created."
+      render 'rating_group/index_entry', layout: '', rating_group: @rating_group
+      # redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), notice: "RatingGroup was successfully created."
     else
       render :new
     end

@@ -9,49 +9,19 @@
   <section>
     <p class="title" data-section-title><a href="#">Rating Groups</a></p>
     <div class="content" data-section-content>
-      <% if @exercise.rating_groups.any? %>
-        <% @exercise.rating_groups.each do |rating_group| %>
-          <div>
-            <div>
-              <h3><%= link_to rating_group_full_title(rating_group), course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group) %></h3>
-            </div>
-
-            <% if rating_group.ratings.any? %>
-              <table class='large-12'>
-                <thead>
-                  <tr>
-                    <th class='large-10'>Title</th>
-                    <th class='large-2 columns'>Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% rating_group.ratings.each do |rating| %>
-                    <tr>
-                      <td><%= link_to_rating rating.title, rating %></td>
-
-                      <td class='right-aligned'>
-                        <%= rating_points_description rating %>
-                      </td>
-                    </tr>
-                  <% end %>
-                </tbody>
-              </table>
-            <% else %>
-              <p>No ratings present.</p>
-            <% end %>
-          </div>
+      <div id='rating_group_index'>
+        <% if @exercise.rating_groups.any? %>
+          <% @exercise.rating_groups.each do |rating_group| %>
+            <%= render 'rating_groups/index_entry', rating_group: rating_group %>
+          <% end %>
+        <% else %>
+          <p id='rating_group_index_none'>No rating groups present.</p>
         <% end %>
-
-
-      <% else %>
-        <p>No rating groups present.</p>
-      <% end %>
+      </div>
 
       <p>
-        <%= link_to "Add Rating Group", new_course_term_exercise_rating_group_path(current_course, current_term, @exercise), class: "small button" %>
+        <a href="#" data-reveal-id="new_rating_group_modal" class='small button'>Add Rating Group</a>
       </p>
-
-      <p><a href="#" data-reveal-id="new_rating_group_modal" class='button'>SHOW ME</a></p>
 
     </div>
   </section>
@@ -83,7 +53,7 @@
 </div>
 
 
-<div class='reveal-modal' id='new_rating_group_modal'>
+<div id='new_rating_group_modal' class='reveal-modal small'>
   <h1 class="subheader">New Rating Group</h1>
   <%= render 'rating_groups/form', rating_group: RatingGroup.new %>
   <a class="close-reveal-modal">&#215;</a>

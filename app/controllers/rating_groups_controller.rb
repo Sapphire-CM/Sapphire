@@ -13,10 +13,12 @@ class RatingGroupsController < TermResourceController
     @rating_group = @exercise.rating_groups.new(params[:rating_group])
 
     if @rating_group.save
-      render partial: 'rating_groups/index_entry', locals: { rating_group: @rating_group}
+      render partial: 'rating_groups/index_entry', locals: { rating_group: @rating_group }
     else
+      render partial: 'rating_groups/form', locals: { rating_group: @rating_group }, status: 422
+
       #todo adapt to ajax
-      render :new
+      #render :new
     end
   end
 
@@ -24,10 +26,8 @@ class RatingGroupsController < TermResourceController
     @rating_group = @exercise.rating_groups.find(params[:id])
 
     if @rating_group.update_attributes(params[:rating_group])
-      #todo adapt to ajax
       redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), notice: "RatingGroup was successfully updated."
     else
-      #todo adapt to ajax
       render :edit
     end
   end

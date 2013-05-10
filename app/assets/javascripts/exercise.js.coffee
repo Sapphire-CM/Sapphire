@@ -11,9 +11,26 @@ $(document).ready ->
   $('body').append new_rating_group_modal
 
   $('#rating_group_form').bind 'ajax:success', (xhr, data, status) ->
-    $('#rating_group_form').text "Done."
+    $('#new_rating_group_modal_status').text 'Rating Group was successfully created.'
+
+    $('#rating_group_form').hide()
+    $('#new_rating_group_modal_status').show()
+
     $('#rating_group_index_none').remove
     $('#rating_group_index').append data
 
+    setTimeout(closeModal, 1500)
+
   $('#rating_group_form').bind 'ajax:error', (xhr, status, error) ->
-    $('#rating_group_form').text "Failed. Please try again later." + status + " " + error
+    $('#new_rating_group_modal_status').text "Failed. Please try again later." + status + " " + error
+
+    $('#rating_group_form').hide()
+    $('#new_rating_group_modal_status').show()
+
+  $('#new_rating_group_modal').bind 'opened', ->
+    $('#rating_group_form').show()
+    $('#new_rating_group_modal_status').hide()
+
+closeModal = ->
+    $('#new_rating_group_modal').foundation('reveal', 'close');
+

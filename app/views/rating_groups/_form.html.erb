@@ -5,7 +5,11 @@
       <%= f.input :title %>
       <%= f.input :global %>
       <%= f.input :points %>
-      <%= link_to_function "Change Pointrange", 'window.toggle_point_range_fields(this)', :id => "point_range_toggle_button" %>
+
+      <div>
+        <%= f.label 'Pointrange' %>
+        <%= link_to_function "Change ", 'window.toggle_point_range_fields(this)', :id => "point_range_toggle_button" %>
+      </div>
     </div>
   </div>
 

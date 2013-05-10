@@ -13,7 +13,7 @@ class RatingGroupsController < TermResourceController
     @rating_group = @exercise.rating_groups.new(params[:rating_group])
 
     if @rating_group.save
-      render partial: 'rating_groups/index_entry', formats: [:html], locals: { rating_group: @rating_group}
+      render partial: 'rating_groups/index_entry', locals: { rating_group: @rating_group}
     else
       #todo adapt to ajax
       render :new
@@ -36,7 +36,14 @@ class RatingGroupsController < TermResourceController
     @rating_group = @exercise.rating_groups.find(params[:id])
     @rating_group.destroy
 
-    redirect_to course_term_exercise_rating_groups_path(current_course, current_term, @exercise), notice: "RatingGroup was successfully deleted."
+    respond_to do |format|
+      format.js do
+        render nothing: true
+      end
+      format.html do
+        redirect_to course_term_exercise_rating_groups_path(current_course, current_term, @exercise), notice: "RatingGroup was successfully deleted."
+      end
+    end
   end
 
   private

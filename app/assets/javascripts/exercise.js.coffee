@@ -31,6 +31,15 @@ $(document).ready ->
     $('#rating_group_form').show()
     $('#new_rating_group_modal_status').hide()
 
+  $('.rating_group_index_remove').bind 'ajax:success', (e, data, xhr, status) ->
+    $(this).parents('.rating_group_index_entry').animate {height: '0'}, 750, 'swing', ->
+      $(this).remove()
+
+
+  $('.rating_group_index_remove').bind 'ajax:error', (e, data, xhr, status) ->
+    console.log "ERROR: ", arguments
+
+
 closeModal = ->
     $('#new_rating_group_modal').foundation('reveal', 'close');
 

@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
-$(document).ready ->
+$ ->
 
   # move the reveal modal to the bottom of the page
   # out of the grid-system
@@ -33,6 +33,7 @@ $(document).ready ->
     $('#rating_group_form').hide()
     new_form = $(xhr.responseText).attr('id', 'rating_group_form_error')
     $('#rating_group_form_error').replaceWith(new_form).show()
+    initRatingGroupForm()
 
 
 

@@ -3,13 +3,14 @@ class RatingGroup < ActiveRecord::Base
   has_many :ratings, dependent: :destroy
 
   validates_presence_of :title
+  validates_uniqueness_of :title, scope: :exercise_id
+
+  validate :min_max_points_range, :points_in_range
   validates_presence_of :points, unless: Proc.new { |rating_group|
     rating_group.global == true
   }
 
   attr_accessible :title, :description, :points, :exercise, :global, :enable_range_points, :min_points, :max_points
-
-  validate :min_max_points_range, :points_in_range
 
   after_initialize :points_min_max
 

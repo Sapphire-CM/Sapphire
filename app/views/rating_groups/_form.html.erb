@@ -1,5 +1,5 @@
 <% rating_group = @rating_group unless rating_group %>
-<%= simple_form_for [current_course, current_term, @exercise, rating_group], remote: true, html: {id: "rating_group_form"} do |f| %>
+<%= simple_form_for [current_course, current_term, @exercise, rating_group], remote: true, html: {id: "rating_group_form", class: 'form_new' } do |f| %>
   <div class='row'>
     <div class='large-12'>
       <%= f.input :title %>

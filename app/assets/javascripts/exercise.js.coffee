@@ -3,41 +3,55 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 $ ->
-  initNewModelRevealModal('#new_rating_group_modal')
+  initNewModelRevealModal('#rating_group_index_entries', '#new_rating_group_modal')
 
 
-initNewModelRevealModal = (id) ->
+initNewModelRevealModal = (id_index, id_modal) ->
   # move the reveal modal to the bottom of the page
   # out of the grid-system
-  $reveal_modal = $(id)
+  $reveal_modal = $(id_modal)
   $reveal_modal.remove()
   $('body').append $reveal_modal
 
 
-  $(id).on 'opened', ->
-    $('#rating_group_form').show()
-    $('#rating_group_form_error').hide()
-    $('#new_rating_group_modal_status').hide()
+
+  $(document).on 'click', '.index_entry_edit', ->
+    $(id_modal + ' .form_new').hide()
+    $(id_modal + ' .form_edit').show()
+    # $(id_modal).foundation('reveal', 'open');
+
+  $(document).on 'click', '.index_entry_new', ->
+    $(id_modal + ' .form_new').show()
+    $(id_modal + ' .form_edit').hide()
+
+  $(id_modal).on 'opened', ->
+    $(id_modal + ' .form_error').hide()
+    $(id_modal + ' .status').hide()
 
 
-  $(document).on 'ajax:success', '#rating_group_form, #rating_group_form_error', (xhr, data, status) ->
-    $('#new_rating_group_modal_status').text 'Rating Group was successfully created.'
 
-    $('#rating_group_form').hide()
-    $('#rating_group_form_error').hide()
-    $('#new_rating_group_modal_status').show()
+  $(document).on 'ajax:success', id_modal + ' form', (xhr, data, status) ->
+    $(id_modal + ' .form_new').hide()
+    $(id_modal + ' .form_edit').hide()
+    $(id_modal + ' .form_error').hide()
 
-    $('#rating_group_index_entries .index_entry_none').hide()
-    $('#rating_group_index_entries').append data
+    $(id_modal + ' .status').text 'Rating Group was successfully created.'
+    $(id_modal + ' .status').show()
+
+    $(id_index + ' .index_entry_none').hide()
+    $(id_index).append data
 
     setTimeout(->
-      $('#new_rating_group_modal').foundation('reveal', 'close');
+      $(id_modal).foundation('reveal', 'close');
     , 1250)
 
-  $(document).on 'ajax:error', '#rating_group_form, #rating_group_form_error', (e, xhr, status, error) ->
-    $('#rating_group_form').hide()
-    new_form = $(xhr.responseText).attr('id', 'rating_group_form_error')
-    $('#rating_group_form_error').replaceWith(new_form).show()
+  $(document).on 'ajax:error', id_modal + ' form', (e, xhr, status, error) ->
+    $(id_modal + ' .form_new').hide()
+    $(id_modal + ' .form_edit').hide()
+
+    new_form = $(xhr.responseText).removeClass('form_new form_edit').addClass('form_error')
+    $(id_modal + ' .form_error').replaceWith(new_form).show()
+
     initRatingGroupForm()
 
 
@@ -45,9 +59,7 @@ initNewModelRevealModal = (id) ->
   $(document).on 'ajax:success', '.index_entry_remove', (e, data, xhr, status) ->
     $(this).parents('.index_entry').animate {height: '0'}, 400, 'swing', ->
       $(this).remove()
-      $('#rating_group_index_entries .index_entry_none').show() if $('.index_entry').length == 0
-
+      $(id_index + ' .index_entry_none').show() if $('.index_entry').length == 0
 
   $(document).on 'ajax:error', '.index_entry_remove', (e, data, xhr, status) ->
     console.log "ERROR: index entry remove:", arguments
-

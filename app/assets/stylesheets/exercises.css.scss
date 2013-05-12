@@ -2,12 +2,12 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.rating_group_index_header {
+.index_entry_header {
   display: inline;
   margin-left: 0.2em;
 }
 
-.rating_group_index_edit, .rating_group_index_remove {
+.index_entry_edit, .index_entry_remove {
   position: relative;
   top: -0.125em;
 }

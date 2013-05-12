@@ -9,13 +9,15 @@
   <section>
     <p class="title" data-section-title><a href="#">Rating Groups</a></p>
     <div class="content" data-section-content>
-      <div id='rating_group_index'>
+      <div id='rating_group_index_entries'>
+        <p class='index_entry_none <%= 'hide' if @exercise.rating_groups.any? %>'>
+          No rating groups present.
+        </p>
+
         <% if @exercise.rating_groups.any? %>
           <% @exercise.rating_groups.each do |rating_group| %>
             <%= render 'rating_groups/index_entry', rating_group: rating_group %>
           <% end %>
-        <% else %>
-          <p id='rating_group_index_none'>No rating groups present.</p>
         <% end %>
       </div>
 

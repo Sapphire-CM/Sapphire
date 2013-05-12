@@ -16,9 +16,6 @@ class RatingGroupsController < TermResourceController
       render partial: 'rating_groups/index_entry', locals: { rating_group: @rating_group }
     else
       render partial: 'rating_groups/form', locals: { rating_group: @rating_group }, status: 422
-
-      #todo adapt to ajax
-      #render :new
     end
   end
 

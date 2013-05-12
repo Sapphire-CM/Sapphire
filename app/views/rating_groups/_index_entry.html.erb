@@ -1,10 +1,10 @@
-<div class='rating_group_index_entry'>
+<div class='index_entry'>
   <div>
-      <%= link_to raw("<i class='general foundicon-edit'></i>"), edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'rating_group_index_edit' %>
+      <%= link_to raw("<i class='general foundicon-edit'></i>"), edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_edit' %>
 
-      <%= link_to raw("<i class='general foundicon-remove'></i>"), course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'rating_group_index_remove', method: :delete, confirm: "Are you sure?", remote: true %>
+      <%= link_to raw("<i class='general foundicon-remove'></i>"), course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_remove', method: :delete, confirm: "Are you sure?", remote: true %>
 
-    <h3 class='rating_group_index_header'>
+    <h3 class='index_entry_header'>
       <%= link_to rating_group_full_title(rating_group), course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group) %>
     </h3>
   </div>

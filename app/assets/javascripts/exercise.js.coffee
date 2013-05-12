@@ -3,15 +3,18 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 $ ->
+  initNewModelRevealModal('#new_rating_group_modal')
 
+
+initNewModelRevealModal = (id) ->
   # move the reveal modal to the bottom of the page
   # out of the grid-system
-  new_rating_group_modal = $('#new_rating_group_modal')
-  new_rating_group_modal.remove()
-  $('body').append new_rating_group_modal
+  $reveal_modal = $(id)
+  $reveal_modal.remove()
+  $('body').append $reveal_modal
 
 
-  $('#new_rating_group_modal').on 'opened', ->
+  $(id).on 'opened', ->
     $('#rating_group_form').show()
     $('#rating_group_form_error').hide()
     $('#new_rating_group_modal_status').hide()
@@ -24,8 +27,8 @@ $ ->
     $('#rating_group_form_error').hide()
     $('#new_rating_group_modal_status').show()
 
-    $('#rating_group_index_none').remove()
-    $('#rating_group_index').append data
+    $('#rating_group_index_entries .index_entry_none').hide()
+    $('#rating_group_index_entries').append data
 
     setTimeout(->
       $('#new_rating_group_modal').foundation('reveal', 'close');
@@ -39,10 +42,12 @@ $ ->
 
 
 
-  $(document).on 'ajax:success', '.rating_group_index_remove', (e, data, xhr, status) ->
-    $(this).parents('.rating_group_index_entry').animate {height: '0'}, 500, 'swing', ->
+  $(document).on 'ajax:success', '.index_entry_remove', (e, data, xhr, status) ->
+    $(this).parents('.index_entry').animate {height: '0'}, 400, 'swing', ->
       $(this).remove()
+      $('#rating_group_index_entries .index_entry_none').show() if $('.index_entry').length == 0
 
-  $(document).on 'ajax:error', '.rating_group_index_remove', (e, data, xhr, status) ->
+
+  $(document).on 'ajax:error', '.index_entry_remove', (e, data, xhr, status) ->
     console.log "ERROR: index entry remove:", arguments
 

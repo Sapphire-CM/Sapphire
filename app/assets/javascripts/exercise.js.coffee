@@ -27,7 +27,9 @@ $ ->
     $('#rating_group_index_none').remove()
     $('#rating_group_index').append data
 
-    setTimeout(closeModal, 1250)
+    setTimeout(->
+      $('#new_rating_group_modal').foundation('reveal', 'close');
+    , 1250)
 
   $(document).on 'ajax:error', '#rating_group_form, #rating_group_form_error', (e, xhr, status, error) ->
     $('#rating_group_form').hide()
@@ -42,9 +44,5 @@ $ ->
       $(this).remove()
 
   $(document).on 'ajax:error', '.rating_group_index_remove', (e, data, xhr, status) ->
-    console.log "ERROR: ", arguments
-
-
-closeModal = ->
-    $('#new_rating_group_modal').foundation('reveal', 'close');
+    console.log "ERROR: index entry remove:", arguments
 

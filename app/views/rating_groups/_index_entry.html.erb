@@ -1,6 +1,6 @@
 <div class='index_entry'>
   <div>
-      <%= link_to raw("<i class='general foundicon-edit'></i>"), edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_edit' %>
+      <%= link_to raw("<i class='general foundicon-edit'></i>"), edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_edit', remote: true %>
 
       <%= link_to raw("<i class='general foundicon-remove'></i>"), course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_remove', method: :delete, confirm: "Are you sure?", remote: true %>
 

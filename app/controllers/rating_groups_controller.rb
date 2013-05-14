@@ -7,6 +7,8 @@ class RatingGroupsController < TermResourceController
 
   def edit
     @rating_group = @exercise.rating_groups.find(params[:id])
+
+    render partial: 'rating_groups/form', locals: { rating_group: @rating_group }
   end
 
   def create
@@ -23,9 +25,9 @@ class RatingGroupsController < TermResourceController
     @rating_group = @exercise.rating_groups.find(params[:id])
 
     if @rating_group.update_attributes(params[:rating_group])
-      redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), notice: "RatingGroup was successfully updated."
+      render partial: 'rating_groups/index_entry', locals: { rating_group: @rating_group }
     else
-      render :edit
+      render partial: 'rating_groups/form', locals: { rating_group: @rating_group }, status: 422
     end
   end
 

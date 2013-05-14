@@ -15,18 +15,22 @@ initNewModelRevealModal = (id_index, id_modal) ->
 
 
 
-  $(document).on 'click', '.index_entry_edit', ->
-    $(id_modal + ' .form_new').hide()
-    $(id_modal + ' .form_edit').show()
-    # $(id_modal).foundation('reveal', 'open');
+
 
   $(document).on 'click', '.index_entry_new', ->
     $(id_modal + ' .form_new').show()
     $(id_modal + ' .form_edit').hide()
-
-  $(id_modal).on 'opened', ->
     $(id_modal + ' .form_error').hide()
     $(id_modal + ' .status').hide()
+
+  $(document).on 'click', '.index_entry_edit', ->
+    $(id_modal + ' .form_new').hide()
+    $(id_modal + ' .form_edit').hide()
+    $(id_modal + ' .form_error').hide()
+    $(id_modal + ' .status').hide()
+    $(id_modal).data('entry', $(this).parents('.index_entry'))
+
+
 
 
 
@@ -35,11 +39,16 @@ initNewModelRevealModal = (id_index, id_modal) ->
     $(id_modal + ' .form_edit').hide()
     $(id_modal + ' .form_error').hide()
 
-    $(id_modal + ' .status').text 'Rating Group was successfully created.'
-    $(id_modal + ' .status').show()
+    if $(this).hasClass('form_new')
+      $(id_index + ' .index_entry_none').hide()
+      $(id_index).append data
+      action = 'created'
+    else
+      $(id_modal).data('entry').replaceWith(data)
+      action = 'updated'
 
-    $(id_index + ' .index_entry_none').hide()
-    $(id_index).append data
+    $(id_modal + ' .status').text 'Rating Group was successfully ' + action + '.'
+    $(id_modal + ' .status').show()
 
     setTimeout(->
       $(id_modal).foundation('reveal', 'close');
@@ -53,6 +62,27 @@ initNewModelRevealModal = (id_index, id_modal) ->
     $(id_modal + ' .form_error').replaceWith(new_form).show()
 
     initRatingGroupForm()
+
+
+
+
+
+  $(document).on 'ajax:success', '.index_entry_edit', (xhr, data, status) ->
+    $(id_modal + ' .form_new').hide()
+    $(id_modal + ' .form_error').hide()
+
+    edit_form = $(data).removeClass('form_new form_error').addClass('form_edit')
+    $(id_modal + ' .form_edit').replaceWith(edit_form).show()
+
+    initRatingGroupForm()
+
+    $(id_modal + ' .form_edit').show()
+    $(id_modal).foundation('reveal', 'open');
+
+  $(document).on 'ajax:error', '.index_entry_edit', (e, data, xhr, status) ->
+    console.log "ERROR: index entry edit:", arguments
+
+
 
 
 

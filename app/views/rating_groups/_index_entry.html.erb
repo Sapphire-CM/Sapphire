@@ -1,20 +1,24 @@
 <div class='index_entry'>
-  <div>
-      <%= link_to raw("<i class='general foundicon-edit'></i>"), edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_edit', remote: true %>
-
-      <%= link_to raw("<i class='general foundicon-remove'></i>"), course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_remove', method: :delete, confirm: "Are you sure?", remote: true %>
-
+  <div class='row'>
+    <div class='large-12 columns'>
     <h3 class='index_entry_header'>
       <%= link_to rating_group_full_title(rating_group), course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group) %>
     </h3>
+    <span class='index_entry_icons right-aligned'>
+    <%= link_to "<i class='general foundicon-edit'></i>".html_safe, edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_edit', remote: true %>
+
+    <%= link_to "<i class='general foundicon-remove'></i>".html_safe, course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_remove', method: :delete, confirm: "Are you sure?", remote: true %>
+    </span>  
+    </div>
   </div>
+
 
   <% if rating_group.ratings.any? %>
     <table class='large-12'>
       <thead>
         <tr>
           <th class='large-10'>Title</th>
-          <th class='large-2 columns'>Value</th>
+          <th class='large-2'>Value</th>
         </tr>
       </thead>
       <tbody>
@@ -27,6 +31,11 @@
             </td>
           </tr>
         <% end %>
+        <tr>
+          <td colspan='2' class='large-1 large-centered'>
+            <%= link_to "<i class='general-enclosed foundicon-plus'></i>".html_safe, '#' %>
+          </td>
+        </tr>
       </tbody>
     </table>
   <% else %>

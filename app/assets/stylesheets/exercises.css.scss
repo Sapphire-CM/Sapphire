@@ -7,9 +7,13 @@
   margin-left: 0.2em;
 }
 
-.index_entry_edit, .index_entry_remove {
-  position: relative;
-  top: -0.125em;
+.index_entry_icons {
+  padding:{
+    top: .6em;
+    right: .5em;
+  }
+  
+  float: right;
 }
 
 #new_rating_group_modal {

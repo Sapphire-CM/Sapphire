@@ -24,6 +24,8 @@ initNewModelRevealModal = (id_index, id_modal) ->
     $(id_modal + ' .status').hide()
     $(id_modal + ' .header_new').show()
     $(id_modal + ' .header_edit').hide()
+    $(id_modal).data('entry', undefined)
+    $(id_modal + ' .form_new')[0].reset()
 
   $(document).on 'click', '.index_entry_edit', ->
     $(id_modal + ' .form_new').hide()
@@ -43,13 +45,13 @@ initNewModelRevealModal = (id_index, id_modal) ->
     $(id_modal + ' .form_edit').hide()
     $(id_modal + ' .form_error').hide()
 
-    if $(this).hasClass('form_new')
+    if $(id_modal).data('entry')
+      $(id_modal).data('entry').replaceWith(data)
+      action = 'updated'
+    else
       $(id_index + ' .index_entry_none').hide()
       $(id_index).append data
       action = 'created'
-    else
-      $(id_modal).data('entry').replaceWith(data)
-      action = 'updated'
 
     $(id_modal + ' .status').text 'Successfully ' + action + '.'
     $(id_modal + ' .status').show()

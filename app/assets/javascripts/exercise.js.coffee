@@ -22,12 +22,16 @@ initNewModelRevealModal = (id_index, id_modal) ->
     $(id_modal + ' .form_edit').hide()
     $(id_modal + ' .form_error').hide()
     $(id_modal + ' .status').hide()
+    $(id_modal + ' .header_new').show()
+    $(id_modal + ' .header_edit').hide()
 
   $(document).on 'click', '.index_entry_edit', ->
     $(id_modal + ' .form_new').hide()
     $(id_modal + ' .form_edit').hide()
     $(id_modal + ' .form_error').hide()
     $(id_modal + ' .status').hide()
+    $(id_modal + ' .header_new').hide()
+    $(id_modal + ' .header_edit').show()
     $(id_modal).data('entry', $(this).parents('.index_entry'))
 
 
@@ -47,7 +51,7 @@ initNewModelRevealModal = (id_index, id_modal) ->
       $(id_modal).data('entry').replaceWith(data)
       action = 'updated'
 
-    $(id_modal + ' .status').text 'Rating Group was successfully ' + action + '.'
+    $(id_modal + ' .status').text 'Successfully ' + action + '.'
     $(id_modal + ' .status').show()
 
     setTimeout(->

@@ -20,13 +20,17 @@ namespace :deploy do
   shared_folders = ["public/assets"]
 
   task :start do
-    run "ruby -v && which ruby && ps -p $$"
+    run "ruby -v"
   end
 
   task :stop do ; end
 
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "touch #{File.join(current_path,'tmp','restart.txt')}"
+  end
+
+  task :seed do
+    run "cd #{current_release} && RAILS_ENV=#{rails_env} rake db:seed"
   end
 
   task :migrate do
@@ -94,3 +98,4 @@ end
 before "assets:precompile" do
   deploy.symlink_shared_folders
 end
+

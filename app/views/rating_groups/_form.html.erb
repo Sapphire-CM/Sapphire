@@ -1,4 +1,4 @@
-<%= simple_form_for [current_course, current_term, @exercise, @rating_group], remote: true, html: {id: "rating_group_form", class: 'form_new' } do |f| %>
+<%= simple_form_for [current_course, current_term, @exercise, @rating_group], remote: true, html: {id: "rating_group_form" } do |f| %>
   <div class='row'>
     <div class='large-12'>
       <%= f.input :title %>
@@ -7,7 +7,7 @@
 
       <div>
         <%= f.label 'Pointrange' %>
-        <%= link_to_function "Change ", 'window.toggle_point_range_fields(this)', :id => "point_range_toggle_button" %>
+        <%= link_to_function "Change ", 'toggle_point_range_fields(this)', :id => "point_range_toggle_button" %>
       </div>
     </div>
   </div>

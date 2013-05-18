@@ -5,29 +5,31 @@ class RatingGroupsController < TermResourceController
     @rating_group = @exercise.rating_groups.find(params[:id])
   end
 
-  def edit
-    @rating_group = @exercise.rating_groups.find(params[:id])
-
-    render partial: 'rating_groups/form', locals: { rating_group: @rating_group }
+  def new
+    @rating_group = @exercise.rating_groups.new
   end
 
   def create
     @rating_group = @exercise.rating_groups.new(params[:rating_group])
 
     if @rating_group.save
-      render partial: 'rating_groups/index_entry', locals: { rating_group: @rating_group }
+      render partial: 'rating_groups/insert_index_entry', locals: { rating_group: @rating_group }
     else
-      render partial: 'rating_groups/form', locals: { rating_group: @rating_group }, status: 422
+      render :new
     end
+  end
+
+  def edit
+    @rating_group = @exercise.rating_groups.find(params[:id])
   end
 
   def update
     @rating_group = @exercise.rating_groups.find(params[:id])
 
     if @rating_group.update_attributes(params[:rating_group])
-      render partial: 'rating_groups/index_entry', locals: { rating_group: @rating_group }
+      render partial: 'rating_groups/replace_index_entry', locals: { rating_group: @rating_group }
     else
-      render partial: 'rating_groups/form', locals: { rating_group: @rating_group }, status: 422
+      render :edit
     end
   end
 
@@ -37,7 +39,7 @@ class RatingGroupsController < TermResourceController
 
     respond_to do |format|
       format.js do
-        render nothing: true
+        render partial: 'rating_groups/remove_index_entry', locals: { rating_group: @rating_group }
       end
       format.html do
         redirect_to course_term_exercise_rating_groups_path(current_course, current_term, @exercise), notice: "RatingGroup was successfully deleted."

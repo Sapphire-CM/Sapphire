@@ -1,4 +1,4 @@
-<%= simple_form_for [current_course, current_term, @exercise, rating_group], remote: true, html: {id: "rating_group_form", class: 'form_new' } do |f| %>
+<%= simple_form_for [current_course, current_term, @exercise, @rating_group], remote: true, html: {id: "rating_group_form", class: 'form_new' } do |f| %>
   <div class='row'>
     <div class='large-12'>
       <%= f.input :title %>
@@ -30,8 +30,7 @@
   </div>
 
   <div class='row'>
-    <div class='large-12'>
-      <%= link_to "Cancel", (rating_group.new_record? ? course_term_exercise_rating_groups_path(current_course, current_term, @exercise) : course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group)), class: "secondary button" %>
+    <div class='large-12 large-centered columns text-center'>
       <%= f.submit class: "button" %>
     </div>
   </div>

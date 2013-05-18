@@ -1,0 +1,4 @@
+var html = "<%= escape_javascript render partial: 'index_entry', locals: { rating: @rating } %>";
+
+$("<%= "#rating_id_#{rating.id}" %>").replaceWith(html);
+$('#reveal_modal').foundation('reveal', 'close');

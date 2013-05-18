@@ -1,4 +1,4 @@
-<div class='index_entry' id="<%= "rating_group_id_#{rating_group.id}" %>">
+<div class='index_entry rating_group' id="<%= "rating_group_id_#{rating_group.id}" %>">
   <div class='row'>
     <div class='large-12 columns'>
     <h3 class='index_entry_header'>
@@ -22,37 +22,32 @@
     <p><%= rating_group.description %></p>
   </div>
 
+  <table class='large-12'>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Value</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="rating_index_entries">
+      <tr class="index_entry_none <%= 'hide' if rating_group.ratings.any? %>">
+        <td>No ratings present.</td>
+      </tr>
 
-  <% if rating_group.ratings.any? %>
-    <table class='large-12'>
-      <thead>
-        <tr>
-          <th class='large-10'>Title</th>
-          <th class='large-2'>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% rating_group.ratings.each do |rating| %>
-          <tr>
-            <td><%= link_to_rating rating.title, rating %></td>
+      <% rating_group.ratings.each do |rating| %>
+        <%= render 'ratings/index_entry', rating: rating  %>
+      <% end %>
 
-            <td class='right-aligned'>
-              <%= rating_points_description rating %>
-            </td>
-          </tr>
-        <% end %>
-        <tr>
-          <td colspan='2'>
-            <div class='row'>
-              <div class='large-1 large-centered columns text-center'>
-                <%= link_to "<i class='general foundicon-plus'></i>".html_safe, '#', title: 'Add new Rating'  %>
-              </div>
+      <tr class="last_one">
+        <td colspan='3'>
+          <div class='row'>
+            <div class='large-1 large-centered columns text-center'>
+              <%= link_to "<i class='general foundicon-plus'></i>".html_safe, new_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, rating_group), remote: true, title: 'Add Rating', data: {"reveal-id" => "reveal_modal"}   %>
             </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  <% else %>
-    <p>No ratings present.</p>
-  <% end %>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

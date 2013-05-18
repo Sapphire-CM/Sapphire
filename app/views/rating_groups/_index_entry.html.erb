@@ -2,7 +2,13 @@
   <div class='row'>
     <div class='large-12 columns'>
     <h3 class='index_entry_header'>
-      <%= link_to rating_group_full_title(rating_group), course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group) %>
+      <% if rating_group.description.blank? %>
+        <%= rating_group_full_title(rating_group) %>
+      <% else %>
+        <a href="#" class="rating_group_header index_entry_header">
+          <%= rating_group_full_title(rating_group) %>
+        </a>
+      <% end %>
     </h3>
     <span class='index_entry_icons right-aligned'>
     <%= link_to "<i class='general foundicon-edit'></i>".html_safe, edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
@@ -10,6 +16,10 @@
     <%= link_to "<i class='general foundicon-remove'></i>".html_safe, course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_remove', method: :delete, confirm: "Are you sure?", remote: true %>
     </span>
     </div>
+  </div>
+
+  <div class="rating_group_description hide">
+    <p><%= rating_group.description %></p>
   </div>
 
 

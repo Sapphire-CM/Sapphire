@@ -1,10 +1,6 @@
 class RatingGroupsController < TermResourceController
   before_filter :fetch_exercise
 
-  def show
-    @rating_group = @exercise.rating_groups.find(params[:id])
-  end
-
   def new
     @rating_group = @exercise.rating_groups.new
   end
@@ -37,14 +33,7 @@ class RatingGroupsController < TermResourceController
     @rating_group = @exercise.rating_groups.find(params[:id])
     @rating_group.destroy
 
-    respond_to do |format|
-      format.js do
-        render partial: 'rating_groups/remove_index_entry', locals: { rating_group: @rating_group }
-      end
-      format.html do
-        redirect_to course_term_exercise_path(current_course, current_term, @exercise), notice: "RatingGroup was successfully deleted."
-      end
-    end
+    render partial: 'rating_groups/remove_index_entry', locals: { rating_group: @rating_group }
   end
 
   private

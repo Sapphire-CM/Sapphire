@@ -32,8 +32,8 @@ Sapphire::Application.routes.draw do
       end
 
       resources :exercises do
-        resources :rating_groups, except: :index do
-          resources :ratings, except: :index
+        resources :rating_groups, except: [:index, :show] do
+          resources :ratings, except: [:index, :show]
         end
 
         resources :evaluations

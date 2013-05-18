@@ -42,7 +42,7 @@ class RatingGroupsController < TermResourceController
         render partial: 'rating_groups/remove_index_entry', locals: { rating_group: @rating_group }
       end
       format.html do
-        redirect_to course_term_exercise_rating_groups_path(current_course, current_term, @exercise), notice: "RatingGroup was successfully deleted."
+        redirect_to course_term_exercise_path(current_course, current_term, @exercise), notice: "RatingGroup was successfully deleted."
       end
     end
   end

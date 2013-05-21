@@ -24,6 +24,7 @@ gem 'modernizr'         # needed for date-input-rails
 
 group :production do
   gem 'therubyracer'
+  gem 'pg'
 end
 
 group :development do

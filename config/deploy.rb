@@ -17,7 +17,7 @@ set :default_stage, "staging"
 
 
 namespace :deploy do
-  shared_folders = ["public/assets"]
+  shared_folders = ["public/assets", "config"]
 
   task :start do
     run "ruby -v"
@@ -26,7 +26,7 @@ namespace :deploy do
   task :stop do ; end
 
   task :restart, :roles => :app, :except => { :no_release => true } do
-    run "touch #{File.join(current_path,'tmp','restart.txt')}"
+    run "touch #{current_path}/tmp/restart.txt"
   end
 
   task :seed do
@@ -35,6 +35,24 @@ namespace :deploy do
 
   task :migrate do
     run "cd #{current_release} && RAILS_ENV=#{rails_env} bundle exec rake db:migrate"
+  end
+
+  task :replace_secret do
+    # stolen from: github.com/digineo/secret_token_replacer/
+    pattern  = /(\.secret_token *= *')\w+(')/
+    secret   = SecureRandom.hex(64)
+    filepath = "#{release_path}/config/initializers/secret_token.rb"
+    content  = File.read(filepath)
+
+    # replace the secret token
+    content.gsub!(pattern,"\\1#{secret}\\2")
+
+    # write the new configuration
+    File.open(filepath, 'w') {|f| f.write(content) }
+  end
+
+  task :setup_database_config do
+    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
   end
 
   task :setup_shared_folders do
@@ -46,7 +64,7 @@ namespace :deploy do
   task :symlink_shared_folders do
     shared_folders.each do |dir|
       run "rm -rf #{current_path}/#{dir}"
-      run "ln -s #{shared_path}/#{dir} #{release_path}/#{dir}"
+      run "ln -nfs #{shared_path}/#{dir} #{release_path}/#{dir}"
     end
   end
 end
@@ -75,7 +93,6 @@ namespace :bundler do
   end
 end
 
-desc "tail production log files"
 task :tail_logs, :roles => :app do
   run "tail -f #{shared_path}/log/production.log" do |channel, stream, data|
     puts  # for an extra line break before the host name
@@ -86,8 +103,13 @@ end
 
 after 'deploy:update_code' do
   bundler.bundle_new_release
+
+  # deploy:replace_secret
+  deploy.setup_database_config
   deploy.migrate
+
   assets.precompile
+
   deploy.cleanup
 end
 

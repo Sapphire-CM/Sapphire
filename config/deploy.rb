@@ -15,9 +15,8 @@ set :deploy_to, "/home/sapphire/#{application}"
 set :stages, %w(staging production)
 set :default_stage, "staging"
 
-
 namespace :deploy do
-  shared_folders = ["public/assets", "config"]
+  shared_folders = ["public/assets"]
 
   task :start do
     run "ruby -v"
@@ -38,17 +37,7 @@ namespace :deploy do
   end
 
   task :replace_secret do
-    # stolen from: github.com/digineo/secret_token_replacer/
-    pattern  = /(\.secret_token *= *')\w+(')/
-    secret   = SecureRandom.hex(64)
-    filepath = "#{release_path}/config/initializers/secret_token.rb"
-    content  = File.read(filepath)
-
-    # replace the secret token
-    content.gsub!(pattern,"\\1#{secret}\\2")
-
-    # write the new configuration
-    File.open(filepath, 'w') {|f| f.write(content) }
+    run "cd #{current_release} && RAILS_ENV=#{rails_env} bundle exec rake secret:update"
   end
 
   task :setup_database_config do

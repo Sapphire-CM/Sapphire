@@ -1,29 +1,3 @@
 // Place all the styles related to the exercises controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-
-.index_entry_header {
-  display: inline;
-  margin-left: 0.2em;
-}
-
-.index_entry_icons {
-  padding:{
-    top: .6em;
-    right: .5em;
-  }
-  
-  float: right;
-}
-
-#new_rating_group_modal {
-  margin-bottom: 0em;
-
-  form {
-    margin-bottom: 0;
-
-    .button {
-      margin-bottom: 0;
-    }
-  }
-}

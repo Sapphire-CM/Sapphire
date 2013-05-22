@@ -1,0 +1,7 @@
+$("<%= "#rating_group_id_#{rating_group.id}" %>").slideUp(function() {
+  $(this).remove();
+
+  if ($('.index_entry').length == 0) {
+    $('#rating_group_index_entries .index_entry_none').slideDown();
+  }
+});

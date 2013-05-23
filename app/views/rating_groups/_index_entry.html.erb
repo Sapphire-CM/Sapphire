@@ -28,9 +28,7 @@
     </thead>
     <tbody class="rating_index_entries">
       <% if rating_group.ratings.present? %>
-        <% rating_group.ratings.each do |rating| %>
-          <%= render 'ratings/index_entry', rating: rating  %>
-        <% end %>
+        <%= render collection: rating_group.ratings, partial:'ratings/index_entry', as: :rating  %>
       <% else %>
         <%= render "rating_groups/index_entry_no_ratings" %>
       <% end %>

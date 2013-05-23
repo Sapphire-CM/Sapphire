@@ -80,9 +80,6 @@ GEM
     compass-rails (1.0.3)
       compass (>= 0.12.2, < 0.14)
     daemons (1.1.9)
-    date-input-rails (0.0.3)
-      jquery-ui-rails
-      rails (~> 3.2.8)
     debug_inspector (0.0.2)
     devise (2.2.4)
       bcrypt-ruby (~> 3.0)
@@ -143,6 +140,7 @@ GEM
       net-ssh (>= 2.6.5)
     nokogiri (1.5.9)
     orm_adapter (0.4.0)
+    pg (0.15.1)
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
@@ -257,7 +255,6 @@ DEPENDENCIES
   carrierwave
   coffee-rails (~> 3.2.1)
   compass-rails
-  date-input-rails
   devise
   draper
   factory_girl
@@ -268,6 +265,7 @@ DEPENDENCIES
   jquery-ui-rails
   kaminari
   modernizr
+  pg
   rails (= 3.2.13)
   rspec-rails
   sass-rails (~> 3.2.3)

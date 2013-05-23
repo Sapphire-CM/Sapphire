@@ -18,7 +18,7 @@ gem 'kaminari'          # pagination
 gem 'flash_render'      # render method with notice/alerts
 gem 'devise'            # user authentication
 gem 'cancan'            # role based ability management for users
-gem 'date-input-rails'  # input-tag for date type
+# gem 'date-input-rails'  # input-tag for date type
 gem 'modernizr'         # needed for date-input-rails
 gem 'turbolinks'        # ajax replacement links
 gem 'jquery-turbolinks' # turbolinks jquery plugin for events

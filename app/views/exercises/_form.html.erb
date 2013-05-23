@@ -4,11 +4,8 @@
   <%= f.input :enable_max_points %>
   <%= f.input :max_points %>
 
-  <%= f.label 'Deadline'  %>
-  <%= f.date_field :deadline %>
-
-  <%= f.label 'Late Deadline'  %>
-  <%= f.date_field :late_deadline %>
+  <%= f.input :deadline, as: :datetime_picker %>
+  <%= f.input :late_deadline, as: :datetime_picker %>
 
   <%= f.input :submission_time %>
 

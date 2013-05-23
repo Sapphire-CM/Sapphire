@@ -93,7 +93,7 @@ end
 after 'deploy:update_code' do
   bundler.bundle_new_release
 
-  # deploy:replace_secret
+  deploy.replace_secret
   deploy.setup_database_config
   deploy.migrate
 

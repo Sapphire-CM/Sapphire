@@ -1,5 +1,8 @@
-var html = "<%= escape_javascript render partial: 'index_entry', locals: { rating_group: @rating_group } %>";
+var html = "<%=j render 'index_entry', rating_group: @rating_group %>";
 
-$('#rating_group_index_entries .index_entry_none').hide();
-$('#rating_group_index_entries').append(html);
-$('#reveal_modal').foundation('reveal', 'close');
+$('#rating_group_index_entries .index_entry_none.rating_group').slideUp(function(){
+  $html = $(html).hide();
+  $('#rating_group_index_entries').append($html);
+  $html.slideDown();
+  $('#reveal_modal').foundation('reveal', 'close');
+});

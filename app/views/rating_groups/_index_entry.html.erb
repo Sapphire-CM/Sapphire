@@ -5,9 +5,9 @@
       <% if rating_group.description.blank? %>
         <%= rating_group_full_title(rating_group) %>
       <% else %>
-        <a href="#" class="rating_group_header index_entry_header">
+        <span data-tooltip class="has-tip" title="<%= rating_group.description.html_safe %>">
           <%= rating_group_full_title(rating_group) %>
-        </a>
+        </span>
       <% end %>
     </h3>
     <span class='index_entry_icons right-aligned'>
@@ -16,10 +16,6 @@
     <%= link_to "<i class='general foundicon-remove'></i>".html_safe, course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_remove', method: :delete, confirm: "Are you sure?", remote: true %>
     </span>
     </div>
-  </div>
-
-  <div class="rating_group_description hide">
-    <p><%= rating_group.description %></p>
   </div>
 
   <table class='large-12'>
@@ -31,14 +27,13 @@
       </tr>
     </thead>
     <tbody class="rating_index_entries">
-      <tr class="index_entry_none <%= 'hide' if rating_group.ratings.any? %>">
-        <td>No ratings present.</td>
-      </tr>
-
-      <% rating_group.ratings.each do |rating| %>
-        <%= render 'ratings/index_entry', rating: rating  %>
+      <% if rating_group.ratings.present? %>
+        <% rating_group.ratings.each do |rating| %>
+          <%= render 'ratings/index_entry', rating: rating  %>
+        <% end %>
+      <% else %>
+        <%= render "rating_groups/index_entry_no_ratings" %>
       <% end %>
-
       <tr class="last_one">
         <td colspan='3'>
           <div class='row'>

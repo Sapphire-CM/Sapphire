@@ -11,10 +11,17 @@ class AccountsController < ApplicationController
     @registrations = []
   end
 
-  def destroy
+  def edit
     @account = Account.find(params[:id])
-    @account.destroy
-    redirect_to accounts_path(), notice: "Account was successfully deleted."
   end
 
+  def update
+    @account = Account.find(params[:id])
+
+    if @account.update_with_password(params[:account])
+      redirect_to root_path, notice: "Account was successfully updated."
+    else
+      render :edit
+    end
+  end
 end

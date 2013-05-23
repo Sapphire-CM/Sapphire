@@ -1,0 +1,8 @@
+$("<%= "#rating_id_#{rating.id}" %>").slideUp(function() {
+  $(this).remove();
+
+  $rating_group = $("<%= "#rating_group_id_#{rating.rating_group.id}" %>")
+  if ($rating_group.find('.index_entry.rating').length == 0) {
+    $rating_group.find('.index_entry_none').slideDown();
+  }
+});

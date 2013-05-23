@@ -1,16 +1,8 @@
 class RatingsController < TermResourceController
   before_filter :fetch_exercise, :fetch_rating_group
 
-  def show
-    @rating = @rating_group.ratings.find(params[:id])
-  end
-
   def new
     @rating = @rating_group.ratings.new
-  end
-
-  def edit
-    @rating = @rating_group.ratings.find(params[:id])
   end
 
   def create
@@ -24,17 +16,21 @@ class RatingsController < TermResourceController
     @rating.rating_group = @rating_group
 
     if @rating.save
-      redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), notice: "Rating was successfully created."
+      render partial: 'ratings/insert_index_entry', locals: { rating: @rating }
     else
       render :new, alert: 'Error saving!'
     end
+  end
+
+  def edit
+    @rating = @rating_group.ratings.find(params[:id])
   end
 
   def update
     @rating = @rating_group.ratings.find(params[:id])
 
     if @rating.update_attributes(params[:rating])
-      redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), notice: "Rating was successfully updated."
+      render partial: 'ratings/replace_index_entry', locals: { rating: @rating }
     else
       render :edit
     end
@@ -44,7 +40,7 @@ class RatingsController < TermResourceController
     @rating = @rating_group.ratings.find(params[:id])
     @rating.destroy
 
-    redirect_to course_term_exercise_rating_group_path(current_course, current_term, @exercise, @rating_group), notice: "Rating was successfully deleted."
+    render partial: 'ratings/remove_index_entry', locals: { rating: @rating }
   end
 
   private

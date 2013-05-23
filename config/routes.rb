@@ -15,12 +15,12 @@ Sapphire::Application.routes.draw do
       get :new_lecturer_registration
       post :create_lecturer_registration
       delete :clear_lecturer_registration
-      
+
       resources :submissions do
         resource :evaluation, controller: "SubmissionEvaluations"
       end
-      
-      
+
+
       get :meeting
 
       resources :tutorial_groups do
@@ -32,8 +32,8 @@ Sapphire::Application.routes.draw do
       end
 
       resources :exercises do
-        resources :rating_groups do
-          resources :ratings
+        resources :rating_groups, except: [:index, :show] do
+          resources :ratings, except: [:index, :show]
         end
 
         resources :evaluations

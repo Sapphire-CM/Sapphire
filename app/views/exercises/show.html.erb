@@ -21,9 +21,11 @@
         <% end %>
       </div>
 
-      <p>
-        <a href="#" data-reveal-id="new_rating_group_modal" class='small button index_entry_new'>Add Rating Group</a>
-      </p>
+      <div class="row">
+        <div class="large-12 large-centered columns text-center">
+          <%= link_to "Add Rating Group", new_course_term_exercise_rating_group_path(current_course, current_term, @exercise), remote: true, class: "small button", data: {"reveal-id" => "reveal_modal"} %>
+        </div>
+      </div>
 
     </div>
   </section>
@@ -47,16 +49,8 @@
   </section>
 </div>
 
-
-<div id='new_rating_group_modal' class='reveal-modal small'>
-  <h1 class="subheader header_new">New Rating Group</h1>
-  <h1 class="subheader header_edit">Edit Rating Group</h1>
-
-  <%= render 'rating_groups/form', rating_group: RatingGroup.new %>
-
-  <form class='form_edit'></form>
-  <form class='form_error'></form>
-  <p class='status'>Status</p>
-
+<div id="reveal_modal" class='reveal-modal small'>
+  <h1 id="reveal_modal_header" class="subheader"></h1>
+  <div id="reveal_modal_content"></div>
   <a class="close-reveal-modal">&#215;</a>
 </div>

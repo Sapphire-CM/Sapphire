@@ -1,48 +1,53 @@
-<div class='index_entry'>
+<div class='index_entry rating_group' id="<%= "rating_group_id_#{rating_group.id}" %>">
   <div class='row'>
     <div class='large-12 columns'>
     <h3 class='index_entry_header'>
-      <%= link_to rating_group_full_title(rating_group), course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group) %>
+      <% if rating_group.description.blank? %>
+        <%= rating_group_full_title(rating_group) %>
+      <% else %>
+        <a href="#" class="rating_group_header index_entry_header">
+          <%= rating_group_full_title(rating_group) %>
+        </a>
+      <% end %>
     </h3>
     <span class='index_entry_icons right-aligned'>
-    <%= link_to "<i class='general foundicon-edit'></i>".html_safe, edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_edit', remote: true %>
+    <%= link_to "<i class='general foundicon-edit'></i>".html_safe, edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
 
     <%= link_to "<i class='general foundicon-remove'></i>".html_safe, course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_remove', method: :delete, confirm: "Are you sure?", remote: true %>
     </span>
     </div>
   </div>
 
+  <div class="rating_group_description hide">
+    <p><%= rating_group.description %></p>
+  </div>
 
-  <% if rating_group.ratings.any? %>
-    <table class='large-12'>
-      <thead>
-        <tr>
-          <th class='large-10'>Title</th>
-          <th class='large-2'>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% rating_group.ratings.each do |rating| %>
-          <tr>
-            <td><%= link_to_rating rating.title, rating %></td>
+  <table class='large-12'>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Value</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="rating_index_entries">
+      <tr class="index_entry_none <%= 'hide' if rating_group.ratings.any? %>">
+        <td>No ratings present.</td>
+      </tr>
 
-            <td class='right-aligned'>
-              <%= rating_points_description rating %>
-            </td>
-          </tr>
-        <% end %>
-        <tr>
-          <td colspan='2'>
-            <div class='row'>
-              <div class='large-1 large-centered columns text-center'>
-                <%= link_to "<i class='general foundicon-plus'></i>".html_safe, '#', title: 'Add new Rating'  %>
-              </div>
+      <% rating_group.ratings.each do |rating| %>
+        <%= render 'ratings/index_entry', rating: rating  %>
+      <% end %>
+
+      <tr class="last_one">
+        <td colspan='3'>
+          <div class='row'>
+            <div class='large-1 large-centered columns text-center'>
+              <%= link_to "<i class='general foundicon-plus'></i>".html_safe, new_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, rating_group), remote: true, title: 'Add Rating', data: {"reveal-id" => "reveal_modal"}   %>
             </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  <% else %>
-    <p>No ratings present.</p>
-  <% end %>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

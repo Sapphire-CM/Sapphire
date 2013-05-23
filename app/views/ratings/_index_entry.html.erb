@@ -1,0 +1,19 @@
+<tr class="index_entry rating" id="<%= "rating_id_#{rating.id}" %>">
+  <td>
+    <% if rating.description.blank? %>
+      <%= rating.title %>
+    <% else %>
+      <span data-tooltip class="has-tip" title="<%= rating.description.html_safe %>"><%= rating.title %></span>
+    <% end %>
+  </td>
+
+  <td class='right-aligned'>
+    <%= rating_points_description rating %>
+  </td>
+
+  <td class='right-aligned minimum-width'>
+    <%= link_to "<i class='general foundicon-edit'></i>".html_safe, edit_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, rating.rating_group, rating), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
+
+    <%= link_to "<i class='general foundicon-remove'></i>".html_safe, course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, rating.rating_group, rating), class: 'index_entry_remove', method: :delete, confirm: "Are you sure?", remote: true %>
+  </td>
+</tr>

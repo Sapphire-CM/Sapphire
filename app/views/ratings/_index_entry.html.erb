@@ -3,7 +3,9 @@
     <% if rating.description.blank? %>
       <%= rating.title %>
     <% else %>
-      <span data-tooltip class="has-tip" title="<%= rating.description.html_safe %>"><%= rating.title %></span>
+      <span data-tooltip class="has-tip" title="<%= rating.description.html_safe %>">
+        <%= rating.title %>
+      </span>
     <% end %>
   </td>
 

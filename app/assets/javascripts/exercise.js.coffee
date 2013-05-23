@@ -6,7 +6,3 @@ $ ->
   $reveal_modal = $("#reveal_modal")
   $reveal_modal.remove()
   $('body').append $reveal_modal
-
-  $(document).on 'click', '.rating_group_header', ->
-    $description = $(this).parents('.index_entry').children('.rating_group_description')
-    $description.slideToggle()

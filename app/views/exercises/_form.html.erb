@@ -7,8 +7,6 @@
   <%= f.input :deadline, as: :datetime_picker %>
   <%= f.input :late_deadline, as: :datetime_picker %>
 
-  <%= f.input :submission_time %>
-
   <%= link_to "Cancel", (@exercise.new_record? ?
     course_term_exercises_path(current_course, current_term) :
     course_term_exercise_path(current_course, current_term, @exercise)), class: "secondary button" %>

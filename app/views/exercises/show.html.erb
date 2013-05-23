@@ -15,9 +15,7 @@
         </p>
 
         <% if @exercise.rating_groups.any? %>
-          <% @exercise.rating_groups.each do |rating_group| %>
-            <%= render 'rating_groups/index_entry', rating_group: rating_group %>
-          <% end %>
+          <%= render collection: @exercise.rating_groups, partial: 'rating_groups/index_entry', as: :rating_group %>
         <% end %>
       </div>
 

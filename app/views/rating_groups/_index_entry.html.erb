@@ -31,14 +31,13 @@
       </tr>
     </thead>
     <tbody class="rating_index_entries">
-      <tr class="index_entry_none <%= 'hide' if rating_group.ratings.any? %>">
-        <td>No ratings present.</td>
-      </tr>
-
-      <% rating_group.ratings.each do |rating| %>
-        <%= render 'ratings/index_entry', rating: rating  %>
+      <% if rating_group.ratings.present? %>
+        <% rating_group.ratings.each do |rating| %>
+          <%= render 'ratings/index_entry', rating: rating  %>
+        <% end %>
+      <% else %>
+        <%= render "rating_groups/index_entry_no_ratings" %>
       <% end %>
-
       <tr class="last_one">
         <td colspan='3'>
           <div class='row'>

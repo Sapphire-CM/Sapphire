@@ -1,7 +1,7 @@
-var html = "<%= escape_javascript render partial: 'index_entry', locals: { rating: @rating } %>";
+var html = "<%=j render 'index_entry', rating: @rating %>";
 
 $rating_group = $("<%= "#rating_group_id_#{rating.rating_group.id}" %>")
 $rating_group.find(".rating_index_entries").children(".last_one").before(html)
-$rating_group.find(".index_entry_none").hide();
+$rating_group.find(".index_entry_none").remove();
 
 $('#reveal_modal').foundation('reveal', 'close');

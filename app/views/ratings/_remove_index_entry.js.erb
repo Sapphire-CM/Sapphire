@@ -1,8 +1,9 @@
-$("<%= "#rating_id_#{rating.id}" %>").slideUp(function() {
-  $(this).remove();
+var $rating = $("<%= "#rating_id_#{rating.id}" %>");
 
-  $rating_group = $("<%= "#rating_group_id_#{rating.rating_group.id}" %>")
-  if ($rating_group.find('.index_entry.rating').length == 0) {
-    $rating_group.find('.index_entry_none').slideDown();
-  }
-});
+$rating.remove()
+$rating_group = $("<%= "#rating_group_id_#{rating.rating_group.id}" %>")
+
+if ($rating_group.find('.index_entry.rating').length == 0) {
+  var html = "<%=j render "rating_groups/index_entry_no_ratings" %>", $last_one = $rating_group.find(".last_one");
+  $last_one.before(html);
+}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130508090745) do
+ActiveRecord::Schema.define(:version => 20130523103546) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -64,7 +64,6 @@ ActiveRecord::Schema.define(:version => 20130508090745) do
     t.datetime "late_deadline"
     t.boolean  "enable_max_points"
     t.integer  "max_points"
-    t.time     "submission_time"
   end
 
   add_index "exercises", ["term_id"], :name => "index_exercises_on_term_id"

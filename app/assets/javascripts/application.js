@@ -13,12 +13,14 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
-//= require jquery.ui.datepicker
-//= require modernizr
-//= require date-input-polyfill
 //= require foundation
 //= require turbolinks
 //= require vendor
 //= require_tree .
 
-$(function(){ $(document).foundation(); });
+$(function(){ 
+  $(document).foundation(); 
+  $('.date_picker input').fdatepicker();
+  $('.datetime_picker input').fdatetimepicker();
+});
+

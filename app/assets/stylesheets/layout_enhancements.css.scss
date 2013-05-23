@@ -1,0 +1,34 @@
+.text-center {
+  text-align: center;
+}
+
+.reveal-modal {
+  margin-bottom: 0em;
+
+  form {
+    margin-bottom: 0;
+
+    .button {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.index_entry_header {
+  display: inline;
+  margin-left: 0.2em;
+}
+
+.index_entry_icons {
+  padding:{
+    top: .6em;
+    right: .5em;
+  }
+
+  float: right;
+}
+
+td.minimum-width {
+  white-space: nowrap;
+  width: 1em;
+}

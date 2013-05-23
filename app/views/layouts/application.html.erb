@@ -27,41 +27,44 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <%= render "navigation" %>
+  <div id='wrapper'>
+    <%= render "navigation" %>
 
-  <%= render "flashes" if flash.any? %>
+    <%= render "flashes" if flash.any? %>
 
-  <% if @show_title %>
-  <div class='row'>
-    <div class='large-12'>
-      <h1>
-        <%= yield(:title) %>
-        <% if content_for(:subtitle) %>
-          <small><%= yield(:subtitle) %></small>
-        <% end %>
-      </h1>
-      <hr />
-    </div>
-  </div>
-  <% end %>
-
-  <div class='row'>
-    <% if content_for? :sidebar %>
-      <div class='large-9 columns'>
-        <%= yield %>
-      </div>
-      <div class='large-3 columns'>
-        <%= yield :sidebar %>
-      </div>
-    <% else %>
+    <% if @show_title %>
+    <div class='row'>
       <div class='large-12'>
-        <%= yield %>
+        <h1>
+          <%= yield(:title) %>
+          <% if content_for(:subtitle) %>
+            <small><%= yield(:subtitle) %></small>
+          <% end %>
+        </h1>
+        <hr />
       </div>
+    </div>
     <% end %>
+
+    <div class='row'>
+      <% if content_for? :sidebar %>
+        <div class='large-9 columns'>
+          <%= yield %>
+        </div>
+        <div class='large-3 columns'>
+          <%= yield :sidebar %>
+        </div>
+      <% else %>
+        <div class='large-12'>
+          <%= yield %>
+        </div>
+      <% end %>
+    </div>
+    <div id='content-push'></div>
   </div>
 
   <footer class='row'>
-    <div class='large-12'>
+    <div class='large-12 footer-inner'>
       Sapphire &copy; 2012-<%= Date.today.strftime("%Y") %> - proudly presented by IICM of TUGraz
     </div>
   </footer>

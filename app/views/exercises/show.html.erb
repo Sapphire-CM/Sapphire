@@ -10,7 +10,7 @@
     <p class="title" data-section-title><a href="#">Rating Groups</a></p>
     <div class="content" data-section-content>
       <div id='rating_group_index_entries'>
-        <p class='index_entry_none <%= 'hide' if @exercise.rating_groups.any? %>'>
+        <p class='index_entry_none rating_group <%= 'hide' if @exercise.rating_groups.any? %>'>
           No rating groups present.
         </p>
 

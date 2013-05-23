@@ -25,10 +25,8 @@
     $points_input = $('#rating_group_points')
     $min_points_input = $fields.find("#rating_group_min_points")
     $max_points_input = $fields.find("#rating_group_max_points")
-
-    using_default_values = is_using_default_values($points_input, $min_points_input, $max_points_input)
-
-    if using_default_values
+    
+    if is_using_default_values($points_input, $min_points_input, $max_points_input)
       $fields.hide()
       points = parseInt $points_input.val()
       if $points_input.val() == ""
@@ -49,8 +47,10 @@
       points = parseInt $points_input.val()
       min_points = parseInt $min_points_input.val()
       max_points = parseInt $max_points_input.val()
-      if using_default_values
+      
+      if is_using_default_values($points_input, $min_points_input, $max_points_input)
         if points >= 0
+          alert("here!")
           $max_points_input.val("#{points}")
         else
           $min_points_input.val("#{points}")
@@ -59,7 +59,7 @@
           $max_points_input.val("#{points}")
         if points < min_points
           $min_points_input.val("#{points}")
-      using_default_values = is_using_default_values($points_input, $min_points_input, $max_points_input)
+      is_using_default_values($points_input, $min_points_input, $max_points_input)
       update_button_title()
 
 
@@ -77,7 +77,7 @@
         $points_input.val("#{min_points}")
       if min_points > max_points
         $max_points_input.val("#{min_points}")
-      using_default_values = is_using_default_values($points_input, $min_points_input, $max_points_input)
+      is_using_default_values($points_input, $min_points_input, $max_points_input)
       update_button_title()
 
     $max_points_input.change ->
@@ -93,7 +93,7 @@
         $points_input.val("#{max_points}")
       if min_points > max_points
         $min_points_input.val("#{max_points}")
-      using_default_values = is_using_default_values($points_input, $min_points_input, $max_points_input)
+      is_using_default_values($points_input, $min_points_input, $max_points_input)
       update_button_title()
 
 
@@ -102,7 +102,6 @@ update_button_title = (fields_shown) ->
   $button = $("#point_range_toggle_button")
   $fields = $('#point_range_fields')
 
-
   $points_input = $('#rating_group_points')
   $min_points_input = $fields.find("#rating_group_min_points")
   $max_points_input = $fields.find("#rating_group_max_points")
@@ -110,18 +109,13 @@ update_button_title = (fields_shown) ->
   if fields_shown == undefined
     fields_shown = $fields.is(':visible')
 
-
   title = ""
-
   unless fields_shown
     title += "Change Pointrange"
     title += " (#{$min_points_input.val()}..#{$max_points_input.val()})"
   else
     title += "Hide Pointranges"
-
   $button.text(title)
-
-
 
 is_using_default_values = (points_input, min_points_input, max_points_input) ->
   if min_points_input.val() == "" && max_points_input.val() == ""
@@ -130,9 +124,9 @@ is_using_default_values = (points_input, min_points_input, max_points_input) ->
     if points_input.val() != ""
       points = parseInt points_input.val()
       if points >= 0
-        using_default_values = (min_points_input.val() == "0" && max_points_input.val() == "#{points}")
+        using_default_values = (parseInt(min_points_input.val()) == 0 && parseInt(max_points_input.val()) == points)
       else
-        using_default_values = (min_points_input.val() == "#{points}" && max_points_input.val() == "0")
+        using_default_values = (parseInt(min_points_input.val()) == points && parseInt(max_points_input.val()) == 0)
     else
       using_default_values = true
 

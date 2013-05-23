@@ -2,7 +2,7 @@ class Account < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable,
          :recoverable, :rememberable, :trackable, :validatable
 
   attr_accessible :email, :password, :password_confirmation, :remember_me, :forename, :surname, :matriculum_number
@@ -19,7 +19,7 @@ class Account < ActiveRecord::Base
   has_many :student_registrations, dependent: :destroy
 
   has_many :submissions, through: :student_registrations
-  
+
   def submissions_for_term(term)
     submissions.for_term term
   end

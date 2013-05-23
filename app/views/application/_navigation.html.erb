@@ -26,9 +26,9 @@
         <ul class='right'>
           <li class='divider'></li>
           <li class='has-dropdown'>
-            <%= link_to current_account.email, edit_account_registration_path %>
+            <%= link_to current_account.email, edit_account_path(current_account) %>
             <ul class='dropdown'>
-              <li><%= link_to 'Edit Account', edit_account_registration_path %></li>
+              <li><%= link_to 'Edit Account', edit_account_path(current_account) %></li>
               <li><%= link_to 'Logout', destroy_account_session_path, method: :delete %></li>
             </ul>
           </li>

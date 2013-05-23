@@ -3,11 +3,12 @@ Sapphire::Application.routes.draw do
   resources :submission_evaluations
 
 
-  devise_for :accounts # , skip: [ :registrations ]
+  devise_for :accounts
   as :user do
-    get 'accounts'        => 'accounts#index'
-    get 'accounts/:id'    => 'accounts#show', as: "account"
-    delete 'accounts/:id' => 'accounts#destroy'
+    get 'accounts'          => 'accounts#index'
+    get 'accounts/:id'      => 'accounts#show', as: "account"
+    get 'accounts/:id/edit' => 'accounts#edit', as: "edit_account"
+    put 'accounts/:id'      => 'accounts#update'
   end
 
   resources :courses do

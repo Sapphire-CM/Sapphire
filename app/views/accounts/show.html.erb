@@ -1,25 +1,27 @@
 <% title "#{@account.fullname}", "#{@account.matriculum_number}" %>
 
 <% sidebar do %>
-  <%= link_to "Edit", edit_account_registration_path(@account), class: "small button" %>
-  <%= link_to "Delete", account_path(@account), method: :delete, class: "small alert button", confirm: "Are you sure?" %>
+  <%= link_to "Edit", edit_account_path(@account), class: "small button" %>
 <% end %>
 
-<dl class='tabs'>
-  <dd class='active'><a href='#overview'>Overview</a></dd>
-  <dd><a href='#registrations'>Registrations</a></dd>
-</dl>
-<ul class='tabs-content'>
-  <li class='active' id='overviewTab'>
-    Quick overview of the account
-  </li>
-  <li id='registrationsTab'>
-    <% if @registrations.any? %>
-      <p>TODO something</p>
-    <% else %>
-      <p>Student hasn't attended in any courses</p>
-    <% end %>
-  </li>
-</ul>
+<div class="section-container tabs" data-section="tabs">
+  <section>
+    <p class="title" data-section-title><a href="#">Overview</a></p>
+    <div class="content" data-section-content>
+      TODO something
+    </div>
+  </section>
+
+  <section>
+    <p class="title" data-section-title><a href="#">Registrations</a></p>
+    <div class="content" data-section-content>
+      <% if @registrations.any? %>
+        <p>TODO something</p>
+      <% else %>
+        <p>Student hasn't attended in any courses</p>
+      <% end %>
+    </div>
+  </section>
+</div>
 
 <p><%= link_to "Back", accounts_path, class: "tiny button" %></p>

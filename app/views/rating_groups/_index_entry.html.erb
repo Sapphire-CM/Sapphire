@@ -5,9 +5,9 @@
       <% if rating_group.description.blank? %>
         <%= rating_group_full_title(rating_group) %>
       <% else %>
-        <a href="#" class="rating_group_header index_entry_header">
+        <span data-tooltip class="has-tip" title="<%= rating_group.description.html_safe %>">
           <%= rating_group_full_title(rating_group) %>
-        </a>
+        </span>
       <% end %>
     </h3>
     <span class='index_entry_icons right-aligned'>

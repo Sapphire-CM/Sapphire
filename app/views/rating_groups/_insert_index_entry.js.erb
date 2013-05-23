@@ -1,8 +1,8 @@
 var html = "<%=j render 'index_entry', rating_group: @rating_group %>";
 
 $('#rating_group_index_entries .index_entry_none').slideUp(function(){
-  $(this).remove();
-  $('#rating_group_index_entries').append(html);
+  $html = $(html).hide();
+  $('#rating_group_index_entries').append($html);
+  $html.slideDown();
   $('#reveal_modal').foundation('reveal', 'close');
 });
-

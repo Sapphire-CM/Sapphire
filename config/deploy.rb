@@ -1,5 +1,5 @@
 require 'capistrano/ext/multistage'
-
+# load 'deploy/assets'
 set :application, "sapphire"
 set :repository, "git@github.com:matthee/Sapphire.git"
 
@@ -14,6 +14,8 @@ set :deploy_via, :remote_cache
 set :deploy_to, "/home/sapphire/#{application}"
 set :stages, %w(staging production)
 set :default_stage, "staging"
+
+set :normalize_asset_timestamps, false
 
 namespace :deploy do
   shared_folders = ["public/assets"]

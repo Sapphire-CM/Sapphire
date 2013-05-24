@@ -1,10 +1,11 @@
 require 'capistrano/ext/multistage'
-# load 'deploy/assets'
+
 set :application, "sapphire"
-set :repository, "git@github.com:matthee/Sapphire.git"
 
 set :scm, :git
-set :user, "sapphire"
+set :repository, "git@github.com:matthee/Sapphire.git"
+
+set :user, :sapphire
 set :use_sudo, false
 
 default_run_options[:shell] = '/bin/zsh -i'
@@ -15,7 +16,27 @@ set :deploy_to, "/home/sapphire/#{application}"
 set :stages, %w(staging production)
 set :default_stage, "staging"
 
-set :normalize_asset_timestamps, false
+###############################################################################
+
+after 'deploy:update_code' do
+  bundler.bundle_new_release
+
+  deploy.replace_secret
+  deploy.symlink_shared_folders
+
+  deploy.setup_database_config
+  deploy.migrate
+
+  deploy.cleanup
+end
+
+after "deploy:setup" do
+  deploy.setup_shared_folders
+end
+
+load 'deploy/assets'
+
+###############################################################################
 
 namespace :deploy do
   shared_folders = ["public/assets"]
@@ -31,11 +52,7 @@ namespace :deploy do
   end
 
   task :seed do
-    run "cd #{current_release} && RAILS_ENV=#{rails_env} rake db:seed"
-  end
-
-  task :migrate do
-    run "cd #{current_release} && RAILS_ENV=#{rails_env} bundle exec rake db:migrate"
+    run "cd #{current_release} && RAILS_ENV=#{rails_env} bundle exec rake db:seed"
   end
 
   task :replace_secret do
@@ -60,26 +77,8 @@ namespace :deploy do
   end
 end
 
-namespace :assets do
-  desc "Clean and Precompile new assets"
-  task :update do
-    assets.clean
-    assets.precompile
-  end
-
-  desc "Remove compiled assets"
-  task :clean do
-    run "cd #{release_path} && RAILS_ENV=#{rails_env} bundle exec rake assets:clean"
-  end
-
-  desc "Compile all the assets named in config.assets.precompile"
-  task :precompile do
-    run "cd #{release_path} && RAILS_ENV=#{rails_env} bundle exec rake assets:precompile"
-  end
-end
-
 namespace :bundler do
-  task :bundle_new_release, :roles => :app do
+  task :bundle_new_release, roles: :app do
     run "cd #{release_path} && bundle --without development test"
   end
 end
@@ -91,24 +90,3 @@ task :tail_logs, :roles => :app do
     break if stream == :err
   end
 end
-
-after 'deploy:update_code' do
-  bundler.bundle_new_release
-
-  deploy.replace_secret
-  deploy.setup_database_config
-  deploy.migrate
-
-  assets.precompile
-
-  deploy.cleanup
-end
-
-after "deploy:setup" do
-  deploy.setup_shared_folders
-end
-
-before "assets:precompile" do
-  deploy.symlink_shared_folders
-end
-

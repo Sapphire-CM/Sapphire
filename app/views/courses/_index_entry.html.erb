@@ -28,12 +28,10 @@
       </tr>
     </thead>
     <tbody class='term_index_entries'>
-      <tr class='index_entry_none term <%= 'hide' if course.terms.any? %>'>
-        <td>No terms present.</td>
-      </tr>
-
-      <% if course.terms.any? %>
-        <%= render collection: course.terms, partial: 'terms/index_entry', as: :term, locals: {course: course} %>
+      <% if course.terms.present? %>
+        <%= render collection: course.terms, partial:'terms/index_entry', as: :term, locals: {course: course} %>
+      <% else %>
+        <%= render "courses/index_entry_no_terms" %>
       <% end %>
 
       <tr class="last_one">

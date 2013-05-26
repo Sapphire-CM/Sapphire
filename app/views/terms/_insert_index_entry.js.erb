@@ -1,8 +1,7 @@
 var html = "<%=j render 'index_entry', term: @term %>";
 
-$('.term_index_entries .index_entry_none.term').slideUp(function(){
-  $html = $(html).hide();
-  $('#term_index_entries').append($html);
-  $html.slideDown();
-  $('#reveal_modal').foundation('reveal', 'close');
-});
+$course = $("<%= "#course_id_#{term.course.id}" %>")
+$course.find(".term_index_entries").children(".last_one").before(html)
+$course.find(".index_entry_none").remove();
+
+$('#reveal_modal').foundation('reveal', 'close');

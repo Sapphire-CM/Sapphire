@@ -1,0 +1,7 @@
+$("<%= "#term_id_#{term.id}" %>").slideUp(function() {
+  $(this).remove();
+
+  if ($('.index_entry.term').length == 0) {
+    $('#term_index_entries .index_entry_none').slideDown();
+  }
+});

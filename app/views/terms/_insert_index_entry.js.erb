@@ -1,0 +1,8 @@
+var html = "<%=j render 'index_entry', term: @term %>";
+
+$('.term_index_entries .index_entry_none.term').slideUp(function(){
+  $html = $(html).hide();
+  $('#term_index_entries').append($html);
+  $html.slideDown();
+  $('#reveal_modal').foundation('reveal', 'close');
+});

@@ -9,38 +9,45 @@
   <section>
     <p class="title" data-section-title><a href="#">Terms</a></p>
     <div class="content" data-section-content>
-      <% if @terms.any? %>
-        <table class='large-12'>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Tutorials</th>
-              <th>Registered Students</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-          <% @terms.each do |term| %>
-            <tr>
-              <th><%= term.title %></th>
-              <td><%= pluralize term.tutorial_groups.count, "Tutorial" %></td>
-              <td><%= term.students.count %></td>
+      <table class='large-12'>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Tutorials</th>
+            <th>Registered Students</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody class='term_index_entries'>
+          <tr class='index_entry_none term <%= 'hide' if @course.terms.any? %>'>
+            <td>No ratings present.</td>
+          </tr>
 
-              <td class='right-aligned'>
-                <%= link_to "View", course_term_path(@course, term), class: "small button" %>
-                <%= link_to "Edit", edit_course_term_path(@course, term), class: "small button" %>
-                <%= link_to "Delete", course_term_path(@course, term), class: "small alert button", method: :delete, confirm: "Are you sure?" %>
-              </td>
-            </tr>
+          <% if @course.terms.any? %>
+            <%= render collection: @course.terms, partial: 'terms/index_entry', as: :term %>
           <% end %>
-          </tbody>
-        </table>
-      <% else %>
-        <p>No terms present.</p>
-      <% end %>
+
+          <tr class="last_one">
+            <td colspan='4'>
+              <div class='row'>
+                <div class='large-1 large-centered columns text-center'>
+                  <%= link_to "<i class='general foundicon-plus'></i>".html_safe, new_course_term_path(@course), remote: true, title: 'Add Term', data: {"reveal-id" => "reveal_modal"}   %>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+
       <p><%= link_to "Add Term", new_course_term_path(@course), class: "button" %></p>
+
+
+
     </div>
   </section>
+
   <section>
     <p class="title" data-section-title><a href="#">Description</a></p>
     <div class="content" data-section-content>
@@ -52,3 +59,5 @@
     </div>
   </section>
 </div>
+
+<%= render 'application/reveal_modal' %>

@@ -8,7 +8,7 @@ class TermResourceController < ApplicationController
 
   def current_term
     id = params[:term_id] || params[:id]
-    @current_term ||= current_course.terms.find(id)
+    @current_term ||= current_course.terms.find(id) if id
   end
   helper_method :current_term
 end

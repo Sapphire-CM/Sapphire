@@ -38,6 +38,7 @@ class TermsController < TermResourceController
 
   def destroy
     @term.destroy
+
     render partial: 'terms/remove_index_entry', locals: { term: @term }
   end
 

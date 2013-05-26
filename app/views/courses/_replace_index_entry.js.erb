@@ -1,0 +1,5 @@
+var html = "<%=j render 'index_entry', course: @course %>";
+
+$("<%= "#course_id_#{course.id}" %>").replaceWith(html);
+
+$('#reveal_modal').foundation('reveal', 'close');

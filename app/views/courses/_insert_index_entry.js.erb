@@ -1,0 +1,8 @@
+var html = "<%=j render 'index_entry', course: @course %>";
+
+$('#course_index_entries .index_entry_none.course').slideUp(function(){
+  $html = $(html).hide();
+  $('#course_index_entries').append($html);
+  $html.slideDown();
+  $('#reveal_modal').foundation('reveal', 'close');
+});

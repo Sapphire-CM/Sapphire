@@ -16,7 +16,7 @@ class CoursesController < ApplicationController
     @course = Course.new(params[:course])
 
     if @course.save
-      redirect_to course_path(@course), notice: "Course was successfully created."
+      render partial: 'courses/insert_index_entry', locals: { course: @course }
     else
       render :new
     end
@@ -30,7 +30,7 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
 
     if @course.update_attributes(params[:course])
-      redirect_to course_path(@course), notice: "Course was successfully updated."
+      render partial: 'courses/replace_index_entry', locals: { course: @course }
     else
       render :edit
     end
@@ -39,6 +39,7 @@ class CoursesController < ApplicationController
   def destroy
     @course = Course.find(params[:id])
     @course.destroy
-    redirect_to courses_path(), notice: "Course was successfully deleted."
+
+    render partial: 'courses/remove_index_entry', locals: { course: @course }
   end
 end

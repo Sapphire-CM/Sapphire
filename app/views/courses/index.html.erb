@@ -1,32 +1,21 @@
 <% title "Courses" %>
 
-<% sidebar do %>
-  <%= link_to "New Course", new_course_path, class: "small button" %>
-<% end %>
+<div>
+  <div id='course_index_entries'>
+    <p class='index_entry_none course <%= 'hide' if @courses.any? %>'>
+      No courses present.
+    </p>
 
-<% if @courses.any? %>
-  <table class='large-12'>
-    <thead>
-      <tr>
-      <th>Title</th>
-      <th>Terms</th>
-      <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @courses.each do |course| %>
-        <tr>
-          <td><%= course.title %></td>
-          <td><%= course.terms.count %></td>
-          <td class='right-aligned'>
-            <%= link_to "View", course_path(course), class: "tiny button" %>
-            <%= link_to "Edit", edit_course_path(course), class: "tiny button" %>
-            <%= link_to "Delete", course_path(course), class: "tiny alert button", method: :delete, confirm: "Are you sure?" %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p>There are no courses present.</p>
-<% end %>
+    <% if @courses.any? %>
+      <%= render collection: @courses, partial: 'courses/index_entry', as: :course %>
+    <% end %>
+  </div>
+
+  <div class="row">
+    <div class="large-12 large-centered columns text-center">
+      <%= link_to "Add Course", new_course_path, remote: true, class: "small button", data: {"reveal-id" => "reveal_modal"} %>
+    </div>
+  </div>
+</div>
+
+<%= render 'application/reveal_modal' %>

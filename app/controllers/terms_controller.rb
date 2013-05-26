@@ -1,8 +1,6 @@
 class TermsController < TermResourceController
   before_filter :fetch_course_term
 
-  # index action not needed
-
   def show
     @tutorial_groups = @term.tutorial_groups
     @exercises = @term.exercises
@@ -20,7 +18,7 @@ class TermsController < TermResourceController
     @term = @course.terms.new(params[:term])
 
     if @term.save
-      redirect_to course_term_path(@course, @term), notice: "Term was successfully created."
+      render partial: 'terms/insert_index_entry', locals: { term: @term }
     else
       render :new
     end
@@ -32,7 +30,7 @@ class TermsController < TermResourceController
 
   def update
     if @term.update_attributes(params[:term])
-      redirect_to course_term_path(@course, @term), notice: "Term was successfully updated."
+      render partial: 'terms/replace_index_entry', locals: { term: @term }
     else
       render :edit
     end
@@ -40,7 +38,8 @@ class TermsController < TermResourceController
 
   def destroy
     @term.destroy
-    redirect_to course_path(@course), notice: "Term was successfully deleted."
+
+    render partial: 'terms/remove_index_entry', locals: { term: @term }
   end
 
   def new_lecturer_registration

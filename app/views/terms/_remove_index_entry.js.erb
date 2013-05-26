@@ -1,0 +1,10 @@
+var $term = $("<%= "#term_id_#{term.id}" %>");
+$term.remove()
+
+$course = $("<%= "#course_id_#{term.course.id}" %>")
+
+if ($course.find('.index_entry.term').length == 0) {
+  var $last_one = $course.find(".last_one");
+  var html = "<%=j render "courses/index_entry_no_terms" %>";
+  $last_one.before(html);
+}

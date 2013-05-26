@@ -1,0 +1,7 @@
+$("<%= "#course_id_#{course.id}" %>").slideUp(function() {
+  $(this).remove();
+
+  if ($('.index_entry.course').length == 0) {
+    $('#course_index_entries .index_entry_none').slideDown();
+  }
+});

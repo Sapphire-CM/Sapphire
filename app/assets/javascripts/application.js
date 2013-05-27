@@ -18,9 +18,14 @@
 //= require vendor
 //= require_tree .
 
-$(function(){ 
-  $(document).foundation(); 
+$(function(){
+  $(document).foundation();
   $('.date_picker input').fdatepicker();
   $('.datetime_picker input').fdatetimepicker();
 });
 
+$(function(){
+  $reveal_modal = $("#reveal_modal");
+  $reveal_modal.remove();
+  $('body').append($reveal_modal);
+});

@@ -1,0 +1,48 @@
+<div class='index_entry course' id="<%= "course_id_#{course.id}" %>">
+  <div class='row'>
+    <div class='large-12 columns'>
+    <h3 class='index_entry_header'>
+      <% if course.description.blank? %>
+        <%= course.title %>
+      <% else %>
+        <span data-tooltip class="has-tip" title="<%= course.description.html_safe %>">
+          <%= course.title %>
+        </span>
+      <% end %>
+    </h3>
+    <span class='index_entry_icons right-aligned'>
+      <%= link_to "<i class='general foundicon-edit'></i>".html_safe, edit_course_path(course), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
+
+      <%= link_to "<i class='general foundicon-remove'></i>".html_safe, course_path(course), class: 'index_entry_remove', method: :delete, confirm: "Are you sure?", remote: true %>
+    </span>
+    </div>
+  </div>
+
+  <table class='large-12'>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Tutorials</th>
+        <th>Registered Students</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class='term_index_entries'>
+      <% if course.terms.present? %>
+        <%= render collection: course.terms, partial:'terms/index_entry', as: :term, locals: {course: course} %>
+      <% else %>
+        <%= render "courses/index_entry_no_terms" %>
+      <% end %>
+
+      <tr class="last_one">
+        <td colspan='4'>
+          <div class='row'>
+            <div class='large-1 large-centered columns text-center'>
+              <%= link_to "<i class='general foundicon-plus'></i>".html_safe, new_course_term_path(course), remote: true, title: 'Add Term', data: {"reveal-id" => "reveal_modal"}   %>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

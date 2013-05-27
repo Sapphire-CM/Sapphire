@@ -39,7 +39,7 @@ load 'deploy/assets'
 ###############################################################################
 
 namespace :deploy do
-  shared_folders = ["public/assets"]
+  shared_folders = ["public/assets", "uploads"]
 
   task :start do
     run "ruby -v"

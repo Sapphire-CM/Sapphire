@@ -13,7 +13,7 @@ module SimpleForm
           template.content_tag :div, class: 'row collapse' do
             input = ""
             input += template.content_tag :div, class: 'small-1 columns' do
-              template.content_tag :span, class: 'prefix radius' do 
+              template.content_tag :a, class: 'prefix secondary button' do 
                 template.content_tag :i, "", class: 'general foundicon-calendar'
               end
             end
@@ -43,7 +43,7 @@ module SimpleForm
           template.content_tag :div, class: 'row collapse' do
             input = ""
             input += template.content_tag :div, class: 'small-1 columns' do
-              template.content_tag :span, class: 'prefix radius' do 
+              template.content_tag :a, class: 'prefix secondary button' do 
                 template.content_tag :i, "", class: 'general foundicon-calendar'
               end
             end

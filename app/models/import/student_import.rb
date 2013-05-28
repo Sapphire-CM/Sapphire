@@ -61,10 +61,13 @@ class Import::StudentImport < ActiveRecord::Base
     values = parsed_file
 
     begin
+      students = []
+      student_registrations = []
+
       values.each do |row|
         email = row[import_mapping.email.to_i]
         matriculum_number = row[import_mapping.matriculum_number.to_i]
-        
+
         student = Account.find_or_initialize_by_email(email)
         student.forename = row[import_mapping.forename.to_i]
         student.surname = row[import_mapping.surname.to_i]
@@ -72,7 +75,7 @@ class Import::StudentImport < ActiveRecord::Base
         student.matriculum_number = row[import_mapping.matriculum_number.to_i]
         student.password = "123456" # TODO change default password
         student.password_confirmation = "123456"
-        student.save!
+        students << student
 
         group_title = row[import_mapping.tutorial_group.to_i]
         tutorial_group = term.tutorial_groups.find_or_initialize_by_title(group_title)
@@ -80,8 +83,25 @@ class Import::StudentImport < ActiveRecord::Base
 
         registration = tutorial_group.student_registrations.find_or_initialize_by_account_id(student.id)
         registration.registered_at = DateTime.parse(row[import_mapping.registered_at.to_i].gsub(/,/, " "))
-        registration.save!
+        student_registrations << registration
       end
+
+      Account.uncached do
+        Account.transaction do
+          students.each do |account|
+            account.save!
+          end
+        end
+      end
+
+      StudentRegistration.uncached do
+        StudentRegistration.transaction do
+          student_registrations.each do |registration|
+            registration.save!
+          end
+        end
+      end
+
       self.status = "imported"
       self.save
 

@@ -55,10 +55,11 @@
         </table>
       <% else %>
         <p>No tutorial groups present.</p>
-        <p>
-          <%= link_to "Import Students", new_course_term_import_student_import_path(current_course, current_term), class: 'small button' %>
-        </p>
       <% end %>
+
+      <p>
+        <%= link_to "Import Students", new_course_term_import_student_import_path(current_course, current_term), class: 'small button' %>
+      </p>
     </div>
   </section>
 

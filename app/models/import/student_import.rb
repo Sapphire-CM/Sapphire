@@ -117,8 +117,12 @@ class Import::StudentImport < ActiveRecord::Base
     @parsing_error
   end
 
-  def parsed_file
+  def values
     @parsed_file ||= parsed_csv_file
+  end
+
+  def headers
+    @headers if values
   end
 
 
@@ -129,16 +133,20 @@ class Import::StudentImport < ActiveRecord::Base
     options[:col_sep] = import_options[:col_seperator] || ";"
     options[:quote_char] = import_options[:quote_char] || "\""
 
+    @headers = []
     records = []
     text = File.open(self.file.to_s, "r").read
     text = text.force_encoding("UTF-8").gsub("\xEF\xBB\xBF".force_encoding("UTF-8"), '')
     text.split(/\n/).each_with_index do |line, index|
-      # ignore first line
-      next if index == 0 && import_options[:headers_on_first_line] == "1"
-
       line.strip!
       begin
-        records << CSV.parse_line(line, options).keep_if {|cell| cell.present?}
+        values = CSV.parse_line(line, options).keep_if {|cell| cell.present?}
+
+        if index == 0 && import_options[:headers_on_first_line] == "1"
+          @headers << values
+        else
+          records << values
+        end
       rescue CSV::MalformedCSVError => e
         @parsing_error = true
         records << ["Couldn't parse this line: #{line}", e.inspect]

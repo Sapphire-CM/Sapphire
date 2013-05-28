@@ -8,10 +8,18 @@
       <table class='mapping_table'>
         <thead>
           <tr>
-          <% column_count.times do |i| %>
-            <td><%= mapping_table_header i, importable_attributes, mapping, fb %></td>
-          <% end %>
+            <% column_count.times do |i| %>
+              <td><%= mapping_table_header i, importable_attributes, mapping, fb %></td>
+            <% end %>
           </tr>
+
+          <% if headers.length == 1 %>
+            <tr>
+              <% for header in headers.first %>
+                <th><%= header.html_safe %></th>
+              <% end %>
+            </tr>
+          <% end %>
         </thead>
         <tbody>
           <% values.first(5).each do |row| %>

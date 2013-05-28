@@ -3,19 +3,17 @@ require "csv"
 class Import::StudentImport < ActiveRecord::Base
   IMPORTABLE_ATTRIBUTES = [:tutorial_group, :email, :forename, :surname, :matriculum_number, :registered_at].freeze
   STATES = ["pending", "imported"].freeze
-  FORMATS = ["csv"].freeze
 
   # associations
   belongs_to :term
 
   # attributes
-  attr_accessible :format, :term_id, :file, :file_cache, :import_options, :import_mapping
+  attr_accessible :term_id, :file, :file_cache, :import_options, :import_mapping
   mount_uploader :file, Import::StudentImportsUploader
   serialize :import_options, Hash
   serialize :import_mapping, Import::ImportMapping
 
   # callbacks
-  before_validation :determine_format, if: lambda {|student_import| student_import.format.blank? && student_import.file.identifier.present? }
   before_validation :fill_status, on: :create
 
   #validations
@@ -120,10 +118,7 @@ class Import::StudentImport < ActiveRecord::Base
   end
 
   def parsed_file
-    @parsed_file ||= case self.format
-    when "csv" then parsed_csv_file
-    when "xml" then parsed_xml_file
-    end
+    @parsed_file ||= parsed_csv_file
   end
 
 
@@ -152,25 +147,7 @@ class Import::StudentImport < ActiveRecord::Base
     records
   end
 
-  def parsed_xml_file
-
-  end
-
   def fill_status
     self.status = "pending"
-  end
-
-  def determine_format
-    ext = File.extname self.file.identifier
-
-    self.format = case ext
-    when ".csv"
-      "csv"
-    when ".xml"
-      "xml"
-    else
-      FORMATS.first
-    end
-
   end
 end

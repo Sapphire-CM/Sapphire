@@ -13,9 +13,9 @@
             <% end %>
           </tr>
 
-          <% if headers.length == 1 %>
+          <% if headers.any? %>
             <tr>
-              <% for header in headers.first %>
+              <% for header in headers %>
                 <th><%= header.html_safe %></th>
               <% end %>
             </tr>
@@ -25,7 +25,11 @@
           <% values.first(5).each do |row| %>
             <tr>
               <% row.each do |cell| %>
-              <td><%= cell %></td>
+                <td><%= cell %></td>
+              <% end %>
+
+              <% (column_count - row.length).times do %>
+                <td></td>
               <% end %>
             </tr>
           <% end %>

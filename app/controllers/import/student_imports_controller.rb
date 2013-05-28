@@ -20,6 +20,8 @@ class Import::StudentImportsController < TermResourceController
     @student_import = current_term.student_imports.new(params[:import_student_import])
 
     if @student_import.save
+      @student_import.smart_guess_new_import_mapping
+
       redirect_to course_term_import_student_import_path(current_course, current_term, @student_import)
     else
       render :new, notice: "Error during saving!"

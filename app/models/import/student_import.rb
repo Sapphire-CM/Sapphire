@@ -1,7 +1,7 @@
 require "csv"
 
 class Import::StudentImport < ActiveRecord::Base
-  IMPORTABLE_ATTRIBUTES = [:tutorial_group, :email, :forename, :surname, :matriculum_number, :registered_at].freeze
+  IMPORTABLE_ATTRIBUTES = [:tutorial_group, :email, :forename, :surname, :matriculum_number, :registered_at, :comment].freeze
   STATES = ["pending", "imported"].freeze
 
   # associations
@@ -42,7 +42,6 @@ class Import::StudentImport < ActiveRecord::Base
 
   def import_mapping=(val)
     val = Import::ImportMapping.new(val) unless val.class == Import::ImportMapping
-
     write_attribute :import_mapping, val
   end
 
@@ -56,15 +55,12 @@ class Import::StudentImport < ActiveRecord::Base
   end
 
   def import!
-    values = parsed_file
-
     begin
       students = []
       student_registrations = []
 
       values.each do |row|
         email = row[import_mapping.email.to_i]
-        matriculum_number = row[import_mapping.matriculum_number.to_i]
 
         student = Account.find_or_initialize_by_email(email)
         student.forename = row[import_mapping.forename.to_i]
@@ -80,7 +76,8 @@ class Import::StudentImport < ActiveRecord::Base
         tutorial_group.save!
 
         registration = tutorial_group.student_registrations.find_or_initialize_by_account_id(student.id)
-        registration.registered_at = DateTime.parse(row[import_mapping.registered_at.to_i].gsub(/,/, " "))
+        registration.registered_at = row[import_mapping.registered_at.to_i].to_datetime
+        registration.comment = row[import_mapping.comment.to_i] if import_mapping.comment
         student_registrations << registration
       end
 
@@ -117,13 +114,42 @@ class Import::StudentImport < ActiveRecord::Base
     @parsing_error
   end
 
+  def headers
+    @headers if values
+  end
+
   def values
     @parsed_file ||= parsed_csv_file
   end
 
-  def headers
-    @headers if values
+  def smart_guess_new_import_mapping
+    smart_guessed_import_mapping = Import::ImportMapping.new
+
+    if headers.length - values.first.length == 1
+      smart_guessed_import_mapping.comment = headers.length - 1
+    end
+
+    if values.any?
+      row = values.first
+
+      row.each_index do |cell_index|
+        smart_guessed_import_mapping.tutorial_group = cell_index if /\AT[\d]{1}/ =~ row[cell_index]
+        smart_guessed_import_mapping.email = cell_index if /.*?@?.*/ =~ row[cell_index]
+        smart_guessed_import_mapping.matriculum_number = cell_index if /\A[\d]{7}\z/ =~ row[cell_index]
+
+        begin
+          smart_guessed_import_mapping.registered_at = cell_index if row[cell_index].to_datetime
+        rescue
+        end
+      end
+    end
+
+    self.import_mapping = smart_guessed_import_mapping
+    self.save
   end
+
+
+
 
 
   private
@@ -143,7 +169,7 @@ class Import::StudentImport < ActiveRecord::Base
         values = CSV.parse_line(line, options).keep_if {|cell| cell.present?}
 
         if index == 0 && import_options[:headers_on_first_line] == "1"
-          @headers << values
+          @headers = values
         else
           records << values
         end

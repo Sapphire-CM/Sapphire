@@ -4,24 +4,26 @@
   </p>
 
   <%= f.fields_for :import_mapping do |fb| %>
-    <table class='mapping_table'>
-      <thead>
-        <tr>
-        <% column_count.times do |i| %>
-          <td><%= mapping_table_header i, importable_attributes, mapping, fb %></td>
-        <% end %>
-        </tr>
-      </thead>
-      <tbody>
-        <% values.first(5).each do |row| %>
+    <div>
+      <table class='mapping_table'>
+        <thead>
           <tr>
-            <% row.each do |cell| %>
-            <td><%= cell %></td>
-            <% end %>
+          <% column_count.times do |i| %>
+            <td><%= mapping_table_header i, importable_attributes, mapping, fb %></td>
+          <% end %>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% values.first(5).each do |row| %>
+            <tr>
+              <% row.each do |cell| %>
+              <td><%= cell %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
 
     <p>
       <%= "#{values.count - 5} more entries..." %>

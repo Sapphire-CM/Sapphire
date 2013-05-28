@@ -40,14 +40,14 @@
           <tbody>
             <% @tutorial_groups.each do |tutorial_group| %>
               <tr>
-                <td><%= tutorial_group.title %></td>
+                <td><%= link_to "#{tutorial_group.title}", course_term_tutorial_group_path(current_course, current_term, tutorial_group) %></td>
                 <td><%= tutor_name tutorial_group.tutor %></td>
                 <td><%= tutorial_group.students.count %></td>
 
                 <td class='right-aligned'>
-                  <%= link_to "View", course_term_tutorial_group_path(current_course, current_term, tutorial_group), class: "small button" %>
-                  <%= link_to "Edit", edit_course_term_tutorial_group_path(current_course, current_term, tutorial_group), class: "small button" %>
-                  <%= link_to "Delete", course_term_tutorial_group_path(current_course, current_term, tutorial_group), method: :delete, confirm: "Are you sure?", class: "small alert button" %>
+                  <%= link_to "<i class='general foundicon-edit'></i>".html_safe, edit_course_term_tutorial_group_path(current_course, current_term, tutorial_group) %>
+
+                  <%= link_to "<i class='general foundicon-remove'></i>".html_safe, course_term_tutorial_group_path(current_course, current_term, tutorial_group), method: :delete, confirm: "Are you sure?" %>
                 </td>
               </tr>
             <% end %>
@@ -71,7 +71,7 @@
           <thead>
             <tr>
               <th>Title</th>
-              <th>Rating Groups</th>
+              <th>Deadline</th>
               <th>Submissions</th>
               <th></th>
             </tr>
@@ -79,14 +79,14 @@
           <tbody>
             <% @exercises.each do |exercise| %>
               <tr>
-                <td><%= exercise.title %></td>
-                <td><%= exercise.rating_groups.count %></td>
+                <td><%= link_to "#{exercise.title}", course_term_exercise_path(current_course, current_term, exercise) %></td>
+                <td><%= exercise.deadline%></td>
                 <td><%= exercise.submissions.count %></td>
 
                 <td class='right-aligned'>
-                  <%= link_to "View", course_term_exercise_path(current_course, current_term, exercise), class: "small button" %>
-                  <%= link_to "Edit", edit_course_term_exercise_path(current_course, current_term, exercise), class: "small button" %>
-                  <%= link_to "Delete", course_term_exercise_path(current_course, current_term, exercise), class: "small alert button", method: :delete, confirm: "Are you sure?" %>
+                  <%= link_to "<i class='general foundicon-edit'></i>".html_safe, edit_course_term_exercise_path(current_course, current_term, exercise) %>
+
+                  <%= link_to "<i class='general foundicon-remove'></i>".html_safe, course_term_exercise_path(current_course, current_term, exercise), method: :delete, confirm: "Are you sure?" %>
                 </td>
               </tr>
             <% end %>

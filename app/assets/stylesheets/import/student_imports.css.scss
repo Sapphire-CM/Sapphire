@@ -5,3 +5,10 @@
 table.mapping_table select {
   min-width: 50px;
 }
+
+input.file-format-centered {
+  text-align: center;
+  width: 2em;
+  margin-left: auto;
+  margin-right: auto;
+}

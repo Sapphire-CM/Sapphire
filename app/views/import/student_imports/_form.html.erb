@@ -11,9 +11,6 @@
       <% end %>
 
     </div>
-    <div class='large-4 columns'>
-      <%= f.input :format, as: :select, collection: Import::StudentImport::FORMATS, include_blank: "-- determine automatically --" %>
-    </div>
   </div>
 
   <div class="section-container tabs" data-section="tabs">
@@ -23,30 +20,44 @@
 
         <%= f.simple_fields_for :import_options do |b| %>
           <div class='row'>
-            <div class='large-2 columns'>
-              <%= b.label :col_seperator, class: "right" %>
+            <div class='large-4 columns'>
+              <div class='row'>
+                <div class='large-12 large-centered text-center'>
+                  <%= b.label :col_seperator %>
+                </div>
+              </div>
+              <div class='row'>
+                <div>
+                  <%= b.input_field :col_seperator, value: @student_import.import_options[:col_seperator], class: 'file-format-centered' %>
+                </div>
+              </div>
             </div>
-            <div class='large-1 columns'>
-              <%= b.input_field :col_seperator, value: @student_import.import_options[:col_seperator], class: "inline" %>
-            </div>
-            <div class='large-1 columns'></div>
 
-            <div class='large-2 columns'>
-              <%= b.label :quote_char, class: "right" %>
+            <div class='large-4 columns'>
+              <div class='row'>
+                <div class='large-12 large-centered text-center'>
+                  <%= b.label :quote_char %>
+                </div>
+              </div>
+              <div class='row'>
+                <div>
+                  <%= b.input_field :quote_char, value: @student_import.import_options[:quote_char], class: "file-format-centered" %>
+                </div>
+              </div>
             </div>
-            <div class='large-1 columns'>
-              <%= b.input_field :quote_char, value: @student_import.import_options[:quote_char], class: "inline" %>
-            </div>
-            <div class='large-1 columns'></div>
 
-            <div class='large-2 columns'>
-              <%= b.label :headers_on_first_line, class: "right" %>
+            <div class='large-4 columns'>
+              <div class='row'>
+                <div class='large-12 large-centered text-center'>
+                  <%= b.label :headers_on_first_line %>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='file-format-centered text-center'>
+                  <%= b.check_box :headers_on_first_line, checked: (@student_import.import_options[:headers_on_first_line].to_s == "1") %>
+                </div>
+              </div>
             </div>
-            <div class='large-1 columns'>
-              <%= b.check_box :headers_on_first_line, checked: (@student_import.import_options[:headers_on_first_line].to_s == "1"), class: "inline" %>
-            </div>
-            <div class='large-1 columns'></div>
-
           </div>
         <% end %>
 

@@ -24,11 +24,19 @@ class Import::StudentImportDecorator < Draper::Decorator
   end
 
   def mapping_table
-    values = model.parsed_file
-
+    headers = model.headers
+    values = model.values
     mapping = model.import_mapping
 
-    h.render "import/student_imports/mapping_table", mapping: mapping, column_count: values.first.length, values: values, importable_attributes: model.class::IMPORTABLE_ATTRIBUTES, student_import: model
+    column_count = if headers.length > 0
+      headers.length
+    elsif values.length > 0
+      values.first.length
+    else
+      0
+    end
+
+    h.render "import/student_imports/mapping_table", mapping: mapping, column_count: column_count, headers: headers, values: values, importable_attributes: model.class::IMPORTABLE_ATTRIBUTES, student_import: model
   end
 
   # Accessing Helpers

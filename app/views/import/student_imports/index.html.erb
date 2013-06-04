@@ -1,32 +1,36 @@
 <% title "Student Imports for #{current_course.title} " %>
 
-<table>
-  <thead>
-    <th>Term</th>
-    <th>Filename</th>
-    <th>Imported Students</th>
-    <th>Created At</th>
-    <th>Status</th>
-    <th></th>
-  </thead>
-  <tbody>
-    <% @student_imports.each do |student_import| %>
-      <tr>
-        <td><%= student_import.term_title %></td>
-        <td><%= student_import.filename %></td>
-        <td><%= student_import.students_count %></td>
-        <td><%= student_import.created_at %></td>
-        <td><%= student_import.status %></td>
-        <td>
-          <%= link_to "View", course_term_import_student_import_path(current_course, current_term, student_import), class: 'button tiny' %>
-          <%#= link_to "Edit", edit_import_student_import_path(student_import), class: 'button tiny' %>
-          <%#= link_to "Delete", import_student_import_path(student_import), method: :delete, class: "button tiny alert" %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class='row'>
+  <div class='columns'>
+    <table class='large-12'>
+      <thead>
+        <th>Term</th>
+        <th>Filename</th>
+        <th>Imported Students</th>
+        <th>Created At</th>
+        <th>Status</th>
+        <th></th>
+      </thead>
+      <tbody>
+        <% @student_imports.each do |student_import| %>
+          <tr>
+            <td><%= student_import.term_title %></td>
+            <td><%= student_import.filename %></td>
+            <td><%= student_import.students_count %></td>
+            <td><%= student_import.created_at %></td>
+            <td><%= student_import.status %></td>
+            <td>
+              <%= link_to "<i class='general foundicon-search'></i>".html_safe, course_term_import_student_import_path(current_course, current_term, student_import) %>
+
+              <%= link_to "<i class='general foundicon-remove'></i>".html_safe, course_term_import_student_import_path(current_course, current_term, student_import), method: :delete, confirm: "Are you sure?" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 
 <p>
-  <%#= link_to "New Student Import", new_import_student_import_path, class: "button" %>
+  For new imports please go through the term of your choice.
 </p>

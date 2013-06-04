@@ -125,10 +125,7 @@ class Import::StudentImport < ActiveRecord::Base
   def smart_guess_new_import_mapping
     smart_guessed_import_mapping = Import::ImportMapping.new
 
-    if headers.length - values.first.length == 1
-      smart_guessed_import_mapping.comment = headers.length - 1
-    end
-
+    # guess mapping from content
     if values.any?
       row = values.first
 
@@ -143,6 +140,14 @@ class Import::StudentImport < ActiveRecord::Base
         end
       end
     end
+
+    # hard coded values of headers
+    headers.each_index do |cell_index|
+      smart_guessed_import_mapping.forename = cell_index if /.*Vorname.*/ =~ headers[cell_index]
+      smart_guessed_import_mapping.surname = cell_index if /.*Nachname.*/ =~ headers[cell_index]
+      smart_guessed_import_mapping.comment = cell_index if /.*Anmerkung.*/ =~ headers[cell_index]
+    end if headers
+
 
     self.import_mapping = smart_guessed_import_mapping
     self.save

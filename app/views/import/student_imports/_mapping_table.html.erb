@@ -1,44 +1,46 @@
 <%= simple_form_for [current_course, current_term, @student_import] do |f| %>
-  <p>
-    <%= f.submit "Import", class: "button" %>
-  </p>
-
   <%= f.fields_for :import_mapping do |fb| %>
-    <div>
-      <table class='mapping_table'>
-        <thead>
-          <tr>
-            <% column_count.times do |i| %>
-              <td><%= mapping_table_header i, importable_attributes, mapping, fb %></td>
+    <div class='row'>
+      <div>
+        <table class='mapping_table'>
+          <thead>
+            <tr>
+              <% column_count.times do |i| %>
+                <td><%= mapping_table_header i, importable_attributes, mapping, fb %></td>
+              <% end %>
+            </tr>
+
+            <% if headers.any? %>
+              <tr>
+                <% for header in headers %>
+                  <th><%= header.html_safe %></th>
+                <% end %>
+              </tr>
             <% end %>
-          </tr>
+          </thead>
+          <tbody>
+            <% values.first(5).each do |row| %>
+              <tr>
+                <% row.each do |cell| %>
+                  <td><%= cell %></td>
+                <% end %>
 
-          <% if headers.any? %>
-            <tr>
-              <% for header in headers %>
-                <th><%= header.html_safe %></th>
-              <% end %>
-            </tr>
-          <% end %>
-        </thead>
-        <tbody>
-          <% values.first(5).each do |row| %>
-            <tr>
-              <% row.each do |cell| %>
-                <td><%= cell %></td>
-              <% end %>
-
-              <% (column_count - row.length).times do %>
-                <td></td>
-              <% end %>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+                <% (column_count - row.length).times do %>
+                  <td></td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <p>
       <%= "#{values.count - 5} more entries..." %>
     </p>
   <% end %>
+
+  <p>
+    <%= f.submit "Import", class: "button" %>
+  </p>
 <% end %>

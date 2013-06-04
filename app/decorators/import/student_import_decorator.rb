@@ -28,7 +28,7 @@ class Import::StudentImportDecorator < Draper::Decorator
     values = model.values
     mapping = model.import_mapping
 
-    column_count = if headers
+    column_count = if headers.length > 0
       headers.length
     elsif values.length > 0
       values.first.length

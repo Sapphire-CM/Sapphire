@@ -1,8 +1,6 @@
 <% title "Edit your Account" %>
 
 <%= simple_form_for @account do |f| %>
-  <%= f.error_notification %>
-
   <div class="form-inputs">
     <%= f.input :email, required: true, disabled: true %>
     <%= f.input :forename, required: true, autofocus: true %>

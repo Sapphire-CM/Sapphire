@@ -10,7 +10,19 @@
     <% end %>
 
     <div id="copy_elements_container" class="radius panel hide">
+      <%= label_tag :copy_elements_lecturer, "Source term" %>
       <%= collection_select(:copy_elements_data, :term_id, @course.terms, :id, :title) %>
+
+      <%= label_tag :copy_elements_lecturer do %>
+        <%= check_box_tag :copy_elements_lecturer %>
+        Lecturer
+      <% end %>
+
+      <%= label_tag :copy_elements_exercises do %>
+        <%= check_box_tag :copy_elements_exercises %>
+        Exercises with RatingGroups and Ratings
+      <% end %>
+
     </div>
   <% end %>
 

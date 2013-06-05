@@ -22,7 +22,38 @@ class TermsController < TermResourceController
 
       # create elements for new term
       if params[:copy_elements] == '1'
-        raise
+        source_term = Term.find(params[:copy_elements_data][:term_id])
+
+        if params[:copy_elements_lecturer] == '1'
+          source_registration = LecturerRegistration.find_by_term_id(source_term.id)
+
+          if source_registration
+            registration = LecturerRegistration.find_or_initialize_by_term_id(@term.id)
+            registration.lecturer = source_registration.lecturer
+            registration.registered_at = DateTime.now
+            registration.save
+          end
+        end
+
+        if params[:copy_elements_exercises] == '1'
+          source_term.exercises.each do |source_exercise|
+            exercise = source_exercise.dup
+            exercise.term = @term
+            exercise.save
+
+            source_exercise.rating_groups.each do |source_rating_group|
+              rating_group = source_rating_group.dup
+              rating_group.exercise = exercise
+              rating_group.save
+
+              source_rating_group.ratings.each do |source_rating|
+                rating = source_rating.dup
+                rating.rating_group = rating_group
+                rating.save
+              end
+            end
+          end
+        end
       end
 
       render partial: 'terms/insert_index_entry', locals: { term: @term }

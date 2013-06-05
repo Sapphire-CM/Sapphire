@@ -11,13 +11,20 @@ class TermsController < TermResourceController
   end
 
   def new
-    @term = @course.terms.new
+    @term = Term.new
+    @term.course = @course
   end
 
   def create
-    @term = @course.terms.new(params[:term])
+    @term = Term.new(params[:term])
 
     if @term.save
+
+      # create elements for new term
+      if params[:copy_elements] == '1'
+        raise
+      end
+
       render partial: 'terms/insert_index_entry', locals: { term: @term }
     else
       render :new

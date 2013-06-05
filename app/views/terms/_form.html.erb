@@ -3,6 +3,17 @@
   <%= f.input :description, input_html: { rows: 3 } %>
   <%= f.input :course_id, as: :hidden %>
 
+  <% if @course.terms.any? %>
+    <%= label_tag :copy_elements do %>
+      <%= check_box_tag :copy_elements %>
+      Copy elements from previous term
+    <% end %>
+
+    <div id="copy_elements_container" class="radius panel hide">
+      <%= collection_select(:copy_elements_data, :term_id, @course.terms, :id, :title) %>
+    </div>
+  <% end %>
+
   <div class='row'>
     <div class='large-12 large-centered columns text-center'>
       <%= f.submit "Save", class: "button" %>

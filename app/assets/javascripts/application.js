@@ -37,3 +37,9 @@ $(function(){
   $reveal_modal.remove();
   $('body').append($reveal_modal);
 });
+
+$(function(){
+  $('.alert-box').on('click', function(){
+    $(this).children('a').trigger('click.fndtn.alerts');
+  });
+});

@@ -11,9 +11,9 @@
       <% end %>
     </h3>
     <span class='index_entry_icons right-aligned'>
-      <%= link_to "<i class='general foundicon-edit'></i>".html_safe, edit_course_path(course), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
+      <%= link_to foundicon(:edit), edit_course_path(course), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
 
-      <%= link_to "<i class='general foundicon-remove'></i>".html_safe, course_path(course), class: 'index_entry_remove', method: :delete, confirm: "Are you sure?", remote: true %>
+      <%= link_to foundicon(:remove), course_path(course), class: 'index_entry_remove', method: :delete, confirm: "Are you sure?", remote: true %>
     </span>
     </div>
   </div>
@@ -37,7 +37,7 @@
 
       <tr class="last_one">
         <td colspan='5' class='text-center minimum-width'>
-          <%= link_to "<i class='general foundicon-plus'></i>".html_safe, new_course_term_path(course), remote: true, title: 'Add Term', data: {"reveal-id" => "reveal_modal"}   %>
+          <%= link_to foundicon(:plus), new_course_term_path(course), remote: true, title: 'Add Term', data: {"reveal-id" => "reveal_modal"}   %>
         </td>
       </tr>
     </tbody>

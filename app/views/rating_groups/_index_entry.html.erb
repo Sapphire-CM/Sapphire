@@ -5,15 +5,15 @@
       <% if rating_group.description.blank? %>
         <%= rating_group_full_title(rating_group) %>
       <% else %>
-        <span data-tooltip class="has-tip" title="<%= rating_group.description.html_safe %>">
+        <span data-tooltip class="has-tip" title="<%= rating_group.description %>">
           <%= rating_group_full_title(rating_group) %>
         </span>
       <% end %>
     </h3>
     <span class='index_entry_icons right-aligned'>
-    <%= link_to "<i class='general foundicon-edit'></i>".html_safe, edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
+    <%= link_to foundicon(:edit), edit_course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
 
-    <%= link_to "<i class='general foundicon-remove'></i>".html_safe, course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_remove', method: :delete, confirm: "Are you sure?", remote: true %>
+    <%= link_to foundicon(:remove), course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group), class: 'index_entry_remove', method: :delete, confirm: "Are you sure?", remote: true %>
     </span>
     </div>
   </div>
@@ -36,7 +36,7 @@
         <td colspan='3'>
           <div class='row'>
             <div class='large-1 large-centered columns text-center'>
-              <%= link_to "<i class='general foundicon-plus'></i>".html_safe, new_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, rating_group), remote: true, title: 'Add Rating', data: {"reveal-id" => "reveal_modal"}   %>
+              <%= link_to foundicon(:plus), new_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, rating_group), remote: true, title: 'Add Rating', data: {"reveal-id" => "reveal_modal"}   %>
             </div>
           </div>
         </td>

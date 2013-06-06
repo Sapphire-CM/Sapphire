@@ -99,7 +99,9 @@
   <section>
     <p class="title" data-section-title><a href="#">Staff</a></p>
     <div class="content" data-section-content>
-      <%= link_to set_lecturer_label, course_term_new_lecturer_registration_path(current_course, current_term), class: "small button twelve columns" %>
+      <p>
+        <%= link_to set_lecturer_label, course_term_new_lecturer_registration_path(current_course, current_term), class: "small button" %>
+      </p>
 
       <% if @term.tutors.any? || @term.lecturer %>
         <table class='large-12'>

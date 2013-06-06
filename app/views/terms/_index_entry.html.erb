@@ -1,6 +1,7 @@
 <tr class="index_entry term" id="<%= "term_id_#{term.id}" %>">
   <td><%= link_to "#{term.title}", course_term_path(term.course, term) %></th>
-  <td><%= pluralize term.tutorial_groups.count, "Tutorial" %></td>
+  <td><%= term.exercises.count %></td>
+  <td><%= term.tutorial_groups.count %></td>
   <td><%= term.students.count %></td>
 
   <td class='right-aligned minimum-width'>

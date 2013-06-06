@@ -22,8 +22,9 @@
     <thead>
       <tr>
         <th>Title</th>
-        <th>Tutorials</th>
-        <th>Registered Students</th>
+        <th>Exercises</th>
+        <th>Tutorial Groups</th>
+        <th>Students</th>
         <th></th>
       </tr>
     </thead>
@@ -35,12 +36,8 @@
       <% end %>
 
       <tr class="last_one">
-        <td colspan='4'>
-          <div class='row'>
-            <div class='large-1 large-centered columns text-center'>
-              <%= link_to "<i class='general foundicon-plus'></i>".html_safe, new_course_term_path(course), remote: true, title: 'Add Term', data: {"reveal-id" => "reveal_modal"}   %>
-            </div>
-          </div>
+        <td colspan='5' class='text-center minimum-width'>
+          <%= link_to "<i class='general foundicon-plus'></i>".html_safe, new_course_term_path(course), remote: true, title: 'Add Term', data: {"reveal-id" => "reveal_modal"}   %>
         </td>
       </tr>
     </tbody>

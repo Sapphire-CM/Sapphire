@@ -1,18 +1,20 @@
 <% title "Courses" %>
 
-<div>
-  <div id='course_index_entries'>
-    <p class='index_entry_none course <%= 'hide' if @courses.any? %>'>
-      No courses present.
-    </p>
+<div class='large-6 large-centered columns grid-center'>
+  <div class='row'>
+    <div id='large-12 course_index_entries'>
+      <p class='index_entry_none course <%= 'hide' if @courses.any? %>'>
+        No courses present.
+      </p>
 
-    <% if @courses.any? %>
-      <%= render collection: @courses, partial: 'courses/index_entry', as: :course %>
-    <% end %>
+      <% if @courses.any? %>
+        <%= render collection: @courses, partial: 'courses/index_entry', as: :course %>
+      <% end %>
+    </div>
   </div>
 
   <div class="row">
-    <div class="large-12 large-centered columns text-center">
+    <div class="large-12 large-centered text-center">
       <%= link_to "Add Course", new_course_path, remote: true, class: "small button", data: {"reveal-id" => "reveal_modal"} %>
     </div>
   </div>

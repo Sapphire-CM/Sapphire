@@ -99,15 +99,11 @@ module LayoutHelper
   end
 
   def foundicon(icon)
-    html = "<i class='general foundicon-#{icon}'></i>"
-
-    html.html_safe
+    "<i class='general foundicon-#{icon}'></i>".html_safe
   end
 
   def foundicon_enclosed(icon)
-    html = "<i class='general-enclosed foundicon-#{icon}'></i>"
-
-    html.html_safe
+    "<i class='general-enclosed foundicon-#{icon}'></i>".html_safe
   end
 
 end

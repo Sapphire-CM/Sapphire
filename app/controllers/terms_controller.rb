@@ -11,20 +11,20 @@ class TermsController < TermResourceController
   end
 
   def new
-    @term = Term.new
+    @term = TermNew.new
     @term.course = @course
   end
 
   def create
-    @term = Term.new(params[:term])
+    @term = TermNew.new(params[:term])
 
     if @term.save
 
       # create elements for new term
-      if params[:copy_elements] == '1'
-        source_term = Term.find(params[:copy_elements_data][:term_id])
+      if @term.copy_elements
+        source_term = Term.find(@term.source_term_id)
 
-        if params[:copy_elements_lecturer] == '1'
+        if @term.copy_lecturer
           source_registration = LecturerRegistration.find_by_term_id(source_term.id)
 
           if source_registration
@@ -35,7 +35,7 @@ class TermsController < TermResourceController
           end
         end
 
-        if params[:copy_elements_exercises] == '1'
+        if @term.copy_exercises
           source_term.exercises.each do |source_exercise|
             exercise = source_exercise.dup
             exercise.term = @term

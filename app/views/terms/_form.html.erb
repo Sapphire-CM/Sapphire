@@ -1,28 +1,15 @@
-<%= simple_form_for [@course, @term], remote: true do |f| %>
+<%= simple_form_for @term, as: :term, url: course_terms_path(@course, @term), remote: true do |f| %>
   <%= f.input :title %>
   <%= f.input :description, input_html: { rows: 3 } %>
   <%= f.input :course_id, as: :hidden %>
 
   <% if @course.terms.any? %>
-    <%= label_tag :copy_elements do %>
-      <%= check_box_tag :copy_elements %>
-      Copy elements from previous term
-    <% end %>
+    <%= f.input :copy_elements, as: :boolean, label: "Copy elements from previous term" %>
 
     <div id="copy_elements_container" class="radius panel hide">
-      <%= label_tag :copy_elements_lecturer, "Source term" %>
-      <%= collection_select(:copy_elements_data, :term_id, @course.terms, :id, :title) %>
-
-      <%= label_tag :copy_elements_lecturer do %>
-        <%= check_box_tag :copy_elements_lecturer %>
-        Lecturer
-      <% end %>
-
-      <%= label_tag :copy_elements_exercises do %>
-        <%= check_box_tag :copy_elements_exercises %>
-        Exercises with RatingGroups and Ratings
-      <% end %>
-
+      <%= f.input :source_term_id, as: :select, collection: @course.terms, selected: @course.terms.first, label: "Source term" %>
+      <%= f.input :copy_lecturer, as: :boolean, label: "Lecturer" %>
+      <%= f.input :copy_exercises, as: :boolean, label: "Exercises, Rating groups and Ratings" %>
     </div>
   <% end %>
 

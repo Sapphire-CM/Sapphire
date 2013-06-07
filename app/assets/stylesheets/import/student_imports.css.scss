@@ -2,8 +2,21 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import "config";
+
 .mapping_table_container {
   overflow: scroll;
+  border: {
+    width: 0px;
+    style: solid;
+    color: $hr-border-color;
+    left-width: 1px;
+    right-width: 1px;
+  }
+
+  table.mapping_table {
+    margin-bottom: 0;
+  }
 }
 
 table.mapping_table select {

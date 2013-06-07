@@ -3,5 +3,5 @@
   <%= f.input :description, input_html: { rows: 3 } %>
 
   <%= link_to "Cancel", (@tutorial_group.new_record? ? course_term_path(current_course, current_term) : course_term_tutorial_groups_path(current_course, current_term, @tutorial_group)), class: "secondary button" %>
-  <%= f.submit "Save", class: "button"%>
+  <%= f.submit class: "button"%>
 <% end %>

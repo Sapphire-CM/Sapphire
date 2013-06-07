@@ -41,9 +41,7 @@ Sapphire::Application.routes.draw do
       end
 
       namespace :import do
-        resources :student_imports do
-          put :import, on: :member
-        end
+        resources :student_imports
       end
     end
   end

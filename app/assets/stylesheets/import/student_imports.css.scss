@@ -2,6 +2,21 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.mapping_table_container {
+  overflow: scroll;
+}
+
 table.mapping_table select {
   min-width: 50px;
+}
+
+select.import-mapping {
+  width: auto;
+}
+
+input.file-format-centered {
+  text-align: center;
+  width: 2em;
+  margin-left: auto;
+  margin-right: auto;
 }

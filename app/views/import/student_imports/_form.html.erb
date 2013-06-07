@@ -54,7 +54,7 @@
               </div>
               <div class='row'>
                 <div class='file-format-centered text-center'>
-                  <%= b.check_box :headers_on_first_line, checked: (@student_import.import_options[:headers_on_first_line].to_s == "1") %>
+                  <%= b.check_box :headers_on_first_line, checked: (@student_import.import_options[:headers_on_first_line].to_s == "1"), data: { customforms: 'disabled' } %>
                 </div>
               </div>
             </div>

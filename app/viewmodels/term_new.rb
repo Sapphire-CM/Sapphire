@@ -3,7 +3,7 @@ class TermNew < Term
   attr_accessible :copy_elements, :source_term_id, :copy_lecturer, :copy_exercises
 
   def copy_elements
-    @copy_elements ||= false
+    @copy_elements ||= nil
   end
 
   def source_term_id
@@ -11,11 +11,11 @@ class TermNew < Term
   end
 
   def copy_lecturer
-    @copy_lecturer ||= false
+    @copy_lecturer ||= nil
   end
 
   def copy_exercises
-    @copy_exercises ||= false
+    @copy_exercises ||= nil
   end
 
 

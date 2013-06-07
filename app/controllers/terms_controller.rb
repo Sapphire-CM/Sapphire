@@ -21,10 +21,10 @@ class TermsController < TermResourceController
     if @term.save
 
       # create elements for new term
-      if @term.copy_elements
+      if not @term.copy_elements.to_i.zero?
         source_term = Term.find(@term.source_term_id)
 
-        if @term.copy_lecturer
+        if not @term.copy_lecturer.to_i.zero?
           source_registration = LecturerRegistration.find_by_term_id(source_term.id)
 
           if source_registration
@@ -35,7 +35,7 @@ class TermsController < TermResourceController
           end
         end
 
-        if @term.copy_exercises
+        if not @term.copy_exercises.to_i.zero?
           source_term.exercises.each do |source_exercise|
             exercise = source_exercise.dup
             exercise.term = @term

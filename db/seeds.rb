@@ -1,6 +1,7 @@
 accounts = Account.create([
   { email: 'thomas.kriechbaumer@student.tugraz.at', forename: 'Thomas', surname: 'Kriechbaumer', password: '123456', password_confirmation: '123456'},
-  { email: 'matthias.link@student.tugraz.at', forename: 'Matthias', surname: 'Link', password: '654321', password_confirmation: '654321'} ])
+  { email: 'matthias.link@student.tugraz.at', forename: 'Matthias', surname: 'Link', password: '654321', password_confirmation: '654321'},
+  { email: 'kandrews@iicm.tugraz.at', forename: 'Keith', surname: 'Andrews', password: '123456', password_confirmation: '123456'} ])
 
 courses = Course.create([
   { title: 'INM' },
@@ -13,6 +14,10 @@ terms = Term.create([
   { title: 'SS 2013', course: courses[1] },
   { title: 'SS 2014', course: courses[1] },
   { title: 'WS 2013', course: courses[2] } ])
+
+lecturer_registrations = LecturerRegistration.create([
+  { term: terms[0], lecturer: accounts[2] },
+  { term: terms[2], lecturer: accounts[2] } ])
 
 exercises = Exercise.create([
   { title: 'Ex 1: Newsgroup',  term: terms[0] },

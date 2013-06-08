@@ -36,6 +36,26 @@ class RatingsController < TermResourceController
     end
   end
 
+  def update_position
+
+    @rating = @rating_group.ratings.where(id: params[:id]).first
+    
+    # is nil, when rating has been moved from another rating_group
+    if @rating.nil?
+      logger.info "Rating has been moved!"
+      @rating = @exercise.ratings.find(params[:id])
+      @rating.rating_group = @rating_group
+      @rating.save!
+      @rating.reload
+    end
+    # @rating = @rating.becomes(Rating)
+    
+
+    @rating.update_attribute :row_order_position,  params[:rating][:position]
+    
+    render :nothing => true
+  end
+
   def destroy
     @rating = @rating_group.ratings.find(params[:id])
     @rating.destroy

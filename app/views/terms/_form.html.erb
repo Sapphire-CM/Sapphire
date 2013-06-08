@@ -1,7 +1,17 @@
-<%= simple_form_for [@course, @term], remote: true do |f| %>
+<%= simple_form_for @term, as: :term, url: course_terms_path(@course, @term), remote: true do |f| %>
   <%= f.input :title %>
   <%= f.input :description, input_html: { rows: 3 } %>
   <%= f.input :course_id, as: :hidden %>
+
+  <% if @course.terms.any? %>
+    <%= f.input :copy_elements, as: :boolean, label: "Copy elements from previous term" %>
+
+    <div id="copy_elements_container" class="radius panel <%= 'hide' if @term.copy_elements.to_i.zero? %>">
+      <%= f.input :source_term_id, as: :select, collection: @course.terms, selected: @term.source_term_id || @course.terms.first, label: "Source term" %>
+      <%= f.input :copy_lecturer, as: :boolean, label: "Lecturer" %>
+      <%= f.input :copy_exercises, as: :boolean, label: "Exercises, Rating groups and Ratings" %>
+    </div>
+  <% end %>
 
   <div class='row'>
     <div class='large-12 large-centered columns text-center'>

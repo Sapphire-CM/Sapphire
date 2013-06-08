@@ -54,7 +54,7 @@
               </div>
               <div class='row'>
                 <div class='file-format-centered text-center'>
-                  <%= b.check_box :headers_on_first_line, checked: (@student_import.import_options[:headers_on_first_line].to_s == "1") %>
+                  <%= b.check_box :headers_on_first_line, checked: (@student_import.import_options[:headers_on_first_line].to_s == "1"), data: { customforms: 'disabled' } %>
                 </div>
               </div>
             </div>
@@ -65,6 +65,11 @@
     </section>
   </div>
 
-  <%= link_to "Cancel", (@student_import.new_record? ? course_term_import_student_imports_path(current_course, current_term) : course_term_import_student_import_path(current_course, current_term, @student_import)), class: "secondary button" %>
-  <%= f.submit "Next", class: "button" %>
+
+  <div class='row'>
+    <div class='large-12 large-centered columns text-center'>
+      <%= link_to "Cancel", (@student_import.new_record? ? course_term_import_student_imports_path(current_course, current_term) : course_term_import_student_import_path(current_course, current_term, @student_import)), class: "secondary button" %>
+      <%= f.submit "Next", class: "button" %>
+    </div>
+  </div>
 <% end %>

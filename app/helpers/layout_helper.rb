@@ -98,4 +98,12 @@ module LayoutHelper
     subtitle
   end
 
+  def foundicon(icon)
+    "<i class='general foundicon-#{icon}'></i>".html_safe
+  end
+
+  def foundicon_enclosed(icon)
+    "<i class='general-enclosed foundicon-#{icon}'></i>".html_safe
+  end
+
 end

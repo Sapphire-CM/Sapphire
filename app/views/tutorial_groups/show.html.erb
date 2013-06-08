@@ -16,30 +16,34 @@
     <section>
       <p class="title" data-section-title><a href="#">Students</a></p>
       <div class="content" data-section-content>
-        <table class='large-12'>
-          <thead>
-            <th>Forename</th>
-            <th>Surname</th>
-            <th>Matriculum Number</th>
-            <th>Submissions</th>
-            <th></th>
-          </thead>
-          <tbody>
-            <% @tutorial_group.students.each do |student|  %>
-            <tr>
-              <td><%= student.forename %></td>
-              <td><%= student.surname %></td>
-              <td><%= student.matriculum_number %></td>
-              <td><%= student.submissions_for_term(current_term).count %></td>
+        <% if @tutorial_group.students.any? %>
+          <table class='large-12'>
+            <thead>
+              <th>Forename</th>
+              <th>Surname</th>
+              <th>Matriculum Number</th>
+              <th>Submissions</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <% @tutorial_group.students.each do |student|  %>
+              <tr>
+                <td><%= student.forename %></td>
+                <td><%= student.surname %></td>
+                <td><%= student.matriculum_number %></td>
+                <td><%= student.submissions_for_term(current_term).count %></td>
 
-              <td class='right-aligned'>
-                <a href='#' class='tiny button'>SOME</a>
-                <a href='#' class='tiny alert button'>BUTTONS</a>
-              </td>
-            </tr>
-            <% end %>
-          </tbody>
-        </table>
+                <td class='right-aligned'>
+                  <a href='#' class='tiny button'>SOME</a>
+                  <a href='#' class='tiny alert button'>BUTTONS</a>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <p>No students present.</p>
+        <% end %>
       </div>
     </section>
 

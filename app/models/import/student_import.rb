@@ -75,7 +75,13 @@ class Import::StudentImport < ActiveRecord::Base
         tutorial_group = term.tutorial_groups.find_or_initialize_by_title(group_title)
         tutorial_group.save!
 
-        registration = tutorial_group.student_registrations.find_or_initialize_by_account_id(student.id)
+        if student.new_record?
+          registration = tutorial_group.student_registrations.new
+          registration.student = student
+        else
+          registration = tutorial_group.student_registrations.find_or_initialize_by_account_id(student.id)
+        end
+
         registration.registered_at = row[import_mapping.registered_at.to_i].to_datetime
         registration.comment = row[import_mapping.comment.to_i] if import_mapping.comment
         student_registrations << registration

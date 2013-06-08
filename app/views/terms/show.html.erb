@@ -1,12 +1,5 @@
 <% title course_term_title(current_course, current_term) %>
 
-<% sidebar do %>
-  <%= link_to set_lecturer_label, course_term_new_lecturer_registration_path(current_course, current_term), class: "small button twelve columns" %>
-  <%= link_to "Edit", edit_course_term_path(current_course, current_term), class: "small button twelve columns" %>
-  <%= link_to "Delete", course_term_path(current_course, current_term), method: :delete, confirm: "Are you sure?", class: "small alert button twelve columns" %>
-<% end %>
-
-
 <div class="section-container tabs" data-section="tabs">
   <section>
     <p class="title" data-section-title><a href="#">Dashboard</a></p>
@@ -45,9 +38,9 @@
                 <td><%= tutorial_group.students.count %></td>
 
                 <td class='right-aligned'>
-                  <%= link_to "<i class='general foundicon-edit'></i>".html_safe, edit_course_term_tutorial_group_path(current_course, current_term, tutorial_group) %>
+                  <%= link_to foundicon(:edit), edit_course_term_tutorial_group_path(current_course, current_term, tutorial_group) %>
 
-                  <%= link_to "<i class='general foundicon-remove'></i>".html_safe, course_term_tutorial_group_path(current_course, current_term, tutorial_group), method: :delete, confirm: "Are you sure?" %>
+                  <%= link_to foundicon(:remove), course_term_tutorial_group_path(current_course, current_term, tutorial_group), method: :delete, confirm: "Are you sure?" %>
                 </td>
               </tr>
             <% end %>
@@ -85,9 +78,9 @@
                 <td><%= exercise.submissions.count %></td>
 
                 <td class='right-aligned'>
-                  <%= link_to "<i class='general foundicon-edit'></i>".html_safe, edit_course_term_exercise_path(current_course, current_term, exercise) %>
+                  <%= link_to foundicon(:edit), edit_course_term_exercise_path(current_course, current_term, exercise) %>
 
-                  <%= link_to "<i class='general foundicon-remove'></i>".html_safe, course_term_exercise_path(current_course, current_term, exercise), method: :delete, confirm: "Are you sure?" %>
+                  <%= link_to foundicon(:remove), course_term_exercise_path(current_course, current_term, exercise), method: :delete, confirm: "Are you sure?" %>
                 </td>
               </tr>
             <% end %>
@@ -106,6 +99,9 @@
   <section>
     <p class="title" data-section-title><a href="#">Staff</a></p>
     <div class="content" data-section-content>
+      <p>
+        <%= link_to set_lecturer_label, course_term_new_lecturer_registration_path(current_course, current_term), class: "small button" %>
+      </p>
 
       <% if @term.tutors.any? || @term.lecturer %>
         <table class='large-12'>

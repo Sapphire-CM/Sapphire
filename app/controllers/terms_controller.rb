@@ -11,13 +11,51 @@ class TermsController < TermResourceController
   end
 
   def new
-    @term = @course.terms.new
+    @term = TermNew.new
+    @term.course = @course
   end
 
   def create
-    @term = @course.terms.new(params[:term])
+    @term = TermNew.new(params[:term])
 
     if @term.save
+
+      # create elements for new term
+      if not @term.copy_elements.to_i.zero?
+        source_term = Term.find(@term.source_term_id)
+
+        if not @term.copy_lecturer.to_i.zero?
+          source_registration = LecturerRegistration.find_by_term_id(source_term.id)
+
+          if source_registration
+            registration = LecturerRegistration.find_or_initialize_by_term_id(@term.id)
+            registration.lecturer = source_registration.lecturer
+            registration.registered_at = DateTime.now
+            registration.save
+          end
+        end
+
+        if not @term.copy_exercises.to_i.zero?
+          source_term.exercises.each do |source_exercise|
+            exercise = source_exercise.dup
+            exercise.term = @term
+            exercise.save
+
+            source_exercise.rating_groups.each do |source_rating_group|
+              rating_group = source_rating_group.dup
+              rating_group.exercise = exercise
+              rating_group.save
+
+              source_rating_group.ratings.each do |source_rating|
+                rating = source_rating.dup
+                rating.rating_group = rating_group
+                rating.save
+              end
+            end
+          end
+        end
+      end
+
       render partial: 'terms/insert_index_entry', locals: { term: @term }
     else
       render :new

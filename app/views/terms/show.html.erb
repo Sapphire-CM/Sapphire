@@ -31,7 +31,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @tutorial_groups.each do |tutorial_group| %>
+            <% @tutorial_groups.includes(:tutor_registration).each do |tutorial_group| %>
               <tr>
                 <td><%= link_to "#{tutorial_group.title}", course_term_tutorial_group_path(current_course, current_term, tutorial_group) %></td>
                 <td><%= tutor_name tutorial_group.tutor %></td>

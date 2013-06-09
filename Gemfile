@@ -35,6 +35,7 @@ group :development do
   gem 'brakeman'           # common security problems checker
   gem 'awesome_print'      # nicley formatted object inspection
   gem 'capistrano'         # deployment
+  gem 'bullet'             # logs and supposes optimizations for db queries
 end
 
 group :assets do

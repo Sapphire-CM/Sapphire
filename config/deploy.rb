@@ -51,8 +51,14 @@ namespace :deploy do
     run "touch #{current_path}/tmp/restart.txt"
   end
 
-  task :seed do
-    run "cd #{current_release} && RAILS_ENV=#{rails_env} bundle exec rake db:seed"
+  namespace :db do
+    task :seed do
+      run "cd #{current_release} && RAILS_ENV=#{rails_env} bundle exec rake db:seed"
+    end
+    
+    task :reset do
+      run "cd #{current_release} && RAILS_ENV=#{rails_env} bundle exec rake db:reset"
+    end
   end
 
   task :replace_secret do

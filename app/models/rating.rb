@@ -1,4 +1,7 @@
 class Rating < ActiveRecord::Base
+  include RankedModel
+  ranks :row_order, with_same: :rating_group_id, class_name: "Rating"
+  
   belongs_to :rating_group
   
   has_one :exercise, through: :rating_group
@@ -6,7 +9,7 @@ class Rating < ActiveRecord::Base
 
   validates_presence_of :title, :type
 
-  attr_accessible :title, :description, :rating_group, :value, :min_value, :max_value, :type
+  attr_accessible :title, :description, :rating_group, :value, :min_value, :max_value, :type, :position
   
   validate :rating_type_validation
 

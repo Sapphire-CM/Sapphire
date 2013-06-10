@@ -1,5 +1,5 @@
 <tr class="index_entry rating" id="<%= "rating_id_#{rating.id}" %>">
-  <td>
+  <td class='title-column'>
     <% if rating.description.blank? %>
       <%= rating.title %>
     <% else %>
@@ -9,11 +9,11 @@
     <% end %>
   </td>
 
-  <td class='right-aligned'>
+  <td class='value-column right-aligned'>
     <%= rating_points_description rating %>
   </td>
 
-  <td class='right-aligned minimum-width'>
+  <td class='buttons-column right-aligned minimum-width'>
     <%= link_to foundicon(:edit), edit_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, rating.rating_group, rating), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
 
     <%= link_to foundicon(:remove), course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, rating.rating_group, rating), class: 'index_entry_remove', method: :delete, confirm: "Are you sure?", remote: true %>

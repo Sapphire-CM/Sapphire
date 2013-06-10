@@ -20,6 +20,7 @@ gem 'devise'            # user authentication
 gem 'cancan'            # role based ability management for users
 gem 'turbolinks'        # ajax replacement links
 gem 'jquery-turbolinks' # turbolinks jquery plugin for events
+gem 'ranked-model'      # manages sort-position of ratings
 
 group :production do
   gem 'therubyracer'

@@ -1,7 +1,12 @@
 accounts = Account.create([
   { email: 'thomas.kriechbaumer@student.tugraz.at', forename: 'Thomas', surname: 'Kriechbaumer', password: '123456', password_confirmation: '123456'},
   { email: 'matthias.link@student.tugraz.at', forename: 'Matthias', surname: 'Link', password: '654321', password_confirmation: '654321'},
-  { email: 'kandrews@iicm.tugraz.at', forename: 'Keith', surname: 'Andrews', password: '123456', password_confirmation: '123456'} ])
+  { email: 'kandrews@iicm.tugraz.at', forename: 'Keith', surname: 'Andrews', password: '123456', password_confirmation: '123456'},
+  { email: 'john.doe@student.tugraz.at', forename: 'John', surname: 'Doe', matriculum_number:"1234567", password: '123456', password_confirmation: '123456'},
+  { email: 'jane.doe@iicm.tugraz.at', forename: 'Jane', surname: 'Doe', matriculum_number: "7654321", password: '123456', password_confirmation: '123456'},
+  { email: 'jack.doe@iicm.tugraz.at', forename: 'Jack', surname: 'Doe', matriculum_number: "1234765", password: '123456', password_confirmation: '123456'},
+   ])
+  
 
 courses = Course.create([
   { title: 'INM' },
@@ -18,6 +23,20 @@ terms = Term.create([
 lecturer_registrations = LecturerRegistration.create([
   { term: terms[0], lecturer: accounts[2] },
   { term: terms[2], lecturer: accounts[2] } ])
+
+tutorial_groups = [
+  {title: "T1", description: "First tutorial group"},
+  {title: "T2", description: "Second tutorial group"}
+].map {|tg_hash| tg = TutorialGroup.new(tg_hash); tg.term = terms.first; tg}
+tutorial_groups.each {|tg| tg.save}
+
+
+student_registrations = [
+  {account: accounts[3], tutorial_group: tutorial_groups.first, registered_at: Time.now},
+  {account: accounts[4], tutorial_group: tutorial_groups.first, registered_at: Time.now},
+  {account: accounts[5], tutorial_group: tutorial_groups.first, registered_at: Time.now}
+].map {|sr_hash| sr = StudentRegistration.new(registered_at: sr_hash[:registered_at]); sr.student = sr_hash[:account]; sr.tutorial_group = sr_hash[:tutorial_group]; sr }
+student_registrations.each { |sr| sr.save}
 
 exercises = Exercise.create([
   { title: 'Ex 1: Newsgroup',  term: terms[0] },
@@ -88,3 +107,11 @@ value_number_ratings = ValueNumberRating.create([
   { title: 'content of summary',    min_value:  0,   max_value: 10,  rating_group: rating_groups[2] },
   { title: 'style of layout',       min_value: -5,   max_value:  5,  rating_group: rating_groups[2] } ])
 
+
+submissions = [
+  {exercise: exercises.first, student_registration: student_registrations[0], submitted_at: Time.now - Random.rand(5..24).floor.hours},
+  {exercise: exercises.first, student_registration: student_registrations[1], submitted_at: Time.now - Random.rand(5..24).floor.hours},
+  {exercise: exercises.first, student_registration: student_registrations[2], submitted_at: Time.now - Random.rand(5..24).floor.hours},
+  {exercise: exercises.last, student_registration: student_registrations[2], submitted_at: Time.now - Random.rand(5..24).floor.hours}
+].map {|s_hash| s = Submission.new(submitted_at: s_hash[:submitted_at]); s.exercise = s_hash[:exercise]; s.student_registration = s_hash[:student_registration]; s}
+submissions.each {|s| s.save!}

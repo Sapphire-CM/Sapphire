@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130528191713) do
+ActiveRecord::Schema.define(:version => 20130608171829) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -112,12 +112,13 @@ ActiveRecord::Schema.define(:version => 20130528191713) do
     t.integer  "rating_group_id"
     t.string   "title"
     t.integer  "value"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.text     "description"
     t.string   "type"
     t.integer  "max_value"
     t.integer  "min_value"
+    t.integer  "row_order",       :default => 0
   end
 
   add_index "ratings", ["rating_group_id"], :name => "index_ratings_on_rating_group_id"

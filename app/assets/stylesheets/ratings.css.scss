@@ -1,3 +1,16 @@
 // Place all the styles related to the ratings controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+tr.index_entry.rating {
+  .title-column {
+    width: 70%;
+  }
+  .value-column {
+    width: 20%;
+  }
+  
+  .buttons-column {
+    width: auto;
+  }
+}

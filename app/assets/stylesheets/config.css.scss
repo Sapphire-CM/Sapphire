@@ -26,3 +26,28 @@ $hr-border-color: #ddd;
 }
 
 
+
+//
+// Panel Variables
+//
+
+// Background and border styles
+
+ $panel-bg: darken(#fff, 5%);
+ $panel-border-style: solid;
+ $panel-border-size: 1px;
+
+// Control how much we darken things on hover
+
+ $panel-function-factor: 10%;
+ $panel-border-color: darken($panel-bg, $panel-function-factor);
+
+// Inner padding and bottom margin
+
+ $panel-margin-bottom: emCalc(20px);
+ $panel-padding: emCalc(20px);
+
+// Font colors
+
+ $panel-font-color: #333;
+ $panel-font-color-alt: #fff;

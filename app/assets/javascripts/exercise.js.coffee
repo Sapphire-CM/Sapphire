@@ -4,19 +4,39 @@
 
 
 $ ->
-  $('.rating_group').each (i, el) ->
+  
+  get_rating_group_id = ($rating_group)->
+    $rating_group.attr("id").replace("rating_group_id_", "")
+  
+  get_rating_id = ($rating) ->
+    $rating.attr("id").replace("rating_id_", "")
+  
+  
+  $('#rating_group_index_entries').sortable(
+    items: ".rating_group.index_entry"
+    helper: 'clone'
+    forcePlaceholderSize: true
+    placeholder: 'rating-group-sortable-placeholder'
+    start: (e, ui) -> 
+      ui.helper.addClass('rating-group-sortable-helper')
+      ui.placeholder.show()
+      # ui.placeholder.addClass("rating-group-sortable-placeholder")
+      ui.placeholder.html('&nbsp;')
+      
+    update: (e, ui) ->
+      current_rg_id = get_rating_group_id ui.item
+      
+      data = rating_group: {row_order_position: ui.item.index()-1}
+      $.post(window.location + "/rating_groups/#{current_rg_id}/update_position", data)
+      
+  ).disableSelection()
+  
+  $('.rating_group.index_entry').each (i, el) ->
     $rating_group = $ el
     # $rating_group.find('tr.index_entry.rating').children("td").each ->
     #   $this = $(this)
     #   console.log("setting...")
     #   $this.width($this.width())
-    
-    get_rating_group_id = ($rating_group)->
-      $rating_group.attr("id").replace("rating_group_id_", "")
-    
-    get_rating_id = ($rating) ->
-      $rating.attr("id").replace("rating_id_", "")
-
     
     $ratings = $rating_group.find('table tbody').sortable(
       items: 'tr.index_entry.rating'

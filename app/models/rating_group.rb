@@ -1,4 +1,11 @@
 class RatingGroup < ActiveRecord::Base
+  include RankedModel
+  
+  # maybe definitin of class_name is not necessary here!
+  ranks :row_order, with_same: :exercise_id, class_name: "RatingGroup"
+  
+  
+  
   belongs_to :exercise
   has_many :ratings, dependent: :destroy
 
@@ -10,12 +17,12 @@ class RatingGroup < ActiveRecord::Base
     rating_group.global == true
   }
 
-  attr_accessible :title, :description, :points, :exercise, :global, :enable_range_points, :min_points, :max_points
+  attr_accessible :title, :description, :points, :exercise, :global, :enable_range_points, :min_points, :max_points, :row_order_position
 
   after_initialize :points_min_max
 
   def points_min_max
-    if enable_range_points
+    if self.try(:enable_range_points)
       if points > 0
         self.min_points ||= 0
         self.max_points ||= self.points
@@ -27,6 +34,9 @@ class RatingGroup < ActiveRecord::Base
       self.min_points = nil
       self.max_points = nil
     end
+  rescue
+    nil
+    # fixme!!!
   end
 
   def min_max_points_range

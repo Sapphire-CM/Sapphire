@@ -6,7 +6,7 @@ accounts = Account.create([
   { email: 'jane.doe@iicm.tugraz.at', forename: 'Jane', surname: 'Doe', matriculum_number: "7654321", password: '123456', password_confirmation: '123456'},
   { email: 'jack.doe@iicm.tugraz.at', forename: 'Jack', surname: 'Doe', matriculum_number: "1234765", password: '123456', password_confirmation: '123456'},
    ])
-  
+
 
 courses = Course.create([
   { title: 'INM' },
@@ -107,6 +107,7 @@ value_number_ratings = ValueNumberRating.create([
   { title: 'content of summary',    min_value:  0,   max_value: 10,  rating_group: rating_groups[2] },
   { title: 'style of layout',       min_value: -5,   max_value:  5,  rating_group: rating_groups[2] } ])
 
+Rating.all.map{ |rating| rating.row_order_position = :last; rating.save }
 
 submissions = [
   {exercise: exercises.first, student_registration: student_registrations[0], submitted_at: Time.now - Random.rand(5..24).floor.hours},

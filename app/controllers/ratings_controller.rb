@@ -14,6 +14,7 @@ class RatingsController < TermResourceController
 
     @rating = Rating.new_from_type(params[:rating])
     @rating.rating_group = @rating_group
+    @rating.row_order_position = :last
 
     if @rating.save
       render partial: 'ratings/insert_index_entry', locals: { rating: @rating }
@@ -39,7 +40,7 @@ class RatingsController < TermResourceController
   def update_position
 
     @rating = @rating_group.ratings.where(id: params[:id]).first
-    
+
     # is nil, when rating has been moved from another rating_group
     if @rating.nil?
       logger.info "Rating has been moved!"
@@ -49,10 +50,10 @@ class RatingsController < TermResourceController
       @rating.reload
     end
     # @rating = @rating.becomes(Rating)
-    
+
 
     @rating.update_attribute :row_order_position,  params[:rating][:position]
-    
+
     render :nothing => true
   end
 

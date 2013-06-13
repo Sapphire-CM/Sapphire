@@ -1,10 +1,10 @@
 class CoursesController < ApplicationController
   def index
-    @courses = Course.all
+    @courses = Course.includes(:terms).all
   end
 
   def show
-    @course = Course.find(params[:id])
+    @course = Course.includes(:terms).find(params[:id])
     @terms = @course.terms
   end
 

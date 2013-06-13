@@ -9,28 +9,27 @@ gem 'sqlite3'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 
-gem "simple-navigation"
-gem 'simple_form'       # forms
-gem 'carrierwave'       # fileuploads
-gem 'squeel'            # easy DSL
-gem 'draper'            # decorators
-gem 'kaminari'          # pagination
-gem 'flash_render'      # render method with notice/alerts
-gem 'devise'            # user authentication
-gem 'cancan'            # role based ability management for users
-gem 'turbolinks'        # ajax replacement links
-gem 'jquery-turbolinks' # turbolinks jquery plugin for events
-gem 'ranked-model'      # manages sort-position of ratings
+gem 'simple_form'          # forms
+gem 'carrierwave'          # fileuploads
+gem 'squeel'               # easy DSL
+gem 'draper'               # decorators
+gem 'kaminari'             # pagination
+gem 'flash_render'         # render method with notice/alerts
+gem 'devise'               # user authentication
+gem 'cancan'               # role based ability management for users
+gem 'turbolinks'           # ajax replacement links
+gem 'jquery-turbolinks'    # turbolinks jquery plugin for events
+gem 'ranked-model'         # manages sort-position of ratings
 
 group :production do
   gem 'therubyracer'
-  gem 'pg'
+  gem 'pg'                 # postgres connector
 end
 
 group :development do
-  gem 'thin'
-  gem 'better_errors'
-  gem 'binding_of_caller'
+  gem 'thin'               # webserver
+  gem 'better_errors'      # pretty error pages
+  gem 'binding_of_caller'  # interactive shell within error pages
   gem 'sextant'            # /rails/routes for displaying all routes
   gem 'brakeman'           # common security problems checker
   gem 'awesome_print'      # nicley formatted object inspection
@@ -42,8 +41,8 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
-
   gem 'compass-rails'
+
   gem 'zurb-foundation', '>= 4.0'
   gem 'foundation-icons-sass-rails'
 end

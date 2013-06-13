@@ -19,8 +19,6 @@ set :default_stage, "staging"
 ###############################################################################
 
 after 'deploy:update_code' do
-  bundler.bundle_new_release
-
   deploy.replace_secret
   deploy.symlink_shared_folders
 
@@ -35,6 +33,8 @@ after "deploy:setup" do
 end
 
 load 'deploy/assets'
+
+require 'bundler/capistrano'
 
 ###############################################################################
 
@@ -55,7 +55,7 @@ namespace :deploy do
     task :seed do
       run "cd #{current_release} && RAILS_ENV=#{rails_env} bundle exec rake db:seed"
     end
-    
+
     task :reset do
       run "cd #{current_release} && RAILS_ENV=#{rails_env} bundle exec rake db:reset"
     end
@@ -80,12 +80,6 @@ namespace :deploy do
       run "rm -rf #{current_path}/#{dir}"
       run "ln -nfs #{shared_path}/#{dir} #{release_path}/#{dir}"
     end
-  end
-end
-
-namespace :bundler do
-  task :bundle_new_release, roles: :app do
-    run "cd #{release_path} && bundle --without development test"
   end
 end
 

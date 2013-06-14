@@ -1,4 +1,6 @@
 class TutorialGroup < ActiveRecord::Base
+  default_scope includes(:tutor_registration)
+
   belongs_to :term
 
   has_one :course, through: :term

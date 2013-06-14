@@ -2,7 +2,7 @@ class Rating < ActiveRecord::Base
   include RankedModel
   ranks :row_order, with_same: :rating_group_id, class_name: "Rating"
 
-  default_scope includes(:rating_group)
+  default_scope includes(:rating_group).rank(:row_order)
 
   belongs_to :rating_group
 

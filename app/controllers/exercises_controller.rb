@@ -1,7 +1,7 @@
 class ExercisesController < TermResourceController
 
   def show
-    @exercise = current_term.exercises.find(params[:id])
+    @exercise = current_term.exercises.includes(rating_groups: :ratings).find(params[:id])
   end
 
   def new

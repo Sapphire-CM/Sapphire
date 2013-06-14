@@ -28,6 +28,7 @@ end
 
 group :development do
   gem 'thin'               # webserver
+  gem 'debugger'           # debugger with irb, 1.9.3-only
   gem 'better_errors'      # pretty error pages
   gem 'binding_of_caller'  # interactive shell within error pages
   gem 'sextant'            # /rails/routes for displaying all routes

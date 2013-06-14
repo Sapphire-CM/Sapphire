@@ -24,4 +24,65 @@ class Term < ActiveRecord::Base
     Account.joins(student_registrations: {tutorial_group: :term}).where{ student_registrations.tutorial_group.term.id == my{id}}
   end
 
+  def copy_lecturer(destination_term)
+    source_registration = LecturerRegistration.find_by_term_id(self.id)
+
+    if source_registration
+      registration = LecturerRegistration.find_or_initialize_by_term_id(destination_term.id)
+      registration.lecturer = source_registration.lecturer
+      registration.registered_at = DateTime.now
+      registration.save
+    end
+  end
+
+  def copy_exercises(destination_term)
+    exercises = []
+    rating_groups = []
+    ratings = []
+
+    self.exercises.each do |source_exercise|
+      exercise = source_exercise.dup
+      exercise.term = destination_term
+      exercises << exercise
+
+      source_exercise.rating_groups.each do |source_rating_group|
+        rating_group = source_rating_group.dup
+        rating_group.exercise = exercise
+        rating_groups << rating_group
+
+        source_rating_group.ratings.each do |source_rating|
+          rating = source_rating.dup
+          rating.rating_group = rating_group
+          ratings << rating
+        end
+      end
+    end
+
+    Exercise.uncached do
+      Exercise.transaction do
+        exercises.each do |exercise|
+          exercise.save
+        end
+      end
+    end
+
+    RatingGroup.uncached do
+      RatingGroup.transaction do
+        rating_groups.each do |rating_group|
+          rating_group.exercise = rating_group.exercise # refresh exercise_id
+          rating_group.save
+        end
+      end
+    end
+
+    Rating.uncached do
+      Rating.transaction do
+        ratings.each do |rating|
+          rating.rating_group = rating.rating_group # refresh rating_group_id
+          rating.save
+        end
+      end
+    end
+  end
+
 end

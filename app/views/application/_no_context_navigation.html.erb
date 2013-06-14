@@ -6,7 +6,7 @@
       <% if Course.any? %>
         <% Course.includes(:terms).all.each do |course| %>
           <li class='<%= course.terms.any? ? "has-dropdown" : "" %>'>
-            <%= link_to course.title, course_path(course) %>
+            <a href="#"><%= course.title %></a>
 
             <% if course.terms.any? %>
               <ul class='dropdown'>

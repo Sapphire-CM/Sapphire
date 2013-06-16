@@ -1,8 +1,7 @@
 Sapphire::Application.routes.draw do
 
   resources :submission_evaluations
-
-
+  
   devise_for :accounts
   as :user do
     get 'accounts'          => 'accounts#index'
@@ -34,6 +33,7 @@ Sapphire::Application.routes.draw do
 
       resources :exercises do
         resources :rating_groups, except: [:index, :show] do
+          post :update_position, on: :member
           resources :ratings, except: [:index, :show] do
             post :update_position, on: :member
           end

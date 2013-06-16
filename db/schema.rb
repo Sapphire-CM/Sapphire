@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130608171829) do
+ActiveRecord::Schema.define(:version => 20130616171829) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -97,13 +97,14 @@ ActiveRecord::Schema.define(:version => 20130608171829) do
     t.integer  "exercise_id"
     t.string   "title"
     t.integer  "points"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.text     "description"
     t.boolean  "global"
     t.integer  "min_points"
     t.integer  "max_points"
     t.boolean  "enable_range_points"
+    t.integer  "row_order",           :default => 0
   end
 
   add_index "rating_groups", ["exercise_id"], :name => "index_rating_groups_on_exercise_id"

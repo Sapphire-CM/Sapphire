@@ -1,4 +1,6 @@
-<tr class="index_entry rating" id="<%= "rating_id_#{rating.id}" %>">
+<tr id="<%= "rating_id_#{rating.id}" %>"
+    data-update-position-action="<%= update_position_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, rating.rating_group, rating) %>"
+    class="index_entry rating" >
   <td class='title-column'>
     <% if rating.description.blank? %>
       <%= rating.title %>

@@ -1,4 +1,6 @@
-<div class='index_entry rating_group' id="<%= "rating_group_id_#{rating_group.id}" %>">
+<div id="<%= "rating_group_id_#{rating_group.id}" %>"
+     data-update-position-action="<%= update_position_course_term_exercise_rating_group_path(current_course, current_term, @exercise, rating_group) %>"
+     class='index_entry rating_group' >
   <div class='row'>
     <div class='large-12 columns'>
     <h3 class='index_entry_header'>

@@ -8,7 +8,7 @@ class RatingGroupsController < TermResourceController
   def create
     @rating_group = @exercise.rating_groups.new(params[:rating_group])
     @rating_group.row_order_position = :last
-    
+
     if @rating_group.save
       render partial: 'rating_groups/insert_index_entry', locals: { rating_group: @rating_group }
     else
@@ -29,12 +29,12 @@ class RatingGroupsController < TermResourceController
       render :edit
     end
   end
-  
+
   def update_position
-    @rating_group = RatingGroup.find(params[:id])
+    @rating_group = @exercise.rating_groups.find(params[:id])
     @rating_group.update_attributes(params[:rating_group])
-    
-    render nothing: true 
+
+    render nothing: true
   end
 
   def destroy

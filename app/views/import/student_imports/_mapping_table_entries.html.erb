@@ -1,0 +1,9 @@
+<tr>
+  <% row.each do |cell| %>
+    <td><%= cell %></td>
+  <% end %>
+
+  <% (column_count - row.length).times do %>
+    <td></td>
+  <% end %>
+</tr>

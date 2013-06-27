@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130616171829) do
+ActiveRecord::Schema.define(:version => 20130627104809) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -57,13 +57,14 @@ ActiveRecord::Schema.define(:version => 20130616171829) do
   create_table "exercises", :force => true do |t|
     t.integer  "term_id"
     t.string   "title"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
     t.text     "description"
     t.datetime "deadline"
     t.datetime "late_deadline"
     t.boolean  "enable_max_points"
     t.integer  "max_points"
+    t.integer  "row_order",         :default => 0
   end
 
   add_index "exercises", ["term_id"], :name => "index_exercises_on_term_id"
@@ -92,6 +93,18 @@ ActiveRecord::Schema.define(:version => 20130616171829) do
 
   add_index "lecturer_registrations", ["account_id"], :name => "index_lecturer_term_registrations_on_account_id"
   add_index "lecturer_registrations", ["term_id"], :name => "index_lecturer_term_registrations_on_term_id"
+
+  create_table "point_systems", :force => true do |t|
+    t.integer  "term_id"
+    t.float    "a_lower_bound"
+    t.float    "b_lower_bound"
+    t.float    "c_lower_bound"
+    t.float    "d_lower_bound"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "point_systems", ["term_id"], :name => "index_point_systems_on_term_id"
 
   create_table "rating_groups", :force => true do |t|
     t.integer  "exercise_id"

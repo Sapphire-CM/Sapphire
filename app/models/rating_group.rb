@@ -1,11 +1,7 @@
 class RatingGroup < ActiveRecord::Base
   include RankedModel
-  
-  # maybe definitin of class_name is not necessary here!
-  ranks :row_order, with_same: :exercise_id, class_name: "RatingGroup"
-  
-  
-  
+  ranks :row_order, with_same: :exercise_id
+
   belongs_to :exercise
   has_many :ratings, dependent: :destroy
 
@@ -17,7 +13,7 @@ class RatingGroup < ActiveRecord::Base
     rating_group.global == true
   }
 
-  attr_accessible :title, :description, :points, :exercise, :global, :enable_range_points, :min_points, :max_points, :row_order_position
+  attr_accessible :title, :description, :points, :exercise, :global, :enable_range_points, :min_points, :max_points, :row_order
 
   after_initialize :points_min_max
 

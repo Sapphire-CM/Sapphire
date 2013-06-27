@@ -11,7 +11,7 @@ class Rating < ActiveRecord::Base
 
   validates_presence_of :title, :type
 
-  attr_accessible :title, :description, :rating_group, :value, :min_value, :max_value, :type, :position
+  attr_accessible :title, :description, :rating_group, :value, :min_value, :max_value, :type, :row_order
 
   validate :rating_type_validation
 

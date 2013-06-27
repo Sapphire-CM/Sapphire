@@ -38,23 +38,12 @@ class RatingsController < TermResourceController
   end
 
   def update_position
+    @rating = @exercise.ratings.find(params[:id])
 
-    @rating = @rating_group.ratings.where(id: params[:id]).first
-
-    # is nil, when rating has been moved from another rating_group
-    if @rating.nil?
-      logger.info "Rating has been moved!"
-      @rating = @exercise.ratings.find(params[:id])
-      @rating.rating_group = @rating_group
-      @rating.save!
-      @rating.reload
-    end
-    # @rating = @rating.becomes(Rating)
-
-
+    @rating.update_attribute :rating_group_id,  params[:rating][:rating_group_id]
     @rating.update_attribute :row_order_position,  params[:rating][:position]
 
-    render :nothing => true
+    render text: "#{update_position_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating.rating_group, @rating)}"
   end
 
   def destroy

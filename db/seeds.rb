@@ -1,12 +1,10 @@
 accounts = Account.create([
-  { email: 'thomas.kriechbaumer@student.tugraz.at', forename: 'Thomas', surname: 'Kriechbaumer', password: '123456', password_confirmation: '123456'},
-  { email: 'matthias.link@student.tugraz.at', forename: 'Matthias', surname: 'Link', password: '654321', password_confirmation: '654321'},
-  { email: 'kandrews@iicm.tugraz.at', forename: 'Keith', surname: 'Andrews', password: '123456', password_confirmation: '123456'},
-  { email: 'john.doe@student.tugraz.at', forename: 'John', surname: 'Doe', matriculum_number:"1234567", password: '123456', password_confirmation: '123456'},
-  { email: 'jane.doe@iicm.tugraz.at', forename: 'Jane', surname: 'Doe', matriculum_number: "7654321", password: '123456', password_confirmation: '123456'},
-  { email: 'jack.doe@iicm.tugraz.at', forename: 'Jack', surname: 'Doe', matriculum_number: "1234765", password: '123456', password_confirmation: '123456'},
-   ])
-
+  { email: 'thomas.kriechbaumer@student.tugraz.at', forename: 'Thomas',   surname: 'Kriechbaumer', password: '123456', password_confirmation: '123456'},
+  { email: 'matthias.link@student.tugraz.at',       forename: 'Matthias', surname: 'Link',         password: '654321', password_confirmation: '654321'},
+  { email: 'kandrews@iicm.tugraz.at',               forename: 'Keith',    surname: 'Andrews',      password: '123456', password_confirmation: '123456'},
+  { email: 'john.doe@student.tugraz.at',            forename: 'John',     surname: 'Doe', matriculum_number: '1231567', password: '123456', password_confirmation: '123456'},
+  { email: 'jane.doe@student.tugraz.at',               forename: 'Jane',     surname: 'Doe', matriculum_number: '1120321', password: '123456', password_confirmation: '123456'},
+  { email: 'jack.doe@student.tugraz.at',               forename: 'Jack',     surname: 'Doe', matriculum_number: '1030765', password: '123456', password_confirmation: '123456'} ])
 
 courses = Course.create([
   { title: 'INM' },
@@ -106,8 +104,6 @@ binary_percent_ratings = BinaryPercentRating.create([
 value_number_ratings = ValueNumberRating.create([
   { title: 'content of summary',    min_value:  0,   max_value: 10,  rating_group: rating_groups[2] },
   { title: 'style of layout',       min_value: -5,   max_value:  5,  rating_group: rating_groups[2] } ])
-
-Rating.all.map{ |rating| rating.row_order_position = :last; rating.save }
 
 submissions = [
   {exercise: exercises.first, student_registration: student_registrations[0], submitted_at: Time.now - Random.rand(5..24).floor.hours},

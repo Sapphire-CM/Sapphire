@@ -4,11 +4,26 @@
 
 @import "config";
 
+
 .rating-sortable-placeholder {
   background-color: $panel-bg;
-  border: 1px dotted $panel-border-color;
+  outline: 1px dotted $panel-border-color;
 }
 .rating-sortable-helper {
   background-color: white !important;
   box-shadow: 0px 0px 5px #707070;
+}
+
+
+.rating-group-sortable-placeholder {
+  background-color: $panel-bg;
+  outline: 1px dotted $panel-border-color;
+  
+  margin-bottom: 1em;
+}
+
+.rating-group-sortable-helper {
+  background-color: white !important;
+  box-shadow: 0px 0px 5px #707070;
+  z-index: 99 !important;
 }

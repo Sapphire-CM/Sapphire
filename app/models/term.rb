@@ -1,4 +1,9 @@
 class Term < ActiveRecord::Base
+  include RankedModel
+  ranks :row_order, with_same: :course_id
+
+  default_scope rank(:row_order)
+
   belongs_to :course
 
   has_many :exercises, dependent: :destroy

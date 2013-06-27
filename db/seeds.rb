@@ -17,6 +17,7 @@ terms = Term.create([
   { title: 'SS 2013', course: courses[1] },
   { title: 'SS 2014', course: courses[1] },
   { title: 'WS 2013', course: courses[2] } ])
+Term.all.map{ |obj| obj.row_order_position = :last; obj.save }
 
 lecturer_registrations = LecturerRegistration.create([
   { term: terms[0], lecturer: accounts[2] },
@@ -44,6 +45,7 @@ exercises = Exercise.create([
   { title: 'Ex 4: Website',    term: terms[0] },
   { title: 'Ex 5: CSS',        term: terms[0] },
   { title: 'MC Test',          term: terms[0] } ])
+Exercise.all.map{ |obj| obj.row_order_position = :last; obj.save }
 
 rating_groups = RatingGroup.create([
   { title: 'Identity',                points:   7, exercise: exercises[0] },
@@ -84,6 +86,7 @@ rating_groups = RatingGroup.create([
 
   { title: 'Questions',               points:  40, exercise: exercises[6] },
   { title: 'General',                 points: nil, exercise: exercises[6], global: true } ])
+RatingGroup.all.map{ |obj| obj.row_order_position = :last; obj.save }
 
 binary_number_ratings = BinaryNumberRating.create([
   { title: 'no realname',                        value: -3, rating_group: rating_groups[0] },
@@ -104,6 +107,9 @@ binary_percent_ratings = BinaryPercentRating.create([
 value_number_ratings = ValueNumberRating.create([
   { title: 'content of summary',    min_value:  0,   max_value: 10,  rating_group: rating_groups[2] },
   { title: 'style of layout',       min_value: -5,   max_value:  5,  rating_group: rating_groups[2] } ])
+
+Rating.all.map{ |obj| obj.row_order_position = :last; obj.save }
+
 
 submissions = [
   {exercise: exercises.first, student_registration: student_registrations[0], submitted_at: Time.now - Random.rand(5..24).floor.hours},

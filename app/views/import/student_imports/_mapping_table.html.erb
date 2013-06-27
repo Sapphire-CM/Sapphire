@@ -19,7 +19,7 @@
             <% end %>
           </thead>
           <tbody>
-            <%= render collection: values.first(5), partial:'mapping_table_entries', as: :row, locals: { column_count: column_count } %>
+            <%= render collection: values, partial:'mapping_table_entries', as: :row, locals: { column_count: column_count } %>
           </tbody>
         </table>
       </div>
@@ -28,7 +28,7 @@
 
   <div class="row" id="load_more_entries">
     <p>
-      <%= link_to "Load #{values.count - 5} more entries...", full_mapping_table_course_term_import_student_import_path(current_course, current_term, @student_import), remote: true, class: "tiny button" %>
+      <%= link_to "Load all entries", full_mapping_table_course_term_import_student_import_path(current_course, current_term, @student_import), remote: true, class: "tiny button" %>
     </p>
   </div>
 

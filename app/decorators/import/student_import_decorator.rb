@@ -25,7 +25,7 @@ class Import::StudentImportDecorator < Draper::Decorator
 
   def mapping_table
     headers = model.headers
-    values = model.values
+    values = model.values.first(5)
     mapping = model.import_mapping
     column_count = model.column_count
 

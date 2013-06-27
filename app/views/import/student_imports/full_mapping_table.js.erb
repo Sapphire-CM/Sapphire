@@ -1,0 +1,4 @@
+var html = "<%=j render collection: @entries, partial:'mapping_table_entries', as: :row, locals: { column_count: @column_count } %>";
+
+$('#load_more_entries').remove();
+$('table.mapping_table tbody').empty().html(html);

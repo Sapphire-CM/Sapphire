@@ -128,6 +128,16 @@ class Import::StudentImport < ActiveRecord::Base
     @parsed_file ||= parsed_csv_file
   end
 
+  def column_count
+    if headers.length > 0
+      headers.length
+    elsif values.length > 0
+      values.first.length
+    else
+      0
+    end
+  end
+
   def smart_guess_new_import_mapping
     smart_guessed_import_mapping = Import::ImportMapping.new
 

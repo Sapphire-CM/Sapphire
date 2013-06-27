@@ -19,30 +19,22 @@
             <% end %>
           </thead>
           <tbody>
-            <% values.first(5).each do |row| %>
-              <tr>
-                <% row.each do |cell| %>
-                  <td><%= cell %></td>
-                <% end %>
-
-                <% (column_count - row.length).times do %>
-                  <td></td>
-                <% end %>
-              </tr>
-            <% end %>
+            <%= render collection: values, partial:'mapping_table_entries', as: :row, locals: { column_count: column_count } %>
           </tbody>
         </table>
       </div>
     </div>
-
-    <p>
-      <%= "#{values.count - 5} more entries..." %>
-    </p>
   <% end %>
+
+  <div class="row" id="load_more_entries">
+    <p>
+      <%= link_to "Load all entries", full_mapping_table_course_term_import_student_import_path(current_course, current_term, @student_import), remote: true, class: "tiny button" %>
+    </p>
+  </div>
 
   <div class='row'>
     <div class='large-12 large-centered columns text-center'>
-      <%= f.submit "Import", class: "button" %>
+      <p><%= f.submit "Import", class: "button" %></p>
     </div>
   </div>
 <% end %>

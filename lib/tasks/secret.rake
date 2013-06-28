@@ -1,6 +1,6 @@
 namespace :secret do
 
-  desc "Updates the secret"
+  desc "Updates the secret key for cookies"
   task :update do
     # stolen from: github.com/digineo/secret_token_replacer/
 

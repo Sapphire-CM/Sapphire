@@ -20,9 +20,9 @@
             <td><%= student_import.created_at %></td>
             <td><%= student_import.status %></td>
             <td>
-              <%= link_to "<i class='general foundicon-search'></i>".html_safe, course_term_import_student_import_path(current_course, current_term, student_import) %>
+              <%= link_to  foundicon(:search), course_term_import_student_import_path(current_course, current_term, student_import) %>
 
-              <%= link_to "<i class='general foundicon-remove'></i>".html_safe, course_term_import_student_import_path(current_course, current_term, student_import), method: :delete, confirm: "Are you sure?" %>
+              <%= link_to  foundicon(:remove), course_term_import_student_import_path(current_course, current_term, student_import), method: :delete, data: { confirm: "Are you sure?" } %>
             </td>
           </tr>
         <% end %>

@@ -2,7 +2,7 @@
 
 <% sidebar do %>
   <%= link_to "Edit", edit_course_term_exercise_path(current_course, current_term, @exercise), class: "small button" %>
-  <%= link_to "Delete", course_term_exercise_path(current_course, current_term, @exercise), method: :delete, class: "small alert button", confirm: "Are you sure?" %>
+  <%= link_to "Delete", course_term_exercise_path(current_course, current_term, @exercise), method: :delete, class: "small alert button", data: { confirm: "Are you sure?" } %>
 <% end %>
 
 <div class="section-container tabs" data-section="tabs">

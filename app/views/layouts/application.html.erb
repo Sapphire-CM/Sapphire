@@ -16,13 +16,13 @@
 	<title>Sapphire - <%= content_for?(:title) ? yield(:title) : "Untitled" %></title>
 
 	<!-- Included CSS Files -->
-	<%= stylesheet_link_tag    "application" %>
+	<%= stylesheet_link_tag    "application", "data-turbolinks-track" => true %>
 
 	<!-- Included JS Files  -->
-	<%= javascript_include_tag "application" %>
+	<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
 
   <!-- Included Modernizr Files  -->
-  <%= javascript_include_tag "vendor/custom.modernizr" %>
+  <%= javascript_include_tag "vendor/custom.modernizr", "data-turbolinks-track" => true %>
 
   <%= csrf_meta_tags %>
 </head>

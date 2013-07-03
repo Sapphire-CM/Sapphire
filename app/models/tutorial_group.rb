@@ -1,11 +1,9 @@
 class TutorialGroup < ActiveRecord::Base
-  default_scope includes(:tutor_registration)
-
   belongs_to :term
-
   has_one :course, through: :term
-
   attr_accessible :title, :description
+
+  default_scope { includes(:tutor_registration) }
 
   validates_presence_of :title
   validates_uniqueness_of :title, scope: :term_id

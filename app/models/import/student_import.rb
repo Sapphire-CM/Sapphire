@@ -55,7 +55,20 @@ class Import::StudentImport < ActiveRecord::Base
     self.status == "imported"
   end
 
-  def import!
+  def import(params)
+    result = {
+      success: true,
+      imported_students: 0,
+      imported_tutorial_groups: 0,
+      imported_student_registrations: 0,
+      problems: []
+    }
+
+    if not update_attributes(params)
+      result[:success] = false
+      return result
+    end
+
     begin
       students = []
       student_registrations = []
@@ -74,7 +87,12 @@ class Import::StudentImport < ActiveRecord::Base
 
         group_title = row[import_mapping.group.to_i]
         tutorial_group = term.tutorial_groups.find_or_initialize_by_title(group_title)
-        tutorial_group.save!
+        if tutorial_group.save
+          result[:imported_tutorial_groups] += 1
+        else
+          result[:success] = false
+          result[:problems] << tutorial_group
+        end
 
         if student.new_record?
           registration = tutorial_group.student_registrations.new
@@ -91,7 +109,12 @@ class Import::StudentImport < ActiveRecord::Base
       Account.uncached do
         Account.transaction do
           students.each do |account|
-            account.save!
+            if account.save
+              result[:imported_students] += 1
+            else
+              result[:success] = false
+              result[:problems] << account
+            end
           end
         end
       end
@@ -99,19 +122,27 @@ class Import::StudentImport < ActiveRecord::Base
       StudentRegistration.uncached do
         StudentRegistration.transaction do
           student_registrations.each do |registration|
-            registration.save!
+            if registration.save
+              result[:imported_student_registrations] += 1
+            else
+              result[:success] = false
+              result[:problems] << registration
+            end
           end
         end
       end
 
       self.status = "imported"
-      self.save
+      if not self.save
+        result[:success] = false
+      end
 
     rescue
       puts $!
-      false
-      raise
+      result[:success] = false
     end
+
+    result
   end
 
   def parsed?

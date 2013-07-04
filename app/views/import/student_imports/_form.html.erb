@@ -19,8 +19,8 @@
       <div class="content" data-section-content>
 
         <%= f.simple_fields_for :import_options do |b| %>
-          <div class='row'>
-            <div class='large-4 columns'>
+          <ul class="large-block-grid-5">
+            <li>
               <div class='row'>
                 <div class='large-12 large-centered text-center'>
                   <%= b.label :col_seperator %>
@@ -31,9 +31,8 @@
                   <%= b.input_field :col_seperator, value: @student_import.import_options[:col_seperator], class: 'file-format-centered' %>
                 </div>
               </div>
-            </div>
-
-            <div class='large-4 columns'>
+            </li>
+            <li>
               <div class='row'>
                 <div class='large-12 large-centered text-center'>
                   <%= b.label :quote_char %>
@@ -44,9 +43,8 @@
                   <%= b.input_field :quote_char, value: @student_import.import_options[:quote_char], class: "file-format-centered" %>
                 </div>
               </div>
-            </div>
-
-            <div class='large-4 columns'>
+            </li>
+            <li>
               <div class='row'>
                 <div class='large-12 large-centered text-center'>
                   <%= b.label :headers_on_first_line %>
@@ -57,8 +55,32 @@
                   <%= b.check_box :headers_on_first_line, checked: (@student_import.import_options[:headers_on_first_line].to_s == "1"), data: { customforms: 'disabled' } %>
                 </div>
               </div>
-            </div>
-          </div>
+            </li>
+            <li>
+              <div class='row'>
+                <div class='large-12 large-centered text-center'>
+                  <%= b.label :decimal_seperator %>
+                </div>
+              </div>
+              <div class='row'>
+                <div>
+                  <%= b.input_field :decimal_seperator, value: @student_import.import_options[:decimal_seperator], class: "file-format-centered" %>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class='row'>
+                <div class='large-12 large-centered text-center'>
+                  <%= b.label :thousands_seperator %>
+                </div>
+              </div>
+              <div class='row'>
+                <div>
+                  <%= b.input_field :thousands_seperator, value: @student_import.import_options[:thousands_seperator], class: "file-format-centered" %>
+                </div>
+              </div>
+            </li>
+          </ul>
         <% end %>
 
       </div>

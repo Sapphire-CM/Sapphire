@@ -19,6 +19,8 @@ class Import::StudentImportsController < TermResourceController
     # default values
     @student_import.import_options[:col_seperator] = ";"
     @student_import.import_options[:quote_char] = "\""
+    @student_import.import_options[:decimal_seperator] = ","
+    @student_import.import_options[:thousands_seperator] = "."
     @student_import.import_options[:headers_on_first_line] = "1"
   end
 

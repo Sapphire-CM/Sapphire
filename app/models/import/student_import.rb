@@ -1,7 +1,7 @@
 require "csv"
 
 class Import::StudentImport < ActiveRecord::Base
-  IMPORTABLE_ATTRIBUTES = [:tutorial_group, :email, :forename, :surname, :matriculum_number, :registered_at, :comment].freeze
+  IMPORTABLE_ATTRIBUTES = [:group, :email, :forename, :surname, :matriculum_number, :registered_at, :comment].freeze
   STATES = ["pending", "imported"].freeze
 
   # associations
@@ -72,7 +72,7 @@ class Import::StudentImport < ActiveRecord::Base
         student.password_confirmation = "123456"
         students << student
 
-        group_title = row[import_mapping.tutorial_group.to_i]
+        group_title = row[import_mapping.group.to_i]
         tutorial_group = term.tutorial_groups.find_or_initialize_by_title(group_title)
         tutorial_group.save!
 
@@ -110,6 +110,7 @@ class Import::StudentImport < ActiveRecord::Base
     rescue
       puts $!
       false
+      raise
     end
   end
 
@@ -147,7 +148,7 @@ class Import::StudentImport < ActiveRecord::Base
       row = values.first
 
       row.each_index do |cell_index|
-        smart_guessed_import_mapping.tutorial_group = cell_index if /\AT[\d]{1}/ =~ row[cell_index]
+        smart_guessed_import_mapping.group = cell_index if /\A(T|G)[\d]{1}/ =~ row[cell_index]
         smart_guessed_import_mapping.email = cell_index if /.*?@?.*/ =~ row[cell_index]
         smart_guessed_import_mapping.matriculum_number = cell_index if /\A[\d]{7}\z/ =~ row[cell_index]
 
@@ -164,7 +165,6 @@ class Import::StudentImport < ActiveRecord::Base
       smart_guessed_import_mapping.surname = cell_index if /.*Nachname.*/ =~ headers[cell_index]
       smart_guessed_import_mapping.comment = cell_index if /.*Anmerkung.*/ =~ headers[cell_index]
     end if headers
-
 
     self.import_mapping = smart_guessed_import_mapping
     self.save

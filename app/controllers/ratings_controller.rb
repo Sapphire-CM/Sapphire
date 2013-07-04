@@ -40,8 +40,8 @@ class RatingsController < TermResourceController
   def update_position
     @rating = @exercise.ratings.find(params[:id])
 
-    @rating.update_attribute :rating_group_id,  params[:rating][:rating_group_id]
-    @rating.update_attribute :row_order_position,  params[:rating][:position]
+    update_params = { rating_group_id: params[:rating][:rating_group_id], row_order_position: params[:rating][:position]}
+    @rating.update_attributes(update_params)
 
     render text: "#{update_position_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating.rating_group, @rating)}"
   end

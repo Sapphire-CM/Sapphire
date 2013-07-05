@@ -29,6 +29,7 @@ class Import::StudentImport < ActiveRecord::Base
   def initialize(*args)
     super *args
     @parsed = false
+    @encoding_error = false
     @parsing_error = false
   end
 
@@ -145,8 +146,16 @@ class Import::StudentImport < ActiveRecord::Base
     result
   end
 
+  def fill_status
+    self.status = "pending"
+  end
+
   def parsed?
     !!@parsed_file
+  end
+
+  def encoding_error?
+    @encoding_error
   end
 
   def parsing_error?
@@ -154,17 +163,19 @@ class Import::StudentImport < ActiveRecord::Base
   end
 
   def headers
-    @headers if values
+    parse_csv unless @headers
+    @headers
   end
 
   def values
-    @parsed_file ||= parsed_csv_file
+    parse_csv unless @values
+    @values
   end
 
   def column_count
-    if headers.length > 0
+    if headers && headers.length > 0
       headers.length
-    elsif values.length > 0
+    elsif values && values.length > 0
       values.first.length
     else
       0
@@ -201,13 +212,7 @@ class Import::StudentImport < ActiveRecord::Base
     self.save
   end
 
-
-
-
-
-  private
-
-  def parsed_csv_file
+  def parse_csv
     csv_options = {}
     csv_options[:col_sep] = import_options[:col_seperator] || ";"
     csv_options[:quote_char] = import_options[:quote_char] || "\""
@@ -216,28 +221,45 @@ class Import::StudentImport < ActiveRecord::Base
     # not used: import_options[:thousands_seperator] || "."
 
     @headers = []
-    records = []
-    text = File.open(self.file.to_s, "r").read
-    text = text.force_encoding("UTF-8").gsub("\xEF\xBB\xBF".force_encoding("UTF-8"), '')
+    @values = []
+
+    text = load_csv_text
+
     text.split(/\n/).each_with_index do |line, index|
       line.strip!
-      begin
-        values = CSV.parse_line(line, csv_options).keep_if {|cell| cell.present?}
 
-        if index == 0 && import_options[:headers_on_first_line] == "1"
-          @headers = values
-        else
-          records << values
-        end
-      rescue CSV::MalformedCSVError => e
-        @parsing_error = true
-        records << ["Couldn't parse this line: #{line}", e.inspect]
+      values = parse_csv_line(line, csv_options)
+
+      if index == 0 && import_options[:headers_on_first_line] == "1"
+        @headers = values
+      else
+        @values << values
       end
     end
-    records
+
+    true
   end
 
-  def fill_status
-    self.status = "pending"
+  private
+
+  def load_csv_text
+    begin
+      text = File.open(self.file.to_s, "r").read
+      text = text.force_encoding("UTF-8").gsub("\xEF\xBB\xBF".force_encoding("UTF-8"), '')
+    rescue Exception => e
+      @encoding_error = true
+      text = "" # empty string should not harm anybody else
+    end
+  end
+
+  def parse_csv_line(line, csv_options)
+    begin
+      values = CSV.parse_line(line, csv_options).keep_if {|cell| cell.present?}
+    rescue CSV::MalformedCSVError => e
+      @parsing_error = true
+      values = [line]
+    end
+
+    values
   end
 end

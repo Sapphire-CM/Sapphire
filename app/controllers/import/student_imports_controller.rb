@@ -27,12 +27,15 @@ class Import::StudentImportsController < TermResourceController
   def create
     @student_import = current_term.student_imports.new(params[:import_student_import])
 
-    if @student_import.save
+    if not (@student_import.save and @student_import.parse_csv)
+      render :new, alert: "Error during saving!"
+    elsif @student_import.encoding_error?
+      render :new, alert: "Error with file encoding! UTF8-like is required."
+    elsif @student_import.parsing_error?
+      render :new, alert: "Error during parsing the file!"
+    else # everything worked
       @student_import.smart_guess_new_import_mapping
-
       redirect_to course_term_import_student_import_path(current_course, current_term, @student_import)
-    else
-      render :new, notice: "Error during saving!"
     end
   end
 

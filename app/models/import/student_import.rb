@@ -17,20 +17,31 @@ class Import::StudentImport < ActiveRecord::Base
   # callbacks
   before_validation :fill_status, on: :create
 
-  #validations
+  # validations
   validates_presence_of :file, :term_id
   validates_inclusion_of :status, in: STATES
 
-  #scopes
+  # scopes
   scope :for_course, lambda {|course| joins(:term).where {term.course_id == course} }
   scope :for_term, lambda {|term| where {term_id == term} }
   scope :with_terms, joins(:term).includes(:term)
 
   def initialize(*args)
     super *args
+
     @parsed = false
     @encoding_error = false
     @parsing_error = false
+
+    import_options[:matching_groups]        ||= "first"
+    import_options[:tutorial_groups_regexp] ||= '\AT[\d]+\z'
+    import_options[:student_groups_regexp]  ||= '\A(G[\d]+)-([\d]+)\z'
+
+    import_options[:headers_on_first_line]  ||= "1"
+    import_options[:col_seperator]          ||= ";"
+    import_options[:quote_char]             ||= "\""
+    import_options[:decimal_seperator]      ||= ","
+    import_options[:thousands_seperator]    ||= "."
   end
 
   def import_mapping

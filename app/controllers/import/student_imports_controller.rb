@@ -15,25 +15,23 @@ class Import::StudentImportsController < TermResourceController
 
   def new
     @student_import = current_term.student_imports.new
-
-    # default values
-    @student_import.import_options[:col_seperator] = ";"
-    @student_import.import_options[:quote_char] = "\""
-    @student_import.import_options[:decimal_seperator] = ","
-    @student_import.import_options[:thousands_seperator] = "."
-    @student_import.import_options[:headers_on_first_line] = "1"
   end
 
   def create
     @student_import = current_term.student_imports.new(params[:import_student_import])
 
-    if not (@student_import.save and @student_import.parse_csv)
-      render :new, alert: "Error during saving!"
-    elsif @student_import.encoding_error?
+    if not @student_import.save
+      return render :new
+    end
+
+    @student_import.parse_csv
+
+    if @student_import.encoding_error?
       render :new, alert: "Error with file encoding! UTF8-like is required."
     elsif @student_import.parsing_error?
-      render :new, alert: "Error during parsing the file!"
-    else # everything worked
+      render :new, alert: "Error during parsing! Corrupt data detected."
+    else
+      # everything worked
       @student_import.smart_guess_new_import_mapping
       redirect_to course_term_import_student_import_path(current_course, current_term, @student_import)
     end

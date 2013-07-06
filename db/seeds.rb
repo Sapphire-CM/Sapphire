@@ -29,13 +29,12 @@ tutorial_groups = [
 ].map {|tg_hash| tg = TutorialGroup.new(tg_hash); tg.term = terms.first; tg}
 tutorial_groups.each {|tg| tg.save}
 
-
-student_registrations = [
-  {account: accounts[3], tutorial_group: tutorial_groups.first, registered_at: Time.now},
-  {account: accounts[4], tutorial_group: tutorial_groups.first, registered_at: Time.now},
-  {account: accounts[5], tutorial_group: tutorial_groups.first, registered_at: Time.now}
-].map {|sr_hash| sr = StudentRegistration.new(registered_at: sr_hash[:registered_at]); sr.student = sr_hash[:account]; sr.tutorial_group = sr_hash[:tutorial_group]; sr }
-student_registrations.each { |sr| sr.save}
+# student_registrations = [
+#   {account: accounts[3], tutorial_group: tutorial_groups.first, registered_at: Time.now},
+#   {account: accounts[4], tutorial_group: tutorial_groups.first, registered_at: Time.now},
+#   {account: accounts[5], tutorial_group: tutorial_groups.first, registered_at: Time.now}
+# ].map {|sr_hash| sr = StudentRegistration.new(registered_at: sr_hash[:registered_at]); sr.student = sr_hash[:account]; sr.tutorial_group = sr_hash[:tutorial_group]; sr }
+# student_registrations.each { |sr| sr.save}
 
 exercises = Exercise.create([
   { title: 'Ex 1: Newsgroup',  term: terms[0] },
@@ -110,11 +109,10 @@ value_number_ratings = ValueNumberRating.create([
 
 Rating.all.map{ |obj| obj.row_order_position = :last; obj.save }
 
-
-submissions = [
-  {exercise: exercises.first, student_registration: student_registrations[0], submitted_at: Time.now - Random.rand(5..24).floor.hours},
-  {exercise: exercises.first, student_registration: student_registrations[1], submitted_at: Time.now - Random.rand(5..24).floor.hours},
-  {exercise: exercises.first, student_registration: student_registrations[2], submitted_at: Time.now - Random.rand(5..24).floor.hours},
-  {exercise: exercises.last, student_registration: student_registrations[2], submitted_at: Time.now - Random.rand(5..24).floor.hours}
-].map {|s_hash| s = Submission.new(submitted_at: s_hash[:submitted_at]); s.exercise = s_hash[:exercise]; s.student_registration = s_hash[:student_registration]; s}
-submissions.each {|s| s.save!}
+# submissions = [
+#   {exercise: exercises.first, student_registration: student_registrations[0], submitted_at: Time.now - Random.rand(5..24).floor.hours},
+#   {exercise: exercises.first, student_registration: student_registrations[1], submitted_at: Time.now - Random.rand(5..24).floor.hours},
+#   {exercise: exercises.first, student_registration: student_registrations[2], submitted_at: Time.now - Random.rand(5..24).floor.hours},
+#   {exercise: exercises.last, student_registration: student_registrations[2], submitted_at: Time.now - Random.rand(5..24).floor.hours}
+# ].map {|s_hash| s = Submission.new(submitted_at: s_hash[:submitted_at]); s.exercise = s_hash[:exercise]; s.student_registration = s_hash[:student_registration]; s}
+# submissions.each {|s| s.save!}

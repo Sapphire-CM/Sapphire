@@ -7,21 +7,19 @@
         <ul class="large-block-grid-1">
           <li class="import-setting">
             <div class="row">
-              <div class='large-12 large-centered text-center import-file-upload'>
+              <div class='large-12 large-centered text-center <%= "import-file-upload" if !@student_import.file? %>'>
                 <%= f.input :file %>
                 <%= f.input :file_cache, as: :hidden %>
               </div>
             </div>
-          </li>
-          <% if @student_import.file.to_s.present? %>
-          <li class="import-setting">
-            <div class="row">
-              <div class='large-12 large-centered text-center'>
-                <p>Current File: <%= File.basename @student_import.file.to_s %></p>
+            <% if @student_import.file.to_s.present? %>
+              <div class="row">
+                <div class='large-12 large-centered text-center'>
+                  <small>Current File: <%= File.basename @student_import.file.to_s %></small>
+                </div>
               </div>
-            </div>
+            <% end %>
           </li>
-          <% end %>
         </ul>
         </div>
       </div>

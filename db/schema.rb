@@ -137,7 +137,7 @@ ActiveRecord::Schema.define(version: 20130706155015) do
   add_index "student_group_registrations", ["student_group_id"], name: "index_student_group_registrations_on_student_group_id"
 
   create_table "student_groups", force: true do |t|
-    t.string   "name"
+    t.string   "title"
     t.integer  "tutorial_group_id"
     t.datetime "created_at"
     t.datetime "updated_at"

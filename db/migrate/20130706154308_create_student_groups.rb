@@ -10,7 +10,7 @@ class CreateStudentGroups < ActiveRecord::Migration
     add_index :student_group_registrations, [:student_group_id], :name => "index_student_group_registrations_on_student_group_id"
 
     create_table :student_groups do |t|
-      t.string :name
+      t.string :title
       t.integer :tutorial_group_id
 
       t.timestamps

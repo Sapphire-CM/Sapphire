@@ -15,6 +15,7 @@ class Import::StudentImportsController < TermResourceController
 
   def new
     @student_import = current_term.student_imports.new
+    @student_import.import_options[:matching_groups] = "both" if current_term.exercises.where(group_submission: true).exists?
   end
 
   def create

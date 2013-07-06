@@ -43,7 +43,10 @@ exercises = Exercise.create([
   { title: 'Ex 3.2: Research', term: terms[0] },
   { title: 'Ex 4: Website',    term: terms[0] },
   { title: 'Ex 5: CSS',        term: terms[0] },
-  { title: 'MC Test',          term: terms[0] } ])
+  { title: 'MC Test',          term: terms[0] },
+
+  { title: 'Ex 1: Something',  term: terms[2], group_submission: true },
+  { title: 'MC Test',          term: terms[2], group_submission: false } ])
 Exercise.all.map{ |obj| obj.row_order_position = :last; obj.save }
 
 rating_groups = RatingGroup.create([

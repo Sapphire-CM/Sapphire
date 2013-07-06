@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130627202109) do
+ActiveRecord::Schema.define(version: 20130706155015) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 20130627202109) do
     t.boolean  "enable_max_points"
     t.integer  "max_points"
     t.integer  "row_order"
+    t.boolean  "group_submission"
   end
 
   add_index "exercises", ["term_id"], name: "index_exercises_on_term_id"
@@ -124,6 +125,20 @@ ActiveRecord::Schema.define(version: 20130627202109) do
   end
 
   add_index "ratings", ["rating_group_id"], name: "index_ratings_on_rating_group_id"
+
+  create_table "student_group_registrations", force: true do |t|
+    t.integer  "exercise_id"
+    t.integer  "student_group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "student_groups", force: true do |t|
+    t.string   "name"
+    t.integer  "tutorial_group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "student_registrations", force: true do |t|
     t.integer  "account_id"

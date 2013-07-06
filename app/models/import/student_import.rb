@@ -38,10 +38,10 @@ class Import::StudentImport < ActiveRecord::Base
     import_options[:student_groups_regexp]  ||= '\A(G[\d]+)-([\d]+)\z'
 
     import_options[:headers_on_first_line]  ||= "1"
-    import_options[:col_seperator]          ||= ";"
+    import_options[:column_separator]       ||= ";"
     import_options[:quote_char]             ||= "\""
-    import_options[:decimal_seperator]      ||= ","
-    import_options[:thousands_seperator]    ||= "."
+    import_options[:decimal_separator]      ||= ","
+    import_options[:thousands_separator]    ||= "."
   end
 
   def import_mapping
@@ -225,11 +225,11 @@ class Import::StudentImport < ActiveRecord::Base
 
   def parse_csv
     csv_options = {}
-    csv_options[:col_sep] = import_options[:col_seperator] || ";"
+    csv_options[:col_sep] = import_options[:column_separator] || ";"
     csv_options[:quote_char] = import_options[:quote_char] || "\""
 
-    # not used: import_options[:decimal_seperator] || ","
-    # not used: import_options[:thousands_seperator] || "."
+    # not used: import_options[:decimal_separator] || ","
+    # not used: import_options[:thousands_separator] || "."
 
     @headers = []
     @values = []

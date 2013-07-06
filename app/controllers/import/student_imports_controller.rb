@@ -24,6 +24,8 @@ class Import::StudentImportsController < TermResourceController
       return render :new
     end
 
+    # TODO: add validation for import_options
+
     @student_import.parse_csv
 
     if @student_import.encoding_error?

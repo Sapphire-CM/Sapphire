@@ -39,3 +39,11 @@ $ ->
   $('#import_student_import_import_options_matching_groups_both').trigger 'change'
 
 
+$(window).load ->
+  $('div.row.sync-height > div.columns > div.panel').syncHeight({ 'updateOnResize': true})
+
+
+
+
+
+

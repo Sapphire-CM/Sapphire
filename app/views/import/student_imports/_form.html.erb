@@ -1,132 +1,139 @@
 <%= simple_form_for [current_course, current_term, @student_import], html: {class: "custom"} do |f| %>
   <%= f.simple_fields_for :import_options do |b| %>
-    <div class="panel">
-      <h3 class="subheader">Input File</h3>
-      <ul class="large-block-grid-1">
-        <li>
-          <div class="row">
-            <div class='large-12 large-centered text-center'>
-              <%= f.input :file %>
-              <%= f.input :file_cache, as: :hidden %>
+    <div class="row sync-height">
+      <div class="large-4 columns">
+        <div class="panel">
+        <h3 class="subheader">Input File</h3>
+        <ul class="large-block-grid-1">
+          <li class="import-setting">
+            <div class="row">
+              <div class='large-12 large-centered text-center import-file-upload'>
+                <%= f.input :file %>
+                <%= f.input :file_cache, as: :hidden %>
+              </div>
             </div>
-          </div>
-        </li>
-        <% if @student_import.file.to_s.present? %>
-        <li>
-          <div class="row">
-            <div class='large-12 large-centered text-center'>
-              <p>Current File: <%= File.basename @student_import.file.to_s %></p>
+          </li>
+          <% if @student_import.file.to_s.present? %>
+          <li class="import-setting">
+            <div class="row">
+              <div class='large-12 large-centered text-center'>
+                <p>Current File: <%= File.basename @student_import.file.to_s %></p>
+              </div>
             </div>
-          </div>
-        </li>
-        <% end %>
-      </ul>
+          </li>
+          <% end %>
+        </ul>
+        </div>
+      </div>
+      <div class="large-8 columns">
+        <div class="panel">
+          <h3 class="subheader">Data Representation Settings</h3>
+          <ul class="large-block-grid-2">
+            <li class="import-setting">
+              <div class="row">
+                <div class='large-12 large-centered text-center'>
+                  <%= b.label "Match tutorial groups", required: false %>
+                </div>
+              </div>
+              <div class="row">
+                <div class='large-12 large-centered text-center'>
+                  <%= b.radio_button :matching_groups, "first", checked: (@student_import.import_options[:matching_groups] == "first") %>
+                </div>
+              </div>
+              <div class="row">
+                <%= b.input_field :tutorial_groups_regexp, value: @student_import.import_options[:tutorial_groups_regexp], class: 'regex' %>
+              </div>
+            </li>
+            <li class="import-setting">
+              <div class="row">
+                <div class='large-12 large-centered text-center'>
+                  <%= b.label "Match tutorial and student groups", required: false %>
+                </div>
+              </div>
+              <div class="row">
+                <div class='large-12 large-centered text-center'>
+                  <%= b.radio_button :matching_groups, "both", checked: (@student_import.import_options[:matching_groups] == "both")  %>
+                </div>
+              </div>
+              <div class="row">
+                <%= b.input_field :student_groups_regexp, value: @student_import.import_options[:student_groups_regexp], class: 'regex'  %>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <div class="panel">
-      <h3 class="subheader">Data Representation Settings</h3>
-      <ul class="large-block-grid-2">
-        <li>
-          <div class="row">
-            <div class='large-12 large-centered text-center'>
-              <%= b.label "Match tutorial groups", required: false %>
-            </div>
-          </div>
-          <div class="row">
-            <div class='large-12 large-centered text-center'>
-              <%= b.radio_button :matching_groups, "first", checked: (@student_import.import_options[:matching_groups] == "first") %>
-            </div>
-          </div>
-          <div class="row">
-            <%= b.input_field :tutorial_groups_regexp, value: @student_import.import_options[:tutorial_groups_regexp], class: 'regex' %>
-          </div>
-        </li>
-        <li>
-          <div class="row">
-            <div class='large-12 large-centered text-center'>
-              <%= b.label "Match tutorial and student groups", required: false %>
-            </div>
-          </div>
-          <div class="row">
-            <div class='large-12 large-centered text-center'>
-              <%= b.radio_button :matching_groups, "both", checked: (@student_import.import_options[:matching_groups] == "both")  %>
-            </div>
-          </div>
-          <div class="row">
-            <%= b.input_field :student_groups_regexp, value: @student_import.import_options[:student_groups_regexp], class: 'regex'  %>
-          </div>
-        </li>
-      </ul>
-    </div>
-
-    <div class="panel">
-      <h3 class="subheader">File Format Settings</h3>
-      <ul class="large-block-grid-5">
-        <li>
-          <div class='row'>
-            <div class='large-12 large-centered text-center'>
-              <%= b.label :headers_on_first_line %>
-            </div>
-          </div>
-          <div class='row'>
-            <div class='text-center'>
-              <%= b.check_box :headers_on_first_line, checked: (@student_import.import_options[:headers_on_first_line].to_s == "1"), data: { customforms: 'disabled' } %>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class='row'>
-            <div class='large-12 large-centered text-center'>
-              <%= b.label :col_seperator %>
-            </div>
-          </div>
-          <div class='row'>
-            <div>
-              <%= b.input_field :col_seperator, value: @student_import.import_options[:col_seperator], class: 'file-format-centered' %>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class='row'>
-            <div class='large-12 large-centered text-center'>
-              <%= b.label :quote_char %>
-            </div>
-          </div>
-          <div class='row'>
-            <div>
-              <%= b.input_field :quote_char, value: @student_import.import_options[:quote_char], class: "file-format-centered" %>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class='row'>
-            <div class='large-12 large-centered text-center'>
-              <%= b.label :decimal_seperator %>
-            </div>
-          </div>
-          <div class='row'>
-            <div>
-              <%= b.input_field :decimal_seperator, value: @student_import.import_options[:decimal_seperator], class: "file-format-centered" %>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class='row'>
-            <div class='large-12 large-centered text-center'>
-              <%= b.label :thousands_seperator %>
-            </div>
-          </div>
-          <div class='row'>
-            <div>
-              <%= b.input_field :thousands_seperator, value: @student_import.import_options[:thousands_seperator], class: "file-format-centered" %>
-            </div>
-          </div>
-        </li>
-      </ul>
+    <div class="row">
+      <div class="large-12 columns">
+        <div class="panel">
+          <h3 class="subheader">File Format Settings</h3>
+          <ul class="large-block-grid-5">
+            <li class="import-setting">
+              <div class='row'>
+                <div class='large-12 large-centered text-center'>
+                  <%= b.label :headers_on_first_line %>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='text-center'>
+                  <%= b.check_box :headers_on_first_line, checked: (@student_import.import_options[:headers_on_first_line].to_s == "1"), data: { customforms: 'disabled' } %>
+                </div>
+              </div>
+            </li>
+            <li class="import-setting">
+              <div class='row'>
+                <div class='large-12 large-centered text-center'>
+                  <%= b.label :col_seperator %>
+                </div>
+              </div>
+              <div class='row'>
+                <div>
+                  <%= b.input_field :col_seperator, value: @student_import.import_options[:col_seperator], class: 'file-format-centered' %>
+                </div>
+              </div>
+            </li>
+            <li class="import-setting">
+              <div class='row'>
+                <div class='large-12 large-centered text-center'>
+                  <%= b.label :quote_char %>
+                </div>
+              </div>
+              <div class='row'>
+                <div>
+                  <%= b.input_field :quote_char, value: @student_import.import_options[:quote_char], class: "file-format-centered" %>
+                </div>
+              </div>
+            </li>
+            <li class="import-setting">
+              <div class='row'>
+                <div class='large-12 large-centered text-center'>
+                  <%= b.label :decimal_seperator %>
+                </div>
+              </div>
+              <div class='row'>
+                <div>
+                  <%= b.input_field :decimal_seperator, value: @student_import.import_options[:decimal_seperator], class: "file-format-centered" %>
+                </div>
+              </div>
+            </li>
+            <li class="import-setting">
+              <div class='row'>
+                <div class='large-12 large-centered text-center'>
+                  <%= b.label :thousands_seperator %>
+                </div>
+              </div>
+              <div class='row'>
+                <div>
+                  <%= b.input_field :thousands_seperator, value: @student_import.import_options[:thousands_seperator], class: "file-format-centered" %>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   <% end %>
-
-
 
   <div class='row'>
     <div class='large-12 large-centered columns text-center'>

@@ -9,6 +9,7 @@ class Import::StudentImport < ActiveRecord::Base
 
   # attributes
   attr_accessible :term_id, :file, :file_cache, :import_options, :import_mapping
+
   mount_uploader :file, Import::StudentImportsUploader
   serialize :import_options, Hash
   serialize :import_mapping, Import::ImportMapping
@@ -67,7 +68,7 @@ class Import::StudentImport < ActiveRecord::Base
         student.surname = row[import_mapping.surname.to_i]
         student.email = email
         student.matriculum_number = row[import_mapping.matriculum_number.to_i]
-        student.password = "123456" # TODO change default password
+        student.password = "123456" # TODO: change default password
         student.password_confirmation = "123456"
         students << student
 
@@ -176,9 +177,12 @@ class Import::StudentImport < ActiveRecord::Base
   private
 
   def parsed_csv_file
-    options = {}
-    options[:col_sep] = import_options[:col_seperator] || ";"
-    options[:quote_char] = import_options[:quote_char] || "\""
+    csv_options = {}
+    csv_options[:col_sep] = import_options[:col_seperator] || ";"
+    csv_options[:quote_char] = import_options[:quote_char] || "\""
+
+    # not used: import_options[:decimal_seperator] || ","
+    # not used: import_options[:thousands_seperator] || "."
 
     @headers = []
     records = []
@@ -187,7 +191,7 @@ class Import::StudentImport < ActiveRecord::Base
     text.split(/\n/).each_with_index do |line, index|
       line.strip!
       begin
-        values = CSV.parse_line(line, options).keep_if {|cell| cell.present?}
+        values = CSV.parse_line(line, csv_options).keep_if {|cell| cell.present?}
 
         if index == 0 && import_options[:headers_on_first_line] == "1"
           @headers = values

@@ -45,6 +45,7 @@ Sapphire::Application.routes.draw do
       namespace :import do
         resources :student_imports do
           get :full_mapping_table, on: :member
+          get :results, on: :member
         end
       end
     end

@@ -1,27 +1,3 @@
-<% if @student_import.import_result? %>
-  <p>success:                        <%= @student_import.import_result[:success] %></p>
-  <p>imported_students:              <%= @student_import.import_result[:imported_students] %></p>
-  <p>imported_tutorial_groups:       <%= @student_import.import_result[:imported_tutorial_groups] %></p>
-  <p>imported_student_groups:        <%= @student_import.import_result[:imported_student_groups] %></p>
-  <p>imported_student_registrations: <%= @student_import.import_result[:imported_student_registrations] %></p>
-
-  <% if @student_import.import_result[:problems].any? %>
-    <div>
-      <% @student_import.import_result[:problems].each do |problem| %>
-        <p>
-          <%= problem[:entry] %><br/>
-          <%= problem[:problem] %>
-        </p>
-      <% end %>
-    </div>
-  <% else %>
-    <p>problems: 0</p>
-  <% end %>
-
-<hr/>
-
-<% end %>
-
 <%= simple_form_for [current_course, current_term, @student_import] do |f| %>
   <%= f.fields_for :import_mapping do |fb| %>
     <div class='row mapping_table_container'>

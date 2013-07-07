@@ -44,12 +44,12 @@ class Import::StudentImportsController < TermResourceController
     @student_import = Import::StudentImport.find(params[:id])
 
     result = @student_import.import(params[:import_student_import])
-    if result[:success]
-      redirect_to course_term_path(current_course, current_term), notice: "Import successfully finished!"
-    else
-      @student_import = Import::StudentImport.for_course(current_course).find(params[:id]).decorate
-      render :show, alert: "Error during importing studentes!"
-    end
+
+    redirect_to results_course_term_import_student_import_path(current_course, current_term, @student_import)
+  end
+
+  def results
+    @student_import = Import::StudentImport.find(params[:id])
   end
 
   def destroy

@@ -48,7 +48,8 @@ class Import::StudentImportsController < TermResourceController
       redirect_to course_term_path(current_course, current_term), notice: "Import successfully finished!"
     else
       @student_import = Import::StudentImport.for_course(current_course).find(params[:id]).decorate
-      render :show, alert: "Error during importing studentes! #{result.inspect}"
+      @problems = result[:problems]
+      render :show, alert: "Error during importing studentes!"
     end
   end
 

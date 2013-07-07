@@ -11,11 +11,12 @@ class Import::StudentImport < ActiveRecord::Base
   belongs_to :term
 
   # attributes
-  attr_accessible :term_id, :file, :file_cache, :import_options, :import_mapping
+  attr_accessible :term_id, :file, :file_cache, :import_options, :import_mapping, :import_result
 
   mount_uploader :file, Import::StudentImportsUploader
   serialize :import_options, Hash
   serialize :import_mapping, Import::ImportMapping
+  serialize :import_result, Hash
 
   # callbacks
   before_validation :fill_status, on: :create

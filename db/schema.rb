@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130706155015) do
+ActiveRecord::Schema.define(version: 20130707095649) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 20130706155015) do
     t.integer  "line_count"
     t.text     "import_options"
     t.text     "import_mapping"
+    t.text     "import_result"
   end
 
   add_index "import_student_imports", ["term_id"], name: "index_import_student_imports_on_term_id"

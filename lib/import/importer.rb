@@ -74,10 +74,12 @@ module Import::Importer
       end
 
       self.status = "imported"
+      self.import_result = @import_result
       if not self.save
         @import_result[:success] = false
       end
 
+    # TODO: uncomment me in production!
     # rescue
     #   puts $!
     #   @import_result[:success] = false

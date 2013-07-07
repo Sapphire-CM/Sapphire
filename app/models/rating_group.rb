@@ -13,7 +13,7 @@ class RatingGroup < ActiveRecord::Base
     rating_group.global == true
   }
 
-  attr_accessible :title, :description, :points, :exercise, :global, :enable_range_points, :min_points, :max_points, :row_order
+  attr_accessible :title, :description, :points, :exercise, :global, :enable_range_points, :min_points, :max_points, :row_order_position
 
   after_initialize :points_min_max
 

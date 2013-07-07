@@ -2,7 +2,7 @@
 
 <% sidebar do %>
   <div>
-  <%= link_to "Add student", course_term_tutorial_group_new_student_registration_path(current_course, current_term, @tutorial_group), class: "small button twelve columns" %>
+  <%# TODO: change to student_group  <%= link_to "Add student", course_term_tutorial_group_new_student_registration_path(current_course, current_term, @tutorial_group), class: "small button twelve columns" %>
 
   <%= link_to set_tutor_label, course_term_tutorial_group_new_tutor_registration_path(current_course, current_term, @tutorial_group), class: "small button twelve columns" %>
 
@@ -13,55 +13,80 @@
 <% end %>
 
 <div class="section-container tabs" data-section="tabs">
-    <section>
-      <p class="title" data-section-title><a href="#">Students</a></p>
-      <div class="content" data-section-content>
-        <% if @tutorial_group.students.any? %>
-          <table class='large-12'>
-            <thead>
-              <th>Forename</th>
-              <th>Surname</th>
-              <th>Matriculum Number</th>
-              <th>Submissions</th>
-              <th></th>
-            </thead>
-            <tbody>
-              <% @tutorial_group.students.each do |student|  %>
-              <tr>
-                <td><%= student.forename %></td>
-                <td><%= student.surname %></td>
-                <td><%= student.matriculum_number %></td>
-                <td><%= student.submissions_for_term(current_term).count %></td>
+  <section>
+    <p class="title" data-section-title><a href="#">Student groups</a></p>
+    <div class="content" data-section-content>
+      <% if @tutorial_group.student_groups.any? %>
+        <table class='large-12'>
+          <thead>
+            <th>Group</th>
+            <th>Students</th>
+            <th></th>
+          </thead>
+          <tbody>
+            <% @tutorial_group.student_groups.each do |student_group|  %>
+            <tr>
+              <td><%= student_group.title %></td>
+              <td><%= student_group.students.count %></td>
 
                 <td class='right-aligned'>
-                  <a href='#' class='tiny button'>SOME</a>
-                  <a href='#' class='tiny alert button'>BUTTONS</a>
+                  <%= link_to foundicon(:edit), edit_course_term_tutorial_group_student_group_path(current_course, current_term, @tutorial_group, student_group) %>
+
+                  <%= link_to foundicon(:remove), course_term_tutorial_group_student_group_path(current_course, current_term, @tutorial_group, student_group), method: :delete, confirm: "Are you sure?" %>
                 </td>
-              </tr>
-              <% end %>
-            </tbody>
-          </table>
-        <% else %>
-          <p>No students present.</p>
-        <% end %>
-      </div>
-    </section>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p>No student groups present.</p>
+      <% end %>
+    </div>
+  </section>
 
-    <section>
-      <p class="title" data-section-title><a href="#">Submissions</a></p>
-      <div class="content" data-section-content>
-        <%= render "submissions/submissions_list", submissions: @submissions %>
-      </div>
-    </section>
+  <section>
+    <p class="title" data-section-title><a href="#">Students</a></p>
+    <div class="content" data-section-content>
+      <% if @tutorial_group.students.any? %>
+        <table class='large-12'>
+          <thead>
+            <th>Forename</th>
+            <th>Surname</th>
+            <th>Matriculum Number</th>
+            <th>Email</th>
+          </thead>
+          <tbody>
+            <% @tutorial_group.students.each do |student|  %>
+            <tr>
+              <td><%= student.forename %></td>
+              <td><%= student.surname %></td>
+              <td><%= student.matriculum_number %></td>
+              <td><%= student.email %></td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p>No students present.</p>
+      <% end %>
+    </div>
+  </section>
 
-    <section>
-      <p class="title" data-section-title><a href="#">Description</a></p>
-      <div class="content" data-section-content>
-        <% if @tutorial_group.description? %>
-          <%= simple_format @tutorial_group.description %>
-        <% else %>
-          <p>No description present.</p>
-        <% end %>
-      </div>
-    </section>
+  <section>
+    <p class="title" data-section-title><a href="#">Submissions</a></p>
+    <div class="content" data-section-content>
+      <%# TODO: fix that <%= render "submissions/submissions_list", submissions: @submissions %>
+    </div>
+  </section>
+
+  <section>
+    <p class="title" data-section-title><a href="#">Description</a></p>
+    <div class="content" data-section-content>
+      <% if @tutorial_group.description? %>
+        <%= simple_format @tutorial_group.description %>
+      <% else %>
+        <p>No description present.</p>
+      <% end %>
+    </div>
+  </section>
 </div>

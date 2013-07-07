@@ -103,11 +103,12 @@ private
     student.password              = "123456"
     student.password_confirmation = "123456"
 
+    new_record = student.new_record?
     if student.save
-      @import_result[:imported_students] += 1
+      @import_result[:imported_students] += 1 if new_record
     else
       @import_result[:success] = false
-      @import_result[:problems] << student
+      @import_result[:problems] << create_problem_definition(row, student.errors.full_messages)
     end
 
     student
@@ -116,11 +117,12 @@ private
   def create_tutorial_group(title)
     tutorial_group = term.tutorial_groups.find_or_initialize_by_title(title)
 
+    new_record = tutorial_group.new_record?
     if tutorial_group.save
-      @import_result[:imported_tutorial_groups] += 1
+      @import_result[:imported_tutorial_groups] += 1 if new_record
     else
       @import_result[:success] = false
-      @import_result[:problems] << tutorial_group
+      @import_result[:problems] << create_problem_definition(row, tutorial_group.errors.full_messages)
     end
 
     tutorial_group
@@ -129,11 +131,12 @@ private
   def create_student_group(title, tutorial_group)
     student_group = tutorial_group.student_groups.find_or_initialize_by_title(title)
 
+    new_record = student_group.new_record?
     if student_group.save
-      @import_result[:imported_student_groups] += 1
+      @import_result[:imported_student_groups] += 1 if new_record
     else
       @import_result[:success] = false
-      @import_result[:problems] << student_group
+      @import_result[:problems] << create_problem_definition(row, student_group.errors.full_messages)
     end
 
     student_group
@@ -151,14 +154,30 @@ private
     registration.registered_at = row[import_mapping.registered_at.to_i].to_datetime
     registration.comment = row[import_mapping.comment.to_i] if import_mapping.comment
 
+    new_record = registration.new_record?
     if registration.save
-      @import_result[:imported_student_registrations] += 1
+      @import_result[:imported_student_registrations] += 1 if new_record
     else
       @import_result[:success] = false
-      @import_result[:problems] << registration
+      @import_result[:problems] << create_problem_definition(row, registration.errors.full_messages)
     end
 
     registration
+  end
+
+
+  def create_problem_definition(row, full_messages)
+    entry = {
+      group: row[import_mapping.group.to_i],
+      matriculum_number: row[import_mapping.matriculum_number.to_i],
+      forename: row[import_mapping.forename.to_i],
+      surname: row[import_mapping.surname.to_i],
+      email: row[import_mapping.email.to_i],
+      registered_at: row[import_mapping.registered_at.to_i],
+      comment: row[import_mapping.comment.to_i]
+    }
+
+    { entry: entry, problem: full_messages}
   end
 
 end

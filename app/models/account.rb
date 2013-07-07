@@ -7,7 +7,7 @@ class Account < ActiveRecord::Base
 
   attr_accessible :email, :password, :password_confirmation, :remember_me, :forename, :surname, :matriculum_number
 
-  validates_uniqueness_of :email
+  # devise already does this with the validatable-option: validates_uniqueness_of :email
   validates_presence_of :forename
   validates_presence_of :surname
 

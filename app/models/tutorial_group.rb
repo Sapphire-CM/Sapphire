@@ -15,4 +15,7 @@ class TutorialGroup < ActiveRecord::Base
 
   has_many :submissions, through: :student_group_registrations
 
+  def students
+    student_groups.flat_map { |sg| sg.students  }.uniq
+  end
 end

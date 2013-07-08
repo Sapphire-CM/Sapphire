@@ -66,7 +66,7 @@ namespace :deploy do
     end
   end
 
-  desc "Updates the secret key for cookies"
+  desc "Updates the secret_key_base for cookies"
   task :replace_secret do
     run "cd #{current_release} && RAILS_ENV=#{rails_env} bundle exec rake secret:update"
   end

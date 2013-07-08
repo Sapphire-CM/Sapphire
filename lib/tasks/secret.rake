@@ -1,10 +1,10 @@
 namespace :secret do
 
-  desc "Updates the secret key for cookies"
+  desc "Updates the secret_key_base for cookies"
   task :update do
-    # stolen from: github.com/digineo/secret_token_replacer/
+    # partially stolen from: github.com/digineo/secret_token_replacer/
 
-    pattern  = /(\.secret_token *= *')\w+(')/
+    pattern  = /(\.secret_key_base *= *')\w+(')/
     secret   = SecureRandom.hex(64)
     filepath = "#{Rails.root}/config/initializers/secret_token.rb"
     content  = File.read(filepath)

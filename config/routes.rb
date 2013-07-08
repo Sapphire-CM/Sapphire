@@ -1,7 +1,7 @@
 Sapphire::Application.routes.draw do
 
   resources :submission_evaluations
-  
+
   devise_for :accounts
   as :user do
     get 'accounts'          => 'accounts#index'
@@ -17,7 +17,7 @@ Sapphire::Application.routes.draw do
       delete :clear_lecturer_registration
 
       resources :submissions do
-        resource :evaluation, controller: "SubmissionEvaluations"
+        resource :evaluation, controller: 'submission_evaluations'
       end
 
 

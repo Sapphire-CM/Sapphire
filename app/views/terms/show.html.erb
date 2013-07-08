@@ -40,7 +40,7 @@
                 <td class='right-aligned'>
                   <%= link_to foundicon(:edit), edit_course_term_tutorial_group_path(current_course, current_term, tutorial_group) %>
 
-                  <%= link_to foundicon(:remove), course_term_tutorial_group_path(current_course, current_term, tutorial_group), method: :delete, confirm: "Are you sure?" %>
+                  <%= link_to foundicon(:remove), course_term_tutorial_group_path(current_course, current_term, tutorial_group), method: :delete, data: { confirm: "Are you sure?" } %>
                 </td>
               </tr>
             <% end %>
@@ -80,7 +80,7 @@
                 <td class='right-aligned'>
                   <%= link_to foundicon(:edit), edit_course_term_exercise_path(current_course, current_term, exercise) %>
 
-                  <%= link_to foundicon(:remove), course_term_exercise_path(current_course, current_term, exercise), method: :delete, confirm: "Are you sure?" %>
+                  <%= link_to foundicon(:remove), course_term_exercise_path(current_course, current_term, exercise), method: :delete, data: { confirm: "Are you sure?" } %>
                 </td>
               </tr>
             <% end %>

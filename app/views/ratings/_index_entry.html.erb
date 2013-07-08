@@ -18,6 +18,6 @@
   <td class='buttons-column right-aligned minimum-width'>
     <%= link_to foundicon(:edit), edit_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, rating.rating_group, rating), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
 
-    <%= link_to foundicon(:remove), course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, rating.rating_group, rating), class: 'index_entry_remove', method: :delete, confirm: "Are you sure?", remote: true %>
+    <%= link_to foundicon(:remove), course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, rating.rating_group, rating), class: 'index_entry_remove', method: :delete, data: { confirm: "Are you sure?" }, remote: true %>
   </td>
 </tr>

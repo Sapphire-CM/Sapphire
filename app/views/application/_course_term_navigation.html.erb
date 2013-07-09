@@ -1,0 +1,27 @@
+<li class='has-dropdown'>
+  <% if defined?(current_term) %>
+    <%= link_to_current_term %>
+  <% else %>
+    <%= link_to "Courses", courses_path %>
+  <% end %>
+
+  <ul class='dropdown'>
+    <% if Course.any? %>
+      <% Course.includes(:terms).load.each do |course| %>
+        <li class='<%= course.terms.any? ? "has-dropdown" : "" %>'>
+          <a href="#"><%= course.title %></a>
+
+          <% if course.terms.any? %>
+            <ul class='dropdown'>
+              <% course.terms.each do |term| %>
+                <li><%= link_to term.title, course_term_path(course, term) %></li>
+              <% end %>
+            </ul>
+          <% end %>
+        </li>
+      <% end %>
+    <% else %>
+      <li><%= link_to "(no courses)", '#' %></li>
+    <% end %>
+  </ul>
+</li>

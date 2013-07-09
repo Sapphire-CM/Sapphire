@@ -40,9 +40,9 @@
                 <td><%= tutorial_group.students.count %></td>
 
                 <td class='right-aligned'>
-                  <%= link_to general_foundicon(:edit), edit_course_term_tutorial_group_path(current_course, current_term, tutorial_group) %>
+                  <%= link_to gen_icon(:edit), edit_course_term_tutorial_group_path(current_course, current_term, tutorial_group) %>
 
-                  <%= link_to general_foundicon(:remove), course_term_tutorial_group_path(current_course, current_term, tutorial_group), method: :delete, data: { confirm: "Are you sure?" } %>
+                  <%= link_to gen_icon(:remove), course_term_tutorial_group_path(current_course, current_term, tutorial_group), method: :delete, data: { confirm: "Are you sure?" } %>
                 </td>
               </tr>
             <% end %>
@@ -80,9 +80,9 @@
                 <td><%= exercise.submissions.count %></td>
 
                 <td class='right-aligned'>
-                  <%= link_to general_foundicon(:edit), edit_course_term_exercise_path(current_course, current_term, exercise) %>
+                  <%= link_to gen_icon(:edit), edit_course_term_exercise_path(current_course, current_term, exercise) %>
 
-                  <%= link_to general_foundicon(:remove), course_term_exercise_path(current_course, current_term, exercise), method: :delete, data: { confirm: "Are you sure?" } %>
+                  <%= link_to gen_icon(:remove), course_term_exercise_path(current_course, current_term, exercise), method: :delete, data: { confirm: "Are you sure?" } %>
                 </td>
               </tr>
             <% end %>

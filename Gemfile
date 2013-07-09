@@ -25,7 +25,7 @@ gem 'uglifier',        '>= 1.3.0' # Use Uglifier as compressor for JavaScript as
 gem 'jquery-rails'                # Use jquery as the JavaScript library
 
 gem 'zurb-foundation', '>= 4.0'
-gem 'foundation-icons-sass-rails'
+gem "foundation_icons_rails", "~> 1.0.1"
 
 group :production do
   gem 'therubyracer'

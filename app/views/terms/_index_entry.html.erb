@@ -5,8 +5,8 @@
   <td><%= term.students.count %></td>
 
   <td class='right-aligned minimum-width'>
-    <%= link_to foundicon(:edit), edit_course_term_path(course, term), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
+    <%= link_to general_foundicon(:edit), edit_course_term_path(course, term), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
 
-    <%= link_to foundicon(:remove), course_term_path(course, term), class: 'index_entry_remove', method: :delete, data: { confirm: "Are you sure?" }, remote: true %>
+    <%= link_to general_foundicon(:remove), course_term_path(course, term), class: 'index_entry_remove', method: :delete, data: { confirm: "Are you sure?" }, remote: true %>
   </td>
 </tr>

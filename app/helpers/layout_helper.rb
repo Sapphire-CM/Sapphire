@@ -98,12 +98,24 @@ module LayoutHelper
     subtitle
   end
 
-  def foundicon(icon)
-    "<i class='general foundicon-#{icon}'></i>".html_safe
+  def foundicon(font, icon, classes = 'general')
+    "<i class='#{font} foundicon-#{icon} #{classes}'></i>".html_safe
   end
 
-  def foundicon_enclosed(icon)
-    "<i class='general-enclosed foundicon-#{icon}'></i>".html_safe
+  def general_foundicon(icon, classes = '')
+    foundicon 'general', icon, classes
+  end
+
+  def general_enclosed_foundicon(icon, classes = '')
+    foundicon 'general-enclosed', icon, classes
+  end
+
+  def social_foundicon(icon, classes = '')
+    foundicon 'social', icon, classes
+  end
+
+  def accessibility_foundicon(icon, classes = '')
+    foundicon 'accessibility', icon, classes
   end
 
 end

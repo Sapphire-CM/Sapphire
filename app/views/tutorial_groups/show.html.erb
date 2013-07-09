@@ -30,9 +30,9 @@
               <td><%= student_group.students.count %></td>
 
                 <td class='right-aligned'>
-                  <%= link_to foundicon(:edit), edit_course_term_tutorial_group_student_group_path(current_course, current_term, @tutorial_group, student_group) %>
+                  <%= link_to general_foundicon(:edit), edit_course_term_tutorial_group_student_group_path(current_course, current_term, @tutorial_group, student_group) %>
 
-                  <%= link_to foundicon(:remove), course_term_tutorial_group_student_group_path(current_course, current_term, @tutorial_group, student_group), method: :delete, confirm: "Are you sure?" %>
+                  <%= link_to general_foundicon(:remove), course_term_tutorial_group_student_group_path(current_course, current_term, @tutorial_group, student_group), method: :delete, confirm: "Are you sure?" %>
                 </td>
             </tr>
             <% end %>

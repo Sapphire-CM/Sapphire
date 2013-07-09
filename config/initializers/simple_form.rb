@@ -13,7 +13,7 @@ module SimpleForm
           template.content_tag :div, class: 'row collapse' do
             input = ""
             input += template.content_tag :div, class: 'small-1 columns' do
-              template.content_tag :a, class: 'prefix secondary button' do 
+              template.content_tag :a, class: 'prefix secondary button' do
                 template.content_tag :i, "", class: 'general foundicon-calendar'
               end
             end
@@ -43,7 +43,7 @@ module SimpleForm
           template.content_tag :div, class: 'row collapse' do
             input = ""
             input += template.content_tag :div, class: 'small-1 columns' do
-              template.content_tag :a, class: 'prefix secondary button' do 
+              template.content_tag :a, class: 'prefix secondary button' do
                 template.content_tag :i, "", class: 'general foundicon-calendar'
               end
             end
@@ -83,10 +83,10 @@ SimpleForm.setup do |config|
 
   # HTML input-checkbox nested inside label
   config.boolean_style = :nested
-  
-  
+
+
   config.browser_validations = false
-  
+
   # CSS class for buttons
   config.button_class = 'button'
 

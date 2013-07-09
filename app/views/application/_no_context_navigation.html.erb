@@ -1,27 +1,8 @@
 <ul class='left'>
   <li class='divider'></li>
-  <li class='has-dropdown'>
-    <%= link_to "Courses", courses_path %>
-    <ul class='dropdown'>
-      <% if Course.any? %>
-        <% Course.includes(:terms).load.each do |course| %>
-          <li class='<%= course.terms.any? ? "has-dropdown" : "" %>'>
-            <a href="#"><%= course.title %></a>
 
-            <% if course.terms.any? %>
-              <ul class='dropdown'>
-                <% course.terms.each do |term| %>
-                  <li><%= link_to term.title, course_term_path(course, term) %></li>
-                <% end %>
-              </ul>
-            <% end %>
-          </li>
-        <% end %>
-      <% else %>
-        <li><%= link_to "(no courses)", '#' %></li>
-      <% end %>
-    </ul>
-  </li>
+  <%= render 'course_term_navigation' %>
+
   <li>
     <%= link_to "Accounts", accounts_path %>
   </li>

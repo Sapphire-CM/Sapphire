@@ -1,19 +1,7 @@
 <ul class='left'>
   <li class='divider'></li>
 
-  <li class='has-dropdown'>
-    <%= link_to_current_term %>
-    <ul class='dropdown'>
-      <% if Term.includes(:course).load.any? %>
-        <li><label>Choose:</label></li>
-        <% Term.all.each do |term| %>
-          <li><%= link_to(course_term_title(term.course, term), course_term_path(term.course, term)).html_safe %></li>
-        <% end %>
-      <% else %>
-        <p>No terms present.</p>
-      <% end %>
-    </ul>
-  </li>
+  <%= render 'course_term_navigation' %>
 
   <li class='divider'></li>
 

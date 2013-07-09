@@ -42,3 +42,12 @@ input[type="file"] {
   width: auto;
 }
 
+a.account-top-bar {
+  height: 45px;
+  i {
+    color: #fff;
+    margin-right: 0.5em;
+    font-size: 1.8em;
+    vertical-align: middle;
+  }
+}

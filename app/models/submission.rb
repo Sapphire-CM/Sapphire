@@ -1,5 +1,5 @@
 class Submission < ActiveRecord::Base
-  default_scope includes(:exercise, :student, :submission_evaluation)
+  default_scope { includes(:exercise, :student, :submission_evaluation) }
 
   belongs_to :exercise
   belongs_to :student_registration

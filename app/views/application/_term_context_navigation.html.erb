@@ -4,7 +4,7 @@
   <li class='has-dropdown'>
     <%= link_to_current_term %>
     <ul class='dropdown'>
-      <% if Term.includes(:course).all.any? %>
+      <% if Term.includes(:course).load.any? %>
         <li><label>Choose:</label></li>
         <% Term.all.each do |term| %>
           <li><%= link_to(course_term_title(term.course, term), course_term_path(term.course, term)).html_safe %></li>

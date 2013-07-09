@@ -1,10 +1,11 @@
 class Term < ActiveRecord::Base
+  belongs_to :course
+  attr_accessible :title, :description, :course, :course_id, :exercises
+
   include RankedModel
   ranks :row_order, with_same: :course_id
 
-  default_scope rank(:row_order)
-
-  belongs_to :course
+  default_scope { rank(:row_order) }
 
   has_many :exercises, dependent: :destroy
   has_many :tutorial_groups, dependent: :destroy
@@ -13,8 +14,6 @@ class Term < ActiveRecord::Base
 
   has_one :lecturer_registration, dependent: :destroy
   delegate :lecturer, to: :lecturer_registration, allow_nil: true
-
-  attr_accessible :title, :description, :course, :course_id, :exercises
 
   validates_presence_of :title, :course_id
   validates_uniqueness_of :title, scope: :course_id

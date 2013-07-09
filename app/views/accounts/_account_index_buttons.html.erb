@@ -1,2 +1,2 @@
 <%= link_to "View", account_path(account), class: 'small button' %>
-<%= link_to "Delete", account_path(account), method: :delete, confirm: "Are you sure?", class: "small alert button" %>
+<%= link_to "Delete", account_path(account), method: :delete, data: { confirm: "Are you sure?" }, class: "small alert button" %>

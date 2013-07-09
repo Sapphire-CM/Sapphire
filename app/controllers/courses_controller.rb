@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   def index
-    @courses = Course.includes(:terms).all
+    @courses = Course.includes(:terms).load
   end
 
   def show

@@ -1,17 +1,16 @@
 class Rating < ActiveRecord::Base
+  belongs_to :rating_group
+  attr_accessible :title, :description, :rating_group, :rating_group_id, :value, :min_value, :max_value, :type, :row_order_position
+
   include RankedModel
   ranks :row_order, with_same: :rating_group_id, class_name: "Rating"
 
-  default_scope includes(:rating_group).rank(:row_order)
-
-  belongs_to :rating_group
+  default_scope { includes(:rating_group).rank(:row_order) }
 
   has_one :exercise, through: :rating_group
   has_many :evalutions
 
   validates_presence_of :title, :type
-
-  attr_accessible :title, :description, :rating_group, :rating_group_id, :value, :min_value, :max_value, :type, :row_order_position
 
   validate :rating_type_validation
 

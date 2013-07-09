@@ -8,7 +8,7 @@
 
   <%= link_to "Edit", edit_course_term_tutorial_group_path(current_course, current_term, @tutorial_group), class: "small button twelve columns" %>
 
-  <%= link_to "Delete", course_term_tutorial_group_path(current_course, current_term, @tutorial_group), class: "small alert button twelve columns", method: :delete, confirm: "Are you sure?" %>
+  <%= link_to "Delete", course_term_tutorial_group_path(current_course, current_term, @tutorial_group), class: "small alert button twelve columns", method: :delete, data: { confirm: "Are you sure?" } %>
   </div>
 <% end %>
 

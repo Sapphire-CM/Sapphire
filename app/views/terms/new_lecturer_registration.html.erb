@@ -3,7 +3,7 @@
 <% if ! @term.lecturer.blank? %>
   <p>
     Current Lecturer: <%= @term.lecturer.fullname %>
-    <%= link_to "Clear", course_term_clear_lecturer_registration_path(current_course, current_term), class: "small alert button", method: :delete, confirm: "Are you sure?" %>
+    <%= link_to "Clear", course_term_clear_lecturer_registration_path(current_course, current_term), class: "small alert button", method: :delete, data: { confirm: "Are you sure?" } %>
     <%= link_to "Cancel", course_term_path(current_course, current_term), class: "small button" %>
   </p>
 <% end %>

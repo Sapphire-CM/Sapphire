@@ -43,6 +43,7 @@ group :development do
   gem 'pry'
   gem 'pry-rails'
   gem 'pry-plus'
+  gem 'spring'
 
   gem 'thin'                # small development webserver
   gem 'debugger'            # debugger with irb, 1.9.3-only

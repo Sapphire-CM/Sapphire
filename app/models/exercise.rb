@@ -7,6 +7,8 @@ class Exercise < ActiveRecord::Base
 
   default_scope { rank(:row_order) }
 
+  has_many :student_group_registrations, dependent: :destroy
+
   has_many :submissions
   has_many :rating_groups, dependent: :destroy
   has_many :ratings, through: :rating_groups

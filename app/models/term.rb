@@ -28,6 +28,10 @@ class Term < ActiveRecord::Base
     Account.joins(student_registrations: {tutorial_group: :term}).where{ student_registrations.tutorial_group.term.id == my{id}}
   end
 
+  def group_submissions?
+    exercises.where(group_submission: true).exists?
+  end
+
   def copy_lecturer(destination_term)
     source_registration = LecturerRegistration.find_by_term_id(self.id)
 

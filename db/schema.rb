@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130627202109) do
+ActiveRecord::Schema.define(version: 20130707095649) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 20130627202109) do
     t.boolean  "enable_max_points"
     t.integer  "max_points"
     t.integer  "row_order"
+    t.boolean  "group_submission"
   end
 
   add_index "exercises", ["term_id"], name: "index_exercises_on_term_id"
@@ -79,6 +80,7 @@ ActiveRecord::Schema.define(version: 20130627202109) do
     t.integer  "line_count"
     t.text     "import_options"
     t.text     "import_mapping"
+    t.text     "import_result"
   end
 
   add_index "import_student_imports", ["term_id"], name: "index_import_student_imports_on_term_id"
@@ -125,17 +127,36 @@ ActiveRecord::Schema.define(version: 20130627202109) do
 
   add_index "ratings", ["rating_group_id"], name: "index_ratings_on_rating_group_id"
 
+  create_table "student_group_registrations", force: true do |t|
+    t.integer  "exercise_id"
+    t.integer  "student_group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "student_group_registrations", ["exercise_id"], name: "index_student_group_registrations_on_exercise_id"
+  add_index "student_group_registrations", ["student_group_id"], name: "index_student_group_registrations_on_student_group_id"
+
+  create_table "student_groups", force: true do |t|
+    t.string   "title"
+    t.integer  "tutorial_group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "student_groups", ["tutorial_group_id"], name: "index_student_groups_on_tutorial_group_id"
+
   create_table "student_registrations", force: true do |t|
     t.integer  "account_id"
-    t.integer  "tutorial_group_id"
     t.datetime "registered_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "comment"
+    t.integer  "student_group_id"
   end
 
   add_index "student_registrations", ["account_id"], name: "index_student_registrations_on_account_id"
-  add_index "student_registrations", ["tutorial_group_id"], name: "index_student_registrations_on_tutorial_group_id"
+  add_index "student_registrations", ["student_group_id"], name: "index_student_registrations_on_student_group_id"
 
   create_table "submission_evaluations", force: true do |t|
     t.integer  "submission_id"

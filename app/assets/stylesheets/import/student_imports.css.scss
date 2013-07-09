@@ -20,7 +20,7 @@
 }
 
 table.mapping_table select {
-  min-width: 50px;
+  min-width: 5em;
 }
 
 select.import-mapping {
@@ -33,3 +33,19 @@ input.file-format-centered {
   margin-left: auto;
   margin-right: auto;
 }
+
+input.regex {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
+}
+
+li.import-setting {
+  padding-bottom: 0;
+}
+
+.import-file-upload {
+  margin-top: 1.25em;
+}
+

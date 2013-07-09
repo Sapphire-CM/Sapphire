@@ -15,36 +15,41 @@ class Import::StudentImportsController < TermResourceController
 
   def new
     @student_import = current_term.student_imports.new
-
-    # default values
-    @student_import.import_options[:col_seperator] = ";"
-    @student_import.import_options[:quote_char] = "\""
-    @student_import.import_options[:decimal_seperator] = ","
-    @student_import.import_options[:thousands_seperator] = "."
-    @student_import.import_options[:headers_on_first_line] = "1"
+    @student_import.import_options[:matching_groups] = "both" if current_term.group_submissions?
   end
 
   def create
     @student_import = current_term.student_imports.new(params[:import_student_import])
 
-    if @student_import.save
-      @student_import.smart_guess_new_import_mapping
+    if not @student_import.save
+      return render :new
+    end
 
-      redirect_to course_term_import_student_import_path(current_course, current_term, @student_import)
+    # TODO: add validation for import_options
+
+    @student_import.parse_csv
+
+    if @student_import.encoding_error?
+      render :new, alert: "Error with file encoding! UTF8-like is required."
+    elsif @student_import.parsing_error?
+      render :new, alert: "Error during parsing! Corrupt data detected."
     else
-      render :new, notice: "Error during saving!"
+      # everything worked
+      @student_import.smart_guess_new_import_mapping
+      redirect_to course_term_import_student_import_path(current_course, current_term, @student_import)
     end
   end
 
   def update
     @student_import = Import::StudentImport.find(params[:id])
 
-    if @student_import.update_attributes(params[:import_student_import]) && @student_import.import!
-      redirect_to course_term_path(current_course, current_term), notice: "Import successfully finished!"
-    else
-      @student_import = Import::StudentImport.for_course(current_course).find(params[:id]).decorate
-      render :show, alert: "Error during importing studentes!"
-    end
+    result = @student_import.import(params[:import_student_import])
+
+    redirect_to results_course_term_import_student_import_path(current_course, current_term, @student_import)
+  end
+
+  def results
+    @student_import = Import::StudentImport.find(params[:id])
   end
 
   def destroy

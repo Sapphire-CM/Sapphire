@@ -1,5 +1,5 @@
 class EvaluationsController < TermResourceController
-  before_filter :fetch_exercise
+  before_action :fetch_exercise
 
   def index
     @students = current_term.students

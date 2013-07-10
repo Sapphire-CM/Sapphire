@@ -1,5 +1,5 @@
 class StudentGroupsControllerr < TermResourceController
-  before_filter :fetch_tutorial_group
+  before_action :fetch_tutorial_group
 
   # index action not needed
 

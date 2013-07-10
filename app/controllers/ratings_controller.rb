@@ -1,5 +1,5 @@
 class RatingsController < TermResourceController
-  before_filter :fetch_exercise, :fetch_rating_group
+  before_action :fetch_exercise, :fetch_rating_group
 
   def new
     @rating = @rating_group.ratings.new

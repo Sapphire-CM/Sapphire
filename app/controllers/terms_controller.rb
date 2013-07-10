@@ -1,5 +1,5 @@
 class TermsController < TermResourceController
-  before_filter :fetch_course_term
+  before_action :fetch_course_term
 
   def show
     @tutorial_groups = @term.tutorial_groups
@@ -35,7 +35,7 @@ class TermsController < TermResourceController
   end
 
   def edit
-    # term is fetched with before_filter
+    # term is fetched with before_action
   end
 
   def update

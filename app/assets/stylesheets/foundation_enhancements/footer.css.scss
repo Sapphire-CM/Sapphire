@@ -1,3 +1,7 @@
+// Place all the styles related to the rating_groups controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
 @import "compass/layout/sticky-footer";
 @import "../config";
 
@@ -6,7 +10,7 @@
 footer {
   border-top: 1px solid $hr-border-color;
   font-size: 1em;
-  
+
   .footer-inner {
     font-size: 0.7em;
     padding: {

@@ -16,7 +16,7 @@ gem 'devise', '~> 3.0.0.rc'       # user authentication
 gem 'cancan'                      # role based ability management for users
 gem 'turbolinks'                  # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'jquery-turbolinks'           # turbolinks jquery plugin for events
-gem 'ranked-model', :git => "https://github.com/mixonic/ranked-model.git", :branch => "rails4"                # manages sort-position of ratings
+gem 'ranked-model'                # manages sort-position of ratings
 
 gem 'compass-rails', :git => "https://github.com/Compass/compass-rails.git", :branch => "rails4-hack"
 gem 'sass-rails',      '~> 4.0.0' # Use SCSS for stylesheets
@@ -25,7 +25,7 @@ gem 'uglifier',        '>= 1.3.0' # Use Uglifier as compressor for JavaScript as
 gem 'jquery-rails'                # Use jquery as the JavaScript library
 
 gem 'zurb-foundation', '>= 4.0'
-gem "foundation_icons_rails", "~> 1.0.1"
+gem 'foundation-icons-sass-rails', :git => "https://github.com/zaiste/foundation-icons-sass-rails.git"
 
 group :production do
   gem 'therubyracer'

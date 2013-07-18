@@ -10,9 +10,10 @@
  *
  *= require_self
  *= require foundation_and_overrides
- *= require foundation_icons
  *= require jquery.ui.core
  *= require jquery.ui.theme
  *= require vendor
  *= require_tree .
  */
+
+@import 'foundation-icons';

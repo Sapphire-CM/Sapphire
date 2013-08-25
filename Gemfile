@@ -8,11 +8,11 @@ gem 'jquery-ui-rails'
 
 gem 'simple_form', '~> 3.0.0.rc'  # forms
 gem 'carrierwave'                 # fileuploads
-gem 'squeel', :git => "https://github.com/ernie/squeel.git"                      # easy DSL
+gem 'squeel', '~> 1.1'          # easy DSL
 gem 'draper'                      # decorators
 gem 'kaminari'                    # pagination
 gem 'flash_render'                # render method with notice/alerts
-gem 'devise', '~> 3.0.0.rc'       # user authentication
+gem 'devise', '~> 3.0'       # user authentication
 gem 'cancan'                      # role based ability management for users
 gem 'turbolinks'                  # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'jquery-turbolinks'           # turbolinks jquery plugin for events

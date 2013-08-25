@@ -21,8 +21,9 @@ module SubmissionEvaluationsHelper
     end
 
 
-    options[:label] = "#{rating.title} (#{rating_points_description rating})"
+    # options[:label] = "#{rating.title} (#{rating_points_description rating})"
+    options[:label] = false
 
-    f.input(:value, options) + raw("<span class='value'>#{additional_value}</span>")
+    f.input_field(:value, options) + raw("<span class='value'>#{additional_value}</span>")
   end
 end

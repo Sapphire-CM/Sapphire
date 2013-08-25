@@ -1,6 +1,6 @@
 class Exercise < ActiveRecord::Base
   belongs_to :term
-  attr_accessible :title, :description, :term, :term_id, :deadline, :late_deadline, :enable_max_points, :max_points, :submission_time, :row_order_position, :group_submission
+  attr_accessible :title, :description, :term, :term_id, :deadline, :late_deadline, :enable_max_points, :max_points, :submission_time, :group_exercise, :row_order_position, :group_submission
 
   include RankedModel
   ranks :row_order, with_same: :term_id

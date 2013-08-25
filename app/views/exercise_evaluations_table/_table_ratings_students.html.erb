@@ -1,0 +1,40 @@
+<table class='exercise-evaluations-table'>
+  <tr>
+    <th colspan='2'>&nbsp;</th>
+    <% data.student_groups.each do |student_group| %>
+    <th class='<%= exercise_evaluations_state_class(data, student_group) %>'>
+      SG: <%= student_group.id %>
+      <%= exercise_evaluations_student_group_title(data, student_group) %>
+    </th>
+    <% end %>
+  </tr>
+<% data.rating_groups.each do |rating_group| %>
+  <tr>
+    <th><%= rating_group.title %></th>
+    <th><%= rating_group.points %></th>
+    <% data.student_groups.each do |student_group| %>
+    <td class='<%= exercise_evaluations_state_class(data, student_group) %> <%= exercise_evaluations_evaluation_group_results_id(student_group, rating_group) %>' ><%= exercise_evaluations_evaluation_group_result(data, student_group, rating_group) %></td>
+    <% end %>
+  </tr>
+
+  <% rating_group.ratings.each_with_index do |rating, rating_index| %>
+  <tr>
+    <td class='rating-title'><%= shorten rating.title, 20 %></td>
+    <td class='rating-points'><%= rating_points_description rating %></td>
+
+
+  <% data.student_groups.each_with_index do |student_group, index| %>
+    <td class='<%= exercise_evaluations_state_class(data, student_group) %> submission-evaluation-<%= student_group.id %>-<%= rating.id %> submission-evaluation-<%= student_group.id %>' data-student-group='<%= student_group.id %>'>
+      <%= exercise_evaluations_table_form data, student_group, rating %>
+    </td>
+  <% end %>
+  </tr>
+  <% end %>
+<% end %>
+
+<tr>
+  <th colspan='2'>Result</th>
+  <% data.student_groups.each do |student_group| %>
+  <td class='<%= exercise_evaluations_result_id(student_group) %>'><%= exercise_evaluations_submission_result(data, student_group) %></td>
+  <% end %>
+</table>

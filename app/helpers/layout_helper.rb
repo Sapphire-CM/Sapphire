@@ -54,6 +54,13 @@ module LayoutHelper
     render "application/navigation_context_selector", terms: terms.all
   end
 
+  def shorten(text, length)
+    short = truncate(text, length: length)
+
+    short = content_tag(:span, short, title: text, class: "has-tip", data: {tooltip: ''}).html_safe if short != text
+
+    short
+  end
 
   def side_navigation_item(title, path, options = {})
     classes = []

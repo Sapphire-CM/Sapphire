@@ -1,4 +1,5 @@
 require 'capistrano/ext/multistage'
+require 'bundler/capistrano'
 
 set :application, "sapphire"
 
@@ -34,7 +35,6 @@ end
 
 load 'deploy/assets'
 
-require 'bundler/capistrano'
 
 ###############################################################################
 

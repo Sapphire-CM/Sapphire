@@ -8,7 +8,8 @@ class Rating < ActiveRecord::Base
   default_scope { includes(:rating_group).rank(:row_order) }
 
   has_one :exercise, through: :rating_group
-  has_many :evalutions
+  has_many :evaluations
+  has_many :submission_evaluations, through: :evaluations
 
   validates_presence_of :title, :type
 

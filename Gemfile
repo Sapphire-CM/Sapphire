@@ -24,7 +24,7 @@ gem 'coffee-rails',    '~> 4.0.0' # Use CoffeeScript for .js.coffee assets and v
 gem 'uglifier',        '>= 1.3.0' # Use Uglifier as compressor for JavaScript assets
 gem 'jquery-rails'                # Use jquery as the JavaScript library
 
-gem 'zurb-foundation', '>= 4.0'
+gem 'zurb-foundation', '~> 4.2.0'
 gem 'foundation-icons-sass-rails', :git => "https://github.com/zaiste/foundation-icons-sass-rails.git"
 
 group :production do

@@ -98,12 +98,8 @@ module LayoutHelper
     subtitle
   end
 
-  def gen_icon(icon)
-    "<i class='general foundicon-#{icon.to_s}'></i>".html_safe
-  end
-
-  def accessibility_icon(icon)
-    "<i class='accessibility foundicon-#{icon.to_s}'></i>".html_safe
+  def foundation_icon(icon)
+    "<i class='fi-#{icon.to_s.dasherize}'></i>".html_safe
   end
 
 end

@@ -26,6 +26,7 @@ class TermsController < TermResourceController
 
         source_term.copy_lecturer(@term) if not @term.copy_lecturer.to_i.zero?
         source_term.copy_exercises(@term) if not @term.copy_exercises.to_i.zero?
+        source_term.copy_grading_scale(@term) if not @term.copy_grading_scale.to_i.zero?
       end
 
       render partial: 'terms/insert_index_entry', locals: { term: @term }

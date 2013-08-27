@@ -1,0 +1,21 @@
+<table>
+  <thead>
+    <th>Grade</th>
+    <th colspan=3>points</th>
+    <th>Students with resulting that grade</th>
+  </thead>
+  <tbody>
+    <% @term.grading_scale.reverse.each_with_index do |item, index| %>
+      <tr>
+        <td><%= item[1] %></td>
+        <% if index-1 >= 0 %>
+          <td><%= @term.grading_scale.reverse[index-1][0] - 1 %></td>
+        <% else %>
+          <td><%# something %></td>
+        <% end %>
+        <td>-</td>
+        <td><%= item[0] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

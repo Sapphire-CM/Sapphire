@@ -27,8 +27,7 @@
           <li class='divider'></li>
 
           <li class='has-dropdown'>
-            <%# TODO: use access-icon view-helper, when it is fixed! %>
-            <%= link_to accessibility_icon(:adult) + "#{current_account.email}", edit_account_path(current_account), class: 'account-top-bar' %>
+            <%= link_to foundation_icon(:torso) + "#{current_account.email}", edit_account_path(current_account), class: 'account-top-bar' %>
             <ul class='dropdown'>
               <li><%= link_to 'Edit Account', edit_account_path(current_account) %></li>
               <li><%= link_to 'Logout', destroy_account_session_path, method: :delete %></li>

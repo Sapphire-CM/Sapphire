@@ -78,6 +78,16 @@ class TermsController < TermResourceController
     redirect_to course_term_path(current_course, current_term), notice: "Lecturer registration successfully cleared!"
   end
 
+  def update_grading_scale
+    grade = params[:grading_scale].to_a[0][0]
+    low = params[:grading_scale].to_a[0][1]
+
+    pair = @term.grading_scale.select{|l,g| g == grade}.first
+    @term.grading_scale.delete pair
+    @term.grading_scale << [low.to_i, grade]
+    @term.save!
+  end
+
   private
 
   def fetch_course_term

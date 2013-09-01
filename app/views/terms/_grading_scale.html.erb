@@ -1,21 +1,34 @@
-<table>
-  <thead>
-    <th>Grade</th>
-    <th colspan=3>points</th>
-    <th>Students with resulting that grade</th>
-  </thead>
-  <tbody>
-    <% @term.grading_scale.reverse.each_with_index do |item, index| %>
-      <tr>
-        <td><%= item[1] %></td>
-        <% if index-1 >= 0 %>
-          <td><%= @term.grading_scale.reverse[index-1][0] - 1 %></td>
-        <% else %>
-          <td><%= @term.points %></td>
-        <% end %>
-        <td>-</td>
-        <td><%= item[0] %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div id='grading_scale'>
+  <table class='large-centered grid-center'>
+    <thead>
+      <th>Grade</th>
+      <th colspan=3 class='text-center'>Points</th>
+      <th>Total students</th>
+    </thead>
+    <tbody>
+      <% @term.grading_scale.reverse.each_with_index do |item, index| %>
+        <tr>
+          <td class='minimum-width text-center'><%= item[1] %></td>
+          <td class='minimum-width right-aligned'>
+            <% if index-1 >= 0 %>
+              <%= @term.grading_scale.reverse[index-1][0] - 1 %></td>
+            <% else %>
+              <%= @term.points %>
+            <% end %>
+          </td>
+          <td class='minimum-width'>-</td>
+          <td>
+            <% if index+1 == @term.grading_scale.length %>
+              <%= item[0] %>
+            <% else %>
+              <%= simple_form_for :grading_scale, url: course_term_update_grading_scale_path(@term.course, @term), remote: true do |f| %>
+                <%= f.number_field item[1].to_s, value: item[0], min: 0, max: @term.points %>
+              <% end %>
+            <% end %>
+          </td>
+          <td><span data-tooltip class="has-tip" title=" insert who many students get this grade!">TODO</span></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -21,4 +21,10 @@ class Exercise < ActiveRecord::Base
     self.save!
   end
 
+  after_save :update_term_points, if: lambda { |ex| ex.points_changed? }
+
+  def update_term_points
+    term.update_points!
+  end
+
 end

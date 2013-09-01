@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130901121557) do
+ActiveRecord::Schema.define(version: 20130901130533) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -191,6 +191,7 @@ ActiveRecord::Schema.define(version: 20130901121557) do
     t.text     "description"
     t.integer  "row_order"
     t.text     "grading_scale"
+    t.integer  "points"
   end
 
   add_index "terms", ["course_id"], name: "index_terms_on_course_id"

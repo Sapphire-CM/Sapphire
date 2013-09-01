@@ -11,7 +11,7 @@
         <% if index-1 >= 0 %>
           <td><%= @term.grading_scale.reverse[index-1][0] - 1 %></td>
         <% else %>
-          <td><%# something %></td>
+          <td><%= @term.points %></td>
         <% end %>
         <td>-</td>
         <td><%= item[0] %></td>

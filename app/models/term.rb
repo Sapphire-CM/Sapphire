@@ -36,6 +36,11 @@ class Term < ActiveRecord::Base
     self.grading_scale.sort!
   end
 
+  def update_points!
+    self.points = exercises.pluck(:points).select{ |p| p }.inject(:+) || 0
+    self.save!
+  end
+
   def tutors
     Account.joins(tutor_registrations: {tutorial_group: :term}).where{ tutor_registrations.tutorial_group.term.id == my{id}}
   end

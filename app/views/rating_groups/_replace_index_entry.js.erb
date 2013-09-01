@@ -1,5 +1,7 @@
 var html = "<%=j render 'index_entry', rating_group: @rating_group %>";
+var html_subtitle = "<%=j pluralize(@rating_group.exercise.points, 'point') %>";
 
 $("<%= "#rating_group_id_#{rating_group.id}" %>").replaceWith(html);
+$("#site_subtitle").html(html_subtitle);
 
 $('#reveal_modal').foundation('reveal', 'close');

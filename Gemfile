@@ -42,6 +42,7 @@ group :development do
   gem 'capistrano'          # deployment via ssh
   gem 'bullet'              # logs and supposes optimizations for db queries
   gem 'sextant'             # route /rails/routes for displaying all routes
+  gem 'quiet_assets'        # suppresses logging of assets files
 end
 
 group :development, :test do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130831163507) do
+ActiveRecord::Schema.define(version: 20130901121557) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20130831163507) do
     t.integer  "max_points"
     t.integer  "row_order"
     t.boolean  "group_submission"
+    t.integer  "points"
   end
 
   add_index "exercises", ["term_id"], name: "index_exercises_on_term_id"

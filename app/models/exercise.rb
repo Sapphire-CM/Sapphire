@@ -16,4 +16,9 @@ class Exercise < ActiveRecord::Base
   validates_presence_of :title
   validates_presence_of :max_points, unless: Proc.new { ! self.enable_max_points }
 
+  def update_points!
+    self.points = rating_groups.pluck(:points).select{ |p| p }.inject(:+) || 0
+    self.save!
+  end
+
 end

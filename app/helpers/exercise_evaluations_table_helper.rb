@@ -3,7 +3,7 @@ module ExerciseEvaluationsTableHelper
     unless table_data.transpose
       render "table_ratings_students", data: table_data
     else
-      render "table_students_ratings"
+      render "table_students_ratings", data: table_data
     end
   end
 

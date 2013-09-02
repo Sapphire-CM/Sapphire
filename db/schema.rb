@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130901130533) do
+ActiveRecord::Schema.define(version: 20130902132711) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20130901130533) do
     t.string   "forename"
     t.string   "surname"
     t.string   "matriculum_number"
+    t.text     "options"
   end
 
   add_index "accounts", ["email"], name: "index_accounts_on_email", unique: true

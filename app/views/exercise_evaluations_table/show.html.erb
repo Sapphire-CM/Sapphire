@@ -1,4 +1,9 @@
 <% title "Evaluations of #{@exercise.title}" %>
 
+<div class='row'>
+  <div class='small-12 big-12 columns'>
+    <%= link_to "Transpose", {toggle_transpose: true}, {class: "small button"} %>
+  </div>
+</div>
 
 <%= exercise_evaluations_table(@table_data) %>

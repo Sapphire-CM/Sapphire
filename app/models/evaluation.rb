@@ -8,11 +8,12 @@ class Evaluation < ActiveRecord::Base
   has_one :rating_group, through: :evaluation_group
 
   validate :validate_evaluation_type
+  validates_presence_of :evaluation_group
 
   attr_accessible :rating_id, :type, :value
 
-  after_create :update_result
-  after_update :update_result, if: lambda {|eval| eval.value_changed? }
+  after_create :update_result!
+  after_update :update_result!, if: lambda {|eval| eval.value_changed? }
 
   scope :for_submission, lambda {|submission| joins{evaluation_group.submission_evaluation}.where{evaluation_group.submission_evaluation.submission_id == my{submission.id}}.readonly(false) }
 
@@ -33,6 +34,10 @@ class Evaluation < ActiveRecord::Base
   end
 
 
+  def update_result!
+    self.evaluation_group.update_result!
+  end
+
   private
   def self.new_from_rating(rating)
     evaluation = rating.evaluation_class.new
@@ -44,7 +49,4 @@ class Evaluation < ActiveRecord::Base
     errors[:type] = "must not be Evaluation" if self.type == "Evaluation"
   end
 
-  def update_result
-    self.evaluation_group.update_result!
-  end
 end

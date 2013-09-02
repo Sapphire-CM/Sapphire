@@ -24,13 +24,8 @@ class Rating < ActiveRecord::Base
   #   super
   # end
 
-  def self.new_from_type(params)
-
-    classes = [BinaryNumberRating, BinaryPercentRating, ValueNumberRating, ValuePercentRating]
-
-    rating_class_index = classes.map(&:name).index(params[:type])
-
-    classes[rating_class_index].new(params.except(:type))
+  def evaluation_class
+    raise NotImplementedError
   end
 
   def rating_type_validation

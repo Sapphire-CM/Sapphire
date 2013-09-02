@@ -24,19 +24,20 @@ class Evaluation < ActiveRecord::Base
     end
   end
 
+  def points
+    0
+  end
+
+  def percent
+    1
+  end
+
 
   private
   def self.new_from_rating(rating)
-    ev = if rating.is_a? BinaryRating
-      BinaryEvaluation.new
-    elsif rating.is_a? ValueRating
-      ValueEvaluation.new
-    end
-
-    unless ev.nil?
-      ev.rating = rating
-    end
-    ev
+    evaluation = rating.evaluation_class.new
+    evaluation.rating = rating
+    evaluation
   end
 
   def validate_evaluation_type

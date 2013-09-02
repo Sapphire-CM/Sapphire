@@ -26,25 +26,10 @@ class EvaluationGroup < ActiveRecord::Base
     points_sum = rating_group.points
     percent_product = 1
 
-    self.evaluations.includes(:rating).uniq.each do |evaluation|
-      rating = evaluation.rating
-
-      # TODO: refactor this into Evaluation itself!
-      if evaluation.is_a? BinaryEvaluation
-        if evaluation.value == 1
-          if rating.is_a? BinaryNumberRating
-            points_sum += rating.value
-          elsif rating.is_a? BinaryPercentRating
-            percent_product *= 1 + rating.value.to_f/100.0
-          end
-        end
-      else
-        if rating.is_a? ValueNumberRating
-          points_sum += evaluation.value
-        elsif rating.is_a? ValuePercentRating
-          percent_product *= 1 + evaluation.value.to_f/100.0
-        end
-      end
+    self.evaluations.includes(:rating).each do |evaluation|
+      Rails.logger.info "#{evaluation.class} - #{evaluation.points}p, #{evaluation.percent}%"
+      points_sum += evaluation.points
+      percent_product *= evaluation.percent
     end
 
     if points_sum < (min_points = self.rating_group.min_points || 0)
@@ -52,7 +37,6 @@ class EvaluationGroup < ActiveRecord::Base
     elsif points > (max_points = self.rating_group.max_points || rating_group.points || 0)
       points_sum = max_points
     end
-
 
     self.points = points_sum
     self.percent = percent_product

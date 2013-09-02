@@ -23,7 +23,7 @@ class EvaluationGroup < ActiveRecord::Base
   end
 
   def calc_result
-    points_sum = rating_group.points
+    points_sum = rating_group.points || 0
     percent_product = 1
 
     self.evaluations.includes(:rating).each do |evaluation|
@@ -34,7 +34,7 @@ class EvaluationGroup < ActiveRecord::Base
 
     if points_sum < (min_points = self.rating_group.min_points || 0)
       points_sum = min_points
-    elsif points > (max_points = self.rating_group.max_points || rating_group.points || 0)
+    elsif points_sum > (max_points = self.rating_group.max_points || rating_group.points || 0)
       points_sum = max_points
     end
 

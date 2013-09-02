@@ -29,6 +29,11 @@ GEM
     atomic (1.1.13)
     awesome_print (1.1.0)
     bcrypt-ruby (3.1.2)
+    better_errors (0.9.0)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+    binding_of_caller (0.7.2)
+      debug_inspector (>= 0.0.1)
     brakeman (2.1.1)
       erubis (~> 2.6)
       fastercsv (~> 1.5)
@@ -62,6 +67,7 @@ GEM
       json (>= 1.7)
     choice (0.1.6)
     chunky_png (1.2.8)
+    coderay (1.1.0)
     coffee-rails (4.0.0)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0.beta, < 5.0)
@@ -89,6 +95,7 @@ GEM
       rails (>= 3.0.0)
     daemons (1.1.9)
     database_cleaner (1.1.1)
+    debug_inspector (0.0.2)
     debugger (1.6.1)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.2.0)
@@ -273,6 +280,8 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
+  better_errors
+  binding_of_caller
   brakeman
   bullet
   cancan

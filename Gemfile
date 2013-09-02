@@ -35,8 +35,8 @@ end
 group :development do
   gem 'thin'                # small development webserver
   gem 'debugger'            # debugger with irb, 1.9.3-only
-  # gem 'better_errors'       # pretty error pages
-  # gem 'binding_of_caller'   # interactive shell within error pages
+  gem 'better_errors'       # pretty error pages
+  gem 'binding_of_caller'   # interactive shell within error pages
   gem 'brakeman'            # common security problems checker
   gem 'awesome_print'       # nicley formatted object inspection
   gem 'capistrano'          # deployment via ssh

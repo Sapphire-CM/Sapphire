@@ -109,4 +109,10 @@ module LayoutHelper
     "<i class='fi-#{icon.to_s.dasherize}'></i>".html_safe
   end
 
+  def dropdown_button(title, links)
+    dropdown_identifier = "dropdown-button-#{SecureRandom.hex}"
+
+    render "dropdown_button", title: title, dropdown_identifier: dropdown_identifier, links: links
+  end
+
 end

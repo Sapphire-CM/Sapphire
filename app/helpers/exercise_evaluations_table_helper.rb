@@ -7,20 +7,34 @@ module ExerciseEvaluationsTableHelper
     end
   end
 
+  def exercise_evaluations_view_dropdown(data)
+    links = []
 
-  def exercise_evaluations_student_group_title(data, student_group)
-    titles = []
     if data.exercise.group_submission?
-      titles << student_group.title
-      titles << pluralize(student_group.students.count, "student")
+      links << link_to("Group Name", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "group_name"}})
+      links << link_to("Student Count", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "student_count"}})
     else
-      student = student_group.students.first
-      titles << student.fullname
-      titles << student.email
-      titles << student.matriculum_number
+      links << link_to("Fullname", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "fullname"}})
+      links << link_to("Email", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "email"}})
+      links << link_to("Matriculum Number", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "matriculum_number"}})
     end
 
-    options = {data: {cycle: titles.to_json, "cycle-container" => "tr"}}
+    dropdown_button("View", links)
+  end
+
+  def exercise_evaluations_student_group_title(data, student_group)
+    titles = Hash.new
+    if data.exercise.group_submission?
+      titles[:group_name] = student_group.title
+      titles[:student_count] = pluralize(student_group.students.count, "student")
+    else
+      student = student_group.students.first
+      titles[:fullname] = student.fullname
+      titles[:email]= student.email
+      titles[:matriculum_number] = student.matriculum_number
+    end
+
+    options = {data: {cycle: titles.to_json}, class: "evaluations-table-cycle"}
     state = exercise_evaluations_state(data, student_group)
 
     if state != :present
@@ -32,7 +46,7 @@ module ExerciseEvaluationsTableHelper
       end
     end
 
-    content_tag :span, titles.join(", "), options
+    content_tag :span, titles[titles.keys.first], options
   end
 
   def exercise_evaluations_state_class(data, student_group)
@@ -115,5 +129,9 @@ module ExerciseEvaluationsTableHelper
     else
       :missing
     end
+  end
+
+  def exercise_evaluations_title_cycle_group
+    "evaluations-table-cycle"
   end
 end

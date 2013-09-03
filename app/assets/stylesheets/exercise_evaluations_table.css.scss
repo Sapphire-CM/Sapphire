@@ -1,0 +1,18 @@
+// Place all the styles related to the submission_evaluation_table controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.exercise-evaluation-table {
+  .submission-evaluation-state-present {
+
+  }
+
+
+  .submission-evaluation-state-not-evaluated {
+    background-color: #A6FEAE;
+  }
+
+  .submission-evaluation-state-missing {
+    background-color: #DADADA;
+  }
+}

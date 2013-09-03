@@ -4,6 +4,7 @@ class RatingGroup < ActiveRecord::Base
 
   belongs_to :exercise
   has_many :ratings, dependent: :destroy
+  has_many :evaluation_groups
 
   validates_presence_of :title
   validates_uniqueness_of :title, scope: :exercise_id
@@ -22,6 +23,7 @@ class RatingGroup < ActiveRecord::Base
   end
 
   after_initialize :points_min_max
+  after_update :update_evaluation_group_results, if: lambda {|rating_group| rating_group.points_changed? || rating_group.min_points_changed? || rating_group.max_points_changed?}
 
   def points_min_max
     if self.try(:enable_range_points)
@@ -49,6 +51,10 @@ class RatingGroup < ActiveRecord::Base
     errors.add :points, 'must be between minimum points and maximum points' if self.min_points && self.max_points && ! (self.min_points..self.max_points).include?(self.points)
   end
 
+  private
+  def update_evaluation_group_results
+    self.evaluation_groups.each(&:update_result!)
+  end
 
   # global: true     if there is no maximum points for this group, therefore all
   #                  ratings count directly to the whole exercise

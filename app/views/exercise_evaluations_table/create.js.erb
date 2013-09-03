@@ -1,0 +1,15 @@
+<%= render "update_fields" %>
+
+<% if @update_all_evaluation_groups %>
+
+<% @submission_evaluation.evaluation_groups.each do |evaluation_group| %>
+  $table.find(".<%= exercise_evaluations_evaluation_group_results_id(@student_group, evaluation_group.rating_group) %>").html("<%= evaluation_group.points %>");
+<% end %>
+
+<% else %>
+
+$table.find(".<%= exercise_evaluations_evaluation_group_results_id(@student_group, @evaluation.rating_group) %>").html("<%= @evaluation.evaluation_group.points %>");
+
+<% end %>
+
+// update-forms?

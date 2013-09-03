@@ -43,6 +43,7 @@ group :development do
   gem 'bullet'              # logs and supposes optimizations for db queries
   gem 'sextant'             # route /rails/routes for displaying all routes
   gem 'quiet_assets'        # suppresses logging of assets files
+  gem "rails-erd"           # Entity-Relation Diagrams of models
 end
 
 group :development, :test do

@@ -36,9 +36,9 @@
     <div class='row'>
       <div class='large-12'>
         <h1>
-          <%= yield(:title) %>
+          <span id='site_title'><%= yield(:title) %></span>
           <% if content_for(:subtitle) %>
-            <small><%= yield(:subtitle) %></small>
+            <small id='site_subtitle'><%= yield(:subtitle) %></small>
           <% end %>
         </h1>
         <hr />

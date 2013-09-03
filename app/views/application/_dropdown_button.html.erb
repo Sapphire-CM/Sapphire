@@ -1,0 +1,6 @@
+<%= link_to title, '#', data: {dropdown: dropdown_identifier}, class: "small dropdown button" %>
+<ul id='<%= dropdown_identifier %>' class='f-dropdown'>
+<% links.each do |link| %>
+  <li><%= link %></li>
+<% end %>
+</ul>

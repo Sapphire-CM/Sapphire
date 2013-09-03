@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130901130533) do
+ActiveRecord::Schema.define(version: 20130902132711) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20130901130533) do
     t.string   "forename"
     t.string   "surname"
     t.string   "matriculum_number"
+    t.text     "options"
   end
 
   add_index "accounts", ["email"], name: "index_accounts_on_email", unique: true
@@ -41,6 +42,18 @@ ActiveRecord::Schema.define(version: 20130901130533) do
     t.datetime "updated_at"
   end
 
+  create_table "evaluation_groups", force: true do |t|
+    t.integer  "points"
+    t.float    "percent"
+    t.integer  "rating_group_id"
+    t.integer  "submission_evaluation_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "evaluation_groups", ["rating_group_id"], name: "index_evaluation_groups_on_rating_group_id"
+  add_index "evaluation_groups", ["submission_evaluation_id"], name: "index_evaluation_groups_on_submission_evaluation_id"
+
   create_table "evaluations", force: true do |t|
     t.boolean  "checked"
     t.integer  "rating_id"
@@ -48,11 +61,11 @@ ActiveRecord::Schema.define(version: 20130901130533) do
     t.datetime "updated_at"
     t.string   "type"
     t.integer  "value"
-    t.integer  "submission_evaluation_id"
+    t.integer  "evaluation_group_id"
   end
 
+  add_index "evaluations", ["evaluation_group_id"], name: "index_evaluations_on_evaluation_group_id"
   add_index "evaluations", ["rating_id"], name: "index_evaluations_on_rating_id"
-  add_index "evaluations", ["submission_evaluation_id"], name: "index_evaluations_on_submission_evaluation_id"
 
   create_table "exercises", force: true do |t|
     t.integer  "term_id"
@@ -174,14 +187,14 @@ ActiveRecord::Schema.define(version: 20130901130533) do
 
   create_table "submissions", force: true do |t|
     t.integer  "exercise_id"
-    t.integer  "student_registration_id"
     t.datetime "submitted_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "student_group_registration_id"
   end
 
   add_index "submissions", ["exercise_id"], name: "index_submissions_on_exercise_id"
-  add_index "submissions", ["student_registration_id"], name: "index_submissions_on_student_registration_id"
+  add_index "submissions", ["student_group_registration_id"], name: "index_submissions_on_student_group_registration_id"
 
   create_table "terms", force: true do |t|
     t.string   "title"

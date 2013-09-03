@@ -13,7 +13,7 @@
     <tbody>
       <% submissions.each do |submission| %>
       <tr>
-        <td><%= submission.student.fullname %> (<%= submission.student.matriculum_number %>)</td>
+        <td><%= submission.student_group.title %></td>
         <td><%= submission.exercise.title %></td>
         <td><%= l submission.submitted_at, format: :long %></td>
         <td>

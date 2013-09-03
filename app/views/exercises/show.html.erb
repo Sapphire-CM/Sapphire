@@ -3,6 +3,8 @@
 <% sidebar do %>
   <%= link_to "Edit", edit_course_term_exercise_path(current_course, current_term, @exercise), class: "small button" %>
   <%= link_to "Delete", course_term_exercise_path(current_course, current_term, @exercise), method: :delete, class: "small alert button", data: { confirm: "Are you sure?" } %>
+
+  <p><%= link_to "Evaluations Table", course_term_exercise_evaluation_path(current_course, current_term, @exercise), class: "small button" %></p>
 <% end %>
 
 <div class="section-container tabs" data-section="tabs">

@@ -20,6 +20,8 @@ class Account < ActiveRecord::Base
 
   has_many :submissions, through: :student_registrations
 
+  serialize :options
+
   def submissions_for_term(term)
     submissions.for_term term
   end

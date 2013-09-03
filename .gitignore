@@ -15,4 +15,6 @@
 /tmp
 /uploads
 
+/erd.pdf
+
 *.sublime-workspace

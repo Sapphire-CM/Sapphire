@@ -1,0 +1,16 @@
+<% title "Evaluations of #{@exercise.title}" %>
+
+<div class='row'>
+  <div class='small-12 large-12 columns'>
+    <%= link_to "Transpose", {toggle_transpose: true}, {class: "small button"} %>
+
+    <%= exercise_evaluations_view_dropdown(@table_data) %>
+  </div>
+</div>
+
+<ul id='drop-view' class='f-dropdown'>
+  <li><%= link_to "Group Number", '#' %></li>
+  <li><%= link_to "Student Count", '#' %></li>
+</ul>
+
+<%= exercise_evaluations_table(@table_data) %>

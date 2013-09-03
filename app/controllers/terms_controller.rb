@@ -26,6 +26,7 @@ class TermsController < TermResourceController
 
         source_term.copy_lecturer(@term) if not @term.copy_lecturer.to_i.zero?
         source_term.copy_exercises(@term) if not @term.copy_exercises.to_i.zero?
+        source_term.copy_grading_scale(@term) if not @term.copy_grading_scale.to_i.zero?
       end
 
       render partial: 'terms/insert_index_entry', locals: { term: @term }
@@ -75,6 +76,16 @@ class TermsController < TermResourceController
     @term.lecturer_registration.destroy
 
     redirect_to course_term_path(current_course, current_term), notice: "Lecturer registration successfully cleared!"
+  end
+
+  def update_grading_scale
+    grade = params[:grading_scale].to_a[0][0]
+    low = params[:grading_scale].to_a[0][1]
+
+    pair = @term.grading_scale.select{|l,g| g == grade}.first
+    @term.grading_scale.delete pair
+    @term.grading_scale << [low.to_i, grade]
+    @term.save!
   end
 
   private

@@ -1,11 +1,13 @@
 class Term < ActiveRecord::Base
   belongs_to :course
-  attr_accessible :title, :description, :course, :course_id, :exercises
+  attr_accessible :title, :description, :course, :course_id, :exercises, :grading_scale
 
   include RankedModel
   ranks :row_order, with_same: :course_id
 
   default_scope { rank(:row_order) }
+
+  serialize :grading_scale, Array
 
   has_many :exercises, dependent: :destroy
   has_many :tutorial_groups, dependent: :destroy
@@ -19,6 +21,25 @@ class Term < ActiveRecord::Base
   validates_uniqueness_of :title, scope: :course_id
 
   has_many :student_imports, dependent: :destroy, class_name: "Import::StudentImport"
+
+  before_save :improve_grading_scale
+
+  def improve_grading_scale
+    self.grading_scale = {
+       0 => '5',
+      51 => '4',
+      64 => '3',
+      80 => '2',
+      90 => '1'
+    }.to_a if self.grading_scale.empty?
+
+    self.grading_scale.sort!
+  end
+
+  def update_points!
+    self.points = exercises.pluck(:points).compact.inject(:+) || 0
+    self.save!
+  end
 
   def tutors
     Account.joins(tutor_registrations: {tutorial_group: :term}).where{ tutor_registrations.tutorial_group.term.id == my{id}}
@@ -91,6 +112,15 @@ class Term < ActiveRecord::Base
         end
       end
     end
+  end
+
+  def copy_grading_scale(destination_term)
+    destination_term.grading_scale = self.grading_scale.dup
+    destination_term.save
+  end
+
+  def get_grade(points)
+    grading_scale.select{|lower, grade| lower <= points}.last[1]
   end
 
 end

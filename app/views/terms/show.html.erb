@@ -2,6 +2,13 @@
 
 <div class="section-container tabs" data-section="tabs">
   <section>
+    <p class="title" data-section-title><a href="#">Grading Scale</a></p>
+    <div class="content" data-section-content>
+      <%= render 'grading_scale' %>
+    </div>
+  </section>
+
+  <section>
     <p class="title" data-section-title><a href="#">Dashboard</a></p>
     <div class="content" data-section-content>
 
@@ -95,6 +102,13 @@
       <p>
         <%= link_to 'New Exercise', new_course_term_exercise_path(current_course, current_term), class: "button"  %>
       </p>
+    </div>
+  </section>
+
+  <section>
+    <p class="title" data-section-title><a href="#">Grading Scale</a></p>
+    <div class="content" data-section-content>
+      <%= render 'grading_scale' %>
     </div>
   </section>
 

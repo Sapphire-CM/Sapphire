@@ -20,6 +20,7 @@ Sapphire::Application.routes.draw do
         resource :evaluation, controller: 'submission_evaluations'
       end
 
+      post :update_grading_scale
 
       get :meeting
 

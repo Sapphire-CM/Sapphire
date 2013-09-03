@@ -2,8 +2,6 @@
 
 <% sidebar do %>
   <div>
-  <%# TODO: change to student_group  <%= link_to "Add student", course_term_tutorial_group_new_student_registration_path(current_course, current_term, @tutorial_group), class: "small button twelve columns" %>
-
   <%= link_to set_tutor_label, course_term_tutorial_group_new_tutor_registration_path(current_course, current_term, @tutorial_group), class: "small button twelve columns" %>
 
   <%= link_to "Edit", edit_course_term_tutorial_group_path(current_course, current_term, @tutorial_group), class: "small button twelve columns" %>

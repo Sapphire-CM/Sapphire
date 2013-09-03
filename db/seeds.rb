@@ -29,13 +29,6 @@ tutorial_groups = [
 ].map {|tg_hash| tg = TutorialGroup.new(tg_hash); tg.term = terms.first; tg}
 tutorial_groups.each {|tg| tg.save}
 
-# student_registrations = [
-#   {account: accounts[3], tutorial_group: tutorial_groups.first, registered_at: Time.now},
-#   {account: accounts[4], tutorial_group: tutorial_groups.first, registered_at: Time.now},
-#   {account: accounts[5], tutorial_group: tutorial_groups.first, registered_at: Time.now}
-# ].map {|sr_hash| sr = StudentRegistration.new(registered_at: sr_hash[:registered_at]); sr.student = sr_hash[:account]; sr.tutorial_group = sr_hash[:tutorial_group]; sr }
-# student_registrations.each { |sr| sr.save}
-
 exercises = Exercise.create([
   { title: 'Ex 1: Newsgroup',  term: terms[0] },
   { title: 'Ex 2: Follow-ups', term: terms[0] },

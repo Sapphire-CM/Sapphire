@@ -52,33 +52,12 @@ class TutorialGroupsController < TermResourceController
     @accounts = @accounts.search(params[:q]) if params[:q].present?
   end
 
-  def new_student_registration
-    @tutorial_group = current_term.tutorial_groups.find(params[:tutorial_group_id])
-
-    # TODO filter to only those, who are not already registered
-
-    @accounts = Account.scoped.page(params[:page]).per(50)
-    @accounts = @accounts.search(params[:q]) if params[:q].present?
-  end
-
   def create_tutor_registration
     @tutorial_group = current_term.tutorial_groups.find(params[:tutorial_group_id])
     @account = Account.find(params[:account_id])
 
     registration = TutorRegistration.find_or_initialize_by_tutorial_group_id(@tutorial_group.id)
     registration.tutor = @account
-
-    save_registration_and_redirect registration
-  end
-
-  def create_student_registration
-    @tutorial_group = current_term.tutorial_groups.find(params[:tutorial_group_id])
-    @account = Account.find(params[:account_id])
-
-    # TODO has_many assiciation with this type of initialization might not work at all....?!
-    registration = StudentRegistration.new
-    registration.tutorial_group = @tutorial_group
-    registration.student = @account
 
     save_registration_and_redirect registration
   end

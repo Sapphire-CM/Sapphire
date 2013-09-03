@@ -1,5 +1,0 @@
-<% title "New student for #{@tutorial_group.title}"  %>
-
-<% @create_path = course_term_tutorial_group_create_student_registration_path(current_course, current_term, @tutorial_group) %>
-
-<%= render 'accounts/accounts_list', { buttons_partial_view: 'account_selection_buttons', search_path: course_term_tutorial_group_new_student_registration_path(current_course, current_term, @tutorial_group) } %>

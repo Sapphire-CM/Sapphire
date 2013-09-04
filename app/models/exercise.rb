@@ -6,6 +6,7 @@ class Exercise < ActiveRecord::Base
   ranks :row_order, with_same: :term_id
 
   default_scope { rank(:row_order) }
+  scope :for_evaluations_table, lambda { includes(submissions: [{submission_evaluation: {evaluation_groups: [:rating_group, {evaluations: :rating}]}}, {student_group_registration: {student_group: :students}}])}
 
   has_many :student_group_registrations, dependent: :destroy
 
@@ -15,6 +16,7 @@ class Exercise < ActiveRecord::Base
 
   validates_presence_of :title
   validates_presence_of :max_points, unless: Proc.new { ! self.enable_max_points }
+
 
   def update_points!
     self.points = rating_groups.pluck(:points).compact.inject(:+) || 0

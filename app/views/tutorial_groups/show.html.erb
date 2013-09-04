@@ -22,7 +22,7 @@
             <th></th>
           </thead>
           <tbody>
-            <% @tutorial_group.student_groups.each do |student_group|  %>
+            <% @tutorial_group.student_groups.where{|sg| sg.solitary == false }.each do |student_group|  %>
             <tr>
               <td><%= student_group.title %></td>
               <td><%= student_group.students.count %></td>
@@ -30,7 +30,7 @@
                 <td class='right-aligned'>
                   <%= link_to foundation_icon(:page_edit), edit_tutorial_group_student_group_path(@tutorial_group, student_group) %>
 
-                  <%= link_to foundation_icon(:x), tutorial_group_student_group_path(@tutorial_group, student_group), method: :delete, confirm: "Are you sure?" %>
+                  <%= link_to foundation_icon(:x), tutorial_group_student_group_path(@tutorial_group, student_group), method: :delete, data: { confirm: "Are you sure?" } %>
                 </td>
             </tr>
             <% end %>
@@ -52,6 +52,7 @@
             <th>Surname</th>
             <th>Matriculum Number</th>
             <th>Email</th>
+            <th>Groups</th>
           </thead>
           <tbody>
             <% @tutorial_group.students.each do |student|  %>
@@ -60,6 +61,9 @@
               <td><%= student.surname %></td>
               <td><%= student.matriculum_number %></td>
               <td><%= student.email %></td>
+              <td>
+                <%= student.student_registrations.map(&:student_group).map(&:title).join ', ' %>
+              </td>
             </tr>
             <% end %>
           </tbody>

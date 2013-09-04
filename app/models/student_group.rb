@@ -5,6 +5,6 @@ class StudentGroup < ActiveRecord::Base
   has_many :student_registrations, dependent: :destroy
   has_many :students, through: :student_registrations
 
-  attr_accessible :title
+  attr_accessible :title, :solitary
 
 end

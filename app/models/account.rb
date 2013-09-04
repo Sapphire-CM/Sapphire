@@ -1,9 +1,11 @@
 class Account < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable,
-  # :lockable, :timeoutable and :omniauthable
+  DEFAULT_PASSWORD = "sapphire%{matriculum_number}"
+
   devise :database_authenticatable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable,
+         :rememberable,
+         :trackable,
+         :validatable
 
   attr_accessible :email, :password, :password_confirmation, :remember_me, :forename, :surname, :matriculum_number
 

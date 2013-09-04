@@ -18,9 +18,6 @@ class Import::StudentImport < ActiveRecord::Base
   serialize :import_mapping, Import::ImportMapping
   serialize :import_result, Hash
 
-  # callbacks
-  before_validation :fill_status, on: :create
-
   # validations
   validates_presence_of :file, :term_id
   validates_inclusion_of :status, in: STATES

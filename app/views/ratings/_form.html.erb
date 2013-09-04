@@ -1,4 +1,4 @@
-<%= simple_form_for @rating, as: :rating, url: [current_course, current_term, @rating.exercise, @rating.rating_group, @rating.becomes(Rating)], remote: true, html: {id: "rating_form"} do |f| %>
+<%= simple_form_for @rating, as: :rating, url: [current_term, @rating.exercise, @rating.rating_group, @rating.becomes(Rating)], remote: true, html: {id: "rating_form"} do |f| %>
   <% @rating.type = @rating.class.name %>
   <%= f.input :title %>
   <%= f.input :description, input_html: { rows: 3 } %>

@@ -1,4 +1,4 @@
-<%= simple_form_for [current_course, current_term, @tutorial_group], html: {class: "custom"} do |f| %>
+<%= simple_form_for [current_term, @tutorial_group], html: {class: "custom"} do |f| %>
   <%= f.input :title %>
   <%= f.input :description, input_html: { rows: 3 } %>
 

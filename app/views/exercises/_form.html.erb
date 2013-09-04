@@ -1,4 +1,4 @@
-<%= simple_form_for [current_course, current_term, @exercise] do |f| %>
+<%= simple_form_for [current_term, @exercise] do |f| %>
   <%= f.input :title %>
   <%= f.input :description, input_html: { rows: 3 } %>
   <%= f.input :group_submission %>

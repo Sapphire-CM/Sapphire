@@ -3,11 +3,11 @@
   <%= f.input :description, input_html: { rows: 3 } %>
   <%= f.input :course_id, as: :hidden %>
 
-  <% if @term.is_a?(TermNew) && @course.terms.any? %>
+  <% if @term.is_a?(TermNew) && @term.course.terms.any? %>
     <%= f.input :copy_elements, as: :boolean, label: "Copy elements from previous term" %>
 
     <div id="copy_elements_container" class="radius panel <%= 'hide' if @term.copy_elements.to_i.zero? %>">
-      <%= f.input :source_term_id, as: :select, collection: @course.terms, selected: @term.source_term_id || @course.terms.first, label: "Source term" %>
+      <%= f.input :source_term_id, as: :select, collection: @term.course.terms, selected: @term.source_term_id || @term.course.terms.first, label: "Source term" %>
       <%= f.input :copy_lecturer, as: :boolean, label: "Lecturer" %>
       <%= f.input :copy_exercises, as: :boolean, label: "Exercises, Rating groups and Ratings" %>
       <%= f.input :copy_grading_scale, as: :boolean, label: "Grading scale" %>

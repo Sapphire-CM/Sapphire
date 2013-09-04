@@ -37,7 +37,7 @@
 
       <tr class="last_one">
         <td colspan='5' class='text-center minimum-width'>
-          <%= link_to foundation_icon(:plus), new_term_path, remote: true, title: 'Add Term', data: {"reveal-id" => "reveal_modal"}   %>
+          <%= link_to foundation_icon(:plus), new_term_path(course_id: course.id), remote: true, title: 'Add Term', data: {"reveal-id" => "reveal_modal"}   %>
         </td>
       </tr>
     </tbody>

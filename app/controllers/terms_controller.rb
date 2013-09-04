@@ -1,5 +1,5 @@
 class TermsController < TermResourceController
-  before_action :fetch_course_term
+  before_action :fetch_term
 
   def show
     @tutorial_groups = @term.tutorial_groups
@@ -12,7 +12,7 @@ class TermsController < TermResourceController
 
   def new
     @term = TermNew.new
-    @term.course = @course
+    @term.course = Course.find(params[:course_id])
   end
 
   def create
@@ -90,8 +90,7 @@ class TermsController < TermResourceController
 
   private
 
-  def fetch_course_term
-    @course = current_course
+  def fetch_term
     @term = current_term
   end
 end

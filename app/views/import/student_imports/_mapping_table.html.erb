@@ -1,4 +1,4 @@
-<%= simple_form_for [current_course, current_term, @student_import] do |f| %>
+<%= simple_form_for [current_term, @student_import] do |f| %>
   <%= f.fields_for :import_mapping do |fb| %>
     <div class='row mapping_table_container'>
       <div>

@@ -1,5 +1,5 @@
-class TermsController < TermResourceController
-  before_action :fetch_course_term
+class TermsController < ApplicationController
+  before_action :set_context, only: [:show, :edit, :update, :destroy, :new_lecturer_registration, :create_lecturer_registration, :clear_lecturer_registration, :update_grading_scale]
 
   def show
     @tutorial_groups = @term.tutorial_groups
@@ -12,14 +12,13 @@ class TermsController < TermResourceController
 
   def new
     @term = TermNew.new
-    @term.course = @course
+    @term.course = Course.find(params[:course_id])
   end
 
   def create
     @term = TermNew.new(params[:term])
 
     if @term.save
-
       # create elements for new term
       if not @term.copy_elements.to_i.zero?
         source_term = Term.find(@term.source_term_id)
@@ -36,7 +35,6 @@ class TermsController < TermResourceController
   end
 
   def edit
-    # term is fetched with before_action
   end
 
   def update
@@ -49,7 +47,6 @@ class TermsController < TermResourceController
 
   def destroy
     @term.destroy
-
     render partial: 'terms/remove_index_entry', locals: { term: @term }
   end
 
@@ -66,16 +63,15 @@ class TermsController < TermResourceController
     registration.registered_at = DateTime.now
 
     if registration.save
-      redirect_to course_term_path(current_course, current_term), notice: "Lecturer registration successfully added."
+      redirect_to @term, notice: "Lecturer registration successfully added."
     else
-      redirect_to course_term_path(current_course, current_term), alert: "Lecturer registration failed!"
+      redirect_to @term, alert: "Lecturer registration failed!"
     end
   end
 
   def clear_lecturer_registration
     @term.lecturer_registration.destroy
-
-    redirect_to course_term_path(current_course, current_term), notice: "Lecturer registration successfully cleared!"
+    redirect_to @term, notice: "Lecturer registration successfully cleared!"
   end
 
   def update_grading_scale
@@ -89,9 +85,8 @@ class TermsController < TermResourceController
   end
 
   private
+    def set_context
+      @term = Term.find(params[:id] || params[:term_id])
+    end
 
-  def fetch_course_term
-    @course = current_course
-    @term = current_term
-  end
 end

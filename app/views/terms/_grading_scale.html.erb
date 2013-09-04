@@ -21,7 +21,7 @@
             <% if index+1 == @term.grading_scale.length %>
               <%= item[0] %>
             <% else %>
-              <%= simple_form_for :grading_scale, url: course_term_update_grading_scale_path(@term.course, @term), remote: true do |f| %>
+              <%= simple_form_for :grading_scale, url: term_update_grading_scale_path(@term), remote: true do |f| %>
                 <%= f.number_field item[1].to_s, value: item[0], min: 0, max: @term.points %>
               <% end %>
             <% end %>

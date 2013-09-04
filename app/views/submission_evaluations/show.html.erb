@@ -1,6 +1,6 @@
 <% title "Evaluation \"#{current_submission.exercise.title}\" of #{current_submission.student.fullname}" %>
 <% sidebar do %>
-  <%= link_to "Edit", edit_course_term_submission_evaluation_path(current_course, current_term, current_submission), class: "small button" %>
+  <%= link_to "Edit", edit_submission_evaluation_path(current_submission), class: "small button" %>
 
   <%= render "sidebar" %>
 <% end %>

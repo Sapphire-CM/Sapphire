@@ -1,5 +1,5 @@
-class RatingsController < TermResourceController
-  before_action :fetch_exercise, :fetch_rating_group
+class RatingsController < ApplicationController
+  before_action :set_context
 
   def new
     @rating = @rating_group.ratings.new
@@ -43,7 +43,7 @@ class RatingsController < TermResourceController
     update_params = { rating_group_id: params[:rating][:rating_group_id], row_order_position: params[:rating][:position]}
     @rating.update_attributes(update_params)
 
-    render text: "#{update_position_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating.rating_group, @rating)}"
+    render text: "#{update_position_exercise_rating_group_rating_path(@exercise, @rating.rating_group, @rating)}"
   end
 
   def destroy
@@ -54,12 +54,10 @@ class RatingsController < TermResourceController
   end
 
   private
-  def fetch_exercise
-    @exercise = current_term.exercises.find(params[:exercise_id])
-  end
-
-  def fetch_rating_group
-    @rating_group = @exercise.rating_groups.find(params[:rating_group_id])
-  end
+    def set_context
+      @exercise = Exercises.find(params[:exercise_id])
+      @rating_group = RatingGroup.find(params[:rating_group_id])
+      @term = @exercise.term
+    end
 
 end

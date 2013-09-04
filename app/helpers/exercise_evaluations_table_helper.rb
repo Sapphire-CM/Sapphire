@@ -102,7 +102,7 @@ module ExerciseEvaluationsTableHelper
     evaluation = data.evaluation_for_student_group_and_rating(student_group, rating) || Evaluation.new_from_rating(rating)
     submission = data.submission_for_student_group(student_group)
 
-    url = course_term_exercise_evaluation_path(current_course, current_term, @exercise, format: :js)
+    url = exercise_evaluation_path(@exercise, format: :js)
     html_options = {class: "exercise-evaluations-table-form", id: exercise_evaluations_form_id(student_group, rating)}
 
     simple_form_for(evaluation, as: :evaluation, url: url, html: html_options, remote: true) do |f|

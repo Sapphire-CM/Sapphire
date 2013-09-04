@@ -1,10 +1,10 @@
 <% title @exercise.title, "#{pluralize(@exercise.points, 'point')}" %>
 
 <% sidebar do %>
-  <%= link_to "Edit", edit_course_term_exercise_path(current_course, current_term, @exercise), class: "small button" %>
-  <%= link_to "Delete", course_term_exercise_path(current_course, current_term, @exercise), method: :delete, class: "small alert button", data: { confirm: "Are you sure?" } %>
+  <%= link_to "Edit", edit_exercise_path(@exercise), class: "small button" %>
+  <%= link_to "Delete", exercise_path(@exercise), method: :delete, class: "small alert button", data: { confirm: "Are you sure?" } %>
 
-  <p><%= link_to "Evaluations Table", course_term_exercise_evaluation_path(current_course, current_term, @exercise), class: "small button" %></p>
+  <p><%= link_to "Evaluations Table", exercise_evaluation_path(@exercise), class: "small button" %></p>
 <% end %>
 
 <div class="section-container tabs" data-section="tabs">
@@ -23,7 +23,7 @@
 
       <div class="row">
         <div class="large-12 large-centered columns text-center">
-          <%= link_to "Add Rating Group", new_course_term_exercise_rating_group_path(current_course, current_term, @exercise), remote: true, class: "small button", data: {"reveal-id" => "reveal_modal"} %>
+          <%= link_to "Add Rating Group", new_exercise_rating_group_path(@exercise), remote: true, class: "small button", data: {"reveal-id" => "reveal_modal"} %>
         </div>
       </div>
 

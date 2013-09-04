@@ -8,9 +8,9 @@
   <li class='has-dropdown'>
     <%= link_to "Exercises", '#' %>
     <ul class='dropdown'>
-      <% if current_term.exercises(true).any? %>
-        <% current_term.exercises.each do |exercise| %>
-          <li><%= link_to exercise.title, course_term_exercise_path(current_course, current_term, exercise) %></li>
+      <% if @term.exercises(true).any? %>
+        <% @term.exercises.each do |exercise| %>
+          <li><%= link_to exercise.title, exercise_path(exercise) %></li>
         <% end %>
       <% else %>
         <li><%= link_to "(no exercises)", '#' %></li>
@@ -21,9 +21,9 @@
   <li class='has-dropdown'>
     <%= link_to "Tutorial Groups", '#' %>
     <ul class='dropdown'>
-      <% if current_term.tutorial_groups(true).any? %>
-        <% current_term.tutorial_groups.each do |tutorial_group| %>
-          <li><%= link_to tutorial_group_title(tutorial_group), course_term_tutorial_group_path(current_course, current_term, tutorial_group) %></li>
+      <% if @term.tutorial_groups(true).any? %>
+        <% @term.tutorial_groups.each do |tutorial_group| %>
+          <li><%= link_to tutorial_group_title(tutorial_group), tutorial_group_path(tutorial_group) %></li>
         <% end %>
       <% else %>
         <li><%= link_to "(no tutorial groups)", '#' %></li>

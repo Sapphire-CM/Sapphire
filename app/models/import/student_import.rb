@@ -25,11 +25,6 @@ class Import::StudentImport < ActiveRecord::Base
   validates_presence_of :file, :term_id
   validates_inclusion_of :status, in: STATES
 
-  # scopes
-  scope :for_course, lambda {|course| joins(:term).where {term.course_id == course} }
-  scope :for_term, lambda {|term| where {term_id == term} }
-  scope :with_terms, joins(:term).includes(:term)
-
   def initialize(*args)
     super *args
 

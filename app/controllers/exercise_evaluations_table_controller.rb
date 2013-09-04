@@ -2,9 +2,17 @@ class ExerciseEvaluationsTableController < ApplicationController
   before_filter :toggle_transpose, on: :show, if: lambda { !!params[:toggle_transpose] }
 
   def show
-    @exercise = Exercise.includes(submissions: {submission_evaluation: {evaluation_groups: [:rating_group, {evaluations: :rating}]}}).find(params[:exercise_id])
-    @term = @exercise.term
-    @table_data = ExerciseEvaluationsTableData.new(@exercise, @term.tutorial_groups.first, current_account.options[:transpose] || false)
+    respond_to do |format|
+      format.html do
+        @exercise = Exercise.find(params[:exercise_id])
+        @term = @exercise.term
+      end
+      format.js do
+        @exercise = Exercise.for_evaluations_table.find(params[:exercise_id])
+        @term = @exercise.term
+        @table_data = ExerciseEvaluationsTableData.new(@exercise, @term.tutorial_groups.first, current_account.options[:transpose] || false)
+      end
+    end
   end
 
   def create
@@ -18,22 +26,25 @@ class ExerciseEvaluationsTableController < ApplicationController
   private
     def update_evaluation
       @exercise = Exercise.find(params[:exercise_id])
+      @student_group = StudentGroup.find(params[:student_group_id])
+
       @term = @exercise.term
-      @submission = @exercise.submissions.find(params[:submission_id])
+
+      @submission = @student_group.submissions.for_exercise(@exercise).first || begin
+        s = Submission.new
+        s.exercise = @exercise
+        s.assign_to @student_group
+        s.submitted_at = Time.now
+        s.save!
+        s
+      end
+
+
       @rating = @exercise.ratings.find(params[:rating_id])
 
-      @submission_evaluation = if @submission.submission_evaluation.present?
-        @submission.submission_evaluation
-      else
-        se = SubmissionEvaluation.new
-        se.submission = @submission
-        se.evaluator = current_account
-        se.evaluated_at = Time.now
-        se.save!
-        @update_all_evaluation_groups = true
-
-        se
-      end
+      @submission_evaluation = @submission.submission_evaluation
+      @submission_evaluation.evaluated_at = Time.now
+      @submission_evaluation.save!
 
       @student_group = @submission.student_group
       @evaluation = Evaluation.where(rating_id: @rating.id).for_submission(@submission).first

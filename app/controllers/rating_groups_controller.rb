@@ -1,5 +1,5 @@
-class RatingGroupsController < TermResourceController
-  before_action :fetch_exercise
+class RatingGroupsController < ApplicationController
+  before_action :set_context
 
   def new
     @rating_group = @exercise.rating_groups.new
@@ -45,8 +45,9 @@ class RatingGroupsController < TermResourceController
   end
 
   private
-  def fetch_exercise
-    @exercise = current_term.exercises.find(params[:exercise_id])
-  end
+    def set_context
+      @exercise = Exercise.find(params[:exercise_id])
+      @term = @exercise.term
+    end
 
 end

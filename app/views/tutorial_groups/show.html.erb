@@ -2,11 +2,11 @@
 
 <% sidebar do %>
   <div>
-  <%= link_to set_tutor_label, course_term_tutorial_group_new_tutor_registration_path(current_course, current_term, @tutorial_group), class: "small button twelve columns" %>
+  <%= link_to set_tutor_label, tutorial_group_new_tutor_registration_path(@tutorial_group), class: "small button twelve columns" %>
 
-  <%= link_to "Edit", edit_course_term_tutorial_group_path(current_course, current_term, @tutorial_group), class: "small button twelve columns" %>
+  <%= link_to "Edit", edit_tutorial_group_path(@tutorial_group), class: "small button twelve columns" %>
 
-  <%= link_to "Delete", course_term_tutorial_group_path(current_course, current_term, @tutorial_group), class: "small alert button twelve columns", method: :delete, data: { confirm: "Are you sure?" } %>
+  <%= link_to "Delete", tutorial_group_path(@tutorial_group), class: "small alert button twelve columns", method: :delete, data: { confirm: "Are you sure?" } %>
   </div>
 <% end %>
 
@@ -28,9 +28,9 @@
               <td><%= student_group.students.count %></td>
 
                 <td class='right-aligned'>
-                  <%= link_to foundation_icon(:page_edit), edit_course_term_tutorial_group_student_group_path(current_course, current_term, @tutorial_group, student_group) %>
+                  <%= link_to foundation_icon(:page_edit), edit_tutorial_group_student_group_path(@tutorial_group, student_group) %>
 
-                  <%= link_to foundation_icon(:x), course_term_tutorial_group_student_group_path(current_course, current_term, @tutorial_group, student_group), method: :delete, confirm: "Are you sure?" %>
+                  <%= link_to foundation_icon(:x), tutorial_group_student_group_path(@tutorial_group, student_group), method: :delete, confirm: "Are you sure?" %>
                 </td>
             </tr>
             <% end %>

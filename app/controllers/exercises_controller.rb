@@ -1,41 +1,45 @@
-class ExercisesController < TermResourceController
+class ExercisesController < ApplicationController
+  before_action :set_context, only: [:show, :edit, :update, :destroy]
 
   def show
-    @exercise = current_term.exercises.includes(rating_groups: :ratings).find(params[:id])
   end
 
   def new
-    @exercise = current_term.exercises.new
+    @exercise = Exercise.new
+    @term = Term.find(params[:term_id])
+    @exercise.term = @term
   end
 
   def edit
-    @exercise = current_term.exercises.find(params[:id])
   end
 
   def create
-    @exercise = current_term.exercises.new(params[:exercise])
+    @exercise = Exercise.new(params[:exercise])
 
     if @exercise.save
-      redirect_to course_term_exercise_path(current_course, current_term, @exercise), notice: "Exercise was successfully created."
+      redirect_to @exercise, notice: "Exercise was successfully created."
     else
       render :new
     end
   end
 
   def update
-    @exercise = current_term.exercises.find(params[:id])
-
     if @exercise.update_attributes(params[:exercise])
-      redirect_to course_term_exercise_path(current_course, current_term, @exercise), notice:  "Exercise was successfully updated."
+      redirect_to @exercise, notice:  "Exercise was successfully updated."
     else
       render :edit
     end
   end
 
   def destroy
-    @exercise = current_term.exercises.find(params[:id])
     @exercise.destroy
-
-    redirect_to course_term_exercises_path(current_course, current_term), notice: "Exercise was successfully deleted."
+    redirect_to term_exercises_path(@term), notice: "Exercise was successfully deleted."
   end
+
+  private
+    def set_context
+      @exercise = Exercise.find(params[:id] || params[:exercise_id])
+      @term = @exercise.term
+    end
+
 end

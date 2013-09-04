@@ -1,4 +1,4 @@
-<%= simple_form_for @submission_evaluation, url: course_term_submission_evaluation_path(current_course, current_term, current_submission, @submission_evaluation), html: {class: "custom"} do |se| %>
+<%= simple_form_for @submission_evaluation, url: submission_evaluation_path(current_submission, @submission_evaluation), html: {class: "custom"} do |se| %>
   <% prepared_evaluations.each do |rating_group, evaluations| %>
     <h3><%= rating_group.title %> (<%= pluralize rating_group.points, "point"%>)</h3>
     <% evaluations.each do |evaluation| %>

@@ -1,15 +1,15 @@
-class SubmissionEvaluationsController < TermResourceController
+class SubmissionEvaluationsController < ApplicationController
   def show
     @submission_evaluation = current_submission.submission_evaluation
 
-    redirect_to new_course_term_submission_evaluation_path(current_course, current_term, current_submission) unless @submission_evaluation.present?
+    redirect_to new_submission_evaluation_path(current_submission) unless @submission_evaluation.present?
   end
 
   def new
     @submission_evaluation = current_submission.submission_evaluation
 
     if @submission_evaluation.present?
-      redirect_to edit_course_term_submission_evaluation_path(current_course, current_term, current_submission)
+      redirect_to edit_submission_evaluation_path(current_submission)
       return
     end
 
@@ -20,7 +20,7 @@ class SubmissionEvaluationsController < TermResourceController
   def create
     @submission_evaluation = current_submission.submission_evaluation
     if @submission_evaluation.present?
-      redirect_to course_term_submission_evaluation_path(current_course, current_term, current_submission), :alert => "Error - Evaluation already present"
+      redirect_to submission_evaluation_path(current_submission), :alert => "Error - Evaluation already present"
       return
     end
 
@@ -31,7 +31,7 @@ class SubmissionEvaluationsController < TermResourceController
 
     if @submission_evaluation.save
       @submission_evaluation.update_evaluation_result!
-      redirect_to course_term_submission_evaluation_path(current_course, current_term, current_submission), :notice => "Evaluation has been created"
+      redirect_to submission_evaluation_path(current_submission), :notice => "Evaluation has been created"
     else
       render :new
     end
@@ -40,13 +40,13 @@ class SubmissionEvaluationsController < TermResourceController
   def edit
     @submission_evaluation = current_submission.submission_evaluation
 
-    redirect_to new_course_term_submission_evaluation_path(current_course, current_term, current_submission) unless @submission_evaluation.present?
+    redirect_to new_submission_evaluation_path(current_submission) unless @submission_evaluation.present?
   end
 
   def update
     @submission_evaluation = current_submission.submission_evaluation
     unless @submission_evaluation.present?
-      redirect_to new_course_term_submission_evaluation_path(current_course, current_term, current_submission)
+      redirect_to new_submission_evaluation_path(current_submission)
       return
     end
 
@@ -54,7 +54,7 @@ class SubmissionEvaluationsController < TermResourceController
 
     if @submission_evaluation.update_attributes(params[:submission_evaluation])
       @submission_evaluation.update_evaluation_result!
-      redirect_to course_term_submission_evaluation_path(current_course, current_term, current_submission), :notice => "Evaluation has been updated"
+      redirect_to submission_evaluation_path(current_submission), :notice => "Evaluation has been updated"
     else
 
       render :edit
@@ -62,13 +62,14 @@ class SubmissionEvaluationsController < TermResourceController
   end
 
   private
-  def prepared_evaluations
-    @evaluations ||= @submission_evaluation.prepared_evaluations.group_by {|ev| ev.rating_group}
-  end
-  helper_method :prepared_evaluations
+    def prepared_evaluations
+      @evaluations ||= @submission_evaluation.prepared_evaluations.group_by {|ev| ev.rating_group}
+    end
+    helper_method :prepared_evaluations
 
-  def current_submission
-    @submission ||= current_term.submissions.find(params[:submission_id])
-  end
-  helper_method :current_submission
+    def current_submission
+      @submission ||= current_term.submissions.find(params[:submission_id])
+    end
+    helper_method :current_submission
+
 end

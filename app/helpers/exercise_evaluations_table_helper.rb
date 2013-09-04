@@ -61,13 +61,19 @@ module ExerciseEvaluationsTableHelper
 
   # only use in submission_evaluation table - submissions have to be prepaired
   def exercise_evaluations_table_form(data, student_group, rating)
-    # if s = data.submission_for_student_group(student_group)
-      exercise_evaluations_form(data, student_group, rating)
-    # else
-      # what to do if no submission present?
-      # "-"
-    # end
+    evaluation = data.evaluation_for_student_group_and_rating(student_group, rating) || Evaluation.new_from_rating(rating)
+    submission = data.submission_for_student_group(student_group)
 
+    url = exercise_evaluation_path(@exercise, format: :js)
+    html_options = {class: "exercise-evaluations-table-form", id: exercise_evaluations_form_id(student_group, rating)}
+
+    simple_form_for(evaluation, as: :evaluation, url: url, html: html_options, remote: true) do |f|
+      rc = ""
+      rc << evaluation_input_field(f)
+      rc << hidden_field_tag(:rating_id,        rating.id)
+      rc << hidden_field_tag(:student_group_id, student_group.id)
+      rc.html_safe
+    end
   end
 
   def exercise_evaluations_result_id(student_group)
@@ -95,23 +101,6 @@ module ExerciseEvaluationsTableHelper
 
   def exercise_evaluations_evaluation_group_results_id(student_group, rating_group)
     "evaluation-group-#{student_group.id}-#{rating_group.id}"
-  end
-
-  private
-  def exercise_evaluations_form(data, student_group, rating)
-    evaluation = data.evaluation_for_student_group_and_rating(student_group, rating) || Evaluation.new_from_rating(rating)
-    submission = data.submission_for_student_group(student_group)
-
-    url = exercise_evaluation_path(@exercise, format: :js)
-    html_options = {class: "exercise-evaluations-table-form", id: exercise_evaluations_form_id(student_group, rating)}
-
-    simple_form_for(evaluation, as: :evaluation, url: url, html: html_options, remote: true) do |f|
-      rc = ""
-      rc << evaluation_input_field(f)
-      rc << hidden_field_tag(:rating_id,        rating.id)
-      rc << hidden_field_tag(:student_group_id, student_group.id)
-      rc.html_safe
-    end
   end
 
   def exercise_evaluations_form_id(student_group, rating)

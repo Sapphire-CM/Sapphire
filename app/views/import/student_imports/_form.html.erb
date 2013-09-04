@@ -1,4 +1,4 @@
-<%= simple_form_for [current_term, @student_import], html: {class: "custom"} do |f| %>
+<%= simple_form_for [@student_import], html: {class: "custom"} do |f| %>
   <%= f.simple_fields_for :import_options do |b| %>
     <div class="row sync-height">
       <div class="large-4 columns">

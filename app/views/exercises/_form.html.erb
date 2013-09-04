@@ -1,4 +1,6 @@
-<%= simple_form_for [current_term, @exercise] do |f| %>
+<%= simple_form_for @exercise do |f| %>
+  <%= f.input :term_id, as: :hidden %>
+
   <%= f.input :title %>
   <%= f.input :description, input_html: { rows: 3 } %>
   <%= f.input :group_submission %>
@@ -12,7 +14,7 @@
   <div class='row'>
     <div class='large-12 large-centered columns text-center'>
         <%= link_to "Cancel", (@exercise.new_record? ?
-            term_exercises_path(current_term) :
+            term_path(current_term) :
             exercise_path(@exercise)), class: "secondary button" %>
         <%= f.submit class: "button" %>
     </div>

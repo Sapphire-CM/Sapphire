@@ -60,7 +60,7 @@
       <% end %>
 
       <p>
-        <%= link_to "Import Students", new_term_import_student_import_path(current_term), class: 'small button' %>
+        <%= link_to "Import Students", new_import_student_import_path(term_id: @term.id), class: 'small button' %>
       </p>
     </div>
   </section>
@@ -100,7 +100,7 @@
       <% end %>
 
       <p>
-        <%= link_to 'New Exercise', new_term_exercise_path(current_term), class: "button"  %>
+        <%= link_to 'New Exercise', new_exercise_path(term_id: @term.id), class: "button"  %>
       </p>
     </div>
   </section>
@@ -116,7 +116,7 @@
     <p class="title" data-section-title><a href="#">Staff</a></p>
     <div class="content" data-section-content>
       <p>
-        <%= link_to set_lecturer_label, term_new_lecturer_registration_path(current_term), class: "small button" %>
+        <%= link_to set_lecturer_label, term_new_lecturer_registration_path(term_id: @term.id), class: "small button" %>
       </p>
 
       <% if @term.tutors.any? || @term.lecturer %>

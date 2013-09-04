@@ -22,6 +22,12 @@ class Account < ActiveRecord::Base
 
   serialize :options
 
+  before_save :improve_options
+
+  def improve_options
+    self.options ||= Hash.new
+  end
+
   def submissions_for_term(term)
     submissions.for_term term
   end

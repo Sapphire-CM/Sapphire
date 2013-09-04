@@ -24,8 +24,8 @@ class SubmissionEvaluation < ActiveRecord::Base
     percent = 1
 
     self.evaluation_groups.each do |eval_group|
-      final_sum += eval_group.points
-      percent *= eval_group.percent
+      final_sum += eval_group.points || 0
+      percent *= eval_group.percent || 0
     end
 
 

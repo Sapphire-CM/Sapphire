@@ -27,7 +27,6 @@ class EvaluationGroup < ActiveRecord::Base
     percent_product = 1
 
     self.evaluations.includes(:rating).each do |evaluation|
-      Rails.logger.info "#{evaluation.class} - #{evaluation.points}p, #{evaluation.percent}%"
       points_sum += evaluation.points
       percent_product *= evaluation.percent
     end

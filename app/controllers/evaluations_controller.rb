@@ -1,8 +1,8 @@
-class EvaluationsController < TermResourceController
-  before_action :fetch_exercise
+class EvaluationsController < ApplicationController
+  before_action :set_context
 
   def index
-    @students = current_term.students
+    @students = @term.students
     @rating_groups = @exercise.rating_groups
   end
 
@@ -28,8 +28,9 @@ class EvaluationsController < TermResourceController
   end
 
   private
-  def fetch_exercise
-    @exercise = current_term.exercises.find(params[:exercise_id])
-  end
+    def set_context
+      @exercise = Exercise.find(params[:exercise_id])
+      @term = @exercise.term
+    end
 
 end

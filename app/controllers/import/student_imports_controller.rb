@@ -1,4 +1,6 @@
-class Import::StudentImportsController < TermResourceController
+class Import::StudentImportsController < ApplicationController
+  before_action :set_student_import, only: [:show, :edit, :update, :destroy, :results]
+
   def index
     @student_imports = Import::StudentImport.all.decorate
   end
@@ -8,18 +10,19 @@ class Import::StudentImportsController < TermResourceController
   end
 
   def full_mapping_table
-    @student_import = Import::StudentImport.find(params[:id])
     @entries = @student_import.values
     @column_count = @student_import.column_count
   end
 
   def new
-    @student_import = current_term.student_imports.new
-    @student_import.import_options[:matching_groups] = "both" if current_term.group_submissions?
+    @term = Term.find(params[:term_id])
+    @student_import = Import::StudentImport.new
+    @student_import.term = @term
+    @student_import.import_options[:matching_groups] = "both" if @term.group_submissions?
   end
 
   def create
-    @student_import = current_term.student_imports.new(params[:import_student_import])
+    @student_import = Import::StudentImport.new(params[:import_student_import])
 
     if not @student_import.save
       return render :new
@@ -41,21 +44,21 @@ class Import::StudentImportsController < TermResourceController
   end
 
   def update
-    @student_import = Import::StudentImport.find(params[:id])
-
     result = @student_import.import(params[:import_student_import])
-
     redirect_to results_import_student_import_path(@student_import)
   end
 
   def results
-    @student_import = Import::StudentImport.find(params[:id])
   end
 
   def destroy
-    @student_import = Import::StudentImport.find(params[:id])
     @student_import.destroy
-
-    redirect_to term_import_student_import_path(current_term)
+    redirect_to term_import_student_import_path(@term)
   end
+
+  private
+    def set_student_import
+      @student_import = Import::StudentImport.find(params[:id])
+      @term = @student_import.term
+    end
 end

@@ -1,5 +1,5 @@
-class TermsController < TermResourceController
-  before_action :set_term, only: [:show, :edit, :update, :destroy, :new_lecturer_registration, :create_lecturer_registration, :clear_lecturer_registration, :update_grading_scale]
+class TermsController < ApplicationController
+  before_action :set_context, only: [:show, :edit, :update, :destroy, :new_lecturer_registration, :create_lecturer_registration, :clear_lecturer_registration, :update_grading_scale]
 
   def show
     @tutorial_groups = @term.tutorial_groups
@@ -85,7 +85,7 @@ class TermsController < TermResourceController
   end
 
   private
-    def set_term
+    def set_context
       @term = Term.find(params[:id])
     end
 

@@ -1,5 +1,5 @@
 <li class='has-dropdown'>
-  <% if defined?(current_term) %>
+  <% if defined?(@term) %>
     <%= link_to_current_term %>
   <% else %>
     <%= link_to "Courses", courses_path %>

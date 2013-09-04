@@ -1,7 +1,5 @@
-class StudentGroupsControllerr < TermResourceController
-  before_action :fetch_tutorial_group
-
-  # index action not needed
+class StudentGroupsControllerr < ApplicationController
+  before_action :set_context
 
   def show
     @student_group = tutorial_groups.student_groups.find(params[:id])
@@ -42,8 +40,9 @@ class StudentGroupsControllerr < TermResourceController
   end
 
   private
-  def fetch_tutorial_group
-    @tutorial_group = current_term.tutorial_groups.find(params[:tutorial_group_id])
-  end
+    def set_context
+      @tutorial_group = TutorialGroup.find(params[:tutorial_group_id])
+      @term = @tutorial_group.term
+    end
 
 end

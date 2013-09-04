@@ -1,5 +1,5 @@
-class TutorialGroupsController < TermResourceController
-  before_action :set_tutorial_group, only: [:show, :edit, :update, :destroy, :new_tutor_registration, :create_tutor_registration, :clear_tutor_registration]
+class TutorialGroupsController < ApplicationController
+  before_action :set_context, only: [:show, :edit, :update, :destroy, :new_tutor_registration, :create_tutor_registration, :clear_tutor_registration]
 
   def show
     if @tutorial_group.tutor.blank?
@@ -8,11 +8,12 @@ class TutorialGroupsController < TermResourceController
   end
 
   def new
-    @tutorial_group = current_term.tutorial_groups.new
+    @tutorial_group = TutorialGroups.new
+    @tutorial_group.term = Term.find(params[:term_id])
   end
 
   def create
-    @tutorial_group = current_term.tutorial_groups.new(params[:tutorial_group])
+    @tutorial_group = TutorialGroup.new(params[:tutorial_group])
 
     if @tutorial_group.save
       redirect_to @tutorial_group, notice: "Tutorial group successfully created."
@@ -26,7 +27,7 @@ class TutorialGroupsController < TermResourceController
 
   def update
     if @tutorial_group.update_attributes(params[:tutorial_group])
-      redirect_to tutorial_group_path(@tutorial_group), notice: "Tutorial group successfully updated."
+      redirect_to @tutorial_group, notice: "Tutorial group successfully updated."
     else
       render :edit
     end
@@ -34,7 +35,7 @@ class TutorialGroupsController < TermResourceController
 
   def destroy
     @tutorial_group.destroy
-    redirect_to term_path(current_term), notice: "Tutorial group successfully deleted."
+    redirect_to @term, notice: "Tutorial group successfully deleted."
   end
 
   def new_tutor_registration
@@ -57,7 +58,7 @@ class TutorialGroupsController < TermResourceController
   end
 
   private
-    def set_tutorial_group
+    def set_context
       @tutorial_group = TutorialGroup.find(params[:id])
       @term = @tutorial_group.term
     end

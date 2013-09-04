@@ -1,12 +1,13 @@
-class ExercisesController < TermResourceController
-  before_action :set_exercise, only: [:show, :edit, :update, :destroy]
+class ExercisesController < ApplicationController
+  before_action :set_context, only: [:show, :edit, :update, :destroy]
 
   def show
   end
 
   def new
     @exercise = Exercise.new
-    @exercise.term = Term.find(params[:term_id])
+    @term = Term.find(params[:term_id])
+    @exercise.term = @term
   end
 
   def edit
@@ -32,11 +33,11 @@ class ExercisesController < TermResourceController
 
   def destroy
     @exercise.destroy
-    redirect_to term_exercises_path(current_term), notice: "Exercise was successfully deleted."
+    redirect_to term_exercises_path(@term), notice: "Exercise was successfully deleted."
   end
 
   private
-    def set_exercise
+    def set_context
       @exercise = Exercise.find(params[:id])
       @term = @exercise.term
     end

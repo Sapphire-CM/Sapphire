@@ -1,4 +1,4 @@
-class ExerciseEvaluationsTableController < TermResourceController
+class ExerciseEvaluationsTableController < ApplicationController
   before_filter :toggle_transpose, on: :show, if: lambda { !!params[:toggle_transpose] }
 
   def show

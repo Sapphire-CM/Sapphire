@@ -1,4 +1,4 @@
-class SubmissionEvaluationsController < TermResourceController
+class SubmissionEvaluationsController < ApplicationController
   def show
     @submission_evaluation = current_submission.submission_evaluation
 
@@ -62,13 +62,14 @@ class SubmissionEvaluationsController < TermResourceController
   end
 
   private
-  def prepared_evaluations
-    @evaluations ||= @submission_evaluation.prepared_evaluations.group_by {|ev| ev.rating_group}
-  end
-  helper_method :prepared_evaluations
+    def prepared_evaluations
+      @evaluations ||= @submission_evaluation.prepared_evaluations.group_by {|ev| ev.rating_group}
+    end
+    helper_method :prepared_evaluations
 
-  def current_submission
-    @submission ||= current_term.submissions.find(params[:submission_id])
-  end
-  helper_method :current_submission
+    def current_submission
+      @submission ||= current_term.submissions.find(params[:submission_id])
+    end
+    helper_method :current_submission
+
 end

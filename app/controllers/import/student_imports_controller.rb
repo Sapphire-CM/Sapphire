@@ -1,14 +1,14 @@
 class Import::StudentImportsController < TermResourceController
   def index
-    @student_imports = Import::StudentImport.with_terms.for_course(current_course).decorate
+    @student_imports = Import::StudentImport.all.decorate
   end
 
   def show
-    @student_import = Import::StudentImport.for_course(current_course).find(params[:id]).decorate
+    @student_import = Import::StudentImport.find(params[:id]).decorate
   end
 
   def full_mapping_table
-    @student_import = Import::StudentImport.for_course(current_course).find(params[:id])
+    @student_import = Import::StudentImport.find(params[:id])
     @entries = @student_import.values
     @column_count = @student_import.column_count
   end

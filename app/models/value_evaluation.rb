@@ -13,7 +13,7 @@ class ValueEvaluation < Evaluation
 
   def percent
     if self.rating.is_a?(ValuePercentRating)
-      1 + evaluation.value.to_f/100.0
+      1 + self.value.to_f/100.0
     else
       1
     end

@@ -1,4 +1,4 @@
-<%= simple_form_for @term, as: :term, url: course_terms_path(@course, @term), remote: true do |f| %>
+<%= simple_form_for @term, as: :term, url: terms_path(@term), remote: true do |f| %>
   <%= f.input :title %>
   <%= f.input :description, input_html: { rows: 3 } %>
   <%= f.input :course_id, as: :hidden %>

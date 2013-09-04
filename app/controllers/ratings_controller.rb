@@ -43,7 +43,7 @@ class RatingsController < TermResourceController
     update_params = { rating_group_id: params[:rating][:rating_group_id], row_order_position: params[:rating][:position]}
     @rating.update_attributes(update_params)
 
-    render text: "#{update_position_course_term_exercise_rating_group_rating_path(current_course, current_term, @exercise, @rating.rating_group, @rating)}"
+    render text: "#{update_position_term_exercise_rating_group_rating_path(current_term, @exercise, @rating.rating_group, @rating)}"
   end
 
   def destroy

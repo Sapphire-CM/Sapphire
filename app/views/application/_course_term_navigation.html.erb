@@ -14,7 +14,7 @@
           <% if course.terms.any? %>
             <ul class='dropdown'>
               <% course.terms.each do |term| %>
-                <li><%= link_to term.title, course_term_path(course, term) %></li>
+                <li><%= link_to term.title, term_path(term) %></li>
               <% end %>
             </ul>
           <% end %>

@@ -45,10 +45,10 @@ $('input[type=checkbox]').bind('click', function() {
   var evaluation_url;
   if ($(this).checked) {
     type = 'DELETE'
-    url = "<%= course_term_exercise_evaluations_path(current_course, current_term, @exercise) %>"
+    url = "<%= term_exercise_evaluations_path(current_term, @exercise) %>"
   } else {
     type = 'POST'
-    url = "<%= new_course_term_exercise_evaluation_path(current_course, current_term, @exercise) %>"
+    url = "<%= new_term_exercise_evaluation_path(current_term, @exercise) %>"
   }
 
   $.ajax(type: type, url: evaluation_url);

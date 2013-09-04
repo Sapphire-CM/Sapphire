@@ -66,16 +66,16 @@ class TermsController < TermResourceController
     registration.registered_at = DateTime.now
 
     if registration.save
-      redirect_to course_term_path(current_course, current_term), notice: "Lecturer registration successfully added."
+      redirect_to term_path(current_term), notice: "Lecturer registration successfully added."
     else
-      redirect_to course_term_path(current_course, current_term), alert: "Lecturer registration failed!"
+      redirect_to term_path(current_term), alert: "Lecturer registration failed!"
     end
   end
 
   def clear_lecturer_registration
     @term.lecturer_registration.destroy
 
-    redirect_to course_term_path(current_course, current_term), notice: "Lecturer registration successfully cleared!"
+    redirect_to term_path(current_term), notice: "Lecturer registration successfully cleared!"
   end
 
   def update_grading_scale

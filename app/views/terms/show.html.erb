@@ -41,15 +41,15 @@
           <tbody>
             <% @tutorial_groups.includes(:tutor_registration).each do |tutorial_group| %>
               <tr>
-                <td><%= link_to "#{tutorial_group.title}", course_term_tutorial_group_path(current_course, current_term, tutorial_group) %></td>
+                <td><%= link_to "#{tutorial_group.title}", term_tutorial_group_path(current_term, tutorial_group) %></td>
                 <td><%= tutor_name tutorial_group.tutor %></td>
                 <td><%= tutorial_group.student_groups.count %></td>
                 <td><%= tutorial_group.students.count %></td>
 
                 <td class='right-aligned'>
-                  <%= link_to foundation_icon(:page_edit), edit_course_term_tutorial_group_path(current_course, current_term, tutorial_group) %>
+                  <%= link_to foundation_icon(:page_edit), edit_term_tutorial_group_path(current_term, tutorial_group) %>
 
-                  <%= link_to foundation_icon(:x), course_term_tutorial_group_path(current_course, current_term, tutorial_group), method: :delete, data: { confirm: "Are you sure?" } %>
+                  <%= link_to foundation_icon(:x), term_tutorial_group_path(current_term, tutorial_group), method: :delete, data: { confirm: "Are you sure?" } %>
                 </td>
               </tr>
             <% end %>
@@ -60,7 +60,7 @@
       <% end %>
 
       <p>
-        <%= link_to "Import Students", new_course_term_import_student_import_path(current_course, current_term), class: 'small button' %>
+        <%= link_to "Import Students", new_term_import_student_import_path(current_term), class: 'small button' %>
       </p>
     </div>
   </section>
@@ -82,14 +82,14 @@
           <tbody>
             <% @exercises.each do |exercise| %>
               <tr>
-                <td><%= link_to "#{exercise.title}", course_term_exercise_path(current_course, current_term, exercise) %></td>
+                <td><%= link_to "#{exercise.title}", term_exercise_path(current_term, exercise) %></td>
                 <td><%= exercise.deadline%></td>
                 <td><%= exercise.submissions.count %></td>
 
                 <td class='right-aligned'>
-                  <%= link_to foundation_icon(:page_edit), edit_course_term_exercise_path(current_course, current_term, exercise) %>
+                  <%= link_to foundation_icon(:page_edit), edit_term_exercise_path(current_term, exercise) %>
 
-                  <%= link_to foundation_icon(:x), course_term_exercise_path(current_course, current_term, exercise), method: :delete, data: { confirm: "Are you sure?" } %>
+                  <%= link_to foundation_icon(:x), term_exercise_path(current_term, exercise), method: :delete, data: { confirm: "Are you sure?" } %>
                 </td>
               </tr>
             <% end %>
@@ -100,7 +100,7 @@
       <% end %>
 
       <p>
-        <%= link_to 'New Exercise', new_course_term_exercise_path(current_course, current_term), class: "button"  %>
+        <%= link_to 'New Exercise', new_term_exercise_path(current_term), class: "button"  %>
       </p>
     </div>
   </section>
@@ -116,7 +116,7 @@
     <p class="title" data-section-title><a href="#">Staff</a></p>
     <div class="content" data-section-content>
       <p>
-        <%= link_to set_lecturer_label, course_term_new_lecturer_registration_path(current_course, current_term), class: "small button" %>
+        <%= link_to set_lecturer_label, term_new_lecturer_registration_path(current_term), class: "small button" %>
       </p>
 
       <% if @term.tutors.any? || @term.lecturer %>

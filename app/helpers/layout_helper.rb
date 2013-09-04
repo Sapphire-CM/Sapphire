@@ -12,7 +12,7 @@ module LayoutHelper
 
   def link_to_current_term
     if term_context?
-      link_to course_term_title(current_course, current_term), course_term_path(current_course, current_term)
+      link_to course_term_title(current_course, current_term), term_path(current_term)
     else
       # Todo: change to not using a link here!
       link_to "<em>-- no term selected --</em>".html_safe, '#'

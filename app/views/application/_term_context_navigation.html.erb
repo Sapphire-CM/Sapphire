@@ -10,7 +10,7 @@
     <ul class='dropdown'>
       <% if current_term.exercises(true).any? %>
         <% current_term.exercises.each do |exercise| %>
-          <li><%= link_to exercise.title, course_term_exercise_path(current_course, current_term, exercise) %></li>
+          <li><%= link_to exercise.title, term_exercise_path(current_term, exercise) %></li>
         <% end %>
       <% else %>
         <li><%= link_to "(no exercises)", '#' %></li>
@@ -23,7 +23,7 @@
     <ul class='dropdown'>
       <% if current_term.tutorial_groups(true).any? %>
         <% current_term.tutorial_groups.each do |tutorial_group| %>
-          <li><%= link_to tutorial_group_title(tutorial_group), course_term_tutorial_group_path(current_course, current_term, tutorial_group) %></li>
+          <li><%= link_to tutorial_group_title(tutorial_group), term_tutorial_group_path(current_term, tutorial_group) %></li>
         <% end %>
       <% else %>
         <li><%= link_to "(no tutorial groups)", '#' %></li>

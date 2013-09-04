@@ -55,7 +55,7 @@ class RatingsController < ApplicationController
 
   private
     def set_context
-      @exercise = Exercises.find(params[:exercise_id])
+      @exercise = Exercise.find(params[:exercise_id])
       @rating_group = RatingGroup.find(params[:rating_group_id])
       @term = @exercise.term
     end

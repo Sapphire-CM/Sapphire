@@ -18,14 +18,11 @@ class Rating < ActiveRecord::Base
   after_update :update_evaluations, if: lambda {|rating| rating.value_changed? || rating.max_value_changed? || rating.min_value_changed?}
   after_update :move_evaluations, id: lambda {|rating| rating.rating_group_id_changed? }
 
-  # def initialize(*args)
-  #   unless args[0] == false
-  #     raise "Cannot directly instantiate a Rating" if self.class == Rating
-  #     super
-  #   end
-  #
-  #   super
-  # end
+  def self.new_from_type(params)
+    classes = [BinaryNumberRating, BinaryPercentRating, ValueNumberRating, ValuePercentRating]
+    rating_class_index = classes.map(&:name).index(params[:type])
+    classes[rating_class_index].new(params.except(:type))
+  end
 
   def evaluation_class
     raise NotImplementedError

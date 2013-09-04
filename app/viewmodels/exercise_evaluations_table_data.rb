@@ -4,8 +4,8 @@ class ExerciseEvaluationsTableData
   attr_reader :student_groups, :rating_groups
 
   def initialize(exercise, tutorial_group = nil, transpose = false)
-    @tutorial_group = tutorial_group
     @exercise = exercise
+    @tutorial_group = tutorial_group
     @transpose = transpose
 
     prepare_data!
@@ -66,10 +66,12 @@ class ExerciseEvaluationsTableData
   end
 
   def student_groups_for_table
-    @student_groups ||= if @tutorial_group
-      @tutorial_group.student_groups
-    else
-      @exercise.term.student_groups
-    end.includes(student_registrations: :student).load
+    @student_groups ||= begin
+      if @tutorial_group
+        student_groups = @tutorial_group.student_groups
+      else
+        student_groups = @exercise.term.student_groups
+      end.includes(student_registrations: :student).where {solitary != my {@exercise.group_submission?}}.load
+    end
   end
 end

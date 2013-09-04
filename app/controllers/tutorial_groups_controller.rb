@@ -59,7 +59,7 @@ class TutorialGroupsController < ApplicationController
 
   private
     def set_context
-      @tutorial_group = TutorialGroup.find(params[:id])
+      @tutorial_group = TutorialGroup.find(params[:id] || params[:tutorial_group_id])
       @term = @tutorial_group.term
     end
 

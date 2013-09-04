@@ -38,7 +38,7 @@ class ExercisesController < ApplicationController
 
   private
     def set_context
-      @exercise = Exercise.find(params[:id])
+      @exercise = Exercise.find(params[:id] || params[:exercise_id])
       @term = @exercise.term
     end
 

@@ -86,7 +86,7 @@ class TermsController < ApplicationController
 
   private
     def set_context
-      @term = Term.find(params[:id])
+      @term = Term.find(params[:id] || params[:term_id])
     end
 
 end

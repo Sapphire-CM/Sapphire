@@ -22,9 +22,8 @@ class Account < ActiveRecord::Base
 
   serialize :options
 
-  before_save :improve_options
-
-  def improve_options
+  def initialize(*args)
+    super *args
     self.options ||= Hash.new
   end
 

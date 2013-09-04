@@ -76,27 +76,31 @@ module Import::Importer
         student = create_student_account row
 
         group_title = row[import_mapping.group.to_i]
+        student_group_title = []
 
         case import_options[:matching_groups]
         when "first"
           regexp = Regexp.new(import_options[:tutorial_groups_regexp])
           m = regexp.match(group_title)
-          tutorial_group_title = m[:tutorial]
-          student_group_title = "#{student.matriculum_number}"
+
+          tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
+
+          student_group = create_student_group "G#{student.matriculum_number}", true, tutorial_group
+          create_student_registration row, student, student_group, tutorial_group
         when "both"
           regexp = Regexp.new(import_options[:student_groups_regexp])
           m = regexp.match(group_title)
-          tutorial_group_title = m[:tutorial]
-          student_group_title = m[:student]
+
+          tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
+
+          student_group = create_student_group "G#{m[:student]}", false, tutorial_group
+          create_student_registration row, student, student_group, tutorial_group
+
+          student_group = create_student_group "G#{student.matriculum_number}", true, tutorial_group
+          create_student_registration row, student, student_group, tutorial_group
         else
           raise # unknown value for :matching_groups
         end
-
-
-        tutorial_group = create_tutorial_group "T#{tutorial_group_title}"
-        student_group = create_student_group "G#{student_group_title}", tutorial_group
-        create_student_registration row, student, student_group, tutorial_group
-        create_student_group_registrations student_group
       end
 
       self.status = "imported"
@@ -104,11 +108,6 @@ module Import::Importer
       if not self.save
         @import_result[:success] = false
       end
-
-    # TODO: uncomment me in production!
-    # rescue
-    #   puts $!
-    #   @import_result[:success] = false
     end
 
     @import_result
@@ -123,9 +122,8 @@ private
     student.surname = row[import_mapping.surname.to_i]
     student.email = row[import_mapping.email.to_i]
 
-    # TODO: change default password
-    student.password              = "123456"
-    student.password_confirmation = "123456"
+    student.password              = Account::DEFAULT_PASSWORD % { matriculum_number: student.matriculum_number }
+    student.password_confirmation = Account::DEFAULT_PASSWORD % { matriculum_number: student.matriculum_number }
 
     new_record = student.new_record?
     if student.save
@@ -152,8 +150,9 @@ private
     tutorial_group
   end
 
-  def create_student_group(title, tutorial_group)
+  def create_student_group(title, solitary, tutorial_group)
     student_group = tutorial_group.student_groups.find_or_initialize_by(title: title)
+    student_group.solitary = solitary
 
     new_record = student_group.new_record?
     if student_group.save
@@ -187,14 +186,6 @@ private
     end
 
     registration
-  end
-
-  def create_student_group_registrations(student_group)
-    term.exercises.where(group_submission: false).each do |exercise|
-      student_group_registration = StudentGroupRegistration.find_or_initialize_by(student_group_id: student_group.id)
-      student_group_registration.exercise = exercise
-      student_group_registration.save
-    end
   end
 
   def create_problem_definition(row, full_messages)

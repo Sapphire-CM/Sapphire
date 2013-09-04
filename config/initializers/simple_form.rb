@@ -14,7 +14,7 @@ module SimpleForm
             input = ""
             input += template.content_tag :div, class: 'small-1 columns' do
               template.content_tag :a, class: 'prefix secondary button' do
-                template.content_tag :i, "", class: 'general foundicon-calendar'
+                template.content_tag :i, "", class: 'fi-calendar'
               end
             end
             input+= template.content_tag :div, class: 'small-11 columns' do
@@ -44,7 +44,7 @@ module SimpleForm
             input = ""
             input += template.content_tag :div, class: 'small-1 columns' do
               template.content_tag :a, class: 'prefix secondary button' do
-                template.content_tag :i, "", class: 'general foundicon-calendar'
+                template.content_tag :i, "", class: 'fi-calendar'
               end
             end
             input+= template.content_tag :div, class: 'small-11 columns' do

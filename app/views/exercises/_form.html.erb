@@ -13,7 +13,7 @@
     <div class='large-12 large-centered columns text-center'>
         <%= link_to "Cancel", (@exercise.new_record? ?
             term_exercises_path(current_term) :
-            term_exercise_path(current_term, @exercise)), class: "secondary button" %>
+            exercise_path(@exercise)), class: "secondary button" %>
         <%= f.submit class: "button" %>
     </div>
   </div>

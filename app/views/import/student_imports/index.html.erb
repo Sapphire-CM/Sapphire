@@ -20,9 +20,9 @@
             <td><%= student_import.created_at %></td>
             <td><%= student_import.status %></td>
             <td>
-              <%= link_to foundation_icon(:magnifying_glass), term_import_student_import_path(current_term, student_import) %>
+              <%= link_to foundation_icon(:magnifying_glass), import_student_import_path(student_import) %>
 
-              <%= link_to foundation_icon(:x), term_import_student_import_path(current_term, student_import), method: :delete, data: { confirm: "Are you sure?" } %>
+              <%= link_to foundation_icon(:x), import_student_import_path(student_import), method: :delete, data: { confirm: "Are you sure?" } %>
             </td>
           </tr>
         <% end %>

@@ -32,8 +32,8 @@
           <% end %>
         </td>
         <td>
-          <%= link_to "Show", term_submission_path(current_term, submission), class: "small button" %>
-          <%= link_to "Evaluate", term_submission_evaluation_path(current_term, submission), class: "small button" %>
+          <%= link_to "Show", submission_path(submission), class: "small button" %>
+          <%= link_to "Evaluate", submission_evaluation_path(submission), class: "small button" %>
         </td>
       </tr>
       <% end %>

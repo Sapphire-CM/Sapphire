@@ -36,7 +36,7 @@ class Import::StudentImportsController < TermResourceController
     else
       # everything worked
       @student_import.smart_guess_new_import_mapping
-      redirect_to term_import_student_import_path(current_term, @student_import)
+      redirect_to import_student_import_path(@student_import)
     end
   end
 
@@ -45,7 +45,7 @@ class Import::StudentImportsController < TermResourceController
 
     result = @student_import.import(params[:import_student_import])
 
-    redirect_to results_term_import_student_import_path(current_term, @student_import)
+    redirect_to results_import_student_import_path(@student_import)
   end
 
   def results

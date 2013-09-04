@@ -2,9 +2,9 @@
 
 <p>
   <% if @submission.submission_evaluation.present? %>
-    <%= link_to "Update Evaluation", edit_term_submission_evaluation_path(current_term, @submission), class: "small button" %>
+    <%= link_to "Update Evaluation", edit_submission_evaluation_path(@submission), class: "small button" %>
   <% else %>
-    <%= link_to "Evaluate!", new_term_submission_evaluation_path(current_term, @submission), class: "small button" %>
+    <%= link_to "Evaluate!", new_submission_evaluation_path(@submission), class: "small button" %>
   <% end %>
 </p>
 

@@ -1,5 +1,5 @@
 <div id="<%= "rating_group_id_#{rating_group.id}" %>"
-     data-update-position-action="<%= update_position_term_exercise_rating_group_path(current_term, @exercise, rating_group) %>"
+     data-update-position-action="<%= update_position_exercise_rating_group_path(@exercise, rating_group) %>"
      class='index_entry rating_group' >
   <div class='row'>
     <div class='large-12 columns'>
@@ -13,9 +13,9 @@
       <% end %>
     </h3>
     <span class='index_entry_icons right-aligned'>
-    <%= link_to foundation_icon(:page_edit), edit_term_exercise_rating_group_path(current_term, @exercise, rating_group), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
+    <%= link_to foundation_icon(:page_edit), edit_exercise_rating_group_path(@exercise, rating_group), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
 
-    <%= link_to foundation_icon(:x), term_exercise_rating_group_path(current_term, @exercise, rating_group), class: 'index_entry_remove', method: :delete, data: { confirm: "Are you sure?" }, remote: true %>
+    <%= link_to foundation_icon(:x), exercise_rating_group_path(@exercise, rating_group), class: 'index_entry_remove', method: :delete, data: { confirm: "Are you sure?" }, remote: true %>
     </span>
     </div>
   </div>
@@ -34,7 +34,7 @@
         <td colspan='3'>
           <div class='row'>
             <div class='large-1 large-centered columns text-center'>
-              <%= link_to foundation_icon(:plus), new_term_exercise_rating_group_rating_path(current_term, @exercise, rating_group), remote: true, title: 'Add Rating', data: {"reveal-id" => "reveal_modal"}   %>
+              <%= link_to foundation_icon(:plus), new_exercise_rating_group_rating_path(@exercise, rating_group), remote: true, title: 'Add Rating', data: {"reveal-id" => "reveal_modal"}   %>
             </div>
           </div>
         </td>

@@ -1,5 +1,5 @@
 <tr id="<%= "rating_id_#{rating.id}" %>"
-    data-update-position-action="<%= update_position_term_exercise_rating_group_rating_path(current_term, @exercise, rating.rating_group, rating) %>"
+    data-update-position-action="<%= update_position_exercise_rating_group_rating_path(@exercise, rating.rating_group, rating) %>"
     class="index_entry rating" >
   <td class='title-column'>
     <% if rating.description.blank? %>
@@ -16,8 +16,8 @@
   </td>
 
   <td class='buttons-column right-aligned minimum-width'>
-    <%= link_to foundation_icon(:page_edit), edit_term_exercise_rating_group_rating_path(current_term, @exercise, rating.rating_group, rating), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
+    <%= link_to foundation_icon(:page_edit), edit_exercise_rating_group_rating_path(@exercise, rating.rating_group, rating), class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
 
-    <%= link_to foundation_icon(:x), term_exercise_rating_group_rating_path(current_term, @exercise, rating.rating_group, rating), class: 'index_entry_remove', method: :delete, data: { confirm: "Are you sure?" }, remote: true %>
+    <%= link_to foundation_icon(:x), exercise_rating_group_rating_path(@exercise, rating.rating_group, rating), class: 'index_entry_remove', method: :delete, data: { confirm: "Are you sure?" }, remote: true %>
   </td>
 </tr>

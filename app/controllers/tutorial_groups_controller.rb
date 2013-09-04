@@ -20,7 +20,7 @@ class TutorialGroupsController < TermResourceController
     @tutorial_group = current_term.tutorial_groups.new(params[:tutorial_group])
 
     if @tutorial_group.save
-      redirect_to term_tutorial_group_path(current_term, @tutorial_group), notice: "Tutorial group successfully created."
+      redirect_to tutorial_group_path(@tutorial_group), notice: "Tutorial group successfully created."
     else
       render :new
     end
@@ -34,7 +34,7 @@ class TutorialGroupsController < TermResourceController
     @tutorial_group = current_term.tutorial_groups.find(params[:id])
 
     if @tutorial_group.update_attributes(params[:tutorial_group])
-      redirect_to term_tutorial_group_path(current_term, @tutorial_group), notice: "Tutorial group successfully updated."
+      redirect_to tutorial_group_path(@tutorial_group), notice: "Tutorial group successfully updated."
     else
       render :edit
     end
@@ -66,7 +66,7 @@ class TutorialGroupsController < TermResourceController
     @tutorial_group = current_term.tutorial_groups.find(params[:tutorial_group_id])
     @tutorial_group.tutor_registration.destroy
 
-    redirect_to term_tutorial_group_path(current_term, @tutorial_group), notice: "Tutor registration successfully cleared!"
+    redirect_to tutorial_group_path(@tutorial_group), notice: "Tutor registration successfully cleared!"
   end
 
   private
@@ -74,9 +74,9 @@ class TutorialGroupsController < TermResourceController
   def save_registration_and_redirect(registration)
     registration.registered_at = DateTime.now
     if registration.save
-      redirect_to term_tutorial_group_path(current_term, @tutorial_group), notice: "New registration successfully added."
+      redirect_to tutorial_group_path(@tutorial_group), notice: "New registration successfully added."
     else
-      redirect_to term_tutorial_group_path(current_term, @tutorial_group), alert: "Registration failed!"
+      redirect_to tutorial_group_path(@tutorial_group), alert: "Registration failed!"
     end
   end
 

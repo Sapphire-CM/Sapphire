@@ -16,7 +16,7 @@ class ExercisesController < TermResourceController
     @exercise = current_term.exercises.new(params[:exercise])
 
     if @exercise.save
-      redirect_to term_exercise_path(current_term, @exercise), notice: "Exercise was successfully created."
+      redirect_to exercise_path(@exercise), notice: "Exercise was successfully created."
     else
       render :new
     end
@@ -26,7 +26,7 @@ class ExercisesController < TermResourceController
     @exercise = current_term.exercises.find(params[:id])
 
     if @exercise.update_attributes(params[:exercise])
-      redirect_to term_exercise_path(current_term, @exercise), notice:  "Exercise was successfully updated."
+      redirect_to exercise_path(@exercise), notice:  "Exercise was successfully updated."
     else
       render :edit
     end

@@ -55,6 +55,6 @@ class ExerciseEvaluationsTableController < TermResourceController
 
     current_account.options[:transpose] = !transpose
     current_account.save
-    redirect_to term_exercise_evaluation_path(current_term, Exercise.find(params[:exercise_id]))
+    redirect_to exercise_evaluation_path(Exercise.find(params[:exercise_id]))
   end
 end

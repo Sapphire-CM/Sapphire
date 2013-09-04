@@ -9,7 +9,6 @@ class SubmissionEvaluation < ActiveRecord::Base
   has_many :rating_groups, through: :ratings
 
   validates_uniqueness_of :submission_id
-  validates_presence_of :evaluated_at
 
   after_create :create_evaluation_groups
 
@@ -25,7 +24,7 @@ class SubmissionEvaluation < ActiveRecord::Base
 
     self.evaluation_groups.each do |eval_group|
       final_sum += eval_group.points || 0
-      percent *= eval_group.percent || 0
+      percent *= eval_group.percent || 1
     end
 
 

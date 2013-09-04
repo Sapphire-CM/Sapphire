@@ -4,7 +4,7 @@
   <div class='small-12 large-12 columns'>
     <%= link_to "Transpose", {toggle_transpose: true}, {class: "small button"} %>
 
-    <%= exercise_evaluations_view_dropdown(@table_data) %>
+    <%= exercise_evaluations_view_dropdown(@exercise) %>
   </div>
 </div>
 
@@ -13,4 +13,8 @@
   <li><%= link_to "Student Count", '#' %></li>
 </ul>
 
-<%= exercise_evaluations_table(@table_data) %>
+<div class='exercise-evaluations-table-container' data-url='<%= exercise_evaluation_path(@exercise, format: :js) %>'>
+  Loading table - please stand by
+</div>
+
+<!-- <script src='>'></script> -->

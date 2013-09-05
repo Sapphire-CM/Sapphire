@@ -4,11 +4,10 @@ $.widget "sapphire.evaluations_table",
     endpoint: undefined
     view: undefined
     toolbar: undefined
-
   _create: ->
     @endpoint = @options.endpoint
     @transpose_table = !!@options.transposed
-    @tutorial_group = @options.tutorial_group
+    @tutorial_group = undefined
     @toolbar_selector = @options.toolbar
     @reload()
 
@@ -18,9 +17,7 @@ $.widget "sapphire.evaluations_table",
 
   reload:  ->
     if @endpoint
-      @load_count ||= 0
-      @load_count++
-      @element.html("loading table - please be patient - #{@load_count}")
+      @element.html("Loading table - please be patient")
       r = $.ajax
         url: @endpoint
         async: true

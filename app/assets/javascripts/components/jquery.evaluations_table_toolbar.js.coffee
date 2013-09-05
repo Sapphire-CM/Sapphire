@@ -34,4 +34,3 @@ $.widget "sapphire.evaluations_table_toolbar",
 
   _handle_click: (e)->
     e.preventDefault()
-    # e.stopPropagation()

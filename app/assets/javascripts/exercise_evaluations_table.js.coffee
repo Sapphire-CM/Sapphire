@@ -16,5 +16,4 @@ $ ->
     toolbar: '#exercise_evaluations_table_toolbar'
     endpoint: $table_container.data("url")
     transposed: $table_container.data("transposed")
-    tutorial_group: $table_container.data("tutorial_group")
 

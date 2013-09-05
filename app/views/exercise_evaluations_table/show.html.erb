@@ -1,20 +1,16 @@
 <% title "Evaluations of #{@exercise.title}" %>
 
 <div class='row'>
-  <div class='small-12 large-12 columns'>
-    <%= link_to "Transpose", {toggle_transpose: true}, {class: "small button"} %>
+  <div class='small-12 large-12 columns' id='exercise_evaluations_table_toolbar'>
+    <%= link_to "Reload", '#', class: "small button reload-button" %>
 
     <%= exercise_evaluations_view_dropdown(@exercise) %>
+    <%= link_to "Transpose", '#', {class: "small button transpose-button"} %>
+
+    <%= exercise_evaluations_tutorial_groups_dropdown(@tutorial_groups) %>
   </div>
 </div>
 
-<ul id='drop-view' class='f-dropdown'>
-  <li><%= link_to "Group Number", '#' %></li>
-  <li><%= link_to "Student Count", '#' %></li>
-</ul>
-
-<div class='exercise-evaluations-table-container' data-url='<%= exercise_evaluation_path(@exercise, format: :js) %>'>
+<div id='exercise_evaluations_table_container' data-url='<%= exercise_evaluation_path(@exercise, format: :json) %>' data-transposed='<%= @transposed %>' data-tutorial-group='<%= @tutorial_group_id %>'>
   Loading table - please stand by
 </div>
-
-<!-- <script src='>'></script> -->

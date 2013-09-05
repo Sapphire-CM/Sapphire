@@ -19,6 +19,7 @@ class Account < ActiveRecord::Base
   has_many :lecturer_registrations, dependent: :destroy
   has_many :tutor_registrations, dependent: :destroy
   has_many :student_registrations, dependent: :destroy
+  has_many :tutorial_groups, through: :tutor_registrations
 
   has_many :submissions, through: :student_registrations
 

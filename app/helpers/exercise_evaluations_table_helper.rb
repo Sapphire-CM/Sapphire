@@ -19,8 +19,16 @@ module ExerciseEvaluationsTableHelper
       links << link_to("Matriculum Number", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "matriculum_number"}})
     end
 
-    dropdown_button("View", links)
+    dropdown_button("Title", links)
   end
+
+  def exercise_evaluations_tutorial_groups_dropdown(tutorial_groups)
+    links = tutorial_groups.map do |tutorial_group|
+      link_to tutorial_group_title(tutorial_group), '#', data: {tutorial_group_id: tutorial_group.id}
+    end
+    dropdown_button("Tutorial Group", links, dropdown_class: "tutorial_groups_dropdown")
+  end
+
 
   def exercise_evaluations_student_group_title(data, student_group)
     titles = Hash.new

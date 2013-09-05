@@ -1,17 +1,34 @@
 class ExerciseEvaluationsTableController < ApplicationController
-  before_filter :toggle_transpose, on: :show, if: lambda { !!params[:toggle_transpose] }
-
   def show
     respond_to do |format|
       format.html do
         @exercise = Exercise.find(params[:exercise_id])
         @term = @exercise.term
+        @transposed = current_account.options[:transpose] || false
+        @tutorial_groups = @term.tutorial_groups
       end
-      format.js do
+      format.json do
+        if params[:transpose].present?
+          current_account.options[:transpose] = (params[:transpose] == "true") || false
+          current_account.save!
+        end
+
         @exercise = Exercise.for_evaluations_table.find(params[:exercise_id])
         @term = @exercise.term
-        @table_data = ExerciseEvaluationsTableData.new(@exercise, @term.tutorial_groups.first, current_account.options[:transpose] || false)
+
+        @tutorial_group = if params[:tutorial_group_id].present?
+          @term.tutorial_groups.find(params[:tutorial_group_id])
+        else
+          if tut_group = current_account.tutorial_groups.where(term: @term).first
+            tut_group
+          else
+            @term.tutorial_groups.first
+          end
+        end
+
+        @table_data = ExerciseEvaluationsTableData.new(@exercise, @tutorial_group, current_account.options[:transpose])
       end
+
     end
   end
 
@@ -61,13 +78,5 @@ class ExerciseEvaluationsTableController < ApplicationController
 
     def evaluation_params
       params.require(:evaluation).permit(:value)
-    end
-
-    def toggle_transpose
-      transpose = current_account.options[:transpose] || false
-
-      current_account.options[:transpose] = !transpose
-      current_account.save!
-      redirect_to exercise_evaluation_path(Exercise.find(params[:exercise_id]))
     end
 end

@@ -9,7 +9,12 @@ $(document).on 'change', '.exercise-evaluations-table-form input', (e) ->
 
 
 $ ->
-  $containers = $('.exercise-evaluations-table-container')
+  $('#exercise_evaluations_table_toolbar').evaluations_table_toolbar()
+  $table_container = $('#exercise_evaluations_table_container')
 
-  if $containers.length > 0
-    $.get $containers.first().data("url")
+  $table_container.evaluations_table
+    toolbar: '#exercise_evaluations_table_toolbar'
+    endpoint: $table_container.data("url")
+    transposed: $table_container.data("transposed")
+    tutorial_group: $table_container.data("tutorial_group")
+

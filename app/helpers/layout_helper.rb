@@ -109,10 +109,15 @@ module LayoutHelper
     "<i class='fi-#{icon.to_s.dasherize}'></i>".html_safe
   end
 
-  def dropdown_button(title, links)
+  def dropdown_button(title, links, options = {})
     dropdown_identifier = "dropdown-button-#{SecureRandom.hex}"
 
-    render "dropdown_button", title: title, dropdown_identifier: dropdown_identifier, links: links
+    dropdown_classes = ["f-dropdown"]
+    if options[:dropdown_class]
+      dropdown_classes << options[:dropdown_class]
+    end
+
+    render "dropdown_button", title: title, dropdown_identifier: dropdown_identifier, links: links, dropdown_classes: dropdown_classes.join(" ")
   end
 
 end

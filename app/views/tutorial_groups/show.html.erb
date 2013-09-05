@@ -62,7 +62,7 @@
               <td><%= student.matriculum_number %></td>
               <td><%= student.email %></td>
               <td>
-                <%= student.student_registrations.map(&:student_group).map(&:title).join ', ' %>
+                <%= student.student_registrations.joins({student_group: :tutorial_group}).where(student_group: {tutorial_group: {term_id: @term.id}}).map(&:student_group).map(&:title).join ', ' %>
               </td>
             </tr>
             <% end %>

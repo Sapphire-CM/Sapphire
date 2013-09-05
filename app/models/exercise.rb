@@ -20,6 +20,7 @@ class Exercise < ActiveRecord::Base
 
 
   def update_points!
+    # TODO: account for negative points in RG
     self.points = rating_groups.pluck(:points).compact.inject(:+) || 0
     self.save!
   end

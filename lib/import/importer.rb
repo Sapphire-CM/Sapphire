@@ -93,7 +93,7 @@ module Import::Importer
 
           tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
 
-          student_group = create_student_group "G#{m[:student]}", false, tutorial_group
+          student_group = create_student_group group_title, false, tutorial_group
           create_student_registration row, student, student_group, tutorial_group
 
           student_group = create_student_group "G#{student.matriculum_number}", true, tutorial_group

@@ -8,13 +8,14 @@ class Rating < ActiveRecord::Base
   default_scope { includes(:rating_group).rank(:row_order) }
 
   has_one :exercise, through: :rating_group
-  has_many :evaluations
+  has_many :evaluations, dependent: :destroy
   has_many :submission_evaluations, through: :evaluations
 
   validates_presence_of :title, :type
 
   validate :rating_type_validation
 
+  after_create :create_evaluations
   after_update :update_evaluations, if: lambda {|rating| rating.value_changed? || rating.max_value_changed? || rating.min_value_changed?}
   after_update :move_evaluations, id: lambda {|rating| rating.rating_group_id_changed? }
 
@@ -45,6 +46,10 @@ class Rating < ActiveRecord::Base
   end
 
   private
+  def create_evaluations
+    Evaluation.create_for_rating(self)
+  end
+
   def update_evaluations
     self.evaluations.each(&:update_result!)
   end

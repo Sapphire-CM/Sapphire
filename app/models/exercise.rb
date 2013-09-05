@@ -11,6 +11,7 @@ class Exercise < ActiveRecord::Base
   has_many :student_group_registrations, dependent: :destroy
 
   has_many :submissions
+  has_many :submission_evaluations, through: :submissions
   has_many :rating_groups, dependent: :destroy
   has_many :ratings, through: :rating_groups
 

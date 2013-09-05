@@ -4,7 +4,7 @@ class RatingGroup < ActiveRecord::Base
 
   belongs_to :exercise
   has_many :ratings, dependent: :destroy
-  has_many :evaluation_groups
+  has_many :evaluation_groups, dependent: :destroy
 
   validates_presence_of :title
   validates_uniqueness_of :title, scope: :exercise_id
@@ -16,6 +16,7 @@ class RatingGroup < ActiveRecord::Base
 
   attr_accessible :title, :description, :points, :exercise, :global, :enable_range_points, :min_points, :max_points, :row_order_position
 
+  after_create :create_evaluation_groups
   after_save :update_exercise_points, if: lambda { |rg| rg.points_changed? }
 
   def update_exercise_points
@@ -54,6 +55,12 @@ class RatingGroup < ActiveRecord::Base
   private
   def update_evaluation_group_results
     self.evaluation_groups.each(&:update_result!)
+  end
+
+  def create_evaluation_groups
+    self.exercise.submission_evaluations.each do |se|
+      EvaluationGroup.create_for_submission_evaluation_and_rating_group(se, self)
+    end
   end
 
   # global: true     if there is no maximum points for this group, therefore all

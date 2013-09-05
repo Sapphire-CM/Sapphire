@@ -14,6 +14,7 @@ class Evaluation < ActiveRecord::Base
 
   after_create :update_result!
   after_update :update_result!, if: lambda {|eval| eval.value_changed? }
+  after_destroy :update_result!
 
   scope :for_submission, lambda {|submission| joins{evaluation_group.submission_evaluation}.where{evaluation_group.submission_evaluation.submission_id == my{submission.id}}.readonly(false) }
 
@@ -25,6 +26,14 @@ class Evaluation < ActiveRecord::Base
     end
   end
 
+  def self.create_for_rating(rating)
+    rating.rating_group.evaluation_groups.each do |eval_group|
+      evaluation = self.new_from_rating(rating)
+      evaluation.evaluation_group = eval_group
+      evaluation.save!
+    end
+  end
+
   def points
     0
   end
@@ -32,7 +41,6 @@ class Evaluation < ActiveRecord::Base
   def percent
     1
   end
-
 
   def update_result!
     self.evaluation_group.update_result!

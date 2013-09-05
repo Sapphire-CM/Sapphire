@@ -2,19 +2,24 @@ class EvaluationGroup < ActiveRecord::Base
   belongs_to :rating_group
   belongs_to :submission_evaluation
 
-  after_create :create_evaluations
   has_many :evaluations, dependent: :destroy
 
+  after_create :create_evaluations
   after_save :update_submission_evaluation_results, if: lambda {|eg| eg.points_changed? || eg.percent_changed?}
+  after_destroy :update_submission_evaluation_results
 
   def self.create_for_submission_evaluation(submission_evaluation)
     submission_evaluation.submission.exercise.rating_groups.each do |rating_group|
-      eg = self.new
-      eg.rating_group = rating_group
-      eg.points = rating_group.points
-      eg.submission_evaluation = submission_evaluation
-      eg.save!
+      create_for_submission_evaluation_and_rating_group(submission_evaluation, rating_group)
     end
+  end
+
+  def self.create_for_submission_evaluation_and_rating_group(submission_evaluation, rating_group)
+    eg = self.new
+    eg.rating_group = rating_group
+    eg.points = rating_group.points
+    eg.submission_evaluation = submission_evaluation
+    eg.save!
   end
 
   def update_result!

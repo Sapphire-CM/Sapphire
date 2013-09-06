@@ -12,7 +12,7 @@ gem 'squeel', '~> 1.1'            # easy DSL
 gem 'draper'                      # decorators
 gem 'kaminari'                    # pagination
 gem 'flash_render'                # render method with notice/alerts
-gem 'devise', '~> 3.0'            # user authentication
+gem 'devise', '~> 3.1.0'          # user authentication
 gem 'cancan'                      # role based ability management for users
 gem 'turbolinks'                  # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'jquery-turbolinks'           # turbolinks jquery plugin for events

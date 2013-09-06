@@ -33,6 +33,9 @@ group :production do
 end
 
 group :development do
+  gem 'guard'
+  gem 'guard-pow'
+
   gem 'thin'                # small development webserver
   gem 'debugger'            # debugger with irb, 1.9.3-only
   gem 'better_errors'       # pretty error pages

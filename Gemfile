@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.0.0'
+gem 'rails', '4.0'
 
 gem 'sqlite3'
 gem 'jquery-rails'
@@ -38,6 +38,7 @@ group :development do
 
   gem 'thin'                # small development webserver
   gem 'debugger'            # debugger with irb, 1.9.3-only
+  gem 'byebug'              # debugger with irb, 2.0.0-only
   gem 'better_errors'       # pretty error pages
   gem 'binding_of_caller'   # interactive shell within error pages
   gem 'brakeman'            # common security problems checker

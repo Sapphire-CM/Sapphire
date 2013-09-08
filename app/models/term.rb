@@ -120,7 +120,7 @@ class Term < ActiveRecord::Base
     destination_term.save
   end
 
-  def get_grade(points)
+  def points_to_grade(points)
     grading_scale.select{|lower, grade| lower <= points}.last[1]
   end
 

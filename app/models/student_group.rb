@@ -16,4 +16,8 @@ class StudentGroup < ActiveRecord::Base
 
     self.student_group_registrations.where(:exercise_id => exercise.id).first_or_create!
   end
+
+  def points_for_term(term)
+    SubmissionEvaluation.where{submission_id.in(my {self.submissions.joins{exercise}.where{{exercise: {term_id: term.id}}}.pluck(:id)})}.pluck(:evaluation_result).inject(:+)
+  end
 end

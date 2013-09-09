@@ -9,6 +9,7 @@ class Exercise < ActiveRecord::Base
   scope :for_evaluations_table, lambda { includes(submissions: [{submission_evaluation: {evaluation_groups: [:rating_group, {evaluations: :rating}]}}, {student_group_registration: {student_group: :students}}])}
 
   has_many :student_group_registrations, dependent: :destroy
+  has_many :student_groups, through: :student_group_registrations
 
   has_many :submissions
   has_many :submission_evaluations, through: :submissions

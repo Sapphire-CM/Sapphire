@@ -22,6 +22,7 @@ class Account < ActiveRecord::Base
   has_many :tutorial_groups, through: :tutor_registrations
 
   has_many :submissions, through: :student_registrations
+  has_many :student_groups, through: :student_registrations
 
   serialize :options
 
@@ -30,12 +31,20 @@ class Account < ActiveRecord::Base
     self.options ||= Hash.new
   end
 
+  def fullname
+    "#{forename} #{surname}"
+  end
+
   def submissions_for_term(term)
     submissions.for_term term
   end
 
-  def fullname
-    "#{forename} #{surname}"
+  def points_for_term(term)
+    student_groups.for_term(term).map(&:points).sum
+  end
+
+  def grade_for_term(term)
+    term.grade_for_points points_for_term(term)
   end
 
   def self.search(query)

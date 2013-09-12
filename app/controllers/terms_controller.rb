@@ -4,6 +4,7 @@ class TermsController < ApplicationController
   def show
     @tutorial_groups = @term.tutorial_groups
     @exercises = @term.exercises
+    @grade_distribution = @term.grade_distribution
 
     if @term.lecturer.blank?
       render alert: 'You have not set a lecturer yet!'
@@ -82,6 +83,8 @@ class TermsController < ApplicationController
     @term.grading_scale.delete pair
     @term.grading_scale << [low.to_i, grade]
     @term.save!
+
+    @grade_distribution = @term.grade_distribution
   end
 
   private

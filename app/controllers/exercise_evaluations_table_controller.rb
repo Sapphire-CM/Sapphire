@@ -71,7 +71,7 @@ class ExerciseEvaluationsTableController < ApplicationController
           format.js
         end
       else
-        render :text, "alert('something went wrong!')"
+        render text: "alert('something went wrong! #{@evaluation.errors.full_messages}')"
       end
     end
 

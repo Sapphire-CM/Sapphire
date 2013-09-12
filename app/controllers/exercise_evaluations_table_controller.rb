@@ -27,6 +27,29 @@ class ExerciseEvaluationsTableController < ApplicationController
         end
 
         @table_data = ExerciseEvaluationsTableData.new(@exercise, @tutorial_group, current_account.options[:transpose])
+
+        ratings = @table_data.rating_groups.flat_map{|rg| rg.ratings}
+        student_groups = @table_data.student_groups
+
+        @forms = {}
+        ratings.each do |r|
+          @forms[r.id] = {}
+          student_groups.each do |sg|
+            if @table_data.submission_for_student_group(sg).present?
+              @forms[r.id][sg.id] = view_context.exercise_evaluations_table_form @table_data, sg, r
+            end
+          end
+        end
+
+        @exercise_evaluations_state_classes = {}
+        student_groups.each do |sg|
+          @exercise_evaluations_state_classes[sg.id] = view_context.exercise_evaluations_state_class @table_data, sg
+        end
+
+        @exercise_evaluations_student_group_titles = {}
+        student_groups.each do |sg|
+          @exercise_evaluations_student_group_titles[sg.id] = view_context.exercise_evaluations_student_group_title @table_data, sg
+        end
       end
 
     end

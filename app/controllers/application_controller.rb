@@ -4,4 +4,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :authenticate_account!
+
+  # before_action :tmp_debug
+  # def tmp_debug
+  #   sign_in Account.first, store: false
+  # end
 end

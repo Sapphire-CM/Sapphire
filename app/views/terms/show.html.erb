@@ -1,25 +1,28 @@
 <% title course_term_title %>
 
 <div class="section-container tabs" data-section="tabs">
-  <section>
+<!--   <section>
     <p class="title" data-section-title><a href="#">Grading Scale</a></p>
     <div class="content" data-section-content>
       <%= render 'grading_scale' %>
     </div>
-  </section>
+  </section> -->
 
   <section>
     <p class="title" data-section-title><a href="#">Dashboard</a></p>
     <div class="content" data-section-content>
 
-      <%#= DO SOMETHING USEFULL HERE %>
       <p>
-        <a href='#' class='button'>Current evaluation</a>
-        <a href='#' class='button'>Current submissions</a>
-        <a href='#' class='button'>Meeting time</a>
-        <a href='#' class='alert button'>Get help!</a>
+        <% if Import::StudentImport.where{term_id == my{@term.id}}.blank? %>
+          <%= link_to "Import Students", new_import_student_import_path(term_id: @term.id), class: 'button' %>
+        <% else %>
+          <%= link_to "View last Import result", results_import_student_import_path(@term.student_imports.last) %>
+        <% end %>
       </p>
-      <%#= DO SOMETHING USEFULL HERE %>
+
+      <!-- TODO: insert important stuff here -->
+      <!-- * link to evalation table for exercises as dropdown -->
+      <!-- ... -->
 
     </div>
   </section>

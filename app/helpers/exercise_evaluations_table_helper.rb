@@ -14,7 +14,8 @@ module ExerciseEvaluationsTableHelper
       links << link_to("Group Name", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "group_name"}})
       links << link_to("Student Count", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "student_count"}})
     else
-      links << link_to("Fullname", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "fullname"}})
+      links << link_to("Forename Surname", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "forename_surname"}})
+      links << link_to("Surname Forename", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "surname_forename"}})
       links << link_to("Email", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "email"}})
       links << link_to("Matriculum Number", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "matriculum_number"}})
     end
@@ -37,7 +38,8 @@ module ExerciseEvaluationsTableHelper
       titles[:student_count] = pluralize(student_group.students.count, "student")
     else
       student = student_group.students.first
-      titles[:fullname] = student.fullname
+      titles[:forename_surname] = student.fullname
+      titles[:surname_forename] = "#{student.surname} #{student.forename}"
       titles[:email]= student.email
       titles[:matriculum_number] = student.matriculum_number
     end

@@ -1,26 +1,22 @@
 module SubmissionEvaluationsHelper
   def evaluation_input_field(f)
-    evaluation = f.object
-    rating = evaluation.rating
+    rating = f.object.rating
     options = {}
 
-    additional_value = nil
     if rating.is_a? BinaryRating
       options[:as] = :boolean
-      options[:input_html] = { data: { customforms: 'disabled' } }
+      options[:data] = {customforms: 'disabled'}
     elsif rating.is_a? ValueNumberRating
-      options[:as] = :range
-      options[:input_html] = {min: rating.min_value, max: rating.max_value}
+      options[:type] = :number
       options[:step] = 1
+      options[:min] = rating.min_value
+      options[:max] = rating.max_value
     elsif rating.is_a? ValuePercentRating
-      options[:as] = :range
-      options[:input_html] = {min: 0, max: 100}
-      options[:step] = 10
+      options[:type] = :number
+      options[:step] = 5
+      options[:min] = rating.min_value
+      options[:max] = rating.max_value
     end
-
-
-    # options[:label] = "#{rating.title} (#{rating_points_description rating})"
-    options[:label] = false
 
     f.input_field(:value, options)
   end

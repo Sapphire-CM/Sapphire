@@ -12,7 +12,7 @@ class Submission < ActiveRecord::Base
 
 
   scope :for_term, lambda {|term| joins(:exercise).where(exercise: {term_id: term.id})}
-  scope :for_exercise, lambda {|exercise|  where(exercise_id: exercise) }
+  scope :for_exercise, lambda {|exercise| where(exercise_id: exercise) }
 
   after_create :create_submission_evaluation
 

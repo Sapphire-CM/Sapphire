@@ -120,8 +120,20 @@ class Term < ActiveRecord::Base
     destination_term.save
   end
 
-  def points_to_grade(points)
+  def grade_for_points(points)
     grading_scale.select{|lower, grade| lower <= points}.last[1]
+  end
+
+  def grade_distribution
+    grades = students.map{|s| s.grade_for_term(self)}
+
+    distribution = Hash.new(0)
+
+    grades.each do |v|
+      distribution[v] += 1
+    end
+
+    distribution
   end
 
 end

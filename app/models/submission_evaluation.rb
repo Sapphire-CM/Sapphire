@@ -12,9 +12,15 @@ class SubmissionEvaluation < ActiveRecord::Base
 
   after_create :create_evaluation_groups
 
+  after_save :update_student_group_points, if: lambda { |se| se.evaluation_result_changed? }
+
   def calc_results!
     calc_results
     self.save!
+  end
+
+  def update_student_group_points
+    student_group.update_points!
   end
 
   private

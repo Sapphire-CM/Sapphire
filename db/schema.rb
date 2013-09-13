@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130904134914) do
+ActiveRecord::Schema.define(version: 20130913111450) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -157,6 +157,7 @@ ActiveRecord::Schema.define(version: 20130904134914) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "solitary"
+    t.integer  "points"
   end
 
   add_index "student_groups", ["tutorial_group_id"], name: "index_student_groups_on_tutorial_group_id"

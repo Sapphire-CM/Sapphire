@@ -3,7 +3,8 @@
     <thead>
       <th>Grade</th>
       <th colspan=3 class='text-center'>Points</th>
-      <th>Total students</th>
+      <th>Students</th>
+      <th>Percent</th>
     </thead>
     <tbody>
       <% @term.grading_scale.reverse.each_with_index do |item, index| %>
@@ -26,7 +27,12 @@
               <% end %>
             <% end %>
           </td>
-          <td><span data-tooltip class="has-tip" title=" insert who many students get this grade!">TODO</span></td>
+          <td>
+            <%= @grade_distribution[item[1]] %>
+          </td>
+          <td>
+            <%= "#{(@grade_distribution[item[1]] / @term.students.count.to_f * 100).round 1} %" %>
+          </td>
         </tr>
       <% end %>
     </tbody>

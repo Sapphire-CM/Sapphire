@@ -19,7 +19,8 @@ class StudentGroup < ActiveRecord::Base
     self.student_group_registrations.where(:exercise_id => exercise.id).first_or_create!
   end
 
-  def points
-    SubmissionEvaluation.where{submission_id.in(my {self.submissions.joins{exercise}.where{{exercise: {term_id: my{term.id}}}}.pluck(:id)})}.pluck(:evaluation_result).sum
+  def update_points!
+    self.points = SubmissionEvaluation.where{submission_id.in(my {self.submissions.joins{exercise}.where{{exercise: {term_id: my{term.id}}}}.pluck(:id)})}.pluck(:evaluation_result).sum
+    self.save!
   end
 end

@@ -38,7 +38,7 @@ class Term < ActiveRecord::Base
   end
 
   def update_points!
-    self.points = exercises.pluck(:points).compact.inject(:+) || 0
+    self.points = exercises.pluck(:points).compact.sum
     self.save!
   end
 

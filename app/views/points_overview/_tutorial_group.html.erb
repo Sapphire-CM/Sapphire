@@ -1,0 +1,48 @@
+<h2 class='subheader'>
+  <%= "#{tutorial_group.title} #{tutorial_group.tutor.forename unless tutorial_group.tutor.blank?}" %>
+</h2>
+
+<table>
+  <thead>
+    <th>MatrNr</th>
+    <% @term.exercises.each do |exercise| %>
+      <th><%= exercise.title %></th>
+    <% end %>
+    <th>Sum</th>
+    <th>Grade</th>
+  </thead>
+
+  <tbody>
+    <% tutorial_group.students.sort!{|a,b| a.matriculum_number <=> b.matriculum_number}.each do |student| %>
+      <tr>
+        <td><%= student.matriculum_number %></td>
+
+        <% @term.exercises.each do |exercise| %>
+          <td>
+            <% if student.submission_for_exercise(exercise).any? %>
+              <%= student.submission_for_exercise(exercise).first.submission_evaluation.evaluation_result %>
+            <% else %>
+              na
+            <% end %>
+          </td>
+        <% end %>
+
+        <td>
+          <% if @term.exercises.map{|ex| student.submission_for_exercise(ex).any? }.any? %>
+            <%= student.points_for_term @term %>
+          <% else %>
+            na
+          <% end %>
+        </td>
+        <td>
+          <% if @term.exercises.map{|ex| student.submission_for_exercise(ex).any? }.any? %>
+            <%= student.grade_for_term @term %>
+          <% else %>
+            0
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<p><small>Sorted by MatrNr, 9x numbers at the bottom.</small></p>

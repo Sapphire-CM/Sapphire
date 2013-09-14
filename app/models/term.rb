@@ -125,15 +125,16 @@ class Term < ActiveRecord::Base
   end
 
   def grade_distribution
-    grades = students.map{|s| s.grade_for_term(self)}
+    @grade_distribution ||= begin
+      distribution = Hash.new(0)
+      grades = students.map{|s| s.grade_for_term(self)}
 
-    distribution = Hash.new(0)
+      grades.each do |v|
+        distribution[v] += 1
+      end
 
-    grades.each do |v|
-      distribution[v] += 1
+      distribution
     end
-
-    distribution
   end
 
 end

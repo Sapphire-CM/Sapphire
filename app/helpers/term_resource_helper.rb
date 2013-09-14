@@ -1,7 +1,7 @@
 module TermResourceHelper
   def term_context?
     if @term_context.nil?
-      @term_context = (current_controller != StaticController && current_controller != CoursesController && current_controller != TermsController ) || (params[:controller] == "terms" && params[:action] == "show")
+      @term_context = (current_controller != StaticController && current_controller != CoursesController && current_controller != TermsController ) || (params[:controller] == "terms" && params[:action] == "show") || (params[:term_id])
     end
 
     @term_context

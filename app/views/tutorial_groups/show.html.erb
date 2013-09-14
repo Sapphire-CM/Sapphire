@@ -2,15 +2,18 @@
 
 <% sidebar do %>
   <div>
-  <%= link_to set_tutor_label, tutorial_group_new_tutor_registration_path(@tutorial_group), class: "small button twelve columns" %>
+  <%= link_to set_tutor_label, tutorial_group_new_tutor_registration_path(@tutorial_group), class: "small button columns" %>
 
-  <%= link_to "Edit", edit_tutorial_group_path(@tutorial_group), class: "small button twelve columns" %>
+  <%= link_to "Points overview", tutorial_group_points_overview_path(@term), class: "small button columns" %>
 
-  <%= link_to "Delete", tutorial_group_path(@tutorial_group), class: "small alert button twelve columns", method: :delete, data: { confirm: "Are you sure?" } %>
+  <%= link_to "Edit", edit_tutorial_group_path(@tutorial_group), class: "small button columns" %>
+
+  <%= link_to "Delete", tutorial_group_path(@tutorial_group), class: "small alert button columns", method: :delete, data: { confirm: "Are you sure?" } %>
   </div>
 <% end %>
 
 <div class="section-container tabs" data-section="tabs">
+  <% if @tutorial_group.term.group_submissions? %>
   <section>
     <p class="title" data-section-title><a href="#">Student groups</a></p>
     <div class="content" data-section-content>
@@ -41,6 +44,7 @@
       <% end %>
     </div>
   </section>
+  <% end %>
 
   <section>
     <p class="title" data-section-title><a href="#">Students</a></p>

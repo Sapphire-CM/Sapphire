@@ -1,10 +1,9 @@
 class TermsController < ApplicationController
-  before_action :set_context, only: [:show, :edit, :update, :destroy, :new_lecturer_registration, :create_lecturer_registration, :clear_lecturer_registration, :update_grading_scale]
+  before_action :set_context, only: [:show, :edit, :update, :destroy, :new_lecturer_registration, :create_lecturer_registration, :clear_lecturer_registration, :update_grading_scale, :points_overview]
 
   def show
     @tutorial_groups = @term.tutorial_groups
     @exercises = @term.exercises
-    @grade_distribution = @term.grade_distribution
 
     if @term.lecturer.blank?
       render alert: 'You have not set a lecturer yet!'
@@ -83,8 +82,9 @@ class TermsController < ApplicationController
     @term.grading_scale.delete pair
     @term.grading_scale << [low.to_i, grade]
     @term.save!
+  end
 
-    @grade_distribution = @term.grade_distribution
+  def points_overview
   end
 
   private

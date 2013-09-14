@@ -22,8 +22,9 @@ class Account < ActiveRecord::Base
   has_many :student_registrations, dependent: :destroy
   has_many :tutorial_groups, through: :tutor_registrations
 
-  has_many :submissions, through: :student_registrations
   has_many :student_groups, through: :student_registrations
+  has_many :student_group_registrations, through: :student_groups
+  has_many :submissions, through: :student_group_registrations
 
   serialize :options
 
@@ -38,6 +39,10 @@ class Account < ActiveRecord::Base
 
   def submissions_for_term(term)
     submissions.for_term term
+  end
+
+  def submission_for_exercise(exercise)
+    submissions.for_exercise exercise
   end
 
   def points_for_term(term)

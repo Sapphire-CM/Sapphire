@@ -21,6 +21,7 @@
         <table class='large-12'>
           <thead>
             <th>Group</th>
+            <th>Students count</th>
             <th>Students</th>
             <th></th>
           </thead>
@@ -29,12 +30,16 @@
             <tr>
               <td><%= student_group.title %></td>
               <td><%= student_group.students.count %></td>
+              <td>
+                <% student_group.students.order(:matriculum_number).each do |student| %>
+                  <%= "#{student.matriculum_number}, #{student.fullname}" %><br/>
+                <% end %>
+              </td>
+              <td class='right-aligned'>
+                <%= link_to foundation_icon(:page_edit), edit_tutorial_group_student_group_path(@tutorial_group, student_group) %>
 
-                <td class='right-aligned'>
-                  <%= link_to foundation_icon(:page_edit), edit_tutorial_group_student_group_path(@tutorial_group, student_group) %>
-
-                  <%= link_to foundation_icon(:x), tutorial_group_student_group_path(@tutorial_group, student_group), method: :delete, data: { confirm: "Are you sure?" } %>
-                </td>
+                <%= link_to foundation_icon(:x), tutorial_group_student_group_path(@tutorial_group, student_group), method: :delete, data: { confirm: "Are you sure?" } %>
+              </td>
             </tr>
             <% end %>
           </tbody>
@@ -66,7 +71,7 @@
               <td><%= student.matriculum_number %></td>
               <td><%= student.email %></td>
               <td>
-                <%= student.student_registrations.joins({student_group: :tutorial_group}).where(student_group: {tutorial_group: {term_id: @term.id}}).map(&:student_group).map(&:title).join ', ' %>
+                <%= student.student_groups.for_term(@tutorial_group.term).pluck(:title).join ', ' %>
               </td>
             </tr>
             <% end %>

@@ -46,7 +46,7 @@ class Account < ActiveRecord::Base
   end
 
   def points_for_term(term)
-    student_groups.for_term(term).map(&:points).sum
+    student_groups.for_term(term).map(&:points).compact.sum
   end
 
   def grade_for_term(term)

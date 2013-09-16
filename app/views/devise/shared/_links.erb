@@ -1,13 +1,7 @@
-<% sidebar do %>
-  <ul class='side-nav'>
-    <%= side_navigation_item "Log in", new_session_path(resource_name), active: controller_name == "sessions" %>
+<%- if devise_mapping.recoverable? %>
+  <%= link_to "Forgot your password?", new_password_path(resource_name), active: controller_name == "passwords" %>
+<% end -%>
 
-    <%- if devise_mapping.recoverable? %>
-      <%= side_navigation_item "Forgot your password?", new_password_path(resource_name), active: controller_name == "passwords" %>
-    <% end -%>
-
-    <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
-      <%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name) %><br />
-    <% end -%>
-  </ul>
-<% end %>
+<%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
+  <%= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name) %><br />
+<% end -%>

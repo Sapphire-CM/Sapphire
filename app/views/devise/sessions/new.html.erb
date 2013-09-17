@@ -1,18 +1,24 @@
-<% title "Sapphire: Login" %>
+<% title "Login", false %>
 
-<%= render "devise/shared/links" %>
+<div class='row down'>
+  <div class='large-5 large-centered grid-center panel radius'>
+    <h1 class='subheader text-center'>Sapphire Login</h1>
 
-<div class='row'>
-  <div class='large-6 large-centered grid-center'>
     <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-      <div class="form-inputs">
-        <%= f.input :email, required: false, autofocus: true %>
-        <%= f.input :password, required: false %>
-        <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+      <%= f.input :email, required: false, autofocus: true %>
+      <%= f.input :password, required: false %>
+      <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+
+      <div class='row'>
+        <div class='large-12 large-centered columns text-center'>
+          <%= f.submit "Sign in", class: "button with-bottom-margin" %>
+        </div>
       </div>
 
-      <div class="form-actions">
-        <%= f.button :submit, "Sign in" %>
+      <div class='row'>
+        <div class='large-12 large centered columns text-center'>
+          <%= render "devise/shared/links" %>
+        </div>
       </div>
     <% end %>
   </div>

@@ -33,50 +33,47 @@ class ExerciseEvaluationsTableController < ApplicationController
   end
 
   def create
-    update_evaluation
+    @exercise = Exercise.find(params[:exercise_id])
+    @student_group = StudentGroup.find(params[:student_group_id])
+
+    @submission = Submission.new
+    @submission.exercise = @exercise
+    @submission.assign_to(@student_group)
+    @submission.submitted_at = Time.now
+    @submission.save!
+    @submission.reload
+    se = @submission.submission_evaluation
+    se.evaluated_at = Time.now
+    se.save!
+
+    @data = ExerciseEvaluationsTableData.new(@exercise, @student_group.tutorial_group, current_account.options[:transpose], [@student_group])
   end
 
   def update
-    update_evaluation
+    @exercise = Exercise.find(params[:exercise_id])
+    @student_group = StudentGroup.find(params[:student_group_id])
+    @rating = @exercise.ratings.find(params[:rating_id])
+
+    @submission = @student_group.submissions.for_exercise(@exercise).first
+
+    @submission_evaluation = @submission.submission_evaluation
+    @submission_evaluation.evaluated_at = Time.now
+    @submission_evaluation.save!
+
+    @student_group = @submission.student_group
+    @evaluation = Evaluation.where(rating_id: @rating.id).for_submission(@submission).first
+
+    if @evaluation.update_attributes(evaluation_params)
+      respond_to do |format|
+        format.js
+      end
+    else
+      render text: "alert('something went wrong! #{@evaluation.errors.full_messages}')"
+    end
   end
 
-  private
-    def update_evaluation
-      @exercise = Exercise.find(params[:exercise_id])
-      @student_group = StudentGroup.find(params[:student_group_id])
 
-      @term = @exercise.term
-
-      @submission = @student_group.submissions.for_exercise(@exercise).first || begin
-        s = Submission.new
-        s.exercise = @exercise
-        s.assign_to @student_group
-        s.submitted_at = Time.now
-        s.save!
-        s
-      end
-
-
-      @rating = @exercise.ratings.find(params[:rating_id])
-
-      @submission_evaluation = @submission.submission_evaluation
-      @submission_evaluation.evaluated_at = Time.now
-      @submission_evaluation.save!
-
-      @student_group = @submission.student_group
-      @evaluation = Evaluation.where(rating_id: @rating.id).for_submission(@submission).first
-
-      if @evaluation.update_attributes(evaluation_params)
-        respond_to do |format|
-          format.js
-        end
-      else
-        render text: "alert('something went wrong! #{@evaluation.errors.full_messages}')"
-      end
-    end
-
-
-    def evaluation_params
-      params.require(:evaluation).permit(:value)
-    end
+  def evaluation_params
+    params.require(:evaluation).permit(:value)
+  end
 end

@@ -4,8 +4,9 @@ class EvaluationGroup < ActiveRecord::Base
 
   has_many :evaluations, dependent: :destroy
 
+  before_create :calc_result
   after_create :create_evaluations
-  after_save :update_submission_evaluation_results, if: lambda {|eg| eg.points_changed? || eg.percent_changed?}
+  after_update :update_submission_evaluation_results, if: lambda {|eg| eg.points_changed? || eg.percent_changed?}
   after_destroy :update_submission_evaluation_results
 
   def self.create_for_submission_evaluation(submission_evaluation)
@@ -28,7 +29,7 @@ class EvaluationGroup < ActiveRecord::Base
   end
 
   def calc_result
-    points_sum = rating_group.points || 0
+    points_sum = self.rating_group.points || 0
     percent_product = 1
 
     self.evaluations.includes(:rating).each do |evaluation|

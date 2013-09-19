@@ -8,6 +8,13 @@
         </th>
       <% end %>
     </tr>
+    <tr>
+      <td colspan='2'>&nbsp;</td>
+      <% data.student_groups.each do |student_group| %>
+      <td><%= exercise_evaluations_create_submission_button(data, student_group) %></td>
+      <% end %>
+    </tr>
+
   </thead>
 
   <tbody>
@@ -26,7 +33,11 @@
         <td class='rating-points'><%= rating_points_description rating %></td>
         <% data.student_groups.each_with_index do |student_group, index| %>
           <td class='<%= exercise_evaluations_state_class(data, student_group) %> submission-evaluation-<%= student_group.id %>-<%= rating.id %> submission-evaluation-<%= student_group.id %>' data-student-group='<%= student_group.id %>'>
-            <%= exercise_evaluations_table_form data, student_group, rating %>
+            <% if data.submission_for_student_group(student_group).present? %>
+              <%= exercise_evaluations_table_form data, student_group, rating %>
+            <% else %>
+              -
+            <% end %>
           </td>
         <% end %>
       </tr>
@@ -35,7 +46,6 @@
 
     <tr>
       <th colspan='2'>Result</th>
-
       <% data.student_groups.each do |student_group| %>
         <td class='<%= exercise_evaluations_result_id(student_group) %>'>
           <%= exercise_evaluations_submission_result(data, student_group) %>

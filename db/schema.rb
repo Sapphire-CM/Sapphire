@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130913111450) do
+ActiveRecord::Schema.define(version: 20130920194400) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -24,15 +24,15 @@ ActiveRecord::Schema.define(version: 20130913111450) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.integer  "failed_attempts",        default: 0
-    t.string   "unlock_token"
-    t.datetime "locked_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "forename"
     t.string   "surname"
     t.string   "matriculum_number"
     t.text     "options"
+    t.integer  "failed_attempts",        default: 0
+    t.string   "unlock_token"
+    t.datetime "locked_at"
   end
 
   add_index "accounts", ["email"], name: "index_accounts_on_email", unique: true

@@ -13,14 +13,6 @@
 
 .reveal-modal {
   margin-bottom: 0em;
-
-  form {
-    margin-bottom: 0;
-
-    .button {
-      margin-bottom: 0;
-    }
-  }
 }
 
 .index_entry_header {
@@ -35,6 +27,22 @@
   }
 
   float: right;
+}
+
+.row.down {
+  margin-top: 6em;
+}
+
+form {
+  margin-bottom: 0;
+
+  .button {
+    margin-bottom: 0;
+  }
+
+  .button.with-bottom-margin {
+    margin-bottom: 1.25em;
+  }
 }
 
 td.minimum-width {

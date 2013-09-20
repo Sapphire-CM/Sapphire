@@ -1,13 +1,9 @@
 Sapphire::Application.routes.draw do
+  devise_for :accounts, skip: :registration
 
-  resources :submission_evaluations
-
-  devise_for :accounts
-  as :user do
-    get 'accounts'          => 'accounts#index'
-    get 'accounts/:id'      => 'accounts#show', as: "account"
-    get 'accounts/:id/edit' => 'accounts#edit', as: "edit_account"
-    put 'accounts/:id'      => 'accounts#update'
+  resources :accounts, except: [:new, :show] do
+    get :change_password, on: :member
+    patch :update_password, on: :member
   end
 
   resources :courses
@@ -46,6 +42,8 @@ Sapphire::Application.routes.draw do
     resource :evaluation, controller: 'exercise_evaluations_table'
 
   end
+
+  resources :submission_evaluations
 
   namespace :import do
     resources :student_imports do

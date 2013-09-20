@@ -5,7 +5,8 @@ class Account < ActiveRecord::Base
          :recoverable,
          :rememberable,
          :trackable,
-         :validatable
+         :validatable,
+         :lockable
 
   attr_accessible :email, :password, :password_confirmation, :remember_me, :forename, :surname, :matriculum_number
 

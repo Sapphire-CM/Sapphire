@@ -81,9 +81,9 @@ module LayoutHelper
     elsif rating.is_a? BinaryPercentRating
       "#{rating.value} %"
     elsif rating.is_a? ValueNumberRating
-      "#{rating.min_value} to #{rating.max_value}"
+      "#{rating.min_value} ... #{rating.max_value}"
     elsif rating.is_a? ValuePercentRating
-      "#{rating.min_value} to #{rating.max_value} %"
+      "#{rating.min_value} ... #{rating.max_value} %"
     end
   end
 

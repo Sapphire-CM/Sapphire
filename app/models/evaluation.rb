@@ -16,7 +16,7 @@ class Evaluation < ActiveRecord::Base
   after_update :update_result!, if: lambda {|eval| eval.value_changed? }
   after_destroy :update_result!
 
-  scope :for_submission, lambda {|submission| joins{evaluation_group.submission_evaluation}.where{evaluation_group.submission_evaluation.submission_id == my{submission.id}}.readonly(false) }
+  scope :for_submission, lambda { |submission| joins{evaluation_group.submission_evaluation}.where{evaluation_group.submission_evaluation.submission_id == my{submission.id}}.readonly(false) }
 
   def self.create_for_evaluation_group(evaluation_group)
     evaluation_group.rating_group.ratings.each do |rating|

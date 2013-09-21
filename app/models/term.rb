@@ -43,15 +43,15 @@ class Term < ActiveRecord::Base
   end
 
   def tutors
-    Account.joins(tutor_registrations: {tutorial_group: :term}).where{ tutor_registrations.tutorial_group.term.id == my{id}}
+    @tutors ||= Account.joins(tutor_registrations: {tutorial_group: :term}).where{ tutor_registrations.tutorial_group.term.id == my{id}}
   end
 
   def students
-    Account.joins(student_registrations: {tutorial_group: :term}).where{ student_registrations.tutorial_group.term.id == my{id}}
+    @students ||= Account.joins(student_registrations: {tutorial_group: :term}).where{ student_registrations.tutorial_group.term.id == my{id}}
   end
 
   def group_submissions?
-    exercises.where(group_submission: true).exists?
+    @group_submission ||= exercises.where(group_submission: true).exists?
   end
 
   def copy_lecturer(destination_term)
@@ -121,19 +121,21 @@ class Term < ActiveRecord::Base
   end
 
   def grade_for_points(points)
-    grading_scale.select{|lower, grade| lower <= points}.last[1]
+    @grade_for_points ||= {}
+    @grade_for_points[points] ||= grading_scale.select{|lower, grade| lower <= points}.last[1]
   end
 
   def grade_distribution
-    grades = students.map{|s| s.grade_for_term(self)}
+    @grade_distribution ||= begin
+      distribution = Hash.new(0)
+      grades = students.map{|s| s.grade_for_term(self)}
 
-    distribution = Hash.new(0)
+      grades.each do |v|
+        distribution[v] += 1
+      end
 
-    grades.each do |v|
-      distribution[v] += 1
+      distribution
     end
-
-    distribution
   end
 
 end

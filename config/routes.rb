@@ -14,6 +14,7 @@ Sapphire::Application.routes.draw do
     delete :clear_lecturer_registration
 
     post :update_grading_scale
+    get :points_overview
   end
 
   resources :submissions do
@@ -24,6 +25,8 @@ Sapphire::Application.routes.draw do
     get :new_tutor_registration
     post :create_tutor_registration
     delete :clear_tutor_registration
+
+    get :points_overview
 
     resources :student_groups do
       get :new_student_registration

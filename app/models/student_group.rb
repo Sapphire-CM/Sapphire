@@ -11,7 +11,11 @@ class StudentGroup < ActiveRecord::Base
 
   attr_accessible :title, :solitary
 
-  scope :for_term, lambda {|term| where{term.id == my{term.id}}}
+  scope :for_term, lambda { |term| joins{tutorial_group.term}.where{tutorial_group.term.id == my{term.id}} }
+
+  def submission_evaluations
+    @submission_evaluations ||= SubmissionEvaluation.where{submission_id.in(my {self.submissions.joins{exercise}.where{exercise.term_id == my{term.id}}.pluck(:id)})}
+  end
 
   def register_for(exercise)
     raise ArgumentError, "Exercise is not in same term" unless self.term == exercise.term
@@ -20,7 +24,7 @@ class StudentGroup < ActiveRecord::Base
   end
 
   def update_points!
-    self.points = SubmissionEvaluation.where{submission_id.in(my {self.submissions.joins{exercise}.where{{exercise: {term_id: my{term.id}}}}.pluck(:id)})}.pluck(:evaluation_result).sum
+    self.points = self.submission_evaluations.pluck(:evaluation_result).sum
     self.save!
   end
 end

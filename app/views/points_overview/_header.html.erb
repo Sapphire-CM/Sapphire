@@ -1,0 +1,69 @@
+<% title "#{term.course.title} Results #{term.title}" %>
+
+<% if true %>
+  <p>
+    These are the <em>provisional</em> results. We do occasionally make
+    mistakes, for example when entering points into a spreadsheet or
+    adding up points. Should we find any mistakes in the grading, the
+    provisional grade will be corrected.
+  </p>
+<% else %>
+  <p>
+  These are the <em>final</em> results, including any corrections
+  from the grading review.
+  </p>
+<% end %>
+
+<div class='large-6 columns'>
+  <table class='right'>
+    <thead>
+      <th colspan='3'>Points</th>
+      <th>Grade</th>
+    </thead>
+
+    <tbody>
+      <% term.grading_scale.reverse.each_with_index do |item, index| %>
+        <% if index-1 >= 0 %>
+          <% high = term.grading_scale.reverse[index-1][0] - 1 %></td>
+        <% else %>
+          <% high = term.points %>
+        <% end %>
+
+        <tr>
+          <td class='text-right'>
+            <%= "#{high}" %>
+          </td>
+          <td>-</td>
+          <td class='text-right'>
+            <%= "#{item[0]}" %>
+          </td>
+          <td class='text-center'>
+            <%= item[1] %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class='large-6 columns'>
+  <table class='left'>
+    <thead>
+      <th>Exercise</th>
+      <th>Points</th>
+    </thead>
+
+    <tbody>
+      <% term.exercises.each do |exercise| %>
+        <tr>
+          <td><%= exercise.title %></td>
+          <td><%= exercise.points %></td>
+        </tr>
+      <% end %>
+      <tr>
+        <td>Sum</td>
+        <td><%= term.points %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

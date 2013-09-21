@@ -1,5 +1,5 @@
 class TutorialGroupsController < ApplicationController
-  before_action :set_context, only: [:show, :edit, :update, :destroy, :new_tutor_registration, :create_tutor_registration, :clear_tutor_registration]
+  before_action :set_context, only: [:show, :edit, :update, :destroy, :new_tutor_registration, :create_tutor_registration, :clear_tutor_registration, :points_overview]
 
   def show
     if @tutorial_group.tutor.blank?
@@ -55,6 +55,9 @@ class TutorialGroupsController < ApplicationController
   def clear_tutor_registration
     @tutorial_group.tutor_registration.destroy
     redirect_to tutorial_group_path(@tutorial_group), notice: "Tutor registration successfully cleared!"
+  end
+
+  def points_overview
   end
 
   private

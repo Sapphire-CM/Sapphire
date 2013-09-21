@@ -16,6 +16,23 @@ class TutorialGroup < ActiveRecord::Base
   has_many :submissions, through: :student_group_registrations
 
   def students
-    student_groups.flat_map { |sg| sg.students }.uniq
+    @students ||= student_groups.includes(:students).flat_map{ |sg| sg.students }.uniq
+  end
+
+  def student_has_submission_for_exercise?(student, exercise)
+    @values ||= begin
+      values = {}
+
+      term.exercises.each do |ex|
+        students.each do |s|
+          values[s.id] ||= {}
+          values[s.id][ex.id] = s.submission_for_exercise(ex).any?
+        end
+      end
+
+      values
+    end
+
+    @values[student.id][exercise.id]
   end
 end

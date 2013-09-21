@@ -4,7 +4,9 @@
   <%= link_to "Edit", edit_exercise_path(@exercise), class: "small button" %>
   <%= link_to "Delete", exercise_path(@exercise), method: :delete, class: "small alert button", data: { confirm: "Are you sure?" } %>
 
-  <p><%= link_to "Evaluations Table", exercise_evaluation_path(@exercise), class: "small button" %></p>
+  <% if @term.student_groups.any? %>
+    <p><%= link_to "Evaluations Table", exercise_evaluation_path(@exercise), class: "small button" %></p>
+  <% end %>
 <% end %>
 
 <div class="section-container tabs" data-section="tabs">

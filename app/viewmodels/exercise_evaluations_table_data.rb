@@ -1,12 +1,13 @@
 class ExerciseEvaluationsTableData
 
-  attr_accessor :transpose, :exercise, :tutorial_group
-  attr_reader :student_groups, :rating_groups
+  attr_accessor :transpose, :exercise, :tutorial_group, :student_groups
+  attr_reader :rating_groups
 
-  def initialize(exercise, tutorial_group = nil, transpose = false)
+  def initialize(exercise, tutorial_group = nil, transpose = false, student_groups = nil)
     @exercise = exercise
     @tutorial_group = tutorial_group
     @transpose = transpose
+    @student_groups = student_groups
 
     prepare_data!
   end

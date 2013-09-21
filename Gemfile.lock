@@ -262,6 +262,7 @@ GEM
     rb-kqueue (0.2.0)
       ffi (>= 0.5.0)
     ref (1.0.5)
+    remotipart (1.2.1)
     request_store (1.0.5)
     rspec-core (2.14.5)
     rspec-expectations (2.14.2)
@@ -380,6 +381,7 @@ DEPENDENCIES
   rails (= 4.0)
   rails-erd
   ranked-model
+  remotipart (~> 1.2)
   rspec-rails
   sass-rails (~> 4.0)
   sextant

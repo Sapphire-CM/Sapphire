@@ -27,6 +27,8 @@ gem 'jquery-rails'                # Use jquery as the JavaScript library
 gem 'zurb-foundation', '~> 4.2.0'
 gem 'foundation-icons-sass-rails', '~> 3.0'
 
+gem 'remotipart', '~> 1.2'        # fileuploads via ajax
+
 group :production do
   gem 'therubyracer'
   gem 'pg'                        # PostgreSQL database connector

@@ -20,6 +20,7 @@
 //= require jquery_ujs
 //= require foundation
 //= require turbolinks
+//= require jquery.remotipart
 //= require vendor
 //= require_tree .
 

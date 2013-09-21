@@ -8,6 +8,8 @@ Sapphire::Application.routes.draw do
 
   resources :courses
 
+  resources :submission_assets, only: [:show, :new, :create]
+
   resources :terms do
     get :new_lecturer_registration
     post :create_lecturer_registration
@@ -17,7 +19,7 @@ Sapphire::Application.routes.draw do
     get :points_overview
   end
 
-  resources :submissions do
+  resources :submissions, only: :show do
     resource :evaluation, controller: 'submission_evaluations'
   end
 

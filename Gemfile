@@ -6,7 +6,7 @@ gem 'sqlite3'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 
-gem 'simple_form', '~> 3.0.0.rc'  # forms
+gem 'simple_form', '~> 3.0'       # forms
 gem 'carrierwave'                 # fileuploads
 gem 'squeel', '~> 1.1'            # easy DSL
 gem 'draper'                      # decorators

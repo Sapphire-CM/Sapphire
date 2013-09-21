@@ -11,7 +11,6 @@ class SubmissionEvaluation < ActiveRecord::Base
   validates_uniqueness_of :submission_id
 
   after_create :create_evaluation_groups
-
   after_save :update_student_group_points, if: lambda { |se| se.evaluation_result_changed? }
 
   def calc_results!
@@ -21,6 +20,7 @@ class SubmissionEvaluation < ActiveRecord::Base
 
   def update_student_group_points
     student_group.update_points!
+
   end
 
   private
@@ -42,5 +42,6 @@ class SubmissionEvaluation < ActiveRecord::Base
 
   def create_evaluation_groups
     EvaluationGroup.create_for_submission_evaluation(self)
+    calc_results!
   end
 end

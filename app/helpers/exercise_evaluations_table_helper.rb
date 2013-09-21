@@ -132,4 +132,14 @@ module ExerciseEvaluationsTableHelper
   def exercise_evaluations_title_cycle_group
     "evaluations-table-cycle"
   end
+
+  def exercise_evaluations_create_submission_button(data, student_group)
+    if data.submission_for_student_group(student_group).present?
+      link_to "present", '#', class: "tiny success disabled button exercise-evaluations-table-create-submission"
+    else
+      confirm_message = "Are sure you want to create this #{data.exercise.group_submission? ? "group" : "student"}'s submission?"
+
+      link_to "create", '#', class: "tiny button exercise-evaluations-table-create-submission", data: {student_group_id: student_group.id, url: exercise_evaluation_path(@exercise), confirm: confirm_message}
+    end
+  end
 end

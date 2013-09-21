@@ -2,7 +2,6 @@ class Submission < ActiveRecord::Base
   belongs_to :exercise
   belongs_to :student_group_registration
   has_one :student_group, through: :student_group_registration
-
   has_one :submission_evaluation, dependent: :destroy
 
   has_many :submission_assets

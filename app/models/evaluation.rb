@@ -12,7 +12,7 @@ class Evaluation < ActiveRecord::Base
 
   attr_accessible :rating_id, :type, :value
 
-  after_create :update_result!
+  after_create :update_result!, if: lambda {|eval| eval.value_changed?}
   after_update :update_result!, if: lambda {|eval| eval.value_changed? }
   after_destroy :update_result!
 

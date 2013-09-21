@@ -54,6 +54,11 @@ input[type="file"] {
   width: auto;
 }
 
+input[type="checkbox"].no-margin {
+  margin-right: 0;
+  margin-bottom: 0;
+}
+
 a.account-top-bar {
   height: 45px;
   i {

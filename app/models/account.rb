@@ -34,23 +34,27 @@ class Account < ActiveRecord::Base
   end
 
   def fullname
-    "#{forename} #{surname}"
+    @fullname ||= "#{forename} #{surname}"
   end
 
   def submissions_for_term(term)
-    submissions.for_term term
+    @submissions_for_term ||= {}
+    @submissions_for_term[term.id] ||= submissions.for_term term
   end
 
   def submission_for_exercise(exercise)
-    submissions.for_exercise exercise
+    @submission_for_exercise ||= {}
+    @submission_for_exercise[exercise.id] ||= submissions.for_exercise exercise
   end
 
   def points_for_term(term)
-    student_groups.for_term(term).map(&:points).compact.sum
+    @points_for_term ||= {}
+    @points_for_term[term.id] ||= student_groups.for_term(term).map(&:points).compact.sum
   end
 
   def grade_for_term(term)
-    term.grade_for_points points_for_term(term)
+    @grade_for_term ||= {}
+    @grade_for_term[term.id] ||= term.grade_for_points(points_for_term(term))
   end
 
   def self.search(query)

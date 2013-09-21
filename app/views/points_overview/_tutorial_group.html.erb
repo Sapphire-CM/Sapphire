@@ -21,7 +21,7 @@
 
             <% term.exercises.each do |exercise| %>
               <td>
-                <% if student.submission_for_exercise(exercise).any? %>
+                <% if tutorial_group.student_has_submission_for_exercise?(student, exercise) %>
                   <%= student.submission_for_exercise(exercise).first.submission_evaluation.evaluation_result %>
                 <% else %>
                   na
@@ -29,15 +29,17 @@
               </td>
             <% end %>
 
+            <% participated = term.exercises.map{|ex| tutorial_group.student_has_submission_for_exercise?(student, ex) }.any? %>
+
             <td>
-              <% if term.exercises.map{|ex| student.submission_for_exercise(ex).any? }.any? %>
+              <% if participated %>
                 <%= student.points_for_term term %>
               <% else %>
                 na
               <% end %>
             </td>
             <td>
-              <% if term.exercises.map{|ex| student.submission_for_exercise(ex).any? }.any? %>
+              <% if participated %>
                 <%= student.grade_for_term term %>
               <% else %>
                 0

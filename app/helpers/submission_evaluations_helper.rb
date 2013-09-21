@@ -6,6 +6,7 @@ module SubmissionEvaluationsHelper
     if rating.is_a? BinaryRating
       options[:as] = :boolean
       options[:data] = {customforms: 'disabled'}
+      options[:class] = 'no-margin'
     elsif rating.is_a? ValueNumberRating
       options[:type] = :number
       options[:step] = 1

@@ -177,6 +177,17 @@ ActiveRecord::Schema.define(version: 20130920194400) do
   add_index "student_registrations", ["account_id"], name: "index_student_registrations_on_account_id"
   add_index "student_registrations", ["student_group_id"], name: "index_student_registrations_on_student_group_id"
 
+  create_table "submission_assets", force: true do |t|
+    t.integer  "submission_id"
+    t.string   "file"
+    t.string   "content_type"
+    t.datetime "submitted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "submission_assets", ["submission_id"], name: "index_submission_assets_on_submission_id"
+
   create_table "submission_evaluations", force: true do |t|
     t.integer  "submission_id"
     t.integer  "evaluator_id"

@@ -1,16 +1,55 @@
-<% title course_term_title, "#{@submission.student.fullname} - #{@submission.exercise.title}" %>
+<% title submission_title(@submission) %>
 
-<p>
-  <% if @submission.submission_evaluation.present? %>
-    <%= link_to "Update Evaluation", edit_submission_evaluation_path(@submission), class: "small button" %>
-  <% else %>
-    <%= link_to "Evaluate!", new_submission_evaluation_path(@submission), class: "small button" %>
-  <% end %>
-</p>
 
-Submitted Files:
-<ul class='circle'>
-  <li>first.html</li>
-  <li>styles.css</li>
-  <li>hard coded files</li>
-</ul>
+<div class="section-container tabs" data-section="tabs">
+  <section>
+    <p class='title' data-section-title><a href='#'>Overview</a></p>
+    <div class='content' data-section-content>
+      <table class='large-12'>
+        <tbody>
+          <tr>
+            <th class='large-3'>Exercise:</th>
+            <td><%= @submission.exercise.title %></td>
+          </tr>
+          <tr>
+            <th class='large-3'>Submitted at:</th>
+            <td><%= l @submission.submitted_at, format: :long %></td>
+          </tr>
+          <tr>
+            <th class='large-3'>Result:</th>
+            <td><%=  @submission.submission_evaluation.evaluation_result %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <section>
+    <p class='title' data-section-title><a href='#'>Submitted Files</a></p>
+    <div class='content' data-section-content>
+      <table id='submission_assets_list' class='large-12'>
+        <thead>
+          <th>Filename</th>
+          <th>Submitted at</th>
+          <th>Content Type</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <%= render @submission.submission_assets %>
+        </tbody>
+      </table>
+      <% unless @submission.submission_assets.any? %>
+        <p id='submission_assets_list_empty'>No additional files present</p>
+      <% end %>
+      <p><%= link_to "Add File", new_submission_asset_path(submission_id: @submission.id), class: "small button", remote: true, data: {"reveal-id" => "reveal_modal"} %></p>
+    </div>
+  </section>
+  <!-- Suggestion: adding comments to submissions -->
+  <!-- <section>
+    <p class='title' data-section-title><a href='#'>Comments</a></p>
+    <div class='content' data-section-content></div>
+  </section> -->
+</div>
+
+<%= link_to "Back to #{@submission.exercise.title}", exercise_path(@submission.exercise) %>
+
+<%= render 'application/reveal_modal' %>

@@ -21,7 +21,7 @@
             <%= pluralize submission.submission_evaluation.evaluation_result, "point" %>
           <% else %>
           <em>Not evaluated yet</em>
-              
+
           <% end %>
         </td>
         <td>
@@ -33,7 +33,6 @@
         </td>
         <td>
           <%= link_to "Show", submission_path(submission), class: "small button" %>
-          <%= link_to "Evaluate", submission_evaluation_path(submission), class: "small button" %>
         </td>
       </tr>
       <% end %>

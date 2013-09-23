@@ -2,11 +2,11 @@ var $button = $('.exercise-evaluations-table-create-submission[data-student-grou
 $button.addClass("disabled success").text("present").removeAttr("data-confirm")
 
 <% @data.rating_groups.each do |rating_group| %>
-  $('.<%= exercise_evaluations_evaluation_group_results_id(@student_group, rating_group) %>').html('<%=j exercise_evaluations_evaluation_group_result(@data, @student_group, rating_group).to_s %>')
+  $('.<%= exercise_evaluations_evaluation_group_results_id(@student_group, rating_group) %> b').html('<%=j exercise_evaluations_evaluation_group_result(@data, @student_group, rating_group).to_s %>')
 
   <% rating_group.ratings.each do |rating| %>
     $('.submission-evaluation-<%= @student_group.id %>-<%= rating.id %>').html('<%=j exercise_evaluations_table_form @data, @student_group, rating %>')
   <% end %>
 <% end %>
 
-$('.<%= exercise_evaluations_result_id(@student_group) %>').html("<%=j exercise_evaluations_submission_result(@data, @student_group) %>")
+$('.<%= exercise_evaluations_result_id(@student_group) %> b').html("<%=j exercise_evaluations_submission_result(@data, @student_group) %>")

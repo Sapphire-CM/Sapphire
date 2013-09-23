@@ -11,19 +11,15 @@
   <section>
     <p class="title" data-section-title><a href="#">Dashboard</a></p>
     <div class="content" data-section-content>
-
       <p>
         <% if Import::StudentImport.where{term_id == my{@term.id}}.blank? %>
           <%= link_to "Import Students", new_import_student_import_path(term_id: @term.id), class: 'button' %>
         <% else %>
-          <%= link_to "View last Import result", results_import_student_import_path(@term.student_imports.last) %>
+          <%= link_to "View last Import result", results_import_student_import_path(@term.student_imports.last), class: "button" %>
         <% end %>
-      </p>
 
-      <p>
-        <%= link_to "Points overview", term_points_overview_path(@term) %>
+        <%= link_to "Points overview", term_points_overview_path(@term), class: "button" %>
       </p>
-
       <!-- TODO: insert important stuff here -->
       <!-- * link to evalation table for exercises as dropdown -->
       <!-- ... -->
@@ -53,7 +49,7 @@
                 <td><%= tutorial_group.student_groups.count %></td>
                 <td><%= tutorial_group.students.count %></td>
 
-                <td class='right-aligned'>
+                <td class='right-aligned minimum-width'>
                   <%= link_to foundation_icon(:page_edit), edit_tutorial_group_path(tutorial_group) %>
 
                   <%= link_to foundation_icon(:x), tutorial_group_path(tutorial_group), method: :delete, data: { confirm: "Are you sure?" } %>
@@ -93,7 +89,7 @@
                 <td><%= exercise.deadline%></td>
                 <td><%= exercise.submissions.count %></td>
 
-                <td class='right-aligned'>
+                <td class='right-aligned minimum-width'>
                   <%= link_to foundation_icon(:page_edit), edit_exercise_path(exercise) %>
 
                   <%= link_to foundation_icon(:x), exercise_path(exercise), method: :delete, data: { confirm: "Are you sure?" } %>

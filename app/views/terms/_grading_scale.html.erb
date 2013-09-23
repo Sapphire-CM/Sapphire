@@ -31,7 +31,7 @@
             <%= @term.grade_distribution[item[1]] %>
           </td>
           <td>
-            <%= "#{(@term.grade_distribution[item[1]] / @term.students.count.to_f * 100).round 1} %" %>
+            <%= "#{(@term.grade_distribution[item[1]] / @term.students.count.to_f * 100).round 1} %" if @term.students.any?  %>
           </td>
         </tr>
       <% end %>

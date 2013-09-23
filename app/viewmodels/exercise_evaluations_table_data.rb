@@ -72,7 +72,7 @@ class ExerciseEvaluationsTableData
         student_groups = @tutorial_group.student_groups
       else
         student_groups = @exercise.term.student_groups
-      end.includes(student_registrations: :student).where {solitary != my {@exercise.group_submission?}}.load
+      end.includes(student_registrations: :student).where {solitary != my {@exercise.group_submission?}}.order(:title).load
     end
   end
 end

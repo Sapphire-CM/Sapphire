@@ -49,7 +49,7 @@ rating_groups = RatingGroup.create! [
   { title: 'kids.css',                points:  10, exercise: ex_5 },    # 28
   { title: 'Miscellaneous',           exercise: ex_5, global: true },   # 29
 
-  { title: 'Questions',               points:  40, exercise: ex_6 },    # 30
+  { title: 'Questions',               points:  0, exercise: ex_6, min_points: 0, max_points: 40, enable_range_points: true },    # 30
   { title: 'Miscellaneous',           exercise: ex_6, global: true }    # 31
 ]
 RatingGroup.all.map{ |obj| obj.row_order_position = :last; obj.save }

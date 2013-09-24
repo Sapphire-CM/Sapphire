@@ -1,14 +1,11 @@
 <% title "Resend unlock instructions", false %>
 
-
 <div class='row down'>
   <div class='large-5 large-centered grid-center panel radius'>
-    <h1 class='subheader text-center'>Resend unlock instructions</h1>
+    <h1 class='subheader text-center'><%= yield :title %></h1>
+
     <%= simple_form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
-      <%= f.error_notification %>
-      <div class="form-inputs">
-        <%= f.input :email, required: false %>
-      </div>
+      <%= f.input :email, required: false %>
 
       <div class='row'>
         <div class='large-12 large-centered columns text-center'>
@@ -16,6 +13,7 @@
         </div>
       </div>
     <% end %>
+
     <div class='row'>
       <div class='large-12 large centered columns text-center'>
         <%= render "devise/shared/links" %>

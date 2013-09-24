@@ -10,7 +10,15 @@
     <ul class='dropdown'>
       <% if @term.exercises(true).any? %>
         <% @term.exercises.each do |exercise| %>
-          <li><%= link_to exercise.title, exercise_path(exercise) %></li>
+          <li class='<%= 'has-dropdown' if @term.student_groups.any? %>'>
+            <%= link_to exercise.title, exercise_evaluation_path(exercise) %>
+            <% if @term.student_groups.any? %>
+              <ul class='dropdown'>
+                <li><%= link_to 'Manage', exercise_path(exercise) %></li>
+                <li><%= link_to 'Evaluate', exercise_evaluation_path(exercise) %></li>
+              </ul>
+            <% end %>
+          </li>
         <% end %>
       <% else %>
         <li><%= link_to "(no exercises)", '#' %></li>

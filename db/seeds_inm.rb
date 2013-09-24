@@ -40,7 +40,7 @@ rating_groups = RatingGroup.create! [
   { title: 'XHTML elements',          points:  10, exercise: ex_4 },    # 20
   { title: 'Image (anywhere)',        points:   4, exercise: ex_4 },    # 21
   { title: 'inm.css',                 points:   5, exercise: ex_4 },    # 22
-  { title: 'XHTML coding (anywhere)', points: -20, exercise: ex_4 },    # 23
+  { title: 'XHTML coding (anywhere)', points:   0, exercise: ex_4, min_points: -20, max_points: 0, enable_range_points: true },    # 23
   { title: 'Miscellaneous',           exercise: ex_4, global: true },   # 24
 
   { title: 'Email format',            points:  10, exercise: ex_5 },    # 25

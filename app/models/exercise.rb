@@ -19,10 +19,8 @@ class Exercise < ActiveRecord::Base
   validates_presence_of :title
   validates_presence_of :max_points, unless: Proc.new { ! self.enable_max_points }
 
-
   def update_points!
-    # TODO: account for negative points in RG
-    self.points = rating_groups.pluck(:points).compact.sum
+    self.points = rating_groups.map{|rg| rg.max_points || rg.points}.compact.sum
     self.save!
   end
 

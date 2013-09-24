@@ -17,10 +17,11 @@ module ExerciseEvaluationsTableHelper
       links << link_to("Forename Surname", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "forename_surname"}})
       links << link_to("Surname Forename", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "surname_forename"}})
       links << link_to("Email", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "email"}})
-      links << link_to("Matriculum Number", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "matriculum_number"}})
+      links << link_to("Matriculation Number", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "matriculum_number"}})
     end
 
-    dropdown_button("Title", links)
+    title = exercise.group_submission? ? "Groups" : "Students"
+    dropdown_button(title, links)
   end
 
   def exercise_evaluations_tutorial_groups_dropdown(tutorial_groups)
@@ -135,11 +136,10 @@ module ExerciseEvaluationsTableHelper
 
   def exercise_evaluations_create_submission_button(data, student_group)
     if data.submission_for_student_group(student_group).present?
-      link_to "present", '#', class: "tiny success disabled button exercise-evaluations-table-create-submission"
+      link_to 'Show', submission_path(data.submission_for_student_group(student_group)), class: 'tiny success button'
     else
       confirm_message = "Are sure you want to create this #{data.exercise.group_submission? ? "group" : "student"}'s submission?"
-
-      link_to "create", '#', class: "tiny button exercise-evaluations-table-create-submission", data: {student_group_id: student_group.id, url: exercise_evaluation_path(@exercise), confirm: confirm_message}
+      link_to 'Create', '#', class: "tiny button exercise-evaluations-table-create-submission", data: {student_group_id: student_group.id, url: exercise_evaluation_path(@exercise), confirm: confirm_message}
     end
   end
 end

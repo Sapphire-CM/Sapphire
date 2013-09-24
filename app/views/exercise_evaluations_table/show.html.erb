@@ -1,13 +1,18 @@
 <% title "Evaluations of #{@exercise.title}" %>
 
 <div class='row'>
-  <div class='small-12 large-12 columns' id='exercise_evaluations_table_toolbar'>
-    <%= link_to "Reload", '#', class: "small button reload-button" %>
+  <div class='large-12 columns' id='exercise_evaluations_table_toolbar'>
+    <div class="button-bar">
+      <ul class="button-group">
+        <li><%= link_to "Reload", '#', class: "small button reload-button" %></li>
+        <li><%= link_to "Transpose", '#', class: "small button transpose-button" %></li>
+      </ul>
 
-    <%= exercise_evaluations_view_dropdown(@exercise) %>
-    <%= link_to "Transpose", '#', {class: "small button transpose-button"} %>
-
-    <%= exercise_evaluations_tutorial_groups_dropdown(@tutorial_groups) %>
+      <ul class="button-group">
+        <li><%= exercise_evaluations_view_dropdown(@exercise) %></li>
+        <li><%= exercise_evaluations_tutorial_groups_dropdown(@tutorial_groups) %></li>
+      </ul>
+    </div>
   </div>
 </div>
 

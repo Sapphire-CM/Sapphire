@@ -23,7 +23,7 @@
               <%= item[0] %>
             <% else %>
               <%= simple_form_for :grading_scale, url: term_update_grading_scale_path(@term), remote: true do |f| %>
-                <%= f.number_field item[1].to_s, value: item[0], min: 0, max: @term.points %>
+                <%= f.number_field item[1].to_s, value: item[0], min: 0, max: @term.points, class: 'margin-none' %>
               <% end %>
             <% end %>
           </td>
@@ -35,6 +35,13 @@
           </td>
         </tr>
       <% end %>
+      <tr><td colspan='6'><hr></td></tr>
+      <tr>
+        <td class='minimum-width text-center'>0</td>
+        <td colspan='3'>&nbsp;</td>
+        <td><%= @term.grade_distribution['0'] %></td>
+        <td><%= "#{(@term.grade_distribution['0'] / @term.students.count.to_f * 100).round 1} %" if @term.students.any?  %></td>
+      </tr>
     </tbody>
   </table>
 </div>

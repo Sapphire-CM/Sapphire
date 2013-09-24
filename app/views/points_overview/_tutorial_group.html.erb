@@ -29,17 +29,15 @@
               </td>
             <% end %>
 
-            <% participated = term.exercises.map{|ex| tutorial_group.student_has_submission_for_exercise?(student, ex) }.any? %>
-
             <td>
-              <% if participated %>
+              <% if term.participated? student %>
                 <%= student.points_for_term term %>
               <% else %>
                 na
               <% end %>
             </td>
             <td>
-              <% if participated %>
+              <% if term.participated? student %>
                 <%= student.grade_for_term term %>
               <% else %>
                 0

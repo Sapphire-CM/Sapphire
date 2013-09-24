@@ -35,6 +35,12 @@ class Term < ActiveRecord::Base
     }.to_a if self.grading_scale.empty?
 
     self.grading_scale.sort!
+
+    self.grading_scale.dup.reverse.each_with_index do |scale, index|
+      self.grading_scale[index][1] = "#{grading_scale.length - index}"
+    end
+
+    self.grading_scale
   end
 
   def update_points!
@@ -136,6 +142,23 @@ class Term < ActiveRecord::Base
 
       distribution
     end
+  end
+
+  def participated?(student)
+    @values ||= begin
+      values = {}
+
+      exercises.each do |ex|
+        students.each do |s|
+          values[s.id] ||= {}
+          values[s.id] = s.submissions_for_term(self).any?
+        end
+      end
+
+      values
+    end
+
+    @values[student.id]
   end
 
 end

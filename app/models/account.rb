@@ -53,8 +53,12 @@ class Account < ActiveRecord::Base
   end
 
   def grade_for_term(term)
-    @grade_for_term ||= {}
-    @grade_for_term[term.id] ||= term.grade_for_points(points_for_term(term))
+    if term.participated? self
+      @grade_for_term ||= {}
+      @grade_for_term[term.id] ||= term.grade_for_points(points_for_term(term))
+    else
+      "0"
+    end
   end
 
   def self.search(query)

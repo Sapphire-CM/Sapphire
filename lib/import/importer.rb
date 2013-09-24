@@ -19,7 +19,7 @@ module Import::Importer
         end
 
         if /\A[\d]{7}\z/ =~ row[cell_index]
-          smart_guessed_import_mapping.matriculum_number ||= cell_index
+          smart_guessed_import_mapping.matriculation_number ||= cell_index
           next
         end
 
@@ -85,7 +85,7 @@ module Import::Importer
 
           tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
 
-          student_group = create_student_group "G#{student.matriculum_number}", true, tutorial_group
+          student_group = create_student_group "G#{student.matriculation_number}", true, tutorial_group
           create_student_registration row, student, student_group, tutorial_group
         when "both"
           regexp = Regexp.new(import_options[:student_groups_regexp])
@@ -96,7 +96,7 @@ module Import::Importer
           student_group = create_student_group group_title, false, tutorial_group
           create_student_registration row, student, student_group, tutorial_group
 
-          student_group = create_student_group "G#{student.matriculum_number}", true, tutorial_group
+          student_group = create_student_group "G#{student.matriculation_number}", true, tutorial_group
           create_student_registration row, student, student_group, tutorial_group
         else
           raise # unknown value for :matching_groups
@@ -117,13 +117,13 @@ module Import::Importer
 private
 
   def create_student_account(row)
-    student = Account.find_or_initialize_by(matriculum_number: row[import_mapping.matriculum_number.to_i])
+    student = Account.find_or_initialize_by(matriculation_number: row[import_mapping.matriculation_number.to_i])
     student.forename = row[import_mapping.forename.to_i]
     student.surname = row[import_mapping.surname.to_i]
     student.email = row[import_mapping.email.to_i]
 
-    student.password              = Account::DEFAULT_PASSWORD % { matriculum_number: student.matriculum_number }
-    student.password_confirmation = Account::DEFAULT_PASSWORD % { matriculum_number: student.matriculum_number }
+    student.password              = Account::DEFAULT_PASSWORD % { matriculation_number: student.matriculation_number }
+    student.password_confirmation = Account::DEFAULT_PASSWORD % { matriculation_number: student.matriculation_number }
 
     new_record = student.new_record?
     if student.save
@@ -191,7 +191,7 @@ private
   def create_problem_definition(row, full_messages)
     entry = {
       group: row[import_mapping.group.to_i],
-      matriculum_number: row[import_mapping.matriculum_number.to_i],
+      matriculation_number: row[import_mapping.matriculation_number.to_i],
       forename: row[import_mapping.forename.to_i],
       surname: row[import_mapping.surname.to_i],
       email: row[import_mapping.email.to_i],

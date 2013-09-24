@@ -43,8 +43,14 @@ class EvaluationGroup < ActiveRecord::Base
       points_sum = max_points
     end
 
-    self.points = points_sum
-    self.percent = percent_product
+
+    if rating_group.global?
+      self.points = points_sum
+      self.percent = percent_product
+    else
+      self.points = (points_sum * percent_product).round.to_i
+      self.percent = 1
+    end
     true
   end
 

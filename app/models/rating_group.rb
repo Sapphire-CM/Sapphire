@@ -24,7 +24,7 @@ class RatingGroup < ActiveRecord::Base
   end
 
   after_initialize :points_min_max
-  after_update :update_evaluation_group_results, if: lambda {|rating_group| rating_group.points_changed? || rating_group.min_points_changed? || rating_group.max_points_changed?}
+  after_update :update_evaluation_group_results, if: lambda {|rating_group| rating_group.points_changed? || rating_group.min_points_changed? || rating_group.max_points_changed? || rating_group.global_changed?}
 
   def points_min_max
     if self.try(:enable_range_points)

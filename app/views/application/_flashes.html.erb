@@ -1,10 +1,12 @@
 <div class='row'>
   <div class='large-9 large-centered grid-center text-center'>
     <% flash.each do |key, value| %>
-      <div data-alert class='<%= flash_class_for(key) %>'>
-        <span><%= value %></span>
-        <a href="#" class="close">×</a>
-      </div>
+      <% if !key.blank? && !value.blank? %>
+        <div data-alert class='<%= flash_class_for(key) %>'>
+          <span><%= value %></span>
+          <a href="#" class="close">×</a>
+        </div>
+      <% end %>
     <% end %>
   </div>
 </div>

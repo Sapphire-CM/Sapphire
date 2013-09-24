@@ -57,7 +57,6 @@ Sapphire::Application.routes.draw do
     end
   end
 
-  get '/:action', controller: :static, as: :static
-  root to: 'static#index'
+  root to: 'courses#index'
 
 end

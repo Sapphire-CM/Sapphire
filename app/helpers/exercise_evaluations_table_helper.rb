@@ -17,7 +17,7 @@ module ExerciseEvaluationsTableHelper
       links << link_to("Forename Surname", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "forename_surname"}})
       links << link_to("Surname Forename", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "surname_forename"}})
       links << link_to("Email", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "email"}})
-      links << link_to("Matriculation Number", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "matriculum_number"}})
+      links << link_to("Matriculation Number", '#', data:{:"cycle-control" => {selector: exercise_evaluations_title_cycle_group, cycle_to: "matriculation_number"}})
     end
 
     title = exercise.group_submission? ? "Groups" : "Students"
@@ -42,7 +42,7 @@ module ExerciseEvaluationsTableHelper
       titles[:forename_surname] = student.fullname
       titles[:surname_forename] = "#{student.surname} #{student.forename}"
       titles[:email]= student.email
-      titles[:matriculum_number] = student.matriculum_number
+      titles[:matriculation_number] = student.matriculation_number
     end
 
     options = {data: {cycle: titles.to_json}, class: "evaluations-table-cycle"}

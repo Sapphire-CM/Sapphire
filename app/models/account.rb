@@ -1,5 +1,5 @@
 class Account < ActiveRecord::Base
-  DEFAULT_PASSWORD = "sapphire%{matriculum_number}"
+  DEFAULT_PASSWORD = "sapphire%{matriculation_number}"
 
   devise :database_authenticatable,
          :recoverable,
@@ -8,14 +8,14 @@ class Account < ActiveRecord::Base
          :validatable,
          :lockable
 
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :forename, :surname, :matriculum_number
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :forename, :surname, :matriculation_number
 
   # devise already does this with the validatable-option: validates_uniqueness_of :email
   validates_presence_of :forename
   validates_presence_of :surname
 
-  validates_uniqueness_of :matriculum_number, if: :matriculum_number?
-  validates_format_of :matriculum_number, with: /\A[\d]{7}\z/, if: :matriculum_number?
+  validates_uniqueness_of :matriculation_number, if: :matriculation_number?
+  validates_format_of :matriculation_number, with: /\A[\d]{7}\z/, if: :matriculation_number?
 
   has_many :lecturer_registrations, dependent: :destroy
   has_many :tutor_registrations, dependent: :destroy
@@ -66,7 +66,7 @@ class Account < ActiveRecord::Base
 
     query.split(/\s+/).each do |part|
       part = "%#{part}%"
-      rel = rel.where {(forename =~ part) | (surname =~ part) | (matriculum_number=~ part) | (email=~ part)}
+      rel = rel.where {(forename =~ part) | (surname =~ part) | (matriculation_number=~ part) | (email=~ part)}
     end
 
     rel

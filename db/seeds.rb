@@ -1,7 +1,7 @@
 accounts = Account.create! [
   { email: 'thomas.kriechbaumer@student.tugraz.at', forename: 'Thomas',   surname: 'Kriechbaumer', password: '123456', password_confirmation: '123456'},
   { email: 'matthias.link@student.tugraz.at',       forename: 'Matthias', surname: 'Link',         password: '654321', password_confirmation: '654321'},
-  { email: 'kandrews@iicm.tugraz.at',               forename: 'Keith',    surname: 'Andrews',      password: '123456', password_confirmation: '123456'},
+  { email: 'kandrews@iicm.edu',               forename: 'Keith',    surname: 'Andrews',      password: '123456', password_confirmation: '123456'},
   { email: 'john.doe@student.tugraz.at',            forename: 'John',     surname: 'Doe', matriculum_number: '1231567', password: '123456', password_confirmation: '123456'},
   { email: 'jane.doe@student.tugraz.at',            forename: 'Jane',     surname: 'Doe', matriculum_number: '1120321', password: '123456', password_confirmation: '123456'},
   { email: 'jack.doe@student.tugraz.at',            forename: 'Jack',     surname: 'Doe', matriculum_number: '1030765', password: '123456', password_confirmation: '123456'}

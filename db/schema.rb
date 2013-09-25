@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130924190951) do
+ActiveRecord::Schema.define(version: 20130925183840) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -140,6 +140,7 @@ ActiveRecord::Schema.define(version: 20130924190951) do
     t.integer  "max_value"
     t.integer  "min_value"
     t.integer  "row_order"
+    t.float    "multiplication_factor"
   end
 
   add_index "ratings", ["rating_group_id"], name: "index_ratings_on_rating_group_id"

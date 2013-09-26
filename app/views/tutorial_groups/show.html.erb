@@ -31,8 +31,8 @@
               <td><%= student_group.title %></td>
               <td><%= student_group.students.count %></td>
               <td>
-                <% student_group.students.order(:matriculum_number).each do |student| %>
-                  <%= "#{student.matriculum_number}, #{student.fullname}" %><br/>
+                <% student_group.students.order(:matriculation_number).each do |student| %>
+                  <%= "#{student.matriculation_number}, #{student.fullname}" %><br/>
                 <% end %>
               </td>
               <td class='right-aligned'>
@@ -58,7 +58,7 @@
           <thead>
             <th>Forename</th>
             <th>Surname</th>
-            <th>Matriculum Number</th>
+            <th>Matriculation Number</th>
             <th>Email</th>
             <th>Groups</th>
           </thead>
@@ -67,7 +67,7 @@
             <tr>
               <td><%= student.forename %></td>
               <td><%= student.surname %></td>
-              <td><%= student.matriculum_number %></td>
+              <td><%= student.matriculation_number %></td>
               <td><%= student.email %></td>
               <td>
                 <%= student.student_groups.for_term(@tutorial_group.term).pluck(:title).join ', ' %>

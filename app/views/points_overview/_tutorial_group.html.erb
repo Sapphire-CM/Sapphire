@@ -15,9 +15,9 @@
       </thead>
 
       <tbody>
-        <% tutorial_group.students.sort!{|a,b| a.matriculum_number <=> b.matriculum_number}.each do |student| %>
+        <% tutorial_group.students.sort!{|a,b| a.matriculation_number <=> b.matriculation_number}.each do |student| %>
           <tr>
-            <td><%= student.matriculum_number %></td>
+            <td><%= student.matriculation_number %></td>
 
             <% term.exercises.each do |exercise| %>
               <td>

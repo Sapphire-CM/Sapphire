@@ -8,7 +8,7 @@ module SubmissionsHelper
         creator = submission.student_group
       else
         student = submission.student_group.students.first
-        creator = "#{student.fullname} (#{student.matriculum_number})"
+        creator = "#{student.fullname} (#{student.matriculation_number})"
       end
     else
       creator = "unknown author"

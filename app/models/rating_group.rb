@@ -17,7 +17,7 @@ class RatingGroup < ActiveRecord::Base
   attr_accessible :title, :description, :points, :exercise, :global, :enable_range_points, :min_points, :max_points, :row_order_position
 
   after_create :create_evaluation_groups
-  after_save :update_exercise_points, if: lambda { |rg| rg.points_changed? }
+  after_save :update_exercise_points, if: lambda { |rg| rg.points_changed? || rg.max_points_changed? }
 
   def update_exercise_points
     exercise.update_points!

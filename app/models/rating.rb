@@ -25,7 +25,7 @@ class Rating < ActiveRecord::Base
   end
 
   def self.new_from_type(params)
-    classes = [BinaryNumberRating, BinaryPercentRating, ValueNumberRating, ValuePercentRating]
+    classes = [BinaryNumberRating, BinaryPercentRating, ValueNumberRating, ValuePercentRating, PlagiarismRating]
     rating_class_index = classes.map(&:name).index(params[:type])
     classes[rating_class_index].new(params.except(:type))
   end

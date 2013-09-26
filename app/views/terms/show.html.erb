@@ -77,6 +77,7 @@
           <thead>
             <tr>
               <th>Title</th>
+              <th>Points</th>
               <th>Deadline</th>
               <th>Submissions</th>
               <th></th>
@@ -86,6 +87,7 @@
             <% @exercises.each do |exercise| %>
               <tr>
                 <td><%= link_to "#{exercise.title}", exercise_path(exercise) %></td>
+                <td><%= exercise.points %></td>
                 <td><%= exercise.deadline%></td>
                 <td><%= exercise.submissions.count %></td>
 

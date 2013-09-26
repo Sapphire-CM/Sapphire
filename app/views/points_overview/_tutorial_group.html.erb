@@ -15,33 +15,23 @@
       </thead>
 
       <tbody>
-        <% tutorial_group.students.sort!{|a,b| a.matriculation_number <=> b.matriculation_number}.each do |student| %>
+        <% tutorial_group.students.sort_by{ |a| a[:matriculation_number] }.each do |student| %>
           <tr>
-            <td><%= student.matriculation_number %></td>
+            <td>
+              <%= student.matriculation_number %>
+            </td>
 
             <% term.exercises.each do |exercise| %>
               <td>
-                <% if tutorial_group.student_has_submission_for_exercise?(student, exercise) %>
-                  <%= student.submission_for_exercise(exercise).first.submission_evaluation.evaluation_result %>
-                <% else %>
-                  na
-                <% end %>
+                <%= exercise_result tutorial_group, student, exercise %>
               </td>
             <% end %>
 
             <td>
-              <% if term.participated? student %>
-                <%= student.points_for_term term %>
-              <% else %>
-                na
-              <% end %>
+              <%= total_points term, student %>
             </td>
             <td>
-              <% if term.participated? student %>
-                <%= student.grade_for_term term %>
-              <% else %>
-                0
-              <% end %>
+              <%= final_grade term, student %>
             </td>
           </tr>
         <% end %>

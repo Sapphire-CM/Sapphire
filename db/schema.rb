@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130925183840) do
+ActiveRecord::Schema.define(version: 20130926174312) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -197,6 +197,7 @@ ActiveRecord::Schema.define(version: 20130925183840) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "evaluation_result"
+    t.boolean  "plagiarized"
   end
 
   add_index "submission_evaluations", ["evaluator_id"], name: "index_submission_evaluations_on_evaluator_id"

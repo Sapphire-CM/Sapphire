@@ -492,14 +492,14 @@ BinaryPercentRating.create! [
   { title: '48h late deadline', value: -50, rating_group: rating_groups[31] },
 ]
 
-BinaryPercentRating.create! [
-  { title: 'plagiarism', value: -100, rating_group: rating_groups[3] },
-  { title: 'plagiarism', value: -100, rating_group: rating_groups[8] },
-  { title: 'plagiarism', value: -100, rating_group: rating_groups[10] },
-  { title: 'plagiarism', value: -100, rating_group: rating_groups[15] },
-  { title: 'plagiarism', value: -100, rating_group: rating_groups[24] },
-  { title: 'plagiarism', value: -100, rating_group: rating_groups[29] },
-  { title: 'plagiarism', value: -100, rating_group: rating_groups[31] },
+PlagiarismRating.create! [
+  { rating_group: rating_groups[3] },
+  { rating_group: rating_groups[8] },
+  { rating_group: rating_groups[10] },
+  { rating_group: rating_groups[15] },
+  { rating_group: rating_groups[24] },
+  { rating_group: rating_groups[29] },
+  { rating_group: rating_groups[31] },
 ]
 
 

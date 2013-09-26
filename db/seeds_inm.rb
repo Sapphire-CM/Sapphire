@@ -454,7 +454,7 @@ BinaryNumberRating.create! [
 
 
 ValueNumberRating.create! [
-  { title: 'correct answers', min_value: 0, max_value: 40, rating_group: rating_groups[30] },
+  { title: 'correct answers', min_value: 0, max_value: 10, multiplication_factor: 4.0, rating_group: rating_groups[30] },
 ]
 
 

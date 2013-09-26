@@ -57,3 +57,9 @@ update_fields_visibility = (form) ->
       multiplication_factor_field.hide()
       min_label.text "Minimum Percent"
       max_label.text "Maximum Percent"
+    when "PlagiarismRating"
+      value_field.hide()
+      min_field.hide()
+      max_field.hide()
+      multiplication_factor_field.hide()
+

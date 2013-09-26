@@ -1,6 +1,6 @@
 class Rating < ActiveRecord::Base
   belongs_to :rating_group
-  attr_accessible :title, :description, :rating_group, :rating_group_id, :value, :min_value, :max_value, :type, :row_order_position
+  attr_accessible :title, :description, :rating_group, :rating_group_id, :value, :min_value, :max_value, :multiplication_factor, :type, :row_order_position
 
   include RankedModel
   ranks :row_order, with_same: :rating_group_id, class_name: "Rating"
@@ -16,8 +16,13 @@ class Rating < ActiveRecord::Base
   validate :rating_type_validation
 
   after_create :create_evaluations
-  after_update :update_evaluations, if: lambda {|rating| rating.value_changed? || rating.max_value_changed? || rating.min_value_changed?}
-  after_update :move_evaluations, id: lambda {|rating| rating.rating_group_id_changed? }
+  after_update :update_evaluations, if: lambda {|rating| rating.value_changed? || rating.max_value_changed? || rating.min_value_changed? || rating.multiplication_factor_changed?}
+  after_update :move_evaluations, if: lambda {|rating| rating.rating_group_id_changed? }
+
+  def initialize(*args)
+    super *args
+    self.multiplication_factor ||= 1.0
+  end
 
   def self.new_from_type(params)
     classes = [BinaryNumberRating, BinaryPercentRating, ValueNumberRating, ValuePercentRating]

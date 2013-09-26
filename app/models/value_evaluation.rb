@@ -5,7 +5,7 @@ class ValueEvaluation < Evaluation
 
   def points
     if self.rating.is_a?(ValueNumberRating)
-      self.value || 0
+      self.value * self.rating.multiplication_factor || 0
     else
       0
     end

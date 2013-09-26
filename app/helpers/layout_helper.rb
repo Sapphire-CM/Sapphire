@@ -116,4 +116,11 @@ module LayoutHelper
     render "dropdown_button", title: title, dropdown_identifier: dropdown_identifier, links: links, dropdown_classes: dropdown_classes.join(" ")
   end
 
+  def exercise_topbar_link(exercise)
+    link_to exercise.title,
+      exercise.term.student_groups.any? ?
+        exercise_evaluation_path(exercise) :
+        exercise_path(exercise)
+  end
+
 end

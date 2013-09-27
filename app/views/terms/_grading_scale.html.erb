@@ -9,13 +9,13 @@
     <tbody>
       <% @term.grading_scale.reverse.each_with_index do |item, index| %>
         <tr>
-          <td class='minimum-width text-center'><%= item[1] %></td>
+          <th class='minimum-width text-center'><%= item[1] %></th>
           <td class='text-right'>
             <% if index+1 == @term.grading_scale.length %>
               <%= item[0] %>
             <% else %>
               <%= simple_form_for :grading_scale, url: term_update_grading_scale_path(@term), remote: true do |f| %>
-                <%= f.number_field item[1].to_s, value: item[0], min: 0, max: @term.points, class: 'margin-none' %>
+                <%= f.number_field item[1].to_s, value: item[0], min: 1, max: @term.points-1, class: 'margin-none' %>
               <% end %>
             <% end %>
           </td>
@@ -27,11 +27,11 @@
               <%= @term.points %>
             <% end %>
           </td>
-          <td>
+          <td class='minimum-width text-right'>
             <%= @term.grade_distribution[item[1]] %>
           </td>
-          <td>
-            <%= "#{(@term.grade_distribution[item[1]] / @term.students.count.to_f * 100).round 1} %" if @term.students.any?  %>
+          <td class='minimum-width text-right'>
+            <%= student_grade_percentage @term, item[1] %>
           </td>
         </tr>
       <% end %>
@@ -39,8 +39,8 @@
       <tr>
         <td class='minimum-width text-center'>0</td>
         <td colspan='3'>&nbsp;</td>
-        <td><%= @term.grade_distribution['0'] %></td>
-        <td><%= "#{(@term.grade_distribution['0'] / @term.students.count.to_f * 100).round 1} %" if @term.students.any?  %></td>
+        <td class='minimum-width text-right'><%= @term.grade_distribution['0'] %></td>
+        <td class='minimum-width text-right'><%= student_grade_percentage @term, '0' %></td>
       </tr>
     </tbody>
   </table>

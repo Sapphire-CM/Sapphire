@@ -4,7 +4,4 @@ class TutorRegistration < ActiveRecord::Base
 
   has_one :term, through: :tutorial_group
   has_one :course, through: :term
-
-  attr_accessible :registered_at
-
 end

@@ -66,7 +66,6 @@ class Term < ActiveRecord::Base
     if source_registration
       registration = LecturerRegistration.find_or_initialize_by_term_id(destination_term.id)
       registration.lecturer = source_registration.lecturer
-      registration.registered_at = DateTime.now
       registration.save
     end
   end

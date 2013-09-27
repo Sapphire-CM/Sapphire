@@ -8,6 +8,7 @@ $.widget "sapphire.evaluations_table",
     @endpoint = @options.endpoint
     @transpose_table = !!@options.transposed
     @tutorial_group = undefined
+    @order = undefined
     @toolbar_selector = @options.toolbar
     @reload()
 
@@ -32,6 +33,7 @@ $.widget "sapphire.evaluations_table",
         @element.html(data.payload)
         @_update_tutorial_group(data.tutorial_group_id)
         @element.find("*[data-cycle]").cycle()
+        @_update_order(data.order)
         @_trigger("reloaded")
     else
       alert("no endpoint set!")
@@ -41,10 +43,20 @@ $.widget "sapphire.evaluations_table",
       @tutorial_group = tutorial_group_id
       @reload()
 
+  order_selected: (order)->
+    if @order != order
+      @order = order
+      @reload()
+
   _update_tutorial_group: (id)->
     if @toolbar_selector
       $(@toolbar_selector).evaluations_table_toolbar("update_tutorial_group", id)
 
+  _update_order: (order)->
+    if @toolbar_selector
+      $(@toolbar_selector).evaluations_table_toolbar("update_order", order)
+
   _endpoint_options: ->
     transpose: @transpose_table
     tutorial_group_id: @tutorial_group
+    order: @order

@@ -10,6 +10,10 @@ module LayoutHelper
     end
   end
 
+  def large_content(enabled)
+    content_for :large_content, 'large-full' if enabled
+  end
+
   def link_to_current_term
     if term_context?
       link_to course_term_title, term_path(@term)

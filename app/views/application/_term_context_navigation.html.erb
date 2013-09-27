@@ -6,7 +6,7 @@
   <li class='divider'></li>
 
   <li class='has-dropdown'>
-    <%= link_to "Exercises", '#' %>
+    <%= link_to "Exercises", "#{term_path(@term)}#exercises" %>
     <ul class='dropdown'>
       <% if @term.exercises(true).any? %>
         <% @term.exercises.each do |exercise| %>
@@ -28,7 +28,7 @@
   </li>
 
   <li class='has-dropdown'>
-    <%= link_to "Tutorial Groups", '#' %>
+    <%= link_to "Tutorial Groups", "#{term_path(@term)}#tutorial_groups" %>
     <ul class='dropdown'>
       <% if @term.tutorial_groups(true).any? %>
         <% @term.tutorial_groups.each do |tutorial_group| %>

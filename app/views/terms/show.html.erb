@@ -1,16 +1,9 @@
 <% title course_term_title %>
 
-<div class="section-container tabs" data-section="tabs">
-<!--   <section>
-    <p class="title" data-section-title><a href="#">Grading Scale</a></p>
-    <div class="content" data-section-content>
-      <%= render 'grading_scale' %>
-    </div>
-  </section> -->
-
+<div class="section-container tabs" data-section="tabs" data-options="deep_linking: true">
   <section>
-    <p class="title" data-section-title><a href="#">Dashboard</a></p>
-    <div class="content" data-section-content>
+    <p class="title" data-section-title><a href="#dashboard">Dashboard</a></p>
+    <div class="content" data-section-content data-slug="dashboard">
       <p>
         <% if Import::StudentImport.where{term_id == my{@term.id}}.blank? %>
           <%= link_to "Import Students", new_import_student_import_path(term_id: @term.id), class: 'button' %>
@@ -28,8 +21,8 @@
   </section>
 
   <section>
-    <p class="title" data-section-title><a href="#">Tutorial Groups</a></p>
-    <div class="content" data-section-content>
+    <p class="title" data-section-title><a href="#tutorial_groups">Tutorial Groups</a></p>
+    <div class="content" data-section-content data-slug="tutorial_groups">
       <% if @tutorial_groups.any? %>
         <table class='large-12'>
           <thead>
@@ -69,8 +62,8 @@
   </section>
 
   <section>
-    <p class="title" data-section-title><a href="#">Exercises</a></p>
-    <div class="content" data-section-content>
+    <p class="title" data-section-title><a href="#exercises">Exercises</a></p>
+    <div class="content" data-section-content data-slug="exercises">
 
       <% if @exercises.any? %>
         <table class='large-12'>
@@ -111,15 +104,15 @@
   </section>
 
   <section>
-    <p class="title" data-section-title><a href="#">Grading Scale</a></p>
-    <div class="content" data-section-content>
+    <p class="title" data-section-title><a href="#grading_scale">Grading Scale</a></p>
+    <div class="content" data-section-content data-slug="grading_scale">
       <%= render 'grading_scale' %>
     </div>
   </section>
 
   <section>
-    <p class="title" data-section-title><a href="#">Staff</a></p>
-    <div class="content" data-section-content>
+    <p class="title" data-section-title><a href="#staff">Staff</a></p>
+    <div class="content" data-section-content data-slug="staff">
       <p>
         <%= link_to set_lecturer_label, term_new_lecturer_registration_path(term_id: @term.id), class: "small button" %>
       </p>
@@ -159,8 +152,8 @@
   </section>
 
   <section>
-    <p class="title" data-section-title><a href="#">Description</a></p>
-    <div class="content" data-section-content>
+    <p class="title" data-section-title><a href="#description">Description</a></p>
+    <div class="content" data-section-content data-slug="description">
       <% if @term.description? %>
         <%= simple_format @term.description %>
       <% else %>

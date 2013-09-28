@@ -5,6 +5,6 @@ class StudentRegistration < ActiveRecord::Base
   has_one :tutorial_group, through: :student_group
   has_one :term, through: :tutorial_group
 
-  attr_accessible :registered_at, :comment
+  attr_accessible :comment
 
 end

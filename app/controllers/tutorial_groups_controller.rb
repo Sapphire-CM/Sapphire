@@ -47,7 +47,6 @@ class TutorialGroupsController < ApplicationController
     @account = Account.find(params[:account_id])
 
     registration = TutorRegistration.find_or_initialize_by_tutorial_group_id(@tutorial_group.id)
-    registration.tutor = @account
 
     save_registration_and_redirect registration
   end
@@ -67,7 +66,6 @@ class TutorialGroupsController < ApplicationController
     end
 
     def save_registration_and_redirect(registration)
-      registration.registered_at = DateTime.now
       if registration.save
         redirect_to tutorial_group_path(@tutorial_group), notice: "New registration successfully added."
       else

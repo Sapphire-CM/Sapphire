@@ -22,15 +22,6 @@ module Import::Importer
           smart_guessed_import_mapping.matriculation_number ||= cell_index
           next
         end
-
-        begin
-          datetime = row[cell_index].to_datetime
-          if not datetime.blank?
-            smart_guessed_import_mapping.registered_at ||= cell_index
-            next
-          end
-        rescue
-        end
       end
     end
 
@@ -174,7 +165,6 @@ private
       registration.student = student
     end
 
-    registration.registered_at = row[import_mapping.registered_at.to_i].to_datetime
     registration.comment = row[import_mapping.comment.to_i] if import_mapping.comment
 
     new_record = registration.new_record?
@@ -195,7 +185,6 @@ private
       forename: row[import_mapping.forename.to_i],
       surname: row[import_mapping.surname.to_i],
       email: row[import_mapping.email.to_i],
-      registered_at: row[import_mapping.registered_at.to_i],
       comment: row[import_mapping.comment.to_i]
     }
 

@@ -9,7 +9,7 @@
       <% end %>
     </tr>
     <tr>
-      <td colspan='2'>&nbsp;</td>
+      <td colspan='2'><b>Submission</b></td>
       <% data.student_groups.each do |student_group| %>
         <td class='text-center'>
           <%= exercise_evaluations_create_submission_button(data, student_group) %>
@@ -22,7 +22,7 @@
     <% data.rating_groups.each do |rating_group| %>
       <tr>
         <th><%= rating_group.title %></th>
-        <th class='text-right'><%= rating_group.points %></th>
+        <th class='minimum-width text-right'><%= rating_group.points %></th>
         <% data.student_groups.each do |student_group| %>
           <td class='text-center
             <%= @exercise_evaluations_state_classes[student_group.id] %>

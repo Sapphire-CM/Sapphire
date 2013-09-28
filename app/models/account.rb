@@ -37,6 +37,10 @@ class Account < ActiveRecord::Base
     @fullname ||= "#{forename} #{surname}"
   end
 
+  def reverse_fullname
+    @reverse_fullname ||= "#{surname} #{forename}"
+  end
+
   def submissions_for_term(term)
     @submissions_for_term ||= {}
     @submissions_for_term[term.id] ||= submissions.for_term term

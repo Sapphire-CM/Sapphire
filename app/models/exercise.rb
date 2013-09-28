@@ -20,7 +20,7 @@ class Exercise < ActiveRecord::Base
   validates_presence_of :max_points, unless: Proc.new { ! self.enable_max_points }
 
   def update_points!
-    self.points = self.reload.rating_groups.map{|rg| rg.max_points || rg.points}.compact.sum
+    self.points = self.reload.rating_groups.map{|rg| rg.max_points || rg.points}.compact.sum || 0
     self.save!
   end
 

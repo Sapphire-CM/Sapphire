@@ -2,11 +2,27 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import "config";
+
+#exercise_evaluations_table_container {
+  overflow: scroll;
+  border: {
+    width: 0px;
+    style: solid;
+    color: $hr-border-color;
+    left-width: 1px;
+    right-width: 1px;
+  }
+
+  table {
+    margin-bottom: 0;
+  }
+}
+
 .exercise-evaluation-table {
   .submission-evaluation-state-present {
 
   }
-
 
   .submission-evaluation-state-not-evaluated {
     background-color: #A6FEAE;

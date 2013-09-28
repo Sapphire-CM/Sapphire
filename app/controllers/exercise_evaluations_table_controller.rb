@@ -6,6 +6,7 @@ class ExerciseEvaluationsTableController < ApplicationController
         @term = @exercise.term
         @transposed = current_account.options[:transpose] || false
         @tutorial_groups = @term.tutorial_groups
+        @order = :matriculation_number
       end
       format.json do
         if params[:transpose].present?
@@ -26,7 +27,15 @@ class ExerciseEvaluationsTableController < ApplicationController
           end
         end
 
-        @table_data = ExerciseEvaluationsTableData.new(@exercise, @tutorial_group, current_account.options[:transpose])
+        @table_data = ExerciseEvaluationsTableData.new(@exercise,
+          @tutorial_group,
+          current_account.options[:transpose],
+          nil,
+          params[:order])
+
+
+
+
 
         ratings = @table_data.rating_groups.flat_map{|rg| rg.ratings}
         student_groups = @table_data.student_groups

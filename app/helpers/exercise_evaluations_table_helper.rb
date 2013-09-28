@@ -24,6 +24,24 @@ module ExerciseEvaluationsTableHelper
     dropdown_button(title, links)
   end
 
+  def exercise_evaluations_order_dropdown(exercise)
+    links = []
+
+    if exercise.group_submission?
+      links << link_to("Group Name", '#', data: {order: 'group_name'})
+      links << link_to("Group Name (inverse)", '#', data: {order: 'group_name_inverse'})
+    else
+      links << link_to("Surname Forename", '#', data: {order: 'surname_forename'})
+      links << link_to("Matriculation Number", '#', data: {order: 'matriculation_number'})
+      links << link_to("Email", '#', data: {order: 'email'})
+      links << link_to("Surname Forename (inverse)", '#', data: {order: 'surname_forename_inverse'})
+      links << link_to("Matriculation Number (inverse)", '#', data: {order: 'matriculation_number_inverse'})
+      links << link_to("Email (inverse)", '#', data: {order: 'email_inverse'})
+    end
+
+    dropdown_button("Order", links, dropdown_class: "orders_dropdown")
+  end
+
   def exercise_evaluations_tutorial_groups_dropdown(tutorial_groups)
     links = tutorial_groups.map do |tutorial_group|
       link_to tutorial_group_title(tutorial_group), '#', data: {tutorial_group_id: tutorial_group.id}

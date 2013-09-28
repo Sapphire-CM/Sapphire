@@ -25,6 +25,8 @@ class Term < ActiveRecord::Base
 
   before_save :improve_grading_scale
 
+  before_save :improve_points
+
   def improve_grading_scale
     self.grading_scale = {
        0 => '5',
@@ -43,8 +45,12 @@ class Term < ActiveRecord::Base
     self.grading_scale
   end
 
+  def improve_points
+    self.points ||= 0
+  end
+
   def update_points!
-    self.points = exercises.pluck(:points).compact.sum
+    self.points = exercises.pluck(:points).compact.sum || 0
     self.save!
   end
 

@@ -1,4 +1,4 @@
-<% title @exercise.title, "#{pluralize(@exercise.points, 'point')}" %>
+<% title @exercise.title, exercise_sub_title(@exercise) %>
 
 <% sidebar do %>
   <%= link_to "Edit", edit_exercise_path(@exercise), class: "small button" %>

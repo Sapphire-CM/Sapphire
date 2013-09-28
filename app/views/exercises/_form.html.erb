@@ -1,22 +1,32 @@
-<%= simple_form_for @exercise do |f| %>
-  <%= f.input :term_id, as: :hidden %>
+<div class='row'>
+  <div class='large-6 large-centered columns'>
+    <%= simple_form_for @exercise do |f| %>
+      <%= f.input :term_id, as: :hidden %>
 
-  <%= f.input :title %>
-  <%= f.input :description, input_html: { rows: 3 } %>
-  <%= f.input :group_submission %>
+      <%= f.input :title %>
+      <%= f.input :description, input_html: { rows: 3 } %>
 
-  <%= f.input :enable_max_points %>
-  <%= f.input :max_points %>
+      <%= f.input :deadline, as: :datetime_picker %>
+      <%= f.input :late_deadline, as: :datetime_picker %>
 
-  <%= f.input :deadline, as: :datetime_picker %>
-  <%= f.input :late_deadline, as: :datetime_picker %>
+      <%= f.input :group_submission %>
 
-  <div class='row'>
-    <div class='large-12 large-centered columns text-center'>
-        <%= link_to "Cancel", (@exercise.new_record? ?
-            term_path(@exercise.term) :
-            exercise_path(@exercise)), class: "secondary button" %>
-        <%= f.submit class: "button" %>
-    </div>
+      <%= f.input :enable_min_required_points, label: 'Minimum points required for positive grade' %>
+      <%= f.input :min_required_points, label: false,
+        wrapper_html: {class: ('hide' unless @exercise.enable_min_required_points)} %>
+
+      <%= f.input :enable_max_total_points, label: 'Maximum points in total' %>
+      <%= f.input :max_total_points, label: false,
+        wrapper_html: {class: ('hide' unless @exercise.enable_max_total_points)} %>
+
+      <div class='row'>
+        <div class='large-12 large-centered columns text-center'>
+            <%= link_to "Cancel", (@exercise.new_record? ?
+                term_path(@exercise.term) :
+                exercise_path(@exercise)), class: "secondary button" %>
+            <%= f.submit class: "button" %>
+        </div>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>

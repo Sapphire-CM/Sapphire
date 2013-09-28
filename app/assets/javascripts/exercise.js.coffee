@@ -4,6 +4,14 @@
 
 
 $ ->
+  $('#exercise_enable_min_required_points').on 'click', ->
+    $('#exercise_min_required_points').parent().slideToggle()
+
+  $('#exercise_enable_max_total_points').on 'click', ->
+    $('#exercise_max_total_points').parent().slideToggle()
+
+
+
   get_rating_group_id = ($rating_group)->
     $rating_group.attr("id").replace("rating_group_id_", "")
 

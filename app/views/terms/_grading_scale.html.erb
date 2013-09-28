@@ -15,7 +15,11 @@
               <%= item[0] %>
             <% else %>
               <%= simple_form_for :grading_scale, url: term_update_grading_scale_path(@term), remote: true do |f| %>
-                <%= f.number_field item[1].to_s, value: item[0], min: 1, max: @term.points-1, class: 'margin-none' %>
+                <%= f.number_field item[1].to_s,
+                  value: item[0],
+                  min: 1,
+                  max: @term.points > 0 ? (@term.points-1) : 9999,
+                  class: 'margin-none' %>
               <% end %>
             <% end %>
           </td>

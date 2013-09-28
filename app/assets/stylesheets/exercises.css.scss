@@ -18,7 +18,7 @@
 .rating-group-sortable-placeholder {
   background-color: $panel-bg;
   outline: 1px dotted $panel-border-color;
-  
+
   margin-bottom: 1em;
 }
 
@@ -26,4 +26,8 @@
   background-color: white !important;
   box-shadow: 0px 0px 5px #707070;
   z-index: 99 !important;
+}
+
+.input-append.date a i {
+  font-size: 200%;
 }

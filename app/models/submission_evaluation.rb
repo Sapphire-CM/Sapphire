@@ -5,6 +5,8 @@ class SubmissionEvaluation < ActiveRecord::Base
   has_one :student_group, through: :submission
 
   has_many :evaluation_groups, dependent: :destroy
+  has_many :evaluations, through: :evaluation_groups
+
   has_many :ratings, through: :evaluations
   has_many :rating_groups, through: :ratings
 
@@ -18,9 +20,16 @@ class SubmissionEvaluation < ActiveRecord::Base
     self.save!
   end
 
+  def update_plagiarized!
+    plagiarized = evaluations.joins{rating}.
+      where{ rating.type == PlagiarismRating }.
+      pluck(:value).compact.sum > 0
+    self.plagiarized = plagiarized
+    self.save!
+  end
+
   def update_student_group_points
     student_group.update_points!
-
   end
 
   private
@@ -32,7 +41,6 @@ class SubmissionEvaluation < ActiveRecord::Base
       final_sum += eval_group.points || 0
       percent *= eval_group.percent || 1
     end
-
 
     final_sum = final_sum.to_f * percent
     final_sum = 0 if final_sum < 0

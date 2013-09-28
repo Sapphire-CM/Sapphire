@@ -2,18 +2,17 @@ class ValueEvaluation < Evaluation
   attr_accessible :value
   validate :value_range
 
-
   def points
-    if self.rating.is_a?(ValueNumberRating)
-      self.value * self.rating.multiplication_factor || 0
+    if value.present? && rating.is_a?(ValueNumberRating)
+      value * rating.multiplication_factor
     else
       0
     end
   end
 
   def percent
-    if self.rating.is_a?(ValuePercentRating)
-      1 + self.value.to_f/100.0
+    if value.present? && rating.is_a?(ValuePercentRating)
+      1 + value.to_f/100.0
     else
       1
     end

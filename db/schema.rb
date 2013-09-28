@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130927085032) do
+ActiveRecord::Schema.define(version: 20130928085417) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -78,11 +78,13 @@ ActiveRecord::Schema.define(version: 20130927085032) do
     t.text     "description"
     t.datetime "deadline"
     t.datetime "late_deadline"
-    t.boolean  "enable_max_points"
-    t.integer  "max_points"
+    t.boolean  "enable_max_total_points"
+    t.integer  "max_total_points"
     t.integer  "row_order"
     t.boolean  "group_submission"
     t.integer  "points"
+    t.boolean  "enable_min_required_points"
+    t.integer  "min_required_points"
   end
 
   add_index "exercises", ["term_id"], name: "index_exercises_on_term_id"

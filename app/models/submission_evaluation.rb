@@ -45,6 +45,14 @@ class SubmissionEvaluation < ActiveRecord::Base
     final_sum = final_sum.to_f * percent
     final_sum = 0 if final_sum < 0
 
+    final_sum = if submission.exercise.enable_max_total_points &&
+      final_sum > submission.exercise.max_total_points
+
+      submission.exercise.max_total_points
+    else
+      final_sum
+    end
+
     self.evaluation_result = final_sum
   end
 

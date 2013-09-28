@@ -9,7 +9,7 @@ ex_31 = Exercise.create!({ title: 'Ex 3.1: Email',    term: term_inm })
 ex_32 = Exercise.create!({ title: 'Ex 3.2: Research', term: term_inm })
 ex_4  = Exercise.create!({ title: 'Ex 4: Website',    term: term_inm })
 ex_5  = Exercise.create!({ title: 'Ex 5: CSS',        term: term_inm })
-ex_6  = Exercise.create!({ title: 'MC Test',          term: term_inm })
+ex_6  = Exercise.create!({ title: 'MC Test',          term: term_inm, enable_min_required_points: true, min_required_points: 4 })
 Exercise.all.map{ |obj| obj.row_order_position = :last; obj.save }
 
 rating_groups = RatingGroup.create! [

@@ -1,5 +1,7 @@
 <% title "Evaluations of #{@exercise.title}" %>
 
+<% large_content true %>
+
 <div class='row'>
   <div class='large-12 columns' id='exercise_evaluations_table_toolbar'>
     <div class="button-bar">
@@ -9,13 +11,18 @@
       </ul>
 
       <ul class="button-group">
-        <li><%= exercise_evaluations_view_dropdown(@exercise) %></li>
         <li><%= exercise_evaluations_tutorial_groups_dropdown(@tutorial_groups) %></li>
+        <li><%= exercise_evaluations_view_dropdown(@exercise) %></li>
+        <li><%= exercise_evaluations_order_dropdown(@exercise) %></li>
       </ul>
     </div>
   </div>
 </div>
 
-<div id='exercise_evaluations_table_container' data-url='<%= exercise_evaluation_path(@exercise, format: :json) %>' data-transposed='<%= @transposed %>' data-tutorial-group='<%= @tutorial_group_id %>'>
+<div id='exercise_evaluations_table_container'
+  data-url='<%= exercise_evaluation_path(@exercise, format: :json) %>'
+  data-transposed='<%= @transposed %>'
+  data-tutorial-group='<%= @tutorial_group_id %>'
+  data-order='<%= @order %>'>
   Loading table - please stand by
 </div>

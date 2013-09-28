@@ -1,1 +1,5 @@
-<%= {payload: exercise_evaluations_table(@table_data), tutorial_group_id: @table_data.tutorial_group.id}.to_json.html_safe %>
+<%= {
+  payload: exercise_evaluations_table(@table_data),
+  tutorial_group_id: @table_data.tutorial_group.id,
+  order: @table_data.order
+}.to_json.html_safe %>

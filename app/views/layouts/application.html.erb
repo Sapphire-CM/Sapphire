@@ -46,7 +46,7 @@
     </div>
     <% end %>
 
-    <div class='row'>
+    <div class='row <%= yield(:large_content) if content_for(:large_content) %>'>
       <% if content_for? :sidebar %>
         <div class='large-9 columns'>
           <%= yield %>

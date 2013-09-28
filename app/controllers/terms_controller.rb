@@ -60,7 +60,6 @@ class TermsController < ApplicationController
 
     registration = LecturerRegistration.find_or_initialize_by_term_id(@term.id)
     registration.lecturer = @account
-    registration.registered_at = DateTime.now
 
     if registration.save
       redirect_to @term, notice: "Lecturer registration successfully added."

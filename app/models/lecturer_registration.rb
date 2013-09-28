@@ -4,6 +4,6 @@ class LecturerRegistration < ActiveRecord::Base
 
   has_one :course, through: :term
 
-  attr_accessible :term, :lecturer, :registered_at
+  attr_accessible :term, :lecturer
 
 end

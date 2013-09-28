@@ -14,7 +14,7 @@
 
 <div class="section-container tabs" data-section="tabs">
   <% if @tutorial_group.term.group_submissions? %>
-  <section>
+  <section class="active">
     <p class="title" data-section-title><a href="#">Student groups</a></p>
     <div class="content" data-section-content>
       <% if @tutorial_group.student_groups.any? %>

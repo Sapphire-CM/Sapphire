@@ -51,9 +51,9 @@ def process_email(mail)
     deliver_mail to: mail.from, subject: 'Ex3.1 Sapphire Test', body: email_body
     # deliver_mail to: student.email, subject: 'Ex3.1 Sapphire Test', body: email_body
 
-    Rails.logger.info "#{DateTime.now} Sent email to #{student.fullname}, #{student.matriculation_number}."
+    Rails.logger.info "AutoResponder: Sent email to #{student.fullname}, #{student.matriculation_number}."
   rescue
-    Rails.logger.error "#{DateTime.now} Error with email #{mail.message_id}. No email sent."
+    Rails.logger.error "AutoResponder: Error with email #{mail.message_id}. No email sent."
     # binding.pry
   end
 end

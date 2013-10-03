@@ -15,12 +15,13 @@
 /tmp
 /uploads
 /emails
+/persistent
 
 /erd.pdf
 
 /config/mail.yml
 
 # INM Auto Email Responder for Web Research
-/config/auto_responder_paper_data.rb
+/persistent/auto_responder_paper_data.rb
 
 *.sublime-workspace

@@ -42,7 +42,7 @@ load 'deploy/assets'
 ###############################################################################
 
 namespace :deploy do
-  shared_folders = ["public/assets", "uploads", "emails"]
+  shared_folders = ["public/assets", "uploads", "emails", "persistent"]
 
   desc "Start, shows ruby version"
   task :start do

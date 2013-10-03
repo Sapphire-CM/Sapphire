@@ -79,4 +79,4 @@ end
 
 load 'lib/email/email_text.rb'
 
-load 'config/auto_responder_paper_data.rb'
+load 'persistent/auto_responder_paper_data.rb'

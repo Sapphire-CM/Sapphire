@@ -1,3 +1,3 @@
 every 1.minutes do
-  rake "email:auto_responder"
+  rake "sapphire:auto_responder"
 end

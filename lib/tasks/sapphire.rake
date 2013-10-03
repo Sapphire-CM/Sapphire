@@ -35,4 +35,13 @@ namespace :sapphire do
 
     puts "Seed written to ./#{fn}"
   end
+
+  desc "Auto Email Responder: process and respond to emails"
+  task :auto_responder => :environment do
+    load 'lib/email/auto_responder.rb'
+
+    new_mails.each do |mail|
+      process_email mail
+    end
+  end
 end

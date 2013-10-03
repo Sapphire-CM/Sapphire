@@ -1,5 +1,6 @@
 require 'capistrano/ext/multistage'
 require 'bundler/capistrano'
+require "whenever/capistrano"
 
 set :application, "sapphire"
 
@@ -17,12 +18,14 @@ set :deploy_to, "/home/sapphire/#{application}"
 set :stages, %w(staging production)
 set :default_stage, "staging"
 
+set :whenever_environment, defer { stage }
+
 ###############################################################################
 
 after 'deploy:update_code' do
   deploy.replace_secret
   deploy.symlink_shared_folders
-
+  deploy.setup_mail_config
   deploy.setup_database_config
   deploy.migrate
 
@@ -39,7 +42,7 @@ load 'deploy/assets'
 ###############################################################################
 
 namespace :deploy do
-  shared_folders = ["public/assets", "uploads"]
+  shared_folders = ["public/assets", "uploads", "emails"]
 
   desc "Start, shows ruby version"
   task :start do
@@ -69,6 +72,11 @@ namespace :deploy do
   desc "Updates the secret_key_base for cookies"
   task :replace_secret do
     run "cd #{current_release} && RAILS_ENV=#{rails_env} bundle exec rake secret:update"
+  end
+
+  desc "Setup mail config file in shared_path"
+  task :setup_mail_config do
+    run "ln -nfs #{shared_path}/config/mail.yml #{release_path}/config/mail.yml"
   end
 
   desc "Setup database config file in shared_path"

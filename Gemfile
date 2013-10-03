@@ -29,6 +29,9 @@ gem 'foundation-icons-sass-rails', '~> 3.0'
 
 gem 'remotipart', '~> 1.2'        # fileuploads via ajax
 
+gem 'whenever'                    # cron tasks
+gem 'mail'                        # fetching, delivering and parsing of emails
+
 group :production do
   gem 'therubyracer'
   gem 'pg'                        # PostgreSQL database connector

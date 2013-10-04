@@ -1,6 +1,5 @@
 require 'capistrano/ext/multistage'
 require 'bundler/capistrano'
-require "whenever/capistrano"
 
 set :application, "sapphire"
 
@@ -17,9 +16,6 @@ set :deploy_via, :remote_cache
 set :deploy_to, "/home/sapphire/#{application}"
 set :stages, %w(staging production)
 set :default_stage, "staging"
-
-set :whenever_command, "bundle exec whenever"
-set :whenever_environment, "production"
 
 ###############################################################################
 

@@ -36,7 +36,6 @@ class ExerciseEvaluationsTableController < ApplicationController
 
 
 
-
         ratings = @table_data.rating_groups.flat_map{|rg| rg.ratings}
         student_groups = @table_data.student_groups
 

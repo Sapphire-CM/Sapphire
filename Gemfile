@@ -61,11 +61,13 @@ group :development do
 end
 
 group :development, :test do
+  gem 'cucumber'
   gem 'rspec-rails'
   gem 'cucumber-rails', require:false
   gem 'capybara'
+  gem 'selenium-webdriver'
   gem 'factory_girl_rails'
-  gem 'database_cleaner'
+  gem 'database_cleaner', '~>1.0.0' # newer versions are broken concerning the sqlite/postgres stuff
 end
 
 ############################

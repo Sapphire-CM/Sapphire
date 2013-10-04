@@ -59,3 +59,5 @@ end
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
+require 'capybara/poltergeist'
+Capybara.javascript_driver = :poltergeist

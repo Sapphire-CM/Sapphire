@@ -65,7 +65,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'cucumber-rails', require:false
   gem 'capybara'
-  gem 'selenium-webdriver'
+  gem 'poltergeist'
   gem 'factory_girl_rails'
   gem 'database_cleaner', '~>1.0.0' # newer versions are broken concerning the sqlite/postgres stuff
 end

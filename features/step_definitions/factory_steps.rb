@@ -14,6 +14,13 @@ Given(/^there is a term called "(.*?)"$/) do |title|
   FactoryGirl.create(:term, title: title)
 end
 
+Given(/^there is a course "(.*?)" with a term "(.*?)"$/) do |course_title, term_title|
+  course = Course.where(title: course_title).first
+  course = FactoryGirl.create(:course, title: course_title) unless course
+
+  FactoryGirl.create(:term, title: term_title, course: course)
+end
+
 Given(/^there is a tutorial group called "(.*?)" in term "(.*?)"$/) do |title, term_title|
   FactoryGirl.create(:tutorial_group, title: title, term: Term.where(title: term_title).first)
 end
@@ -28,6 +35,7 @@ Given(/^there are (\d+) submissions for "(.*?)"$/) do |sub_count, ex_title|
 
   FactoryGirl.create_list(:submission, sub_count.to_i, exercise: exercise)
 end
+
 Given(/^there are (\d+) students in "(.*?)" registered for "(.*?)"$/) do |stud_count, tut_group_title, ex_title|
   exercise = Exercise.where(title: ex_title).first
   exercise = FactoryGirl.create(:exercise, title: ex_title) unless exercise

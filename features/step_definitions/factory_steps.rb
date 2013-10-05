@@ -6,27 +6,29 @@ Given(/^an account with email "(.*?)"$/) do |email|
   FactoryGirl.create(:account, email: email)
 end
 
-Given(/^there is a course called "(.*?)"$/) do |title|
+Given(/^there is a course "(.*?)"$/) do |title|
   FactoryGirl.create(:course, title: title)
 end
 
-Given(/^there is a term called "(.*?)"$/) do |title|
-  FactoryGirl.create(:term, title: title)
-end
-
-Given(/^there is a course "(.*?)" with a term "(.*?)"$/) do |course_title, term_title|
+Given(/^there is a term "(.*?)" in a course "(.*?)"$/) do |term_title, course_title|
   course = Course.where(title: course_title).first
   course = FactoryGirl.create(:course, title: course_title) unless course
 
   FactoryGirl.create(:term, title: term_title, course: course)
 end
 
-Given(/^there is a tutorial group called "(.*?)" in term "(.*?)"$/) do |title, term_title|
-  FactoryGirl.create(:tutorial_group, title: title, term: Term.where(title: term_title).first)
+Given(/^there is a tutorial group "(.*?)" in term "(.*?)"$/) do |title, term_title|
+  term = Term.where(title: term_title).first
+  term = FactoryGirl.create(:term, title: term_title) unless term
+
+  FactoryGirl.create(:tutorial_group, title: title, term: term)
 end
 
-Given(/^there is an exercise called "(.*?)" in term "(.*?)"$/) do |title, term_title|
-  FactoryGirl.create(:exercise, title: title, term: Term.where(title: term_title).first)
+Given(/^there is an exercise "(.*?)" in term "(.*?)"$/) do |title, term_title|
+  term = Term.where(title: term_title).first
+  term = FactoryGirl.create(:term, title: term_title) unless term
+
+  FactoryGirl.create(:exercise, title: title, term: term)
 end
 
 Given(/^there are (\d+) submissions for "(.*?)"$/) do |sub_count, ex_title|

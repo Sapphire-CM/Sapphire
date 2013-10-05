@@ -22,7 +22,7 @@ Then(/^have a break$/) do
   require 'pry'; binding.pry
 end
 
-When(/^I create a new term called "(.*?)" on course "(.*?)"$/) do |term_title, course_title|
+When(/^I create a new term "(.*?)" on course "(.*?)"$/) do |term_title, course_title|
   course = Course.where(title: course_title).first
   course_div = find_by_id("course_id_#{course.id}")
 

@@ -5,12 +5,12 @@ Feature: Evaluation of Students
 
 @javascript
   Scenario: Evaluation Table for solitary student groups
-    Given there is a term called "Term 2013"
-    Given there is a tutorial group called "T1" in term "Term 2013"
-    Given there is an exercise called "Exercise 1" in term "Term 2013"
-    Given there are 5 submissions for "Exercise 1"
-    Given there are 10 students in "T1" registered for "Exercise 1"
-    Given there are these rating groups for "Exercise 1"
+    Given there is a term "Term 2013" in a course "My Course"
+      And there is a tutorial group "T1" in term "Term 2013"
+      And there is an exercise "Exercise 1" in term "Term 2013"
+      And there are 5 submissions for "Exercise 1"
+      And there are 10 students in "T1" registered for "Exercise 1"
+      And there are these rating groups for "Exercise 1"
       | title    |
       | Identity |
       | Format   |

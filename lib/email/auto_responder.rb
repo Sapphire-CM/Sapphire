@@ -12,10 +12,16 @@ end
 
 def deliver_mail(args)
   Mail.deliver do
+    charset = 'UTF-8'
+
     from $mail_config[:from_address]
     to args[:to]
     subject args[:subject]
-    body args[:body]
+
+    text_part do
+      content_type 'text/plain; charset=utf-8'
+      body args[:body]
+    end
   end
 end
 

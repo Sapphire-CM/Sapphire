@@ -5,32 +5,41 @@
 @import "config";
 
 #exercise_evaluations_table_container {
-  overflow: scroll;
-  border: {
-    width: 0px;
-    style: solid;
-    color: $hr-border-color;
-    left-width: 1px;
-    right-width: 1px;
-  }
-
+  //overflow: scroll;
+//  border: {
+//    width: 0px;
+//    style: solid;
+//    color: $hr-border-color;
+//    left-width: 1px;
+//    right-width: 1px;
+//  }
+//
   table {
     margin-bottom: 0;
   }
 }
 
-.exercise-evaluation-table {
-  .submission-evaluation-state-present {
+.exercise-evaluations-table {
+  margin-bottom: 0px;
 
+  .rating-group-separator {
+    td, th {
+      background-color: #DBD5F1;
+    }
   }
 
-  .submission-evaluation-state-not-evaluated {
-    background-color: #A6FEAE;
-  }
 
-  .submission-evaluation-state-missing {
-    background-color: #DADADA;
-  }
+//  .submission-evaluation-state-present {
+//
+//  }
+//
+//  .submission-evaluation-state-not-evaluated {
+//    background-color: #A6FEAE;
+//  }
+//
+//  .submission-evaluation-state-missing {
+//    background-color: #DADADA;
+//  }
 }
 
 .rating_group_seperator {

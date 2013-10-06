@@ -1,27 +1,29 @@
 <table class='exercise-evaluations-table'>
-  <tr>
-    <th colspan='2'>&nbsp;</th>
-    <% data.rating_groups.each do |rating_group| %>
-      <th><%= rating_group.title %></th>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <% data.rating_groups.each do |rating_group| %>
+        <th><%= rating_group.title %></th>
 
-      <% rating_group.ratings.each_with_index do |rating, rating_index| %>
-        <td><%= shorten rating.title, 20 %></td>
+        <% rating_group.ratings.each_with_index do |rating, rating_index| %>
+          <td><%= shorten rating.title, 20 %></td>
+        <% end %>
       <% end %>
-    <% end %>
-    <th>Result</th>
-  </tr>
-  <tr>
-    <th colspan='2'>&nbsp;</th>
-    <% data.rating_groups.each do |rating_group| %>
-      <th><%= rating_group.points %></th>
+      <th>Result</th>
+    </tr>
+    <tr>
+      <th colspan='2'>&nbsp;</th>
+      <% data.rating_groups.each do |rating_group| %>
+        <th><%= rating_group.points %></th>
 
-      <% rating_group.ratings.each_with_index do |rating, rating_index| %>
-        <td><%= rating_points_description rating %></td>
+        <% rating_group.ratings.each_with_index do |rating, rating_index| %>
+          <td><%= rating_points_description rating %></td>
+        <% end %>
       <% end %>
-    <% end %>
-    <th></th>
-  </tr>
-
+      <th></th>
+    </tr>
+  </thead>
   <% data.student_groups.each do |student_group| %>
   <tr>
     <th><%= exercise_evaluations_student_group_title(data, student_group) %></th>

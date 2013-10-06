@@ -8,6 +8,8 @@ class Exercise < ActiveRecord::Base
   include RankedModel
   ranks :row_order, with_same: :term_id
 
+  delegate :course, to: :term
+
   default_scope { rank(:row_order) }
   scope :for_evaluations_table, lambda { includes(submissions: [{submission_evaluation: {evaluation_groups: [:rating_group, {evaluations: :rating}]}}, {student_group_registration: {student_group: :students}}])}
 

@@ -5,6 +5,7 @@ $.widget "sapphire.evaluations_table",
     view: undefined
     toolbar: undefined
     min_height: 200
+
   _create: ->
     @endpoint = @options.endpoint
     @transpose_table = !!@options.transposed
@@ -89,15 +90,7 @@ $.widget "sapphire.evaluations_table",
           @element.find(".table").fixedHeaderTable("destroy")
           @element.html("").append(@table_backup)
           @_reload_table()
-
       , 200
-  #
-  # _repin_headers: ->
-  #   if @table_markup
-  #
-  #   else
-  #     console.log("fuzuuuu!")
-  #   @_pin_headers();
 
   _pin_headers: ->
     @element.find("table").fixedHeaderTable

@@ -1,1 +1,3 @@
-server 'stagingsapphire.iicm.tugraz.at', :app, :web, :db, :primary => true
+set :stage, :staging
+
+server 'stagingsapphire.iicm.tugraz.at', user: 'sapphire', roles: %w{app db web}

@@ -25,7 +25,7 @@ end
 def new_mails
   mails = Mail.all delete_after_find: true
   mails.each do |mail|
-    filename = "#{mail.date.parameterize}_#{mail.message_id.parameterize}.eml"
+    filename = "#{mail.date.to_s.parameterize}_#{mail.message_id.parameterize}.eml"
     filename = File.join('emails', filename)
     File.open(filename, 'w') do |f|
       f.write(mail.to_s)
@@ -54,7 +54,7 @@ def process_email(mail)
     email_body = create_email_text tutorial_group_index, student_index
     deliver_mail(
       to: mail.from,
-      reply_to: tutors[tutorial_group_index][:email],
+      reply_to: $tutors[tutorial_group_index][:email],
       subject: '[INM] Ex3.1: Web Research Topic',
       body: email_body)
 

@@ -12,23 +12,21 @@ end
 
 def deliver_mail(args)
   Mail.deliver do
-    charset = 'UTF-8'
-
     from $mail_config[:from_address]
     to args[:to]
+    reply_to args[:reply_to]
     subject args[:subject]
 
-    text_part do
-      content_type 'text/plain; charset=utf-8'
-      body args[:body]
-    end
+    content_type 'text/plain; charset=utf-8'
+    body args[:body]
   end
 end
 
 def new_mails
   mails = Mail.all delete_after_find: true
   mails.each do |mail|
-    filename = File.join('emails', mail.message_id.parameterize + '.eml')
+    filename = "#{mail.date.parameterize}_#{mail.message_id.parameterize}.eml"
+    filename = File.join('emails', filename)
     File.open(filename, 'w') do |f|
       f.write(mail.to_s)
     end
@@ -54,32 +52,16 @@ def process_email(mail)
     throw NotFoundExeception unless student_index
 
     email_body = create_email_text tutorial_group_index, student_index
-    deliver_mail to: mail.from, subject: 'Ex3.1 Sapphire Test', body: email_body
-    # deliver_mail to: student.email, subject: 'Ex3.1 Sapphire Test', body: email_body
+    deliver_mail(
+      to: mail.from,
+      reply_to: tutors[tutorial_group_index][:email],
+      subject: '[INM] Ex3.1: Web Research Topic',
+      body: email_body)
 
     Rails.logger.info "AutoResponder: Sent email to #{student.fullname}, #{student.matriculation_number}."
   rescue
     Rails.logger.error "AutoResponder: Error with email #{mail.message_id}. No email sent."
     # binding.pry
-  end
-end
-
-class FamousPerson
-  attr_accessor :fullname, :acm_paper, :ieee_paper
-
-  def initialize(fullname, acm_paper, ieee_paper)
-    @fullname = fullname
-    @acm_paper = acm_paper
-    @ieee_paper = ieee_paper
-  end
-end
-
-class Paper
-  attr_accessor :page_count, :hash
-
-  def initialize(page_count, hash)
-    @page_count = page_count
-    @hash = hash
   end
 end
 

@@ -7,10 +7,10 @@ Web Research
 
 You should research into the following computer scientist:
 
-#{famous_person.fullname}
+#{famous_person[:name]}
 
-  IEEE: #{famous_person.ieee_paper.page_count.to_s} pages, MD5: #{famous_person.ieee_paper.hash.to_s}
-   ACM: #{famous_person.acm_paper.page_count.to_s} pages, MD5: #{famous_person.acm_paper.hash.to_s}
+  IEEE: #{famous_person[:ieee][:page_count]} pages, MD5: #{famous_person[:ieee][:hash]}
+   ACM: #{famous_person[:acm][:page_count]} pages, MD5: #{famous_person[:acm][:hash]}
 
 Before you start, read the detailed instructions at:
 
@@ -27,7 +27,7 @@ EOF
 
 text << "-- \n" + <<EOF
 Good luck!
-#{$tutors[tutorial_group_index]}
+#{$tutors[tutorial_group_index][:name]}
 EOF
 
   text

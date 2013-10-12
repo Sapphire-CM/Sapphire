@@ -45,29 +45,27 @@ group :development do
   gem 'pry-plus'
   gem 'spring'
 
-  gem 'thin'                # small development webserver
-  gem 'debugger'            # debugger with irb, 1.9.3-only
-  gem 'byebug'              # debugger with irb, 2.0.0-only
-  gem 'better_errors'       # pretty error pages
-  gem 'binding_of_caller'   # interactive shell within error pages
-  gem 'brakeman'            # common security problems checker
-  gem 'awesome_print'       # nicley formatted object inspection
-  gem 'capistrano'          # deployment via ssh
-  gem 'bullet'              # logs and supposes optimizations for db queries
-  gem 'sextant'             # route /rails/routes for displaying all routes
-  gem 'quiet_assets'        # suppresses logging of assets files
-  gem 'rails-erd'           # Entity-Relation Diagrams of models
-  gem 'letter_opener'       # local email sender to HTML pages
+  gem 'thin'                       # small development webserver
+  gem 'better_errors'              # pretty error pages
+  gem 'binding_of_caller'          # interactive shell within error pages
+  gem 'brakeman'                   # common security problems checker
+  gem 'awesome_print'              # nicley formatted object inspection
+  gem 'bullet'                     # logs and supposes optimizations for db queries
+  gem 'sextant'                    # route /rails/routes for displaying all routes
+  gem 'quiet_assets'               # suppresses logging of assets files
+  gem 'rails-erd'                  # Entity-Relation Diagrams of models
+  gem 'letter_opener'              # local email sender to HTML pages
+  gem 'capistrano', '~> 2.0'       # deployment via ssh
 end
 
 group :development, :test do
   gem 'cucumber'
-  gem 'rspec-rails'
   gem 'cucumber-rails', require:false
+  gem 'rspec-rails'
   gem 'capybara'
   gem 'poltergeist'
   gem 'factory_girl_rails'
-  gem 'database_cleaner', '~>1.0.0' # newer versions are broken concerning the sqlite/postgres stuff
+  gem 'database_cleaner'
 end
 
 ############################

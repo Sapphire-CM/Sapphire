@@ -1,6 +1,6 @@
 class SubmissionEvaluation < ActiveRecord::Base
   belongs_to :submission
-  belongs_to :evaluator, polymorphic: true
+  belongs_to :evaluator, polymorphic: true, class_name: "Account", foreign_key: :account_id
 
   has_one :student_group, through: :submission
 

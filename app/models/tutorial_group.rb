@@ -13,8 +13,6 @@ class TutorialGroup < ActiveRecord::Base
 
   has_many :student_groups, dependent: :destroy
 
-  has_many :submissions, through: :student_group_registrations
-
   def students
     @students ||= student_groups.includes(:students).flat_map{ |sg| sg.students }.uniq
   end

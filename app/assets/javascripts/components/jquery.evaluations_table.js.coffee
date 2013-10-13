@@ -95,7 +95,7 @@ $.widget "sapphire.evaluations_table",
   _pin_headers: ->
     @element.find("table").fixedHeaderTable
       height: "#{@element.height()}px"
-      fixedColumns:2
+      fixedColumns: 2
 
   _fit_table_into_window: ->
 

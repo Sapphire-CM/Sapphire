@@ -414,7 +414,6 @@
         $firstThChildren = $fixedBody.find('.fht-thead thead tr > *:not(:nth-child(n+' + (settings.fixedColumns + 1) + '))');
         fixedColumnWidth = settings.fixedColumns * tableProps.border;
         $firstThChildren.each(function(i) {
-          console.log(i)
           if (settings.fixedColumns == i) {
             return false;
           }

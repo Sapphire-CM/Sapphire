@@ -37,7 +37,7 @@
       <% rating_group.ratings.each_with_index do |rating, rating_index| %>
         <tr>
           <td class='rating-title'><%= shorten rating.title, 20 %></td>
-          <td class='text-right rating-points'><%= rating_points_description rating %></td>
+          <td class='text-right minimum-width rating-points'><%= rating_points_description rating %></td>
           <% data.student_groups.each do |student_group| %>
             <td class='text-center
               <%= @exercise_evaluations_state_classes[student_group.id] %>

@@ -14,8 +14,8 @@ gem 'kaminari'                    # pagination
 gem 'flash_render'                # render method with notice/alerts
 gem 'devise', '~> 3.1.0'          # user authentication
 gem 'cancan'                      # role based ability management for users
-gem 'turbolinks'                  # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'jquery-turbolinks'           # turbolinks jquery plugin for events
+gem 'turbolinks'                  # Turbolinks makes following links in your web application faster
+gem 'jquery-turbolinks'           # Turbolinks jquery plugin for DOM ready events
 gem 'ranked-model'                # manages sort-position of ratings
 
 gem 'compass-rails',   '~> 2.0.alpha'   # Compass intregration into assets-pipeline
@@ -23,6 +23,7 @@ gem 'sass-rails',      '~> 4.0'   # Use SCSS for stylesheets
 gem 'coffee-rails',    '~> 4.0'   # Use CoffeeScript for .js.coffee assets and views
 gem 'uglifier',        '>= 1.3'   # Use Uglifier as compressor for JavaScript assets
 gem 'jquery-rails'                # Use jquery as the JavaScript library
+gem 'jquery-mousewheel-rails'     # jquery MouseWheel support
 
 gem 'zurb-foundation', '~> 4.3.0'
 gem 'foundation-icons-sass-rails', '~> 3.0'

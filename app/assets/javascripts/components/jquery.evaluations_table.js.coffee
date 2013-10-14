@@ -94,15 +94,15 @@ $.widget "sapphire.evaluations_table",
 
   _pin_headers: ->
     @element.find("table").fixedHeaderTable
-      height: "#{@element.height()}px"
+      height: @element.height() + @element.offset().top  # "#{@element.height()}px"
       fixedColumns: 2
 
   _fit_table_into_window: ->
 
-    win_height = $(window).height()
-    el_off_top = @element.offset().top
+    # win_height = $(window).height()
+    # el_off_top = @element.offset().top
 
-    height = win_height - el_off_top
-    height = @min_height if height < @min_height
+    # height = win_height - el_off_top
+    # height = @min_height if height < @min_height
 
-    @element.height(height)
+    # @element.height(height)

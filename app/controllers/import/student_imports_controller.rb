@@ -32,6 +32,7 @@ class Import::StudentImportsController < ApplicationController
 
     @student_import.parse_csv
 
+    @term = @student_import.term
     if @student_import.encoding_error?
       render :new, alert: "Error with file encoding! UTF8-like is required."
     elsif @student_import.parsing_error?

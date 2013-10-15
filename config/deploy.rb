@@ -1,111 +1,76 @@
-require 'capistrano/ext/multistage'
-require 'bundler/capistrano'
-require 'whenever/capistrano'
-
-set :application, "sapphire"
-
+set :application, 'sapphire'
+set :repo_url, 'git@github.com:matthee/Sapphire.git'
 set :scm, :git
-set :repository, "git@github.com:matthee/Sapphire.git"
 
-set :user, :sapphire
-set :use_sudo, false
+set :deploy_to, "/home/sapphire/#{fetch(:application)}"
+set :deploy_via, :copy
 
-default_run_options[:shell] = '/bin/zsh -i'
-set :rvm_ruby_string, :local
-
-set :deploy_via, :remote_cache
-set :deploy_to, "/home/sapphire/#{application}"
 set :stages, %w(staging production)
-set :default_stage, "staging"
 
-set :whenever_command, 'bundle exec whenever'
-set :whenever_environment, 'production'
+set :linked_files, %w{config/database.yml config/mail.yml}
+set :linked_dirs, %w{bin log emails uploads persitent}
 
-###############################################################################
-
-after 'deploy:update_code' do
-  deploy.replace_secret
-  deploy.symlink_shared_folders
-  deploy.setup_mail_config
-  deploy.setup_database_config
-  deploy.migrate
-
-  deploy.cleanup
-end
-
-after "deploy:setup" do
-  deploy.setup_shared_folders
-end
-
-load 'deploy/assets'
-
-
-###############################################################################
+set :log_level, :debug
 
 namespace :deploy do
-  shared_folders = ["public/assets", "uploads", "emails", "persistent"]
 
-  desc "Start, shows ruby version"
-  task :start do
-    run "ruby -v"
+  desc 'Restart application'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      execute :touch, release_path.join('tmp/restart.txt')
+    end
   end
 
-  desc "Stop"
-  task :stop do ; end
-
-  desc "Restart rails hosting webserver"
-  task :restart, :roles => :app, :except => { :no_release => true } do
-    run "touch #{current_path}/tmp/restart.txt"
-  end
+  after :finishing, 'deploy:cleanup'
 
   namespace :db do
+    desc 'Drops the database to an empty state'
+    task :drop do
+      on primary :db do
+        within release_path do
+          with rails_env: fetch(:stage) do
+            execute :rake, "db:drop"
+          end
+        end
+      end
+    end
+    before :drop, 'rvm:hook'
+
+    desc 'Resets the database to an empty state'
+    task :reset do
+      on primary :db do
+        within release_path do
+          with rails_env: fetch(:stage) do
+            execute :rake, "db:reset"
+          end
+        end
+      end
+    end
+    before :reset, 'rvm:hook'
+
     desc "Load the seed data from db/seeds.rb"
     task :seed do
-      run "cd #{current_release} && RAILS_ENV=#{rails_env} bundle exec rake db:seed"
+      on primary :db do
+        within release_path do
+          with rails_env: fetch(:stage) do
+            execute :rake, "db:seed"
+          end
+        end
+      end
     end
+    before :seed, 'rvm:hook'
 
-    desc "Reset the database"
-    task :reset do
-      run "cd #{current_release} && RAILS_ENV=#{rails_env} bundle exec rake db:reset"
+    desc "Updates the secret_key_base for cookies"
+    task :seed do
+      on primary :db do
+        within release_path do
+          with rails_env: fetch(:stage) do
+            execute :rake, "secret:update"
+          end
+        end
+      end
     end
-  end
+    before :seed, 'rvm:hook'
 
-  desc "Updates the secret_key_base for cookies"
-  task :replace_secret do
-    run "cd #{current_release} && RAILS_ENV=#{rails_env} bundle exec rake secret:update"
-  end
-
-  desc "Setup mail config file in shared_path"
-  task :setup_mail_config do
-    run "ln -nfs #{shared_path}/config/mail.yml #{release_path}/config/mail.yml"
-  end
-
-  desc "Setup database config file in shared_path"
-  task :setup_database_config do
-    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
-  end
-
-  desc "Create shared folders in shared_path"
-  task :setup_shared_folders do
-    shared_folders.each do |folder|
-      run "mkdir -p #{shared_path}/#{folder}"
-    end
-  end
-
-  desc "Create symlinks for shared folders in current_path"
-  task :symlink_shared_folders do
-    shared_folders.each do |dir|
-      run "rm -rf #{current_path}/#{dir}"
-      run "ln -nfs #{shared_path}/#{dir} #{release_path}/#{dir}"
-    end
-  end
-end
-
-desc "Tails the production log file"
-task :tail_logs, :roles => :app do
-  run "tail -f #{shared_path}/log/production.log" do |channel, stream, data|
-    puts  # for an extra line break before the host name
-    puts "#{channel[:host]}: #{data}"
-    break if stream == :err
   end
 end

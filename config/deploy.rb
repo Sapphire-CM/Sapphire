@@ -60,19 +60,17 @@ namespace :deploy do
     end
     before :seed, 'rvm:hook'
 
+    desc "Updates the secret_key_base for cookies"
+    task :seed do
+      on primary :db do
+        within release_path do
+          with rails_env: fetch(:stage) do
+            execute :rake, "secret:update"
+          end
+        end
+      end
+    end
+    before :seed, 'rvm:hook'
+
   end
 end
-
-# desc "Updates the secret_key_base for cookies"
-# task :replace_secret do
-#   run "cd #{current_release} && RAILS_ENV=#{rails_env} bundle exec rake secret:update"
-# end
-
-# desc "Tails the production log file"
-# task :tail_logs, :roles => :app do
-#   run "tail -f #{shared_path}/log/production.log" do |channel, stream, data|
-#     puts  # for an extra line break before the host name
-#     puts "#{channel[:host]}: #{data}"
-#     break if stream == :err
-#   end
-# end

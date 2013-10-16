@@ -47,8 +47,8 @@ $(window).on 'scroll.fht-thead', ->
       "z-index":101,
       "margin-left":0,
       "margin-right":0,
-      "padding-left":"1em",
-      "padding-right":"1em"
+      "padding-left":0,
+      "padding-right":0
       })
 
     @scrolling = true

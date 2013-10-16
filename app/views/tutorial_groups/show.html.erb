@@ -50,7 +50,7 @@
   </section>
   <% end %>
 
-  <section>
+  <section class="<%= 'active' unless @tutorial_group.term.group_submissions? %>">
     <p class="title" data-section-title><a href="#">Students</a></p>
     <div class="content" data-section-content>
       <% if @tutorial_group.students.any? %>
@@ -85,7 +85,7 @@
   <section>
     <p class="title" data-section-title><a href="#">Submissions</a></p>
     <div class="content" data-section-content>
-      <%# TODO: fix that <%= render "submissions/submissions_list", submissions: @submissions %>
+      TODO: fix that: render "submissions/submissions_list", submissions: @submissions
     </div>
   </section>
 

@@ -47,6 +47,7 @@ class TutorialGroupsController < ApplicationController
     @account = Account.find(params[:account_id])
 
     registration = TutorRegistration.find_or_initialize_by_tutorial_group_id(@tutorial_group.id)
+    registration.tutor = @account
 
     save_registration_and_redirect registration
   end

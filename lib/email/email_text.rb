@@ -14,12 +14,12 @@ You should research into the following computer scientist:
 
 Before you start, read the detailed instructions at:
 
-http://courses.iicm.tugraz.at/inm/exercises/exer3.html
+  http://courses.iicm.tugraz.at/inm/exercises/exer3.html
 
-When you have finished your essay and created your PDF file, you will
+When you have finished your report and created your PDF file, you will
 need to upload it to the following TU Graz Teach Center room:
 
-#{$tugtc_rooms[tutorial_group_index]}
+  #{$tugtc_rooms[tutorial_group_index]}
 
 Note that there is one room for each tutorial group.
 
@@ -27,7 +27,7 @@ EOF
 
 text << "-- \n" + <<EOF
 Good luck!
-#{$tutors[tutorial_group_index][:name]}
+#{$tutors[tutorial_group_index][:name]} T#{tutorial_group_index+1}
 EOF
 
   text

@@ -8,7 +8,7 @@ set :deploy_via, :copy
 set :stages, %w(staging production)
 
 set :linked_files, %w{config/database.yml config/mail.yml}
-set :linked_dirs, %w{bin log emails uploads persitent}
+set :linked_dirs, %w{bin log emails uploads persistent}
 
 set :log_level, :debug
 

@@ -27,3 +27,32 @@ $ ->
     endpoint: $table_container.data("url")
     transposed: $table_container.data("transposed")
 
+$(window).on 'scroll.fht-thead', ->
+  windowScrollTop = $(window).scrollTop()
+  header = $('.fht-thead').last()
+
+  if @scrolling && windowScrollTop < header.data('scrolling-end') - 45
+    @scrolling = false
+    header.removeClass('fixed').css({position:'static', top:0, "z-index":50})
+    $('.fht-thead').first().show()
+    $('#placeholder').hide().height 0
+
+    return
+
+  if !@scrolling && windowScrollTop >= header.offset().top - 45
+    header.data 'scrolling-end', header.offset().top
+    header.addClass('fixed').css({
+      position:"fixed",
+      top: 45,
+      "z-index":101,
+      "margin-left":0,
+      "margin-right":0,
+      "padding-left":0,
+      "padding-right":0
+      })
+
+    @scrolling = true
+    $('#placeholder').show().height $('.fht-thead').first().height()
+    $('.fht-thead').first().hide()
+
+    return

@@ -1,7 +1,8 @@
 <table class='exercise-evaluations-table'>
   <thead>
     <tr>
-      <th colspan='2'>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
       <% data.student_groups.each do |student_group| %>
         <th class='<%= @exercise_evaluations_state_classes[student_group.id] %>'>
           <%= @exercise_evaluations_student_group_titles[student_group.id] %>
@@ -9,7 +10,8 @@
       <% end %>
     </tr>
     <tr>
-      <td colspan='2'><b>Submission</b></td>
+      <td><b>Submission</b></td>
+      <td></td>
       <% data.student_groups.each do |student_group| %>
         <td class='text-center'>
           <%= exercise_evaluations_create_submission_button(data, student_group) %>
@@ -20,13 +22,13 @@
 
   <tbody>
     <% data.rating_groups.each do |rating_group| %>
-      <tr>
+      <tr class='rating-group-separator'>
         <th><%= rating_group.title %></th>
         <th class='minimum-width text-right'><%= rating_group.points %></th>
         <% data.student_groups.each do |student_group| %>
           <td class='text-center
             <%= @exercise_evaluations_state_classes[student_group.id] %>
-            <%= exercise_evaluations_evaluation_group_results_id(student_group, rating_group) %>' >
+            <%= exercise_evaluations_evaluation_group_results_id(student_group, rating_group) %>'>
             <b><%= exercise_evaluations_evaluation_group_result(data, student_group, rating_group) %></b>
           </td>
         <% end %>
@@ -47,15 +49,11 @@
           <% end %>
         </tr>
       <% end %>
-      <tr>
-        <td colspan='<%= data.student_groups.count+2 %>' class='rating_group_seperator'>
-          <hr/>
-        </td>
-      </tr>
     <% end %>
 
     <tr>
-      <th colspan='2'>Result</th>
+      <th>Result</th>
+      <th></th>
       <% data.student_groups.each do |student_group| %>
         <td class='text-center <%= exercise_evaluations_result_id(student_group) %>'>
           <b><%= exercise_evaluations_submission_result(data, student_group) %></b>

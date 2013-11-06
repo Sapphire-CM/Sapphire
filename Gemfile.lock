@@ -176,6 +176,8 @@ GEM
     interception (0.3)
     jist (1.5.1)
       json
+    jquery-mousewheel-rails (0.0.2)
+      railties (>= 3.1)
     jquery-rails (3.0.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
@@ -405,6 +407,7 @@ DEPENDENCIES
   foundation-icons-sass-rails (~> 3.0)
   guard
   guard-pow
+  jquery-mousewheel-rails
   jquery-rails
   jquery-turbolinks
   jquery-ui-rails

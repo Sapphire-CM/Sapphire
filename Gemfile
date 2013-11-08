@@ -44,7 +44,9 @@ group :development do
   gem 'pry'
   gem 'pry-rails'
   gem 'pry-plus'
+
   gem 'spring'
+  gem 'spring-commands-cucumber', require: false
 
   gem 'capistrano', '~> 3.0'          # deployment via ssh
   gem 'capistrano-bundler', github: 'capistrano/bundler'

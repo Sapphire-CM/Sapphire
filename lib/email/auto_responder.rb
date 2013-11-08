@@ -8,6 +8,9 @@ Mail.defaults do
     authentication: $mail_config[:authentication],
     user_name: $mail_config[:user_name],
     password: $mail_config[:password]
+
+
+  delivery_method :file
 end
 
 def deliver_mail(args)
@@ -36,35 +39,17 @@ end
 
 def process_email(mail)
   begin
-    mn = /inm-ws20[\d]{2}-t.-ex31-(.*)-(.*)-([\d]{7})/.match(mail.subject)[3]
-    throw NotFoundExeception unless mn
 
-    student = Account.all.where{matriculation_number == my{mn}}.first
-    throw NotFoundExeception unless student
+    # load 'lib/email/inm/web_research.rb'
+    load 'lib/email/inm/style_sheets.rb'
 
-    tutorial_group = student.student_registrations.last.student_group.tutorial_group
-    throw NotFoundExeception unless tutorial_group
+    execute mail
+  # rescue
+  #   message = "AutoResponder: Error with email. No response email sent.\n"
+  #   message << "  Messag-Id: #{mail.message_id.parameterize}\n"
+  #   message << "  From: #{mail.from}\n"
+  #   message << "  Subject: #{mail.subject}\n"
 
-    tutorial_group_index = tutorial_group.term.tutorial_groups.index tutorial_group
-    throw NotFoundExeception unless tutorial_group_index
-
-    student_index = tutorial_group.students.index student
-    throw NotFoundExeception unless student_index
-
-    email_body = create_email_text tutorial_group_index, student_index
-    deliver_mail(
-      to: mail.from,
-      reply_to: $tutors[tutorial_group_index][:email],
-      subject: '[INM] Ex3.1: Web Research Topic',
-      body: email_body)
-
-    Rails.logger.info "AutoResponder: Sent email to #{student.fullname}, #{student.matriculation_number}."
-  rescue
-    Rails.logger.error "AutoResponder: Error with email #{mail.message_id}. No email sent."
-    # binding.pry
+  #   Rails.logger.error message
   end
 end
-
-load 'lib/email/email_text.rb'
-
-load 'persistent/auto_responder_paper_data.rb'

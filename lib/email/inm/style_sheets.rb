@@ -1,6 +1,7 @@
 def execute(mail)
   # mn = /inm-ws20[\d]{2}-t.-ex31-(.*)-(.*)-([\d]{7})/.match(mail.subject)[3]
-  mn = /([\d]{7})/.match(mail.subject)[0]
+  mn = /([\d]{7})/.match(mail.subject)
+  mn = mn[0] if mn
   raise "matriculation_number not found in email subject: '#{mail.subject}'" unless mn
 
   student = Account.all.where{matriculation_number == my{mn}}.first
@@ -18,11 +19,8 @@ def execute(mail)
       f.write attachment.body.decoded.force_encoding('utf-8')
     end
 
-    files << [attachment.filename, File.size(file)]
+    files << [attachment.filename, File.size(file).to_s]
   end
-
-
-
 
   email_body = create_email_text tutorial_group, files
   deliver_mail(
@@ -31,23 +29,26 @@ def execute(mail)
     subject: '[INM] Ex5: Style Sheets Submission',
     body: email_body)
 
-  Rails.logger.info "AutoResponder: Sent email to #{student.fullname}, #{student.matriculation_number}."
+  Rails.logger.info "AutoResponder: Sent email to #{student.fullname}, #{student.matriculation_number}. #{files.count} files submitted."
 end
 
 def create_email_text(tutorial_group, files)
+  max_filename = files.map { |filename, size| filename.length }.max
+  max_size = files.map { |filename, size| size.length  }.max
+
   text = <<-EOF
 Style Sheets Submission
 -----------------------
 
-You have submitted the following style sheets:
+You have submitted #{files.count} #{'file'.pluralize files.count}:
 
 EOF
 
   text << if files.empty?
-    " No files submitted. Are you sure you did everything correctly?"
+    "  *no files submitted* - are you sure you did everything correctly?"
   else
     files.map do |filename, size|
-      "  #{filename}: #{size} bytes"
+      "  #{(filename + ":").ljust(max_filename + 1)} #{size.rjust(max_size)} #{'byte'.pluralize size.to_i}"
     end.join "\n"
   end
 

@@ -21,6 +21,8 @@ def deliver_mail(args)
     subject args[:subject]
 
     content_type 'text/plain; charset=utf-8'
+    transport_encoding '8bit'
+
     body args[:body]
   end
 end
@@ -28,7 +30,7 @@ end
 def new_mails
   mails = Mail.all delete_after_find: true
   mails.each do |mail|
-    filename = "#{mail.date.to_s.parameterize}_#{mail.message_id.parameterize}.eml"
+    filename = "#{mail.date.to_s.parameterize}-#{mail.message_id.parameterize}.eml"
     filename = File.join('emails', filename)
     File.open(filename, 'w') do |f|
       f.write(mail.to_s)
@@ -39,17 +41,13 @@ end
 
 def process_email(mail)
   begin
-
-    # load 'lib/email/inm/web_research.rb'
-    load 'lib/email/inm/style_sheets.rb'
-
     execute mail
-  # rescue
-  #   message = "AutoResponder: Error with email. No response email sent.\n"
-  #   message << "  Messag-Id: #{mail.message_id.parameterize}\n"
-  #   message << "  From: #{mail.from}\n"
-  #   message << "  Subject: #{mail.subject}\n"
+  rescue
+    message = "AutoResponder: Error with email. No response email sent.\n"
+    message << "  Messag-Id: #{mail.message_id.parameterize}\n"
+    message << "  From: #{mail.from.join ', '}\n"
+    message << "  Subject: #{mail.subject}\n"
 
-  #   Rails.logger.error message
+    Rails.logger.error message
   end
 end

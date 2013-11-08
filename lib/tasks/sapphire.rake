@@ -37,8 +37,17 @@ namespace :sapphire do
   end
 
   desc "Auto Email Responder: process and respond to emails"
-  task :auto_responder => :environment do
+  task :auto_responder => :environment do |t, args|
     load 'lib/email/auto_responder.rb'
+
+    case ENV['RESPONDER']
+    when 'web_research'
+      load 'lib/email/inm/web_research.rb'
+    when 'style_sheets'
+      load 'lib/email/inm/style_sheets.rb'
+    else
+      raise 'no responder type defined!'
+    end
 
     new_mails.each do |mail|
       process_email mail

@@ -8,9 +8,6 @@ Mail.defaults do
     authentication: $mail_config[:authentication],
     user_name: $mail_config[:user_name],
     password: $mail_config[:password]
-
-
-  delivery_method :file
 end
 
 def deliver_mail(args)

@@ -48,11 +48,6 @@ group :development do
   gem 'spring'
   gem 'spring-commands-cucumber'
 
-  gem 'capistrano', '~> 3.0'          # deployment via ssh
-  gem 'capistrano-bundler', github: 'capistrano/bundler'
-  gem 'capistrano-rails', github: 'capistrano/rails'
-  gem 'capistrano-rvm', github: 'capistrano/rvm'
-
   gem 'thin'                # small development webserver
   gem 'debugger'            # debugger with irb, 1.9.3-only
   gem 'byebug'              # debugger with irb, 2.0.0-only
@@ -65,6 +60,11 @@ group :development do
   gem 'quiet_assets'        # suppresses logging of assets files
   gem 'rails-erd'           # Entity-Relation Diagrams of models
   gem 'letter_opener'       # local email sender to HTML pages
+
+  gem 'capistrano', '~> 3.0'                              # deployment via ssh
+  gem 'capistrano-rvm',     github: 'capistrano/rvm'      # capistrano plugin for rvm
+  gem 'capistrano-rails',   github: 'capistrano/rails'    # capistrano plugin for rails
+  gem 'capistrano-bundler', github: 'capistrano/bundler'  # capistrano plugin for bundler:install task
 end
 
 group :development, :test do

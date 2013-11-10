@@ -14,7 +14,11 @@ class TutorialGroup < ActiveRecord::Base
   has_many :student_groups, dependent: :destroy
 
   def students
-    @students ||= student_groups.includes(:students).flat_map{ |sg| sg.students }.uniq
+    @students ||= student_groups
+      .includes(:students)
+      .flat_map{ |sg| sg.students }
+      .sort_by{ |s| s.reverse_fullname }
+      .uniq
   end
 
   def student_has_submission_for_exercise?(student, exercise)

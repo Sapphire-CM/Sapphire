@@ -17,7 +17,7 @@ def deliver_mail(args)
     reply_to args[:reply_to]
     subject args[:subject]
 
-    charset 'UTF-8'
+    charset = 'UTF-8'
     content_type 'text/plain; charset=UTF-8'
     transport_encoding '8bit'
 

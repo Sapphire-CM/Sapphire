@@ -1,6 +1,12 @@
 module SubmissionEvaluationsHelper
   def evaluation_input_field(f)
     rating = f.object.rating
+
+
+    f.input_field(:value, evaluation_input_field_options(rating))
+  end
+
+  def evaluation_input_field_options(rating)
     options = {}
 
     if rating.is_a? BinaryRating
@@ -18,7 +24,6 @@ module SubmissionEvaluationsHelper
       options[:min] = rating.min_value
       options[:max] = rating.max_value
     end
-
-    f.input_field(:value, options)
+    options
   end
 end

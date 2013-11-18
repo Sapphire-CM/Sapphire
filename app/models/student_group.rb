@@ -20,7 +20,7 @@ class StudentGroup < ActiveRecord::Base
   def register_for(exercise)
     raise ArgumentError, "Exercise is not in same term" unless self.term == exercise.term
 
-    self.student_group_registrations.where(:exercise_id => exercise.id).first_or_create!
+    self.student_group_registrations.where(exercise: exercise).first_or_create!
   end
 
   def update_points!

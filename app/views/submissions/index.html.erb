@@ -1,3 +1,12 @@
-<% title course_term_title, "Submissions" %>
+<% title @exercise.title, "Submissions" %>
+
+<p>
+  <%= submissions_tutorial_group_dropdown(@tutorial_group) %>
+</p>
 
 <%= render "submissions_list", submissions: @submissions %>
+
+
+<p>
+  <%= paginate @submissions %>
+</p>

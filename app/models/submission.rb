@@ -14,7 +14,18 @@ class Submission < ActiveRecord::Base
 
   scope :for_exercise, lambda { |exercise| where(exercise_id: exercise) }
 
+  scope :for_tutorial_group, lambda { |tutorial_group| joins{student_group}.where { student_group.tutorial_group == my {tutorial_group} }}
+
+  def self.next(submission)
+    Submission.where { id > my{submission.id} } .order {id.asc} .limit(1).first
+  end
+
+  def self.previous(submission)
+    Submission.where { id < my{submission.id} } .order {id.desc} .limit(1).first
+  end
+
   after_create :create_submission_evaluation
+
 
   def assign_to(student_group)
     self.student_group_registration = student_group.register_for(self.exercise)

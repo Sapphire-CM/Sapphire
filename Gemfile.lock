@@ -399,6 +399,7 @@ DEPENDENCIES
   capistrano-rvm!
   capybara
   carrierwave
+  coderay
   coffee-rails (~> 4.0)
   compass-rails (~> 2.0.alpha)
   cucumber

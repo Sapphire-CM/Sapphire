@@ -38,21 +38,21 @@ $(window).on 'scroll.fht-thead', ->
     $('#placeholder').hide().height 0
 
     return
+  if header
+    if !@scrolling&&  windowScrollTop >= header.offset().top - 45
+      header.data 'scrolling-end', header.offset().top
+      header.addClass('fixed').css({
+        position:"fixed",
+        top: 45,
+        "z-index":101,
+        "margin-left":0,
+        "margin-right":0,
+        "padding-left":0,
+        "padding-right":0
+        })
 
-  if !@scrolling && windowScrollTop >= header.offset().top - 45
-    header.data 'scrolling-end', header.offset().top
-    header.addClass('fixed').css({
-      position:"fixed",
-      top: 45,
-      "z-index":101,
-      "margin-left":0,
-      "margin-right":0,
-      "padding-left":0,
-      "padding-right":0
-      })
+      @scrolling = true
+      $('#placeholder').show().height $('.fht-thead').first().height()
+      $('.fht-thead').first().hide()
 
-    @scrolling = true
-    $('#placeholder').show().height $('.fht-thead').first().height()
-    $('.fht-thead').first().hide()
-
-    return
+      return

@@ -51,6 +51,6 @@
   </section> -->
 </div>
 
-<%= link_to "Back to #{@submission.exercise.title}", exercise_path(@submission.exercise) %>
+<%= link_to "Back to Submissions of #{@submission.exercise.title}", :back %>
 
 <%= render 'application/reveal_modal' %>

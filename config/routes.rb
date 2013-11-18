@@ -46,9 +46,12 @@ Sapphire::Application.routes.draw do
 
     resource :evaluation, controller: 'exercise_evaluations_table'
 
+    resources :submissions
   end
+  resources :single_evaluations
 
   resources :submission_evaluations
+
 
   namespace :import do
     resources :student_imports do

@@ -15,4 +15,8 @@ module ApplicationHelper
   def current_controller
     (params[:controller]+"_controller").camelize.constantize
   end
+
+  def coderay(code, lang = :ruby)
+    CodeRay.scan(code, lang).div.html_safe
+  end
 end

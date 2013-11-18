@@ -7,6 +7,11 @@
   <% if @term.student_groups.any? %>
     <p><%= link_to "Evaluations Table", exercise_evaluation_path(@exercise), class: "small button" %></p>
   <% end %>
+
+  <% if @exercise.submissions.any? %>
+    <p><%= link_to "View #{pluralize @exercise.submissions.count, "submission"}", exercise_submissions_path(@exercise), class: "small button" %></p>
+  <% end %>
+
 <% end %>
 
 <div class="section-container tabs" data-section="tabs">
@@ -32,12 +37,12 @@
     </div>
   </section>
 
-  <section>
+<!--   <section>
     <p class="title" data-section-title><a href="#">Submissions</a></p>
     <div class="content" data-section-content>
-      <%= render "submissions/submissions_list", submissions: @exercise.submissions %>
+      <%#= render "submissions/submissions_list", submissions: @exercise.submissions %>
     </div>
-  </section>
+  </section> -->
 
   <section>
     <p class="title" data-section-title><a href="#">Description</a></p>

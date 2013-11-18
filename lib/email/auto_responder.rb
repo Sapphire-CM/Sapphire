@@ -10,19 +10,21 @@ Mail.defaults do
     password: $mail_config[:password]
 end
 
-def deliver_mail(args)
-  Mail.deliver do
-    from $mail_config[:from_address]
-    to args[:to]
-    reply_to args[:reply_to]
-    subject args[:subject]
+class AutoResponderMailer < ActionMailer::Base
+  default from: $mail_config[:from_address]
 
-    charset = 'UTF-8'
-    content_type 'text/plain; charset=UTF-8'
-    transport_encoding '8bit'
-
-    body args[:body]
+  def response(args)
+    mail(
+      to: args[:to],
+      reply_to: args[:reply_to],
+      subject: args[:subject],
+      body: args[:body]
+    )
   end
+end
+
+def deliver_mail(args)
+  AutoResponderMailer.response(args).deliver
 end
 
 def new_mails
@@ -40,11 +42,12 @@ end
 def process_email(mail)
   begin
     execute mail
-  rescue
+  rescue Exception => e
     message = "AutoResponder: Error with email. No response email sent.\n"
     message << "  Messag-Id: #{mail.message_id.parameterize}\n"
     message << "  From: #{mail.from.join ', '}\n"
     message << "  Subject: #{mail.subject}\n"
+    message << "  Exception: #{e.to_s}\n"
 
     Rails.logger.error message
   end

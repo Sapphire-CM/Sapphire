@@ -11,11 +11,11 @@ $.widget "sapphire.evaluations_table_toolbar",
 
   update_tutorial_group:(id)->
     @element.find(".tutorial_groups_dropdown a span").remove()
-    @element.find(".tutorial_groups_dropdown a[data-tutorial-group-id=#{id}]").prepend("<span style='display:block; float:right'>✔</span>");
+    @element.find(".tutorial_groups_dropdown a[data-tutorial-group-id=#{id}]").prepend("<span style='display:block; float:right'>&#x2713;</span>");
 
   update_order: (order)->
     @element.find(".orders_dropdown a span").remove()
-    @element.find(".orders_dropdown a[data-order=#{order}]").prepend("<span style='display:block; float:right'>✔</span>");
+    @element.find(".orders_dropdown a[data-order=#{order}]").prepend("<span style='display:block; float:right'>&#x2713;</span>");
 
   _transpose_clicked: (e) ->
     @_update_table("transpose")

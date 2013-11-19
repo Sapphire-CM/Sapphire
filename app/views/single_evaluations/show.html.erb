@@ -1,0 +1,15 @@
+<% title submission_title(@submission), @exercise.title %>
+
+<div class='row'>
+  <div class='small-9 columns'>
+  <% @submission.submission_assets.each do |submission_asset| %>
+    <h4><%= shorten(File.basename(submission_asset.file.to_s), 60) %></h4>
+    <%= inline_submission_asset submission_asset %>
+  <% end %>
+
+  <p><%= link_to "Back to Submissions", exercise_submissions_path(@exercise) %></p>
+  </div>
+  <div class='small-3 columns evaluations-list'>
+    <%= render "evaluations_list", evaluation_groups: @evaluation_groups, submission_evaluation: @submission.submission_evaluation %>
+  </div>
+</div>

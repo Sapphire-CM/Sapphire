@@ -3,8 +3,8 @@
     <thead>
       <tr>
         <th>Student</th>
-        <th>Exercise</th>
         <th>Submitted at</th>
+        <th>Tutorial Group</th>
         <th>Evaluation Result</th>
         <th>Evaluated at</th>
         <th></th>
@@ -13,9 +13,9 @@
     <tbody>
       <% submissions.each do |submission| %>
       <tr>
-        <td><%= submission.student_group.title %></td>
-        <td><%= submission.exercise.title %></td>
+        <td><%= submission_author submission %></td>
         <td><%= l submission.submitted_at, format: :long %></td>
+        <td><%= tutorial_group_title(submission.student_group.tutorial_group) %></td>
         <td>
           <% if submission.submission_evaluation.present? %>
             <%= pluralize submission.submission_evaluation.evaluation_result, "point" %>
@@ -25,14 +25,15 @@
           <% end %>
         </td>
         <td>
-          <% if submission.submission_evaluation.present? %>
+          <% if submission.submission_evaluation.evaluated_at.present? %>
             <%= l submission.submission_evaluation.evaluated_at, format: :long %>
           <% else %>
             <em>Not evaluated yet</em>
           <% end %>
         </td>
         <td>
-          <%= link_to "Show", submission_path(submission), class: "small button" %>
+          <%= link_to "Show", exercise_submission_path(submission.exercise, submission), class: "small button" %>
+          <%= link_to "Evaluate", single_evaluation_path(submission, tutorial_group_id: params[:tutorial_group_id]), class: "small button" %>
         </td>
       </tr>
       <% end %>

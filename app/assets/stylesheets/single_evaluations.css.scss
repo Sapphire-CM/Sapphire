@@ -1,0 +1,81 @@
+// Place all the styles related to the single_evaluations controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+@import "config";
+
+.code-panel {
+  overflow-x: scroll;
+  position: relative;
+
+  .buttons {
+    position: absolute;
+    display: none;
+    top: -1px;
+    right: -1px;
+  }
+
+  &:after {
+    content: " ";
+    position: absolute;
+    top: 0px;
+    left: 39.75em;
+    height: 100%;
+    border-left: 1px solid rgba(200,200,200,0.8);
+  }
+
+  &:hover .buttons {
+    display: block;
+  }
+}
+
+.evaluations-list {
+  position: fixed;
+  z-index: 100;
+  top: 45px;
+  right: 0px;
+  box-shadow: 0px 2px 5px #ddd;
+  height: calc(100% - 45px);
+
+  padding-bottom: 140px;
+  background-color: white;
+
+  .ratings-list {
+    list-style: none;
+    margin: 0px;
+  }
+
+  .scrollable {
+    height: 100%;
+    overflow: scroll;
+
+    /* smooth scrolling on iOS devices */
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1em;
+    border: 1px solid $hr-border-color;
+  }
+
+  section {
+    margin: 0px;
+
+
+    &:first-child p.title {
+      border-top: 0px;
+    }
+
+    p.title {
+      padding: 10px;
+      font-weight: bold;
+      border-top: 1px solid $hr-border-color;
+      border-bottom: 1px solid $hr-border-color;
+      background-color: $panel-bg;
+      margin: 0px;
+    }
+
+    div.content {
+      padding: 10px 10px;
+      margin-bottom: 20px;
+    }
+  }
+}

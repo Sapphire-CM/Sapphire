@@ -19,6 +19,7 @@ module Sapphire
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/lib/sapphire)
     config.autoload_paths += %W(#{config.root}/app/viewmodels)
+    config.autoload_paths += %W(#{config.root}/lib/scanners)
 
     config.time_zone = 'Vienna'
 

@@ -33,6 +33,8 @@ gem 'remotipart', '~> 1.2'        # fileuploads via ajax
 gem 'whenever'                    # cron tasks
 gem 'mail'                        # fetching, delivering and parsing of emails
 
+gem 'coderay'                     # doing code-highlighting for submission_assets
+
 group :production do
   gem 'therubyracer'
   gem 'pg'                        # PostgreSQL database connector

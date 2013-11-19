@@ -6,4 +6,7 @@ class SubmissionAsset < ActiveRecord::Base
 
   attr_accessible :file, :submission_id
 
+  class Mime
+    NEWSGROUP_POST = "text/newsgroup"
+  end
 end

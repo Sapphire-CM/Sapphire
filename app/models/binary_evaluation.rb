@@ -1,6 +1,10 @@
 class BinaryEvaluation < Evaluation
   attr_accessible :checked
 
+  def checked?
+    value == 1
+  end
+
   def points
     if value == 1 && rating.is_a?(BinaryNumberRating)
       rating.value

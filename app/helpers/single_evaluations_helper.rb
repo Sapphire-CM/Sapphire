@@ -1,4 +1,4 @@
-#encoding: utf8
+#encoding: utf-8
 
 module SingleEvaluationsHelper
   def single_evaluation_input(evaluation)

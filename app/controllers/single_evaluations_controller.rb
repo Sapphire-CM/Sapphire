@@ -6,7 +6,7 @@ class SingleEvaluationsController < ApplicationController
     @previous_submission = Submission.for_exercise(@submission.exercise).for_tutorial_group(@submission.student_group.tutorial_group).previous(@submission)
 
     @exercise = @submission.exercise
-    @evaluation_groups = @submission.submission_evaluation.evaluation_groups.includes([:rating_group, {evaluations: :rating}])
+    @evaluation_groups = @submission.submission_evaluation.evaluation_groups.includes([:rating_group, {evaluations: :rating}]).order{rating_group.ratings.row_order.asc}.order{rating_group.row_order.asc}
     @term = @exercise.term
   end
 

@@ -1,3 +1,5 @@
+#encoding: utf8
+
 module SingleEvaluationsHelper
   def single_evaluation_input(evaluation)
     rating = evaluation.rating

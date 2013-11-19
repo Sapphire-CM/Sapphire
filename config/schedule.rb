@@ -3,6 +3,6 @@
 #   bundle exec whenever --update-crontab sapphire --set environment=production
 
 every 1.minutes do
-  # rake "sapphire:auto_responder RESPONDER=web_research"
-  rake sapphire:auto_responder RESPONDER=style_sheets
+  # rake 'sapphire:auto_responder RESPONDER=web_research'
+  rake 'sapphire:auto_responder RESPONDER=style_sheets'
 end

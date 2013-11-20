@@ -5,9 +5,9 @@ $('#<%= single_evaluation_evaluation_group_id(@evaluation.evaluation_group) %>')
 <% if @rating.is_a? BinaryRating %>
   var eval_button = $('#<%= single_evaluation_button_id(@evaluation) %>');
   <% if @evaluation.checked? %>
-    eval_button.removeClass("success").addClass("secondary");
+    eval_button.removeClass("secondary").addClass("alert");
   <% else %>
-    eval_button.removeClass("secondary").addClass("success");
+    eval_button.removeClass("alert").addClass("secondary");
   <% end %>
 <% end %>
 

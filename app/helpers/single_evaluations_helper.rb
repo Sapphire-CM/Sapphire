@@ -6,9 +6,11 @@ module SingleEvaluationsHelper
 
     if rating.is_a? BinaryRating
       css_class = if evaluation.value == 1
-        "secondary"
+        # "secondary"
+        "alert"
       else
-        "success"
+        # "success"
+        "secondary"
       end
 
       link_to "#{raw rating.title}".html_safe, single_evaluation_path(evaluation), id: single_evaluation_button_id(evaluation), method: "put", data: {remote: true}, class: "#{css_class} tiny button expand"

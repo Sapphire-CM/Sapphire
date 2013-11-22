@@ -1,6 +1,6 @@
 <tr>
   <td><%= File.basename submission_asset.file.to_s %></td>
-  <td><%= l submission_asset.created_at, format: :long %></td>
+  <td><%= l submission_asset.submitted_at, format: :long %></td>
   <td><%= submission_asset.content_type %></td>
   <td><%= link_to "view raw", submission_asset_path(submission_asset), class: "small button", target: "_blank" %></td>
 </tr>

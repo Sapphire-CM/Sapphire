@@ -1,7 +1,7 @@
 class SingleEvaluationsController < ApplicationController
   def show
     @submission = Submission.find(params[:id])
-
+    @submission_assets = @submission.submission_assets.order(submitted_at: :desc)
     @next_submission = Submission.for_exercise(@submission.exercise).for_tutorial_group(@submission.student_group.tutorial_group).next(@submission)
     @previous_submission = Submission.for_exercise(@submission.exercise).for_tutorial_group(@submission.student_group.tutorial_group).previous(@submission)
 

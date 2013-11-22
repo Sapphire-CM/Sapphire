@@ -1,44 +1,65 @@
-module CodeRay
+
   module Scanners
-    class Email < Scanner
+    class Email < ::CodeRay::Scanners::Scanner
       register_for :email
-
-
 
       protected
       def setup
-        @state = :initial
+        @state = :headers
       end
 
       def scan_tokens encoder, options
         state = options[:state] || @state
 
-        if [:string, :key].include? state
-          encoder.begin_group state
-        end
+        header_state = :begin
 
         until eos?
           case state
-
-          when :initial
-            if match = scan(/ \s+ /x)
-              encoder.text_token match, :space
+          when :headers
+            case header_state
+            when :begin
+              if match = scan(/^[A-Z][\w-]+:/)
+                encoder.text_token match, :attribute_name
+                header_state = :contents
+              elsif match = scan(/\n/)
+                encoder.text_token match, :space
+                state = :body
+              elsif match = scan(/\s+/)
+                encoder.text_token match, :space
+                header_state = :contents
+              else
+                puts "fuu 1"
+                state = :body
+                # raise_inspect "else case \" reached; %p not handled." % peek(1), encoder
+              end
+            when :contents
+              if match = scan(/^\s+/)
+                encoder.text_token match, :space
+              elsif match = scan(/.*\n/)
+                encoder.text_token match, :attribute_value
+                header_state = :begin
+              end
             end
-          when :string, :key
-            raise_inspect "else case \" reached; %p not handled." % peek(1), encoder
+          when :body
+            if match = scan(/-- /)
+              encoder.text_token match, :comment
+              state = :sig
+            elsif match = scan(/^>.*\n/)
+              encoder.text_token match, :docstring
+            else
+              match = scan(/.*\n/)
+              encoder.text_token match, :plain
+            end
+          when :sig
+            match = scan(/.*/m)
+            encoder.text_token match, :comment
+          else
+            puts "fuu 3 - headers done?!"
+            # raise_inspect "else case \" reached; %p not handled." % peek(1), encoder
+            return
           end
         end
-
-        if options[:keep_state]
-          @state = state
-        end
-
-        if [:string, :key].include? state
-          encoder.end_group state
-        end
-
         encoder
       end
     end
   end
-end

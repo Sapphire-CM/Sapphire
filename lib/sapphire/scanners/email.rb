@@ -1,4 +1,4 @@
-
+module Sapphire
   module Scanners
     class Email < ::CodeRay::Scanners::Scanner
       register_for :email
@@ -63,3 +63,4 @@
       end
     end
   end
+end

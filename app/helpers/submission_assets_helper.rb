@@ -13,10 +13,11 @@ module SubmissionAssetsHelper
 
   private
   def inline_newsgroup_post_asset(submission_asset)
-    render "code_panel", code: inline_code(submission_asset.file.read, :email), raw_url: submission_asset_path(submission_asset)
+    render "code_panel", code: auto_link(inline_code(submission_asset.file.read, :email), sanitize: false, html: {target: "_blank"}).html_safe, raw_url: submission_asset_path(submission_asset)
   end
 
   def inline_code(code, lang)
     coderay(code.force_encoding("UTF-8"), lang)
   end
+
 end

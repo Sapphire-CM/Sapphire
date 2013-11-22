@@ -24,7 +24,6 @@ gem 'coffee-rails',    '~> 4.0'   # Use CoffeeScript for .js.coffee assets and v
 gem 'uglifier',        '>= 1.3'   # Use Uglifier as compressor for JavaScript assets
 gem 'jquery-rails'                # Use jquery as the JavaScript library
 gem 'jquery-mousewheel-rails'     # jquery MouseWheel support
-
 gem 'zurb-foundation', '~> 4.3.0'
 gem 'foundation-icons-sass-rails', '~> 3.0'
 
@@ -34,7 +33,7 @@ gem 'whenever'                    # cron tasks
 gem 'mail'                        # fetching, delivering and parsing of emails
 
 gem 'coderay'                     # doing code-highlighting for submission_assets
-
+gem 'rails_autolink'              # autolinking submitted newsgroup-posts and emails
 group :production do
   gem 'therubyracer'
   gem 'pg'                        # PostgreSQL database connector

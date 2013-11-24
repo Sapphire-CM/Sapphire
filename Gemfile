@@ -36,6 +36,8 @@ gem 'rails_autolink'              # autolinking submitted newsgroup-posts and em
 gem 'css_parser'                  # for parsing css files
 gem 'nokogiri'                    # for parsing HTML-Files
 
+gem 'multi_logger'                # custom log files
+
 group :production do
   gem 'therubyracer'
   gem 'pg'                        # PostgreSQL database connector

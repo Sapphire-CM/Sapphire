@@ -1,5 +1,6 @@
+load 'persistent/auto_responder_paper_data.rb'
+
 def execute(mail)
-  # mn = /inm-ws20[\d]{2}-t.-ex31-(.*)-(.*)-([\d]{7})/.match(mail.subject)[3]
   mn = /([\d]{7})/.match(mail.subject)
   mn = mn[0] if mn
   raise "matriculation_number not found in email subject: '#{mail.subject}'" unless mn
@@ -10,9 +11,21 @@ def execute(mail)
   tutorial_group = student.student_registrations.last.student_group.tutorial_group
   raise "tutorial_group not found in database" unless tutorial_group
 
+  tutorial_group_index = tutorial_group.term.tutorial_groups.index tutorial_group
+  raise "tutorial_group_index not found in database" unless tutorial_group_index
+
+  base = base_name_schema % {
+    term: tutorial_group.term.title.delete(' ').parameterize,
+    exercise: 'ex5',
+    tutorial_group: tutorial_group.title.parameterize,
+    surname: student.surname.parameterize,
+    forename: student.forename.parameterize,
+    matriculation_number: student.matriculation_number.parameterize,
+  }
+
   files = []
   mail.attachments.each do |attachment|
-    file = "emails/style_sheets/inm-ws2013-ex5-#{tutorial_group.title.downcase}-#{student.surname.downcase.parameterize}-#{student.forename.downcase.parameterize}-#{student.matriculation_number}/#{attachment.filename}"
+    file = "emails/success/style_sheets/#{base}/#{attachment.filename}"
     FileUtils.mkdir_p File.dirname(file)
 
     File.open(file, 'w') do |f|
@@ -23,13 +36,22 @@ def execute(mail)
   end
 
   email_body = create_email_text tutorial_group, files
-  deliver_mail(
+  AutoResponderMailer.response(
     to: mail.from,
     bcc: tutorial_group.tutor.email,
+    reply_to: $tutors[tutorial_group_index][:email],
     subject: '[INM] Ex5: Style Sheets Submission',
-    body: email_body)
+    body: email_body
+  )
 
-  Rails.logger.info "AutoResponder: Sent email to #{student.fullname}, #{student.matriculation_number}. #{files.count} files submitted."
+  File.open("emails/success/#{base}.eml", 'w') do |f|
+    f.write mail.to_s
+  end
+
+  Rails.logger.autoresponder.info """
+    AutoResponder: Style Sheets: Sent email to #{student.fullname}, #{student.matriculation_number}
+      Submitted files: #{files.count}
+  """
 end
 
 def create_email_text(tutorial_group, files)

@@ -10,30 +10,44 @@ Mail.defaults do
     password: $mail_config[:password]
 end
 
+FileUtils.mkdir_p 'emails/raw'
+FileUtils.mkdir_p 'emails/response'
+FileUtils.mkdir_p 'emails/success'
+FileUtils.mkdir_p 'emails/failure'
+
+def mail_filename(mail)
+  "#{mail.date.to_s.parameterize}-#{mail.message_id.parameterize}.eml"
+end
+
+def base_name_schema
+  'inm-%{term}-%{exercise}-%{tutorial_group}-%{surname}-%{forename}-%{matriculation_number}'
+end
+
 class AutoResponderMailer < ActionMailer::Base
   default from: $mail_config[:from_address]
 
   def response(args)
-    mail(
+    message = mail(
       to: args[:to],
       reply_to: args[:reply_to],
       subject: args[:subject],
       body: args[:body]
     )
-  end
-end
 
-def deliver_mail(args)
-  AutoResponderMailer.response(args).deliver
+    message.charset = 'UTF-8'
+    message.deliver
+
+    File.open("emails/response/#{mail_filename message}", 'w') do |f|
+      f.write(message.to_s)
+    end
+  end
 end
 
 def new_mails
   mails = Mail.all delete_after_find: true
-  mails.each do |mail|
-    filename = "#{mail.date.to_s.parameterize}-#{mail.message_id.parameterize}.eml"
-    filename = File.join('emails', filename)
-    File.open(filename, 'w') do |f|
-      f.write(mail.to_s)
+  mails.each do |message|
+    File.open("emails/raw/#{mail_filename message}", 'w') do |f|
+      f.write(message.to_s)
     end
   end
   mails
@@ -43,12 +57,18 @@ def process_email(mail)
   begin
     execute mail
   rescue Exception => e
-    message = "AutoResponder: Error with email. No response email sent.\n"
-    message << "  Messag-Id: #{mail.message_id.parameterize}\n"
-    message << "  From: #{mail.from.join ', '}\n"
-    message << "  Subject: #{mail.subject}\n"
-    message << "  Exception: #{e.to_s}\n"
+    File.open("emails/failure/#{mail_filename mail}", 'w') do |f|
+      f.write mail.to_s
+    end
 
-    Rails.logger.error message
+    Rails.logger.autoresponder.error """
+      AutoResponder: Error with email. No response email sent.
+        Messag-Id: #{mail.message_id.parameterize}
+        From: #{mail.from.join ', '}
+        Subject: #{mail.subject}
+        Exception: #{e.to_s}
+    """
+
+    binding.pry
   end
 end

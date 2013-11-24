@@ -185,6 +185,8 @@ GEM
     mini_portile (0.5.2)
     minitest (4.7.5)
     multi_json (1.9.0)
+    multi_logger (0.1.0)
+      railties
     multi_test (0.0.3)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
@@ -379,6 +381,7 @@ DEPENDENCIES
   kaminari
   letter_opener
   mail
+  multi_logger
   nokogiri
   pg
   poltergeist

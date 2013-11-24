@@ -1,6 +1,9 @@
 # after changes in this file you have to run this on the server
-# for the crontab file to be updated
+# for the crontab file to be updated:
 #   bundle exec whenever --update-crontab sapphire --set environment=production
+#
+# or clear all entries in the current crontab:
+#   crontab -r
 
 # Example for INM to respond to web-research emails on exercise with ID 19
 #   every 1.minutes do

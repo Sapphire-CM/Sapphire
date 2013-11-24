@@ -222,12 +222,14 @@ GEM
     mini_portile (0.6.1)
     minitest (4.7.5)
     multi_json (1.10.1)
+    multi_logger (0.1.0)
+      net-ssh (>= 2.6.5)
+      railties
     multi_test (0.1.1)
     mysql2 (0.3.17)
     net-http-digest_auth (1.4)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
-      net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
     nokogiri (1.6.5)
       mini_portile (~> 0.6.0)
@@ -459,6 +461,7 @@ DEPENDENCIES
   letter_opener
   mail
   mechanize
+  multi_logger
   mysql2
   nntp-client!
   nokogiri

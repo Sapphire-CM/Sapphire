@@ -1,36 +1,52 @@
 load 'persistent/auto_responder_paper_data.rb'
 
 def execute(mail, exercise)
-  # mn = /inm-ws20[\d]{2}-t.-ex31-(.*)-(.*)-([\d]{7})/.match(mail.subject)[3]
-
   term_registration = submitter_for_email(mail, exercise)
-  throw NotFoundExeception unless term_registration
+  raise "term registration not found for email" unless term_registration
 
   student = term_registration.account
-  throw NotFoundExeception unless student
-  mn = student.matriculation_number
+  raise "student not found in database" unless student
 
   tutorial_group = term_registration.tutorial_group
-  throw NotFoundExeception unless tutorial_group
+  raise "tutorial_group not found in database" unless tutorial_group
 
   tutorial_group_index = tutorial_group.term.tutorial_groups.index tutorial_group
-  throw NotFoundExeception unless tutorial_group_index
+  raise "tutorial_group_index not found in term" unless tutorial_group_index
 
   student_index = tutorial_group.student_accounts.index student
-  throw NotFoundExeception unless student_index
+  raise "student index not found in tutorial group" unless student_index
 
-  email_body = create_email_text tutorial_group_index, student_index
-  deliver_mail(
+  famous_person = $famous_persons[tutorial_group_index][student_index % 5]
+
+  email_body = create_email_text famous_person, tutorial_group, student, tutorial_group_index
+  AutoResponderMailer.response(
     to: mail.from,
+    bcc: tutorial_group.tutor.email,
     reply_to: $tutors[tutorial_group_index][:email],
     subject: '[INM] Ex3.1: Web Research Topic',
-    body: email_body)
+    body: email_body
+  )
 
-  Rails.logger.info "AutoResponder: Sent email to #{student.fullname}, #{student.matriculation_number}."
+  base = base_name_schema % {
+    term: tutorial_group.term.title.delete(' ').parameterize,
+    exercise: 'ex3',
+    tutorial_group: tutorial_group.title.parameterize,
+    surname: student.surname.parameterize,
+    forename: student.forename.parameterize,
+    matriculation_number: student.matriculation_number.parameterize,
+  }
+
+  File.open("emails/success/#{base}.eml", 'w') do |f|
+    f.write mail.to_s
+  end
+
+  Rails.logger.autoresponder.info """
+    AutoResponder: Web Research: Sent email to #{student.fullname}, #{student.matriculation_number}
+      Person: #{famous_person[:name]}
+  """
 end
 
-def create_email_text(tutorial_group_index, student_index)
-  famous_person = $famous_persons[tutorial_group_index][student_index % 5]
+def create_email_text(famous_person, tutorial_group, student, tutorial_group_index)
 
   text = <<-EOF
 Web Research
@@ -58,7 +74,7 @@ EOF
 
 text << "-- \n" + <<-EOF
 Good luck!
-#{$tutors[tutorial_group_index][:name]} T#{tutorial_group_index+1}
+#{tutorial_group.tutor.forename} #{tutorial_group.title}
 EOF
 
   text

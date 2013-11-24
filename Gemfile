@@ -45,6 +45,7 @@ gem 'sidekiq'                     # async jobs in background, used for imports
 gem 'sinatra', '>= 1.3.0', :require => nil    # small rack framework, used for sidekiq ui
 
 gem 'writeexcel'                  # exporting excel spreadsheets
+gem 'multi_logger'                # custom log files
 
 group :production do
   gem 'therubyracer'

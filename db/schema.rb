@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130928085417) do
+ActiveRecord::Schema.define(version: 20131130160730) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 20130928085417) do
     t.string   "type"
     t.integer  "value"
     t.integer  "evaluation_group_id"
+    t.boolean  "checked_automatically"
   end
 
   add_index "evaluations", ["evaluation_group_id"], name: "index_evaluations_on_evaluation_group_id"
@@ -142,6 +143,7 @@ ActiveRecord::Schema.define(version: 20130928085417) do
     t.integer  "min_value"
     t.integer  "row_order"
     t.float    "multiplication_factor"
+    t.string   "automated_checker_identifier"
   end
 
   add_index "ratings", ["rating_group_id"], name: "index_ratings_on_rating_group_id"

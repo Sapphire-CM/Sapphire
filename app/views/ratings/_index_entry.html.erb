@@ -9,6 +9,9 @@
         <%= rating.title %>
       </span>
     <% end %>
+    <% if rating.automatically_checked? %>
+      <span data-tooltip class='has-tip' title='Automatically checked via <%= automated_check_title rating.automated_checker_identifier %>'>A</span>
+    <% end %>
   </td>
 
   <td class='value-column right-aligned'>

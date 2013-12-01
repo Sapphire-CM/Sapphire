@@ -15,6 +15,11 @@
     <%= f.input :min_value %>
     <%= f.input :max_value %>
     <%= f.input :multiplication_factor %>
+    <%= f.input :automated_checker_identifier, collection: automated_checks_form_collection,
+      as: :grouped_select,
+      group_method: :checks,
+      group_label_method: :title,
+      value_method: :identifier %>
   </div>
 
   <div class='row'>

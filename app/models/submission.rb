@@ -16,6 +16,8 @@ class Submission < ActiveRecord::Base
 
   scope :for_tutorial_group, lambda { |tutorial_group| joins{student_group}.where { student_group.tutorial_group == my {tutorial_group} }}
 
+  scope :for_student_group, lambda {|student_group| joins(:student_group_registration).where{student_group_registration.student_group_id == my {student_group.id}}}
+
   after_create :create_submission_evaluation
 
   def self.next(submission)

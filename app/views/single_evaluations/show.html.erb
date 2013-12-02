@@ -2,8 +2,13 @@
 
 <div class='row'>
   <div class='small-9 columns'>
-  <% @submission.submission_assets.each do |submission_asset| %>
-    <h4><%= shorten(File.basename(submission_asset.file.to_s), 60) %></h4>
+  <% @submission.submission_assets.order(:file).each do |submission_asset| %>
+    <h4>
+      <%= shorten(File.basename(submission_asset.file.to_s), 60) %>
+      <% if submission_asset.asset_identifier.present? %>
+        <small><%= submission_asset.asset_identifier %></small>
+      <% end %>
+    </h4>
     <%= inline_submission_asset submission_asset %>
   <% end %>
 

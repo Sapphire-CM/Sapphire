@@ -2,7 +2,7 @@ class EvaluationGroup < ActiveRecord::Base
   belongs_to :rating_group
   belongs_to :submission_evaluation
 
-  has_many :evaluations, dependent: :destroy
+  has_many :evaluations, dependent: :delete_all
 
   before_create :calc_result
   after_create :create_evaluations

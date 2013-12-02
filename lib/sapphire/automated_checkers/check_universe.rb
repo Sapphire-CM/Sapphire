@@ -18,7 +18,7 @@ module Sapphire
               when "é" then 'e'
               when "á" then 'a'
             end
-          end
+          end.force_encoding("US-ASCII")
         end
       end
 

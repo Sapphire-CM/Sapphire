@@ -29,15 +29,45 @@ module Sapphire
       end
 
       check :redundant_reply_to_email_address do
-        if @mail.respond_to? :reply_to
-          if @mail.reply_to == @mail.from
+        if @mail.header['Reply-To'] && !@mail.from.nil? && !@mail.header['Reply-To'].nil?
+          if @mail.from.map(&:downcase).include? @mail.header['Reply-To'].to_s.downcase
             failed!
           end
         end
       end
 
-      check :email_address do
+      check :any_email_address_known do
+        addresses = (@mail.from || []) + (@mail.reply_to || [])
+        addresses.compact!
+        addresses.map!(&:downcase)
 
+        success = false
+        student_group.students.each do |student|
+          success = true if addresses.include? student.email
+        end
+
+        failed! unless success
+      end
+
+      check :contains_unknown_email do
+        addresses = (@mail.from || []) + (@mail.reply_to || [])
+        addresses.compact!
+        addresses.uniq!
+        addresses.map!(&:downcase)
+
+        if addresses.length > 1
+          failed!
+        else
+          address = addresses.first
+          known = false
+          student_group.students.each do |student|
+            if student.email == address
+              known = true
+            end
+          end
+
+          failed! unless known
+        end
       end
 
       check :body_utf8_charset do
@@ -66,7 +96,7 @@ module Sapphire
       end
 
       check :ascii_headers do
-        if @mail.subject =~ /\A[A-Za-z0-9\s]\z/
+        if to_ascii(@mail.subject) == @mail.subject
           success!
         else
           failed!
@@ -80,19 +110,56 @@ module Sapphire
       end
 
       check :signature_presence do
+        body = if @mail.multipart?
+          @mail.parts.select {|p| p.content_type =~ /plain/}.first.body
+        else
+          @mail.body
+        end.to_s
 
+        success = false
+        body.split(/\n/).each do |line|
+          success = true if line =~ /^\-{2,}\s*$/
+        end
+
+        failed! unless success
       end
 
       check :signature_length do
+        body = if @mail.multipart?
+          @mail.parts.select {|p| p.content_type =~ /plain/}.first.body
+        else
+          @mail.body
+        end.to_s
+
+        signature = body.scan(/^-- \n(.*)\z/m).last
+
+        failed! if signature && signature.last.gsub(/\s+\z/, "").split(/\n/).count > 4
 
       end
 
       check :signature_separator do
+        body = if @mail.multipart?
+          @mail.parts.select {|p| p.content_type =~ /plain/}.first.body
+        else
+          @mail.body
+        end.to_s
 
+        sig_found = false
+        body.split(/\n/).each do |line|
+          sig_found = true if line =~ /^\-{2,}\s*$/
+        end
+        failed! if sig_found && body !~ /^-- $/
       end
 
       check :line_length do
+        @mail.body.to_s.split("\n").each do |line|
+          next if line.include? "http://"
 
+          if line.length > 76
+            failed!
+            break
+          end
+        end
       end
     end
   end

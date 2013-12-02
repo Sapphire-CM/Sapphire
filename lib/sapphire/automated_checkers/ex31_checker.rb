@@ -13,20 +13,48 @@ module Sapphire
         body = if @mail.multipart?
           part = @mail.parts.select {|part| part.content_type == 'text/plain'}.first
           part = @mail.parts.first if part.blank?
-
           part.body.to_s
         else
           @mail.body.to_s
         end
-        if body =~ /[^\w\s\-\.\,\/\:]/
-          failed!
-        else
-          success!
-        end
+
+        failed! if body =~/\|/
       end
 
       check :subject_present do
         failed! if @mail.subject.blank?
+      end
+
+      check :mail_to_wrong_tutor do
+        mails = [@mail.to, @mail.cc].compact.flatten
+        failed! if !mails.include?("sapphire-submissions-inm-2013@iicm.tu-graz.ac.at") && !mails.include?("sapphire-submissions-inm-2013@iicm.edu")
+      end
+
+      check :tutor_not_in_to do
+        failed! if !@mail.to.include?("sapphire-submissions-inm-2013@iicm.tu-graz.ac.at") && !@mail.to.include?("sapphire-submissions-inm-2013@iicm.edu")
+      end
+
+      check :mail_to_self do
+        success = false
+
+        mails = [@mail.to, @mail.cc].compact.flatten
+        mails.compact!
+        mails.uniq!
+        mails.map!(&:downcase)
+
+        student_group.students.each do |student|
+          success = true if mails.include? student.email.downcase
+        end
+        failed! unless success
+      end
+
+      check :mail_to_self_in_to do
+        student_group.students.each do |student|
+          if @mail.to.include? student.email
+            failed!
+            break
+          end
+        end
       end
 
       check :subject_conforming do
@@ -45,7 +73,7 @@ module Sapphire
       end
 
       check :subject_7bit_ascii do
-        failed! if @mail.subject =~ /[^a-zA-Z0-9\-]/
+        failed! if to_ascii(@mail.subject) != @mail.subject
       end
     end
   end

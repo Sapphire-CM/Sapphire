@@ -1,7 +1,9 @@
 module LayoutHelper
-  def title(title, subtitle=nil)
+  def title(title, subtitle=nil, options = {})
     content_for :title, title
     @show_title = true
+
+    @small_title = !!options[:small]
 
     if subtitle.is_a? String
       content_for :subtitle, subtitle
@@ -13,6 +15,7 @@ module LayoutHelper
   def large_content(enabled)
     content_for :large_content, 'large-full' if enabled
   end
+
 
   def link_to_current_term
     if term_context?

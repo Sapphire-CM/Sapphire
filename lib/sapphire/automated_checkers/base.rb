@@ -14,6 +14,16 @@ module Sapphire
           end
         end
       end
+      def self.asset_identifier(asset_identifier)
+        @asset_identifiers ||= []
+        @asset_identifiers << asset_identifier
+      end
+
+      def self.asset_identifiers(*asset_identifiers)
+        asset_identifiers.each do |id|
+          asset_identifier id
+        end
+      end
 
       def self.create
         self.new(@checks, @prepare_block)
@@ -41,11 +51,11 @@ module Sapphire
         @prepare_block = block
       end
 
-      def self.check(identifier, &block)
+      def self.check(identifier, title = nil, &block)
         if block_given?
           @checks ||= {}
 
-          c = Check.new(identifier, block, self)
+          c = Check.new(identifier, title, block, self)
           @checks[c.identifier] = c
         end
       end

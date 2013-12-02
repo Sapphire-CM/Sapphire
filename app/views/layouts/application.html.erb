@@ -34,7 +34,7 @@
 
     <% if @show_title %>
     <div class='row'>
-      <div class='large-12'>
+      <div class='large-<%= @small_title ? 9 : 12 %>'>
         <h1>
           <span id='site_title'><%= yield(:title) %></span>
           <% if content_for(:subtitle) %>

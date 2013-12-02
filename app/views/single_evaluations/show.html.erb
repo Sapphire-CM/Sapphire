@@ -1,5 +1,4 @@
-<% title submission_title(@submission), @exercise.title %>
-
+<% title submission_author(@submission), @exercise.title, small: true %>
 <div class='row'>
   <div class='small-9 columns'>
   <% @submission.submission_assets.order(:file).each do |submission_asset| %>

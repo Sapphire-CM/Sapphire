@@ -3,7 +3,7 @@ class SubmissionsController < ApplicationController
     @exercise = Exercise.find params[:exercise_id]
     @term = @exercise.term
 
-    @submissions = @exercise.submissions.includes({student_group: [:students, :tutorial_group]}, :submission_evaluation, :exercise)
+    @submissions = @exercise.submissions.includes({student_group: [:students, :tutorial_group]}, :submission_evaluation, :exercise).order(:submitted_at)
 
 
     @tutorial_group = if params[:tutorial_group_id].present?

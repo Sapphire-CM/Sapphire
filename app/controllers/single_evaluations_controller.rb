@@ -2,8 +2,10 @@ class SingleEvaluationsController < ApplicationController
   def show
     @submission = Submission.find(params[:id])
     @submission_assets = @submission.submission_assets.order(submitted_at: :desc)
-    @next_submission = Submission.for_exercise(@submission.exercise).for_tutorial_group(@submission.student_group.tutorial_group).next(@submission)
-    @previous_submission = Submission.for_exercise(@submission.exercise).for_tutorial_group(@submission.student_group.tutorial_group).previous(@submission)
+
+    submission_scope = Submission.for_exercise(@submission.exercise).for_tutorial_group(@submission.student_group.tutorial_group)
+    @next_submission = submission_scope.next(@submission, :submitted_at)
+    @previous_submission = submission_scope.previous(@submission, :submitted_at)
 
     @exercise = @submission.exercise
     @evaluation_groups = @submission.submission_evaluation.evaluation_groups.includes([:rating_group, {evaluations: :rating}]).order{rating_group.ratings.row_order.asc}.order{rating_group.row_order.asc}

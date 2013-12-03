@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131202174128) do
+ActiveRecord::Schema.define(version: 20131203010646) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 20131202174128) do
     t.integer  "points"
     t.boolean  "enable_min_required_points"
     t.integer  "min_required_points"
+    t.string   "submission_viewer_identifier"
   end
 
   add_index "exercises", ["term_id"], name: "index_exercises_on_term_id", using: :btree

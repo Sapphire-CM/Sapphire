@@ -1,0 +1,1121 @@
+
+<style type="text/css" media="screen">
+
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/*! normalize.css v2.1.3 | MIT License | git.io/normalize */
+
+/* ==========================================================================
+   HTML5 display definitions
+   ========================================================================== */
+
+/* Modifications by Keith Andrews */
+
+/**
+ * Correct `block` display not defined in IE 8/9.
+ */
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+  display: block;
+}
+
+/**
+ * Correct `inline-block` display not defined in IE 8/9.
+ */
+
+audio,
+canvas,
+video {
+  display: inline-block;
+}
+
+/**
+ * Prevent modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS 5 devices.
+ */
+
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+/**
+ * Address `[hidden]` styling not present in IE 8/9.
+ * Hide the `template` element in IE, Safari, and Firefox < 22.
+ */
+
+[hidden],
+template {
+  display: none;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+/**
+ * 1. Set default font family to sans-serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+
+html {
+  font-family: sans-serif; /* 1 */
+  -ms-text-size-adjust: 100%; /* 2 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+}
+
+/**
+ * Remove default margin.
+ */
+
+body {
+  margin: 0;
+}
+
+/* ==========================================================================
+   Links
+   ========================================================================== */
+
+/**
+ * Remove the gray background color from active links in IE 10.
+ */
+
+a {
+  background: transparent;
+}
+
+/**
+ * Address `outline` inconsistency between Chrome and other browsers.
+ */
+
+a:focus {
+  outline: thin dotted;
+}
+
+/**
+ * Improve readability when focused and also mouse hovered in all browsers.
+ */
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+/**
+ * Address variable `h1` font-size and margin within `section` and `article`
+ * contexts in Firefox 4+, Safari 5, and Chrome.
+ */
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+/**
+ * Address styling not present in IE 8/9, Safari 5, and Chrome.
+ */
+
+abbr[title] {
+  border-bottom: thin dotted;
+}
+
+/**
+ * Address style set to `bolder` in Firefox 4+, Safari 5, and Chrome.
+ */
+
+b,
+strong {
+  font-weight: bold;
+}
+
+/**
+ * Address styling not present in Safari 5 and Chrome.
+ */
+
+dfn {
+  font-style: italic;
+}
+
+/**
+ * Address differences between Firefox and other browsers.
+ */
+
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+
+/**
+ * Address styling not present in IE 8/9.
+ */
+
+mark {
+  background: #ff0;
+  color: #000;
+}
+
+/**
+ * Correct font family set oddly in Safari 5 and Chrome.
+ */
+
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, serif;
+  font-size: 1em;
+}
+
+/**
+ * Improve readability of pre-formatted text in all browsers.
+ */
+
+pre {
+  white-space: pre-wrap;
+}
+
+/**
+ * Set consistent quote types.
+ */
+
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
+/**
+ * Address inconsistent and variable font size in all browsers.
+ */
+
+small {
+  font-size: 80%;
+}
+
+/**
+ * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+ */
+
+sub,
+sup {
+  font-size: 70%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+/* ==========================================================================
+   Embedded content
+   ========================================================================== */
+
+/**
+ * Remove border when inside `a` element in IE 8/9.
+ */
+
+img {
+  border: 0;
+}
+
+/**
+ * Correct overflow displayed oddly in IE 9.
+ */
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Figures
+   ========================================================================== */
+
+/**
+ * Address margin not present in IE 8/9 and Safari 5.
+ */
+
+figure {
+  margin: 0;
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+/**
+ * Define consistent border, margin, and padding.
+ */
+
+fieldset {
+  border: thin solid #c0c0c0;
+  margin: 0 0.1em;
+  padding: 0.35em 0.625em 0.75em;
+}
+
+/**
+ * 1. Correct `color` not being inherited in IE 8/9.
+ * 2. Remove padding so people aren't caught out if they zero out fieldsets.
+ */
+
+legend {
+  border: 0; /* 1 */
+  padding: 0; /* 2 */
+}
+
+/**
+ * 1. Correct font family not being inherited in all browsers.
+ * 2. Correct font size not being inherited in all browsers.
+ * 3. Address margins set differently in Firefox 4+, Safari 5, and Chrome.
+ */
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-size: 100%; /* 2 */
+  margin: 0; /* 3 */
+}
+
+/**
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+
+button,
+input {
+  line-height: normal;
+}
+
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Chrome, Safari 5+, and IE 8+.
+ * Correct `select` style inheritance in Firefox 4+ and Opera.
+ */
+
+button,
+select {
+  text-transform: none;
+}
+
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ */
+
+button,
+html input[type="button"], /* 1 */
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button; /* 2 */
+  cursor: pointer; /* 3 */
+}
+
+/**
+ * Re-set default cursor for disabled elements.
+ */
+
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+
+/**
+ * 1. Address box sizing set to `content-box` in IE 8/9/10.
+ * 2. Remove excess padding in IE 8/9/10.
+ */
+
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box; /* 1 */
+  padding: 0; /* 2 */
+}
+
+/**
+ * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome
+ *    (include `-moz` to future-proof).
+ */
+
+input[type="search"] {
+  -webkit-appearance: textfield; /* 1 */
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box; /* 2 */
+  box-sizing: content-box;
+}
+
+/**
+ * Remove inner padding and search cancel button in Safari 5 and Chrome
+ * on OS X.
+ */
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/**
+ * Remove inner padding and border in Firefox 4+.
+ */
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+/**
+ * 1. Remove default vertical scrollbar in IE 8/9.
+ * 2. Improve readability and alignment in all browsers.
+ */
+
+textarea {
+  overflow: auto; /* 1 */
+  vertical-align: top; /* 2 */
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
+/**
+ * Remove most spacing between table cells.
+ */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+
+body {
+  margin: 1rem;
+  color: black;
+  background-color: #f9f9f9;
+  font: normal small Verdana, sans-serif;
+  /* allow words to be broken at hyphenation points */
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+}
+
+
+/* turn hyphens off for code, tt, and kbd */
+
+code, var, kbd, samp, listing, plaintext, xmp, abbr {
+  hyphens: none;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+}
+
+
+
+img { border: none; }
+
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Verdana, sans-serif;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 1.4rem;
+  margin: 0 0 0.7rem 0;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin: 0 0 0.6rem 0;
+}
+
+h3 {
+  font-size: 1.1rem;
+  margin: 0 0 0.55rem 0;
+}
+
+h4 {
+  font-size: 1.0rem;
+  margin: 0 0 0.5rem 0;
+}
+
+h5 {
+  font-size: 1.0rem;
+  margin: 0 0 0.5rem 0;
+}
+
+h6 {
+  font-size: 1.0rem;
+  margin: 0 0 0.5rem 0;
+}
+
+p {
+  margin: 0 0 1rem 0;
+  text-align: justify;
+}
+
+
+/* indent first line of each para 2..n  */
+p + p {
+  text-indent: 1em;
+}
+
+
+blockquote {
+  margin: 0 2rem 1rem 2rem;
+}
+
+
+
+
+ol, ul {
+  margin-bottom: 1rem;
+}
+
+
+ol {
+  list-style: decimal;
+}
+
+ul ul ol ol, ul ol ul ol, ol ul ol ol, ol ol ul ol, ol ul ol, ol ol {
+  list-style: lower-alpha;
+}
+
+ol ul ol ol, ol ol ul ol, ul ol ol ol, ol ol ol {
+  list-style: lower-roman;
+}
+
+ol ol ol ol {
+  list-style: decimal;
+}
+
+
+
+ul {
+  list-style: disc;
+}
+
+ul ul, ol ol ul ul, ol ul ol ul, ul ol ol ul, ol ul ul, ul ol ul {
+  list-style: circle;
+}
+
+ol ul ul ul, ul ol ul ul, ul ul ol ul, ul ul ul {
+  list-style: square;
+}
+
+ul ul ul ul {
+  list-style: disc;
+}
+
+
+li {
+  margin: 0.5em 0 1em 2em;
+}
+
+
+pre {
+  font-size: 0.8rem;
+  margin-bottom: 2em;
+  font-family: monospace;
+}
+
+</style>
+
+<style type='text/css' id='studentstyle'></style>
+
+<style type="text/css" media="screen">
+#toolbar{
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  padding: 5px 10px;
+  background-color: rgba(30,30,30,0.9);
+  color: white;
+  z-index: 100000;
+  font-family: Helvetica Neue, Helvetica;
+  font-size: 16px;
+  text-align: right;
+  opacity: 0.1;
+}
+
+#toolbar:hover {
+  opacity: 1;
+}
+
+#toolbar select {
+  margin-left: 20px;
+}
+
+#toolbar a {
+  color: white;
+  margin-right: 20px;
+  text-decoration: underline;
+  background-color: none;
+  font-weight: bold;
+}
+
+#toolbar a:after {
+  display: none !important;
+}
+
+</style>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(function(){
+  var styles = $('#styles').data("styles");
+
+  $('#toolbar').click(function(){
+    var vals = $("#styleselector option");
+    var next_index = vals.index($('#styleselector option:selected')) + 1;
+
+
+    var $el = $(vals.get(next_index % vals.length));
+    $el.prop("selected", true);
+    apply_style($el.val())
+  });
+
+  $("#styleselector").change(function(){
+    apply_style($(this).val());
+  }).click(function(e){
+    e.stopPropagation();
+  });
+
+  function apply_style(style) {
+    $("style#studentstyle").text(style);
+  }
+
+  apply_style($("#styleselector").val());
+})
+</script>
+
+<div id='toolbar'>
+  <%= link_to "Back", single_evaluation_path(@submission) %>
+  <%= submission_title(@submission) %>
+
+  <select id='styleselector'>
+    <% viewer.assets.each do |asset| %>
+      <option value='<%= asset.file.read.to_s.gsub(/\n/, "")  %>'><%= File.basename asset.file.to_s %></option>
+    <% end %>
+  </select>
+</div>
+<div id="mysite">
+
+
+<header>
+<div id="logo">
+<a href="http://graztimes.com/">
+<img id="gtlogo" src="<%= image_path "submission_viewers/ex5_stylesheet_viewer/gtlogo.svg" %>"
+alt="Graz Times Logo" class="logo"/></a>
+</div>
+<h1>The Graz Times</h1>
+<div id="tagline">
+The best English-language newspaper in town.
+</div>
+</header>
+
+
+
+
+<nav id="global-nav">
+<div id="menu" class="menu">
+
+<ul>
+<li><a href="#">Politics</a>
+  <ul>
+  <li><a href="#">Graz</a></li>
+  <li><a href="#">Styria</a></li>
+  <li><a href="#">Austria</a></li>
+  <li><a href="#">EU</a></li>
+  <li><a href="#">World</a></li>
+  </ul>
+</li>
+
+<li><a href="#">Economics</a>
+  <ul>
+  <li><a href="#">Local</a></li>
+  <li><a href="#">Recession</a></li>
+  </ul>
+</li>
+
+<li><a href="#">Culture</a>
+  <ul>
+  <li><a href="#">TV and Radio</a></li>
+  <li><a href="#">Cinema</a></li>
+  <li><a href="#">Music</a></li>
+  <li><a href="#">Events</a></li>
+  </ul>
+</li>
+
+<li><a href="#">Sport</a>
+  <ul>
+  <li><a href="#">Football</a></li>
+  <li><a href="#">Skiing</a></li>
+  <li><a href="#">Rugby</a></li>
+  <li><a href="#">Cricket</a></li>
+  </ul>
+</li>
+
+<li><a href="#">Special</a>
+</li>
+
+<li><a href="#">About</a>
+  <ul>
+  <li><a href="#">Subscriptions</a></li>
+  <li><a href="#">Club GT</a></li>
+  <li><a href="#">History</a></li>
+  <li><a href="#">Location</a></li>
+  <li><a href="#">People</a></li>
+  <li><a href="#">Jobs</a></li>
+  </ul>
+</li>
+
+</ul>
+</div>  <!-- menu -->
+</nav>
+
+
+
+
+
+
+<div id="stories">
+
+<article id="lead-story" class="story">
+<h1 class="story-title">Rubbish Collectors Continue with Strike</h1>
+
+<figure>
+<img src="<%= image_path "submission_viewers/ex5_stylesheet_viewer/rubbish.jpg" %>" alt="Photo: Rubbish piling up in Graz."/>
+<figcaption>
+<p class="caption">
+Rubbish piling up in Graz.
+<span class="credit">Photo © The Graz Times.</span>
+</p>
+</figcaption>
+</figure>
+
+<p>
+Quisque quis est ut odio fringilla ultrices nec a magna. Fusce quis
+ligula sem, in facilisis diam. Morbi auctor lacus sit amet dolor
+cursus at adipiscing urna elementum. Phasellus viverra ullamcorper
+dui, a porta arcu dignissim at.
+</p>
+<p>
+Etiam ac felis quis arcu accumsan
+feugiat. Donec tristique, dolor eget euismod malesuada, metus turpis
+rhoncus massa, non condimentum leo lorem a dolor. Suspendisse in nisl
+eu risus varius consequat in quis arcu.
+</p>
+</article>
+
+
+
+
+<article class="story">
+<h1 class="story-title">Bicycle Theft on the Rise</h1>
+
+<figure>
+<img src="<%= image_path "submission_viewers/ex5_stylesheet_viewer/bicycles.jpg" %>" alt="Photo: Bicycles outside the university."/>
+<figcaption>
+<p class="caption">
+2011 saw record levels of bicycle theft in Graz.
+<span class="credit">Photo © The Graz Times.</span>
+</p>
+</figcaption>
+</figure>
+
+<p>
+Duis aliquam, mauris et egestas consequat, purus sapien eleifend
+dolor, sit amet blandit augue leo et lectus. Nullam faucibus, nisl in
+gravida semper, nisl nulla tincidunt tellus, non lacinia quam nisi ut
+dolor. Fusce nibh elit, pulvinar ut ornare eget, facilisis volutpat
+tellus. Vivamus et diam massa. Nunc laoreet tempor sapien. Cras eu
+mauris elit. Sed condimentum diam <span class="price">€ 250</span>
+ipsum. Nam in justo nec metus egestas imperdiet sed nec urna.
+</p>
+<p>
+Phasellus lacinia nulla eget sapien cursus nec feugiat odio
+iaculis. Morbi luctus <a href="http://tugraz.at/" title="Graz
+University of Technology">TU Graz</a> pellentesque enim in
+aliquet. Donec tincidunt odio quis massa vulputate quis laoreet dui
+cursus. Nulla viverra lorem quis enim congue placerat highest since
+<span class="year">1997</span>. Sed ullamcorper faucibus
+placerat. Nullam vitae sodales nunc. Nullam egestas mollis urna et
+facilisis.
+</p>
+</article>
+
+
+
+
+<article class="story">
+<h1 class="story-title">Green Zone Extended to Entire City</h1>
+
+<figure>
+<img src="<%= image_path "submission_viewers/ex5_stylesheet_viewer/green-zone.jpg" %>"
+alt="Photo: Green Zone in Graz."/>
+<figcaption>
+<p class="caption">
+Graz city council votes to extend the green
+parking zone to cover the entire city.
+<span class="credit">Photo © The Graz Times.</span>
+</p>
+</figcaption>
+</figure>
+
+<p>
+Duis nec nulla ac nunc egestas porta et vel est. Proin vehicula, nisl
+in adipiscing vehicula, nunc ipsum tincidunt dui, cursus interdum nisl
+risus eget est. Class aptent taciti sociosqu ad litora torquent per
+conubia nostra, per inceptos himenaeos. Aliquam erat volutpat. Sed
+erat eros, vehicula sit amet luctus ac, sodales eget ipsum. Cum sociis
+natoque penatibus et magnis dis parturient montes, nascetur ridiculus
+mus. Nam felis est, pellentesque id facilisis eu,
+<a href="http://graztourismus.at/cms/beitrag/10015505/2868014">
+Parking in Graz</a> imperdiet sed nisl.
+</p>
+<p>
+Nam felis est, pellentesque id facilisis eu, imperdiet sed
+nisl. Aenean dapibus neque nec sapien cursus tincidunt. In sed arcu
+dui. Nullam euismod, orci at tempor lacinia, tellus ligula scelerisque
+libero, eget sagittis arcu turpis in diam. Maecenas justo nulla,
+volutpat a laoreet placerat, ultricies in nisl.
+</p>
+<p>
+Class aptent taciti sociosqu ad litora torquent per conubia nostra,
+per inceptos himenaeos. Nulla arcu tellus, pulvinar malesuada
+sollicitudin vitae, vehicula sit amet metus. Maecenas a tortor eget mi
+semper posuere lacinia sit amet tellus.
+</p>
+</article>
+
+
+
+
+<article class="story">
+<h1 class="story-title">Austrian Economy is Nosediving</h1>
+
+<figure>
+<img src="<%= image_path "submission_viewers/ex5_stylesheet_viewer/coins.jpg" %>"
+alt="Photo: Euro coins."/>
+<figcaption>
+<p class="caption">
+The Austrian economy takes a turn for the worse.
+<span class="credit">Photo © The Graz Times.</span>
+</p>
+</figcaption>
+</figure>
+
+<p>
+Vestibulum ornare semper tellus et fermentum. Praesent vulputate,
+sapien dapibus volutpat vulputate, lectus tortor suscipit est, congue
+euismod lectus elit non dui. Pellentesque ac est at libero lobortis
+convallis in at quam. Ut iaculis, lorem quis condimentum mollis, urna
+tellus iaculis lacus, <abbr title="Organisation for Economic
+Co-operation and Development">OECD</abbr> nec ultrices libero tortor
+eu augue. Ut eros justo, posuere at facilisis vel, eleifend id
+nisi. Pellentesque velit elit, blandit eget adipiscing eu, consequat
+eget risus. Vivamus id rhoncus felis.
+</p>
+<p>
+Pellentesque vestibulum suscipit velit, quis interdum arcu laoreet
+ut. Phasellus vel neque dignissim nulla mattis faucibus id vel
+risus. Quisque eu est nibh, a porttitor felis.  Sed dictum congue
+commodo. Sed quis tristique risus. Maecenas tincidunt leo vel neque
+tempus quis tincidunt libero aliquam. Fusce convallis sodales libero,
+eget pharetra nisi tristique id. Duis commodo interdum felis in
+lobortis. Pellentesque condimentum adipiscing euismod. Sed tempus nunc
+in nisl tempus consequat. In eu tempus mauris. Cras ac lacus sed nulla
+accumsan gravida at sed lacus.
+</p>
+</article>
+
+
+
+<article class="story">
+<h1 class="story-title">Student Fees Hit <span class="price">€ 2,000</span></h1>
+
+<figure>
+<img src="<%= image_path "submission_viewers/ex5_stylesheet_viewer/students.jpg" %>"
+alt="Photo: Students in courtyard of TU Graz."/>
+<figcaption>
+<p class="caption">
+Students in Graz will be expected to
+pay <span class="price">€ 2,000</span> per semester from next
+winter.
+<span class="credit">Photo © The Graz Times.</span>
+</p>
+</figcaption>
+</figure>
+
+<p>
+Suspendisse potenti. Nullam sodales fringilla eros non
+dignissim. Nulla augue urna, porta vitae dignissim vitae, imperdiet
+eget nisl. Nam pulvinar, ipsum vitae pretium interdum, mauris elit
+vulputate ligula, et hendrerit massa ante a sem <span class="price">€
+2,000</span>. Donec aliquam, lorem mollis imperdiet ornare, lorem eros
+eleifend metus, eget suscipit dui enim in ligula. Quisque luctus
+tincidunt eros.
+</p>
+<p>
+Curabitur vel libero eu dui tristique elementum. Morbi eros purus,
+mollis ut rhoncus eu, sodales eu turpis. Nunc suscipit iaculis
+tincidunt. Cras ut leo urna, id semper ante. Pellentesque elit justo,
+auctor vitae aliquet sed, ornare in ante. Lorem ipsum dolor sit amet,
+consectetur adipiscing elit. Fusce dapibus augue ut metus laoreet nec
+tincidunt ipsum pellentesque. Phasellus laoreet pellentesque nulla,
+eget tempus lorem bibendum in. Donec sodales, lorem eget commodo
+commodo, leo est auctor nulla, vitae adipiscing ligula nulla et
+sapien.
+</p>
+</article>
+
+
+
+
+<article class="story">
+<h1 class="story-title">Clock Tower Hands Point Wrong Way</h1>
+
+<figure>
+<img src="<%= image_path "submission_viewers/ex5_stylesheet_viewer/clocktower.jpg" %>"
+alt="Photo: Graz clock tower."/>
+<figcaption>
+<p class="caption">
+Scientists at the University of Graz have
+discovered that the hands of the clock have been swapped.
+<span class="credit">Photo © The Graz Times.</span>
+</p>
+</figcaption>
+</figure>
+
+<p>
+Sed nec magna dui, sit amet dignissim massa. Praesent nunc ante,
+dapibus at vulputate vitae, blandit sit amet augue <abbr title="Karl
+Franzens University">KFU</abbr>. Curabitur mattis, metus eget
+tincidunt iaculis, nulla tellus mollis ligula, quis hendrerit urna
+justo sit amet velit. Ut lacus purus, blandit at laoreet at, sodales
+et justo.
+</p>
+<p>
+Vestibulum luctus consectetur eros, euismod gravida lorem egestas
+at. Cum sociis natoque penatibus et magnis dis parturient montes,
+nascetur ridiculus mus. Proin dignissim, tellus ac gravida bibendum,
+metus libero suscipit arcu, at rutrum ligula lacus quis orci. In
+commodo semper mollis. Integer non nibh purus. Curabitur ultrices
+lacinia euismod. Sed id lectus est.
+</p>
+</article>
+
+
+
+
+<article class="story">
+<h1 class="story-title">German Defence Minister Accused of Plagiarism</h1>
+
+<figure>
+<img src="<%= image_path "submission_viewers/ex5_stylesheet_viewer/guttenberg-phd.jpg" %>"
+alt="Photo: Guttenberg PhD book."/>
+<figcaption>
+<p class="caption">
+The German Defence minister has been accused of
+copying large section of his PhD thesis.
+<span class="credit">Photo © The Graz Times.</span>
+</p>
+</figcaption>
+</figure>
+
+<p>
+Etiam sit amet magna massa, quis pharetra neque. Nam eget sem at magna
+aliquam luctus. Maecenas accumsan nibh eu nisi consectetur eu pharetra
+nisl egestas. Maecenas arcu ipsum, convallis non ultricies in, semper
+ullamcorper ipsum. Proin sit amet bibendum libero. Mauris feugiat
+tempus tincidunt.
+</p>
+<p>
+Morbi id lectus at sem iaculis aliquet sed quis lorem. Pellentesque
+nec dictum elit. In varius lectus sed magna condimentum mattis. Nam
+vel arcu sit amet turpis convallis ultricies. Morbi lacinia hendrerit
+egestas. Ut ornare accumsan lectus. Donec ut leo metus.
+</p>
+</article>
+
+
+</div>  <!-- stories -->
+
+
+
+
+
+
+<div id="specials">
+
+<article class="special">
+<h1 class="special-title">4 Weeks Free Subscription!</h1>
+
+<figure>
+<img src="<%= image_path "submission_viewers/ex5_stylesheet_viewer/4weeks.svg" %>"
+alt="Graphic: 4 weeks free trial."/>
+<figcaption>
+<p class="caption">
+Read The Graz Times for 4 weeks for free.
+</p>
+</figcaption>
+</figure>
+
+<p>
+Vestibulum sollicitudin arcu vitae purus commodo placerat at in
+tellus. Nam ultrices purus et leo blandit a cursus ante volutpat. Sed
+nec odio a erat <span class="price">€ 35.00</span> per month
+condimentum egestas quis vel ante
+in <span class="year">2013</span>. Morbi dignissim velit vel tellus
+consectetur ac pulvinar mi suscipit. Sed sit amet nunc non libero
+varius adipiscing ut sed dui.
+</p>
+</article>
+
+
+
+
+<article class="special">
+<h1 class="special-title">Annual Competition</h1>
+
+<figure>
+<img src="<%= image_path "submission_viewers/ex5_stylesheet_viewer/competition.svg" %>"
+alt="Graphic: Graz Times annual competition."/>
+<figcaption>
+<p class="caption">
+Take part in our annual competition.
+</p>
+</figcaption>
+</figure>
+<p>
+Phasellus nec risus ligula, non volutpat tellus. Vivamus tempus congue
+nisi sit amet varius. Proin tincidunt ullamcorper orci id
+lobortis. Maecenas eget ligula vitae first prize
+of <span class="price">€ 400.00</span>justo imperdiet vehicula nec id
+sapien. Quisque ac mi purus, vel sollicitudin nisi
+<a href="http://graztimes.com/competition/">Graz Times Competition</a>.
+</p>
+</article>
+
+
+
+<article class="special">
+<h1 class="special-title">Join the GT Club</h1>
+
+<figure>
+<img src="<%= image_path "submission_viewers/ex5_stylesheet_viewer/gtclub.svg" %>"
+alt="Graphic: Graz Times club."/>
+<figcaption>
+<p class="caption">
+Join The Graz Times exclusive GT Club.
+</p>
+</figcaption>
+</figure>
+
+<p>
+Morbi quis turpis eu leo dignissim ultricies varius et nulla. Nam
+pulvinar luctus hendrerit. Donec viverra interdum justo id
+mattis. Etiam accumsan dolor sed nisi consequat ultrices. Cras rhoncus
+augue et lacus ultricies eu posuere lacus semper.
+</p>
+<p>
+Suspendisse scelerisque euismod lorem, in feugiat est ornare
+quis. Praesent nunc ante, ultrices quis bibendum sit amet, fermentum
+et nulla.
+</p>
+</article>
+
+
+</div>  <!-- specials -->
+
+
+
+
+<div id="footer-clear"></div>  <!-- hook for clearfix if needed -->
+
+
+<footer>
+<span class="valid-xhtml">
+<a href="http://validator.w3.org/check/referer">Polyglot XHTML5</a></span>
+<span class="valid-css">
+<a href="http://jigsaw.w3.org/css-validator/check/referer">CSS3</a></span>
+<span class="copyright">Copyright © 2013 The Graz Times.</span>
+<span class="impressum">
+<a href="/impressum">Impressum</a></span>
+</footer>
+
+
+
+</div>  <!-- mysite -->

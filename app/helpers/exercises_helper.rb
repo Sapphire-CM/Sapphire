@@ -8,4 +8,9 @@ module ExercisesHelper
     value.join ', '
   end
 
+  def submission_viewer_form_collection
+    Sapphire::SubmissionViewers::Central.registered_viewers.map do |viewer|
+      [viewer.title, viewer.identifier]
+    end
+  end
 end

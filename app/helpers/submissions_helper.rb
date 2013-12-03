@@ -50,4 +50,12 @@ module SubmissionsHelper
       "unknown author"
     end
   end
+
+  def submission_tutorial_group(submission)
+    if submission.student_group.present?
+      tutorial_group_title(submission.student_group.tutorial_group)
+    else
+      "unkown"
+    end
+  end
 end

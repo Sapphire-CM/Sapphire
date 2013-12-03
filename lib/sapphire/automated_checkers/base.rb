@@ -14,34 +14,47 @@ module Sapphire
           end
         end
       end
-      def self.asset_identifier(asset_identifier)
-        @asset_identifiers ||= []
-        @asset_identifiers << asset_identifier
-      end
-
-      def self.asset_identifiers(*asset_identifiers)
-        asset_identifiers.each do |id|
-          asset_identifier id
-        end
-      end
 
       def self.create
         self.new(@checks, @prepare_block)
       end
 
-      def self.content_types(*args)
-        args.each do |content_type|
-          content_type(content_type)
+      def self.asset_identifier(identifier)
+        checks_asset_files!
+
+        @asset_identifiers ||= []
+        @asset_identifiers << identifier
+      end
+
+      def self.asset_identifiers(*args)
+        args.each do |identifier|
+          asset_identifier(identifier)
         end
       end
 
-      def self.content_type(content_type)
-        (@content_types||=[]) << content_type
+
+      def self.content_type(type)
+        @content_types ||= []
+        @content_types << type
+      end
+
+      def self.content_types(*args)
+        args.each do |type|
+          content_type(type)
+        end
       end
 
       def self.content_type?(content_type)
         if @content_types.present?
           @content_types.include?(content_type)
+        else
+          true
+        end
+      end
+
+      def self.asset_identifier?(identifier)
+        if @asset_identifiers.present?
+          @asset_identifiers.include?(identifier)
         else
           true
         end

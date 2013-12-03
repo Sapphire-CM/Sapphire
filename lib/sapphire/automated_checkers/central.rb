@@ -61,11 +61,12 @@ module Sapphire
 
         submission.submission_assets.each do |asset|
           assets_checkers_to_run.each do |checker, ratings|
-
-            if checker.checks_asset_files? && checker.content_type?(asset.content_type)
-              run_checker_with_subject_submission_and_ratings(checker, File.open(asset.file.path), submission, ratings)
-            elsif checker.checks_assets?
-              run_checker_with_subject_submission_and_ratings(checker, asset, submission, ratings)
+            if checker.asset_identifier? asset.asset_identifier
+              if checker.checks_asset_files?() && checker.content_type?(asset.content_type)
+                run_checker_with_subject_submission_and_ratings(checker, File.open(asset.file.path), submission, ratings)
+              elsif checker.checks_assets?
+                run_checker_with_subject_submission_and_ratings(checker, asset, submission, ratings)
+              end
             end
           end
         end
@@ -116,11 +117,4 @@ module Sapphire
 end
 
 
-
-
-if Rails.env.development?
-  Sapphire::AutomatedCheckers::Central.register Sapphire::AutomatedCheckers::EmailChecker
-  Sapphire::AutomatedCheckers::Central.register Sapphire::AutomatedCheckers::AssetCountChecker
-  Sapphire::AutomatedCheckers::Central.register Sapphire::AutomatedCheckers::DeadlineChecker
-  Sapphire::AutomatedCheckers::Central.register Sapphire::AutomatedCheckers::Ex31Checker
-end
+load File.join(File.dirname(__FILE__), "register_checkers.rb")

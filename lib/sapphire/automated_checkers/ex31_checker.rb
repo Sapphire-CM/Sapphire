@@ -3,7 +3,7 @@ module Sapphire
     class Ex31Checker < Base
       checks_asset_files!
 
-      # content_type "text/email"
+      content_type "text/email"
 
       prepare do
         @mail = Mail.new(subject.read)
@@ -58,7 +58,7 @@ module Sapphire
         failed! if @mail.subject.blank?
       end
 
-      check :subject_conforming, "Subject conforms to \"inm-ws2013-tN-ex31-forename-surname-mnr\"" do
+      check :subject_conforming, "Subject conforms to \"inm-ws2013-tN-ex31-surname-forename-mnr\"" do
         success = false
 
         subject = @mail.subject
@@ -71,10 +71,6 @@ module Sapphire
           end
         end
         failed! unless success
-      end
-
-      check :subject_7bit_ascii, "Subject contains only 7-bit ASCII characters" do
-        failed! if to_ascii(@mail.subject) != @mail.subject
       end
     end
   end

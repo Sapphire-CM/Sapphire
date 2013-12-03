@@ -34,6 +34,8 @@ gem 'mail'                        # fetching, delivering and parsing of emails
 
 gem 'coderay'                     # doing code-highlighting for submission_assets
 gem 'rails_autolink'              # autolinking submitted newsgroup-posts and emails
+gem 'css_parser'                  # for parsing css files
+
 group :production do
   gem 'therubyracer'
   gem 'pg'                        # PostgreSQL database connector

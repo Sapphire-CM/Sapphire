@@ -53,4 +53,6 @@
 
 <%= link_to "Back to Submissions of #{@submission.exercise.title}", :back %>
 
+<%= link_to "Evaluate", single_evaluation_path(@submission) %>
+
 <%= render 'application/reveal_modal' %>

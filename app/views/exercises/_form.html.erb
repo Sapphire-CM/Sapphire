@@ -19,6 +19,8 @@
       <%= f.input :max_total_points, label: false,
         wrapper_html: {class: ('hide' unless @exercise.enable_max_total_points)} %>
 
+        <%= f.input :submission_viewer_identifier, collection: submission_viewer_form_collection, as: :select %>
+
       <div class='row'>
         <div class='large-12 large-centered columns text-center'>
             <%= link_to "Cancel", (@exercise.new_record? ?

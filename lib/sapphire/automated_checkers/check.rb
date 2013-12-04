@@ -14,14 +14,15 @@ module Sapphire
       end
 
 
-      def initialize(identifier, check, checker_class)
+      def initialize(identifier, title, check, checker_class)
         @identifier = identifier
+        @title = title
         @check = check
         @checker_class = checker_class
       end
 
       def title
-        @identifier.to_s.titleize
+        @title.presence || @identifier.to_s.titleize
       end
 
       def identifier

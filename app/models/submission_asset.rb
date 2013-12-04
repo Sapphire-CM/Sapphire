@@ -9,5 +9,6 @@ class SubmissionAsset < ActiveRecord::Base
   class Mime
     NEWSGROUP_POST = "text/newsgroup"
     EMAIL = "text/email"
+    STYLESHEET = "text/css"
   end
 end

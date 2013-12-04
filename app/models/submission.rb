@@ -16,14 +16,16 @@ class Submission < ActiveRecord::Base
 
   scope :for_tutorial_group, lambda { |tutorial_group| joins{student_group}.where { student_group.tutorial_group == my {tutorial_group} }}
 
+  scope :for_student_group, lambda {|student_group| joins(:student_group_registration).where{student_group_registration.student_group_id == my {student_group.id}}}
+
   after_create :create_submission_evaluation
 
-  def self.next(submission)
-    Submission.where { id > my{submission.id} } .order {id.asc} .limit(1).first
+  def self.next(submission, order = :id)
+    Submission.where{submissions.send(my {order}) > submission.send(order)}.order(order => :asc).first
   end
 
-  def self.previous(submission)
-    Submission.where { id < my{submission.id} } .order {id.desc} .limit(1).first
+  def self.previous(submission, order = :id)
+    Submission.where{submissions.send(my {order}) < submission.send(order)} .order(order => :desc).first
   end
 
   def assign_to(student_group)

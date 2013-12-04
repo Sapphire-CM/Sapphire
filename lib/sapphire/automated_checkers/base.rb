@@ -19,14 +19,29 @@ module Sapphire
         self.new(@checks, @prepare_block)
       end
 
-      def self.content_types(*args)
-        args.each do |content_type|
-          content_type(content_type)
+      def self.asset_identifier(identifier)
+        checks_asset_files!
+
+        @asset_identifiers ||= []
+        @asset_identifiers << identifier
+      end
+
+      def self.asset_identifiers(*args)
+        args.each do |identifier|
+          asset_identifier(identifier)
         end
       end
 
-      def self.content_type(content_type)
-        (@content_types||=[]) << content_type
+
+      def self.content_type(type)
+        @content_types ||= []
+        @content_types << type
+      end
+
+      def self.content_types(*args)
+        args.each do |type|
+          content_type(type)
+        end
       end
 
       def self.content_type?(content_type)
@@ -37,15 +52,23 @@ module Sapphire
         end
       end
 
+      def self.asset_identifier?(identifier)
+        if @asset_identifiers.present?
+          @asset_identifiers.include?(identifier)
+        else
+          true
+        end
+      end
+
       def self.prepare(&block)
         @prepare_block = block
       end
 
-      def self.check(identifier, &block)
+      def self.check(identifier, title = nil, &block)
         if block_given?
           @checks ||= {}
 
-          c = Check.new(identifier, block, self)
+          c = Check.new(identifier, title, block, self)
           @checks[c.identifier] = c
         end
       end

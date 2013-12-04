@@ -3,13 +3,13 @@ module Sapphire
     class Ex31Checker < Base
       checks_asset_files!
 
-      # content_type "text/email"
+      content_type "text/email"
 
       prepare do
         @mail = Mail.new(subject.read)
       end
 
-      check :no_strange_characters do
+      check :no_strange_characters, "Body does not contain a \"|\"" do
         body = if @mail.multipart?
           part = @mail.parts.select {|part| part.content_type == 'text/plain'}.first
           part = @mail.parts.first if part.blank?
@@ -21,20 +21,16 @@ module Sapphire
         failed! if body =~/\|/
       end
 
-      check :subject_present do
-        failed! if @mail.subject.blank?
-      end
-
-      check :mail_to_wrong_tutor do
+      check :mail_to_wrong_tutor, "Email has not been sent to apphire-submissions-inm-2013@iicm.tu-graz.ac.at" do
         mails = [@mail.to, @mail.cc].compact.flatten
         failed! if !mails.include?("sapphire-submissions-inm-2013@iicm.tu-graz.ac.at") && !mails.include?("sapphire-submissions-inm-2013@iicm.edu")
       end
 
-      check :tutor_not_in_to do
+      check :tutor_not_in_to, "sapphire-submissions-inm-2013@iicm.tu-graz.ac.at is in \"To\"" do
         failed! if !@mail.to.include?("sapphire-submissions-inm-2013@iicm.tu-graz.ac.at") && !@mail.to.include?("sapphire-submissions-inm-2013@iicm.edu")
       end
 
-      check :mail_to_self do
+      check :mail_to_self, "Mail has been also sent to student" do
         success = false
 
         mails = [@mail.to, @mail.cc].compact.flatten
@@ -48,7 +44,7 @@ module Sapphire
         failed! unless success
       end
 
-      check :mail_to_self_in_to do
+      check :mail_to_self_in_to, "Student's email is in \"To\"" do
         student_group.students.each do |student|
           if @mail.to.include? student.email
             failed!
@@ -57,7 +53,12 @@ module Sapphire
         end
       end
 
-      check :subject_conforming do
+
+      check :subject_present, "Subject is not empty" do
+        failed! if @mail.subject.blank?
+      end
+
+      check :subject_conforming, "Subject conforms to \"inm-ws2013-tN-ex31-surname-forename-mnr\"" do
         success = false
 
         subject = @mail.subject
@@ -70,10 +71,6 @@ module Sapphire
           end
         end
         failed! unless success
-      end
-
-      check :subject_7bit_ascii do
-        failed! if to_ascii(@mail.subject) != @mail.subject
       end
     end
   end

@@ -25,6 +25,7 @@
   <%= javascript_include_tag "vendor/custom.modernizr", "data-turbolinks-track" => true %>
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <%= csrf_meta_tags %>
+  <%= yield :head %>
 </head>
 <body>
   <div id='wrapper'>
@@ -34,7 +35,7 @@
 
     <% if @show_title %>
     <div class='row'>
-      <div class='large-12'>
+      <div class='large-<%= @small_title ? 9 : 12 %>'>
         <h1>
           <span id='site_title'><%= yield(:title) %></span>
           <% if content_for(:subtitle) %>

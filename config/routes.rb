@@ -1,4 +1,5 @@
 Sapphire::Application.routes.draw do
+  get "submission_viewers/show"
   devise_for :accounts, skip: :registration
 
   resources :accounts, except: [:new, :show] do
@@ -48,7 +49,9 @@ Sapphire::Application.routes.draw do
 
     resources :submissions
   end
+
   resources :single_evaluations
+  resources :submission_viewers
 
   resources :submission_evaluations
 

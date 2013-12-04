@@ -21,7 +21,7 @@ class SubmissionsController < ApplicationController
     end
 
     @submissions = @submissions.for_tutorial_group @tutorial_group if @tutorial_group.present?
-
+    @submission_count = @submissions.count
     @submissions = @submissions.page(params[:page]).per(20)
   end
 

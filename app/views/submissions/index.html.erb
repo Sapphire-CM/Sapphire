@@ -1,4 +1,4 @@
-<% title @exercise.title, "Submissions" %>
+<% title @exercise.title, pluralize(@submission_count, "Submission") %>
 
 <p>
   <%= submissions_tutorial_group_dropdown(@tutorial_group) %>

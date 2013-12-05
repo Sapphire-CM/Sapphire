@@ -666,7 +666,7 @@ $(function(){
 
   <select id='styleselector'>
     <% viewer.assets.each do |asset| %>
-      <option value='<%= asset.file.read.to_s.gsub(/\n/, "")  %>'><%= File.basename asset.file.to_s %></option>
+      <option value='<%= asset.file.read.to_s.force_encoding("UTF-8").gsub(/\n/, "")  %>'><%= File.basename asset.file.to_s %></option>
     <% end %>
   </select>
 </div>

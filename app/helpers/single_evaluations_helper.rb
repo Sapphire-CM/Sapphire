@@ -13,7 +13,7 @@ module SingleEvaluationsHelper
         "secondary"
       end
 
-      link_to "#{raw rating.title}".html_safe, single_evaluation_path(evaluation), id: single_evaluation_button_id(evaluation), method: "put", data: {remote: true}, class: "#{css_class} tiny button expand"
+      link_to rating.title, single_evaluation_path(evaluation), id: single_evaluation_button_id(evaluation), method: "put", data: {remote: true}, class: "#{css_class} tiny button expand"
     else
       simple_form_for evaluation.becomes(Evaluation), url: single_evaluation_path(evaluation), remote: true, html: {class: "single-evaluation-form"} do |f|
         f.input :value, label: rating.title

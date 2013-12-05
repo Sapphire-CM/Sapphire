@@ -3,7 +3,7 @@
 <% if @exercise.submission_viewer? %>
 <div class='row'>
   <div class='small-9 columns'>
-    <%= link_to "Open Viewer", submission_viewer_path(@submission), class: "small button" %>
+    <%= link_to "Open Viewer", submission_viewer_path(@submission), class: "small button", target: "sapphire_submission_viewer" %>
   </div>
 </div>
 <% end %>

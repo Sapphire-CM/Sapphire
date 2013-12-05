@@ -51,8 +51,8 @@
   </section> -->
 </div>
 
+<p>
 <%= link_to "Back to Submissions of #{@submission.exercise.title}", :back %>
-
-<%= link_to "Evaluate", single_evaluation_path(@submission) %>
-
+<%= link_to "Evaluate", single_evaluation_path(@submission), class: "small button" %>
+</p>
 <%= render 'application/reveal_modal' %>

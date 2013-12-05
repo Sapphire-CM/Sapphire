@@ -10,5 +10,10 @@ class SubmissionAsset < ActiveRecord::Base
     NEWSGROUP_POST = "text/newsgroup"
     EMAIL = "text/email"
     STYLESHEET = "text/css"
+    HTML = "text/html"
+    JPEG = "image/jpeg"
+    PNG = "image/png"
+    FAVICON = "image/x-icon"
   end
+
 end

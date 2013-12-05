@@ -13,8 +13,9 @@
   <% @submission.submission_assets.order(:file).each do |submission_asset| %>
     <h4>
       <%= shorten(File.basename(submission_asset.file.to_s), 60) %>
+      <small><%= number_to_human_size(submission_asset.file.size) %></small>
       <% if submission_asset.asset_identifier.present? %>
-        <small><%= submission_asset.asset_identifier %></small>
+        , <%= submission_asset.asset_identifier %>
       <% end %>
     </h4>
     <%= inline_submission_asset submission_asset %>

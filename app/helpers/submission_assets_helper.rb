@@ -7,10 +7,14 @@ module SubmissionAssetsHelper
       inline_email_asset(submission_asset)
     when SubmissionAsset::Mime::STYLESHEET then
       inline_css_asset(submission_asset)
+    when SubmissionAsset::Mime::HTML then
+      inline_html_asset(submission_asset)
+    when SubmissionAsset::Mime::JPEG || SubmissionAsset::Mime::PNG then
+      inline_image_asset(submission_asset)
     else
       content_tag :div, class: "panel" do
-        content = "<h5>Cannot display inline version of this asset</h5>".html_safe
-        content << link_to("View raw", submission_asset_path(submission_asset))
+        content = "<strong>Cannot display inline version of this asset</strong> ".html_safe
+        content << link_to("View raw", submission_asset_path(submission_asset), class: "tiny button", target: "_blank")
       end
     end
   end
@@ -28,6 +32,13 @@ module SubmissionAssetsHelper
     render "code_panel", code: inline_code(submission_asset.file.read, :css), raw_url: submission_asset_path(submission_asset)
   end
 
+  def inline_html_asset(submission_asset)
+    render "code_panel", code: inline_code(submission_asset.file.read, :html), raw_url: submission_asset_path(submission_asset)
+  end
+
+  def inline_image_asset(submission_asset)
+    render "image_panel", image_path: submission_asset_path(submission_asset)
+  end
 
   def inline_code(code, lang)
     coderay(code.force_encoding("UTF-8"), lang)

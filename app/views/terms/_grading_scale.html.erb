@@ -35,7 +35,7 @@
             <%= @term.grade_distribution[item[1]] %>
           </td>
           <td class='minimum-width text-right'>
-            <%= student_grade_percentage @term, item[1] %>
+            <%= student_grade_percentage @term.students, @term.grade_distribution, item[1] %>
           </td>
         </tr>
       <% end %>
@@ -43,8 +43,12 @@
       <tr>
         <td class='minimum-width text-center'>0</td>
         <td colspan='3'>&nbsp;</td>
-        <td class='minimum-width text-right'><%= @term.grade_distribution['0'] %></td>
-        <td class='minimum-width text-right'><%= student_grade_percentage @term, '0' %></td>
+        <td class='minimum-width text-right'>
+          <%= @term.grade_distribution['0'] %>
+        </td>
+        <td class='minimum-width text-right'>
+          <%= student_grade_percentage @term.students, @term.grade_distribution, '0' %>
+        </td>
       </tr>
     </tbody>
   </table>

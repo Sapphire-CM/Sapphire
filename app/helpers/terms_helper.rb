@@ -7,9 +7,9 @@ module TermsHelper
     end
   end
 
-  def student_grade_percentage(term, grade)
-    percent = if term.students.any?
-      (term.grade_distribution[grade] / term.students.count.to_f * 100).round 1
+  def student_grade_percentage(students, grade_distribution, grade)
+    percent = if students.any?
+      (grade_distribution[grade] / students.count.to_f * 100).round 1
     else
       0
     end

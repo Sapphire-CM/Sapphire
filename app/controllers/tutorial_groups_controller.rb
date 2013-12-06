@@ -58,6 +58,9 @@ class TutorialGroupsController < ApplicationController
   end
 
   def points_overview
+    @grading_scale = @term.grading_scale
+    @grade_distribution = @tutorial_group.grade_distribution
+    @students = @tutorial_group.students
   end
 
   private

@@ -425,6 +425,7 @@ DEPENDENCIES
   kaminari
   letter_opener
   mail
+  nokogiri
   pg
   poltergeist
   protected_attributes

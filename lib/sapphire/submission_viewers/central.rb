@@ -25,13 +25,13 @@ module Sapphire
         @registered_viewers.values
       end
 
-      def viewer_for_submission(submission)
+      def viewer_for_submission(submission, params)
         ex = submission.exercise
 
         viewer = nil
         if ex.submission_viewer?
           viewer_class = viewer_for_identifier(ex.submission_viewer_identifier)
-          viewer = viewer_class.new(submission)
+          viewer = viewer_class.new(submission, params)
         end
         viewer
       end

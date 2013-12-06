@@ -10,9 +10,11 @@ module Sapphire
       end
 
       attr_reader :submission
+      attr_accessor :params
 
-      def initialize(submission)
+      def initialize(submission, params)
         @submission = submission
+        @params = params
         setup
       end
 

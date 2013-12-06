@@ -1,0 +1,34 @@
+
+
+
+<% if viewer.displayable? %>
+
+  <%= render "toolbar_style" %>
+  <div id='toolbar'>
+    <%= link_to "Back", single_evaluation_path(@submission) %>
+    <%= submission_title(@submission) %>
+    <select>
+      <%= viewer.htmls.each do |html_asset| %>
+      <% fn = File.basename html_asset.file.to_s %>
+        <option value='<%= viewer.submission_html_path(fn) %>' <%= "selected='selected'" if viewer.asset == html_asset %>><%= fn %></option>
+      <% end %>
+    </select>
+  </div>
+
+  <%= content_for :head, viewer.headers %>
+  <%= viewer.body %>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript" charset="utf-8">
+  $("#toolbar select").change(function(){
+    window.location = $(this).val();
+  });
+  </script>
+<% else %>
+
+<center>
+  <h1>There seems to be an error</h1>
+  <p>Maybe you clicked on a link that didn't work</p>
+  <p>Try going <%= link_to "back", :back %>, it might help</p>
+</center>
+<% end %>

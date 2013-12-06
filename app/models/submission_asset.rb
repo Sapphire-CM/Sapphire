@@ -6,6 +6,11 @@ class SubmissionAsset < ActiveRecord::Base
 
   attr_accessible :file, :submission_id
 
+  scope :stylesheets, lambda { where(content_type: Mime::STYLESHEET)}
+  scope :htmls, lambda { where(content_type: Mime::HTML)}
+  scope :images, lambda { where{content_type.in(Mime::IMAGES)} }
+
+
   class Mime
     NEWSGROUP_POST = "text/newsgroup"
     EMAIL = "text/email"
@@ -14,6 +19,10 @@ class SubmissionAsset < ActiveRecord::Base
     JPEG = "image/jpeg"
     PNG = "image/png"
     FAVICON = "image/x-icon"
+
+    IMAGES = [JPEG, PNG]
   end
+
+
 
 end

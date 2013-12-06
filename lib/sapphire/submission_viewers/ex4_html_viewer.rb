@@ -3,6 +3,8 @@ module Sapphire
     class Ex4HTMLViewer < Base
       include Rails.application.routes.url_helpers
 
+      EXTERNAL_LINK = /^https?:\/\//
+
       attr_reader :assets
       def setup
         if asset.present?
@@ -15,7 +17,7 @@ module Sapphire
 
       def stylesheets
         @doc.css('link[rel=stylesheet]').each do |stylesheet|
-          unless stylesheet['href'] =~ /^http:\/\//
+          unless stylesheet['href'] =~ EXTERNAL_LINK
             asset = stylesheet_asset(File.basename(stylesheet['href'] || ""))
             stylesheet["href"] =  submission_asset_path(asset) if asset.present?
           end
@@ -25,7 +27,7 @@ module Sapphire
       def headers
         head_elements = @doc.css("head").dup
         head_elements.css("link[rel=stylesheet]").each do |stylesheet|
-          unless stylesheet['href'] =~ /^http:\/\//
+          unless stylesheet['href'] =~ EXTERNAL_LINK
             asset = stylesheet_asset(File.basename(stylesheet['href'] || ""))
             stylesheet['href'] =  submission_asset_path(asset) if asset.present?
           end
@@ -37,14 +39,14 @@ module Sapphire
       def body
         body = @doc.css("body").dup
         body.css('img').each do |img|
-          unless img['src'] =~ /^http:\/\//
+          unless img['src'] =~ EXTERNAL_LINK
             asset = image_asset(File.basename(img['src'] || ""))
             img['src'] =  submission_asset_path(asset) if asset.present?
           end
         end
 
         body.css('a').each do |link|
-          link['href'] =  submission_html_path(File.basename link['href'] || "") unless link['href'] =~ /^http:\/\//
+          link['href'] =  submission_html_path(File.basename link['href'] || "") unless link['href'] =~ EXTERNAL_LINK
         end
 
         body.children().to_s.html_safe

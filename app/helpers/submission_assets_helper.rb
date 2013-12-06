@@ -33,7 +33,7 @@ module SubmissionAssetsHelper
   end
 
   def inline_html_asset(submission_asset)
-    render "code_panel", code: inline_code(submission_asset.file.read, :html), raw_url: submission_asset_path(submission_asset)
+    render "code_panel", code: auto_link(inline_code(submission_asset.file.read, :html), sanitize: false, html: {target: "_blank"}).html_safe, raw_url: submission_asset_path(submission_asset)
   end
 
   def inline_image_asset(submission_asset)

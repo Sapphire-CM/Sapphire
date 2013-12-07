@@ -16,6 +16,7 @@ Sapphire::Application.routes.draw do
     post :create_lecturer_registration
     delete :clear_lecturer_registration
 
+    get :grading_scale
     post :update_grading_scale
     get :points_overview
   end

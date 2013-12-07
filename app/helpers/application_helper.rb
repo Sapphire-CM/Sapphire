@@ -19,4 +19,16 @@ module ApplicationHelper
   def coderay(code, lang = :ruby)
     CodeRay.scan(code, lang).div.html_safe
   end
+
+  def ajax_load(url)
+    id = Time.now.to_i.to_s
+
+    indicator = content_tag :div, id: 'ajax-load-indicator', class: 'grid-center' do
+      image_tag "ajax-loader.svg"
+    end
+
+    content_tag :div, id: id do
+      javascript_tag "$(function(){ ajax_load('#{id}', '#{url}', '#{indicator}'); })"
+    end
+  end
 end

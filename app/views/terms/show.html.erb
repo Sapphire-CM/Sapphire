@@ -106,11 +106,7 @@
   <section>
     <p class="title" data-section-title><a href="#grading_scale">Grading Scale</a></p>
     <div class="content" data-section-content data-slug="grading_scale">
-      <%= render partial: 'points_overview/grade_distribution',
-        locals: {
-          entry_partial: 'terms/grading_scale_entry',
-          students: @term.students,
-          grade_distribution: @term.grade_distribution(@term.students) } %>
+      <%= ajax_load term_grading_scale_path(@term) %>
     </div>
   </section>
 

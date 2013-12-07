@@ -84,6 +84,8 @@ class TermsController < ApplicationController
   end
 
   def points_overview
+    @students = @term.students
+    @grade_distribution = @term.grade_distribution @students
   end
 
   private

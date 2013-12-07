@@ -1,4 +1,4 @@
-<div id='grading_scale'>
+<div id="grading_scale">
   <table class='large-centered grid-center'>
     <thead>
       <th>Grade</th>
@@ -11,16 +11,10 @@
         <tr>
           <th class='minimum-width text-center'><%= item[1] %></th>
           <td class='text-right'>
-            <% if index+1 == @term.grading_scale.length %>
-              <%= item[0] %>
+            <% if entry_partial.present? %>
+              <%= render partial: entry_partial, locals: {index: index, item: item} %>
             <% else %>
-              <%= simple_form_for :grading_scale, url: term_update_grading_scale_path(@term), remote: true do |f| %>
-                <%= f.number_field item[1].to_s,
-                  value: item[0],
-                  min: 1,
-                  max: @term.points > 0 ? (@term.points-1) : 9999,
-                  class: 'margin-none' %>
-              <% end %>
+              <%= item[0] %>
             <% end %>
           </td>
           <td class='minimum-width'>-</td>
@@ -32,10 +26,10 @@
             <% end %>
           </td>
           <td class='minimum-width text-right'>
-            <%= @term.grade_distribution[item[1]] %>
+            <%= grade_distribution[item[1]] %>
           </td>
           <td class='minimum-width text-right'>
-            <%= student_grade_percentage @term.students, @term.grade_distribution, item[1] %>
+            <%= student_grade_percentage students, grade_distribution, item[1] %>
           </td>
         </tr>
       <% end %>
@@ -44,10 +38,9 @@
         <td class='minimum-width text-center'>0</td>
         <td colspan='3'>&nbsp;</td>
         <td class='minimum-width text-right'>
-          <%= @term.grade_distribution['0'] %>
+          <%= grade_distribution['0'] %>
         </td>
-        <td class='minimum-width text-right'>
-          <%= student_grade_percentage @term.students, @term.grade_distribution, '0' %>
+        <td>
         </td>
       </tr>
     </tbody>

@@ -136,17 +136,14 @@ class Term < ActiveRecord::Base
     @grade_for_points[points] ||= grading_scale.select{|lower, grade| lower <= points}.last[1]
   end
 
-  def grade_distribution
-    @grade_distribution ||= begin
-      distribution = Hash.new(0)
-      grades = students.map{|s| s.grade_for_term(self)}
+  def grade_distribution(students)
+    distribution = Hash.new(0)
+    grades = students.map{|s| s.grade_for_term(self)}
 
-      grades.each do |v|
-        distribution[v] += 1
-      end
-
-      distribution
+    grades.each do |v|
+      distribution[v] += 1
     end
+    distribution
   end
 
   def participated?(student)

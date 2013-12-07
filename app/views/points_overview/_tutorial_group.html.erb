@@ -17,20 +17,20 @@
       <tbody>
         <% tutorial_group.students.sort_by{ |a| a[:matriculation_number] }.each do |student| %>
           <tr>
-            <td>
+            <td class="text-center">
               <%= student.matriculation_number %>
             </td>
 
             <% term.exercises.each do |exercise| %>
-              <td>
+              <td class="text-right">
                 <%= exercise_result tutorial_group, student, exercise %>
               </td>
             <% end %>
 
-            <td>
+            <td class="text-right">
               <%= total_points term, student %>
             </td>
-            <td>
+            <td class="text-center">
               <%= final_grade term, student %>
             </td>
           </tr>

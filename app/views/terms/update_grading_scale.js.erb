@@ -1,3 +1,3 @@
-var html = "<%=j render 'grading_scale', term: @term %>";
+var html = "<%=j render partial: 'points_overview/grade_distribution', locals: { entry_partial: 'terms/grading_scale_entry', students: @term.students, grade_distribution: @term.grade_distribution(@term.students) } %>";
 
 $("#grading_scale").replaceWith(html);

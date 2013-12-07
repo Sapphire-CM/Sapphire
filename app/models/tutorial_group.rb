@@ -37,17 +37,4 @@ class TutorialGroup < ActiveRecord::Base
 
     @values[student.id][exercise.id]
   end
-
-  def grade_distribution
-    @grade_distribution ||= begin
-      distribution = Hash.new(0)
-      grades = students.map{|s| s.grade_for_term(term)}
-
-      grades.each do |v|
-        distribution[v] += 1
-      end
-
-      distribution
-    end
-  end
 end

@@ -1,5 +1,5 @@
 class TermsController < ApplicationController
-  before_action :set_context, only: [:show, :edit, :update, :destroy, :new_lecturer_registration, :create_lecturer_registration, :clear_lecturer_registration, :update_grading_scale, :points_overview]
+  before_action :set_context, only: [:show, :edit, :update, :destroy, :new_lecturer_registration, :create_lecturer_registration, :clear_lecturer_registration, :grading_scale, :update_grading_scale, :points_overview]
 
   def show
     @tutorial_groups = @term.tutorial_groups
@@ -71,6 +71,14 @@ class TermsController < ApplicationController
   def clear_lecturer_registration
     @term.lecturer_registration.destroy
     redirect_to @term, notice: "Lecturer registration successfully cleared!"
+  end
+
+  def grading_scale
+    render partial: 'points_overview/grade_distribution',
+      locals: {
+        entry_partial: 'terms/grading_scale_entry',
+        students: @term.students,
+        grade_distribution: @term.grade_distribution(@term.students) }
   end
 
   def update_grading_scale

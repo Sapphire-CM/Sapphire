@@ -28,6 +28,17 @@ class Account < ActiveRecord::Base
 
   serialize :options
 
+  scope :search, lambda {|query|
+    rel = scoped
+
+    query.split(/\s+/).each do |part|
+      part = "%#{part}%"
+      rel = rel.where {(forename =~ part) | (surname =~ part) | (matriculation_number=~ part) | (email=~ part)}
+    end
+
+    rel
+  }
+
   def initialize(*args)
     super *args
     self.options ||= Hash.new
@@ -74,16 +85,5 @@ class Account < ActiveRecord::Base
     else
       "0"
     end
-  end
-
-  def self.search(query)
-    rel = scoped
-
-    query.split(/\s+/).each do |part|
-      part = "%#{part}%"
-      rel = rel.where {(forename =~ part) | (surname =~ part) | (matriculation_number=~ part) | (email=~ part)}
-    end
-
-    rel
   end
 end

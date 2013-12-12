@@ -12,6 +12,7 @@ class StudentGroup < ActiveRecord::Base
   attr_accessible :title, :solitary
 
   scope :for_term, lambda { |term| joins{tutorial_group.term}.where{tutorial_group.term.id == my{term.id}} }
+  scope :for_student, lambda { |student| joins{student_registrations}.where{student_registration.student_id == my {student.id}}}
 
   def submission_evaluations
     @submission_evaluations ||= SubmissionEvaluation.where{submission_id.in(my {self.submissions.joins{exercise}.where{exercise.term_id == my{term.id}}.pluck(:id)})}

@@ -32,6 +32,9 @@ Sapphire::Application.routes.draw do
 
     get :points_overview
 
+    resources :grading_reviews, only: [:index, :show]
+
+
     resources :student_groups do
       get :new_student_registration
       post :create_student_registration

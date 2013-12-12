@@ -108,6 +108,10 @@ module LayoutHelper
     subtitle
   end
 
+  def highlight_search(haystack, needle)
+    highlight(haystack, needle.split(/\s+/))
+  end
+
   def foundation_icon(icon)
     "<i class='fi-#{icon.to_s.dasherize}'></i>".html_safe
   end

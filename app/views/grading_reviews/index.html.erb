@@ -1,0 +1,50 @@
+<% title "Grading Reviews - #{tutorial_group_title @tutorial_group}" %>
+
+
+<%= form_tag tutorial_group_grading_reviews_path(@tutorial_group), method: :get do %>
+<div class='row collapse'>
+  <div class='small-11 columns'>
+    <%= search_field_tag :q, params[:q], placeholder: "e.g.: forename, surname, matriculation number, ..." %>
+  </div>
+  <div class='small-1 column'>
+    <%= submit_tag "Search", class: "small button" %>
+  </div>
+</div>
+
+<% end %>
+
+<% if params[:q].present? %>
+  <% if @students.any? %>
+    <table class='small-12'>
+      <thead>
+        <tr>
+          <th>Forename</th>
+          <th>Surname</th>
+          <th>Matriculation Number</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @students.each do |student| %>
+        <tr>
+          <td><%= highlight_search(student.forename, params[:q]) %></td>
+          <td><%= highlight_search(student.surname, params[:q]) %></td>
+          <td><%= highlight_search(student.matriculation_number, params[:q]) %></td>
+          <td><%= link_to "Show", tutorial_group_grading_review_path(@tutorial_group, student), class: "small button" %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class='panel'>
+      <h4>No students found <small>You searched for "<%= params[:q] %>", please try again</small></h4>
+    </div>
+  <% end %>
+
+
+<% else %>
+  <div class='panel'>
+    <h4>No student selected <small>Please search for one above</small></h4>
+  </div>
+
+<% end %>

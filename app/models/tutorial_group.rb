@@ -12,14 +12,15 @@ class TutorialGroup < ActiveRecord::Base
   delegate :tutor, to: :tutor_registration, allow_nil: true
 
   has_many :student_groups, dependent: :destroy
+  has_many :students, through: :student_groups, class_name: "Account", uniq: true
 
-  def students
-    @students ||= student_groups
-      .includes(:students)
-      .flat_map{ |sg| sg.students }
-      .sort_by{ |s| s.reverse_fullname }
-      .uniq
-  end
+  # def students
+  #   @students ||= student_groups
+  #     .includes(:students)
+  #     .flat_map{ |sg| sg.students }
+  #     .sort_by{ |s| s.reverse_fullname }
+  #     .uniq
+  # end
 
   def student_has_submission_for_exercise?(student, exercise)
     @values ||= begin

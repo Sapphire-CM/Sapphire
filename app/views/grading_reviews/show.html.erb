@@ -1,0 +1,75 @@
+<% title "Grading-Review for #{@student.forename} #{@student.surname} (#{@student.matriculation_number})" %>
+
+<div class="section-container auto" data-section>
+  <section class="active">
+    <p class="title" data-section-title><a href="#panel1">Overview</a></p>
+    <div class="content" data-section-content>
+      <table class='small-12'>
+        <thead>
+          <tr>
+            <th>Exercise</th>
+            <th>Submitted at</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @submissions.each do |submission| %>
+            <tr>
+              <td><%= submission.exercise.title %></td>
+              <td><%= if submission.submitted_at.present? then l(submission.submitted_at, format: :short) else "unkown" end%></td>
+              <td><%= submission.submission_evaluation.evaluation_result %></td>
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th></th>
+            <th>Grade: <%= final_grade(@term, @student) %></th>
+            <th>Sum: <%= total_points(@term, @student) %></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </section>
+
+  <% @submissions.each_with_index do |submission, i| %>
+  <section>
+    <p class="title" data-section-title><a href="#panel<%= i+1 %>"><%= submission.exercise.title %></a></p>
+    <div class="content" data-section-content>
+      <div class='row'>
+        <% if submission.submission_assets.load.any? %>
+        <div class='small-9 columns'>
+          <% submission.submission_assets.order(:file).each do |submission_asset| %>
+            <h4>
+              <%= shorten(File.basename(submission_asset.file.to_s), 50) %>
+              <small><%= number_to_human_size(submission_asset.file.size) %><%= ", #{submission_asset.asset_identifier}" if submission_asset.asset_identifier.present? %></small>
+            </h4>
+            <%= inline_submission_asset submission_asset %>
+          <% end %>
+        </div>
+        <div class='small-3 columns'>
+
+          <%= grading_review_evaluations(submission) %>
+          <hr />
+          <%= link_to "Reopen Evaluation", single_evaluation_path(submission), class: "small button", target: "_blank" %>
+          <% if submission.exercise.submission_viewer? %>
+            <%= link_to "Open Viewer", submission_viewer_path(submission), class: "small button", target: "sapphire_submission_viewer" %>
+          <% end %>
+
+        </div>
+      </div>
+      <% else %>
+        <div class='small-12 columns'>
+          <%= grading_review_evaluations(submission) %>
+          <hr />
+          <%= link_to "Reopen Evaluation", single_evaluation_path(submission), class: "small button", target: "_blank" %>
+        </div>
+
+      <% end %>
+    </div>
+  </section>
+  <% end %>
+</div>
+
+<hr />
+<%= link_to "Back", tutorial_group_grading_reviews_path(@tutorial_group), class: "small button" %>

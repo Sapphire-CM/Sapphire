@@ -1,0 +1,32 @@
+<% if groups.any? %>
+  <% groups.each do |group| %>
+    <h4><%= single_evaluation_evaluation_group_title group[:group] %></h4>
+    <table class='small-12'>
+      <thead>
+        <tr>
+          <th>Rating</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% group[:evaluations].each do |evaluation| %>
+        <tr>
+          <td><%= evaluation.rating.title %></td>
+          <td>
+          <% if evaluation.is_a? BinaryEvaluation %>
+            <%= rating_points_description evaluation.rating %>
+          <% else %>
+            <%= evaluation.value %>
+          <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% else %>
+  <div class='panel callout radius'>
+    <h5>Well Done!</h5>
+    <p>Nothing wrong with this submission</p>
+  </div>
+<% end %>

@@ -21,7 +21,6 @@
 
 /config/mail.yml
 
-# INM Auto Email Responder for Web Research
-/persistent/auto_responder_paper_data.rb
+/persistent/
 
 *.sublime-workspace

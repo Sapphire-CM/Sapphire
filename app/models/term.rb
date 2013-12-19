@@ -1,6 +1,5 @@
 class Term < ActiveRecord::Base
   belongs_to :course
-  attr_accessible :title, :description, :course, :course_id, :exercises, :grading_scale
 
   include RankedModel
   ranks :row_order, with_same: :course_id
@@ -70,7 +69,7 @@ class Term < ActiveRecord::Base
     source_registration = LecturerRegistration.find_by_term_id(self.id)
 
     if source_registration
-      registration = LecturerRegistration.find_or_initialize_by_term_id(destination_term.id)
+      registration = LecturerRegistration.find_or_initialize_by(term_id: destination_term.id)
       registration.lecturer = source_registration.lecturer
       registration.save
     end

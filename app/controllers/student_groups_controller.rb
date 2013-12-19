@@ -1,8 +1,8 @@
 class StudentGroupsControllerr < ApplicationController
   before_action :set_context
+  before_action :set_student_group, only: [:show, :edit, :update, :destroy]
 
   def show
-    @student_group = tutorial_groups.student_groups.find(params[:id])
   end
 
   def new
@@ -10,7 +10,7 @@ class StudentGroupsControllerr < ApplicationController
   end
 
   def create
-    @student_group = tutorial_groups.student_groups.new(params[:student_group])
+    @student_group = tutorial_groups.student_groups.new(student_group_params)
 
     if @student_group.save
       redirect_to tutorial_group_path(tutorial_group), notice: "Student group successfully created."
@@ -20,13 +20,10 @@ class StudentGroupsControllerr < ApplicationController
   end
 
   def edit
-    @student_group = tutorial_groups.student_groups.find(params[:id])
   end
 
   def update
-    @student_group = tutorial_groups.student_groups.find(params[:id])
-
-    if @student_group.update_attributes(params[:student_group])
+    if @student_group.update_attributes(student_group_params)
       redirect_to tutorial_group_path(tutorial_group), notice: "Student group successfully updated."
     else
       render :edit
@@ -34,7 +31,6 @@ class StudentGroupsControllerr < ApplicationController
   end
 
   def destroy
-    @student_group = tutorial_groups.student_groups.find(params[:id])
     @student_group.destroy
     redirect_to tutorial_group_path(tutorial_group), notice: "Student group successfully deleted."
   end
@@ -45,4 +41,14 @@ class StudentGroupsControllerr < ApplicationController
       @term = @tutorial_group.term
     end
 
+    def set_student_group
+      @student_group = StudentGroup.find(params[:id])
+    end
+
+    def student_group_params
+      params.require(:student_group).permit(
+        :tutorial_group_id
+        :title,
+        :solitary)
+    end
 end

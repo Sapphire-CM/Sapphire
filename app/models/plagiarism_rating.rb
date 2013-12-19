@@ -6,5 +6,4 @@ class PlagiarismRating < BinaryPercentRating
   def value
     -100
   end
-
 end

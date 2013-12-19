@@ -34,8 +34,6 @@ class ExerciseEvaluationsTableController < ApplicationController
           params[:order])
 
 
-
-
         ratings = @table_data.rating_groups.flat_map{|rg| rg.ratings}
         student_groups = @table_data.student_groups
 
@@ -103,8 +101,8 @@ class ExerciseEvaluationsTableController < ApplicationController
     end
   end
 
-
-  def evaluation_params
-    params.require(:evaluation).permit(:value)
-  end
+  private
+    def evaluation_params
+      params.require(:evaluation).permit(:value)
+    end
 end

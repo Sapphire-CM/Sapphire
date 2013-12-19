@@ -1,6 +1,4 @@
 class BinaryEvaluation < Evaluation
-  attr_accessible :checked
-
   def checked?
     value == 1
   end

@@ -22,7 +22,7 @@ class Import::StudentImportsController < ApplicationController
   end
 
   def create
-    @student_import = Import::StudentImport.new(params[:import_student_import])
+    @student_import = Import::StudentImport.new(student_import_params)
 
     if not @student_import.save
       return render :new
@@ -45,7 +45,7 @@ class Import::StudentImportsController < ApplicationController
   end
 
   def update
-    result = @student_import.import(params[:import_student_import])
+    result = @student_import.import(student_import_params)
     redirect_to results_import_student_import_path(@student_import)
   end
 
@@ -61,5 +61,16 @@ class Import::StudentImportsController < ApplicationController
     def set_student_import
       @student_import = Import::StudentImport.find(params[:id])
       @term = @student_import.term
+    end
+
+    def student_import_params
+      params.require(:import_student_import).permit(
+        :term_id,
+        :file,
+        :format,
+        :status,
+        :line_count,
+        :import_options,
+        :import_mapping)
     end
 end

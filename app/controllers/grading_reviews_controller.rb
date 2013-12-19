@@ -1,5 +1,5 @@
 class GradingReviewsController < ApplicationController
-  before_filter :fetch_records
+  before_action :set_context
 
   def index
     @students = @tutorial_group.students.search(params[:q]) if params[:q].present?
@@ -11,8 +11,8 @@ class GradingReviewsController < ApplicationController
   end
 
   private
-  def fetch_records
-    @tutorial_group = TutorialGroup.find(params[:tutorial_group_id])
-    @term = @tutorial_group.term
-  end
+    def set_context
+      @tutorial_group = TutorialGroup.find(params[:tutorial_group_id])
+      @term = @tutorial_group.term
+    end
 end

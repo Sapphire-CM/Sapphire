@@ -1,6 +1,5 @@
 class Rating < ActiveRecord::Base
   belongs_to :rating_group
-  attr_accessible :title, :description, :rating_group, :rating_group_id, :value, :min_value, :max_value, :multiplication_factor, :type, :row_order_position, :automated_checker_identifier
 
   include RankedModel
   ranks :row_order, with_same: :rating_group_id, class_name: "Rating"

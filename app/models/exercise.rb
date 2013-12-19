@@ -1,9 +1,5 @@
 class Exercise < ActiveRecord::Base
   belongs_to :term
-  attr_accessible :title, :description, :term, :term_id, :deadline, :late_deadline,
-    :submission_time, :group_exercise, :row_order_position, :group_submission,
-    :enable_max_total_points, :max_total_points,
-    :enable_min_required_points, :min_required_points, :submission_viewer_identifier
 
   include RankedModel
   ranks :row_order, with_same: :term_id
@@ -33,7 +29,6 @@ class Exercise < ActiveRecord::Base
 
   after_save :update_term_points, if: lambda { |ex| ex.points_changed? }
 
-
   def submission_viewer?
     submission_viewer_identifier.present?
   end
@@ -41,5 +36,4 @@ class Exercise < ActiveRecord::Base
   def update_term_points
     term.update_points!
   end
-
 end

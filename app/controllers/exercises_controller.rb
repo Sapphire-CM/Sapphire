@@ -5,16 +5,16 @@ class ExercisesController < ApplicationController
   end
 
   def new
-    @exercise = Exercise.new
     @term = Term.find(params[:term_id])
-    @exercise.term = @term
+    @exercise = @term.exercises.new
   end
 
   def edit
   end
 
   def create
-    @exercise = Exercise.new(params[:exercise])
+    @exercise = Exercise.new(exercise_params)
+    @exercise.row_order_position = :last
 
     if @exercise.save
       redirect_to @exercise, notice: "Exercise was successfully created."
@@ -24,7 +24,7 @@ class ExercisesController < ApplicationController
   end
 
   def update
-    if @exercise.update_attributes(params[:exercise])
+    if @exercise.update_attributes(exercise_params)
       redirect_to @exercise, notice:  "Exercise was successfully updated."
     else
       render :edit
@@ -40,6 +40,22 @@ class ExercisesController < ApplicationController
     def set_context
       @exercise = Exercise.find(params[:id] || params[:exercise_id])
       @term = @exercise.term
+    end
+
+    def exercise_params
+      params.require(:exercise).permit(
+        :term_id,
+        :title,
+        :description,
+        :deadline,
+        :late_deadline,
+        :group_submission,
+        :points,
+        :enable_min_required_points,
+        :enable_max_total_points,
+        :max_total_points,
+        :min_required_points,
+        :submission_viewer_identifier)
     end
 
 end

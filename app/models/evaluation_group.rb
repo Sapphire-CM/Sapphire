@@ -55,12 +55,11 @@ class EvaluationGroup < ActiveRecord::Base
   end
 
   private
+    def update_submission_evaluation_results
+      self.submission_evaluation.calc_results!
+    end
 
-  def update_submission_evaluation_results
-    self.submission_evaluation.calc_results!
-  end
-
-  def create_evaluations
-    Evaluation.create_for_evaluation_group(self)
-  end
+    def create_evaluations
+      Evaluation.create_for_evaluation_group(self)
+    end
 end

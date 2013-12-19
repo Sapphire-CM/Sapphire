@@ -15,6 +15,7 @@ class SingleEvaluationsController < ApplicationController
   def update
     @evaluation = Evaluation.find(params[:id])
     @rating = @evaluation.rating
+
     @evaluation.value = if @rating.is_a? BinaryRating
       @evaluation.value == 1 ? 0 : 1
     else

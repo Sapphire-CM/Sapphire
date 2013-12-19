@@ -81,14 +81,3 @@ group :development, :test do
   # gem 'selenium-webdriver'      # Selenium, Firefox webdriver
   # gem 'capybara-webkit'         # Webkit headless webdriver
 end
-
-############################
-#  migration to Rails 4.0  #
-############################
-
-gem 'protected_attributes'
-
-############################
-#       end migration      #
-############################
-

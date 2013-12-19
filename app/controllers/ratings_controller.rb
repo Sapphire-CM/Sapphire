@@ -1,5 +1,6 @@
 class RatingsController < ApplicationController
   before_action :set_context
+  before_action :set_rating, only: [:edit, :update, :update_position, :destroy]
 
   def new
     @rating = @rating_group.ratings.new
@@ -12,7 +13,7 @@ class RatingsController < ApplicationController
       return
     end
 
-    @rating = Rating.new_from_type(params[:rating])
+    @rating = Rating.new_from_type(rating_params)
     @rating.rating_group = @rating_group
     @rating.row_order_position = :last
 
@@ -24,13 +25,10 @@ class RatingsController < ApplicationController
   end
 
   def edit
-    @rating = @rating_group.ratings.find(params[:id])
   end
 
   def update
-    @rating = @rating_group.ratings.find(params[:id])
-
-    if @rating.update_attributes(params[:rating])
+    if @rating.update_attributes(rating_params)
       render partial: 'ratings/replace_index_entry', locals: { rating: @rating }
     else
       render :edit
@@ -38,8 +36,6 @@ class RatingsController < ApplicationController
   end
 
   def update_position
-    @rating = @exercise.ratings.find(params[:id])
-
     update_params = { rating_group_id: params[:rating][:rating_group_id], row_order_position: params[:rating][:position]}
     @rating.update_attributes(update_params)
 
@@ -47,9 +43,7 @@ class RatingsController < ApplicationController
   end
 
   def destroy
-    @rating = @rating_group.ratings.find(params[:id])
     @rating.destroy
-
     render partial: 'ratings/remove_index_entry', locals: { rating: @rating }
   end
 
@@ -58,6 +52,23 @@ class RatingsController < ApplicationController
       @exercise = Exercise.find(params[:exercise_id])
       @rating_group = RatingGroup.find(params[:rating_group_id])
       @term = @exercise.term
+    end
+
+    def set_rating
+      @rating = Rating.find(params[:id])
+    end
+
+    def rating_params
+      params.require(:rating).permit(
+        :rating_group_id,
+        :title,
+        :description,
+        :value,
+        :type,
+        :min_value,
+        :max_value,
+        :multiplication_factor,
+        :automated_checker_identifier)
     end
 
 end

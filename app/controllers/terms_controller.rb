@@ -40,7 +40,7 @@ class TermsController < ApplicationController
   end
 
   def update
-    if @term.update_attributes(term_params)
+    if @term.update(term_params)
       render partial: 'terms/replace_index_entry', locals: { term: @term }
     else
       render :edit

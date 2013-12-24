@@ -52,7 +52,7 @@ class SubmissionEvaluationsController < ApplicationController
 
     @submission_evaluation.evaluator = current_account unless @submission_evaluation.evaluator.present?
 
-    if @submission_evaluation.update_attributes(submission_evaluation_params)
+    if @submission_evaluation.update(submission_evaluation_params)
       @submission_evaluation.update_evaluation_result!
       redirect_to submission_evaluation_path(current_submission), notice: "Evaluation has been updated"
     else

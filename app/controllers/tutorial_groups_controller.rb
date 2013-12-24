@@ -28,7 +28,7 @@ class TutorialGroupsController < ApplicationController
   end
 
   def update
-    if @tutorial_group.update_attributes(tutorial_group_params)
+    if @tutorial_group.update(tutorial_group_params)
       redirect_to @tutorial_group, notice: "Tutorial group successfully updated."
     else
       render :edit

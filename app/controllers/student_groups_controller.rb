@@ -23,7 +23,7 @@ class StudentGroupsControllerr < ApplicationController
   end
 
   def update
-    if @student_group.update_attributes(student_group_params)
+    if @student_group.update(student_group_params)
       redirect_to tutorial_group_path(tutorial_group), notice: "Student group successfully updated."
     else
       render :edit

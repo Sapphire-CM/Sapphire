@@ -21,7 +21,7 @@ class RatingGroupsController < ApplicationController
   end
 
   def update
-    if @rating_group.update_attributes(rating_group_params)
+    if @rating_group.update(rating_group_params)
       render partial: 'rating_groups/replace_index_entry', locals: { rating_group: @rating_group }
     else
       render :edit
@@ -29,7 +29,7 @@ class RatingGroupsController < ApplicationController
   end
 
   def update_position
-    @rating_group.update_attributes(params[:rating_group])
+    @rating_group.update(params[:rating_group])
     render nothing: true
   end
 

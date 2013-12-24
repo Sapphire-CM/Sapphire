@@ -28,7 +28,7 @@ class RatingsController < ApplicationController
   end
 
   def update
-    if @rating.update_attributes(rating_params)
+    if @rating.update(rating_params)
       render partial: 'ratings/replace_index_entry', locals: { rating: @rating }
     else
       render :edit
@@ -37,7 +37,7 @@ class RatingsController < ApplicationController
 
   def update_position
     update_params = { rating_group_id: params[:rating][:rating_group_id], row_order_position: params[:rating][:position]}
-    @rating.update_attributes(update_params)
+    @rating.update(update_params)
 
     render text: "#{update_position_exercise_rating_group_rating_path(@exercise, @rating.rating_group, @rating)}"
   end

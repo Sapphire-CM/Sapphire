@@ -24,7 +24,7 @@ class ExercisesController < ApplicationController
   end
 
   def update
-    if @exercise.update_attributes(exercise_params)
+    if @exercise.update(exercise_params)
       redirect_to @exercise, notice:  "Exercise was successfully updated."
     else
       render :edit

@@ -57,7 +57,7 @@ module Import::Importer
       problems: []
     }
 
-    if not update_attributes(params)
+    if not update(params)
       @import_result[:success] = false
       return result
     end

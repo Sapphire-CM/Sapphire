@@ -92,7 +92,7 @@ class ExerciseEvaluationsTableController < ApplicationController
     @student_group = @submission.student_group
     @evaluation = Evaluation.where(rating_id: @rating.id).for_submission(@submission).first
 
-    if @evaluation.update_attributes(evaluation_params)
+    if @evaluation.update(evaluation_params)
       respond_to do |format|
         format.js
       end

@@ -21,12 +21,12 @@ class SingleEvaluationsController < ApplicationController
     else
       params.require(:evaluation).permit(:value)[:value]
     end
-    @evaluation.save
+    @evaluation.save!
 
     @submission = @evaluation.submission
 
     @submission_evaluation = @submission.submission_evaluation
     @submission_evaluation.evaluated_at = Time.now
-    @submission_evaluation.save
+    @submission_evaluation.save!
   end
 end

@@ -88,7 +88,7 @@ class TermsController < ApplicationController
     pair = @term.grading_scale.select{|l,g| g == grade}.first
     @term.grading_scale.delete pair
     @term.grading_scale << [low.to_i, grade]
-    @term.save
+    @term.save!
   end
 
   def points_overview

@@ -44,7 +44,7 @@ module Import::Importer
     end if headers
 
     self.import_mapping = smart_guessed_import_mapping
-    self.save
+    self.save!
   end
 
   def import(params)

@@ -93,7 +93,7 @@ module Sapphire
               evaluation.value
             end
           end
-          evaluation.save
+          evaluation.save!
         end
       end
 

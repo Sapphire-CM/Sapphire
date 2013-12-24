@@ -63,12 +63,10 @@ def process_email(mail)
 
     Rails.logger.autoresponder.error """
       AutoResponder: Error with email. No response email sent.
-        Messag-Id: #{mail.message_id.parameterize}
+        Message-Id: #{mail.message_id.parameterize}
         From: #{mail.from.join ', '}
         Subject: #{mail.subject}
         Exception: #{e.to_s}
     """
-
-    binding.pry
   end
 end

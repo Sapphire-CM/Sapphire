@@ -1,7 +1,7 @@
 course_inm = Course.create!({ title: 'INM' })
 term_inm = course_inm.terms.create!({ title: 'WS 2013' })
 
-LecturerRegistration.create!({ term: term_inm, lecturer: Account.find_by(email: 'kandrews@iicm.tugraz.at') })
+LecturerRegistration.create!({ term: term_inm, lecturer: Account.find_by(email: 'kandrews@iicm.edu') })
 
 ex_1  = Exercise.create!({ title: 'Ex 1: Newsgroup',  term: term_inm })
 ex_2  = Exercise.create!({ title: 'Ex 2: Follow-ups', term: term_inm })

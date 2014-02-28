@@ -1,6 +1,5 @@
 class Term < ActiveRecord::Base
   belongs_to :course
-  attr_accessible :title, :description, :course, :course_id, :exercises, :grading_scale
 
   include RankedModel
   ranks :row_order, with_same: :course_id
@@ -70,9 +69,9 @@ class Term < ActiveRecord::Base
     source_registration = LecturerRegistration.find_by_term_id(self.id)
 
     if source_registration
-      registration = LecturerRegistration.find_or_initialize_by_term_id(destination_term.id)
+      registration = LecturerRegistration.find_or_initialize_by(term_id: destination_term.id)
       registration.lecturer = source_registration.lecturer
-      registration.save
+      registration.save!
     end
   end
 
@@ -102,7 +101,7 @@ class Term < ActiveRecord::Base
     Exercise.uncached do
       Exercise.transaction do
         exercises.each do |exercise|
-          exercise.save
+          exercise.save!
         end
       end
     end
@@ -111,7 +110,7 @@ class Term < ActiveRecord::Base
       RatingGroup.transaction do
         rating_groups.each do |rating_group|
           rating_group.exercise = rating_group.exercise # refresh exercise_id
-          rating_group.save
+          rating_group.save!
         end
       end
     end
@@ -120,7 +119,7 @@ class Term < ActiveRecord::Base
       Rating.transaction do
         ratings.each do |rating|
           rating.rating_group = rating.rating_group # refresh rating_group_id
-          rating.save
+          rating.save!
         end
       end
     end
@@ -128,7 +127,7 @@ class Term < ActiveRecord::Base
 
   def copy_grading_scale(destination_term)
     destination_term.grading_scale = self.grading_scale.dup
-    destination_term.save
+    destination_term.save!
   end
 
   def grade_for_points(points)

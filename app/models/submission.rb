@@ -5,7 +5,6 @@ class Submission < ActiveRecord::Base
   has_one :submission_evaluation, dependent: :destroy
 
   has_many :submission_assets
-  attr_accessible :submitted_at
 
   validates_presence_of :submitted_at, :exercise
   validates_uniqueness_of :exercise_id, scope: :student_group_registration_id

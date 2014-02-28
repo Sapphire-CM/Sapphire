@@ -1,7 +1,5 @@
 class ExerciseEvaluationsTableData
-
-  attr_accessor :transpose, :exercise, :tutorial_group, :student_groups, :order
-  attr_reader :rating_groups
+  attr_reader :rating_groups, :exercise, :transpose, :tutorial_group, :student_groups, :order
 
   def initialize(exercise, tutorial_group=nil, transpose=false, student_groups=nil, order=nil)
     @exercise = exercise
@@ -75,7 +73,7 @@ class ExerciseEvaluationsTableData
         student_groups = @exercise.term.student_groups
       end.includes(student_registrations: :student).where {solitary != my {@exercise.group_submission?}}
 
-      @order = @order.to_sym if order.present?
+      @order = @order.to_sym if @order.present?
 
       student_groups = if @exercise.group_submission?
         case @order

@@ -7,7 +7,7 @@ class EvaluationsController < ApplicationController
   end
 
   def create
-    @evaluation = Evaluation.new(params[:evaluation])
+    @evaluation = Evaluation.new(evaluation_params)
 
     respond_to do |format|
       if @evaluation.save
@@ -33,4 +33,13 @@ class EvaluationsController < ApplicationController
       @term = @exercise.term
     end
 
+    def evaluation_params
+      params.require(:evaluation).permit(
+        :type,
+        :rating_id,
+        :checked,
+        :value,
+        :evaluation_group_id,
+        :checked_automatically)
+    end
 end

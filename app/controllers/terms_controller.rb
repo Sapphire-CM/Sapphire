@@ -1,5 +1,7 @@
 class TermsController < ApplicationController
-  before_action :set_context, only: [:show, :edit, :update, :destroy, :new_lecturer_registration, :create_lecturer_registration, :clear_lecturer_registration, :grading_scale, :update_grading_scale, :points_overview]
+  before_action :set_term, only: [:show, :edit, :update, :destroy,
+    :new_lecturer_registration, :create_lecturer_registration, :clear_lecturer_registration,
+    :grading_scale, :update_grading_scale, :points_overview]
 
   def show
     @tutorial_groups = @term.tutorial_groups
@@ -16,7 +18,7 @@ class TermsController < ApplicationController
   end
 
   def create
-    @term = TermNew.new(params[:term])
+    @term = TermNew.new(term_params)
 
     if @term.save
       # create elements for new term
@@ -38,7 +40,7 @@ class TermsController < ApplicationController
   end
 
   def update
-    if @term.update_attributes(params[:term])
+    if @term.update(term_params)
       render partial: 'terms/replace_index_entry', locals: { term: @term }
     else
       render :edit
@@ -56,10 +58,8 @@ class TermsController < ApplicationController
   end
 
   def create_lecturer_registration
-    @account = Account.find(params[:account_id])
-
-    registration = LecturerRegistration.find_or_initialize_by_term_id(@term.id)
-    registration.lecturer = @account
+    registration = LecturerRegistration.find_or_initialize_by(term_id: @term.id)
+    registration.lecturer = Account.find(params[:account_id])
 
     if registration.save
       redirect_to @term, notice: "Lecturer registration successfully added."
@@ -97,8 +97,19 @@ class TermsController < ApplicationController
   end
 
   private
-    def set_context
+    def set_term
       @term = Term.find(params[:id] || params[:term_id])
     end
 
+    def term_params
+      params.require(:term).permit(
+        :course_id,
+        :title,
+        :description,
+        :source_term_id,
+        :copy_elements,
+        :copy_exercises,
+        :copy_grading_scale,
+        :copy_lecturer)
+    end
 end

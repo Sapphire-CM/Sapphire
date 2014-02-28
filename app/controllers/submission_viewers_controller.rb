@@ -3,7 +3,6 @@ class SubmissionViewersController < ApplicationController
     @submission = Submission.find(params[:id])
     @viewer = Sapphire::SubmissionViewers::Central.viewer_for_submission(@submission, params)
 
-
     if @viewer
       @viewer.params = params
     else

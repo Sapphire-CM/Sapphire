@@ -1,5 +1,4 @@
 class ValueEvaluation < Evaluation
-  attr_accessible :value
   validate :value_range
 
   def points

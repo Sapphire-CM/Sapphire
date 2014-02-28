@@ -34,8 +34,6 @@ class ExerciseEvaluationsTableController < ApplicationController
           params[:order])
 
 
-
-
         ratings = @table_data.rating_groups.flat_map{|rg| rg.ratings}
         student_groups = @table_data.student_groups
 
@@ -94,7 +92,7 @@ class ExerciseEvaluationsTableController < ApplicationController
     @student_group = @submission.student_group
     @evaluation = Evaluation.where(rating_id: @rating.id).for_submission(@submission).first
 
-    if @evaluation.update_attributes(evaluation_params)
+    if @evaluation.update(evaluation_params)
       respond_to do |format|
         format.js
       end
@@ -103,8 +101,8 @@ class ExerciseEvaluationsTableController < ApplicationController
     end
   end
 
-
-  def evaluation_params
-    params.require(:evaluation).permit(:value)
-  end
+  private
+    def evaluation_params
+      params.require(:evaluation).permit(:value)
+    end
 end

@@ -1,11 +1,8 @@
 class CoursesController < ApplicationController
+  before_action :set_course, only: [:edit, :update, :destroy]
+
   def index
     @courses = Course.includes(:terms).load
-  end
-
-  def show
-    @course = Course.includes(:terms).find(params[:id])
-    @terms = @course.terms
   end
 
   def new
@@ -13,7 +10,7 @@ class CoursesController < ApplicationController
   end
 
   def create
-    @course = Course.new(params[:course])
+    @course = Course.new(course_params)
 
     if @course.save
       render partial: 'courses/insert_index_entry', locals: { course: @course }
@@ -23,13 +20,10 @@ class CoursesController < ApplicationController
   end
 
   def edit
-    @course = Course.find(params[:id])
   end
 
   def update
-    @course = Course.find(params[:id])
-
-    if @course.update_attributes(params[:course])
+    if @course.update(course_params)
       render partial: 'courses/replace_index_entry', locals: { course: @course }
     else
       render :edit
@@ -37,9 +31,18 @@ class CoursesController < ApplicationController
   end
 
   def destroy
-    @course = Course.find(params[:id])
     @course.destroy
-
     render partial: 'courses/remove_index_entry', locals: { course: @course }
   end
+
+  private
+    def set_course
+      @course = Course.find(params[:id])
+    end
+
+    def course_params
+      params.require(:course).permit(
+        :title,
+        :discription)
+    end
 end

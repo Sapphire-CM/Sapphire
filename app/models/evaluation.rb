@@ -10,8 +10,6 @@ class Evaluation < ActiveRecord::Base
   validate :validate_evaluation_type
   validates_presence_of :evaluation_group
 
-  attr_accessible :rating_id, :type, :value
-
   after_create :update_result!, if: lambda { |eval| eval.value_changed? }
   after_update :update_result!, if: lambda { |eval| eval.value_changed? }
   after_destroy :update_result!
@@ -53,14 +51,13 @@ class Evaluation < ActiveRecord::Base
   end
 
   private
-  def self.new_from_rating(rating)
-    evaluation = rating.evaluation_class.new
-    evaluation.rating = rating
-    evaluation
-  end
+    def self.new_from_rating(rating)
+      evaluation = rating.evaluation_class.new
+      evaluation.rating = rating
+      evaluation
+    end
 
-  def validate_evaluation_type
-    errors[:type] = "must not be Evaluation" if self.type == "Evaluation"
-  end
-
+    def validate_evaluation_type
+      errors[:type] = "must not be Evaluation" if self.type == "Evaluation"
+    end
 end

@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+  before_action :set_account, only: [:show, :edit, :update, :destroy]
 
   def index
     @accounts = Account.scoped.page(params[:page]).per(50)
@@ -6,22 +7,35 @@ class AccountsController < ApplicationController
   end
 
   def show
-    @account = Account.find(params[:id])
-
     @registrations = []
   end
 
   def edit
-    @account = Account.find(params[:id])
   end
 
   def update
-    @account = Account.find(params[:id])
-
-    if @account.update_with_password(params[:account])
+    if @account.update_with_password(account_params)
       redirect_to root_path, notice: "Account was successfully updated."
     else
       render :edit
     end
   end
+
+  def destroy
+    @account.destroy
+    redirect_to accounts_path
+  end
+
+  private
+    def set_account
+      @account = Account.find(params[:id])
+    end
+
+    def account_params
+      params.require(:account).permit(
+        :forename,
+        :surname,
+        :matriculation_number,
+        :options)
+    end
 end

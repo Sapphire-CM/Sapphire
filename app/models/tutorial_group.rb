@@ -1,7 +1,6 @@
 class TutorialGroup < ActiveRecord::Base
   belongs_to :term
   has_one :course, through: :term
-  attr_accessible :title, :description
 
   default_scope { includes(:tutor_registration).order(:title) }
 
@@ -12,7 +11,7 @@ class TutorialGroup < ActiveRecord::Base
   delegate :tutor, to: :tutor_registration, allow_nil: true
 
   has_many :student_groups, dependent: :destroy
-  has_many :students, through: :student_groups, class_name: "Account", uniq: true
+  has_many :students, -> { uniq }, through: :student_groups, class_name: "Account"
 
   # def students
   #   @students ||= student_groups

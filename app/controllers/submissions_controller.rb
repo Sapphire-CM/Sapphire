@@ -5,7 +5,6 @@ class SubmissionsController < ApplicationController
 
     @submissions = @exercise.submissions.includes({student_group: [:students, :tutorial_group]}, :submission_evaluation, :exercise).order(:submitted_at)
 
-
     @tutorial_group = if params[:tutorial_group_id].present?
       if params[:tutorial_group_id] == "all"
         nil

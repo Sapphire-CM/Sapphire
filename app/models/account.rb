@@ -8,8 +8,6 @@ class Account < ActiveRecord::Base
          :validatable,
          :lockable
 
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :forename, :surname, :matriculation_number
-
   # devise already does this with the validatable-option: validates_uniqueness_of :email
   validates_presence_of :forename
   validates_presence_of :surname

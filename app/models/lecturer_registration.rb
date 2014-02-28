@@ -3,7 +3,4 @@ class LecturerRegistration < ActiveRecord::Base
   belongs_to :term
 
   has_one :course, through: :term
-
-  attr_accessible :term, :lecturer
-
 end

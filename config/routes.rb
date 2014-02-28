@@ -1,5 +1,4 @@
 Sapphire::Application.routes.draw do
-  get "submission_viewers/show"
   devise_for :accounts, skip: :registration
 
   resources :accounts, except: [:new, :show] do
@@ -7,9 +6,7 @@ Sapphire::Application.routes.draw do
     patch :update_password, on: :member
   end
 
-  resources :courses
-
-  resources :submission_assets, only: [:show, :new, :create]
+  resources :courses, except: [:show]
 
   resources :terms do
     get :new_lecturer_registration
@@ -21,10 +18,6 @@ Sapphire::Application.routes.draw do
     get :points_overview
   end
 
-  resources :submissions, only: :show do
-    resource :evaluation, controller: 'submission_evaluations'
-  end
-
   resources :tutorial_groups do
     get :new_tutor_registration
     post :create_tutor_registration
@@ -33,7 +26,6 @@ Sapphire::Application.routes.draw do
     get :points_overview
 
     resources :grading_reviews, only: [:index, :show]
-
 
     resources :student_groups do
       get :new_student_registration
@@ -54,12 +46,6 @@ Sapphire::Application.routes.draw do
     resources :submissions
   end
 
-  resources :single_evaluations
-  resources :submission_viewers
-
-  resources :submission_evaluations
-
-
   namespace :import do
     resources :student_imports do
       get :full_mapping_table, on: :member
@@ -67,6 +53,22 @@ Sapphire::Application.routes.draw do
     end
   end
 
+  resources :submissions, only: :show do
+    resource :evaluation, controller: 'submission_evaluations'
+  end
+
+  resources :submission_viewers
+
+  resources :submission_evaluations
+
+  resources :submission_assets, only: [:show, :new, :create]
+
+  resources :single_evaluations
+
+################################################################################
+
   root to: 'courses#index'
+
+  get 'submission_viewers/show'
 
 end

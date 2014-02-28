@@ -44,7 +44,7 @@ module Import::Importer
     end if headers
 
     self.import_mapping = smart_guessed_import_mapping
-    self.save
+    self.save!
   end
 
   def import(params)
@@ -57,7 +57,7 @@ module Import::Importer
       problems: []
     }
 
-    if not update_attributes(params)
+    if not update(params)
       @import_result[:success] = false
       return result
     end

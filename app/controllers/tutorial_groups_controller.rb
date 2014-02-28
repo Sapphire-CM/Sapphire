@@ -1,5 +1,7 @@
 class TutorialGroupsController < ApplicationController
-  before_action :set_context, only: [:show, :edit, :update, :destroy, :new_tutor_registration, :create_tutor_registration, :clear_tutor_registration, :points_overview]
+  before_action :set_context, only: [:show, :edit, :update, :destroy,
+    :new_tutor_registration, :create_tutor_registration, :clear_tutor_registration,
+    :points_overview]
 
   def show
     if @tutorial_group.tutor.blank?
@@ -13,7 +15,7 @@ class TutorialGroupsController < ApplicationController
   end
 
   def create
-    @tutorial_group = TutorialGroup.new(params[:tutorial_group])
+    @tutorial_group = TutorialGroup.new(tutorial_group_params)
 
     if @tutorial_group.save
       redirect_to @tutorial_group, notice: "Tutorial group successfully created."
@@ -26,7 +28,7 @@ class TutorialGroupsController < ApplicationController
   end
 
   def update
-    if @tutorial_group.update_attributes(params[:tutorial_group])
+    if @tutorial_group.update(tutorial_group_params)
       redirect_to @tutorial_group, notice: "Tutorial group successfully updated."
     else
       render :edit
@@ -44,10 +46,8 @@ class TutorialGroupsController < ApplicationController
   end
 
   def create_tutor_registration
-    @account = Account.find(params[:account_id])
-
-    registration = TutorRegistration.find_or_initialize_by_tutorial_group_id(@tutorial_group.id)
-    registration.tutor = @account
+    registration = TutorRegistration.find_or_initialize_by(tutorial_group_id: @tutorial_group.id)
+    registration.tutor = Account.find(params[:account_id])
 
     save_registration_and_redirect registration
   end
@@ -68,6 +68,13 @@ class TutorialGroupsController < ApplicationController
       @term = @tutorial_group.term
     end
 
+    def tutorial_group_params
+      params.require(:tutorial_group).permit(
+        :term_id,
+        :title,
+        :description)
+    end
+
     def save_registration_and_redirect(registration)
       if registration.save
         redirect_to tutorial_group_path(@tutorial_group), notice: "New registration successfully added."
@@ -75,5 +82,4 @@ class TutorialGroupsController < ApplicationController
         redirect_to tutorial_group_path(@tutorial_group), alert: "Registration failed!"
       end
     end
-
 end

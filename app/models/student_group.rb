@@ -9,8 +9,6 @@ class StudentGroup < ActiveRecord::Base
   has_many :exercises, through: :student_group_registrations
   has_many :submissions, through: :student_group_registrations
 
-  attr_accessible :title, :solitary
-
   scope :for_term, lambda { |term| joins{tutorial_group.term}.where{tutorial_group.term.id == my{term.id}} }
   scope :for_student, lambda { |student| joins{student_registrations}.where{student_registration.student_id == my {student.id}}}
 

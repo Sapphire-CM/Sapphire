@@ -1,11 +1,13 @@
 class SubmissionsController < ApplicationController
-  def index
-    authorize Submission
+  SubmissionPolicyRecord = Struct.new :exercise, :tutorial_group do
+    def policy_class
+      SubmissionPolicy
+    end
+  end
 
+  def index
     @exercise = Exercise.find params[:exercise_id]
     @term = @exercise.term
-
-    @submissions = @exercise.submissions.includes({student_group: [:students, :tutorial_group]}, :submission_evaluation, :exercise).order(:submitted_at)
 
     @tutorial_group = if params[:tutorial_group_id].present?
       if params[:tutorial_group_id] == "all"
@@ -21,6 +23,9 @@ class SubmissionsController < ApplicationController
       end
     end
 
+    authorize SubmissionPolicyRecord.new @exercise, @tutorial_group
+
+    @submissions = @exercise.submissions.includes({student_group: [:students, :tutorial_group]}, :submission_evaluation, :exercise).order(:submitted_at)
     @submissions = @submissions.for_tutorial_group @tutorial_group if @tutorial_group.present?
     @submission_count = @submissions.count
     @submissions = @submissions.page(params[:page]).per(20)

@@ -84,4 +84,49 @@ class Account < ActiveRecord::Base
       "0"
     end
   end
+
+###############################################################################
+
+  def admin?
+    false
+  end
+
+  def lecturer_of_term?(term)
+    lecturer_registrations
+      .where{term_id == my{term.id}}
+      .first
+      .present?
+  end
+
+  def lecturer_of_any_term_in_course?(course)
+    lecturer_registrations
+      .joins{term}
+      .where{term.id.in my{course.terms.pluck(:id)}}
+      .first
+      .present?
+  end
+
+  def tutor_of_term?(term)
+    tutor_registrations
+      .joins{tutorial_group.term}
+      .where{tutorial_group.term == my{term}}
+      .first
+      .present?
+  end
+
+  def tutor_of_tutorial_group?(tutorial_group)
+    if tutorial_group.tutor
+      tutorial_group.tutor == self
+    else
+      true
+    end
+  end
+
+  def tutor_of_any_tutorial_group_in_term?(term)
+    tutor_registrations
+      .joins{tutorial_group.term}
+      .where{tutorial_group.term.id.in my{term.tutorial_groups.pluck(:id)}}
+      .first
+      .present?
+  end
 end

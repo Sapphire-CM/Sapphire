@@ -1,7 +1,13 @@
 class SubmissionViewersController < ApplicationController
+  SubmissionViewerPolicyRecord = Struct.new :submission do
+    def policy_class
+      SubmissionViewerPolicy
+    end
+  end
+
   def show
     @submission = Submission.find(params[:id])
-    authorize @submission
+    authorize SubmissionViewerPolicyRecord.new @submission
 
     @viewer = Sapphire::SubmissionViewers::Central.viewer_for_submission(@submission, params)
 

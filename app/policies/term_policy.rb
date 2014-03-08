@@ -1,53 +1,64 @@
 class TermPolicy < PunditBasePolicy
-  def index?
-    user.admin?
-  end
-
   def show?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_term?(record) ||
+    user.tutor_of_term?(record)
   end
 
   def new?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_any_term_in_course?(record.course)
   end
 
   def create?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_any_term_in_course?(record.course)
   end
 
   def edit?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_term?(record)
   end
 
   def update?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_term?(record)
   end
 
   def destroy?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_term?(record)
   end
 
   def new_lecturer_registration?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_any_term_in_course?(record.course)
   end
 
   def create_lecturer_registration?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_any_term_in_course?(record.course)
   end
 
   def clear_lecturer_registration?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_any_term_in_course?(record.course)
   end
 
   def grading_scale?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_term?(record) ||
+    user.tutor_of_term?(record)
   end
 
   def update_grading_scale?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_term?(record)
   end
 
   def points_overview?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_term?(record) ||
+    user.tutor_of_term?(record)
   end
 end

@@ -54,12 +54,12 @@ Sapphire::Application.routes.draw do
   end
 
   resources :submissions, only: :show do
-    resource :evaluation, controller: 'submission_evaluations'
+    resource :evaluation, controller: 'submission_evaluations', except: [:destroy]
   end
 
   resources :submission_viewers
 
-  resources :submission_evaluations
+  resources :submission_evaluations, except: [:destroy]
 
   resources :submission_assets, only: [:show, :new, :create]
 

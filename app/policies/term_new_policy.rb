@@ -1,0 +1,2 @@
+class TermNewPolicy < TermPolicy
+end

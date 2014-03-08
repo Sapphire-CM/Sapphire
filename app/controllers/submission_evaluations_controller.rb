@@ -1,5 +1,5 @@
 class SubmissionEvaluationsController < ApplicationController
-  before_action :set_submission_evaluation, only: [:show, :new, :create, :edit, :update, :destroy]
+  before_action :set_submission_evaluation, only: [:show, :new, :create, :edit, :update]
 
   def show
     unless @submission_evaluation.present?
@@ -91,5 +91,4 @@ class SubmissionEvaluationsController < ApplicationController
       @submission ||= current_term.submissions.find(params[:submission_id])
     end
     helper_method :current_submission
-
 end

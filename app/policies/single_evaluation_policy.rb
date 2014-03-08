@@ -1,29 +1,13 @@
 class SingleEvaluationPolicy < PunditBasePolicy
-  def index?
-    user.admin?
-  end
-
   def show?
-    user.admin?
-  end
-
-  def new?
-    user.admin?
-  end
-
-  def create?
-    user.admin?
-  end
-
-  def edit?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_term?(record.submission.exercise.term) ||
+    user.tutor_of_tutorial_group?(record.submission.student_group_registration.student_group.tutorial_group)
   end
 
   def update?
-    user.admin?
-  end
-
-  def destroy?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_term?(record.submission.exercise.term) ||
+    user.tutor_of_tutorial_group?(record.submission.student_group_registration.student_group.tutorial_group)
   end
 end

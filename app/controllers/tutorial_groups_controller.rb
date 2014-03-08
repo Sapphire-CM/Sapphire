@@ -4,8 +4,6 @@ class TutorialGroupsController < ApplicationController
     :points_overview]
 
   def show
-    authorize TutorialGroup
-
     if @tutorial_group.tutor.blank?
       render alert: 'You have not set a tutor yet!'
     end

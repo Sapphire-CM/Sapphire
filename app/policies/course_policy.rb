@@ -1,6 +1,8 @@
 class CoursePolicy < PunditBasePolicy
   def index?
-    user.admin?
+    user.admin? ||
+    user.lecturer_registrations.count > 0 ||
+    user.tutor_registrations.count > 0
   end
 
   def new?

@@ -1,25 +1,31 @@
 class Import::StudentImportPolicy < PunditBasePolicy
   def index?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_term?(record)
   end
 
   def edit?
-    user.admin? || user == record
+    user.admin? ||
+    user.lecturer_of_term?(record)
   end
 
   def update?
-    user.admin? || user == record
+    user.admin? ||
+    user.lecturer_of_term?(record)
   end
 
   def destroy?
-    user.admin?
+    user.admin? ||
+    user.lecturer_of_term?(record)
   end
 
-  def change_password?
-    user.admin?
+  def full_mapping_table?
+    user.admin? ||
+    user.lecturer_of_term?(record)
   end
 
-  def update_password?
-    user.admin?
+  def results?
+    user.admin? ||
+    user.lecturer_of_term?(record)
   end
 end

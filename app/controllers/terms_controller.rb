@@ -4,8 +4,6 @@ class TermsController < ApplicationController
     :grading_scale, :update_grading_scale, :points_overview]
 
   def show
-    authorize Term
-
     @tutorial_groups = @term.tutorial_groups
     @exercises = @term.exercises
 

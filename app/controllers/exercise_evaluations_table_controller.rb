@@ -1,9 +1,15 @@
 class ExerciseEvaluationsTableController < ApplicationController
+  ExerciseEvaluationsTablePolicyRecord = Struct.new :exercise, :student_group do
+    def policy_class
+      ExerciseEvaluationsTablePolicy
+    end
+  end
+
   def show
     respond_to do |format|
       format.html do
         @exercise = Exercise.find(params[:exercise_id])
-        authorize @exercise
+        authorize ExerciseEvaluationsTablePolicyRecord.new @exercise
 
         @term = @exercise.term
         @transposed = current_account.options[:transpose] || false
@@ -17,7 +23,7 @@ class ExerciseEvaluationsTableController < ApplicationController
         end
 
         @exercise = Exercise.for_evaluations_table.find(params[:exercise_id])
-        authorize @exercise
+        authorize ExerciseEvaluationsTablePolicyRecord.new @exercise
 
         @term = @exercise.term
 
@@ -68,7 +74,8 @@ class ExerciseEvaluationsTableController < ApplicationController
   def create
     @exercise = Exercise.find(params[:exercise_id])
     @student_group = StudentGroup.find(params[:student_group_id])
-    authorize @exercise
+
+    authorize ExerciseEvaluationsTablePolicyRecord.new @exercise, @student_group
 
     @submission = Submission.new
     @submission.exercise = @exercise
@@ -87,7 +94,8 @@ class ExerciseEvaluationsTableController < ApplicationController
     @exercise = Exercise.find(params[:exercise_id])
     @student_group = StudentGroup.find(params[:student_group_id])
     @rating = @exercise.ratings.find(params[:rating_id])
-    authorize @exercise
+
+    authorize ExerciseEvaluationsTablePolicyRecord.new @exercise, @student_group
 
     @submission = @student_group.submissions.for_exercise(@exercise).first
 

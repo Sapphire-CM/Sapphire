@@ -28,7 +28,7 @@ module ApplicationHelper
     end
 
     content_tag :div, id: id do
-      javascript_tag "$(function(){ ajax_load('#{id}', '#{url}', '#{indicator}'); })"
+      javascript_tag "ajax_load('#{id}', '#{url}', '#{indicator}');"
     end
   end
 end

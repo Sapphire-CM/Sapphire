@@ -1,7 +1,7 @@
 Sapphire::Application.routes.draw do
   devise_for :accounts, skip: :registration
 
-  resources :accounts, except: [:new, :show] do
+  resources :accounts, except: [:show, :new, :create] do
     get :change_password, on: :member
     patch :update_password, on: :member
   end

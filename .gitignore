@@ -23,4 +23,5 @@
 
 /persistent/
 
+*.sublime-project
 *.sublime-workspace

@@ -14,6 +14,6 @@ class ApplicationController < ActionController::Base
 
   private
     def user_not_authorized
-      redirect_to root_path, alert: 'You are not authorized to perform this action.'
+      redirect_to new_account_session_path, alert: 'You are not authorize to perform this action.'
     end
 end

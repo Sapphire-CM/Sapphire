@@ -1,6 +1,8 @@
 class SingleEvaluationsController < ApplicationController
   def show
     @submission = Submission.find(params[:id])
+    authorize @submission
+
     @submission_assets = @submission.submission_assets.order(submitted_at: :desc)
 
     submission_scope = Submission.for_exercise(@submission.exercise).for_tutorial_group(@submission.student_group.tutorial_group)
@@ -14,6 +16,8 @@ class SingleEvaluationsController < ApplicationController
 
   def update
     @evaluation = Evaluation.find(params[:id])
+    authorize @evaluation
+
     @rating = @evaluation.rating
 
     @evaluation.value = if @rating.is_a? BinaryRating

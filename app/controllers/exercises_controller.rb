@@ -7,20 +7,22 @@ class ExercisesController < ApplicationController
   def new
     @term = Term.find(params[:term_id])
     @exercise = @term.exercises.new
-  end
-
-  def edit
+    authorize @exercise
   end
 
   def create
     @exercise = Exercise.new(exercise_params)
     @exercise.row_order_position = :last
+    authorize @exercise
 
     if @exercise.save
       redirect_to @exercise, notice: "Exercise was successfully created."
     else
       render :new
     end
+  end
+
+  def edit
   end
 
   def update
@@ -40,6 +42,7 @@ class ExercisesController < ApplicationController
     def set_context
       @exercise = Exercise.find(params[:id] || params[:exercise_id])
       @term = @exercise.term
+      authorize @exercise
     end
 
     def exercise_params

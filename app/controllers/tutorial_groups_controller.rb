@@ -4,6 +4,8 @@ class TutorialGroupsController < ApplicationController
     :points_overview]
 
   def show
+    authorize TutorialGroup
+
     if @tutorial_group.tutor.blank?
       render alert: 'You have not set a tutor yet!'
     end
@@ -12,10 +14,12 @@ class TutorialGroupsController < ApplicationController
   def new
     @tutorial_group = TutorialGroups.new
     @tutorial_group.term = Term.find(params[:term_id])
+    authorize @tutorial_group
   end
 
   def create
     @tutorial_group = TutorialGroup.new(tutorial_group_params)
+    authorize @tutorial_group
 
     if @tutorial_group.save
       redirect_to @tutorial_group, notice: "Tutorial group successfully created."
@@ -66,6 +70,8 @@ class TutorialGroupsController < ApplicationController
     def set_context
       @tutorial_group = TutorialGroup.find(params[:id] || params[:tutorial_group_id])
       @term = @tutorial_group.term
+
+      authorize @tutorial_group
     end
 
     def tutorial_group_params

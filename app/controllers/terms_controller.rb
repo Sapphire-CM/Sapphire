@@ -4,6 +4,8 @@ class TermsController < ApplicationController
     :grading_scale, :update_grading_scale, :points_overview]
 
   def show
+    authorize Term
+
     @tutorial_groups = @term.tutorial_groups
     @exercises = @term.exercises
 
@@ -15,19 +17,20 @@ class TermsController < ApplicationController
   def new
     @term = TermNew.new
     @term.course = Course.find(params[:course_id])
+    authorize @term
   end
 
   def create
     @term = TermNew.new(term_params)
+    authorize @term
 
     if @term.save
-      # create elements for new term
       if not @term.copy_elements.to_i.zero?
         source_term = Term.find(@term.source_term_id)
 
-        source_term.copy_lecturer(@term) if not @term.copy_lecturer.to_i.zero?
-        source_term.copy_exercises(@term) if not @term.copy_exercises.to_i.zero?
-        source_term.copy_grading_scale(@term) if not @term.copy_grading_scale.to_i.zero?
+        source_term.copy_lecturer(@term) unless @term.copy_lecturer.to_i.zero?
+        source_term.copy_exercises(@term) unless @term.copy_exercises.to_i.zero?
+        source_term.copy_grading_scale(@term) unless @term.copy_grading_scale.to_i.zero?
       end
 
       render partial: 'terms/insert_index_entry', locals: { term: @term }
@@ -99,6 +102,7 @@ class TermsController < ApplicationController
   private
     def set_term
       @term = Term.find(params[:id] || params[:term_id])
+      authorize @term
     end
 
     def term_params

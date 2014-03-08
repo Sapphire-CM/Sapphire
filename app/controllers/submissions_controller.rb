@@ -1,5 +1,7 @@
 class SubmissionsController < ApplicationController
   def index
+    authorize Submission
+
     @exercise = Exercise.find params[:exercise_id]
     @term = @exercise.term
 
@@ -27,5 +29,6 @@ class SubmissionsController < ApplicationController
   def show
     @submission = Submission.find(params[:id])
     @term = @submission.exercise.term
+    authorize @submission
   end
 end

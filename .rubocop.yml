@@ -1,0 +1,41 @@
+AllCops:
+  Includes:
+    - Rakefile
+    - config.ru
+  Excludes:
+    - bin/**
+    - config/**
+    - db/**
+    - public/**
+    - spec/**
+    - tmp/**
+    - !ruby/regexp /old_and_unused\.rb$/
+  RunRailsCops: true
+
+Debugger:
+  Enabled: false
+
+EndAlignment:
+  Enabled: false
+
+BlockAlignment:
+  Enabled: false
+
+LineLength:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+MethodLength:
+  Enabled: false
+
+UnlessElse:
+  Enabled: false
+
+CaseIndentation:
+  Enabled: false
+
+SingleLineMethods:
+  Enabled: false
+

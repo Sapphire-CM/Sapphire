@@ -14,6 +14,19 @@ class ApplicationController < ActionController::Base
 
   private
     def user_not_authorized
-      redirect_to new_account_session_path, alert: 'You are not authorize to perform this action.'
+      destination = request.referer || new_account_session_path
+      alert = 'You are not authorize to perform this action.'
+
+      if request.xhr?
+        js_redirect_to destination, alert: alert
+      else
+        redirect_to destination, alert: alert
+      end
     end
+
+    def js_redirect_to(path, flashes={})
+      flashes.each { |key, value| flash[key] = value }
+      render js: "window.location = '#{path}';"
+    end
+    helper_method :js_redirect_to
 end

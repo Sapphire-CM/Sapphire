@@ -16,10 +16,10 @@ class AccountPolicy < PunditBasePolicy
   end
 
   def change_password?
-    user.admin?
+    user.admin? || user == record
   end
 
   def update_password?
-    user.admin?
+    user.admin? || user == record
   end
 end

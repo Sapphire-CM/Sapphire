@@ -94,31 +94,28 @@ class Account < ActiveRecord::Base
   def lecturer_of_term?(term)
     lecturer_registrations
       .where{term_id == my{term.id}}
-      .first
-      .present?
+      .exists?
   end
 
   def lecturer_of_any_term_in_course?(course)
     lecturer_registrations
       .joins{term}
       .where{term.id.in my{course.terms.pluck(:id)}}
-      .first
-      .present?
+      .exists?
   end
 
   def tutor_of_term?(term)
     tutor_registrations
       .joins{tutorial_group.term}
       .where{tutorial_group.term == my{term}}
-      .first
-      .present?
+      .exists?
   end
 
   def tutor_of_tutorial_group?(tutorial_group)
     if tutorial_group.tutor
       tutorial_group.tutor == self
     else
-      true
+      false
     end
   end
 
@@ -126,7 +123,6 @@ class Account < ActiveRecord::Base
     tutor_registrations
       .joins{tutorial_group.term}
       .where{tutorial_group.term.id.in my{term.tutorial_groups.pluck(:id)}}
-      .first
-      .present?
+      .exists?
   end
 end

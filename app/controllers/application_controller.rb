@@ -5,8 +5,28 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_account!
 
-  # before_action :tmp_debug
-  # def tmp_debug
-  #   sign_in Account.first, store: false
-  # end
+  alias_method :current_user, :current_account
+
+  include Pundit
+  after_action :verify_authorized, unless: :devise_controller?
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+  private
+    def user_not_authorized
+      destination = request.referer || new_account_session_path
+      alert = 'You are not authorize to perform this action.'
+
+      if request.xhr?
+        js_redirect_to destination, alert: alert
+      else
+        redirect_to destination, alert: alert
+      end
+    end
+
+    def js_redirect_to(path, flashes={})
+      flashes.each { |key, value| flash[key] = value }
+      render js: "window.location = '#{path}';"
+    end
+    helper_method :js_redirect_to
 end

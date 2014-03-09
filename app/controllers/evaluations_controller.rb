@@ -4,10 +4,12 @@ class EvaluationsController < ApplicationController
   def index
     @students = @term.students
     @rating_groups = @exercise.rating_groups
+    authorize Evaluation
   end
 
   def create
     @evaluation = Evaluation.new(evaluation_params)
+    authorize @evaluation
 
     respond_to do |format|
       if @evaluation.save
@@ -20,6 +22,8 @@ class EvaluationsController < ApplicationController
 
   def destroy
     @evaluation = Evaluation.find(params[:id])
+    authorize @evaluation
+
     @evaluation.destroy
 
     respond_to do |format|

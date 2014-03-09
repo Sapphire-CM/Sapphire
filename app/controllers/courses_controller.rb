@@ -2,15 +2,18 @@ class CoursesController < ApplicationController
   before_action :set_course, only: [:edit, :update, :destroy]
 
   def index
+    authorize Course
     @courses = Course.includes(:terms).load
   end
 
   def new
     @course = Course.new
+    authorize @course
   end
 
   def create
     @course = Course.new(course_params)
+    authorize @course
 
     if @course.save
       render partial: 'courses/insert_index_entry', locals: { course: @course }
@@ -38,6 +41,7 @@ class CoursesController < ApplicationController
   private
     def set_course
       @course = Course.find(params[:id])
+      authorize @course
     end
 
     def course_params

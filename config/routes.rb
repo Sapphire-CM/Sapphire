@@ -1,7 +1,7 @@
 Sapphire::Application.routes.draw do
   devise_for :accounts, skip: :registration
 
-  resources :accounts, except: [:new, :show] do
+  resources :accounts, except: [:show, :new, :create] do
     get :change_password, on: :member
     patch :update_password, on: :member
   end
@@ -54,12 +54,12 @@ Sapphire::Application.routes.draw do
   end
 
   resources :submissions, only: :show do
-    resource :evaluation, controller: 'submission_evaluations'
+    resource :evaluation, controller: 'submission_evaluations', except: [:destroy]
   end
 
   resources :submission_viewers
 
-  resources :submission_evaluations
+  resources :submission_evaluations, except: [:destroy]
 
   resources :submission_assets, only: [:show, :new, :create]
 

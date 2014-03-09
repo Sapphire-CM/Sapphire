@@ -1,6 +1,14 @@
 class SingleEvaluationsController < ApplicationController
+  SingleEvaluationPolicyRecord = Struct.new :submission do
+    def policy_class
+      SingleEvaluationPolicy
+    end
+  end
+
   def show
     @submission = Submission.find(params[:id])
+    authorize SingleEvaluationPolicyRecord.new @submission
+
     @submission_assets = @submission.submission_assets.order(submitted_at: :desc)
 
     submission_scope = Submission.for_exercise(@submission.exercise).for_tutorial_group(@submission.student_group.tutorial_group)
@@ -14,6 +22,9 @@ class SingleEvaluationsController < ApplicationController
 
   def update
     @evaluation = Evaluation.find(params[:id])
+    @submission = @evaluation.submission
+    authorize SingleEvaluationPolicyRecord.new @submission
+
     @rating = @evaluation.rating
 
     @evaluation.value = if @rating.is_a? BinaryRating
@@ -22,8 +33,6 @@ class SingleEvaluationsController < ApplicationController
       params.require(:evaluation).permit(:value)[:value]
     end
     @evaluation.save!
-
-    @submission = @evaluation.submission
 
     @submission_evaluation = @submission.submission_evaluation
     @submission_evaluation.evaluated_at = Time.now

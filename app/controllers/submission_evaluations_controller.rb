@@ -1,11 +1,13 @@
 class SubmissionEvaluationsController < ApplicationController
-  before_action :set_submission_evaluation, only: [:show, :new, :create, :edit, :update, :destroy]
+  before_action :set_submission_evaluation, only: [:show, :new, :create, :edit, :update]
 
   def show
     unless @submission_evaluation.present?
       redirect_to new_submission_evaluation_path(current_submission)
       return
     end
+
+    authorize @submission_evaluation
   end
 
   def new
@@ -16,6 +18,8 @@ class SubmissionEvaluationsController < ApplicationController
 
     @submission_evaluation = SubmissionEvaluation.new
     @submission_evaluation.submission = current_submission
+
+    authorize @submission_evaluation
   end
 
   def create
@@ -28,6 +32,8 @@ class SubmissionEvaluationsController < ApplicationController
     @submission_evaluation.submission = current_submission
     @submission_evaluation.evaluator = current_account
     @submission_evaluation.evaluated_at = Time.now
+
+    authorize @submission_evaluation
 
     if @submission_evaluation.save
       @submission_evaluation.update_evaluation_result!
@@ -73,6 +79,7 @@ class SubmissionEvaluationsController < ApplicationController
 
     def set_submission_evaluation
       @submission_evaluation = current_submission.submission_evaluation
+      authorize @submission_evaluation
     end
 
     def prepared_evaluations
@@ -84,5 +91,4 @@ class SubmissionEvaluationsController < ApplicationController
       @submission ||= current_term.submissions.find(params[:submission_id])
     end
     helper_method :current_submission
-
 end

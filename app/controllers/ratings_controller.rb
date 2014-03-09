@@ -4,11 +4,13 @@ class RatingsController < ApplicationController
 
   def new
     @rating = @rating_group.ratings.new
+    authorize @rating
   end
 
   def create
     unless (params[:rating] && params[:rating][:type]) || Object.const_defined?(params[:rating][:type])
       @rating = @rating_group.ratings.new
+      authorize @rating
       render :new, alert: 'Invalid type!'
       return
     end
@@ -16,6 +18,7 @@ class RatingsController < ApplicationController
     @rating = Rating.new_from_type(rating_params)
     @rating.rating_group = @rating_group
     @rating.row_order_position = :last
+    authorize @rating
 
     if @rating.save
       render partial: 'ratings/insert_index_entry', locals: { rating: @rating }
@@ -56,6 +59,7 @@ class RatingsController < ApplicationController
 
     def set_rating
       @rating = Rating.find(params[:id])
+      authorize @rating
     end
 
     def rating_params

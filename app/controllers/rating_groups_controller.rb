@@ -4,11 +4,13 @@ class RatingGroupsController < ApplicationController
 
   def new
     @rating_group = @exercise.rating_groups.new
+    authorize @rating_group
   end
 
   def create
     @rating_group = @exercise.rating_groups.new(rating_group_params)
     @rating_group.row_order_position = :last
+    authorize @rating_group
 
     if @rating_group.save
       render partial: 'rating_groups/insert_index_entry', locals: { rating_group: @rating_group }
@@ -46,6 +48,7 @@ class RatingGroupsController < ApplicationController
 
     def set_rating_group
       @rating_group = @exercise.rating_groups.find(params[:id])
+      authorize @rating_group
     end
 
     def rating_group_params

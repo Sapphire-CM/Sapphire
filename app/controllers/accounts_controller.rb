@@ -2,6 +2,8 @@ class AccountsController < ApplicationController
   before_action :set_account, only: [:show, :edit, :update, :destroy]
 
   def index
+    authorize Account
+
     @accounts = Account.scoped.page(params[:page]).per(50)
     @accounts = @accounts.search(params[:q]) if params[:q].present?
   end
@@ -29,6 +31,7 @@ class AccountsController < ApplicationController
   private
     def set_account
       @account = Account.find(params[:id])
+      authorize @account
     end
 
     def account_params

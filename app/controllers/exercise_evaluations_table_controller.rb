@@ -1,8 +1,16 @@
 class ExerciseEvaluationsTableController < ApplicationController
+  ExerciseEvaluationsTablePolicyRecord = Struct.new :exercise, :student_group do
+    def policy_class
+      ExerciseEvaluationsTablePolicy
+    end
+  end
+
   def show
     respond_to do |format|
       format.html do
         @exercise = Exercise.find(params[:exercise_id])
+        authorize ExerciseEvaluationsTablePolicyRecord.new @exercise
+
         @term = @exercise.term
         @transposed = current_account.options[:transpose] || false
         @tutorial_groups = @term.tutorial_groups
@@ -15,6 +23,8 @@ class ExerciseEvaluationsTableController < ApplicationController
         end
 
         @exercise = Exercise.for_evaluations_table.find(params[:exercise_id])
+        authorize ExerciseEvaluationsTablePolicyRecord.new @exercise
+
         @term = @exercise.term
 
         @tutorial_group = if params[:tutorial_group_id].present?
@@ -65,6 +75,8 @@ class ExerciseEvaluationsTableController < ApplicationController
     @exercise = Exercise.find(params[:exercise_id])
     @student_group = StudentGroup.find(params[:student_group_id])
 
+    authorize ExerciseEvaluationsTablePolicyRecord.new @exercise, @student_group
+
     @submission = Submission.new
     @submission.exercise = @exercise
     @submission.assign_to(@student_group)
@@ -82,6 +94,8 @@ class ExerciseEvaluationsTableController < ApplicationController
     @exercise = Exercise.find(params[:exercise_id])
     @student_group = StudentGroup.find(params[:student_group_id])
     @rating = @exercise.ratings.find(params[:rating_id])
+
+    authorize ExerciseEvaluationsTablePolicyRecord.new @exercise, @student_group
 
     @submission = @student_group.submissions.for_exercise(@exercise).first
 

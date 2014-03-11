@@ -4,6 +4,21 @@ class Import::StudentImportPolicy < PunditBasePolicy
     user.lecturer_of_term?(record)
   end
 
+  def show?
+    user.admin? ||
+    user.lecturer_of_term?(record)
+  end
+
+  def new?
+    user.admin? ||
+    user.lecturer_of_term?(record)
+  end
+
+  def create?
+    user.admin? ||
+    user.lecturer_of_term?(record)
+  end
+
   def edit?
     user.admin? ||
     user.lecturer_of_term?(record)

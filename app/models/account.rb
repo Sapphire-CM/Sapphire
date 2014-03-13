@@ -87,9 +87,6 @@ class Account < ActiveRecord::Base
 
 ###############################################################################
 
-  def admin?
-    false
-  end
 
   def lecturer_of_term?(term)
     lecturer_registrations

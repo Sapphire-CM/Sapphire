@@ -11,5 +11,9 @@ FactoryGirl.define do
     group_submission false
 
     term
+
+    trait :with_viewer do
+      submission_viewer_identifier Sapphire::SubmissionViewers::Central.registered_viewers.first.identifier
+    end
   end
 end

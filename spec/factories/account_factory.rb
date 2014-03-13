@@ -9,6 +9,9 @@ FactoryGirl.define do
     matriculation_number {generate :account_matriculation_number}
     password  "secret"
     password_confirmation {password}
-  end
 
+    factory :admin_account do
+      admin true
+    end
+  end
 end

@@ -1,6 +1,6 @@
 class RatingGroupsController < ApplicationController
   before_action :set_context
-  before_action :set_rating_group, only: [:edit, :update, :destroy, :report]
+  before_action :set_rating_group, only: [:edit, :update, :destroy, :update_position]
 
   def new
     @rating_group = @exercise.rating_groups.new
@@ -31,7 +31,8 @@ class RatingGroupsController < ApplicationController
   end
 
   def update_position
-    @rating_group.update(params[:rating_group])
+    update_params = { row_order_position: params[:rating_group][:row_order_position] }
+    @rating_group.update(update_params)
     render nothing: true
   end
 

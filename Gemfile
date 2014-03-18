@@ -73,11 +73,12 @@ group :development, :test do
   gem 'cucumber-rails', require:false
   gem 'rspec-rails'
   gem 'guard-rspec'
+  gem 'guard-cucumber'
   gem 'terminal-notifier-guard'
   gem 'capybara'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
-
+  gem 'simplecov', '~> 0.7.1'     # test-coverage reports (upgrade when https://github.com/colszowka/simplecov/issues/281 is resolved)
   gem 'poltergeist'               # PhantomJS, headless Webkit
   # gem 'selenium-webdriver'      # Selenium, Firefox webdriver
   # gem 'capybara-webkit'         # Webkit headless webdriver

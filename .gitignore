@@ -7,6 +7,9 @@
 # Ignore bundler config
 /.bundle
 
+# Ignore textmate configuration
+/.tm_properties
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 
@@ -17,6 +20,7 @@
 /emails
 /persistent
 /exports
+/coverage
 
 /erd.pdf
 

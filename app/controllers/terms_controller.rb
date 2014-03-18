@@ -1,7 +1,7 @@
 class TermsController < ApplicationController
   before_action :set_term, only: [:show, :edit, :update, :destroy,
     :new_lecturer_registration, :create_lecturer_registration, :clear_lecturer_registration,
-    :grading_scale, :update_grading_scale, :points_overview]
+    :update_grading_scale, :points_overview]
 
   def show
     @tutorial_groups = @term.tutorial_groups
@@ -38,6 +38,8 @@ class TermsController < ApplicationController
   end
 
   def edit
+    @tutorial_groups = @term.tutorial_groups
+    @exercises = @term.exercises
   end
 
   def update

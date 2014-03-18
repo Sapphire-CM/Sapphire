@@ -1,0 +1,22 @@
+<% title course_term_title, "Exercises" %>
+
+<%= render "terms/sidebar" %>
+
+
+<table class='large-12'>
+  <thead>
+    <tr>
+      <th>Exercise</th>
+      <th>Deadline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @exercises.each do |exercise| %>
+      <tr>
+        <td><%= link_to exercise.title, rolebased_submission_path(exercise) %></td>
+        <td><%= l exercise.deadline, format: :unix %></td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>

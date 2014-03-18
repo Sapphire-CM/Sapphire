@@ -58,4 +58,17 @@ module SubmissionsHelper
       "unkown"
     end
   end
+
+  def setup_submission(submission)
+    submission.submission_assets.build unless submission.submission_assets.any?
+    submission
+  end
+
+  def submission_subtitle(submission)
+    if policy(submission.exercise.term).student?
+      "Submission"
+    else
+      "Submission of #{submission.student_group.title}"
+    end
+  end
 end

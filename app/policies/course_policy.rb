@@ -1,8 +1,6 @@
 class CoursePolicy < PunditBasePolicy
   def index?
-    user.admin? ||
-    user.lecturer_registrations.count > 0 ||
-    user.tutor_registrations.count > 0
+    user.present?
   end
 
   def new?
@@ -11,6 +9,14 @@ class CoursePolicy < PunditBasePolicy
 
   def create?
     user.admin?
+  end
+
+  def create_term?
+    user.admin? || (
+      record &&
+      record.terms.any? &&
+      user.lecturer_of_any_term_in_course?(record)
+    )
   end
 
   def edit?

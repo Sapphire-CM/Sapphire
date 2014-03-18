@@ -15,7 +15,7 @@ Feature: Evaluation of Students
       | Identity |
       | Format   |
       | Content  |
-     And I am logged in
+     And I am logged in as an admin
     When I visit the evaluations page of "Exercise 1"
     Then I should see "Evaluations of Exercise 1"
      And I should see "Identity"

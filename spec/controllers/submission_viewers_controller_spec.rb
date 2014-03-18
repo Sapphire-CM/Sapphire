@@ -1,10 +1,9 @@
 require 'spec_helper'
 
 describe SubmissionViewersController do
-
   describe "GET 'show'" do
     it "returns http success" do
-      admin = FactoryGirl.create(:admin_account)
+      admin = FactoryGirl.create(:account, :admin)
       sign_in(admin)
 
       exercise = FactoryGirl.create(:exercise, :with_viewer)
@@ -16,5 +15,4 @@ describe SubmissionViewersController do
       response.should be_success
     end
   end
-
 end

@@ -1,0 +1,11 @@
+<% sidebar_nav do %>
+  <%= sidenav_item(:arrow_left, "Back to Overview", term_path(@term)) %>
+  <li class='divider'></li>
+  <% if policy(@term).student? %>
+    <%= sidenav_item(:upload, "Submission", exercise_student_submission_path(@exercise), true) %>
+    <%= sidenav_item(:megaphone, "Results", '#') %>
+  <% else %>
+    <%= sidenav_item(:list, "Submissions", '#', true) %>
+    <%= sidenav_item(:comment, "Comments", '#') %>
+  <% end %>
+<% end %>

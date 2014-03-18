@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
 
     def user_not_authorized
       destination = request.referer || new_account_session_path
-      alert = 'You are not authorize to perform this action.'
+      alert = 'You are not authorized to perform this action.'
 
       if request.xhr?
         js_redirect_to destination, alert: alert

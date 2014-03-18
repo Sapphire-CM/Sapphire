@@ -3,7 +3,11 @@ class CoursesController < ApplicationController
 
   def index
     authorize Course
-    @courses = Course.includes(:terms).load
+    @courses = if current_account.admin?
+      Course.all
+    else
+      Course.associated_with(current_account)
+    end.includes(:terms).load
   end
 
   def new

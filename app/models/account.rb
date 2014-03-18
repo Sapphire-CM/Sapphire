@@ -108,6 +108,13 @@ class Account < ActiveRecord::Base
       .exists?
   end
 
+  def student_of_term?(term)
+    student_registrations
+      .joins {tutorial_group.term}
+      .where {tutorial_group.term == my {term}}
+      .exists?
+  end
+
   def tutor_of_tutorial_group?(tutorial_group)
     if tutorial_group.tutor
       tutorial_group.tutor == self

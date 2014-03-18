@@ -16,6 +16,10 @@ Sapphire::Application.routes.draw do
     get :grading_scale
     post :update_grading_scale
     get :points_overview
+
+    resource :grading_scale, only: [:edit, :update]
+
+    resources :exercises
   end
 
   resources :tutorial_groups do
@@ -33,7 +37,7 @@ Sapphire::Application.routes.draw do
     end
   end
 
-  resources :exercises do
+  resources :exercises, except: :show do
     resources :rating_groups, except: [:index, :show] do
       post :update_position, on: :member
       resources :ratings, except: [:index, :show] do
@@ -42,8 +46,10 @@ Sapphire::Application.routes.draw do
     end
 
     resource :evaluation, controller: 'exercise_evaluations_table'
+    resource :submission, as: :student_submission, id: :student
 
     resources :submissions
+
   end
 
   namespace :import do
@@ -64,8 +70,6 @@ Sapphire::Application.routes.draw do
   resources :submission_assets, only: [:show, :new, :create]
 
   resources :single_evaluations
-
-################################################################################
 
   root to: 'courses#index'
 

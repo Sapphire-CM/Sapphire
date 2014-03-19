@@ -1,16 +1,22 @@
 class RatingsController < ApplicationController
+  RatingPolicyRecord = Struct.new :rating do
+    def policy_class
+      RatingPolicy
+    end
+  end
+
   before_action :set_context
   before_action :set_rating, only: [:edit, :update, :update_position, :destroy]
 
   def new
     @rating = @rating_group.ratings.new
-    authorize @rating
+    authorize RatingPolicyRecord.new @rating
   end
 
   def create
     unless (params[:rating] && params[:rating][:type]) || Object.const_defined?(params[:rating][:type])
       @rating = @rating_group.ratings.new
-      authorize @rating
+      authorize RatingPolicyRecord.new @rating
       render :new, alert: 'Invalid type!'
       return
     end
@@ -18,7 +24,7 @@ class RatingsController < ApplicationController
     @rating = Rating.new_from_type(rating_params)
     @rating.rating_group = @rating_group
     @rating.row_order_position = :last
-    authorize @rating
+    authorize RatingPolicyRecord.new @rating
 
     if @rating.save
       render partial: 'ratings/insert_index_entry', locals: { rating: @rating }
@@ -59,7 +65,7 @@ class RatingsController < ApplicationController
 
     def set_rating
       @rating = Rating.find(params[:id])
-      authorize @rating
+      authorize RatingPolicyRecord.new @rating
     end
 
     def rating_params

@@ -21,6 +21,7 @@ class Import::StudentImportsController < ApplicationController
 
   def create
     @student_import = Import::StudentImport.new(student_import_params)
+    @student_import.status = 'pending'
     authorize @student_import
 
     if not @student_import.save

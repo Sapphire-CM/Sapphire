@@ -108,11 +108,13 @@ private
 
     new_record = student.new_record?
     if student.save
-      @import_result[:imported_students] += 1 if new_record
+      import_result[:imported_students] += 1 if new_record
     else
-      @import_result[:success] = false
-      @import_result[:problems] << create_problem_definition(row, student.errors.full_messages)
+      import_result[:success] = false
+      import_result[:problems] << create_problem_definition(row, student.errors.full_messages)
     end
+
+    save!
 
     student
   end
@@ -122,11 +124,13 @@ private
 
     new_record = tutorial_group.new_record?
     if tutorial_group.save
-      @import_result[:imported_tutorial_groups] += 1 if new_record
+      import_result[:imported_tutorial_groups] += 1 if new_record
     else
-      @import_result[:success] = false
-      @import_result[:problems] << create_problem_definition(row, tutorial_group.errors.full_messages)
+      import_result[:success] = false
+      import_result[:problems] << create_problem_definition(row, tutorial_group.errors.full_messages)
     end
+
+    save!
 
     tutorial_group
   end
@@ -137,11 +141,13 @@ private
 
     new_record = student_group.new_record?
     if student_group.save
-      @import_result[:imported_student_groups] += 1 if new_record
+      import_result[:imported_student_groups] += 1 if new_record
     else
-      @import_result[:success] = false
-      @import_result[:problems] << create_problem_definition(row, student_group.errors.full_messages)
+      import_result[:success] = false
+      import_result[:problems] << create_problem_definition(row, student_group.errors.full_messages)
     end
+
+    save!
 
     student_group
   end
@@ -159,11 +165,13 @@ private
 
     new_record = registration.new_record?
     if registration.save
-      @import_result[:imported_student_registrations] += 1 if new_record
+      import_result[:imported_student_registrations] += 1 if new_record
     else
-      @import_result[:success] = false
-      @import_result[:problems] << create_problem_definition(row, registration.errors.full_messages)
+      import_result[:success] = false
+      import_result[:problems] << create_problem_definition(row, registration.errors.full_messages)
     end
+
+    save!
 
     registration
   end

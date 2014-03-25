@@ -92,9 +92,11 @@ class Import::StudentImportsController < ApplicationController
         :format,
         :status,
         :line_count,
-        :import_options,
-        :import_mapping).tap do |whitelisted|
-          whitelisted[:import_options] = params[:import_student_import][:import_options]
-        end
+        :import_mapping,
+        import_options: [
+          :matching_groups, :tutorial_groups_regexp, :student_groups_regexp,
+          :headers_on_first_line, :column_separator, :quote_char, :decimal_separator,
+          :thousands_separator ]
+        )
     end
 end

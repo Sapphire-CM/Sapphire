@@ -24,6 +24,7 @@ class Import::StudentImportsController < ApplicationController
     authorize @student_import
 
     if not @student_import.save
+      @term = @student_import.term
       return render :new
     end
 
@@ -57,7 +58,7 @@ class Import::StudentImportsController < ApplicationController
     }
 
     if @student_import.save && @student_import.update(student_import_params)
-      system %(bundle exec rake 'sapphire:import_students[#{@student_import.id}]' --trace 2>&1 >> #{Rails.root}/log/rake.log &)
+      system %(RAILS_ENV='#{Rails.env}' bundle exec rake 'sapphire:import_students[#{@student_import.id}]' --trace 2>&1 >> #{Rails.root}/log/rake.log &)
       redirect_to results_import_student_import_path(@student_import)
     end
   end
@@ -86,10 +87,13 @@ class Import::StudentImportsController < ApplicationController
       params.require(:import_student_import).permit(
         :term_id,
         :file,
+        :file_cache,
         :format,
         :status,
         :line_count,
         :import_options,
-        :import_mapping)
+        :import_mapping).tap do |whitelisted|
+          whitelisted[:import_options] = params[:import_options]
+        end
     end
 end

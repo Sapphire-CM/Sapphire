@@ -93,7 +93,7 @@ class Import::StudentImportsController < ApplicationController
         :line_count,
         :import_options,
         :import_mapping).tap do |whitelisted|
-          whitelisted[:import_options] = params[:import_options]
+          whitelisted[:import_options] = params[:import_student_import][:import_options]
         end
     end
 end

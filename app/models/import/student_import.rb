@@ -35,8 +35,6 @@ class Import::StudentImport < ActiveRecord::Base
     import_options[:quote_char]             ||= "\""
     import_options[:decimal_separator]      ||= ","
     import_options[:thousands_separator]    ||= "."
-
-    self.status ||= "pending"
   end
 
   def import_mapping
@@ -55,11 +53,15 @@ class Import::StudentImport < ActiveRecord::Base
 
 
   def pending?
-    self.status == "pending"
+    self.status == 'pending'
+  end
+
+  def failed?
+    self.status == 'failed'
   end
 
   def imported?
-    self.status == "imported"
+    self.status == 'imported'
   end
 
   def parsed?

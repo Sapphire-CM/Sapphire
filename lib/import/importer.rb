@@ -47,61 +47,51 @@ module Import::Importer
     self.save!
   end
 
-  def import(params)
-    @import_result = {
-      success: true,
-      imported_students: 0,
-      imported_tutorial_groups: 0,
-      imported_student_groups: 0,
-      imported_student_registrations: 0,
-      problems: []
-    }
+  def import
+    processed_rows = 0
+    total_rows = values.length
+    import_result[:total_rows] = total_rows
 
-    if not update(params)
-      @import_result[:success] = false
-      return result
-    end
+    values.each do |row|
+      processed_rows += 1
+      progress = processed_rows.to_f / total_rows.to_f * 100.0
 
-    begin
-      values.each do |row|
-        student = create_student_account row
+      import_result[:progress] = progress.round
+      import_result[:processed_rows] = processed_rows
+      save!
 
-        group_title = row[import_mapping.group.to_i]
-        student_group_title = []
+      student = create_student_account row
+      group_title = row[import_mapping.group.to_i]
+      student_group_title = []
 
-        case import_options[:matching_groups]
-        when "first"
-          regexp = Regexp.new(import_options[:tutorial_groups_regexp])
-          m = regexp.match(group_title)
+      case import_options[:matching_groups]
+      when 'first'
+        regexp = Regexp.new import_options[:tutorial_groups_regexp]
+        m = regexp.match group_title
 
-          tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
+        tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
 
-          student_group = create_student_group "G#{student.matriculation_number}", true, tutorial_group
-          create_student_registration row, student, student_group, tutorial_group
-        when "both"
-          regexp = Regexp.new(import_options[:student_groups_regexp])
-          m = regexp.match(group_title)
+        student_group = create_student_group "G#{student.matriculation_number}", true, tutorial_group
+        create_student_registration row, student, student_group, tutorial_group
+      when 'both'
+        regexp = Regexp.new import_options[:student_groups_regexp]
+        m = regexp.match group_title
 
-          tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
+        tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
 
-          student_group = create_student_group group_title, false, tutorial_group
-          create_student_registration row, student, student_group, tutorial_group
+        student_group = create_student_group group_title, false, tutorial_group
+        create_student_registration row, student, student_group, tutorial_group
 
-          student_group = create_student_group "G#{student.matriculation_number}", true, tutorial_group
-          create_student_registration row, student, student_group, tutorial_group
-        else
-          raise # unknown value for :matching_groups
-        end
-      end
-
-      self.status = "imported"
-      self.import_result = @import_result
-      if not self.save
-        @import_result[:success] = false
+        student_group = create_student_group "G#{student.matriculation_number}", true, tutorial_group
+        create_student_registration row, student, student_group, tutorial_group
+      else
+        raise # unknown value for :matching_groups
       end
     end
 
-    @import_result
+    import_result[:running] = false
+    self.status = 'imported'
+    self.save!
   end
 
 
@@ -118,11 +108,13 @@ private
 
     new_record = student.new_record?
     if student.save
-      @import_result[:imported_students] += 1 if new_record
+      import_result[:imported_students] += 1 if new_record
     else
-      @import_result[:success] = false
-      @import_result[:problems] << create_problem_definition(row, student.errors.full_messages)
+      import_result[:success] = false
+      import_result[:problems] << create_problem_definition(row, student.errors.full_messages)
     end
+
+    save!
 
     student
   end
@@ -132,11 +124,13 @@ private
 
     new_record = tutorial_group.new_record?
     if tutorial_group.save
-      @import_result[:imported_tutorial_groups] += 1 if new_record
+      import_result[:imported_tutorial_groups] += 1 if new_record
     else
-      @import_result[:success] = false
-      @import_result[:problems] << create_problem_definition(row, tutorial_group.errors.full_messages)
+      import_result[:success] = false
+      import_result[:problems] << create_problem_definition(row, tutorial_group.errors.full_messages)
     end
+
+    save!
 
     tutorial_group
   end
@@ -147,11 +141,13 @@ private
 
     new_record = student_group.new_record?
     if student_group.save
-      @import_result[:imported_student_groups] += 1 if new_record
+      import_result[:imported_student_groups] += 1 if new_record
     else
-      @import_result[:success] = false
-      @import_result[:problems] << create_problem_definition(row, student_group.errors.full_messages)
+      import_result[:success] = false
+      import_result[:problems] << create_problem_definition(row, student_group.errors.full_messages)
     end
+
+    save!
 
     student_group
   end
@@ -169,11 +165,13 @@ private
 
     new_record = registration.new_record?
     if registration.save
-      @import_result[:imported_student_registrations] += 1 if new_record
+      import_result[:imported_student_registrations] += 1 if new_record
     else
-      @import_result[:success] = false
-      @import_result[:problems] << create_problem_definition(row, registration.errors.full_messages)
+      import_result[:success] = false
+      import_result[:problems] << create_problem_definition(row, registration.errors.full_messages)
     end
+
+    save!
 
     registration
   end

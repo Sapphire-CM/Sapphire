@@ -1,0 +1,100 @@
+<div id="results_table">
+  <% if @student_import.import_result[:running] %>
+    <div class="row">
+      <div class="large-12 columns">
+        <h1>Working... </h1>
+        <p><%= @student_import.import_result[:processed_rows] %> of <%= @student_import.import_result[:total_rows] %> rows processed...</p>
+
+        <script type="text/javascript">
+          setTimeout(function() {
+            $.ajax("<%= results_import_student_import_path(@student_import) %>", { dataType: 'script' })
+          }, 5000);
+        </script>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="large-12 columns">
+      <h2>Statistics</h2>
+
+      <table>
+        <thead>
+          <th>Property</th>
+          <th>Status</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Running</td>
+            <td><%= @student_import.import_result[:running] %></td>
+          </tr>
+          <tr>
+            <td>Processed rows</td>
+            <td><%= @student_import.import_result[:processed_rows] %></td>
+          </tr>
+          <tr>
+            <td>Total rows</td>
+            <td><%= @student_import.import_result[:total_rows] %></td>
+          </tr>
+          <tr>
+            <td>Created student accounts</td>
+            <td><%= @student_import.import_result[:imported_students] %></td>
+          </tr>
+          <tr>
+            <td>Created tutorial groups</td>
+            <td><%= @student_import.import_result[:imported_tutorial_groups] %></td>
+          </tr>
+          <tr>
+            <td>Created student groups</td>
+            <td><%= @student_import.import_result[:imported_student_groups] %></td>
+          </tr>
+          <tr>
+            <td>Created student registrations</td>
+            <td><%= @student_import.import_result[:imported_student_registrations] %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns">
+      <% if @student_import.import_result[:problems].any? %>
+        <h2>Problems</h2>
+
+        <div class="panel">
+          <% @student_import.import_result[:problems].each do |problem| %>
+            <table>
+              <thead>
+                <th>Group</th>
+                <th>Forename</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Matriculation number</th>
+                <th>Comment</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><%= problem[:entry][:group] %></td>
+                  <td><%= problem[:entry][:forename] %></td>
+                  <td><%= problem[:entry][:surname] %></td>
+                  <td><%= problem[:entry][:email] %></td>
+                  <td><%= problem[:entry][:matriculation_number] %></td>
+                  <td><%= problem[:entry][:comment] %></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <ul class="disc">
+              <% problem[:problem].each do |item| %>
+                <li><%= item %></li>
+              <% end %>
+            </ul>
+          <% end %>
+        </div>
+      <% else %>
+        <p>No errors.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

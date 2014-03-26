@@ -10,6 +10,6 @@
 
   <% if policy(@term).update? %>
     <li class='divider'></li>
-    <%= sidenav_item(:pencil, "Administrate", edit_term_path(@term)) %>
+    <%= sidenav_item(:pencil, "Administrate", edit_term_path(@term), term_sidebar_administrative_active?) %>
   <% end %>
 <% end %>

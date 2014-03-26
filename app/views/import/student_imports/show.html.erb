@@ -1,3 +1,10 @@
 <% title "Import students into #{course_term_title}", "Mapping of data columns" %>
 
-<%= @student_import.mapping_table %>
+<%= render "terms/edit_header" %>
+<%= render "terms/sidebar" %>
+
+<div class='row'>
+  <div class='large-12 columns'>
+    <%= @student_import.mapping_table %>
+  </div>
+</div>

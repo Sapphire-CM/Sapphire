@@ -1,4 +1,14 @@
 class CoursePolicy < PunditBasePolicy
+  class Scope < Struct.new(:user, :scope)
+    def resolve
+      if user.admin?
+         Course.all
+       else
+         Course.associated_with(user)
+       end
+    end
+  end
+
   def index?
     user.present?
   end

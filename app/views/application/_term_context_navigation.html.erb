@@ -18,6 +18,7 @@
     </ul>
   </li>
 
+  <% unless policy(@term).student? %>
   <li class='has-dropdown'>
     <%= link_to "Tutorial Groups", "#{term_path(@term)}#tutorial_groups" %>
     <ul class='dropdown'>
@@ -30,4 +31,5 @@
       <% end %>
     </ul>
   </li>
+  <% end %>
 </ul>

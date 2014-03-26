@@ -108,11 +108,9 @@ Given(/^I have submitted a submission "(.*?)" for "(.*?)"$/) do |filename, exerc
     tutorial_group = FactoryGirl.create(:tutorial_group, term: term) unless tutorial_group = term.tutorial_groups.first
     student_group = FactoryGirl.create(:student_group, tutorial_group: tutorial_group)
     student_registration = FactoryGirl.create(:student_registration, student_group: student_group, student: @acc)
-  else
-    puts "existing reg!"
   end
 
   submission = FactoryGirl.create(:submission)
-  submission.submission_assets << FactoryGirl.create(:submission_asset, file: File.open(File.join(Rails.root, "spec/support/data", filename)))
+  FactoryGirl.create(:submission_asset, file: File.open(File.join(Rails.root, "spec/support/data", filename)), submission: submission)
   submission.assign_to(student_group)
 end

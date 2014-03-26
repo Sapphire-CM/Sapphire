@@ -63,7 +63,6 @@ class SubmissionsController < ApplicationController
       puts @submission.errors.full_messages
       render :show
     end
-
   end
 
   def update

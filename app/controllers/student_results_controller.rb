@@ -1,10 +1,16 @@
 class StudentResultsController < ApplicationController
-  skip_after_action :verify_authorized, only: :show
+  StudentResultsRecord = Struct.new :submission do
+    def policy_class
+      StudentResultsPolicy
+    end
+  end
 
   before_action :set_context
 
   def show
     @submission = Submission.for_account(current_account).for_exercise(@exercise).first
+
+    authorize StudentResultsRecord.new(@submission)
     if @submission.present?
       @submission_evaluation = @submission.submission_evaluation
     else

@@ -25,6 +25,7 @@ describe StudentResultsController do
 
           before :each do
             @submission = submission
+            exercise.result_publications.update_all(published: true)
           end
 
           it "should assign @submission" do
@@ -51,7 +52,7 @@ describe StudentResultsController do
         context "when no submission exists" do
           it "should redirect to submission path" do
             perform_action
-            expect(response).to redirect_to(exercise_student_submission_path(exercise))
+            expect(response).not_to be_ok
           end
         end
       end

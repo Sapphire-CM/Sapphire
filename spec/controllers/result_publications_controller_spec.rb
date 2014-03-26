@@ -24,10 +24,10 @@ describe ResultPublicationsController do
         expect(assigns[:exercise]).to eq(exercise)
       end
 
-      it "should assign @tutorial_groups" do
+      it "should assign @result_publications" do
         get :index, exercise_id: exercise.id
 
-        expect(assigns[:tutorial_groups]).to eq(tutorial_groups)
+        expect(assigns[:result_publications].map(&:id)).to eq(exercise.result_publications.map(&:id))
       end
     end
   end

@@ -11,13 +11,13 @@
     </tr>
   </thead>
   <tbody>
-    <%- @tutorial_groups.each do |tutorial_group| -%>
+    <%- @result_publications.each do |result_publication| -%>
       <tr>
-        <td><%= tutorial_group_title tutorial_group %></td>
+        <td><%= tutorial_group_title result_publication.tutorial_group %></td>
         <td class='right-aligned'>
-          <%= simple_form_for([@exercise, @exercise.result_publication_for(tutorial_group)]) do |f| %>
-            <%= f.input :published, input_html: {value: f.object.published? ? 0 : 1}, as: :hidden %>
-            <%= f.submit "#{f.object.published? ? "Conceal" : "Publish"} #{tutorial_group.title}", class: "small button#{ " alert" if f.object.published?}" %>
+          <%= simple_form_for([@exercise, result_publication]) do |f| %>
+            <%= f.input :published, input_html: {value: result_publication.published? ? 0 : 1}, as: :hidden %>
+            <%= f.submit "#{f.object.published? ? "Conceal" : "Publish"} #{result_publication.tutorial_group.title}", class: "small button#{ " alert" if result_publication.published?}" %>
           <% end %>
         </td>
       </tr>

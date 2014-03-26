@@ -31,8 +31,23 @@ class Submission < ActiveRecord::Base
     self.student_group_registration = student_group.register_for(self.exercise)
   end
 
+  def assign_to_account(account)
+    student_groups = StudentGroup.for_student(account).for_term(exercise.term).active.where(solitary: exercise.group_submission?).load
+
+    if student_groups.count == 1
+      assign_to(student_groups.first)
+    else
+      raise ArgumentError("This account (##{account.id}) has ambiguous student groups")
+    end
+  end
+
+
   def evaluated?
     submission_evaluation.present?
+  end
+
+  def result_published?
+    exercise.result_published_for?(student_group.tutorial_group)
   end
 
   private

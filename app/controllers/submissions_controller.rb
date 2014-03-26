@@ -53,7 +53,7 @@ class SubmissionsController < ApplicationController
     @submission.submitted_at = Time.now
     authorize @submission
 
-    @submission.assign_to StudentGroup.for_student(current_account).for_term(@term).first
+    @submission.assign_to_account(current_account)
 
     if @submission.save
       if policy(@term).student?

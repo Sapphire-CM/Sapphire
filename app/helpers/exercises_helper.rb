@@ -26,4 +26,9 @@ module ExercisesHelper
       exercise_submissions_path(exercise)
     end
   end
+
+  def exercise_sidebar_administrate_active?
+    params[:controller] == "result_publications" ||
+    (params[:controller] == "exercises" && params[:action] == "edit")
+  end
 end

@@ -33,12 +33,15 @@ When(/^I navigate to the term "(.*?)" of course "(.*?)"$/) do |term_title, cours
   visit term_path(term)
 end
 
-
 When(/^I navigate to the exercise "(.*?)"$/) do |exercise_title|
   exercise = Exercise.where(title: exercise_title).first
   visit exercise_path(exercise)
 end
 
+When(/^I navigate to the results publication page of exercise "(.*?)"$/) do |exercise_title|
+  exercise = Exercise.where(title: exercise_title).first
+  visit exercise_result_publications_path(exercise)
+end
 
 When(/^I attach "(.*?)" to "(.*?)"$/) do |filename, input|
   attach_file(input, File.join(Rails.root, "spec/support/data", filename))

@@ -49,8 +49,9 @@ group :development do
   gem 'pry-rails'
   gem 'pry-plus'
 
-  gem 'spring'
-  gem 'spring-commands-cucumber'
+  gem 'spring'                    # application preloader for development environments
+  gem 'spring-commands-cucumber'  # adding cucumber command to spring
+  gem 'spring-commands-rspec'     # adding rspec command to spring
 
   gem 'thin'                # small development webserver
   gem 'awesome_print'       # nicley formatted object inspection

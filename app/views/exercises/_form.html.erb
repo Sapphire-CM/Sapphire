@@ -1,5 +1,5 @@
 <div class='row'>
-  <div class='large-6 large-centered columns'>
+  <div class='large-10 large-centered columns'>
     <%= simple_form_for @exercise do |f| %>
       <%= f.input :term_id, as: :hidden %>
 
@@ -23,9 +23,6 @@
 
       <div class='row'>
         <div class='large-12 large-centered columns text-center'>
-            <%= link_to "Cancel", (@exercise.new_record? ?
-                term_path(@exercise.term) :
-                exercise_path(@exercise)), class: "secondary button" %>
             <%= f.submit class: "button" %>
         </div>
       </div>

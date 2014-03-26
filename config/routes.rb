@@ -13,7 +13,6 @@ Sapphire::Application.routes.draw do
     post :create_lecturer_registration
     delete :clear_lecturer_registration
 
-    get :grading_scale
     post :update_grading_scale
     get :points_overview
 
@@ -37,7 +36,7 @@ Sapphire::Application.routes.draw do
     end
   end
 
-  resources :exercises, except: :show do
+  resources :exercises, except: [:show, :index] do
     resources :rating_groups, except: [:index, :show] do
       post :update_position, on: :member
       resources :ratings, except: [:index, :show] do
@@ -49,7 +48,8 @@ Sapphire::Application.routes.draw do
     resource :submission, as: :student_submission, id: :student
 
     resources :submissions
-
+    resources :result_publications, only: [:index, :update]
+    resource :results, controller: 'student_results', as: :student_results, only: :show
   end
 
   namespace :import do

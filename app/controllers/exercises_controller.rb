@@ -19,8 +19,9 @@ class ExercisesController < ApplicationController
 
   def create
     @exercise = Exercise.new(exercise_params)
-    @exercise.row_order_position = :last
     authorize @exercise
+    @exercise.row_order_position = :last
+    @term = @exercise.term
 
     if @exercise.save
       redirect_to term_exercises_path(@term), notice: "Exercise was successfully created."
@@ -34,7 +35,7 @@ class ExercisesController < ApplicationController
 
   def update
     if @exercise.update(exercise_params)
-      redirect_to term_exercises_path(@term), notice:  "Exercise was successfully updated."
+      redirect_to edit_exercise_path(@exercise), notice:  "Exercise was successfully updated."
     else
       render :edit
     end

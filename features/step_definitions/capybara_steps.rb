@@ -30,6 +30,10 @@ Then(/^I should not see a link with "(.*?)"$/) do |link|
   page.has_link?(link).should be_false
 end
 
+Then(/^I should see a button with "(.*?)"$/) do |button|
+  page.has_button?(button).should be_true
+end
+
 Then(/^I should see "([^"]*)"$/i) do |text|
   page.should have_content text
 end

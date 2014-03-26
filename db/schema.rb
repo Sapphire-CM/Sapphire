@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140316135054) do
+ActiveRecord::Schema.define(version: 20140326110056) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -150,6 +150,17 @@ ActiveRecord::Schema.define(version: 20140316135054) do
   end
 
   add_index "ratings", ["rating_group_id"], name: "index_ratings_on_rating_group_id"
+
+  create_table "result_publications", force: true do |t|
+    t.integer  "exercise_id"
+    t.integer  "tutorial_group_id"
+    t.boolean  "published",         default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "result_publications", ["exercise_id"], name: "index_result_publications_on_exercise_id"
+  add_index "result_publications", ["tutorial_group_id"], name: "index_result_publications_on_tutorial_group_id"
 
   create_table "student_group_registrations", force: true do |t|
     t.integer  "exercise_id"

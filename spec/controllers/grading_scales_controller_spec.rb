@@ -12,8 +12,6 @@ describe GradingScalesController do
     context "as an admin" do
       let(:account) { create(:account, :admin)}
 
-
-
       it "assigns @term" do
         get :edit, term_id: term.id
 

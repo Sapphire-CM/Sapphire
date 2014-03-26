@@ -4,7 +4,7 @@ class Submission < ActiveRecord::Base
   has_one :student_group, through: :student_group_registration
   has_one :submission_evaluation, dependent: :destroy
 
-  has_many :submission_assets
+  has_many :submission_assets, inverse_of: :submission
 
   validates_presence_of :submitted_at, :exercise
   validates_uniqueness_of :exercise_id, scope: :student_group_registration_id

@@ -1,0 +1,47 @@
+require 'spec_helper'
+
+describe ResultPublicationsController do
+  before :each do
+    sign_in(user)
+  end
+
+  let(:course) { create(:course) }
+  let(:term) { create(:term, course: course) }
+  let(:tutorial_groups) { create_list(:tutorial_group, 6, term: term)}
+  let(:exercise) {create(:exercise, term: term)}
+
+  context "GET #index" do
+    context "as an admin" do
+      let(:user) {create(:account, :admin)}
+
+      it "should assign @term" do
+        get :index, exercise_id: exercise.id
+        expect(assigns[:term]).to eq(term)
+      end
+
+      it "should assign @exercise" do
+        get :index, exercise_id: exercise.id
+        expect(assigns[:exercise]).to eq(exercise)
+      end
+
+      it "should assign @tutorial_groups" do
+        get :index, exercise_id: exercise.id
+
+        expect(assigns[:tutorial_groups]).to eq(tutorial_groups)
+      end
+    end
+  end
+
+  context "PATCH #update" do
+    context "as an admin" do
+      let(:user) {create(:account, :admin)}
+      let(:url_params) { {exercise_id: exercise.id, id: exercise.result_publication_for(tutorial_groups.first)} }
+
+      it "should update the publication status of a tutorial group" do
+        patch :update, url_params.merge({result_publication: {published: true}})
+
+        exercise.result_published_for?(tutorial_groups.first).should be_true
+      end
+    end
+  end
+end

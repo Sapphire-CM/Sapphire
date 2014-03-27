@@ -103,14 +103,15 @@ Given(/^I have submitted a submission "(.*?)" for "(.*?)"$/) do |filename, exerc
   exercise = FactoryGirl.create(:exercise, title: exercise_title) unless exercise = Exercise.where(title: exercise_title).first
   term = exercise.term
 
-  unless student_group = StudentGroup.joins(:students, :tutorial_group).where(tutorial_group: {term_id: term}, students: {id: @acc.id}).first
+  unless student_group = StudentGroup.for_term(term).for_student(@acc).first
     puts "creating reg!"
     tutorial_group = FactoryGirl.create(:tutorial_group, term: term) unless tutorial_group = term.tutorial_groups.first
+
     student_group = FactoryGirl.create(:student_group, tutorial_group: tutorial_group)
     student_registration = FactoryGirl.create(:student_registration, student_group: student_group, student: @acc)
   end
 
   submission = FactoryGirl.create(:submission)
   FactoryGirl.create(:submission_asset, file: File.open(File.join(Rails.root, "spec/support/data", filename)), submission: submission)
-  submission.assign_to(student_group)
+  submission.assign_to_account(@acc)
 end

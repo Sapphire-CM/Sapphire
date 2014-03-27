@@ -42,6 +42,10 @@ Then(/^I should not see "([^"]*)"$/i) do |text|
   page.should_not have_content text
 end
 
+Then(/^I should see the subtitle "(.*?)"$/) do |subtitle|
+  page.should have_selector('#site_subtitle', text: subtitle)
+end
+
 Then(/^have a break$/) do
   require 'pry'; binding.pry
 end

@@ -65,7 +65,9 @@ Given(/^I am logged in as a ([^\s]*?) of term "(.*?)" of course "(.*?)"$/) do |r
 
   tut_group = FactoryGirl.create(:tutorial_group, term: term)
   student_group = FactoryGirl.create(:student_group, term: term)
+
   FactoryGirl.create(:student_registration, student_group: student_group, student: account)
+
   sign_in(account)
 end
 

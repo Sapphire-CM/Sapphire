@@ -37,7 +37,7 @@ class Submission < ActiveRecord::Base
     if student_groups.count == 1
       assign_to(student_groups.first)
     else
-      raise ArgumentError("This account (##{account.id}) has ambiguous student groups")
+      raise "This account (##{account.id}) has ambiguous student groups (#{student_groups.count} student groups match)"
     end
   end
 

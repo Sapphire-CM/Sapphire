@@ -10,5 +10,8 @@
   <td>
     <%= submission_asset.submitter.present? ? submission_asset.submitter.fullname : "unknown" %>
   </td>
+  <td>
+    <%= submission_asset.filesize %>
+  </td>
   <td><%= link_to foundation_icon(:download) + " download", submission_asset_path(submission_asset), class: "small button", target: "_blank" %></td>
 </tr>

@@ -66,7 +66,8 @@ class ExercisesController < ApplicationController
         :enable_max_total_points,
         :max_total_points,
         :min_required_points,
-        :submission_viewer_identifier)
+        :submission_viewer_identifier,
+        :maximum_upload_size)
     end
 
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140327200011) do
+ActiveRecord::Schema.define(version: 20140327201753) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20140327200011) do
     t.integer  "min_required_points"
     t.string   "submission_viewer_identifier"
     t.boolean  "allow_student_uploads"
+    t.integer  "maximum_upload_size"
   end
 
   add_index "exercises", ["term_id"], name: "index_exercises_on_term_id"

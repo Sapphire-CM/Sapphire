@@ -23,6 +23,10 @@ class SubmissionAsset < ActiveRecord::Base
     IMAGES = [JPEG, PNG]
   end
 
+  def filesize
+    file.file.size
+  end
+
   def update_submitted_at
     self.submitted_at = Time.now
   end

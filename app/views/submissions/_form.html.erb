@@ -1,7 +1,15 @@
 <%= simple_form_for([@exercise, setup_submission(@submission)]) do |f| %>
   <%= field_set_tag do %>
+    <% if @submission.errors.any? %>
+      <% @submission.errors.full_messages.each do |msg| %>
+        <div data-alert class="alert-box alert">
+          <%= msg %>
+        </div>
+      <% end %>
+    <% end %>
+
     <%= f.simple_fields_for :submission_assets do |sa_f| %>
-      <%= sa_f.input :file, as: :file, label: "#{@exercise.title} .zip file (max. 30 mb)" %>
+      <%= sa_f.input :file, as: :file, label: "#{@exercise.title} .zip file (max. #{number_to_human_size @exercise.maximum_upload_size})" %>
     <% end %>
     <%= f.submit @submission.new_record? ? "Upload Submission" : "Update Submission", class: "small button" %>
   <% end %>

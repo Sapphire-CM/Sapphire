@@ -20,6 +20,8 @@ class Submission < ActiveRecord::Base
 
   accepts_nested_attributes_for :submission_assets
 
+  validate :upload_size_below_exercise_maximum_upload_size
+
   def self.next(submission, order = :id)
     Submission.where{submissions.send(my {order}) > submission.send(order)}.order(order => :asc).first
   end
@@ -56,5 +58,15 @@ class Submission < ActiveRecord::Base
     se = SubmissionEvaluation.new
     se.submission = self
     se.save!
+  end
+
+  def upload_size_below_exercise_maximum_upload_size
+    size = submission_assets.map do |submission_asset|
+      submission_asset.filesize
+    end.sum
+
+    if size > exercise.maximum_upload_size
+      errors.add(:base, "Upload too large")
+    end
   end
 end

@@ -54,7 +54,7 @@ class SubmissionsController < ApplicationController
     authorize @submission
 
     @submission.assign_to_account(current_account)
-
+    @submission.submitter = current_account
     if @submission.save
       if policy(@term).student?
         redirect_to exercise_student_submission_path(@exercise), notice: "Successfully uploaded submission"
@@ -66,7 +66,9 @@ class SubmissionsController < ApplicationController
   end
 
   def update
-    if @submission.update(submission_params)
+    @submission.assign_attributes(submission_params)
+    @submission.submitter = current_account
+    if @submission.save
       if policy(@term).student?
         redirect_to exercise_student_submission_path(@exercise), notice: "Successfully updated submission"
       end

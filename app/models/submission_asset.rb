@@ -9,6 +9,8 @@ class SubmissionAsset < ActiveRecord::Base
   scope :htmls, lambda { where(content_type: Mime::HTML)}
   scope :images, lambda { where{content_type.in(Mime::IMAGES)} }
 
+  delegate :submitter, to: :submission
+
   class Mime
     NEWSGROUP_POST = "text/newsgroup"
     EMAIL = "text/email"

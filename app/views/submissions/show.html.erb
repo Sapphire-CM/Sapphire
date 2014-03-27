@@ -30,7 +30,7 @@
       <th></th>
     </thead>
     <tbody>
-      <%= render @submission.submission_assets %>
+      <%= render collection: @submission.submission_assets, partial: "submission_asset" %>
     </tbody>
   </table>
 <% end %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140327192259) do
+ActiveRecord::Schema.define(version: 20140327200011) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -228,10 +228,12 @@ ActiveRecord::Schema.define(version: 20140327192259) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "student_group_registration_id"
+    t.integer  "submitter_id"
   end
 
   add_index "submissions", ["exercise_id"], name: "index_submissions_on_exercise_id"
   add_index "submissions", ["student_group_registration_id"], name: "index_submissions_on_student_group_registration_id"
+  add_index "submissions", ["submitter_id"], name: "index_submissions_on_submitter_id"
 
   create_table "terms", force: true do |t|
     t.string   "title"

@@ -4,11 +4,15 @@
 <div class='panel'>
   <%  if @exercise.deadline.present?  %>
   <div class='row'>
-    <div class='large-8 columns'>
+    <div class='large-6 columns'>
       Deadline: <%= l @exercise.deadline, format: :unix %>
     </div>
-    <div class='large-4 columns right-aligned'>
-      <strong><%= distance_of_time_in_words @exercise.deadline, Time.now%></strong> left
+    <div class='large-6 columns right-aligned'>
+      <% if @exercise.deadline >= Time.now %>
+        <strong><%= distance_of_time_in_words @exercise.deadline, Time.now%></strong> left
+      <% else %>
+        <strong>Deadline has passed <%= distance_of_time_in_words @exercise.deadline, Time.now%> ago</strong>
+      <% end %>
     </div>
   </div>
   <% end %>
@@ -33,12 +37,12 @@
 <%= render "form" %>
 
 <% if Time.now >= @exercise.deadline && Time.now < @exercise.late_deadline %>
-<div class='panel'>
-  <p>
-    Uploads will be allowed up to 48 hours after the deadline.
-  </p>
-  <p>
-    If you replace your submission after the deadline, you will incur the points deduction for a late submission.
-  </p>
-</div>
+  <div class='panel'>
+    <p>
+      Uploads will be allowed up to 48 hours after the deadline.
+    </p>
+    <p>
+      If you replace your submission after the deadline, you will incur the points deduction for a late submission.
+    </p>
+  </div>
 <% end %>

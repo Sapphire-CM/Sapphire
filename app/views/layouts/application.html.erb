@@ -67,7 +67,7 @@
   <footer class='row'>
     <div class='large-12 footer-inner'>
       Sapphire &copy; 2012-<%= Date.today.strftime("%Y") %> - proudly presented by IICM of TUGraz |
-      <%= mail_to "sapphire@iicm.edu", "Feedback", subject: "[Sapphire] Bugreport", body: "URL: #{request.url}\n\n[Give a detailed desctiption on how the error occured]" %>
+      <%= mail_to "sapphire@iicm.edu", "Feedback", subject: "[Sapphire] Feedback", body: "[URL: #{request.url}]\n" %>
     </div>
   </footer>
 </body>

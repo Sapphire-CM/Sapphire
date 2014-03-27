@@ -1,7 +1,7 @@
 <%= simple_form_for([@exercise, setup_submission(@submission)]) do |f| %>
   <%= field_set_tag do %>
     <%= f.simple_fields_for :submission_assets do |sa_f| %>
-      <%= sa_f.input :file, as: :file %>
+      <%= sa_f.input :file, as: :file, label: "#{@exercise.title} .zip file (max. 30 mb)" %>
     <% end %>
     <%= f.submit @submission.new_record? ? "Upload Submission" : "Update Submission", class: "small button" %>
   <% end %>

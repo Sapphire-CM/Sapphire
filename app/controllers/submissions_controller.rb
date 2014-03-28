@@ -60,7 +60,6 @@ class SubmissionsController < ApplicationController
         redirect_to exercise_student_submission_path(@exercise), notice: "Successfully uploaded submission"
       end
     else
-      puts @submission.errors.full_messages
       render :show
     end
   end

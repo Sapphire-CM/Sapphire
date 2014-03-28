@@ -19,6 +19,6 @@ class ResultPublication < ActiveRecord::Base
 
   def conceal!
     self.published = false
-    self.save
+    self.save!
   end
 end

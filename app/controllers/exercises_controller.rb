@@ -1,8 +1,15 @@
 class ExercisesController < ApplicationController
-  before_action :set_context, only: [:show, :edit, :update, :destroy]
+  before_action :set_context, only: [:edit, :update, :destroy]
 
-  def show
+  skip_after_action :verify_authorized, only: :index
+
+  def index
+    @term = Term.find(params[:term_id])
+    @exercises = @term.exercises
+
+    raise Pundit::NotAuthorizedError unless ExercisePolicy.new(pundit_user, @term).index?
   end
+
 
   def new
     @term = Term.find(params[:term_id])
@@ -12,11 +19,12 @@ class ExercisesController < ApplicationController
 
   def create
     @exercise = Exercise.new(exercise_params)
-    @exercise.row_order_position = :last
     authorize @exercise
+    @exercise.row_order_position = :last
+    @term = @exercise.term
 
     if @exercise.save
-      redirect_to @exercise, notice: "Exercise was successfully created."
+      redirect_to term_exercises_path(@term), notice: "Exercise was successfully created."
     else
       render :new
     end
@@ -27,7 +35,7 @@ class ExercisesController < ApplicationController
 
   def update
     if @exercise.update(exercise_params)
-      redirect_to @exercise, notice:  "Exercise was successfully updated."
+      redirect_to edit_exercise_path(@exercise), notice:  "Exercise was successfully updated."
     else
       render :edit
     end

@@ -1,58 +1,48 @@
-<% title submission_title(@submission) %>
+<% title @exercise.title, submission_subtitle(@submission) %>
+<%= render "exercises/sidebar" %>
 
-
-<div class="section-container tabs" data-section="tabs">
-  <section class="active">
-    <p class='title' data-section-title><a href='#'>Overview</a></p>
-    <div class='content' data-section-content>
-      <table class='large-12'>
-        <tbody>
-          <tr>
-            <th class='large-3'>Exercise:</th>
-            <td><%= @submission.exercise.title %></td>
-          </tr>
-          <tr>
-            <th class='large-3'>Submitted at:</th>
-            <td><%= l @submission.submitted_at, format: :long %></td>
-          </tr>
-          <tr>
-            <th class='large-3'>Result:</th>
-            <td><%=  @submission.submission_evaluation.evaluation_result %></td>
-          </tr>
-        </tbody>
-      </table>
+<div class='panel'>
+  <%  if @exercise.deadline.present?  %>
+  <div class='row'>
+    <div class='large-6 columns'>
+      Deadline: <%= l @exercise.deadline, format: :unix %>
     </div>
-  </section>
-
-  <section>
-    <p class='title' data-section-title><a href='#'>Submitted Assets</a></p>
-    <div class='content' data-section-content>
-      <table id='submission_assets_list' class='large-12'>
-        <thead>
-          <th>Filename</th>
-          <th>Submitted at</th>
-          <th>Content Type</th>
-          <th></th>
-        </thead>
-        <tbody>
-          <%= render @submission.submission_assets %>
-        </tbody>
-      </table>
-      <% unless @submission.submission_assets.any? %>
-        <p id='submission_assets_list_empty'>No additional files present</p>
+    <div class='large-6 columns right-aligned'>
+      <% if @exercise.deadline >= Time.now %>
+        <strong><%= distance_of_time_in_words @exercise.deadline, Time.now%></strong> left
+      <% else %>
+        <strong>Deadline has passed <%= distance_of_time_in_words @exercise.deadline, Time.now%> ago</strong>
       <% end %>
-      <p><%= link_to "Add File", new_submission_asset_path(submission_id: @submission.id), class: "small button", remote: true, data: {"reveal-id" => "reveal_modal"} %></p>
     </div>
-  </section>
-  <!-- Suggestion: adding comments to submissions -->
-  <!-- <section>
-    <p class='title' data-section-title><a href='#'>Comments</a></p>
-    <div class='content' data-section-content></div>
-  </section> -->
+  </div>
+  <% end %>
 </div>
 
-<p>
-<%= link_to "Back to Submissions of #{@submission.exercise.title}", :back %>
-<%= link_to "Evaluate", single_evaluation_path(@submission), class: "small button" %>
-</p>
-<%= render 'application/reveal_modal' %>
+
+
+
+<% if @submission.submission_assets.any? %>
+  <table id='submission_assets_list' class='large-12'>
+    <thead>
+      <th>Filename</th>
+      <th>Submitted at</th>
+      <th>Submitted by</th>
+      <th></th>
+    </thead>
+    <tbody>
+      <%= render @submission.submission_assets %>
+    </tbody>
+  </table>
+<% end %>
+<%= render "form" %>
+
+<% if Time.now >= @exercise.deadline && Time.now < @exercise.late_deadline %>
+  <div class='panel'>
+    <p>
+      Uploads will be allowed up to 48 hours after the deadline.
+    </p>
+    <p>
+      If you replace your submission after the deadline, you will incur the points deduction for a late submission.
+    </p>
+  </div>
+<% end %>

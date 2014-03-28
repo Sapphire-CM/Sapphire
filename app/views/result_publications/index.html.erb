@@ -1,0 +1,34 @@
+<% title @exercise.title, "Publish Results" %>
+
+<%= render "exercises/sidebar" %>
+<%= render "exercises/edit_header" %>
+
+<table class='large-12 result_publications_table'>
+  <thead>
+    <tr>
+      <th>Tutorial Group</th>
+      <th>Status</th>
+      <th class='small-2'></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%- @result_publications.each do |result_publication| -%>
+      <tr>
+        <td><%= tutorial_group_title result_publication.tutorial_group %></td>
+        <td>
+          <% if result_publication.published? %>
+            Published
+          <% else %>
+            Concealed
+          <% end %>
+        </td>
+        <td class='right-aligned'>
+          <%= simple_form_for([@exercise, result_publication]) do |f| %>
+            <%= f.input :published, input_html: {value: result_publication.published? ? 0 : 1}, as: :hidden %>
+            <%= f.submit "#{f.object.published? ? "Conceal" : "Publish"} #{result_publication.tutorial_group.title}", class: "small button#{ " alert" if result_publication.published?}" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -3,7 +3,7 @@ class CoursesController < ApplicationController
 
   def index
     authorize Course
-    @courses = Course.includes(:terms).load
+    @courses = policy_scope(Course).includes(:terms).load
   end
 
   def new

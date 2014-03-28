@@ -26,6 +26,18 @@ class Term < ActiveRecord::Base
 
   before_save :improve_points
 
+  def self.associated_with(account)
+    where {
+      (id.in(my {account.student_registrations.joins(student_group: :tutorial_group).pluck(tutorial_groups: :term_id)})) |
+      (id.in(my {account.tutor_registrations.joins(:tutorial_group).pluck(tutorial_groups: :term_id) })) |
+      (id.in(my {account.lecturer_registrations.pluck(:term_id)}))
+    }
+  end
+
+  def associated_with?(account)
+    Term.associated_with(account).where(id: self.id).exists?
+  end
+
   def improve_grading_scale
     self.grading_scale = {
        0 => '5',
@@ -162,4 +174,15 @@ class Term < ActiveRecord::Base
     @values[student.id]
   end
 
+
+  def update_grading_scale!(new_grading_scale)
+    self.grading_scale.map! do |scale|
+      if (scale_to_update = new_grading_scale.select { |param| scale.last == param.last}).any?
+        scale_to_update.first
+      else
+        scale
+      end
+    end
+    self.save!
+  end
 end

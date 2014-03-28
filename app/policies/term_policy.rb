@@ -1,8 +1,7 @@
 class TermPolicy < PunditBasePolicy
   def show?
     user.admin? ||
-    user.lecturer_of_term?(record) ||
-    user.tutor_of_term?(record)
+    record.associated_with?(user)
   end
 
   def new?
@@ -11,17 +10,20 @@ class TermPolicy < PunditBasePolicy
   end
 
   def create?
-    user.admin? ||
-    user.lecturer_of_any_term_in_course?(record.course)
+    user.admin? || (
+      record.course &&
+      record.course.terms.any? &&
+      user.lecturer_of_any_term_in_course?(record.course)
+    )
   end
 
   def edit?
-    user.admin? ||
+    @edit ||= user.admin? ||
     user.lecturer_of_term?(record)
   end
 
   def update?
-    user.admin? ||
+    @edit ||= user.admin? ||
     user.lecturer_of_term?(record)
   end
 
@@ -60,5 +62,10 @@ class TermPolicy < PunditBasePolicy
     user.admin? ||
     user.lecturer_of_term?(record) ||
     user.tutor_of_term?(record)
+  end
+
+
+  def student?
+    user.student_of_term?(record)
   end
 end

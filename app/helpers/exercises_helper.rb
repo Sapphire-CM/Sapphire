@@ -1,4 +1,9 @@
 module ExercisesHelper
+
+  def exercise_topbar_link(exercise)
+    link_to exercise.title, rolebased_submission_path(exercise)
+  end
+
   def exercise_sub_title(exercise)
     value = []
     value << "#{pluralize(exercise.points, 'point')}"
@@ -12,5 +17,18 @@ module ExercisesHelper
     Sapphire::SubmissionViewers::Central.registered_viewers.map do |viewer|
       [viewer.title, viewer.identifier]
     end
+  end
+
+  def rolebased_submission_path(exercise)
+    if policy(exercise.term).student?
+      exercise_student_submission_path(exercise)
+    else
+      exercise_submissions_path(exercise)
+    end
+  end
+
+  def exercise_sidebar_administrate_active?
+    params[:controller] == "result_publications" ||
+    (params[:controller] == "exercises" && params[:action] == "edit")
   end
 end

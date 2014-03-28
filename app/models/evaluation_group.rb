@@ -9,6 +9,8 @@ class EvaluationGroup < ActiveRecord::Base
   after_update :update_submission_evaluation_results, if: lambda {|eg| eg.points_changed? || eg.percent_changed?}
   after_destroy :update_submission_evaluation_results
 
+  delegate :title, to: :rating_group
+
   def self.create_for_submission_evaluation(submission_evaluation)
     submission_evaluation.submission.exercise.rating_groups.each do |rating_group|
       create_for_submission_evaluation_and_rating_group(submission_evaluation, rating_group)

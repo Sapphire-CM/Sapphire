@@ -5,7 +5,7 @@ class SubmissionAssetsController < ApplicationController
 
     send_file(@submission_asset.file.current_path,
       filename: @submission_asset.file.identifier,
-      type: @submission_asset.content_type,
+      type: @submission_asset.content_type || "application/octet-stream",
       disposition: :inline)
   end
 

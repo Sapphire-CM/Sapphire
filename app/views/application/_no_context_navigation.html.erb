@@ -3,7 +3,9 @@
 
   <%= render 'course_term_navigation' %>
 
-  <li>
-    <%= link_to "Accounts", accounts_path %>
-  </li>
+  <% if current_account.admin? %>
+    <li>
+      <%= link_to "Accounts", accounts_path %>
+    </li>
+  <% end %>
 </ul>

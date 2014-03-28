@@ -1,0 +1,14 @@
+<% sidebar_nav do %>
+  <%= sidenav_item(:arrow_left, "Overview of #{course_term_title}", term_path(@term)) %>
+  <li class='divider'></li>
+  <% if policy(@term).student? %>
+    <%= sidenav_item(:upload, "Submission", exercise_student_submission_path(@exercise), params[:controller] == "submissions") %>
+    <%= sidenav_item(:megaphone, "Results", exercise_student_results_path(@exercise), params[:controller] == "student_results") if @submission && @submission.result_published? %>
+  <% else %>
+    <%= sidenav_item(:list, "Submissions", exercise_submissions_path(@exercise), params[:controller] == "submissions") %>
+    <%= sidenav_item(:results, "Ratings", exercise_rating_groups_path(@exercise)) %>
+    <%= sidenav_item(:comment, "Comments", '#') %>
+    <li class='divider'></li>
+    <%= sidenav_item(:pencil, "Administrate", edit_exercise_path(@exercise), exercise_sidebar_administrate_active?) %>
+  <% end %>
+<% end %>

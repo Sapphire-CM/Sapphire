@@ -1,5 +1,7 @@
 <% title @exercise.title, pluralize(@submission_count, "Submission") %>
 
+<%= render "exercises/sidebar" %>
+
 <p>
   <%= submissions_tutorial_group_dropdown(@tutorial_group) %>
 </p>

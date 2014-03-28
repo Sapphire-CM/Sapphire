@@ -15,7 +15,7 @@
 
   <div class="row">
     <div class="large-12 large-centered text-center">
-      <%= link_to "Add Course", new_course_path, remote: true, class: "small button", data: {"reveal-id" => "reveal_modal"} %>
+      <%= link_to "Add Course", new_course_path, remote: true, class: "small button", data: {"reveal-id" => "reveal_modal"} if policy(@courses).create? %>
     </div>
   </div>
 </div>

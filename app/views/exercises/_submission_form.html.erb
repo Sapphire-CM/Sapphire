@@ -1,0 +1,10 @@
+<%= form_tag do %>
+  <%= field_set_tag do %>
+    <%= label_tag :file, "ZIP-File (max. 5 MB)" %>
+    <%= file_field_tag :file %>
+
+    <p>
+      <%= submit_tag "Update your submission", class: "small button" %>
+    </p>
+  <% end %>
+<% end %>

@@ -22,6 +22,7 @@ class Import::StudentImportsController < ApplicationController
   def create
     @student_import = Import::StudentImport.new(student_import_params)
     @student_import.status = 'pending'
+
     authorize @student_import
 
     if not @student_import.save
@@ -43,6 +44,7 @@ class Import::StudentImportsController < ApplicationController
       @student_import.smart_guess_new_import_mapping
       redirect_to import_student_import_path(@student_import)
     end
+
   end
 
   def update

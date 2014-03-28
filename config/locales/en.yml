@@ -24,3 +24,6 @@ en:
     submit:
       create: "Save"
       update: "Save"
+  time:
+    formats:
+      unix: "%a %d %b %Y at %R"

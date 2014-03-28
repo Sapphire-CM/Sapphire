@@ -7,7 +7,7 @@ class Course < ActiveRecord::Base
   scope :unlocked, where(locked: false)
 
   def self.associated_with(account)
-    joins(:terms).where(terms: {id: Term.select(:id).associated_with(account)}).uniq
+    joins(:terms).where(terms: {id: Term.pluck(:id).associated_with(account)}).uniq
   end
 
   def unlocked?

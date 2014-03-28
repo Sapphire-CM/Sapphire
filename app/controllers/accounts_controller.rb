@@ -16,8 +16,15 @@ class AccountsController < ApplicationController
   end
 
   def update
-    if @account.update_with_password(account_params)
-      redirect_to root_path, notice: "Account was successfully updated."
+    updated = if account_params[:password].present?
+      @account.update_with_password(account_params)
+    else
+      @account.update(account_params)
+    end
+
+    if updated
+      sign_in @account, bypass: true if current_account == @account
+      redirect_to root_path, notice: 'Account was successfully updated.'
     else
       render :edit
     end
@@ -35,10 +42,26 @@ class AccountsController < ApplicationController
     end
 
     def account_params
-      params.require(:account).permit(
+      params_everybody = [
+        :options
+      ]
+
+      params_admin = [
         :forename,
         :surname,
-        :matriculation_number,
-        :options)
+        :matriculation_number
+      ]
+
+      params_password = [
+        :current_password,
+        :password,
+        :password_confirmation
+      ]
+
+      permitted_params = params_everybody.dup
+      permitted_params << params_password.dup if params[:account] && params[:account][:password].present?
+      permitted_params << params_admin.dup if current_account.admin?
+
+      p = params.require(:account).permit(permitted_params)
     end
 end

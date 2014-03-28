@@ -3,6 +3,7 @@ set :deploy_to, "/home/sapphire/#{fetch(:application)}"
 
 set :repo_url, 'git@github.com:matthee/Sapphire.git'
 set :scm, :git
+set :branch, ENV["REVISION"] || ENV["BRANCH_NAME"] || "master"
 
 set :stages, %w(staging production)
 

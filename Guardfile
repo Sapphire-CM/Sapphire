@@ -26,7 +26,7 @@ guard 'pow' do
   watch(%r{^config/initializers/.*\.rb$})
 end
 
-guard :rspec do
+guard :rspec, all_after_pass: true, cmd: "spring rspec" do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
@@ -39,10 +39,17 @@ guard :rspec do
   watch('config/routes.rb')                           { "spec/routing" }
   watch('app/controllers/application_controller.rb')  { "spec/controllers" }
   watch(/spec\/factories\/.*\.rb/)                    { "spec" }
+
   # Capybara features specs
   watch(%r{^app/views/(.+)/.*\.(erb|haml|slim)$})     { |m| "spec/features/#{m[1]}_spec.rb" }
 
   # Turnip features and steps
   watch(%r{^spec/acceptance/(.+)\.feature$})
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$})   { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance' }
+end
+
+guard 'cucumber', all_on_start: false, :keep_failed => false, all_after_pass: true, :command_prefix => 'spring', :bundler => false, :change_format => 'pretty' do
+  watch(%r{^features/.+\.feature$})
+  watch(%r{^features/support/.+$})          { 'features' }
+  watch(%r{^features/step_definitions/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'features' }
 end

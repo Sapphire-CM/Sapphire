@@ -1,12 +1,15 @@
 <tr class="index_entry term" id="<%= "term_id_#{term.id}" %>">
-  <td><%= link_to "#{term.title}", term_path(term) %></th>
+  <td><%= link_to term.title, term_path(term) %></th>
   <td><%= term.exercises.count %></td>
   <td><%= term.tutorial_groups.count %></td>
-  <td><%= term.students.count %></td>
+  <% if policy(term).update? || policy(term).destroy? %>
 
-  <td class='right-aligned minimum-width'>
-    <%= link_to foundation_icon(:page_edit), edit_term_path(term), title: 'Edit', class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"} %>
+    <td><%= term.students.count %></td>
 
-    <%= link_to foundation_icon(:x), term_path(term), title: 'Delete', class: 'index_entry_remove', method: :delete, data: { confirm: "Are you sure?" }, remote: true %>
-  </td>
+    <td class='right-aligned minimum-width'>
+      <%= link_to foundation_icon(:page_edit), edit_term_path(term), title: 'Edit', class: 'index_entry_edit', remote: true, data: {"reveal-id" => "reveal_modal"}  if policy(term).update? %>
+
+      <%= link_to foundation_icon(:x), term_path(term), title: 'Delete', class: 'index_entry_remove', method: :delete, data: { confirm: "Are you sure?" }, remote: true  if policy(term).destroy? %>
+    </td>
+  <% end %>
 </tr>

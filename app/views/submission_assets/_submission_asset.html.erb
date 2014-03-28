@@ -2,7 +2,7 @@
   <td><%= File.basename submission_asset.file.to_s %></td>
   <td>
     <% if submission_asset.submitted_at.present? %>
-      <%= l submission_asset.submitted_at, format: :long %>
+      <%= l submission_asset.submitted_at, format: :unix %>
     <% else %>
       unknown
     <% end %>

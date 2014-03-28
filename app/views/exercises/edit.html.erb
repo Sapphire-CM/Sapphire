@@ -1,3 +1,16 @@
-<% title "Edit Exercise" %>
+<% title @exercise.title, "Edit" %>
 
+<%= render "sidebar" %>
+<%= render "edit_header" %>
 <%= render "form" %>
+
+<hr />
+
+<div class='panel alert callout'>
+  <h4>DANGER ZONE!</h4>
+
+  <p>Deleting an exercise deletes all associated submissions as well.</p>
+
+  <%= link_to "Delete Exercise", exercise_path(@exercise), method: :delete, data: {confirm: "Are you sure?"}, class: "small alert button" %>
+
+</div>

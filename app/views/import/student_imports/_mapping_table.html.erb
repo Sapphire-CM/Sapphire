@@ -1,35 +1,40 @@
 <%= simple_form_for [@student_import] do |f| %>
   <%= f.fields_for :import_mapping do |fb| %>
-    <div class='row mapping_table_container'>
-      <div>
-        <table class='mapping_table'>
-          <thead>
-            <tr>
-              <% column_count.times do |i| %>
-                <td><%= mapping_table_header i, importable_attributes, mapping, fb %></td>
-              <% end %>
-            </tr>
 
-            <% if headers.any? %>
+    <div class='row'>
+      <div class='large-12 columns'>
+        <div class='mapping_table_container'>
+          <table class='mapping_table'>
+            <thead>
               <tr>
-                <% for header in headers %>
-                  <th><%= header.html_safe %></th>
+                <% column_count.times do |i| %>
+                  <td><%= mapping_table_header i, importable_attributes, mapping, fb %></td>
                 <% end %>
               </tr>
-            <% end %>
-          </thead>
-          <tbody>
-            <%= render collection: values, partial:'mapping_table_entries', as: :row, locals: { column_count: column_count } %>
-          </tbody>
-        </table>
+
+              <% if headers.any? %>
+                <tr>
+                  <% for header in headers %>
+                    <th><%= header.html_safe %></th>
+                  <% end %>
+                </tr>
+              <% end %>
+            </thead>
+            <tbody>
+              <%= render collection: values, partial:'mapping_table_entries', as: :row, locals: { column_count: column_count } %>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   <% end %>
 
   <div class="row" id="load_more_entries">
-    <p>
-      <%= link_to "Load all entries", full_mapping_table_import_student_import_path(@student_import), remote: true, class: "tiny button" %>
-    </p>
+    <div class='large-12 columns'>
+      <p>
+        <%= link_to "Load all entries", full_mapping_table_import_student_import_path(@student_import), remote: true, class: "tiny button" %>
+      </p>
+    </div>
   </div>
 
   <div class='row'>

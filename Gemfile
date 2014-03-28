@@ -49,8 +49,9 @@ group :development do
   gem 'pry-rails'
   gem 'pry-plus'
 
-  gem 'spring'
-  gem 'spring-commands-cucumber'
+  gem 'spring'                    # application preloader for development environments
+  gem 'spring-commands-cucumber'  # adding cucumber command to spring
+  gem 'spring-commands-rspec'     # adding rspec command to spring
 
   gem 'thin'                # small development webserver
   gem 'awesome_print'       # nicley formatted object inspection
@@ -73,11 +74,12 @@ group :development, :test do
   gem 'cucumber-rails', require:false
   gem 'rspec-rails'
   gem 'guard-rspec'
+  gem 'guard-cucumber'
   gem 'terminal-notifier-guard'
   gem 'capybara'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
-
+  gem 'simplecov', '~> 0.7.1'     # test-coverage reports (upgrade when https://github.com/colszowka/simplecov/issues/281 is resolved)
   gem 'poltergeist'               # PhantomJS, headless Webkit
   # gem 'selenium-webdriver'      # Selenium, Firefox webdriver
   # gem 'capybara-webkit'         # Webkit headless webdriver

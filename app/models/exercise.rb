@@ -9,6 +9,8 @@ class Exercise < ActiveRecord::Base
   default_scope { rank(:row_order) }
   scope :for_evaluations_table, lambda { includes(submissions: [{submission_evaluation: {evaluation_groups: [:rating_group, {evaluations: :rating}]}}, {student_group_registration: {student_group: :students}}])}
 
+  has_many :result_publications, dependent: :destroy
+
   has_many :student_group_registrations, dependent: :destroy
   has_many :student_groups, through: :student_group_registrations
 
@@ -16,6 +18,8 @@ class Exercise < ActiveRecord::Base
   has_many :submission_evaluations, through: :submissions
   has_many :rating_groups, dependent: :destroy
   has_many :ratings, through: :rating_groups
+
+  after_create :ensure_result_publications
 
   validates_presence_of :title
   validates_presence_of :min_required_points, if: Proc.new { enable_min_required_points }
@@ -35,5 +39,20 @@ class Exercise < ActiveRecord::Base
 
   def update_term_points
     term.update_points!
+  end
+
+  def result_publication_for(tutorial_group)
+    ResultPublication.for(exercise: self, tutorial_group: tutorial_group)
+  end
+
+  def result_published_for?(tutorial_group)
+    result_publication_for(tutorial_group).published?
+  end
+
+  private
+  def ensure_result_publications
+    term.tutorial_groups.each do |tutorial_group|
+      ResultPublication.create(exercise: self, tutorial_group: tutorial_group)
+    end
   end
 end

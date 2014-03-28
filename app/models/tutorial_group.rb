@@ -10,8 +10,11 @@ class TutorialGroup < ActiveRecord::Base
   has_one :tutor_registration, dependent: :destroy
   delegate :tutor, to: :tutor_registration, allow_nil: true
 
+  has_many :result_publications, dependent: :destroy
   has_many :student_groups, dependent: :destroy
   has_many :students, -> { uniq }, through: :student_groups, class_name: "Account"
+
+  after_create :ensure_result_publications
 
   # def students
   #   @students ||= student_groups
@@ -20,6 +23,8 @@ class TutorialGroup < ActiveRecord::Base
   #     .sort_by{ |s| s.reverse_fullname }
   #     .uniq
   # end
+
+
 
   def student_has_submission_for_exercise?(student, exercise)
     @values ||= begin
@@ -36,5 +41,12 @@ class TutorialGroup < ActiveRecord::Base
     end
 
     @values[student.id][exercise.id]
+  end
+
+  private
+  def ensure_result_publications
+    term.exercises.each do |exercise|
+      ResultPublication.create(tutorial_group: self, exercise: exercise)
+    end
   end
 end

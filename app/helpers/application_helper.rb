@@ -6,7 +6,7 @@ module ApplicationHelper
         current_controller != CoursesController &&
         current_controller != TermsController
         ) ||
-      (params[:controller] == "terms" && params[:action] == "show") || (params[:term_id])
+      (params[:controller] == "terms" && params[:action] != "index") || (params[:term_id])
     end
 
     @term_context

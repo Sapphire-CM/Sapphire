@@ -27,6 +27,8 @@ module Sapphire
 
     config.active_support.escape_html_entities_in_json = true
 
+    config.i18n.enforce_available_locales = true
+
     config.generators do |g|
       g.test_framework :rspec, fixture: true
       g.fixture_replacement :factory_girl, dir: 'spec/factories'

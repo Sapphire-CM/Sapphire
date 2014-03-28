@@ -1,0 +1,16 @@
+<% title course_term_title, "Edit Term" %>
+
+<%= render "sidebar" %>
+<%= render "edit_header" %>
+
+<%= render "form" %>
+
+<hr />
+<div class='panel alert callout'>
+  <h4>DANGER ZONE!</h4>
+
+  <p>Deleting a Term deletes all associated exercises, tutorial_groups and submissions as well.</p>
+
+  <%= link_to "Delete Term", term_path, method: :delete, data: {confirm: "Are you sure?"}, class: "small alert button" %>
+
+</div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140313134232) do
+ActiveRecord::Schema.define(version: 20140327201753) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20140313134232) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "locked",      default: true
   end
 
   create_table "evaluation_groups", force: true do |t|
@@ -88,6 +89,8 @@ ActiveRecord::Schema.define(version: 20140313134232) do
     t.boolean  "enable_min_required_points"
     t.integer  "min_required_points"
     t.string   "submission_viewer_identifier"
+    t.boolean  "allow_student_uploads"
+    t.integer  "maximum_upload_size"
   end
 
   add_index "exercises", ["term_id"], name: "index_exercises_on_term_id"
@@ -150,6 +153,17 @@ ActiveRecord::Schema.define(version: 20140313134232) do
 
   add_index "ratings", ["rating_group_id"], name: "index_ratings_on_rating_group_id"
 
+  create_table "result_publications", force: true do |t|
+    t.integer  "exercise_id"
+    t.integer  "tutorial_group_id"
+    t.boolean  "published",         default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "result_publications", ["exercise_id"], name: "index_result_publications_on_exercise_id"
+  add_index "result_publications", ["tutorial_group_id"], name: "index_result_publications_on_tutorial_group_id"
+
   create_table "student_group_registrations", force: true do |t|
     t.integer  "exercise_id"
     t.integer  "student_group_id"
@@ -167,6 +181,7 @@ ActiveRecord::Schema.define(version: 20140313134232) do
     t.datetime "updated_at"
     t.boolean  "solitary"
     t.integer  "points"
+    t.boolean  "active",            default: true
   end
 
   add_index "student_groups", ["tutorial_group_id"], name: "index_student_groups_on_tutorial_group_id"
@@ -214,10 +229,12 @@ ActiveRecord::Schema.define(version: 20140313134232) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "student_group_registration_id"
+    t.integer  "submitter_id"
   end
 
   add_index "submissions", ["exercise_id"], name: "index_submissions_on_exercise_id"
   add_index "submissions", ["student_group_registration_id"], name: "index_submissions_on_student_group_registration_id"
+  add_index "submissions", ["submitter_id"], name: "index_submissions_on_submitter_id"
 
   create_table "terms", force: true do |t|
     t.string   "title"

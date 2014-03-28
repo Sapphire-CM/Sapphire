@@ -2,16 +2,37 @@ FactoryGirl.define do
   sequence(:account_forename) {|n| "John #{n}"}
   sequence(:account_email) {|n| "account_#{n}@student.tugraz.at"}
   sequence(:account_matriculation_number) {|n| "#{"%07d" % n}"}
+
   factory :account, aliases: [:tutor_account] do
-    forename {generate :account_forename}
+    forename { generate(:account_forename) }
+    email { generate(:account_email) }
+    matriculation_number { generate(:account_matriculation_number) }
+
     surname "Doe"
-    email {generate :account_email}
-    matriculation_number {generate :account_matriculation_number}
     password  "secret"
     password_confirmation {password}
+    admin false
 
-    factory :admin_account do
+    trait :admin do
       admin true
+    end
+
+    trait :student do
+      after :create do |account|
+        FactoryGirl.create(:student_registration, student: account)
+      end
+    end
+
+    trait :lecturer do
+      after :create do |account|
+        FactoryGirl.create(:lecturer_registration, lecturer: account)
+      end
+    end
+
+    trait :tutor do
+      after :create do |account|
+        FactoryGirl.create(:tutor_registration, tutor: account)
+      end
     end
   end
 end

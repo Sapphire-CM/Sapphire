@@ -1,0 +1,27 @@
+<% title course_term_title, "Exercises" %>
+
+<%= render "terms/sidebar" %>
+
+
+<table class='large-12'>
+  <thead>
+    <tr>
+      <th>Exercise</th>
+      <th>Deadline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @exercises.each do |exercise| %>
+      <tr>
+        <td><%= link_to exercise.title, rolebased_submission_path(exercise) %></td>
+        <td><%= exercise.deadline.present? ? l(exercise.deadline, format: :unix) : content_tag(:em, "not defined") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% if policy(Exercise.new(term: @term)).create? %>
+<p>
+  <%= link_to "Add Exercise", new_term_exercise_path(@term), class: "small button" %>
+</p>
+<% end %>

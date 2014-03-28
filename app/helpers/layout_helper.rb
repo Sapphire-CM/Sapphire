@@ -34,6 +34,23 @@ module LayoutHelper
     end
   end
 
+  def sidebar_nav(&block)
+    content_for :sidebar, content_tag(:ul, capture(&block), class: "side-nav")
+  end
+
+  def sidenav_item(icon, title, path, active = nil)
+    options = {}
+    options[:class] = "active" if (active.nil? && request.fullpath == path) || (!active.nil? && active)
+
+    content_tag(:li, link_to("#{foundation_icon icon} #{h title}".html_safe, path), options)
+  end
+
+  def subnav_item(icon, title, path, active)
+    options = {}
+    options[:class] = "active" if active
+    content_tag(:dd, link_to("#{foundation_icon icon} #{h title}".html_safe, path), options)
+  end
+
   def flash_class_for(key)
     classes = ["alert-box"]
 
@@ -126,12 +143,4 @@ module LayoutHelper
 
     render "dropdown_button", title: title, dropdown_identifier: dropdown_identifier, links: links, dropdown_classes: dropdown_classes.join(" ")
   end
-
-  def exercise_topbar_link(exercise)
-    link_to exercise.title,
-      exercise.term.student_groups.any? ?
-        exercise_evaluation_path(exercise) :
-        exercise_path(exercise)
-  end
-
 end

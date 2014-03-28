@@ -6,8 +6,8 @@
   <% end %>
 
   <ul class='dropdown'>
-    <% if Course.any? %>
-      <% Course.includes(:terms).load.each do |course| %>
+    <% if (courses = policy_scope(Course).joins(:terms).includes(:terms).load).any? %>
+      <% courses.each do |course| %>
         <li class='<%= course.terms.any? ? "has-dropdown" : "" %>'>
           <a href="#"><%= course.title %></a>
 

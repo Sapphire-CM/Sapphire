@@ -31,8 +31,7 @@ class RatingGroupsController < ApplicationController
   end
 
   def update_position
-    update_params = { row_order_position: params[:rating_group][:row_order_position] }
-    @rating_group.update(update_params)
+    @rating_group.update(params.require(:rating_group).permit(:row_order_position))
     render nothing: true
   end
 

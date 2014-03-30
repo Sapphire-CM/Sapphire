@@ -21,7 +21,7 @@ class SubmissionPolicy < PunditBasePolicy
     (
       record.exercise.term.associated_with?(user) &&
       record.exercise.term.course.unlocked? &&
-      (exercise.late_deadline.present? ? Time.now <= exercise.late_deadline : true)
+      (record.exercise.late_deadline.present? ? Time.now <= record.exercise.late_deadline : true)
     )
   end
 

@@ -8,7 +8,9 @@
     <%= sidenav_item(:list, "Submissions", exercise_submissions_path(@exercise), params[:controller] == "submissions") %>
     <%= sidenav_item(:results, "Ratings", '#') %>
     <%= sidenav_item(:comment, "Comments", '#') %>
-    <li class='divider'></li>
-    <%= sidenav_item(:pencil, "Administrate", edit_exercise_path(@exercise), exercise_sidebar_administrate_active?) %>
+    <% if policy(@exercise).update? %>
+      <li class='divider'></li>
+      <%= sidenav_item(:pencil, "Administrate", edit_exercise_path(@exercise), exercise_sidebar_administrate_active?) %>
+    <% end %>
   <% end %>
 <% end %>

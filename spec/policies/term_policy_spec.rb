@@ -15,6 +15,7 @@ describe TermPolicy do
     end
 
     it { should permit :student }
+    it { should_not permit :tutor }
   end
 
   context "as an admin" do
@@ -22,5 +23,14 @@ describe TermPolicy do
     let(:user) { FactoryGirl.create(:account, :admin) }
 
     it { should_not permit :student }
+    it { should_not permit :tutor }
+  end
+
+  context "as a tutor" do
+    let(:tutor) { FactoryGirl.create(:account, :tutor) }
+    let(:tutorial_group) { tutor.tutorial_groups.first }
+
+    it { should_not permit :student }
+    it { should permit :tutor }
   end
 end

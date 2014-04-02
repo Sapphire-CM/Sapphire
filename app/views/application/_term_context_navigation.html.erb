@@ -18,7 +18,7 @@
     </ul>
   </li>
 
-  <% unless policy(@term).student? %>
+  <% unless policy(@term).student? || policy(@term).tutor? %>
   <li class='has-dropdown'>
     <%= link_to "Tutorial Groups", "#{term_path(@term)}#tutorial_groups" %>
     <ul class='dropdown'>

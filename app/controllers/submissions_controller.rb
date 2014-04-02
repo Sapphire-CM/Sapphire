@@ -67,6 +67,8 @@ class SubmissionsController < ApplicationController
   def update
     @submission.assign_attributes(submission_params)
     @submission.submitter = current_account
+    @submission.submitted_at = Time.now
+
     if @submission.save
       if policy(@term).student?
         redirect_to exercise_student_submission_path(@exercise), notice: "Successfully updated submission"

@@ -2,9 +2,11 @@
 
 <%= render "exercises/sidebar" %>
 
+<% if policy(@exercise).tutorial_group_dropdown? %>
 <p>
   <%= submissions_tutorial_group_dropdown(@tutorial_group) %>
 </p>
+<% end %>
 
 <%= render "submissions_list", submissions: @submissions %>
 

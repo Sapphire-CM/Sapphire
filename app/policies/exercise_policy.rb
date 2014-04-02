@@ -31,4 +31,9 @@ class ExercisePolicy < PunditBasePolicy
     user.admin? ||
     user.lecturer_of_term?(record.term)
   end
+
+  def tutorial_group_dropdown?
+    user.admin? ||
+    user.lecturer_of_term?(record.term)
+  end
 end

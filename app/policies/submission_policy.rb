@@ -2,7 +2,7 @@ class SubmissionPolicy < PunditBasePolicy
   def index?
     user.admin? ||
     user.lecturer_of_term?(record.exercise.term) ||
-    user.tutor_of_tutorial_group?(record.tutorial_group)
+    user.tutor_of_term?(record.exercise.term)
   end
 
   def show?

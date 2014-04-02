@@ -30,7 +30,7 @@ class SubmissionsController < ApplicationController
     authorize SubmissionPolicyRecord.new @exercise, @tutorial_group
 
     @submissions = @exercise.submissions.includes({student_group: [:students, :tutorial_group]}, :submission_evaluation, :exercise).order(:submitted_at)
-    @submissions = @submissions.joins(student_group_registration: :student_group).order("student_groups.title DESC")
+    @submissions = @submissions.joins(student_group_registration: :student_group).order("student_groups.title ASC")
     @submissions = @submissions.for_tutorial_group @tutorial_group if @tutorial_group.present?
     @submission_count = @submissions.count
     @submissions = @submissions.page(params[:page]).per(20)

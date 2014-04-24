@@ -136,3 +136,16 @@ Given(/^there is an exercise "(.*?)" for term "(.*?)" of course "(.*?)"$/) do |e
   term = FactoryGirl.create(:term, title: term_title, course: course) unless term = course.terms.where(title: term_title).first
   FactoryGirl.create(:exercise, term: term, title: exercise_title) unless term.exercises.where(title: exercise_title).first
 end
+
+When(/^I navigate to the submission form of exercise "(.*?)"$/) do |exercise_title|
+  exercise = Exercise.where(title: exercise_title).first
+  term = exercise.term
+
+  if @acc.student_of_term? term
+    visit exercise_student_submission_path(exercise)
+  else
+    visit exercise_submissions_path(exercise)
+  end
+end
+
+

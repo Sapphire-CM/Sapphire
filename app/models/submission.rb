@@ -35,11 +35,11 @@ class Submission < ActiveRecord::Base
   end
 
   def assign_to_account(account)
-    student_groups = StudentGroup.for_student(account).for_term(exercise.term).active.where(solitary: exercise.group_submission?).load
-
+    student_groups = StudentGroup.for_student(account).for_term(exercise.term).active.where(solitary: !exercise.group_submission?).load
     if student_groups.count == 1
       assign_to(student_groups.first)
     else
+      puts StudentGroup.count, student_groups.count
       raise "This account (##{account.id}) has ambiguous student groups (#{student_groups.count} student groups match)"
     end
   end
@@ -50,7 +50,7 @@ class Submission < ActiveRecord::Base
   end
 
   def result_published?
-    exercise.result_published_for?(student_group.tutorial_group)
+    student_group.present? && exercise.result_published_for?(student_group.tutorial_group)
   end
 
   private
@@ -63,9 +63,9 @@ class Submission < ActiveRecord::Base
   def upload_size_below_exercise_maximum_upload_size
     size = submission_assets.map do |submission_asset|
       submission_asset.filesize
-    end.sum
+    end.sum || 0
 
-    if size > exercise.maximum_upload_size
+    if exercise.maximum_upload_size && size > exercise.maximum_upload_size
       errors.add(:base, "Upload too large")
     end
   end

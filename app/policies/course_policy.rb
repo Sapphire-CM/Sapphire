@@ -4,7 +4,7 @@ class CoursePolicy < PunditBasePolicy
       if user.admin?
          Course.all
        else
-         Course.associated_with(user).includes(:term).unlocked
+         Course.associated_with(user).includes(:terms).unlocked
        end
     end
   end

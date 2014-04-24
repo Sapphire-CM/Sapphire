@@ -31,6 +31,18 @@ Given(/^there is an exercise "(.*?)" in term "(.*?)"$/) do |title, term_title|
   FactoryGirl.create(:exercise, title: title, term: term)
 end
 
+Given(/^there is a (group|solitary) exercise "(.*?)" for term "(.*?)" of course "(.*?)"$/) do |exercise_type, title, term_title, course_title|
+  course = FactoryGirl.create(:course, title: course_title) unless course = Course.where(title: course_title).first
+  term = FactoryGirl.create(:term, course: course, title: term_title) unless term = course.terms.where(title: term_title).first
+
+
+  if exercise_type == "group"
+    FactoryGirl.create(:exercise, :group_exercise, title: title, term: term)
+  else
+    FactoryGirl.create(:exercise, title: title, term: term)
+  end
+end
+
 Given(/^there are (\d+) submissions for "(.*?)"$/) do |sub_count, ex_title|
   exercise = Exercise.where(title: ex_title).first
   exercise = FactoryGirl.create(:exercise, title: ex_title) unless exercise
@@ -114,4 +126,22 @@ Given(/^I have submitted a submission "(.*?)" for "(.*?)"$/) do |filename, exerc
   submission = FactoryGirl.create(:submission)
   FactoryGirl.create(:submission_asset, file: File.open(File.join(Rails.root, "spec/support/data", filename)), submission: submission)
   submission.assign_to_account(@acc)
+end
+
+
+Given(/^I am in a group for term "(.*?)" of course "(.*?)" with following users$/) do |term_title, course_title, students_table|
+  StudentGroup.destroy_all
+  course = FactoryGirl.create(:course) unless course = Course.where(title: course_title).first
+  term = FactoryGirl.create(:term, course: course) unless term = course.terms.where(title: term_title).first
+
+  tutorial_group = FactoryGirl.create(:tutorial_group, term: term)
+  FactoryGirl.create(:student_group_for_student, student: @acc, tutorial_group: tutorial_group, solitary: true)
+
+  student_group = FactoryGirl.create(:student_group_for_student, student: @acc, tutorial_group: tutorial_group, solitary: false)
+
+  students_table.hashes.each do |row|
+    fellow_student = FactoryGirl.create(:account, email: row[:email])
+    FactoryGirl.create(:student_registration, student: fellow_student, student_group: student_group)
+    FactoryGirl.create(:student_group_for_student, student: fellow_student, tutorial_group: tutorial_group, solitary: true)
+  end
 end

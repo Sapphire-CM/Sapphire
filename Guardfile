@@ -13,19 +13,6 @@ guard 'pow' do
   watch(%r{^config/initializers/.*\.rb$})
 end
 
-guard 'pow' do
-  watch('.powrc')
-  watch('.powenv')
-  watch('.rvmrc')
-  watch('.ruby-version')
-  watch('Gemfile')
-  watch('Gemfile.lock')
-  watch('config/application.rb')
-  watch('config/environment.rb')
-  watch(%r{^config/environments/.*\.rb$})
-  watch(%r{^config/initializers/.*\.rb$})
-end
-
 guard :rspec, all_after_pass: true, cmd: "spring rspec" do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }

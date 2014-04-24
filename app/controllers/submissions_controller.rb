@@ -39,7 +39,6 @@ class SubmissionsController < ApplicationController
   def show
     if params[:id] == :student
       @submission = Submission.for_exercise(@exercise).for_account(current_account).first_or_initialize
-      @submission.student_group = StudentGroup.for_student(current_account).for_term(@term).first
     else
       @submission = @exercise.submissions.find(params[:id])
     end
@@ -52,10 +51,12 @@ class SubmissionsController < ApplicationController
     @submission = Submission.new(submission_params)
     @submission.exercise = @exercise
     @submission.submitted_at = Time.now
+    @submission.assign_to_account(current_account)
+
     authorize @submission
 
-    @submission.assign_to_account(current_account)
     @submission.submitter = current_account
+
     if @submission.save
       if policy(@term).student?
         redirect_to exercise_student_submission_path(@exercise), notice: "Successfully uploaded submission"
@@ -96,7 +97,6 @@ class SubmissionsController < ApplicationController
   def set_submission
     if params[:id] == :student
       @submission = Submission.for_exercise(@exercise).for_account(current_account).first_or_initialize
-      @submission.student_group = StudentGroup.for_student(current_account).for_term(@term).first
     else
       @submission = @exercise.submissions.find(params[:id])
     end

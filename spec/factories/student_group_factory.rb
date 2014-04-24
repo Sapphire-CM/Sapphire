@@ -3,6 +3,7 @@ FactoryGirl.define do
   factory :student_group do
     tutorial_group
     active true
+    solitary true
 
     factory :student_group_with_students do
       ignore do

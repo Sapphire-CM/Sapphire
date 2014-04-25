@@ -9,8 +9,7 @@
     <% end %>
 
     <%= f.simple_fields_for :submission_assets do |sa_f| %>
-      <%= sa_f.input :file, as: :file %>
-      <%#, label: "#{@exercise.title} .zip file (max. #{number_to_human_size @exercise.maximum_upload_size})"  %>
+      <%= sa_f.input :file, as: :file, label: submission_asset_file_label(@exercise) %>
     <% end %>
     <%= f.submit @submission.new_record? ? "Upload Submission" : "Update Submission", class: "small button" %>
   <% end %>

@@ -3,5 +3,6 @@ FactoryGirl.define do
   factory :course do
     title {generate :course_title}
     description {generate :lorem_ipsum}
+    locked false
   end
 end

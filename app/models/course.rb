@@ -4,7 +4,7 @@ class Course < ActiveRecord::Base
   validates_presence_of :title
   validates_uniqueness_of :title
 
-  scope :unlocked, where(locked: false)
+  scope :unlocked, lambda { where(locked: false) }
 
   def self.associated_with(account)
     joins(:terms).where(terms: {id: Term.associated_with(account).pluck(:id)}).uniq

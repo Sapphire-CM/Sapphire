@@ -15,5 +15,13 @@ FactoryGirl.define do
     trait :with_viewer do
       submission_viewer_identifier Sapphire::SubmissionViewers::Central.registered_viewers.first.identifier
     end
+
+    trait :with_upload_limit do
+      maximum_upload_size 1024**1*5
+    end
+
+    trait :group_exercise do
+      group_submission true
+    end
   end
 end

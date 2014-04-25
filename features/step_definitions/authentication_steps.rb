@@ -57,7 +57,7 @@ Given(/^I am logged in as a ([^\s]*?) for course "(.*?)"$/) do |role, course_tit
   sign_in(account)
 end
 
-Given(/^I am logged in as a ([^\s]*?) of term "(.*?)" of course "(.*?)"$/) do |role, term_title, course_title|
+Given(/^I am logged in as a student of term "(.*?)" of course "(.*?)"$/) do |term_title, course_title|
   account = FactoryGirl.create(:account)
 
   course = FactoryGirl.create(:course, title: course_title) unless course = Course.where(title: course_title).first
@@ -76,3 +76,11 @@ Given(/^no account with email "(.*?)" exists$/) do |email|
 end
 
 
+When(/^I sign in as "(.*?)"$/) do |email|
+  account = Account.where(email: email).first
+  account.password = "secret"
+  account.password_confirmation = account.password
+
+  account.save
+  sign_in(account)
+end

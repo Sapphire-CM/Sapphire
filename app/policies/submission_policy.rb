@@ -13,6 +13,7 @@ class SubmissionPolicy < PunditBasePolicy
     user.admin? ||
     user.lecturer_of_term?(record.exercise.term) ||
     (
+      record.new_record? ||
       record.student_group && (
         user.tutor_of_tutorial_group?(record.student_group.tutorial_group) ||
         record.student_group.students.where(id: user.id).exists?

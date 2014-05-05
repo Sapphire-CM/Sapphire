@@ -62,3 +62,21 @@ Feature: Student submission upload
      And I should see "submission_2.zip"
      And I should not see "submission.zip"
      And there should be 1 submission
+
+   Scenario: Uploading and viewing Submissions for students in moved groups
+    Given there is a group exercise "Ex 2.2: TA Plan" for term "SS 2014" of course "HCI"
+     When I navigate to the submission form of exercise "Ex 2.1: Log Files"
+      And I attach "submission.zip" to "Log Files"
+      And I click on button "Upload Submission"
+     Then I should see "Successfully uploaded submission"
+      And I should see "submission.zip"
+      And there should be 1 submission
+     When I am moved into another student group
+      And I navigate to the submission form of exercise "Ex 2.2: TA Plan"
+      And I attach "submission_2.zip" to "TA Plan"
+      And I click on button "Upload Submission"
+     Then I should see "submission_2.zip"
+     When I navigate to the submission form of exercise "Ex 2.1: Log Files"
+     Then I should see "submission.zip"
+      And there should be 2 submissions of different student groups
+

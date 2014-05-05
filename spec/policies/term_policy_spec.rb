@@ -27,8 +27,12 @@ describe TermPolicy do
   end
 
   context "as a tutor" do
-    let(:tutor) { FactoryGirl.create(:account, :tutor) }
-    let(:tutorial_group) { tutor.tutorial_groups.first }
+    let(:user) {
+      account = FactoryGirl.create(:account, :tutor)
+      FactoryGirl.create(:tutor_registration, tutor: account, tutorial_group: tutorial_group)
+      account
+    }
+    let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
 
     it { should_not permit :student }
     it { should permit :tutor }

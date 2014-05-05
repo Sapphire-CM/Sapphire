@@ -37,7 +37,7 @@ Sapphire::Application.routes.draw do
   end
 
   resources :exercises, except: [:show, :index] do
-    resources :rating_groups, except: [:index, :show] do
+    resources :rating_groups, except: :show do
       post :update_position, on: :member
       resources :ratings, except: [:index, :show] do
         post :update_position, on: :member

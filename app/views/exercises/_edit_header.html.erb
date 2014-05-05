@@ -1,4 +1,6 @@
 <dl class='sub-nav'>
   <%= subnav_item(:clipboard_pencil, "Exercise", edit_exercise_path(@exercise), params[:controller] == "exercises") %>
+  <%= subnav_item(:results, "Ratings", exercise_rating_groups_path(@exercise), params[:controller] == "rating_groups") %>
   <%= subnav_item(:megaphone, "Publish Results", exercise_result_publications_path(@exercise), params[:controller] == "result_publications") %>
 </dl>
+

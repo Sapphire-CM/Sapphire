@@ -29,6 +29,7 @@ module ExercisesHelper
 
   def exercise_sidebar_administrate_active?
     params[:controller] == "result_publications" ||
+    params[:controller] == "rating_groups" ||
     (params[:controller] == "exercises" && params[:action] == "edit")
   end
 end

@@ -148,4 +148,7 @@ When(/^I navigate to the submission form of exercise "(.*?)"$/) do |exercise_tit
   end
 end
 
+Then(/^save and open page$/) do
+  save_and_open_page
+end
 

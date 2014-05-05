@@ -1,6 +1,16 @@
 class RatingGroupsController < ApplicationController
+  RatingGroupPolicyRecord = Struct.new :term do
+    def policy_class
+      RatingGroupPolicy
+    end
+  end
+
   before_action :set_context
   before_action :set_rating_group, only: [:edit, :update, :destroy, :update_position]
+
+  def index
+    authorize RatingGroupPolicyRecord.new(@term)
+  end
 
   def new
     @rating_group = @exercise.rating_groups.new

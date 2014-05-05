@@ -9,7 +9,7 @@ class RatingGroupsController < ApplicationController
   before_action :set_rating_group, only: [:edit, :update, :destroy, :update_position]
 
   def index
-    authorize(RatingGroupPolicyRecord.new(@term))
+    authorize RatingGroupPolicyRecord.new(@term)
   end
 
   def new

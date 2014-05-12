@@ -7,7 +7,7 @@
         <th>Tutorial Group</th>
         <th>Evaluation Result</th>
         <th>Evaluated at</th>
-        <th></th>
+        <th><%= link_to "Download #{foundation_icon(:download).to_s}".html_safe, {format: :zip}.merge(params), class: "small button  small-12" %></th>
       </tr>
     </thead>
     <tbody>
@@ -32,8 +32,8 @@
           <% end %>
         </td>
         <td>
-          <%= link_to "Show", exercise_submission_path(submission.exercise, submission), class: "small button" %>
-          <%= link_to "Evaluate", single_evaluation_path(submission, tutorial_group_id: params[:tutorial_group_id]), class: "small button" %>
+          <%= link_to "Show", exercise_submission_path(submission.exercise, submission), class: "small small-12 button" %>
+          <%= link_to "Evaluate", single_evaluation_path(submission, tutorial_group_id: params[:tutorial_group_id]), class: "small  small-12 button" %>
         </td>
       </tr>
       <% end %>

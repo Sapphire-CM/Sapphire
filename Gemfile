@@ -47,7 +47,7 @@ group :development do
 
   gem 'pry'
   gem 'pry-rails'
-  gem 'pry-plus'
+  gem 'pry-byebug'
 
   gem 'spring'                    # application preloader for development environments
   gem 'spring-commands-cucumber'  # adding cucumber command to spring

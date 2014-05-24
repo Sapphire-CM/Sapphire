@@ -4,10 +4,11 @@ class TutorialGroupsController < ApplicationController
     :points_overview]
 
   def show
+    @student_groups = @tutorial_group.student_groups.where(solitary: false).order(:title)
+
     if @tutorial_group.tutor.blank?
       render alert: 'You have not set a tutor yet!'
     end
-    @student_groups = @tutorial_group.student_groups.where(solitary: false).order(:title)
   end
 
   def new

@@ -43,7 +43,7 @@ Given(/^there is a (group|solitary) exercise "(.*?)" for term "(.*?)" of course 
   end
 end
 
-Given(/^there are (\d+) submissions for "(.*?)"$/) do |sub_count, ex_title|
+Given(/^there are (\d+) submissions for "([^\"]*?)"$/) do |sub_count, ex_title|
   exercise = Exercise.where(title: ex_title).first
   exercise = FactoryGirl.create(:exercise, title: ex_title) unless exercise
 
@@ -78,7 +78,7 @@ Given(/^there are these courses$/) do |table|
 end
 
 Given(/^there are these terms for "(.*?)"$/) do |course_title, table|
-  course = Course.where(title: course_title).first_or_create
+  course = FactoryGirl.create(:course, title: course_title) if course = Course.where(title: course_title)
 
   table.hashes.each do |line|
     FactoryGirl.create(:term, course: course, title: line['title'])

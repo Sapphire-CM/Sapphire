@@ -1,9 +1,4 @@
 class StudentSubmissionsController < ApplicationController
-  # enable streaming
-  include ActionController::Streaming
-  # enable zipline
-  include Zipline
-
   SubmissionPolicyRecord = Struct.new :exercise, :tutorial_group do
     def policy_class
       SubmissionPolicy
@@ -18,31 +13,10 @@ class StudentSubmissionsController < ApplicationController
 
   def show
     unless current_account.student_of_term? @term
-      redirect_to exercise_submissions_path(@exercise)
-      return
+       redirect_to exercise_submissions_path(@exercise)
+       return
     end
 
-    @submission = Submission.for_exercise(@exercise).for_account(current_account).first_or_initialize
-
-    @submissions = @exercise.submissions.includes({student_group: [:students, :tutorial_group]}, :submission_evaluation, :exercise).order(:submitted_at)
-    @submissions = @submissions.joins(student_group_registration: :student_group).order("student_groups.title ASC")
-    @submissions = @submissions.for_tutorial_group @tutorial_group if @tutorial_group.present?
-    @submission_count = @submissions.count
-
-
-    respond_to do |format|
-      format.html do
-        @submissions = @submissions.page(params[:page]).per(20)
-      end
-      format.zip do
-        files = zip_files(@submissions)
-        puts files.to_s
-        zipline files, @exercise.title.parameterize.gsub(/-+/, "-")
-      end
-    end
-  end
-
-  def show
     @term = @submission.exercise.term
     @submission_assets = @submission.submission_assets
   end
@@ -98,19 +72,5 @@ class StudentSubmissionsController < ApplicationController
     @submission = Submission.select(Submission.quoted_table_name + '.*').for_exercise(@exercise).for_account(current_account).first_or_initialize
 
     authorize @submission
-  end
-
-  def zip_files(submissions)
-    files = []
-
-    submissions.includes(:submission_assets).map do |submission|
-      group_name = submission.student_group.title.parameterize
-
-      submission.submission_assets.map do |submission_asset|
-        files << [File.open(submission_asset.file.to_s), File.join(group_name, File.basename(submission_asset.file.to_s))]
-      end
-    end
-
-    files
   end
 end

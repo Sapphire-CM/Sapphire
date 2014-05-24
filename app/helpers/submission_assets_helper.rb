@@ -11,6 +11,8 @@ module SubmissionAssetsHelper
       inline_html_asset(submission_asset)
     when SubmissionAsset::Mime::JPEG || SubmissionAsset::Mime::PNG then
       inline_image_asset(submission_asset)
+    when SubmissionAsset::Mime::PLAIN_TEXT then
+      inline_plain_text_asset(submission_asset)
     else
       content_tag :div, class: "panel" do
         content = "<strong>Cannot display inline version of this asset</strong> ".html_safe
@@ -44,6 +46,12 @@ module SubmissionAssetsHelper
 
   def inline_image_asset(submission_asset)
     render "submission_assets/image_panel", image_path: submission_asset_path(submission_asset)
+  end
+
+  def inline_plain_text_asset(submission_asset)
+    contents = submission_asset.file.read
+    contents.force_encoding!("UTF-8")
+    render "submission_assets/code_panel", code: auto_link(contents, sanitize: true, html: {target: "_blank"}).html_safe, raw_url: submission_asset_path(submission_asset)
   end
 
   def inline_code(code, lang)

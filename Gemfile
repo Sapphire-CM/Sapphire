@@ -47,7 +47,14 @@ group :development do
 
   gem 'pry'
   gem 'pry-rails'
-  gem 'pry-plus'
+
+  gem 'pry-doc'
+  gem 'pry-docmore'
+  gem 'pry-stack_explorer'
+  gem 'pry-rescue'
+  gem 'pry-byebug'
+  gem 'bond'
+  gem 'jist'
 
   gem 'spring'                    # application preloader for development environments
   gem 'spring-commands-cucumber'  # adding cucumber command to spring

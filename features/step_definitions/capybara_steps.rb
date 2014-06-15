@@ -91,11 +91,6 @@ When(/^I delete the term "(.*?)" on course "(.*?)"$/) do |term_title, course_tit
   end
 end
 
-Then(/^I should see term entry "(.*?)" on course "(.*?)"$/) do |term_title, course_title|
-    course = Course.where(title: course_title).first
-    course_div = find("#course_id_#{course.id}")
-    course_div.should have_content "#{term_title}"
-end
 
 Then(/^I should find the term "(.*?)" on course "(.*?)"$/) do |term_title, course_title|
   course = Course.where(title: course_title).first
@@ -150,4 +145,13 @@ end
 
 Then(/^save and open page$/) do
   save_and_open_page
+end
+
+
+When(/^I tick the check box "(.*?)"$/) do |check_box_title|
+  check check_box_title
+end
+
+When(/^I untick the check box "(.*?)"$/) do |check_box_title|
+  uncheck check_box_title
 end

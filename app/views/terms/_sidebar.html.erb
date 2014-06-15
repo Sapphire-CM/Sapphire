@@ -1,6 +1,6 @@
 <% sidebar_nav do %>
   <%= sidenav_item(:home, "Dashboard", term_path(@term)) %>
-  <%= sidenav_item(:clipboard_notes, "Exercises", term_exercises_path(@term)) %>
+  <%= sidenav_item(:clipboard_notes, "Exercises", term_exercises_path(@term), params[:controller] == "exercises") %>
   <% unless policy(@term).student? %>
     <%= sidenav_item(:torsos, "Tutorial Groups", '#') %>
     <%= sidenav_item(:calendar, "Meeting Time", '#') %>

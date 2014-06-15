@@ -12,6 +12,6 @@ Feature: Managing Ratings
     Given I am on the home page
     When I click on link "SS 2014"
      And I click on link "Ex 1: HE Plan"
-     And I click on link "Administrative"
+     And I click on link "Administrate"
      And I click on link "Ratings"
     Then I should see "No rating groups present."

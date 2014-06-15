@@ -5,7 +5,7 @@ class Import::StudentImport < ActiveRecord::Base
   include Import::Importer
 
   IMPORTABLE_ATTRIBUTES = [:group, :email, :forename, :surname, :matriculation_number, :comment].freeze
-  STATES = ["pending", "imported"].freeze
+  STATES = ["pending", "imported", "failed"].freeze
 
   # associations
   belongs_to :term

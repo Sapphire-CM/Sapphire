@@ -18,9 +18,6 @@
   <% end %>
 </div>
 
-
-
-
 <% if @submission.submission_assets.any? %>
   <table id='submission_assets_list' class='large-12'>
     <thead>
@@ -35,15 +32,22 @@
     </tbody>
   </table>
 <% end %>
-<%= render "form" %>
 
-<% if Time.now >= @exercise.deadline && Time.now < @exercise.late_deadline %>
-  <div class='panel'>
-    <p>
-      Uploads will be allowed up to 48 hours after the deadline.
-    </p>
-    <p>
-      If you replace your submission after the deadline, you will incur the points deduction for a late submission.
-    </p>
-  </div>
+<% if policy(@submission).submit? %>
+  <%= render "form" %>
+
+  <% if Time.now >= @exercise.deadline && Time.now < @exercise.late_deadline %>
+    <div class='panel'>
+      <p>
+        Uploads will be allowed up to 48 hours after the deadline.
+      </p>
+      <p>
+        If you replace your submission after the deadline, you will incur the points deduction for a late submission.
+      </p>
+    </div>
+  <% end %>
+<% else %>
+
+    <h4>No uploads are allowed for this exercise</h4>
+
 <% end %>

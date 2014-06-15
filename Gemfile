@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.0.3'
 
-gem 'sqlite3'
 gem 'jquery-rails'                # Use jquery as the JavaScript library
 gem 'jquery-ui-rails'
 gem 'jquery-mousewheel-rails'     # jquery MouseWheel support
@@ -77,6 +76,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'mysql2'
   gem 'cucumber'
   gem 'cucumber-rails', require:false
   gem 'rspec-rails'

@@ -26,7 +26,7 @@ class Exercise < ActiveRecord::Base
   validates_presence_of :max_total_points, if: Proc.new { enable_max_total_points }
 
   def update_points!
-    self.points = self.reload.rating_groups.map{|rg| rg.max_points || rg.points}.compact.sum || 0
+    self.points = self.reload.rating_groups.map {|rg| rg.max_points || rg.points}.compact.sum || 0
     self.points = max_total_points if enable_max_total_points && points > max_total_points
     self.save!
   end
@@ -47,6 +47,10 @@ class Exercise < ActiveRecord::Base
 
   def result_published_for?(tutorial_group)
     result_publication_for(tutorial_group).published?
+  end
+
+  def solitary_submission?
+    !group_submission?
   end
 
   private

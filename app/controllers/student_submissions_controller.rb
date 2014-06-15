@@ -1,4 +1,4 @@
-class SubmissionsController < ApplicationController
+class StudentSubmissionsController < ApplicationController
   SubmissionPolicyRecord = Struct.new :exercise, :tutorial_group do
     def policy_class
       SubmissionPolicy
@@ -11,37 +11,14 @@ class SubmissionsController < ApplicationController
 
   skip_after_action :verify_authorized, only: :create, if: lambda { params[:submission].blank? }
 
-
-  def index
-    @tutorial_group = if params[:tutorial_group_id].present?
-      if params[:tutorial_group_id] == "all"
-        nil
-      else
-        @term.tutorial_groups.find(params[:tutorial_group_id])
-      end
-    else
-      if tut_group = current_account.tutorial_groups.where(term: @term).first
-        tut_group
-      else
-        @term.tutorial_groups.first
-      end
-    end
-
-    authorize SubmissionPolicyRecord.new @exercise, @tutorial_group
-
-    @submissions = @exercise.submissions.includes({student_group: [:students, :tutorial_group]}, :submission_evaluation, :exercise).order(:submitted_at)
-    @submissions = @submissions.joins(student_group_registration: :student_group).order("student_groups.title ASC")
-    @submissions = @submissions.for_tutorial_group @tutorial_group if @tutorial_group.present?
-    @submission_count = @submissions.count
-    @submissions = @submissions.page(params[:page]).per(20)
-  end
-
   def show
-    if params[:id] == :student
-      @submission = Submission.for_exercise(@exercise).for_account(current_account).first_or_initialize
-    else
-      @submission = @exercise.submissions.find(params[:id])
+    unless current_account.student_of_term? @term
+      redirect_to exercise_submissions_path(@exercise)
+      return
     end
+
+    @submission = Submission.for_exercise(@exercise).for_account(current_account).first_or_initialize
+
 
     @term = @submission.exercise.term
     @submission_assets = @submission.submission_assets
@@ -95,11 +72,8 @@ class SubmissionsController < ApplicationController
   end
 
   def set_submission
-    if params[:id] == :student
-      @submission = Submission.for_exercise(@exercise).for_account(current_account).first_or_initialize
-    else
-      @submission = @exercise.submissions.find(params[:id])
-    end
+    @submission = Submission.select(Submission.quoted_table_name + '.*').for_exercise(@exercise).for_account(current_account).first_or_initialize
+
     authorize @submission
   end
 end

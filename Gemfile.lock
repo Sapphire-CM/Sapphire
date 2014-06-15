@@ -189,6 +189,7 @@ GEM
     minitest (4.7.5)
     multi_json (1.9.2)
     multi_test (0.1.1)
+    mysql2 (0.3.16)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (2.8.0)
@@ -307,7 +308,6 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
-    sqlite3 (1.3.9)
     squeel (1.1.1)
       activerecord (>= 3.0)
       activesupport (>= 3.0)
@@ -390,6 +390,7 @@ DEPENDENCIES
   kaminari
   letter_opener
   mail
+  mysql2
   nokogiri
   pg
   poltergeist
@@ -414,7 +415,6 @@ DEPENDENCIES
   spring
   spring-commands-cucumber
   spring-commands-rspec
-  sqlite3
   squeel (~> 1.1)
   terminal-notifier-guard
   therubyracer

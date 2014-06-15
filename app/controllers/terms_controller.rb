@@ -31,7 +31,10 @@ class TermsController < ApplicationController
         source_term.copy_grading_scale(@term) unless @term.copy_grading_scale.to_i.zero?
       end
 
-      render partial: 'terms/insert_index_entry', locals: { term: @term }
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: "Term has been successfully created" }
+        format.js
+      end
     else
       render :new
     end
@@ -44,7 +47,10 @@ class TermsController < ApplicationController
 
   def update
     if @term.update(term_params)
-      render partial: 'terms/replace_index_entry', locals: { term: @term }
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: "Term has been successfully updated" }
+        format.js
+      end
     else
       render :edit
     end

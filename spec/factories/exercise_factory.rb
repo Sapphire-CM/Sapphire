@@ -7,6 +7,7 @@ FactoryGirl.define do
     deadline {Time.now + 14.days}
     late_deadline {deadline || Time.now + 2.days}
     enable_max_total_points false
+    enable_student_uploads true
     max_total_points 0
     group_submission false
 
@@ -22,6 +23,10 @@ FactoryGirl.define do
 
     trait :group_exercise do
       group_submission true
+    end
+
+    trait :no_upload_allowed do
+      enable_student_uploads false
     end
   end
 end

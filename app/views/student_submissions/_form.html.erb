@@ -1,4 +1,4 @@
-<%= simple_form_for([@exercise, setup_submission(@submission)]) do |f| %>
+<%= simple_form_for(setup_submission(@submission), url: exercise_student_submission_path(@exercise)) do |f| %>
   <%= field_set_tag do %>
     <% if @submission.errors.any? %>
       <% @submission.errors.full_messages.each do |msg| %>

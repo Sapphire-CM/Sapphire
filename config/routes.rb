@@ -45,9 +45,9 @@ Sapphire::Application.routes.draw do
     end
 
     resource :evaluation, controller: 'exercise_evaluations_table'
-    resource :submission, as: :student_submission, id: :student
+    resource :submission, as: :student_submission, controller: "student_submissions"
 
-    resources :submissions
+    resources :submissions, controller: "staff_submissions"
     resources :result_publications, only: [:index, :update]
     resource :results, controller: 'student_results', as: :student_results, only: :show
   end

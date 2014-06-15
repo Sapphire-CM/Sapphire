@@ -10,8 +10,12 @@ class StudentGroup < ActiveRecord::Base
   has_many :submissions, through: :student_group_registrations
 
   scope :for_term, lambda { |term| joins{tutorial_group.term}.where{tutorial_group.term.id == my{term.id}} }
+  scope :for_tutorial_group, lambda { |tutorial_group| where(tutorial_group_id: tutorial_group.id) }
   scope :for_student, lambda { |student| joins{student_registrations}.where{student_registrations.student == my {student}}}
   scope :active, lambda { where(active: true)}
+
+  scope :solitary, lambda { where(solitary: true) }
+  scope :multiple, lambda { where(solitary: false) }
 
   def submission_evaluations
     @submission_evaluations ||= SubmissionEvaluation.where{submission_id.in(my {self.submissions.joins{exercise}.where{exercise.term_id == my{term.id}}.pluck(:id)})}

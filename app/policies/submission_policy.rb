@@ -21,9 +21,26 @@ class SubmissionPolicy < PunditBasePolicy
     )
   end
 
+  def submit?
+    record.new_record? ? create? : update?
+  end
+
+  def new?
+    user.admin? ||
+    user.lecturer_of_term?(record.exercise.term) ||
+    user.tutor_of_term?(record.exercise.term)
+  end
+
+  def edit?
+    user.admin? ||
+    user.lecturer_of_term?(record.exercise.term) ||
+    user.tutor_of_term?(record.exercise.term)
+  end
+
   def create?
     user.admin? ||
     (
+      record.exercise.enable_student_uploads? &&
       record.exercise.term.associated_with?(user) &&
       record.exercise.term.course.unlocked? &&
       (record.exercise.late_deadline.present? ? Time.now <= record.exercise.late_deadline : true)
@@ -31,6 +48,18 @@ class SubmissionPolicy < PunditBasePolicy
   end
 
   def update?
+    user.admin? ||
+    user.lecturer_of_term?(record.exercise.term) ||
+    user.tutor_of_tutorial_group?(record.student_group.tutorial_group) ||
+    (
+      record.exercise.enable_student_uploads? &&
+      record.student_group.students.where(id: user.id).exists? &&
+      record.exercise.term.course.unlocked? &&
+      (record.exercise.late_deadline.present? ? Time.now <= record.exercise.late_deadline : true)
+    )
+  end
+
+  def destroy?
     user.admin? ||
     user.lecturer_of_term?(record.exercise.term) ||
     user.tutor_of_tutorial_group?(record.student_group.tutorial_group) ||

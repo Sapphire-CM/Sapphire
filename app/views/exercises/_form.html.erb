@@ -8,14 +8,13 @@
   <%= f.input :deadline, as: :datetime_picker %>
   <%= f.input :late_deadline, as: :datetime_picker %>
 
-
   <%= f.input :maximum_upload_size %>
+  <%= f.input :enable_student_uploads, label: "Enable student uploads" %>
   <%= f.input :group_submission %>
 
   <%= f.input :enable_min_required_points, label: 'Minimum points required for positive grade' %>
   <%= f.input :min_required_points, label: false,
     wrapper_html: {class: ('hide' unless @exercise.enable_min_required_points)} %>
-
 
   <%= f.input :enable_max_total_points, label: 'Maximum points in total' %>
   <%= f.input :max_total_points, label: false,

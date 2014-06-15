@@ -9,6 +9,8 @@ Feature: Student submission upload
     Given I am logged in as a student of term "SS 2014" of course "HCI"
       And there is a group exercise "Ex 1: HE Plan" for term "SS 2014" of course "HCI"
       And there is a solitary exercise "Ex 2.1: Log Files" for term "SS 2014" of course "HCI"
+      And there is a solitary exercise "MC Test" for term "SS 2014" of course "HCI"
+      And there are no uploads allowed for "MC Test" for term "SS 2014" of course "HCI"
       And I am in a group for term "SS 2014" of course "HCI" with following users
         | email                        |
         | another_student@sapphire.com |
@@ -50,6 +52,10 @@ Feature: Student submission upload
       And I should see "submission_2.zip"
       And there should be 2 submissions
 
+  Scenario: Viewing the submission form when no uploads are allowed
+    When I navigate to the submission form of exercise "MC Test"
+    Then I should see "No uploads are allowed for this exercise"
+
   Scenario: Updating group submissions
     When I navigate to the submission form of exercise "Ex 2.1: Log Files"
      And I attach "submission.zip" to "Log Files"
@@ -79,4 +85,3 @@ Feature: Student submission upload
      When I navigate to the submission form of exercise "Ex 2.1: Log Files"
      Then I should see "submission.zip"
       And there should be 2 submissions of different student groups
-

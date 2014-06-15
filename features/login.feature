@@ -22,5 +22,3 @@ Feature: Login
      When I fill in "Email" with "wrong.email@student.tugraz.at"
       And I click on button "Sign in"
      Then I should see "Invalid email or password."
-
-

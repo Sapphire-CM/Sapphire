@@ -1,0 +1,12 @@
+<% title @exercise.title, staff_submission_title(@submission) %>
+<%= render "exercises/sidebar" %>
+
+<p>
+  <%= link_to "Evaluate", single_evaluation_path(@submission, tutorial_group_id: params[:tutorial_group_id]), class: "small button" %>
+  <%= link_to foundation_icon(:pencil) + " Edit", edit_exercise_submission_path(@exercise, @submission, tutorial_group_id: params[:tutorial_group_id]), class: "small button" %>
+</p>
+
+<p>Submitted by <%= @submission.submitter.fullname %> at <%= l @submission.submitted_at, format: :unix %></p>
+
+
+<%= render "student_submissions/submission_assets_list", submission_assets: @submission.submission_assets %>

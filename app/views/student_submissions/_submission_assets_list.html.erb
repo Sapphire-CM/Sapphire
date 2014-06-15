@@ -1,0 +1,16 @@
+<% if submission_assets.any? %>
+  <table id='submission_assets_list' class='large-12'>
+    <thead>
+      <th>Filename</th>
+      <th>Submitted at</th>
+      <th>Submitted by</th>
+      <th>Size (Byte)</th>
+      <th></th>
+    </thead>
+    <tbody>
+      <%= render collection: submission_assets, partial: "student_submissions/submission_asset" %>
+    </tbody>
+  </table>
+<% else %>
+  <h5>This submission has no associated files</h5>
+<% end %>

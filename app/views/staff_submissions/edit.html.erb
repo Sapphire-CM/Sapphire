@@ -1,0 +1,19 @@
+<% title @exercise.title, "Edit Submission" %>
+<%= render "exercises/sidebar" %>
+
+<% if policy(@exercise).tutorial_group_dropdown? %>
+  <%= submissions_tutorial_group_dropdown(@tutorial_group) %>
+<% end %>
+
+
+<%= render "form", submission: @submission, exercise: @exercise, student_groups: @student_groups  %>
+
+
+<div class='panel alert callout'>
+  <h4>DANGER ZONE!</h4>
+
+  <p>Deleting a submission deletes all associated files as well.</p>
+
+  <%= link_to "Delete Submission", exercise_submission_path(@exercise, @submission), method: :delete, data: {confirm: "Are you sure?"}, class: "small alert button" %>
+
+</div>

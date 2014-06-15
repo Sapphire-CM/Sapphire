@@ -26,7 +26,7 @@ module SubmissionsHelper
             id = "all"
           end
 
-          link_to(h(title), exercise_submissions_path(tutorial_group_id: id, q: params[:q]))
+          link_to(h(title), {tutorial_group_id: id, q: params[:q]})
         end.html_safe
       end
 

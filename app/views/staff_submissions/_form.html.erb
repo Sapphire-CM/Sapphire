@@ -1,0 +1,21 @@
+<%= simple_form_for [exercise, submission] do |f| %>
+  <%= hidden_field_tag :tutorial_group_id, params[:tutorial_group_id] %>
+  <%= f.input :student_group_id, collection: student_groups %>
+  <%= f.input :submitted_at, as: :datetime_picker %>
+
+  <fieldset>
+    <h4>Assets</h4>
+
+
+    <%= f.simple_fields_for :submission_assets do |sa_f| %>
+      <%= render "submission_asset_fields", f: sa_f %>
+    <% end %>
+
+    <p><%= link_to_add_association 'Add File', f, :submission_assets, class: "small button" %></p>
+  </fieldset>
+
+  <p>
+    <%= link_to "Cancel", :back, class: "secondary button" %>
+    <%= f.submit class: "button" %>
+  </p>
+<% end %>

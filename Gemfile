@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.0.3'
 
-gem 'sqlite3'
 gem 'jquery-rails'                # Use jquery as the JavaScript library
 gem 'jquery-ui-rails'
 gem 'jquery-mousewheel-rails'     # jquery MouseWheel support
@@ -35,6 +34,8 @@ gem 'coderay'                     # doing code-highlighting for submission_asset
 gem 'rails_autolink'              # autolinking submitted newsgroup-posts and emails
 gem 'css_parser'                  # for parsing css files
 gem 'nokogiri'                    # for parsing HTML-Files
+
+gem 'cocoon'                      # for nested upload forms
 
 group :production do
   gem 'therubyracer'
@@ -77,6 +78,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'mysql2'
   gem 'cucumber'
   gem 'cucumber-rails', require:false
   gem 'rspec-rails'

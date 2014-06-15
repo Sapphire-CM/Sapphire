@@ -24,7 +24,7 @@ class SubmissionAsset < ActiveRecord::Base
   end
 
   def filesize
-    file.file.size
+    file.file.try(:size) || 0
   end
 
   def update_submitted_at

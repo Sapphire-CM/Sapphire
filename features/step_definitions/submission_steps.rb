@@ -23,7 +23,7 @@ Given(/^I have submitted a submission "(.*?)" for "(.*?)"$/) do |filename, exerc
     student_registration = FactoryGirl.create(:student_registration, student_group: student_group, student: @acc)
   end
 
-  submission = FactoryGirl.create(:submission, :without_student_group_registration, exercise: exercise)
+  submission = FactoryGirl.create(:submission, exercise: exercise)
   FactoryGirl.create(:submission_asset, file: File.open(File.join(Rails.root, "spec/support/data", filename)), submission: submission)
   submission.assign_to_account(@acc)
   submission.save

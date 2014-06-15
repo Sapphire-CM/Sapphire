@@ -7,7 +7,7 @@
       <%= submissions_tutorial_group_dropdown(@tutorial_group) %>
     <% end %>
 
-    <%= link_to foundation_icon(:plus) + " Add Submission", new_exercise_submission_path(@exercise, tutorial_group_id: params[:tutorial_group_id]), class: 'small button' %>
+    <%= link_to foundation_icon(:plus) + " Add Submission", new_exercise_submission_path(@exercise, tutorial_group_id: @tutorial_group.try(:id) || "all"), class: 'small button' %>
 </div>
 
 <%= render "submissions_list", submissions: @submissions %>

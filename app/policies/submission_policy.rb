@@ -31,6 +31,12 @@ class SubmissionPolicy < PunditBasePolicy
     user.tutor_of_term?(record.exercise.term)
   end
 
+  def edit?
+    user.admin? ||
+    user.lecturer_of_term?(record.exercise.term) ||
+    user.tutor_of_term?(record.exercise.term)
+  end
+
   def create?
     user.admin? ||
     (

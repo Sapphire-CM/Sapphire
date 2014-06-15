@@ -22,7 +22,7 @@ class Submission < ActiveRecord::Base
   before_save :assign_student_group
   after_create :create_submission_evaluation
 
-  accepts_nested_attributes_for :submission_assets
+  accepts_nested_attributes_for :submission_assets, allow_destroy: true, reject_if: :all_blank
 
   validate :upload_size_below_exercise_maximum_upload_size
 
@@ -54,6 +54,10 @@ class Submission < ActiveRecord::Base
 
   def result_published?
     student_group.present? && exercise.result_published_for?(student_group.tutorial_group)
+  end
+
+  def student_group_id
+    @student_group_id || student_group.try(:id)
   end
 
   private

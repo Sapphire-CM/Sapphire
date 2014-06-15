@@ -18,20 +18,7 @@
   <% end %>
 </div>
 
-<% if @submission.submission_assets.any? %>
-  <table id='submission_assets_list' class='large-12'>
-    <thead>
-      <th>Filename</th>
-      <th>Submitted at</th>
-      <th>Submitted by</th>
-      <th>Size (Byte)</th>
-      <th></th>
-    </thead>
-    <tbody>
-      <%= render collection: @submission.submission_assets, partial: "submission_asset" %>
-    </tbody>
-  </table>
-<% end %>
+<%= render "submission_assets_list", submission_assets: @submission.submission_assets %>
 
 <% if policy(@submission).submit? %>
   <%= render "form" %>

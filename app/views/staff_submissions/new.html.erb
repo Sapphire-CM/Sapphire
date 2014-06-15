@@ -1,9 +1,4 @@
 <% title @exercise.title, "New Submission" %>
 <%= render "exercises/sidebar" %>
 
-<% if policy(@exercise).tutorial_group_dropdown? %>
-  <%= submissions_tutorial_group_dropdown(@tutorial_group) %>
-<% end %>
-
-
 <%= render "form", submission: @submission, exercise: @exercise, student_groups: @student_groups  %>

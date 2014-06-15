@@ -34,6 +34,22 @@ class StaffSubmissionsController < ApplicationController
     end
   end
 
+  def edit
+    @submission = @exercise.submissions.find(params[:id])
+    authorize @submission
+  end
+
+  def update
+    @submission = @exercise.submissions.find(params[:id])
+    authorize @submission
+
+    if @submission.update(submission_params)
+      redirect_to exercise_submission_path(@exercise, @submission), notice: "Submission successfully updated"
+    else
+      render :edit
+    end
+  end
+
   def destroy
     @submission = @exercise.submissions.find(params[:id])
     authorize @submission
@@ -44,7 +60,7 @@ class StaffSubmissionsController < ApplicationController
 
   private
   def submission_params
-    params.require(:submission).permit(:submitted_at, :student_group_id, submission_assets_attributes: [:id, :file])
+    params.require(:submission).permit(:submitted_at, :student_group_id, submission_assets_attributes: [:id, :file, :_destroy])
   end
 
   def set_exercise_and_term

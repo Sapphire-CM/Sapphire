@@ -5,14 +5,17 @@
 
   <fieldset>
     <h4>Assets</h4>
-    <%= f.fields_for :submission_assets do |sa| %>
-      <%= sa.input :file %>
+
+
+    <%= f.simple_fields_for :submission_assets do |sa_f| %>
+      <%= render "submission_asset_fields", f: sa_f %>
     <% end %>
+
+    <p><%= link_to_add_association 'Add File', f, :submission_assets, class: "small button" %></p>
   </fieldset>
 
-  <div class='row'>
-    <div class='large-12 large-centered columns text-center'>
-        <%= f.submit class: "button" %>
-    </div>
-  </div>
+  <p>
+    <%= link_to "Cancel", :back, class: "secondary button" %>
+    <%= f.submit class: "button" %>
+  </p>
 <% end %>

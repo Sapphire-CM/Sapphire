@@ -78,7 +78,7 @@ Given(/^there are these courses$/) do |table|
 end
 
 Given(/^there are these terms for "(.*?)"$/) do |course_title, table|
-  course = FactoryGirl.create(:course, title: course_title) if course = Course.where(title: course_title)
+  course = FactoryGirl.create(:course, title: course_title) unless course = Course.where(title: course_title).first
 
   table.hashes.each do |line|
     FactoryGirl.create(:term, course: course, title: line['title'])

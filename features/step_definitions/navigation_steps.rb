@@ -47,3 +47,8 @@ When(/^I attach "(.*?)" to "(.*?)"$/) do |filename, input|
   attach_file(input, File.join(Rails.root, "spec/support/data", filename))
 end
 
+Given(/^I am on the submissions page of exercise "(.*?)"$/) do |exercise_title|
+  exercise = Exercise.where(title: exercise_title).first
+
+  visit exercise_submissions_path(exercise)
+end

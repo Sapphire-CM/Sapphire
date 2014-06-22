@@ -33,7 +33,7 @@ class StaffSubmissionsController < ApplicationController
       format.zip do
         file_path = @exercise.title.parameterize.gsub(/-+/, "-")
 
-        zipline zip_files(@submissions, file_path), file_path
+        zipline zip_files(@submissions, file_path), "#{file_path}.zip"
       end
     end
   end

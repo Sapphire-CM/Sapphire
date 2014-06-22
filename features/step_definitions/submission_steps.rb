@@ -38,5 +38,4 @@ Given(/^there are (\d+) submissions for "(.*?)" of term "(.*?)" of course "(.*?)
   tutorial_group = FactoryGirl.create(:tutorial_group, title: tutorial_group_title, term: term) unless tutorial_group = term.tutorial_groups.where(title: tutorial_group_title).first
 
   FactoryGirl.create_list(:submission, submission_count.to_i, :for_tutorial_group, tutorial_group: tutorial_group, exercise: exercise)
-
 end

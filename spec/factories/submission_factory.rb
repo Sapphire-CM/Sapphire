@@ -32,7 +32,7 @@ FactoryGirl.define do
       after(:create) do |instance, evaluator|
         student_group = create(:student_group_with_students, tutorial_group: evaluator.tutorial_group, solitary: instance.exercise.solitary_submission? )
         instance.assign_to(student_group)
-        instance.save
+        instance.save!
       end
     end
   end

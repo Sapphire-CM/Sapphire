@@ -13,8 +13,8 @@ class StudentSubmissionsController < ApplicationController
 
   def show
     unless current_account.student_of_term? @term
-       redirect_to exercise_submissions_path(@exercise)
-       return
+      redirect_to exercise_submissions_path(@exercise)
+      return
     end
 
     @term = @submission.exercise.term

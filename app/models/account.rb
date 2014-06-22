@@ -67,16 +67,17 @@ class Account < ActiveRecord::Base
 
   def grade_for_term(term)
     if term.participated? self
-      student_groups.for_term(term).each do |sg|
-        sg.submission_evaluations.each do |se|
-          if se.submission.exercise.enable_min_required_points &&
-            se.evaluation_result < se.submission.exercise.min_required_points
+      submissions = Submission.for_account(self)
 
-            # assumes that the negative grade (term not passed) is first one
-            return term.grading_scale.first[1]
-          end
+      term.exercises.each do |exercise|
+        submission = submissions.for_exercise(exercise).last
+
+        if exercise.enable_min_required_points && (submission.nil? || submission.submission_evaluation.evaluation_result < exercise.min_required_points)
+          # assumes that the negative grade (term not passed) is first one
+          return term.grading_scale.first[1]
         end
       end
+
 
       @grade_for_term ||= {}
       @grade_for_term[term.id] ||= term.grade_for_points(points_for_term(term))

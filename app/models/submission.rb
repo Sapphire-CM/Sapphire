@@ -17,6 +17,7 @@ class Submission < ActiveRecord::Base
   scope :for_tutorial_group, lambda { |tutorial_group| joins{student_group}.where { student_group.tutorial_group == my {tutorial_group} }}
   scope :for_student_group, lambda {|student_group| joins(:student_group_registration).where{student_group_registration.student_group_id == my {student_group.id}}}
   scope :for_account, lambda {|account| joins(student_group_registration: {student_group: :student_registrations}).where{student_group_registration.student_group.student_registrations.student == my{account}}}
+  scope :with_evaluation, lambda { joins(:submission_evaluation).where.not(submission_evaluation: {evaluator: nil}) }
   scope :ordered_by_student_group, lambda { joins(:student_group).order("student_groups.title ASC") }
 
   before_save :assign_student_group

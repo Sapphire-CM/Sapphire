@@ -4,6 +4,7 @@ FactoryGirl.define do
     tutorial_group
     active true
     solitary true
+    title { generate :student_group_title }
 
     factory :student_group_with_students do
       ignore do

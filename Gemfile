@@ -26,6 +26,7 @@ gem 'zurb-foundation', '~> 4.3.0'
 gem 'foundation-icons-sass-rails', '~> 3.0'
 
 gem 'remotipart', '~> 1.2'        # fileuploads via ajax
+gem 'zipline'
 
 gem 'whenever'                    # cron tasks
 gem 'mail'                        # fetching, delivering and parsing of emails

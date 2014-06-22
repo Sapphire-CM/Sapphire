@@ -71,9 +71,23 @@ Given(/^I am logged in as a student of term "(.*?)" of course "(.*?)"$/) do |ter
   sign_in(account)
 end
 
+
+Given(/^I am logged in as a tutor of "(.*?)" of term "(.*?)" of course "(.*?)"$/) do |tutorial_group_title, term_title, course_title|
+  account = FactoryGirl.create(:account)
+
+  course = FactoryGirl.create(:course, title: course_title) unless course = Course.where(title: course_title).first
+  term = FactoryGirl.create(:term, title: term_title, course: course) unless term = course.terms.where(title: term_title).first
+  tutorial_group =  FactoryGirl.create(:tutorial_group, title: tutorial_group_title, term: term) unless tutorial_group = term.tutorial_groups.where(title: tutorial_group_title).first
+
+  FactoryGirl.create(:tutor_registration, tutorial_group: tutorial_group, tutor: account)
+  sign_in(account)
+end
+
+
 Given(/^no account with email "(.*?)" exists$/) do |email|
   Account.where(:email => email).destroy_all
 end
+
 
 
 When(/^I sign in as "(.*?)"$/) do |email|

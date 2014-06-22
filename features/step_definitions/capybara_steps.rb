@@ -155,3 +155,7 @@ end
 When(/^I untick the check box "(.*?)"$/) do |check_box_title|
   uncheck check_box_title
 end
+
+Then /^I should get a download with the filename "([^\"]*)"$/ do |filename|
+  page.driver.response.headers['Content-Disposition'].should include("filename=#{filename}")
+end

@@ -17,9 +17,6 @@ class StudentSubmissionsController < ApplicationController
       return
     end
 
-    @submission = Submission.for_exercise(@exercise).for_account(current_account).first_or_initialize
-
-
     @term = @submission.exercise.term
     @submission_assets = @submission.submission_assets
   end

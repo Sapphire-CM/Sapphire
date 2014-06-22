@@ -28,3 +28,14 @@ Given(/^I have submitted a submission "(.*?)" for "(.*?)"$/) do |filename, exerc
   submission.assign_to_account(@acc)
   submission.save
 end
+
+
+
+Given(/^there are (\d+) submissions for "(.*?)" of term "(.*?)" of course "(.*?)" for tutorial group "(.*?)"$/) do |submission_count, exercise_title, term_title, course_title, tutorial_group_title|
+  course = FactoryGirl.create(:course, title: course_title) unless course = Course.where(title: course_title).first
+  term = FactoryGirl.create(:term, title: term_title, course: course) unless term = course.terms.where(title: term_title).first
+  exercise = FactoryGirl.create(:exercise, title: exercise_title, term: term) unless exercise = term.exercises.where(title: exercise_title).first
+  tutorial_group = FactoryGirl.create(:tutorial_group, title: tutorial_group_title, term: term) unless tutorial_group = term.tutorial_groups.where(title: tutorial_group_title).first
+
+  FactoryGirl.create_list(:submission, submission_count.to_i, :for_tutorial_group, tutorial_group: tutorial_group, exercise: exercise)
+end

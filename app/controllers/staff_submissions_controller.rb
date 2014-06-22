@@ -1,17 +1,41 @@
 class StaffSubmissionsController < ApplicationController
+  # enable streaming
+  include ActionController::Streaming
+  # enable zipline
+  include Zipline
+
   before_action :set_exercise_and_term
   before_action :set_tutorial_group
   before_action :set_submission, only: [:show, :update]
   before_action :set_student_groups, only: [:new, :create, :edit, :update]
 
+  SubmissionPolicyRecord = Struct.new :exercise, :tutorial_group do
+    def policy_class
+      SubmissionPolicy
+    end
+  end
+
+
   def index
     @submissions = @exercise.submissions
-    authorize @submissions
+    authorize SubmissionPolicyRecord.new @exercise, @tutorial_group
 
     @submissions = @submissions.for_tutorial_group(@tutorial_group) if @tutorial_group.present?
+
     @submission_count = @submissions.count
     @submissions = @submissions.includes({student_group: [:students, :tutorial_group]}, :submission_evaluation, :exercise)
-    @submissions = @submissions.ordered_by_student_group.page(params[:page])
+    @submissions = @submissions.ordered_by_student_group
+
+    respond_to do |format|
+      format.html do
+        @submissions = @submissions.page(params[:page]).per(20)
+      end
+      format.zip do
+        file_path = @exercise.title.parameterize.gsub(/-+/, "-")
+
+        zipline zip_files(@submissions, file_path), "#{file_path}.zip"
+      end
+    end
   end
 
   def new
@@ -74,7 +98,7 @@ class StaffSubmissionsController < ApplicationController
   end
 
   def set_student_groups
-    @student_groups = @term.student_groups.active
+    @student_groups = @term.student_groups.active.order(:title)
 
     @student_groups = @student_groups.for_tutorial_group(@tutorial_group) if @tutorial_group.present?
 
@@ -83,6 +107,7 @@ class StaffSubmissionsController < ApplicationController
     else
       @student_groups.solitary
     end
+    @student_groups
   end
 
   def set_tutorial_group
@@ -95,5 +120,19 @@ class StaffSubmissionsController < ApplicationController
     else
       current_account.tutorial_groups.where(term: @term).first.presence || @term.tutorial_groups.first
     end
+  end
+
+  def zip_files(submissions, prefix = "")
+    files = []
+    submissions.each do |submission|
+      group_name = submission.student_group.title.parameterize
+
+      submission.submission_assets.each do |submission_asset|
+        if File.exists? submission_asset.file.to_s
+          files << [File.new(submission_asset.file.to_s), File.join(prefix, group_name, File.basename(submission_asset.file.to_s))]
+        end
+      end
+    end
+    files
   end
 end

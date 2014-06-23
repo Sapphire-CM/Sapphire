@@ -21,36 +21,6 @@
       entry_partial: nil,
       students: @students,
       grade_distribution: @grade_distribution } %>
-
-<!--   <table class='right'>
-    <thead>
-      <th>Grade</th>
-      <th colspan='3'>Points</th>
-    </thead>
-
-    <tbody>
-      <% term.grading_scale.reverse.each_with_index do |item, index| %>
-        <% if index-1 >= 0 %>
-          <% high = term.grading_scale.reverse[index-1][0] - 1 %></td>
-        <% else %>
-          <% high = term.points %>
-        <% end %>
-
-        <tr>
-          <td class='text-center'>
-            <%= item[1] %>
-          </td>
-          <td class='text-right'>
-            <%= "#{item[0]}" %>
-          </td>
-          <td>-</td>
-          <td class='text-right'>
-            <%= "#{high}" %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table> -->
 </div>
 
 <div class='large-6 columns'>

@@ -1,5 +1,4 @@
 <%= render partial: 'points_overview/header', locals:
-  { term: @tutorial_group.term }  %>
+  { term: @tutorial_group.term, grading_scale: GradingScaleService.new(@tutorial_group.term) }  %>
 
-<%= render partial: 'points_overview/tutorial_group', locals:
-  { term: @tutorial_group.term, tutorial_group: @tutorial_group } %>
+<%= points_overview_for_tutorial_group(@tutorial_group) %>

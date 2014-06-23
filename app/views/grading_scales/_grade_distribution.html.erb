@@ -7,21 +7,31 @@
       <th>Percent</th>
     </thead>
     <tbody>
-      <% grading_scale.grading_ranges.each do |grading_range| %>
+      <% grading_scale.grades.each do |grade| %>
         <tr>
-          <th class='minimum-width text-center'><%= grading_range.grade %></th>
+          <th class='minimum-width text-center'><%= grade %></th>
           <td class='text-right'>
-            <%= grading_range.minimum_points %>
+            <% if grade == @grading_scale.grades.last %>
+              <%= @grading_scale.min_points_for(grade) %>
+            <% else %>
+              <%= simple_form_for :term, url: term_grading_scale_path(@grading_scale.term), method: :patch do |f| %>
+                <%= f.number_field "grading_scale[#{grade}]",
+                  value: grading_scale.min_points_for(grade),
+                  min: 1,
+                  max: @term.points > 0 ? (@term.points-1) : 9999,
+                  class: 'margin-none' %>
+              <% end %>
+            <% end %>
           </td>
           <td class='minimum-width'>-</td>
           <td class='minimum-width text-right'>
-            <%= grading_range.maximum_points %>
+            <%= grading_scale.max_points_for(grade) %>
           </td>
           <td class='minimum-width text-right'>
-            <%= grading_range.student_count %>
+            <%= grading_scale.count_for(grade) %>
           </td>
           <td class='minimum-width text-right'>
-            <%= number_to_percentage grading_scale.percent_for(grading_range.grade), precision: 1 %>
+            <%= number_to_percentage grading_scale.percent_for(grade), precision: 1 %>
           </td>
         </tr>
       <% end %>

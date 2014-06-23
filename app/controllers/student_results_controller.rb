@@ -5,7 +5,16 @@ class StudentResultsController < ApplicationController
     end
   end
 
-  before_action :set_context
+  before_action :set_exercise_context, only: :show
+  before_action :set_term_context, only: :index
+
+  def index
+    @exercises = @term.exercises
+    @submissions = Submission.for_account(current_account).for_exercise(@exercise)
+    @tutorial_group = current_account.tutorial_group_for_term(@term)
+
+    authorize StudentResultsRecord.new(@submissions)
+  end
 
   def show
     @submission = Submission.for_account(current_account).for_exercise(@exercise).first
@@ -20,8 +29,12 @@ class StudentResultsController < ApplicationController
 
 
   private
-  def set_context
+  def set_exercise_context
     @exercise = Exercise.find(params[:exercise_id])
     @term = @exercise.term
+  end
+
+  def set_term_context
+    @term = Term.find(params[:term_id])
   end
 end

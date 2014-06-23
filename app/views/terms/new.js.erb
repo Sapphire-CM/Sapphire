@@ -1,5 +1,5 @@
 $('#reveal_modal_header').html("New Term");
-$('#reveal_modal_content').html("<%=j render 'form' %>");
+$('#reveal_modal_content').html("<%=j render 'form', remote: true %>");
 
 $('#term_copy_elements').on('click', function() {
   $('#copy_elements_container').slideToggle();

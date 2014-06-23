@@ -42,6 +42,12 @@ describe ResultPublicationsController do
 
         exercise.result_published_for?(tutorial_groups.first).should be_true
       end
+
+      it "should present a different flash message if the publication status is not updated" do
+        patch :update, url_params.merge({result_publication: {published: false}})
+
+        expect(flash[:notice]).not_to be_empty
+      end
     end
   end
 end

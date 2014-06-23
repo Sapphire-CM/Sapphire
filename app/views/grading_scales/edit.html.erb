@@ -3,8 +3,4 @@
 <%= render "terms/edit_header" %>
 <%= render "terms/sidebar" %>
 
-<%= render partial: 'points_overview/grade_distribution',
-      locals: {
-        entry_partial: 'grading_scale_entry',
-        students: @term.students,
-        grade_distribution: @term.grade_distribution(@term.students) } %>
+<%= render 'grade_distribution', grading_scale: @grading_scale %>

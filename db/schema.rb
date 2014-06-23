@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140614220445) do
+ActiveRecord::Schema.define(version: 20140822075956) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -72,6 +72,19 @@ ActiveRecord::Schema.define(version: 20140614220445) do
 
   add_index "evaluations", ["evaluation_group_id"], name: "index_evaluations_on_evaluation_group_id", using: :btree
   add_index "evaluations", ["rating_id"], name: "index_evaluations_on_rating_id", using: :btree
+
+  create_table "exercise_registrations", force: true do |t|
+    t.integer  "exercise_id"
+    t.integer  "term_registration_id"
+    t.integer  "submission_id"
+    t.integer  "points"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "exercise_registrations", ["exercise_id"], name: "index_exercise_registrations_on_exercise_id", using: :btree
+  add_index "exercise_registrations", ["submission_id"], name: "index_exercise_registrations_on_submission_id", using: :btree
+  add_index "exercise_registrations", ["term_registration_id"], name: "index_exercise_registrations_on_term_registration_id", using: :btree
 
   create_table "exercises", force: true do |t|
     t.integer  "term_id"
@@ -236,6 +249,21 @@ ActiveRecord::Schema.define(version: 20140614220445) do
   add_index "submissions", ["exercise_id"], name: "index_submissions_on_exercise_id", using: :btree
   add_index "submissions", ["student_group_registration_id"], name: "index_submissions_on_student_group_registration_id", using: :btree
   add_index "submissions", ["submitter_id"], name: "index_submissions_on_submitter_id", using: :btree
+
+  create_table "term_registrations", force: true do |t|
+    t.string   "role"
+    t.integer  "points"
+    t.boolean  "positive_grade"
+    t.integer  "account_id"
+    t.integer  "term_id"
+    t.integer  "tutorial_group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "term_registrations", ["account_id"], name: "index_term_registrations_on_account_id", using: :btree
+  add_index "term_registrations", ["term_id"], name: "index_term_registrations_on_term_id", using: :btree
+  add_index "term_registrations", ["tutorial_group_id"], name: "index_term_registrations_on_tutorial_group_id", using: :btree
 
   create_table "terms", force: true do |t|
     t.string   "title"

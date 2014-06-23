@@ -58,9 +58,9 @@ group :development do
   gem 'bond'
   gem 'jist'
 
-  gem 'spring'                    # application preloader for development environments
-  gem 'spring-commands-cucumber'  # adding cucumber command to spring
-  gem 'spring-commands-rspec'     # adding rspec command to spring
+  # gem 'spring'                    # application preloader for development environments
+  # gem 'spring-commands-cucumber'  # adding cucumber command to spring
+  # gem 'spring-commands-rspec'     # adding rspec command to spring
 
   gem 'thin'                # small development webserver
   gem 'awesome_print'       # nicley formatted object inspection
@@ -86,6 +86,8 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'guard-cucumber'
   gem 'terminal-notifier-guard'
+  gem 'shoulda'
+  gem 'shoulda-matchers-pundit'
   gem 'capybara'
   gem 'database_cleaner'
   gem 'factory_girl_rails'

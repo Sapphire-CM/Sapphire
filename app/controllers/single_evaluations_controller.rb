@@ -11,7 +11,9 @@ class SingleEvaluationsController < ApplicationController
 
     @submission_assets = @submission.submission_assets.order(submitted_at: :desc)
 
-    submission_scope = Submission.for_exercise(@submission.exercise).for_tutorial_group(@submission.student_group.tutorial_group)
+    submission_scope = Submission.for_exercise(@submission.exercise)
+    submission_scope = submission_scope.for_tutorial_group(@submission.student_group.tutorial_group) if @submission.student_group.present?
+
     @next_submission = submission_scope.next(@submission, :submitted_at)
     @previous_submission = submission_scope.previous(@submission, :submitted_at)
 

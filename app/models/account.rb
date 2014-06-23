@@ -23,6 +23,7 @@ class Account < ActiveRecord::Base
   has_many :student_groups, through: :student_registrations
   has_many :student_group_registrations, through: :student_groups
   has_many :submissions, through: :student_group_registrations
+  has_many :term_registrations
 
   serialize :options
 
@@ -36,6 +37,10 @@ class Account < ActiveRecord::Base
 
     rel
   }
+
+  %i(students tutors lecturers).each do |group|
+    scope "#{group}_for_term".to_sym, lambda {|term| joins(:term_registrations).where(term_registrations: {term_id: term.id}).merge(TermRegistration.send(group)) }
+  end
 
   def initialize(*args)
     super *args
@@ -84,6 +89,11 @@ class Account < ActiveRecord::Base
     else
       "0"
     end
+  end
+
+  def tutorial_group_for_term(term)
+    student_group = student_groups.joins(:tutorial_group).where(tutorial_group: {term: term}).first
+    student_group.tutorial_group
   end
 
 ###############################################################################

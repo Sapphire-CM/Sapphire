@@ -16,11 +16,7 @@
 
 <div class='large-6 columns'>
 
-  <%= render partial: 'points_overview/grade_distribution',
-    locals: {
-      entry_partial: nil,
-      students: @students,
-      grade_distribution: @grade_distribution } %>
+  <%= render partial: 'points_overview/grade_distribution', locals: { grading_scale: grading_scale } %>
 </div>
 
 <div class='large-6 columns'>

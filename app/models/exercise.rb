@@ -9,29 +9,30 @@ class Exercise < ActiveRecord::Base
   default_scope { rank(:row_order) }
   scope :for_evaluations_table, lambda { includes(submissions: [{submission_evaluation: {evaluation_groups: [:rating_group, {evaluations: :rating}]}}, {student_group_registration: {student_group: :students}}])}
 
-  has_many :result_publications, dependent: :destroy
+  scope :group_exercises, lambda { where(group_submission: true)}
+  scope :solitary_exercises, lambda { where(group_submission: false)}
 
+  has_many :result_publications, dependent: :destroy
   has_many :student_group_registrations, dependent: :destroy
   has_many :student_groups, through: :student_group_registrations
-
   has_many :submissions
   has_many :submission_evaluations, through: :submissions
   has_many :rating_groups, dependent: :destroy
   has_many :ratings, through: :rating_groups
 
   after_create :ensure_result_publications
+  after_save :update_term_points, if: :points_changed?
 
   validates_presence_of :title
   validates_presence_of :min_required_points, if: Proc.new { enable_min_required_points }
   validates_presence_of :max_total_points, if: Proc.new { enable_max_total_points }
+
 
   def update_points!
     self.points = self.reload.rating_groups.map {|rg| rg.max_points || rg.points}.compact.sum || 0
     self.points = max_total_points if enable_max_total_points && points > max_total_points
     self.save!
   end
-
-  after_save :update_term_points, if: lambda { |ex| ex.points_changed? }
 
   def submission_viewer?
     submission_viewer_identifier.present?

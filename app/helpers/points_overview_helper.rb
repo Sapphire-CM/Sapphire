@@ -1,31 +1,14 @@
 module PointsOverviewHelper
-  def exercise_result(tutorial_group, student, exercise)
-    if tutorial_group.student_has_submission_for_exercise?(student, exercise)
-      submission_evaluation = student.submission_for_exercise(exercise).first.submission_evaluation
-
-      if submission_evaluation.plagiarized
-        content_tag :span, submission_evaluation.evaluation_result, class: 'plag'
-      else
-        submission_evaluation.evaluation_result
-      end
-    else
-      "na"
-    end
+  def exercise_result(term_registration, exercise)
+    term_registration.exercise_registrations.find {|ex_reg| ex_reg.exercise_id == exercise.id}.try(:points).presence || "na"
   end
 
-  def total_points(term, student)
-    if term.participated? student
-      student.points_for_term term
-    else
-      "na"
-    end
-  end
 
-  def final_grade(term, student)
-    if term.participated? student
-      student.grade_for_term term
-    else
-      "0"
-    end
+  def points_overview_for_tutorial_group(tutorial_group, grading_scale = nil)
+    term_registrations = tutorial_group.term_registrations.students
+    grading_scale = GradingScaleService.new(@term, term_registrations) if grading_scale.nil?
+    term_registrations = term_registrations.includes(:account, :exercise_registrations).ordered_by_matriculation_number
+
+    render 'points_overview/tutorial_group', term: tutorial_group.term, tutorial_group: tutorial_group, term_registrations: term_registrations, grading_scale: grading_scale
   end
 end

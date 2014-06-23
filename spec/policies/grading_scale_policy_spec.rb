@@ -15,32 +15,32 @@ describe GradingScalePolicy do
     let(:user) { FactoryGirl.create(:account, :admin) }
     let(:term) { FactoryGirl.create(:term) }
 
-    it { should permit :edit }
-    it { should permit :update}
+    it { should permit_authorization :edit }
+    it { should permit_authorization :update}
   end
 
   context "as a lecturer" do
     let(:user) { FactoryGirl.create(:account, :lecturer) }
     let(:term) { user.lecturer_registrations.first.term }
 
-    it { should permit :edit}
-    it { should permit :update}
+    it { should permit_authorization :edit}
+    it { should permit_authorization :update}
   end
 
   context "as a tutor" do
     let(:user) { FactoryGirl.create(:account, :tutor) }
     let(:term) { user.tutor_registrations.first.term }
 
-    it {should_not permit :edit}
-    it {should_not permit :update}
+    it {should_not permit_authorization :edit}
+    it {should_not permit_authorization :update}
   end
 
   context "as a student" do
     let(:user) { FactoryGirl.create(:account, :student)}
     let(:term) { user.student_registrations.first.term}
 
-    it { should_not permit :edit }
-    it { should_not permit :update}
+    it { should_not permit_authorization :edit }
+    it { should_not permit_authorization :update}
   end
 
 end

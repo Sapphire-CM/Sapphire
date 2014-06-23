@@ -18,21 +18,21 @@ describe ExercisePolicy do
     context "as an admin" do
       let(:user) { FactoryGirl.create(:account, :admin) }
 
-      it { should permit :index }
+      it { should permit_authorization :index }
     end
 
     context "as a lecturer" do
       let(:user) { FactoryGirl.create(:account, :lecturer) }
       let(:term) { user.lecturer_registrations.first.term }
 
-      it { should permit :index }
+      it { should permit_authorization :index }
     end
 
     context "as a tutor" do
       let(:user) { FactoryGirl.create(:account, :tutor) }
       let(:term) { user.tutor_registrations.first.term }
 
-      it { should permit :index }
+      it { should permit_authorization :index }
     end
 
 
@@ -40,7 +40,7 @@ describe ExercisePolicy do
       let(:user) { FactoryGirl.create(:account, :student)}
       let(:term) { user.student_registrations.first.term}
 
-      it { should permit :index }
+      it { should permit_authorization :index }
     end
   end
 
@@ -52,44 +52,44 @@ describe ExercisePolicy do
       let(:user) { FactoryGirl.create(:account, :admin) }
       let(:exercise) { FactoryGirl.create(:exercise, term: term) }
 
-      it { should permit :new}
-      it { should permit :create}
-      it { should permit :edit}
-      it { should permit :update}
-      it { should permit :destroy}
+      it { should permit_authorization :new}
+      it { should permit_authorization :create}
+      it { should permit_authorization :edit}
+      it { should permit_authorization :update}
+      it { should permit_authorization :destroy}
     end
 
     context "as a lecturer" do
       let(:user) { FactoryGirl.create(:account, :lecturer) }
       let(:term) { user.lecturer_registrations.first.term }
 
-      it { should permit :new}
-      it { should permit :create}
-      it { should permit :edit}
-      it { should permit :update}
-      it { should permit :destroy}
+      it { should permit_authorization :new}
+      it { should permit_authorization :create}
+      it { should permit_authorization :edit}
+      it { should permit_authorization :update}
+      it { should permit_authorization :destroy}
     end
 
     context "as a tutor" do
       let(:user) { FactoryGirl.create(:account, :tutor) }
       let(:term) { user.tutor_registrations.first.term }
 
-      it { should_not permit :new}
-      it { should_not permit :create}
-      it { should_not permit :edit}
-      it { should_not permit :update}
-      it { should_not permit :destroy}
+      it { should_not permit_authorization :new}
+      it { should_not permit_authorization :create}
+      it { should_not permit_authorization :edit}
+      it { should_not permit_authorization :update}
+      it { should_not permit_authorization :destroy}
     end
 
     context "as a student" do
       let(:user) { FactoryGirl.create(:account, :student)}
       let(:term) { user.student_registrations.first.term}
 
-      it { should_not permit :new}
-      it { should_not permit :create}
-      it { should_not permit :edit}
-      it { should_not permit :update}
-      it { should_not permit :destroy}
+      it { should_not permit_authorization :new}
+      it { should_not permit_authorization :create}
+      it { should_not permit_authorization :edit}
+      it { should_not permit_authorization :update}
+      it { should_not permit_authorization :destroy}
     end
   end
 end

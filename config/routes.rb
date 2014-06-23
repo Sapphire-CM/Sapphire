@@ -19,6 +19,8 @@ Sapphire::Application.routes.draw do
     resource :grading_scale, only: [:edit, :update]
 
     resources :exercises
+
+    resources :results, only: :index, controller: :student_results
   end
 
   resources :tutorial_groups do

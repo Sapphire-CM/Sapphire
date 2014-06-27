@@ -4,6 +4,9 @@ class ResultPublication < ActiveRecord::Base
 
   validates_presence_of :exercise, :tutorial_group
 
+  scope :published, lambda { where(published: true) }
+  scope :concealed, lambda { where(published: false) }
+
   def self.for(exercise: nil, tutorial_group: nil)
     where(exercise_id: exercise.id, tutorial_group_id: tutorial_group.id).first
   end

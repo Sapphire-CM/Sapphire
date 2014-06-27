@@ -43,6 +43,14 @@ class TutorialGroup < ActiveRecord::Base
     @values[student.id][exercise.id]
   end
 
+  def results_published_for?(exercise)
+    exercise.result_published_for?(self)
+  end
+
+  def all_results_published?
+    !result_publications.concealed.where(exercise_id: term.exercises.pluck(:id)).exists?
+  end
+
   private
   def ensure_result_publications
     term.exercises.each do |exercise|

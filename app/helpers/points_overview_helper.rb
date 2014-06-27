@@ -13,6 +13,15 @@ module PointsOverviewHelper
     end
   end
 
+  def points_for_exercise(tutorial_group, student, exercise)
+    result = 0
+    if tutorial_group.student_has_submission_for_exercise?(student, exercise)
+      submission_evaluation = student.submission_for_exercise(exercise).first.submission_evaluation
+      result = submission_evaluation.evaluation_result
+    end
+    result
+  end
+
   def total_points(term, student)
     if term.participated? student
       student.points_for_term term

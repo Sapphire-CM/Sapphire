@@ -7,6 +7,7 @@ class TermRegistration < ActiveRecord::Base
 
   has_many :exercise_registrations
   has_many :exercises, -> { uniq }, through: :exercise_registrations
+  has_many :submissions, through: :exercise_registrations
 
   validates_presence_of :account_id, :term_id, :role
   validates_inclusion_of :role, :in => Roles::ALL
@@ -16,8 +17,11 @@ class TermRegistration < ActiveRecord::Base
 
   scope :positive_grades, lambda { where(positive_grade: true) }
   scope :negative_grades, lambda { where(positive_grade: false) }
-
+  scope :staff, lambda { where(role: Roles::STAFF) }
+  scope :with_accounts, lambda { includes(:account) }
+  scope :for_account, lambda {|account| where(account_id: account.id)}
   scope :ordered_by_matriculation_number, lambda { joins(:account).order{ account.matriculation_number.asc } }
+  scope :ordered_by_name, lambda { joins(:account).order{ account.forename.asc }.order{ account.surname.asc } }
 
   sifter :positive_grades do
     positive_grade == true
@@ -29,6 +33,10 @@ class TermRegistration < ActiveRecord::Base
 
   Roles::ALL.each do |role|
     scope role.to_s.pluralize.to_sym, lambda { where(role: role.to_s) }
+  end
+
+  def self.search(query)
+    all.joins(:account).merge(Account.search(query))
   end
 
   def update_points
@@ -51,6 +59,10 @@ class TermRegistration < ActiveRecord::Base
 
   def all_exercises_submitted?
     term.exercises.count == exercises.count
+  end
+
+  def any_exercise_submitted?
+    exercise_registrations.any?
   end
 
   def positive_grade_archived?

@@ -1,7 +1,7 @@
-<% title "Grading Reviews - #{tutorial_group_title @tutorial_group}" %>
+<% title course_term_title, "Grading Review" %>
 
 
-<%= form_tag tutorial_group_grading_reviews_path(@tutorial_group), method: :get do %>
+<%= form_tag term_grading_reviews_path(current_term), method: :get do %>
 <div class='row collapse'>
   <div class='small-11 columns'>
     <%= search_field_tag :q, params[:q], placeholder: "e.g.: forename, surname, matriculation number, ..." %>
@@ -14,7 +14,7 @@
 <% end %>
 
 <% if params[:q].present? %>
-  <% if @students.any? %>
+  <% if @term_registrations.any? %>
     <table class='small-12'>
       <thead>
         <tr>
@@ -25,12 +25,12 @@
         </tr>
       </thead>
       <tbody>
-        <% @students.each do |student| %>
+        <% @term_registrations.each do |term_registration| %>
         <tr>
-          <td><%= highlight_search(student.forename, params[:q]) %></td>
-          <td><%= highlight_search(student.surname, params[:q]) %></td>
-          <td><%= highlight_search(student.matriculation_number, params[:q]) %></td>
-          <td><%= link_to "Show", tutorial_group_grading_review_path(@tutorial_group, student), class: "small button" %></td>
+          <td><%= highlight_search(term_registration.account.forename, params[:q]) %></td>
+          <td><%= highlight_search(term_registration.account.surname, params[:q]) %></td>
+          <td><%= highlight_search(term_registration.account.matriculation_number, params[:q]) %></td>
+          <td><%= link_to "Show", term_grading_review_path(current_term, term_registration), class: "small button" %></td>
         </tr>
         <% end %>
       </tbody>

@@ -1,0 +1,41 @@
+<% title course_term_title, @term_registration.account.fullname %>
+
+<%= render "terms/sidebar", term: current_term %>
+
+<h2>Submissions</h2>
+
+<% if @exercise_registrations.any? %>
+  <table class='small-12'>
+    <thead>
+      <tr>
+        <th>Exercise</th>
+        <th>Points</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @exercise_registrations.each do |exercise_registration| %>
+      <tr>
+        <td><%= exercise_registration.exercise.title %></td>
+        <td><%= exercise_registration.points %>/<%= exercise_registration.exercise.points %></td>
+        <td class='text-right'>
+          <%= link_to "Show", exercise_submission_path(exercise_registration.exercise, exercise_registration.submission), class: "small button" %>
+          <%= link_to "Evaluate", single_evaluation_path(exercise_registration.submission), class: "small button" %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th>Sum:</th>
+        <th><%= @term_registration.points %>/<%= @term_registration.term.points %></th>
+        <th colspan='2'></th>
+      </tr>
+
+    </tfoot>
+  </table>
+<% else %>
+  <p>No Submissions for this student</p>
+<% end %>
+
+<p><strong>Grade: <%= @grading_scale.grade_for_term_registration(@term_registration) %></strong></p>

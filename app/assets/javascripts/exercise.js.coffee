@@ -4,13 +4,14 @@
 
 
 $ ->
-  $('#exercise_enable_min_required_points').on 'click', ->
-    $('#exercise_min_required_points').parent().slideToggle()
+  $('#exercise_enable_min_required_points').on 'change', ->
+    $('#exercise_min_required_points').parent().slideToggle($(this).val() == 1)
 
-  $('#exercise_enable_max_total_points').on 'click', ->
-    $('#exercise_max_total_points').parent().slideToggle()
+  $('#exercise_enable_max_total_points').on 'change', ->
+    $('#exercise_max_total_points').parent().slideToggle($(this).val() == 1)
 
-
+  $('#exercise_enable_max_upload_size').on 'change', ->
+    $('#exercise_maximum_upload_size').parent().slideToggle($(this).val() == 1)
 
   get_rating_group_id = ($rating_group)->
     $rating_group.attr("id").replace("rating_group_id_", "")

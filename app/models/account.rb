@@ -18,17 +18,17 @@ class Account < ActiveRecord::Base
   has_many :lecturer_registrations, dependent: :destroy
   has_many :tutor_registrations, dependent: :destroy
   has_many :student_registrations, dependent: :destroy
-  has_many :tutorial_groups, through: :tutor_registrations
 
   has_many :student_groups, through: :student_registrations
   has_many :student_group_registrations, through: :student_groups
   has_many :submissions, through: :student_group_registrations
   has_many :term_registrations
+  has_many :tutorial_groups, through: :term_registrations
 
   serialize :options
 
   scope :search, lambda {|query|
-    rel = scoped
+    rel = all
 
     query.split(/\s+/).each do |part|
       part = "%#{part}%"
@@ -65,82 +65,35 @@ class Account < ActiveRecord::Base
     @submission_for_exercise[exercise.id] ||= submissions.for_exercise exercise
   end
 
-  def points_for_term(term)
-    @points_for_term ||= {}
-    @points_for_term[term.id] ||= student_groups.for_term(term).map(&:points).compact.sum
-  end
-
-  def grade_for_term(term)
-    if term.participated? self
-      submissions = Submission.for_account(self)
-
-      term.exercises.each do |exercise|
-        submission = submissions.for_exercise(exercise).last
-
-        if exercise.enable_min_required_points && (submission.nil? || submission.submission_evaluation.evaluation_result < exercise.min_required_points)
-          # assumes that the negative grade (term not passed) is first one
-          return term.grading_scale.first[1]
-        end
-      end
-
-
-      @grade_for_term ||= {}
-      @grade_for_term[term.id] ||= term.grade_for_points(points_for_term(term))
-    else
-      "0"
-    end
-  end
-
   def tutorial_group_for_term(term)
     student_group = student_groups.joins(:tutorial_group).where(tutorial_group: {term: term}).first
     student_group.tutorial_group
   end
 
-###############################################################################
+
+
+  def staff_of_term?(term)
+    term_registrations.where(role: Roles::STAFF, term: term).exists?
+  end
 
 
   def lecturer_of_term?(term)
-    lecturer_registrations
-      .where{term_id == my{term.id}}
-      .exists?
+    term_registrations.lecturers.where(term_id: term.id).exists?
   end
 
   def lecturer_of_any_term_in_course?(course)
-    lecturer_registrations
-      .joins{term}
-      .where{term.id.in my{course.terms.pluck(:id)}}
-      .exists?
+    term_registrations.lecturers.any?
   end
 
   def tutor_of_term?(term)
-    tutor_registrations
-      .joins{tutorial_group.term}
-      .where{tutorial_group.term == my{term}}
-      .exists?
+    term_registrations.tutors.where(term_id: term.id).exists?
   end
 
   def student_of_term?(term)
-    @student_of_term ||= Hash.new do |h,k|
-      h[k] = student_registrations
-        .joins {tutorial_group.term}
-        .where {tutorial_group.term == my {k}}
-        .exists?
-      end
-    @student_of_term[term]
+    term_registrations.students.where(term_id: term.id).exists?
   end
 
   def tutor_of_tutorial_group?(tutorial_group)
-    if tutorial_group.tutor
-      tutorial_group.tutor == self
-    else
-      false
-    end
-  end
-
-  def tutor_of_any_tutorial_group_in_term?(term)
-    tutor_registrations
-      .joins{tutorial_group.term}
-      .where{tutorial_group.term.id.in my{term.tutorial_groups.pluck(:id)}}
-      .exists?
+    term_registrations.tutors.where(tutorial_group_id: tutorial_group.id)
   end
 end

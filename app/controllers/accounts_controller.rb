@@ -9,7 +9,7 @@ class AccountsController < ApplicationController
   end
 
   def show
-    @registrations = []
+    @term_registrations = @account.term_registrations
   end
 
   def edit

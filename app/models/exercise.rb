@@ -22,11 +22,12 @@ class Exercise < ActiveRecord::Base
 
   after_create :ensure_result_publications
   after_save :update_term_points, if: :points_changed?
+  after_save :recalculate_term_registrations_results, if: lambda {|exercise| exercise.enable_min_required_points_changed? || exercise.min_required_points_changed?}
 
   validates_presence_of :title
   validates_presence_of :min_required_points, if: Proc.new { enable_min_required_points }
   validates_presence_of :max_total_points, if: Proc.new { enable_max_total_points }
-
+  validates_presence_of :maximum_upload_size, if: Proc.new { enable_max_upload_size }
 
   def update_points!
     self.points = self.reload.rating_groups.map {|rg| rg.max_points || rg.points}.compact.sum || 0
@@ -52,6 +53,10 @@ class Exercise < ActiveRecord::Base
 
   def solitary_submission?
     !group_submission?
+  end
+
+  def recalculate_term_registrations_results
+    TermRegistrationsPointsUpdateWorker.perform_async(term.id)
   end
 
   private

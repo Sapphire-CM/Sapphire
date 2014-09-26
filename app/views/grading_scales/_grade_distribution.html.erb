@@ -11,14 +11,14 @@
         <tr>
           <th class='minimum-width text-center'><%= grade %></th>
           <td class='text-right'>
-            <% if grade == @grading_scale.grades.last %>
-              <%= @grading_scale.min_points_for(grade) %>
+            <% if grade == grading_scale.grades.last %>
+              <%= grading_scale.min_points_for(grade) %>
             <% else %>
-              <%= simple_form_for :term, url: term_grading_scale_path(@grading_scale.term), method: :patch do |f| %>
+              <%= simple_form_for :term, url: term_grading_scale_path(grading_scale.term), method: :patch do |f| %>
                 <%= f.number_field "grading_scale[#{grade}]",
                   value: grading_scale.min_points_for(grade),
                   min: 1,
-                  max: @term.points > 0 ? (@term.points-1) : 9999,
+                  max: term.points > 0 ? (term.points-1) : 9999,
                   class: 'margin-none' %>
               <% end %>
             <% end %>

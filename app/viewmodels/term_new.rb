@@ -8,4 +8,8 @@ class TermNew < Term
       !self.send(attribute).to_i.zero?
     end
   end
+
+  def needs_copying?
+    copy_lecturer? || copy_grading_scale? || copy_exercises?
+  end
 end

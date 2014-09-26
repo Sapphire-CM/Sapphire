@@ -6,10 +6,6 @@ class TermsController < ApplicationController
   def show
     @tutorial_groups = @term.tutorial_groups
     @exercises = @term.exercises
-
-    if @term.lecturer.blank?
-      render alert: 'You have not set a lecturer yet!'
-    end
   end
 
   def new
@@ -23,10 +19,15 @@ class TermsController < ApplicationController
     authorize @term
 
     if @term.save
-      CreateTermService.new(@term).perform!
+      if @term.needs_copying?
+        TermCopyingService.copy_async(@term)
+        flash[:notice] = "Term has been successfully created, the   previous term is being copied in the background"
+      else
+        flash[:notice] = "Term has been successfully created"
+      end
 
       respond_to do |format|
-        format.html { redirect_to term_path(@term), notice: "Term has been successfully created" }
+        format.html { redirect_to term_path(@term) }
         format.js
       end
     else

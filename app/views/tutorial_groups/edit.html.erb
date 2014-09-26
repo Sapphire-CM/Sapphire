@@ -1,3 +1,16 @@
 <% title "Edit Tutorial Group" %>
 
-<%= render "form" %>
+<%= render "sidebar", tutorial_group: @tutorial_group %>
+
+<%= render "form", term: current_term, tutorial_group: @tutorial_group %>
+
+<hr />
+
+<div class='panel alert callout'>
+  <h4>DANGER ZONE!</h4>
+
+  <p>Deleting a tutorial group deletes all associated associated students from the current course.</p>
+
+  <%= link_to "Delete Tutorial Group", term_tutorial_group_path(current_term, @tutorial_group), method: :delete, data: {confirm: "Are you sure?"}, class: "small alert button" %>
+
+</div>

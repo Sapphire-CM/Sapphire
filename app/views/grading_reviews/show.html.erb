@@ -16,16 +16,16 @@
           <% @submissions.each do |submission| %>
             <tr>
               <td><%= submission.exercise.title %></td>
-              <td><%= if submission.submitted_at.present? then l(submission.submitted_at, format: :short) else "unkown" end%></td>
-              <td><%= submission.submission_evaluation.evaluation_result %></td>
+              <td><%= submission.submitted_at.present? ? l(submission.submitted_at, format: :short) : "unknown" %></td>
+              <td><%= exercise_result @student_registration, submission.exercise %></td>
             </tr>
           <% end %>
         </tbody>
         <tfoot>
           <tr>
             <th></th>
-            <th>Grade: <%= final_grade(@term, @student) %></th>
-            <th>Sum: <%= total_points(@term, @student) %></th>
+            <th>Grade: <%= @grading_scale.grade_for_term_registration(@student_registration) %></th>
+            <th>Sum: <%= @student_registration.points %></th>
           </tr>
         </tfoot>
       </table>
@@ -72,4 +72,4 @@
 </div>
 
 <hr />
-<%= link_to "Back", tutorial_group_grading_reviews_path(@tutorial_group), class: "small button" %>
+<%= link_to "Back", term_grading_reviews_path(current_term), class: "small button" %>

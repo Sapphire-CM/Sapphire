@@ -1,16 +1,22 @@
 <% sidebar_nav do %>
-  <%= sidenav_item(:home, "Dashboard", term_path(@term)) %>
-  <%= sidenav_item(:clipboard_notes, "Exercises", term_exercises_path(@term), params[:controller] == "exercises") %>
-  <% if policy(@term).student? %>
-    <%= sidenav_item(:megaphone, "Results", term_results_path(@term)) %>
+
+  <%= sidenav_item(:home, "Dashboard", term_path(term)) %>
+  <%= sidenav_item(:clipboard_notes, "Exercises", term_exercises_path(term), params[:controller] == "exercises") %>
+
+  <% if current_account.admin? || policy(@term).staff? %>
+    <%= sidenav_item(:torsos, "Tutorial Groups", term_tutorial_groups_path(term)) %>
+    <%= sidenav_item(:torso, "Students", term_students_path(term), params[:controller] == "students") %>
+
+    <%#= sidenav_item(:calendar, "Meeting Time", '#') %>
+    <%= sidenav_item(:list, "Grading Review", term_grading_reviews_path(term)) %>
+    <%= sidenav_item(:list_thumbnails, "Points Overview", term_points_overview_path(term)) %>
   <% else %>
-    <%= sidenav_item(:torsos, "Tutorial Groups", '#') %>
-    <%= sidenav_item(:calendar, "Meeting Time", '#') %>
+    <%= sidenav_item(:megaphone, "Results", term_results_path(@term)) %>
   <% end %>
 
 
-  <% if policy(@term).update? %>
+  <% if policy(term).update? %>
     <li class='divider'></li>
-    <%= sidenav_item(:pencil, "Administrate", edit_term_path(@term), term_sidebar_administrative_active?) %>
+    <%= sidenav_item(:pencil, "Administrate", edit_term_path(term), term_sidebar_administrative_active?) %>
   <% end %>
 <% end %>

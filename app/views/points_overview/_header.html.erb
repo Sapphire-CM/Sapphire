@@ -1,55 +1,49 @@
 <% title "#{term.course.title} Results #{term.title}" %>
 
-<% if true %>
-  <p>
-    These are the <em>provisional</em> results. We do occasionally make
-    mistakes, for example when entering points into a spreadsheet or
-    adding up points. Should we find any mistakes in the grading, the
-    provisional grade will be corrected.
-  </p>
-<% else %>
-  <p>
-  These are the <em>final</em> results, including any corrections
-  from the grading review.
-  </p>
-<% end %>
+<p>
+  These are the <em>provisional</em> results. We do occasionally make
+  mistakes, for example when entering points into a spreadsheet or
+  adding up points. Should we find any mistakes in the grading, the
+  provisional grade will be corrected.
+</p>
 
-<div class='large-6 columns'>
+<div class='row'>
+  <div class='small-12 large-6 columns'>
+    <%= render partial: 'points_overview/grade_distribution', locals: { grading_scale: grading_scale } %>
+  </div>
 
-  <%= render partial: 'points_overview/grade_distribution', locals: { grading_scale: grading_scale } %>
-</div>
+  <div class='small-12 large-6 columns'>
+    <table class='small-12'>
+      <thead>
+        <th>Exercise</th>
+        <th>Minimum Points</th>
+        <th>Maximum Points possible</th>
+      </thead>
 
-<div class='large-6 columns'>
-  <table class='left'>
-    <thead>
-      <th>Exercise</th>
-      <th>Minimum Points</th>
-      <th>Maximum Points possible</th>
-    </thead>
+      <tbody>
+        <% term.exercises.each do |exercise| %>
+          <tr>
+            <td><%= exercise.title %></td>
 
-    <tbody>
-      <% term.exercises.each do |exercise| %>
+            <% if exercise.enable_min_required_points %>
+              <td class='text-center'><%= exercise.min_required_points %></td>
+            <% else %>
+              <td class='text-center'>&nbsp;</td>
+            <% end %>
+
+            <% if exercise.enable_max_total_points %>
+              <td class='text-center'><%= exercise.max_total_points %></td>
+            <% else %>
+              <td class='text-center'><%= exercise.points %></td>
+            <% end %>
+          </tr>
+        <% end %>
         <tr>
-          <td><%= exercise.title %></td>
-
-          <% if exercise.enable_min_required_points %>
-            <td class='text-center'><%= exercise.min_required_points %></td>
-          <% else %>
-            <td class='text-center'>&nbsp;</td>
-          <% end %>
-
-          <% if exercise.enable_max_total_points %>
-            <td class='text-center'><%= exercise.max_total_points %></td>
-          <% else %>
-            <td class='text-center'><%= exercise.points %></td>
-          <% end %>
+          <td>Sum</td>
+          <td>&nbsp;</td>
+          <td class='text-center'><%= term.points %></td>
         </tr>
-      <% end %>
-      <tr>
-        <td>Sum</td>
-        <td>&nbsp;</td>
-        <td class='text-center'><%= term.points %></td>
-      </tr>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  </div>
 </div>

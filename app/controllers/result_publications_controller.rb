@@ -3,7 +3,7 @@ class ResultPublicationsController < ApplicationController
 
   before_action :set_context
   def index
-    @result_publications = @exercise.result_publications.joins(:tutorial_group).includes(tutorial_group: {tutor_registration: :tutor})
+    @result_publications = @exercise.result_publications.joins(:tutorial_group).includes(tutorial_group: {tutor_term_registrations: :account})
   end
 
   def update

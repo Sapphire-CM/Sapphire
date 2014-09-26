@@ -39,11 +39,11 @@ module SubmissionsHelper
 
   def submission_author(submission)
     exercise = submission.exercise
-    if submission.student_group.present?
+    if submission.exercise_registrations.any?
       if exercise.group_submission?
         submission.student_group.title
       else
-        student = submission.student_group.students.first
+        student = submission.term_registrations.first.account
         "#{student.fullname} (#{student.matriculation_number})"
       end
     else

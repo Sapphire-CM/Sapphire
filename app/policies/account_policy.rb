@@ -3,6 +3,10 @@ class AccountPolicy < PunditBasePolicy
     user.admin?
   end
 
+  def show?
+    user.admin?
+  end
+
   def edit?
     user.admin? || user == record
   end

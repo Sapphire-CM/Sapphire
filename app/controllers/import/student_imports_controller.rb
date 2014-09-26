@@ -55,13 +55,14 @@ class Import::StudentImportsController < ApplicationController
       processed_rows: 0,
       imported_students: 0,
       imported_tutorial_groups: 0,
+      imported_term_registrations: 0,
       imported_student_groups: 0,
       imported_student_registrations: 0,
       problems: []
     }
 
     if @student_import.save && @student_import.update(student_import_params)
-      system %(RAILS_ENV='#{Rails.env}' bundle exec rake 'sapphire:import_students[#{@student_import.id}]' --trace 2>&1 >> #{Rails.root}/log/rake.log &)
+      ImportWorker.perform_async(@student_import.id)
       redirect_to results_import_student_import_path(@student_import)
     end
   end

@@ -75,7 +75,11 @@ class GradingScaleService
   end
 
   def percent_for(grade)
-    (count_for(grade).to_f / total_count) * 100
+    if total_count > 0
+      (count_for(grade).to_f / total_count) * 100
+    else
+      0
+    end
   end
 
   def grade_for_student(student)
@@ -83,7 +87,12 @@ class GradingScaleService
   end
 
   def grade_for_term_registration(term_registration)
-    @grading_ranges.find {|grading_range|  grading_range.matches? term_registration }.grade
+    term_registration.exercise_registrations.load
+    if term_registration.any_exercise_submitted?
+      @grading_ranges.find {|grading_range|  grading_range.matches? term_registration }.grade
+    else
+      0
+    end
   end
 
   def range_for(grade)

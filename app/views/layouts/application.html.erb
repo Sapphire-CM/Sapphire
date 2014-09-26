@@ -35,7 +35,7 @@
 
     <% if @show_title %>
     <div class='row'>
-      <div class='large-<%= @small_title ? 9 : 12 %>'>
+      <div class='large-<%= @small_title ? 9 : 12 %> columns'>
         <h1>
           <span id='site_title'><%= yield(:title) %></span>
           <% if content_for(:subtitle) %>
@@ -49,14 +49,14 @@
 
     <div class='row<%= " " + yield(:large_content) if content_for(:large_content) %>'>
       <% if content_for? :sidebar %>
-        <div class='large-9 columns'>
-          <%= yield %>
-        </div>
-        <div class='large-3 columns'>
+        <div class='large-3 columns push-9'>
           <%= yield :sidebar %>
         </div>
+        <div class='large-9 columns pull-3'>
+          <%= yield %>
+        </div>
       <% else %>
-        <div class='large-12'>
+        <div class='large-12 columns'>
           <%= yield %>
         </div>
       <% end %>

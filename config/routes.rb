@@ -1,7 +1,9 @@
+require 'sidekiq/web'
+
 Sapphire::Application.routes.draw do
   devise_for :accounts, skip: :registration
 
-  resources :accounts, except: [:show, :new, :create] do
+  resources :accounts, except: [:new, :create] do
     get :change_password, on: :member
     patch :update_password, on: :member
   end
@@ -17,20 +19,26 @@ Sapphire::Application.routes.draw do
     get :points_overview
 
     resource :grading_scale, only: [:edit, :update]
-
     resources :exercises
 
-    resources :results, only: :index, controller: :student_results
+    resources :staff do
+      post :search, on: :collection
+    end
+
+    resources :students
+
+    resources :tutorial_groups do
+      get :points_overview
+    end
+    resources :grading_reviews, only: [:index, :show]
+
+    resources :results, only: [:index, :show], controller: :student_results
   end
 
   resources :tutorial_groups do
     get :new_tutor_registration
     post :create_tutor_registration
     delete :clear_tutor_registration
-
-    get :points_overview
-
-    resources :grading_reviews, only: [:index, :show]
 
     resources :student_groups do
       get :new_student_registration
@@ -66,15 +74,13 @@ Sapphire::Application.routes.draw do
   end
 
   resources :submission_viewers
-
   resources :submission_evaluations, except: [:destroy]
-
   resources :submission_assets, only: [:show, :new, :create]
-
   resources :single_evaluations
 
+  authenticate :account, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   root to: 'courses#index'
-
-  get 'submission_viewers/show'
-
 end

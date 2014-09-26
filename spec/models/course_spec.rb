@@ -24,7 +24,7 @@ describe Course do
     sg = FactoryGirl.create(:student_group, tutorial_group: tg)
     sgr = FactoryGirl.create(:student_registration, student: account, student_group: sg)
 
-    expect(Course.associated_with(account).sort_by(&:id)).to eq(courses.first(3))
+    expect(Course.associated_with(account).sort_by(&:id)).to eq(courses.first(3).order(:id))
   end
 
   it "should be able to determine whether a student is associated with a course" do

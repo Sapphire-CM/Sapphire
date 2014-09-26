@@ -38,6 +38,9 @@ gem 'nokogiri'                    # for parsing HTML-Files
 
 gem 'cocoon'                      # for nested upload forms
 
+gem 'sidekiq'                     # async jobs in background, used for imports
+gem 'sinatra', '>= 1.3.0', :require => nil    # small rack framework, used for sidekiq ui
+
 group :production do
   gem 'therubyracer'
   gem 'pg'                        # PostgreSQL database connector
@@ -58,9 +61,9 @@ group :development do
   gem 'bond'
   gem 'jist'
 
-  # gem 'spring'                    # application preloader for development environments
-  # gem 'spring-commands-cucumber'  # adding cucumber command to spring
-  # gem 'spring-commands-rspec'     # adding rspec command to spring
+  gem 'spring'                    # application preloader for development environments
+  gem 'spring-commands-cucumber'  # adding cucumber command to spring
+  gem 'spring-commands-rspec'     # adding rspec command to spring
 
   gem 'thin'                # small development webserver
   gem 'awesome_print'       # nicley formatted object inspection

@@ -1,0 +1,7 @@
+<% sidebar_nav do %>
+  <%= sidenav_item(:arrow_left, "Overview of #{course_term_title}", term_path(tutorial_group.term)) %>
+  <li class='divider'></li>
+  <%= sidenav_item(:list_thumbnails, "Points overview", term_tutorial_group_points_overview_path(current_term, @tutorial_group))%>
+  <li class='divider'></li>
+  <%= sidenav_item(:pencil, "Administrate", edit_term_tutorial_group_path(tutorial_group.term, tutorial_group)) %>
+<% end %>

@@ -1,16 +1,9 @@
 class StudentResultsPolicy < PunditBasePolicy
   def index?
-    user.admin? ||
-    begin
-      record.submission.map do |sub|
-        sub.student_group.present? &&
-        sub.student_group.students.include?(user)
-      end.all?
-    end
+    user.admin? || user.student_of_term?(record.subject)
   end
 
   def show?
-    user.admin? ||
-    (record.submission.present? ? record.submission.result_published? : false)
+    user.admin? || (record.subject.result_published? && record.subject.exercise_registrations.for_student(user).exists?)
   end
 end

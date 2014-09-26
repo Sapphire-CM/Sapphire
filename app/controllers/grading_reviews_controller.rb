@@ -1,22 +1,26 @@
 class GradingReviewsController < ApplicationController
-  before_action :set_context
+  include TermContext
+
+  class GradingReviewPolicyRecord < Struct.new(:user, :term)
+    def policy_class
+      GradingReviewPolicy
+    end
+  end
 
   def index
-    authorize @term
+    authorize GradingReviewPolicyRecord.new(current_account, current_term)
 
-    @students = @tutorial_group.students.search(params[:q]) if params[:q].present?
+    @term_registrations = current_term.term_registrations.search(params[:q]).load if params[:q].present?
   end
 
   def show
-    authorize @term
+    authorize GradingReviewPolicyRecord.new(current_account, current_term)
 
-    @student = @tutorial_group.students.find(params[:id])
-    @submissions = @student.submissions.joins(:exercise).order{exercise.row_order}
+    @student_registration = current_term.term_registrations.students.find(params[:id])
+    @student = @student_registration.account
+
+    @exercises = current_term.exercises
+    @submissions = @student_registration.submissions.ordered_by_exercises.includes(:exercise).includes(submission_evaluation: {evaluation_groups: [:rating_group, evaluations: :rating]})
+    @grading_scale = GradingScaleService.new(current_term, [@student_registration])
   end
-
-  private
-    def set_context
-      @tutorial_group = TutorialGroup.find(params[:tutorial_group_id])
-      @term = @tutorial_group.term
-    end
 end

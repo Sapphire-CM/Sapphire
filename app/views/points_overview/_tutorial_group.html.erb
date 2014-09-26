@@ -1,7 +1,7 @@
 <div class='row'>
   <div class='large-12 columns'>
     <h2 class='subheader'>
-      <%= "#{tutorial_group.title} #{tutorial_group.tutor.forename unless tutorial_group.tutor.blank?}" %>
+      <%= tutorial_group_title(tutorial_group) %>
     </h2>
 
     <table>
@@ -28,7 +28,7 @@
             <% end %>
 
             <td class="text-right">
-              <%= registration.points %>
+              <%= registration.points || 0%>
             </td>
             <td class="text-center">
               <%= grading_scale.grade_for_term_registration(registration) %>

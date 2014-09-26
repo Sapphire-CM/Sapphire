@@ -8,7 +8,6 @@
   <%= f.input :deadline, as: :datetime_picker %>
   <%= f.input :late_deadline, as: :datetime_picker %>
 
-  <%= f.input :maximum_upload_size %>
   <%= f.input :enable_student_uploads, label: "Enable student uploads" %>
   <%= f.input :group_submission %>
 
@@ -20,7 +19,12 @@
   <%= f.input :max_total_points, label: false,
     wrapper_html: {class: ('hide' unless @exercise.enable_max_total_points)} %>
 
-    <%= f.input :submission_viewer_identifier, collection: submission_viewer_form_collection, as: :select %>
+  <%= f.input :enable_max_upload_size, label: 'Maximum upload size' %>
+  <%= f.input :maximum_upload_size, label: false,
+    wrapper_html: {class: ('hide' unless @exercise.enable_max_upload_size)} %>
+
+
+  <%= f.input :submission_viewer_identifier, collection: submission_viewer_form_collection, as: :select %>
 
   <div class='row'>
     <div class='large-12 large-centered columns text-center'>

@@ -1,17 +1,6 @@
 <% title tutorial_group_title @tutorial_group %>
 
-<% sidebar do %>
-  <div>
-  <%= link_to set_tutor_label, tutorial_group_new_tutor_registration_path(@tutorial_group), class: "small button columns" %>
-
-  <%= link_to "Points overview", tutorial_group_points_overview_path(@tutorial_group), class: "small button columns" %>
-  <%= link_to "Grading review", tutorial_group_grading_reviews_path(@tutorial_group), class: "small button columns" %>
-
-  <%= link_to "Edit", edit_tutorial_group_path(@tutorial_group), class: "small button columns" %>
-
-  <%= link_to "Delete", tutorial_group_path(@tutorial_group), class: "small alert button columns", method: :delete, data: { confirm: "Are you sure?" } %>
-  </div>
-<% end %>
+<%= render "sidebar", tutorial_group: @tutorial_group %>
 
 <div class="section-container tabs" data-section="tabs">
   <% if @tutorial_group.term.group_submissions? %>
@@ -57,25 +46,23 @@
   <section class="<%= 'active' unless @tutorial_group.term.group_submissions? %>">
     <p class="title" data-section-title><a href="#">Students</a></p>
     <div class="content" data-section-content>
-      <% if @tutorial_group.students.any? %>
+      <% if @student_term_registrations.any? %>
         <table class='large-12'>
           <thead>
             <th>Forename</th>
             <th>Surname</th>
             <th>Matriculation Number</th>
             <th>Email</th>
-            <th>Groups</th>
+            <th></th>
           </thead>
           <tbody>
-            <% @tutorial_group.students.each do |student|  %>
+            <% @student_term_registrations.each do |student_term_registration|  %>
             <tr>
-              <td><%= student.forename %></td>
-              <td><%= student.surname %></td>
-              <td><%= student.matriculation_number %></td>
-              <td><%= student.email %></td>
-              <td>
-                <%= student.student_groups.for_term(@tutorial_group.term).pluck(:title).join ', ' %>
-              </td>
+              <td><%= student_term_registration.account.forename %></td>
+              <td><%= student_term_registration.account.surname %></td>
+              <td><%= student_term_registration.account.matriculation_number %></td>
+              <td><%= mail_to student_term_registration.account.email %></td>
+              <td><%= link_to "show", term_student_path(current_term, student_term_registration) %></td>
             </tr>
             <% end %>
           </tbody>
@@ -83,13 +70,6 @@
       <% else %>
         <p>No students present.</p>
       <% end %>
-    </div>
-  </section>
-
-  <section>
-    <p class="title" data-section-title><a href="#">Submissions</a></p>
-    <div class="content" data-section-content>
-      TODO: fix that: render "submissions/submissions_list", submissions: @submissions
     </div>
   </section>
 

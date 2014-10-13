@@ -1,10 +1,4 @@
 class TutorialGroupPolicy < PunditBasePolicy
-  class Scope < Struct.new(:user, :scope)
-    def resolve
-      scope
-    end
-  end
-
   def index?
     user.admin? ||
     user.lecturer_of_term?(record.subject) ||

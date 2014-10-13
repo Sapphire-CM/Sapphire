@@ -10,9 +10,9 @@ class ServicesController < ApplicationController
   end
 
   def index
-    @services = current_exercise.services
-
     authorize ServicesPolicyRecord.new(current_term)
+
+    @services = current_exercise.services
   end
 
   def edit

@@ -27,8 +27,6 @@ gem 'foundation-icons-sass-rails', '~> 3.0'
 
 gem 'remotipart', '~> 1.2'        # fileuploads via ajax
 gem 'zipline'                     # streaming zips on the fly
-# gem 'zipruby'                     # zip_exports
-
 
 gem 'whenever'                    # cron tasks
 gem 'nntp-client', git: "git@github.com:matthee/Sapphire-NNTP.git"  # fetching newsgroup posts
@@ -40,7 +38,6 @@ gem 'css_parser'                  # for parsing css files
 gem 'nokogiri'                    # for parsing HTML-Files
 
 gem 'cocoon'                      # for nested upload forms
-
 
 gem 'sidekiq'                     # async jobs in background, used for imports
 gem 'sinatra', '>= 1.3.0', :require => nil    # small rack framework, used for sidekiq ui

@@ -43,7 +43,7 @@ module SubmissionsHelper
       if exercise.group_submission?
         submission.student_group.title
       else
-        student = submission.term_registrations.first.account
+        student = submission.exercise_registrations.map(&:term_registration).first.account
         "#{student.fullname} (#{student.matriculation_number})"
       end
     else

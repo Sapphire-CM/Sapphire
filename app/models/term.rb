@@ -14,6 +14,8 @@ class Term < ActiveRecord::Base
   has_many :term_registrations, dependent: :destroy
   has_many :exercise_registrations, through: :term_registrations
 
+  has_many :exports
+
   has_one :lecturer_registration, dependent: :destroy
   delegate :lecturer, to: :lecturer_registration, allow_nil: true
 

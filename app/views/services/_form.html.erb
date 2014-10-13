@@ -1,0 +1,9 @@
+<%= simple_form_for(service, url: term_exercise_service_path(term, exercise, service), as: :service) do |f| %>
+  <%= f.input :active %>
+  <%= service_options_for(service, f) %>
+
+  <p>
+    <%= link_to "cancel", term_exercise_services_path(current_term, current_exercise), class: "secondary button" %>
+    <%= f.submit class: "button" %>
+  </p>
+<% end %>

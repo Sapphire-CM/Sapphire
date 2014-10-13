@@ -20,6 +20,10 @@ module Sapphire
     config.autoload_paths += %W(#{config.root}/lib/sapphire)
     config.autoload_paths += %W(#{config.root}/app/viewmodels)
     config.autoload_paths += %W(#{config.root}/app/workers)
+    config.autoload_paths += %W(#{config.root}/app/models/services)
+    config.autoload_paths += %W(#{config.root}/app/models/ratings)
+    config.autoload_paths += %W(#{config.root}/app/models/evaluations)
+    config.autoload_paths += %W(#{config.root}/app/models/exports)
     config.autoload_paths += %W(#{config.root}/lib/scanners)
     config.autoload_paths += %W(#{config.root}/app/services)
 

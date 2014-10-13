@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140926095018) do
+ActiveRecord::Schema.define(version: 20141012203628) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -110,6 +110,18 @@ ActiveRecord::Schema.define(version: 20140926095018) do
 
   add_index "exercises", ["term_id"], name: "index_exercises_on_term_id", using: :btree
 
+  create_table "exports", force: true do |t|
+    t.string   "type"
+    t.integer  "status"
+    t.integer  "term_id"
+    t.string   "file"
+    t.text     "properties"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "exports", ["term_id"], name: "index_exports_on_term_id", using: :btree
+
   create_table "import_student_imports", force: true do |t|
     t.integer  "term_id"
     t.datetime "created_at"
@@ -179,6 +191,15 @@ ActiveRecord::Schema.define(version: 20140926095018) do
   add_index "result_publications", ["exercise_id"], name: "index_result_publications_on_exercise_id", using: :btree
   add_index "result_publications", ["tutorial_group_id"], name: "index_result_publications_on_tutorial_group_id", using: :btree
 
+  create_table "services", force: true do |t|
+    t.integer  "exercise_id"
+    t.boolean  "active",      default: false
+    t.string   "type"
+    t.text     "properties"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "student_group_registrations", force: true do |t|
     t.integer  "exercise_id"
     t.integer  "student_group_id"
@@ -197,6 +218,7 @@ ActiveRecord::Schema.define(version: 20140926095018) do
     t.boolean  "solitary"
     t.integer  "points"
     t.boolean  "active",            default: true
+    t.string   "topic_identifier"
   end
 
   add_index "student_groups", ["tutorial_group_id"], name: "index_student_groups_on_tutorial_group_id", using: :btree
@@ -220,6 +242,7 @@ ActiveRecord::Schema.define(version: 20140926095018) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "asset_identifier"
+    t.string   "import_identifier"
   end
 
   add_index "submission_assets", ["submission_id"], name: "index_submission_assets_on_submission_id", using: :btree

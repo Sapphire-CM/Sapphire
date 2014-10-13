@@ -1,0 +1,39 @@
+<% title course_term_title(current_term), "Exports" %>
+
+<%= render "terms/sidebar", term: current_term %>
+<%= render "terms/edit_header", term: current_term %>
+
+<div class='text-right'>
+  <%= link_to "New Export", new_term_export_path(current_term), class: "small button" %>
+</div>
+<hr />
+
+<% if @exports.any? %>
+  <table class='small-12'>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Status</th>
+        <th>created at</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @exports.each do |export| %>
+      <tr>
+        <td><%= export.type.underscore.humanize %></td>
+        <td><%= export.status %></td>
+        <td><%= l export.created_at, format: :short %></td>
+        <td class='text-right'>
+          <% if export.finished? %>
+            <%= link_to foundation_icon(:download) + " download (#{number_to_human_size File.size(export.file.to_s)})", download_term_export_path(current_term, export),class: "small button" %>
+            <%= link_to "delete", term_export_path(current_term, export), class: "small alert button", method: :delete, data: {confirm: "Are you sure?"} %>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No exports have been prepared</p>
+<% end %>

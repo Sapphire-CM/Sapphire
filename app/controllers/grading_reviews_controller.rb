@@ -10,7 +10,7 @@ class GradingReviewsController < ApplicationController
   def index
     authorize GradingReviewPolicyRecord.new(current_account, current_term)
 
-    @term_registrations = current_term.term_registrations.search(params[:q]).load if params[:q].present?
+    @term_registrations = current_term.term_registrations.students.search(params[:q]).load if params[:q].present?
   end
 
   def show

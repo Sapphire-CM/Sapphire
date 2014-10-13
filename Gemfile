@@ -26,9 +26,12 @@ gem 'zurb-foundation', '~> 4.3.0'
 gem 'foundation-icons-sass-rails', '~> 3.0'
 
 gem 'remotipart', '~> 1.2'        # fileuploads via ajax
-gem 'zipline'
+gem 'zipline'                     # streaming zips on the fly
+# gem 'zipruby'                     # zip_exports
+
 
 gem 'whenever'                    # cron tasks
+gem 'nntp-client', git: "git@github.com:matthee/Sapphire-NNTP.git"  # fetching newsgroup posts
 gem 'mail'                        # fetching, delivering and parsing of emails
 
 gem 'coderay'                     # doing code-highlighting for submission_assets
@@ -37,6 +40,7 @@ gem 'css_parser'                  # for parsing css files
 gem 'nokogiri'                    # for parsing HTML-Files
 
 gem 'cocoon'                      # for nested upload forms
+
 
 gem 'sidekiq'                     # async jobs in background, used for imports
 gem 'sinatra', '>= 1.3.0', :require => nil    # small rack framework, used for sidekiq ui
@@ -64,6 +68,7 @@ group :development do
   gem 'spring'                    # application preloader for development environments
   gem 'spring-commands-cucumber'  # adding cucumber command to spring
   gem 'spring-commands-rspec'     # adding rspec command to spring
+  gem 'spring-commands-sidekiq'   # adding sidekiq command to spring
 
   gem 'thin'                # small development webserver
   gem 'awesome_print'       # nicley formatted object inspection

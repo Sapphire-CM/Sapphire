@@ -1,0 +1,9 @@
+<%= simple_form_for export, url: term_exports_path(current_term), as: :export do |f| %>
+  <%= hidden_field_tag :type, export_type %>
+  <%= export_options_for(export, f) %>
+
+  <p>
+    <%= link_to "Cancel", term_exports_path(current_term), class: "secondary button" %>
+    <%= f.submit "Start", class: "button" %>
+  </p>
+<% end %>

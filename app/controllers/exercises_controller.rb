@@ -55,7 +55,6 @@ class ExercisesController < ApplicationController
 
     def exercise_params
       params.require(:exercise).permit(
-        :term_id,
         :title,
         :description,
         :deadline,

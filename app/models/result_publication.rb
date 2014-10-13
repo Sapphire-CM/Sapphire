@@ -3,6 +3,7 @@ class ResultPublication < ActiveRecord::Base
   belongs_to :tutorial_group
 
   validates_presence_of :exercise, :tutorial_group
+  validates_uniqueness_of :exercise_id, scope: :tutorial_group_id
 
   scope :published, lambda { where(published: true) }
   scope :concealed, lambda { where(published: false) }

@@ -1,0 +1,10 @@
+<% title course_term_title(current_term), "New Export" %>
+
+<%= render "terms/sidebar", term: current_term %>
+<%= render "terms/edit_header", term: current_term %>
+
+<% if @export.present? %>
+  <%= render "form", export: @export, export_type: @export_type %>
+<% else %>
+  <%= render "export_type_selector" %>
+<% end %>

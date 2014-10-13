@@ -1,0 +1,11 @@
+<%= f.input :server_url %>
+<%= f.input :newsgroups, as: :text, label: "Newsgroups, separated by new lines", input_html: {rows: 8} %>
+
+<div class='row'>
+  <div class='small-6 columns'>
+    <%= f.input :fetch_initial, as: :boolean %>
+  </div>
+  <div class='small-6 columns'>
+    <%= f.input :fetch_followups, as: :boolean %>
+  </div>
+</div>

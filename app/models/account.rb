@@ -70,6 +70,10 @@ class Account < ActiveRecord::Base
     student_group.tutorial_group
   end
 
+  def default_password
+    DEFAULT_PASSWORD % {matriculation_number: self.matriculation_number}
+  end
+
 
 
   def staff_of_term?(term)

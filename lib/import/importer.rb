@@ -104,7 +104,7 @@ private
     student.surname = row[import_mapping.surname.to_i]
     student.email = row[import_mapping.email.to_i]
 
-    student.password = Account::DEFAULT_PASSWORD % { matriculation_number: student.matriculation_number }
+    student.password = student.default_password if student.new_record?
 
     new_record = student.new_record?
     if student.save
@@ -136,12 +136,15 @@ private
   end
 
   def create_term_registration(row, account, tutorial_group)
-    term_registration = TermRegistration.where(account_id: account.id, tutorial_group_id: tutorial_group.id).first_or_initialize(term_id: tutorial_group.term.id)
+    term_registration = TermRegistration.where(account: account, tutorial_group: tutorial_group).first_or_initialize(term_id: tutorial_group.term.id)
     term_registration.role = TermRegistration::STUDENT
 
     new_record = term_registration.new_record?
     if term_registration.save
-      import_result[:imported_term_registrations] += 1 if new_record
+      if new_record
+        import_result[:imported_term_registrations] += 1
+        welcome_notification!(term_registration)
+      end
     else
       import_result[:success] = false
       import_result[:problems] << create_problem_definition(row, term_registration.errors.full_messages)
@@ -206,4 +209,10 @@ private
     { entry: entry, problem: full_messages}
   end
 
+
+  def welcome_notification!(term_registration)
+    welcome_back = TermRegistration.where(account: term_registration.account).where.not(term: term_registration.term).exists?
+
+    WelcomeEmailWorker.perform_async(term_registration.id, welcome_back)
+  end
 end

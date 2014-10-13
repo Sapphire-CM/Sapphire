@@ -19,9 +19,9 @@ module TermsHelper
   end
 
   def term_sidebar_administrative_active?
-    params[:controller] == "import/student_imports" ||
-      params[:controller] == "grading_scales" ||
-      params[:controller] == "staff" ||
+    admin_controllers = %w(import/student_impoers grading_scales staff exports)
+
+    admin_controllers.include?(params[:controller]) ||
       (params[:controller] == "terms" && params[:action] == "edit")
   end
 end

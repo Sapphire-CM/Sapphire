@@ -8,7 +8,7 @@
     <%= sidenav_item(:torso, "Students", term_students_path(term), params[:controller] == "students") %>
 
     <%#= sidenav_item(:calendar, "Meeting Time", '#') %>
-    <%= sidenav_item(:list, "Grading Review", term_grading_reviews_path(term)) %>
+
     <%= sidenav_item(:list_thumbnails, "Points Overview", term_points_overview_path(term)) %>
   <% else %>
     <%= sidenav_item(:megaphone, "Results", term_results_path(@term)) %>

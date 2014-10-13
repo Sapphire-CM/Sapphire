@@ -1,0 +1,23 @@
+<% title @exercise.title, "Services" %>
+
+<%= render "exercises/sidebar" %>
+<%= render "exercises/edit_header" %>
+
+
+<table class='small-12'>
+  <thead>
+    <tr>
+      <th>Service</th>
+      <th>Active</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @services.each do |service| %>
+      <tr>
+        <td><%= link_to service.title, edit_term_exercise_service_path(current_term, current_exercise, service) %></td>
+        <td><%= service.active? ? "yes" : "no" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

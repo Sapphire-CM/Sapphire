@@ -1,7 +1,8 @@
 class Exercise < ActiveRecord::Base
+  include RankedModel
+
   belongs_to :term
 
-  include RankedModel
   ranks :row_order, with_same: :term_id
 
   delegate :course, to: :term
@@ -19,19 +20,26 @@ class Exercise < ActiveRecord::Base
   has_many :submission_evaluations, through: :submissions
   has_many :rating_groups, dependent: :destroy
   has_many :ratings, through: :rating_groups
+  has_many :services
 
+
+  before_save :update_points, if: lambda { |exercise| exercise.enable_max_total_points_changed? || exercise.max_total_points_changed? }
   after_create :ensure_result_publications
   after_save :update_term_points, if: :points_changed?
-  after_save :recalculate_term_registrations_results, if: lambda {|exercise| exercise.enable_min_required_points_changed? || exercise.min_required_points_changed?}
+  after_save :recalculate_term_registrations_results, if: lambda {|exercise| exercise.enable_min_required_points_changed? || exercise.min_required_points_changed? || exercise.points_changed?}
 
   validates_presence_of :title
   validates_presence_of :min_required_points, if: Proc.new { enable_min_required_points }
   validates_presence_of :max_total_points, if: Proc.new { enable_max_total_points }
   validates_presence_of :maximum_upload_size, if: Proc.new { enable_max_upload_size }
 
-  def update_points!
+  def update_points
     self.points = self.reload.rating_groups.map {|rg| rg.max_points || rg.points}.compact.sum || 0
     self.points = max_total_points if enable_max_total_points && points > max_total_points
+  end
+
+  def update_points!
+    update_points
     self.save!
   end
 
@@ -59,10 +67,18 @@ class Exercise < ActiveRecord::Base
     TermRegistrationsPointsUpdateWorker.perform_async(term.id)
   end
 
+  def ensure_services
+    Service.service_classes.each do |service_class|
+      unless self.services.find { |s| s.is_a? service_class }
+        service_class.create(exercise: self)
+      end
+    end
+  end
+
   private
   def ensure_result_publications
     term.tutorial_groups.each do |tutorial_group|
-      ResultPublication.create(exercise: self, tutorial_group: tutorial_group)
+      ResultPublication.find_or_create_by(exercise: self, tutorial_group: tutorial_group)
     end
   end
 end

@@ -1,0 +1,7 @@
+<% title @exercise.title, @service.title %>
+
+<%= render "exercises/sidebar" %>
+<%= render "exercises/edit_header" %>
+
+
+<%= render "form", term: current_term, exercise: current_exercise, service: @service %>

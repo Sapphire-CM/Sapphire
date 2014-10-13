@@ -19,13 +19,18 @@ Sapphire::Application.routes.draw do
     get :points_overview
 
     resource :grading_scale, only: [:edit, :update]
-    resources :exercises
+    resources :exercises do
+      resources :services, only: [:index, :edit, :update]
+    end
 
     resources :staff do
       post :search, on: :collection
     end
 
     resources :students
+    resources :exports do
+      get :download, on: :member
+    end
 
     resources :tutorial_groups do
       get :points_overview

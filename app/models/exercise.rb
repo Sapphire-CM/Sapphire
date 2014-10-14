@@ -34,7 +34,7 @@ class Exercise < ActiveRecord::Base
   validates_presence_of :maximum_upload_size, if: Proc.new { enable_max_upload_size }
 
   def update_points
-    self.points = self.reload.rating_groups.map {|rg| rg.max_points || rg.points}.compact.sum || 0
+    self.points = self.rating_groups(true).map {|rg| rg.max_points || rg.points}.compact.sum || 0
     self.points = max_total_points if enable_max_total_points && points > max_total_points
   end
 

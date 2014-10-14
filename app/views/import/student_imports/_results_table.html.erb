@@ -3,12 +3,13 @@
     <div class="row">
       <div class="large-12 columns">
         <h1>Working... </h1>
+
         <p><%= @student_import.import_result[:processed_rows] %> of <%= @student_import.import_result[:total_rows] %> rows processed...</p>
 
         <script type="text/javascript">
           setTimeout(function() {
             $.ajax("<%= results_import_student_import_path(@student_import) %>", { dataType: 'script' })
-          }, 5000);
+          }, 2000);
         </script>
       </div>
     </div>
@@ -16,6 +17,8 @@
 
   <div class="row">
     <div class="large-12 columns">
+      <div class="progress large-12 <%= student_import_progress_bar_status(@student_import) %> round"><span class="meter" style="width: <%= @student_import.import_result[:progress] %>%"></span></div>
+
       <h2>Statistics</h2>
 
       <table>

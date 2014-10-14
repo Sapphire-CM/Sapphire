@@ -55,7 +55,6 @@ class ExercisesController < ApplicationController
 
     def exercise_params
       params.require(:exercise).permit(
-        :term_id,
         :title,
         :description,
         :deadline,
@@ -65,6 +64,7 @@ class ExercisesController < ApplicationController
         :enable_min_required_points,
         :enable_max_total_points,
         :enable_student_uploads,
+        :enable_max_upload_size,
         :max_total_points,
         :min_required_points,
         :submission_viewer_identifier,

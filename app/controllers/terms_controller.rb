@@ -6,10 +6,6 @@ class TermsController < ApplicationController
   def show
     @tutorial_groups = @term.tutorial_groups
     @exercises = @term.exercises
-
-    if @term.lecturer.blank?
-      render alert: 'You have not set a lecturer yet!'
-    end
   end
 
   def new
@@ -23,16 +19,15 @@ class TermsController < ApplicationController
     authorize @term
 
     if @term.save
-      if not @term.copy_elements.to_i.zero?
-        source_term = Term.find(@term.source_term_id)
-
-        source_term.copy_lecturer(@term) unless @term.copy_lecturer.to_i.zero?
-        source_term.copy_exercises(@term) unless @term.copy_exercises.to_i.zero?
-        source_term.copy_grading_scale(@term) unless @term.copy_grading_scale.to_i.zero?
+      if @term.needs_copying?
+        TermCopyingService.copy_async(@term)
+        flash[:notice] = "Term has been successfully created, the   previous term is being copied in the background"
+      else
+        flash[:notice] = "Term has been successfully created"
       end
 
       respond_to do |format|
-        format.html { redirect_to root_path, notice: "Term has been successfully created" }
+        format.html { redirect_to term_path(@term) }
         format.js
       end
     else
@@ -48,7 +43,7 @@ class TermsController < ApplicationController
   def update
     if @term.update(term_params)
       respond_to do |format|
-        format.html { redirect_to root_path, notice: "Term has been successfully updated" }
+        format.html { redirect_to term_path(@term), notice: "Term has been successfully updated" }
         format.js
       end
     else
@@ -58,7 +53,7 @@ class TermsController < ApplicationController
 
   def destroy
     @term.destroy
-    render partial: 'terms/remove_index_entry', locals: { term: @term }
+    redirect_to root_path
   end
 
   def new_lecturer_registration
@@ -82,44 +77,25 @@ class TermsController < ApplicationController
     redirect_to @term, notice: "Lecturer registration successfully cleared!"
   end
 
-  def grading_scale
-    render partial: 'points_overview/grade_distribution',
-      locals: {
-        entry_partial: 'terms/grading_scale_entry',
-        students: @term.students,
-        grade_distribution: @term.grade_distribution(@term.students) }
-  end
-
-  def update_grading_scale
-    grade = params[:grading_scale].to_a[0][0]
-    low = params[:grading_scale].to_a[0][1]
-
-    pair = @term.grading_scale.select{|l,g| g == grade}.first
-    @term.grading_scale.delete pair
-    @term.grading_scale << [low.to_i, grade]
-    @term.save!
-  end
-
   def points_overview
-    @students = @term.students
-    @grade_distribution = @term.grade_distribution @students
+    @grading_scale = GradingScaleService.new(@term)
   end
 
   private
-    def set_term
-      @term = Term.find(params[:id] || params[:term_id])
-      authorize @term
-    end
+  def set_term
+    @term = Term.find(params[:id] || params[:term_id])
+    authorize @term
+  end
 
-    def term_params
-      params.require(:term).permit(
-        :course_id,
-        :title,
-        :description,
-        :source_term_id,
-        :copy_elements,
-        :copy_exercises,
-        :copy_grading_scale,
-        :copy_lecturer)
-    end
+  def term_params
+    params.require(:term).permit(
+      :course_id,
+      :title,
+      :description,
+      :source_term_id,
+      :copy_elements,
+      :copy_exercises,
+      :copy_grading_scale,
+      :copy_lecturer)
+  end
 end

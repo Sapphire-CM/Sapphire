@@ -95,5 +95,4 @@ class Import::StudentImport < ActiveRecord::Base
       0
     end
   end
-
 end

@@ -8,7 +8,7 @@ describe ResultPublicationPolicy do
   context "as an admin" do
     let(:user) {FactoryGirl.build(:account, :admin)}
 
-    it {should permit :index}
-    it {should permit :update}
+    it {should permit_authorization :index}
+    it {should permit_authorization :update}
   end
 end

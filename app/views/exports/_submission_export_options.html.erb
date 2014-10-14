@@ -1,0 +1,33 @@
+<%= f.input :base_path, label: "Base path, eg. %{course}-%{term}" %>
+
+<%= f.input :include_solitary_submissions, as: :boolean %>
+<%= f.input :solitary_path, label: "Solitary submissions Path, joined with basepath, eg. solitary/%{matriculation_number}/%{exercise}" %>
+
+<%= f.input :include_group_submissions, as: :boolean %>
+<%= f.input :group_path, label: "Group submissions Path, joined with basepath, eg. groups/%{student_group}-%{av_grade}/%{exercise}" %>
+
+<%= f.input :extract_zips, label: "Extract submitted zip files", as: :boolean %>
+
+<div class='panel'>
+  <p>Use placeholders to generate a zip-archive fitted for your need. Following options are supported:</p>
+
+  <dl>
+    <dt>%{course}</dt>
+    <dd>Inserts the course's title, eg. hci</dd>
+
+    <dt>%{term}</dt>
+    <dd>Inserts the term's title, eg. ss2014</dd>
+
+    <dt>%{student_group}</dt>
+    <dd>Inserts the student group identifier, eg. g1-01</dd>
+
+    <dt>%{av_grade}</dt>
+    <dd>Inserts the average grade for the student group</dd>
+
+    <dt>%{exercise}</dt>
+    <dd>Inserts the exercise title, eg. ex1-he-plan </dd>
+
+    <dt>%{matriculation_number}</dt>
+    <dd>Inserts the student's matriculation number, eg. 1234123</dd>
+  </dl>
+</div>

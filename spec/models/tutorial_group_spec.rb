@@ -1,6 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe TutorialGroup do
+  it { should have_many :term_registrations }
+
   let(:course) { create(:course) }
   let(:term) { create(:term, course: course)}
 

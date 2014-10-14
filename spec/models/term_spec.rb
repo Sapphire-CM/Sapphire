@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Term do
-
+  it { should have_many(:term_registrations) }
 
   context "ordinary account" do
     let(:account) { FactoryGirl.create(:account) }

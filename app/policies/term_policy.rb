@@ -72,4 +72,8 @@ class TermPolicy < PunditBasePolicy
   def tutor?
     user.tutor_of_term?(record)
   end
+
+  def staff?
+    user.staff_of_term?(record)
+  end
 end

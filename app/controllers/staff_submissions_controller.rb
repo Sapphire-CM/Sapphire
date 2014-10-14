@@ -23,8 +23,7 @@ class StaffSubmissionsController < ApplicationController
     @submissions = @submissions.for_tutorial_group(@tutorial_group) if @tutorial_group.present?
 
     @submission_count = @submissions.count
-    @submissions = @submissions.includes({student_group: [:students, :tutorial_group]}, :submission_evaluation, :exercise)
-    @submissions = @submissions.ordered_by_student_group
+    @submissions = @submissions.includes({exercise_registrations: {term_registration: :account}}, :submission_evaluation, :exercise).load
 
     respond_to do |format|
       format.html do

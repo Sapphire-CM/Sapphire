@@ -51,6 +51,9 @@ module Import::Importer
     processed_rows = 0
     total_rows = values.length
     import_result[:total_rows] = total_rows
+    import_result[:running] = true
+    import_result[:problems] = []
+
 
     values.each do |row|
       processed_rows += 1
@@ -60,7 +63,7 @@ module Import::Importer
       import_result[:processed_rows] = processed_rows
       save!
 
-      student = create_student_account row
+      account = create_student_account row
       group_title = row[import_mapping.group.to_i]
       student_group_title = []
 
@@ -70,9 +73,7 @@ module Import::Importer
         m = regexp.match group_title
 
         tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
-
-        student_group = create_student_group "G#{student.matriculation_number}", true, tutorial_group
-        create_student_registration row, student, student_group, tutorial_group
+        create_term_registration row, account, tutorial_group
       when 'both'
         regexp = Regexp.new import_options[:student_groups_regexp]
         m = regexp.match group_title
@@ -80,10 +81,10 @@ module Import::Importer
         tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
 
         student_group = create_student_group group_title, false, tutorial_group
-        create_student_registration row, student, student_group, tutorial_group
+        term_registration create_term_registration row, account, tutorial_group
 
-        student_group = create_student_group "G#{student.matriculation_number}", true, tutorial_group
-        create_student_registration row, student, student_group, tutorial_group
+        # TODO: add student to student_group
+
       else
         raise # unknown value for :matching_groups
       end
@@ -103,8 +104,7 @@ private
     student.surname = row[import_mapping.surname.to_i]
     student.email = row[import_mapping.email.to_i]
 
-    student.password              = Account::DEFAULT_PASSWORD % { matriculation_number: student.matriculation_number }
-    student.password_confirmation = Account::DEFAULT_PASSWORD % { matriculation_number: student.matriculation_number }
+    student.password = student.default_password if student.new_record?
 
     new_record = student.new_record?
     if student.save
@@ -133,6 +133,26 @@ private
     save!
 
     tutorial_group
+  end
+
+  def create_term_registration(row, account, tutorial_group)
+    term_registration = TermRegistration.where(account: account, tutorial_group: tutorial_group).first_or_initialize(term_id: tutorial_group.term.id)
+    term_registration.role = TermRegistration::STUDENT
+
+    new_record = term_registration.new_record?
+    if term_registration.save
+      if new_record
+        import_result[:imported_term_registrations] += 1
+        welcome_notification!(term_registration)
+      end
+    else
+      import_result[:success] = false
+      import_result[:problems] << create_problem_definition(row, term_registration.errors.full_messages)
+    end
+
+    save!
+
+    term_registration
   end
 
   def create_student_group(title, solitary, tutorial_group)
@@ -189,4 +209,12 @@ private
     { entry: entry, problem: full_messages}
   end
 
+
+  def welcome_notification!(term_registration)
+    # temporary disabled - no emails from staging please!
+
+    # welcome_back = TermRegistration.where(account: term_registration.account).where.not(term: term_registration.term).exists?
+    #
+    # WelcomeEmailWorker.perform_async(term_registration.id, welcome_back)
+  end
 end

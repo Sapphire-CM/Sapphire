@@ -1,2 +1,2 @@
-BetterErrors.editor = :sublime if defined? BetterErrors
+BetterErrors.editor = :textmate if defined? BetterErrors
 BetterErrors.use_pry! if defined? BetterErrors

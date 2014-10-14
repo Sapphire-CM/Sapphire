@@ -66,8 +66,14 @@ module LayoutHelper
   end
 
 
-  def course_term_title
-    "#{@term.course.title}: #{@term.title}" if @term
+  def course_term_title(term = nil)
+    term ||= if respond_to?(:current_term)
+      current_term
+    else
+      @term
+    end
+
+    "#{term.course.title}: #{term.title}" if term
   end
 
   # Todo: scope this appropriatly for the current_user
@@ -126,7 +132,11 @@ module LayoutHelper
   end
 
   def highlight_search(haystack, needle)
-    highlight(haystack, needle.split(/\s+/))
+    if haystack.present? && needle.present?
+      highlight(haystack, needle.split(/\s+/))
+    else
+      haystack
+    end
   end
 
   def foundation_icon(icon)

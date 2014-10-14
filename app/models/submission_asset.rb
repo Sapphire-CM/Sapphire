@@ -9,6 +9,8 @@ class SubmissionAsset < ActiveRecord::Base
   scope :htmls, lambda { where(content_type: Mime::HTML)}
   scope :images, lambda { where{content_type.in(Mime::IMAGES)} }
 
+  scope :for_exercise, lambda { |exercise| joins(:submission).where(submissions: {exercise_id: exercise.id}) }
+
   delegate :submitter, to: :submission
 
   class Mime
@@ -18,6 +20,7 @@ class SubmissionAsset < ActiveRecord::Base
     HTML = "text/html"
     JPEG = "image/jpeg"
     PNG = "image/png"
+    ZIP = "application/zip"
     FAVICON = "image/x-icon"
 
     IMAGES = [JPEG, PNG]

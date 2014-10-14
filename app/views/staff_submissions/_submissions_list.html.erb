@@ -4,7 +4,6 @@
       <tr>
         <th>Student</th>
         <th>Submitted at</th>
-        <th>Tutorial Group</th>
         <th>Evaluation Result</th>
         <th>Evaluated at</th>
         <th><%= link_to "Download #{foundation_icon(:download).to_s}".html_safe, {format: :zip}.merge(params), class: "small button  small-12" %></th>
@@ -15,7 +14,6 @@
       <tr>
         <td><%= submission_author submission %></td>
         <td><%= l submission.submitted_at, format: :long %></td>
-        <td><%= submission_tutorial_group submission %></td>
         <td>
           <% if submission.submission_evaluation.present? %>
             <%= pluralize submission.submission_evaluation.evaluation_result, "point" %>

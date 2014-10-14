@@ -46,11 +46,11 @@ Before you start, read the detailed instructions at:
   http://courses.iicm.tugraz.at/inm/exercises/exer3.html
 
 When you have finished your report and created your PDF file, you will
-need to upload it to the following TU Graz Teach Center room:
+need to log in to your account on the Sapphire submission system:
 
-  #{$tugtc_rooms[tutorial_group_index]}
+  https://sapphire.iicm.tugraz.at/
 
-Note that there is one room for each tutorial group.
+and upload the PDF file before the corresponding deadline.
 
 EOF
 

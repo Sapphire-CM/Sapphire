@@ -44,7 +44,7 @@ def process_email(mail)
     execute mail
   rescue Exception => e
     message = "AutoResponder: Error with email. No response email sent.\n"
-    message << "  Messag-Id: #{mail.message_id.parameterize}\n"
+    message << "  Message-Id: #{mail.message_id.parameterize}\n"
     message << "  From: #{mail.from.join ', '}\n"
     message << "  Subject: #{mail.subject}\n"
     message << "  Exception: #{e.to_s}\n"

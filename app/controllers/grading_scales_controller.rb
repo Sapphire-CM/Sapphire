@@ -8,7 +8,7 @@ class GradingScalesController < ApplicationController
   before_action :fetch_term, only: [:edit, :update]
 
   def edit
-    @grading_scale = @term.grading_scale
+    @grading_scale = GradingScaleService.new @term
   end
 
   def update

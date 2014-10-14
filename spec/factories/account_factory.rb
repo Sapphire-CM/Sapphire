@@ -19,19 +19,19 @@ FactoryGirl.define do
 
     trait :student do
       after :create do |account|
-        FactoryGirl.create(:student_registration, student: account)
+        FactoryGirl.create(:term_registration, :student, account: account)
       end
     end
 
     trait :lecturer do
       after :create do |account|
-        FactoryGirl.create(:lecturer_registration, lecturer: account)
+        FactoryGirl.create(:term_registration, :lecturer, account: account)
       end
     end
 
     trait :tutor do
       after :create do |account|
-        FactoryGirl.create(:tutor_registration, tutor: account)
+        FactoryGirl.create(:term_registration, :tutor, account: account)
       end
     end
   end

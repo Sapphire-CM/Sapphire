@@ -1331,3 +1331,7 @@ $default-float: left;
 .panel.alert {
   @include panel($alert-color, $panel-padding, true);
 }
+
+textarea {
+  height: auto;
+}

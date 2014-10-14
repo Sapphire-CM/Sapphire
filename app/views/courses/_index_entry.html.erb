@@ -26,8 +26,6 @@
         <th>Tutorial Groups</th>
         <% if policy(course.terms.first || Term.new(course: course)).update? || policy(course.terms.first || Term.new(course: course)).destroy? %>
           <th>Students</th>
-
-          <th></th>
         <% end %>
       </tr>
     </thead>

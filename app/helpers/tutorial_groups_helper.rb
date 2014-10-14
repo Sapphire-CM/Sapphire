@@ -1,6 +1,12 @@
 module TutorialGroupsHelper
   def tutorial_group_title(tutorial_group)
-    "#{tutorial_group.title} - #{tutor_name tutorial_group.tutor}"
+    "#{tutorial_group.title} - #{tutor_names tutorial_group.tutor_accounts}"
+  end
+
+  def tutorial_group_select_params(tutorial_groups)
+    tutorial_groups.map do |tutorial_group|
+      [tutorial_group_title(tutorial_group), tutorial_group.id]
+    end
   end
 
   def set_tutor_label

@@ -1,0 +1,47 @@
+<% title course_term_title, "Your Results" %>
+
+<%= render "terms/sidebar", term: current_term %>
+
+<% sum = 0 %>
+<table class='small-12'>
+  <thead>
+    <tr>
+      <th>Exercise</th>
+      <th>Possible Points</th>
+      <th>Your Points</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @exercise_registrations.each do |exercise_registration| %>
+      <tr>
+        <td><%= exercise_registration.exercise.title %></td>
+        <td><%= exercise_registration.exercise.points %></td>
+
+        <% if @term_registration.tutorial_group.results_published_for?(exercise_registration.exercise) %>
+          <% sum += exercise_registration.points %>
+
+          <td><%= exercise_registration.points || "na" %></td>
+          <td><%= link_to "Details", term_result_path(current_term, exercise_registration.exercise) %></td>
+        <% else %>
+          <td colspan='2'>
+            Not yet published
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+    <tr>
+      <td></td>
+      <td></td>
+      <td><%= sum %></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+<% if @term_registration.tutorial_group.all_results_published? %>
+  <h4>Grade: <%= @grading_scale.grade_for_term_registration(@term_registration) %></h4>
+<% else %>
+  <h4>Your provisional grade will be avaliable, when the results for all exercises are published.</h4>
+<% end %>

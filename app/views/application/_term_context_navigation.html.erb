@@ -18,18 +18,19 @@
     </ul>
   </li>
 
-  <% unless policy(@term).student? || policy(@term).tutor? %>
+  <% unless policy(@term).student? %>
   <li class='has-dropdown'>
-    <%= link_to "Tutorial Groups", "#{term_path(@term)}#tutorial_groups" %>
+    <%= link_to "Tutorial Groups", term_tutorial_groups_path(@term) %>
     <ul class='dropdown'>
       <% if (tutorial_groups = @term.tutorial_groups(true).includes(:term).joins(:term)).any? %>
         <% tutorial_groups.each do |tutorial_group| %>
-          <li><%= link_to tutorial_group_title(tutorial_group), tutorial_group_path(tutorial_group) %></li>
+          <li><%= link_to tutorial_group_title(tutorial_group), term_tutorial_group_path(@term, tutorial_group) %></li>
         <% end %>
       <% else %>
         <li><%= link_to "(no tutorial groups)", '#' %></li>
       <% end %>
     </ul>
+    <li><%= link_to "Grading Review", term_grading_reviews_path(@term) %></li>
   </li>
   <% end %>
 </ul>

@@ -1,6 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Account do
+  it { should have_many :term_registrations }
+
   context "student" do
     let(:term) {FactoryGirl.create(:term)}
     let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }

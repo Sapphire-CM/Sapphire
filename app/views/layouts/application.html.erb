@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
-<!--[if lt IE 7 ]> <html class="ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]>    <html class="ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]>    <html class="ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--> <html lang="en"> <!--<![endif]-->
+<!--[if lt IE 7 ]> <html class="ie6" xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7" xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8" xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> <!--<![endif]-->
 <head>
-	<meta charset="utf-8" />
+	<meta charset="UTF-8" />
 
 	<!-- Uncomment to make IE8 render like IE7 -->
 	<!-- <meta http-equiv="X-UA-Compatible" content="IE=7" /> -->
@@ -35,7 +35,7 @@
 
     <% if @show_title %>
     <div class='row'>
-      <div class='large-<%= @small_title ? 9 : 12 %>'>
+      <div class='large-<%= @small_title ? 9 : 12 %> columns'>
         <h1>
           <span id='site_title'><%= yield(:title) %></span>
           <% if content_for(:subtitle) %>
@@ -47,16 +47,16 @@
     </div>
     <% end %>
 
-    <div class='row <%= yield(:large_content) if content_for(:large_content) %>'>
+    <div class='row<%= " " + yield(:large_content) if content_for(:large_content) %>'>
       <% if content_for? :sidebar %>
-        <div class='large-9 columns'>
-          <%= yield %>
-        </div>
-        <div class='large-3 columns'>
+        <div class='large-3 columns push-9'>
           <%= yield :sidebar %>
         </div>
+        <div class='large-9 columns pull-3'>
+          <%= yield %>
+        </div>
       <% else %>
-        <div class='large-12'>
+        <div class='large-12 columns'>
           <%= yield %>
         </div>
       <% end %>
@@ -66,7 +66,7 @@
 
   <footer class='row'>
     <div class='large-12 footer-inner'>
-      Sapphire &copy; 2012-<%= Date.today.strftime("%Y") %> - proudly presented by IICM of TUGraz |
+      Sapphire © 2012-<%= Date.today.strftime("%Y") %> - proudly presented by IICM of TUGraz |
       <%= mail_to "sapphire@iicm.edu", "Feedback", subject: "[Sapphire] Feedback", body: "[URL: #{request.url}]\n" %>
     </div>
   </footer>

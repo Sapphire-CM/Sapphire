@@ -1,0 +1,31 @@
+<% title course_term_title, "New Staff Member" %>
+
+<%= render "terms/sidebar", term: current_term %>
+<%= render "terms/edit_header", term: current_term %>
+
+<%= form_tag search_term_staff_index_path(current_term), remote: true, html: {id: "term_registration_account_search_form"} do  %>
+<div class='row collapse'>
+  <div class='small-11 columns'>
+    <%= text_field_tag :q, "", placeholder: "search for account" %>
+  </div>
+  <div class='small-1 columns'>
+    <%= submit_tag "Go", class: "button postfix" %>
+  </div>
+</div>
+<% end %>
+
+<div id='term_staff_search_results'>
+
+</div>
+
+<%= simple_form_for(@term_registration, url: term_staff_index_path(@term_registration.term), html: {id: "term_registration_form"}) do |f| %>
+  <div id='term_staff_account_selection'></div>
+  <%= f.input :account_id, as: :hidden %>
+  <%= f.input :role, collection: Roles::STAFF.reverse, include_blank: false %>
+  <%= f.input :tutorial_group_id, collection: tutorial_group_select_params(@tutorial_groups), include_blank: false, wrapper_html: {class: ('hide' if @term_registration.lecturer?)} %>
+
+  <p>
+    <%= link_to "Cancel", term_staff_index_path(current_term), class: "secondary button" %>
+    <%= f.submit "Add new Member", class: "button" %>
+  </p>
+<% end %>

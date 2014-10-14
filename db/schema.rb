@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140614220445) do
+ActiveRecord::Schema.define(version: 20141012203628) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -73,6 +73,19 @@ ActiveRecord::Schema.define(version: 20140614220445) do
   add_index "evaluations", ["evaluation_group_id"], name: "index_evaluations_on_evaluation_group_id", using: :btree
   add_index "evaluations", ["rating_id"], name: "index_evaluations_on_rating_id", using: :btree
 
+  create_table "exercise_registrations", force: true do |t|
+    t.integer  "exercise_id"
+    t.integer  "term_registration_id"
+    t.integer  "submission_id"
+    t.integer  "points"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "exercise_registrations", ["exercise_id"], name: "index_exercise_registrations_on_exercise_id", using: :btree
+  add_index "exercise_registrations", ["submission_id"], name: "index_exercise_registrations_on_submission_id", using: :btree
+  add_index "exercise_registrations", ["term_registration_id"], name: "index_exercise_registrations_on_term_registration_id", using: :btree
+
   create_table "exercises", force: true do |t|
     t.integer  "term_id"
     t.string   "title"
@@ -92,9 +105,22 @@ ActiveRecord::Schema.define(version: 20140614220445) do
     t.boolean  "allow_student_uploads"
     t.integer  "maximum_upload_size"
     t.boolean  "enable_student_uploads",       default: true
+    t.boolean  "enable_max_upload_size"
   end
 
   add_index "exercises", ["term_id"], name: "index_exercises_on_term_id", using: :btree
+
+  create_table "exports", force: true do |t|
+    t.string   "type"
+    t.integer  "status"
+    t.integer  "term_id"
+    t.string   "file"
+    t.text     "properties"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "exports", ["term_id"], name: "index_exports_on_term_id", using: :btree
 
   create_table "import_student_imports", force: true do |t|
     t.integer  "term_id"
@@ -165,6 +191,15 @@ ActiveRecord::Schema.define(version: 20140614220445) do
   add_index "result_publications", ["exercise_id"], name: "index_result_publications_on_exercise_id", using: :btree
   add_index "result_publications", ["tutorial_group_id"], name: "index_result_publications_on_tutorial_group_id", using: :btree
 
+  create_table "services", force: true do |t|
+    t.integer  "exercise_id"
+    t.boolean  "active",      default: false
+    t.string   "type"
+    t.text     "properties"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "student_group_registrations", force: true do |t|
     t.integer  "exercise_id"
     t.integer  "student_group_id"
@@ -183,6 +218,7 @@ ActiveRecord::Schema.define(version: 20140614220445) do
     t.boolean  "solitary"
     t.integer  "points"
     t.boolean  "active",            default: true
+    t.string   "topic_identifier"
   end
 
   add_index "student_groups", ["tutorial_group_id"], name: "index_student_groups_on_tutorial_group_id", using: :btree
@@ -206,6 +242,7 @@ ActiveRecord::Schema.define(version: 20140614220445) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "asset_identifier"
+    t.string   "import_identifier"
   end
 
   add_index "submission_assets", ["submission_id"], name: "index_submission_assets_on_submission_id", using: :btree
@@ -236,6 +273,21 @@ ActiveRecord::Schema.define(version: 20140614220445) do
   add_index "submissions", ["exercise_id"], name: "index_submissions_on_exercise_id", using: :btree
   add_index "submissions", ["student_group_registration_id"], name: "index_submissions_on_student_group_registration_id", using: :btree
   add_index "submissions", ["submitter_id"], name: "index_submissions_on_submitter_id", using: :btree
+
+  create_table "term_registrations", force: true do |t|
+    t.string   "role"
+    t.integer  "points"
+    t.boolean  "positive_grade",    default: false, null: false
+    t.integer  "account_id"
+    t.integer  "term_id"
+    t.integer  "tutorial_group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "term_registrations", ["account_id"], name: "index_term_registrations_on_account_id", using: :btree
+  add_index "term_registrations", ["term_id"], name: "index_term_registrations_on_term_id", using: :btree
+  add_index "term_registrations", ["tutorial_group_id"], name: "index_term_registrations_on_tutorial_group_id", using: :btree
 
   create_table "terms", force: true do |t|
     t.string   "title"

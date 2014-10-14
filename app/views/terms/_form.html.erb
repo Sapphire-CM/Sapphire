@@ -1,4 +1,4 @@
-<%= simple_form_for @term, as: :term, url: (@term.new_record? ? terms_path(@term) : term_path(@term)) do |f| %>
+<%= simple_form_for @term, as: :term, url: (@term.new_record? ? terms_path(@term) : term_path(@term)), remote: try(:remote) || false do |f| %>
   <%= f.input :title %>
   <%= f.input :description, input_html: { rows: 3 } %>
   <%= f.input :course_id, as: :hidden %>
@@ -16,7 +16,7 @@
 
   <div class='row'>
     <div class='large-12 large-centered columns text-center'>
-      <%= f.submit class: "button" %>
+      <%= f.submit class: "button", deactivate_with: "create_term" %>
     </div>
   </div>
 <% end %>

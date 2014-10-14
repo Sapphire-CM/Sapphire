@@ -1,0 +1,30 @@
+<% title course_term_title, "Students" %>
+
+<%= render "terms/sidebar", term: current_term %>
+
+<table class='small-12'>
+  <thead>
+    <tr>
+      <th>Student</th>
+      <th>Matriculation Number</th>
+      <th>Tutorial Group</th>
+      <th>Points</th>
+      <th>Grade</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @term_registrations.each do |term_registration| %>
+      <tr>
+        <td><%= term_registration.account.fullname %></td>
+        <td><%= term_registration.account.matriculation_number %></td>
+        <td><%= tutorial_group_title term_registration.tutorial_group %></td>
+        <td><%= term_registration.points %></td>
+        <td><%= @grading_scale.grade_for_term_registration(term_registration) %></td>
+        <td>
+          <%= link_to "Show", term_student_path(current_term, term_registration) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

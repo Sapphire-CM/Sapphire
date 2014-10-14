@@ -4,24 +4,26 @@
   <%= link_to "Edit", edit_account_path(@account), class: "small button" %>
 <% end %>
 
-<div class="section-container tabs" data-section="tabs">
-  <section class="active">
-    <p class="title" data-section-title><a href="#">Overview</a></p>
-    <div class="content" data-section-content>
-      TODO something
-    </div>
-  </section>
 
-  <section>
-    <p class="title" data-section-title><a href="#">Registrations</a></p>
-    <div class="content" data-section-content>
-      <% if @registrations.any? %>
-        <p>TODO something</p>
-      <% else %>
-        <p>Student hasn't attended in any courses</p>
-      <% end %>
-    </div>
-  </section>
-</div>
+<h2>Terms</h2>
+
+<table class='small-12'>
+  <thead>
+    <tr>
+      <th>Term</th>
+      <th>Points</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @term_registrations.each do |term_registration| %>
+      <tr>
+        <td><%= term_registration_title_for_accounts term_registration %></td>
+        <td><%= term_registration.points %></td>
+        <td class='text-right'><%= link_to "Show", account_detail_term_registration_path(term_registration), class: "tiny button" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <p><%= link_to "Back", accounts_path, class: "tiny button" %></p>

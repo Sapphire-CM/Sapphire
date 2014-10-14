@@ -2,12 +2,12 @@ class SingleEvaluationPolicy < PunditBasePolicy
   def show?
     user.admin? ||
     user.lecturer_of_term?(record.submission.exercise.term) ||
-    user.tutor_of_tutorial_group?(record.submission.student_group_registration.student_group.tutorial_group)
+    user.tutor_registrations.where(tutorial_group_id: record.submission.term_registrations.map(&:tutorial_group_id)).exists?
   end
 
   def update?
     user.admin? ||
     user.lecturer_of_term?(record.submission.exercise.term) ||
-    user.tutor_of_tutorial_group?(record.submission.student_group_registration.student_group.tutorial_group)
+    user.tutor_registrations.where(tutorial_group_id: record.submission.term_registrations.map(&:tutorial_group_id)).exists?
   end
 end

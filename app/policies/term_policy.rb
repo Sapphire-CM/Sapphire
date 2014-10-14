@@ -49,8 +49,7 @@ class TermPolicy < PunditBasePolicy
 
   def grading_scale?
     user.admin? ||
-    user.lecturer_of_term?(record) ||
-    user.tutor_of_term?(record)
+    user.lecturer_of_term?(record)
   end
 
   def update_grading_scale?
@@ -60,8 +59,7 @@ class TermPolicy < PunditBasePolicy
 
   def points_overview?
     user.admin? ||
-    user.lecturer_of_term?(record) ||
-    user.tutor_of_term?(record)
+    user.staff_of_term?(record)
   end
 
 

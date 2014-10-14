@@ -11,14 +11,7 @@ class SubmissionPolicy < PunditBasePolicy
 
   def show?
     user.admin? ||
-    user.lecturer_of_term?(record.exercise.term) ||
-    (
-      record.new_record? ||
-      record.student_group && (
-        user.tutor_of_tutorial_group?(record.student_group.tutorial_group) ||
-        record.student_group.students.where(id: user.id).exists?
-      )
-    )
+    user.staff_of_term?(record.exercise.term)
   end
 
   def submit?
@@ -27,18 +20,17 @@ class SubmissionPolicy < PunditBasePolicy
 
   def new?
     user.admin? ||
-    user.lecturer_of_term?(record.exercise.term) ||
-    user.tutor_of_term?(record.exercise.term)
+    user.staff_of_term??(record.exercise.term)
   end
 
   def edit?
     user.admin? ||
-    user.lecturer_of_term?(record.exercise.term) ||
-    user.tutor_of_term?(record.exercise.term)
+    user.staff_of_term?(record.exercise.term)
   end
 
   def create?
     user.admin? ||
+    user.staff_of_term?(record.exercise.term)
     (
       record.exercise.enable_student_uploads? &&
       record.exercise.term.associated_with?(user) &&
@@ -49,8 +41,7 @@ class SubmissionPolicy < PunditBasePolicy
 
   def update?
     user.admin? ||
-    user.lecturer_of_term?(record.exercise.term) ||
-    user.tutor_of_tutorial_group?(record.student_group.tutorial_group) ||
+    user.staff_of_term?(record.exercise.term) ||
     (
       record.exercise.enable_student_uploads? &&
       record.student_group.students.where(id: user.id).exists? &&
@@ -61,8 +52,7 @@ class SubmissionPolicy < PunditBasePolicy
 
   def destroy?
     user.admin? ||
-    user.lecturer_of_term?(record.exercise.term) ||
-    user.tutor_of_tutorial_group?(record.student_group.tutorial_group) ||
+    user.staff_of_term?(record.exercise.term) ||
     (
       record.student_group.students.where(id: user.id).exists? &&
       record.exercise.term.course.unlocked? &&

@@ -11,7 +11,7 @@ class SubmissionPolicy < PunditBasePolicy
 
   def show?
     user.admin? ||
-    user.staff_of_term?(record.exercise.term)
+    user.associated_with_term?(record.exercise.term)
   end
 
   def submit?
@@ -20,7 +20,7 @@ class SubmissionPolicy < PunditBasePolicy
 
   def new?
     user.admin? ||
-    user.staff_of_term??(record.exercise.term)
+    user.associated_with_term?(record.exercise.term)
   end
 
   def edit?

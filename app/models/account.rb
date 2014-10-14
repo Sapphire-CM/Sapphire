@@ -81,22 +81,26 @@ class Account < ActiveRecord::Base
 
 
   def lecturer_of_term?(term)
-    lecturer_registrations.where(term_id: term.id).exists?
+    term_registrations.lecturers.where(term_id: term.id).exists?
   end
 
   def lecturer_of_any_term_in_course?(course)
-    lecturer_registrations.where(term_id: course.terms.pluck(:id)).exists?
+    term_registrations.lecturers.where(term_id: course.terms.pluck(:id)).any?
   end
 
   def tutor_of_term?(term)
-    tutor_registrations.where(term_id: term.id).exists?
+    term_registrations.tutors.where(term_id: term.id).exists?
   end
 
   def student_of_term?(term)
-    student_registrations.where(term_id: term.id).exists?
+    term_registrations.students.where(term_id: term.id).exists?
   end
 
   def tutor_of_tutorial_group?(tutorial_group)
-    tutor_registrations.where(tutorial_group_id: tutorial_group.id).exists?
+    term_registrations.tutors.where(tutorial_group_id: tutorial_group.id).exists?
+  end
+
+  def associated_with_term?(term)
+    term_registrations.where(term_id: term.id).exists?
   end
 end

@@ -89,10 +89,14 @@ class NewsgroupFetcherService < Service
   def import_submission_for_submitter!(submitter_registration, raw_post, parsed_post)
     exercise_registration = submitter_registration.exercise_registrations.for_exercise(exercise).first
 
+    date = parsed_post.date || Time.now
+
     if exercise_registration.present?
       submission = exercise_registration.submission
+      submission.submitted_at = date
+      submission.save!
     else
-      submission = Submission.create!(exercise: exercise, submitted_at: Time.now)
+      submission = Submission.create!(exercise: exercise, submitted_at: date)
       add_submitter_for_submission(submission, submitter_registration, parsed_post)
       submission.save!
     end

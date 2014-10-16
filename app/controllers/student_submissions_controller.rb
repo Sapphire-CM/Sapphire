@@ -22,16 +22,10 @@ class StudentSubmissionsController < ApplicationController
   end
 
   def create
-    @submission = Submission.new(submission_params)
-    @submission.exercise = @exercise
-    @submission.submitted_at = Time.now
-    @submission.assign_to_account(current_account)
+    creation_service = SubmissionCreationService.new_with_params(current_account, @exercise, submission_params)
+    authorize creation_service.model
 
-    authorize @submission
-
-    @submission.submitter = current_account
-
-    if @submission.save
+    if creation_service.save
       if policy(@term).student?
         redirect_to exercise_student_submission_path(@exercise), notice: "Successfully uploaded submission"
       end
@@ -42,7 +36,6 @@ class StudentSubmissionsController < ApplicationController
 
   def update
     @submission.assign_attributes(submission_params)
-    @submission.submitter = current_account
     @submission.submitted_at = Time.now
 
     if @submission.save
@@ -69,8 +62,7 @@ class StudentSubmissionsController < ApplicationController
   end
 
   def set_submission
-    @submission = Submission.select(Submission.quoted_table_name + '.*').for_exercise(@exercise).for_account(current_account).first_or_initialize
-
+    @submission = Submission.find(Submission.for_account(current_account).for_exercise(@exercise).pluck(:id).first)
     authorize @submission
   end
 end

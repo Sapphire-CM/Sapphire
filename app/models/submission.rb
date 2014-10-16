@@ -19,7 +19,7 @@ class Submission < ActiveRecord::Base
   scope :for_exercise, lambda { |exercise| where(exercise_id: exercise) }
   scope :for_tutorial_group, lambda { |tutorial_group| joins {exercise_registrations.term_registration} .where { term_registrations.tutorial_group_id == my {tutorial_group.id} }}
   scope :for_student_group, lambda {|student_group| joins(:student_group_registration).where{student_group_registration.student_group_id == my {student_group.id}}}
-  scope :for_account, lambda {|account| joins(student_group_registration: {student_group: :student_registrations}).where{student_group_registration.student_group.student_registrations.student == my{account}}}
+  scope :for_account, lambda {|account| joins(:term_registrations).where(term_registrations: {account_id: account.id})}
   scope :with_evaluation, lambda { joins(:submission_evaluation).where.not(submission_evaluation: {evaluator: nil}) }
   scope :ordered_by_student_group, lambda { references(:student_groups).order("student_groups.title ASC") }
   scope :ordered_by_exercises, lambda { joins(:exercise).order{ exercises.row_order }}
@@ -57,6 +57,10 @@ class Submission < ActiveRecord::Base
 
   def result_published?
     student_group.present? && exercise.result_published_for?(student_group.tutorial_group)
+  end
+
+  def visible_for_student?(account)
+    term_registrations.students.where(account_id: account.id).exists?
   end
 
   def student_group_id

@@ -44,9 +44,9 @@ class SubmissionPolicy < PunditBasePolicy
     user.staff_of_term?(record.exercise.term) ||
     (
       record.exercise.enable_student_uploads? &&
-      record.student_group.students.where(id: user.id).exists? &&
       record.exercise.term.course.unlocked? &&
-      (record.exercise.late_deadline.present? ? Time.now <= record.exercise.late_deadline : true)
+      (record.exercise.late_deadline.present? ? Time.now <= record.exercise.late_deadline : true) &&
+      record.visible_for_student?(user)
     )
   end
 

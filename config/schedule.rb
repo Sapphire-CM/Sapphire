@@ -4,5 +4,6 @@
 
 every 1.minutes do
   # rake 'sapphire:auto_responder RESPONDER=web_research'
-  rake 'sapphire:auto_responder RESPONDER=style_sheets'
+  rake 'sapphire:auto_responder[19,web_research]'
+  rake 'sapphire:auto_responder[26,web_research]'
 end

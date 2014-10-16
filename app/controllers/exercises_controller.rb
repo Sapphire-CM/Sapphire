@@ -13,7 +13,7 @@ class ExercisesController < ApplicationController
 
   def new
     @term = Term.find(params[:term_id])
-    @exercise = @term.exercises.new
+    @exercise = @term.exercises.build
     authorize @exercise
   end
 
@@ -55,6 +55,7 @@ class ExercisesController < ApplicationController
 
     def exercise_params
       params.require(:exercise).permit(
+        :term_id,
         :title,
         :description,
         :deadline,

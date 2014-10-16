@@ -30,7 +30,7 @@ class SubmissionPolicy < PunditBasePolicy
 
   def create?
     user.admin? ||
-    user.staff_of_term?(record.exercise.term)
+    user.staff_of_term?(record.exercise.term) ||
     (
       record.exercise.enable_student_uploads? &&
       record.exercise.term.associated_with?(user) &&

@@ -62,7 +62,8 @@ class StudentSubmissionsController < ApplicationController
   end
 
   def set_submission
-    @submission = Submission.find(Submission.for_account(current_account).for_exercise(@exercise).pluck(:id).first)
+    @submission = Submission.select(Submission.quoted_table_name + '.*').for_account(current_account).for_exercise(@exercise).first_or_initialize
+
     authorize @submission
   end
 end

@@ -28,7 +28,7 @@ def deliver_mail(args)
 end
 
 def new_mails(exercise)
-  emails =  Mail.all delete_after_find: false
+  emails =  Mail.all delete_after_find: true
 
   emails.each do |email|
     import_email email, exercise

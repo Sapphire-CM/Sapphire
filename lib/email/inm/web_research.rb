@@ -1,20 +1,22 @@
 load 'persistent/auto_responder_paper_data.rb'
 
-def execute(mail)
+def execute(mail, exercise)
   # mn = /inm-ws20[\d]{2}-t.-ex31-(.*)-(.*)-([\d]{7})/.match(mail.subject)[3]
-  mn = /.*([\d]{7})$/.match(mail.subject)[3]
-  throw NotFoundExeception unless mn
 
-  student = Account.all.where{matriculation_number == my{mn}}.first
+  term_registration = submitter_for_email(mail, exercise)
+  throw NotFoundExeception unless term_registration
+
+  student = term_registration.account
   throw NotFoundExeception unless student
+  mn = student.matriculation_number
 
-  tutorial_group = student.student_registrations.last.student_group.tutorial_group
+  tutorial_group = term_registration.tutorial_group
   throw NotFoundExeception unless tutorial_group
 
   tutorial_group_index = tutorial_group.term.tutorial_groups.index tutorial_group
   throw NotFoundExeception unless tutorial_group_index
 
-  student_index = tutorial_group.students.index student
+  student_index = tutorial_group.student_accounts.index student
   throw NotFoundExeception unless student_index
 
   email_body = create_email_text tutorial_group_index, student_index
@@ -54,7 +56,7 @@ and upload the PDF file before the corresponding deadline.
 
 EOF
 
-text << "-- \n" + <<EOF
+text << "-- \n" + <<-EOF
 Good luck!
 #{$tutors[tutorial_group_index][:name]} T#{tutorial_group_index+1}
 EOF

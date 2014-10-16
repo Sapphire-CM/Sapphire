@@ -55,8 +55,10 @@ class NewsgroupFetcherService < Service
       submission = submission_asset.submission
 
       if submission.submitter.blank?
-        add_submitter_for_submission(submission, parsed_post)
-        submission.save!
+        if submitter_registration = submitter_for_post(parsed_post)
+          add_submitter_for_submission(submission, submitter_registration, parsed_post)
+          submission.save!
+        end
       end
     else
       submitter_registration = submitter_for_post(parsed_post)
@@ -78,7 +80,7 @@ class NewsgroupFetcherService < Service
   end
 
   def create_unkown_submission!(raw_post, parsed_post)
-    submission = Submission.create!(exercise: exercise, submitted_at: Time.now)
+    submission = Submission.create!(exercise: exercise, submitted_at: parsed_post.date || Time.now)
 
     submission_asset = SubmissionAsset.new
     setup_submission_asset(submission_asset, raw_post, parsed_post)

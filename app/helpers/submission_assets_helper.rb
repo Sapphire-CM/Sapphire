@@ -20,8 +20,8 @@ module SubmissionAssetsHelper
   end
 
   def submission_asset_file_label(exercise)
-     title = "#{exercise.title} .zip file"
-     title << " (max. #{number_to_human_size exercise.maximum_upload_size})" if exercise.maximum_upload_size.present?
+     title = "#{exercise.title} .pdf file"
+     title << " (max. #{number_to_human_size exercise.maximum_upload_size})" if exercise.enable_max_upload_size
      title
   end
 

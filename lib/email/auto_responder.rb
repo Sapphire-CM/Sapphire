@@ -77,7 +77,7 @@ def submitter_for_email(parsed_email, exercise)
   emails += parsed_email.from
   emails += parsed_email.reply_to if parsed_email.reply_to.present?
 
-  possible_submitters = exercise.term.term_registrations.joins(:account).where(accounts: {email: emails}).load
+  possible_submitters = exercise.term.term_registrations.for_email_addresses(emails).load
 
   if possible_submitters.size == 1
     possible_submitters.first

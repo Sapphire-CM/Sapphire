@@ -13,7 +13,7 @@
     <tbody>
       <% @email_addresses.each do |email_address| %>
       <tr>
-        <td><%= email_address.email %></th>
+        <td><%= mail_to email_address.email %></th>
         <td class='text-right'>
           <%= link_to "Edit", edit_account_email_address_path(account, email_address), class: "small button" %>
           <%= link_to foundation_icon(:x), account_email_address_path(account, email_address), class: "small alert button", method: :delete, data: {confirm: "Are you sure?"} %></th>

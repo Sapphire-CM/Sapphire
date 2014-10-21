@@ -211,10 +211,7 @@ private
 
 
   def welcome_notification!(term_registration)
-    # temporary disabled - no emails from staging please!
-
-    # welcome_back = TermRegistration.where(account: term_registration.account).where.not(term: term_registration.term).exists?
-    #
-    # WelcomeEmailWorker.perform_async(term_registration.id, welcome_back)
+    welcome_back = TermRegistration.where(account: term_registration.account).where.not(term: term_registration.term).exists?
+    WelcomeEmailWorker.perform_async(term_registration.id, welcome_back)
   end
 end

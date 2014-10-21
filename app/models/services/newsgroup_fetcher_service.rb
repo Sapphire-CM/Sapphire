@@ -132,7 +132,7 @@ class NewsgroupFetcherService < Service
     emails += parsed_post.from
     emails += parsed_post.reply_to if parsed_post.reply_to.present?
 
-    possible_submitters = exercise.term.term_registrations.joins(:account).where(accounts: {email: emails}).load
+    possible_submitters = exercise.term.term_registrations.for_email_addresses(emails).load
 
     if possible_submitters.size == 1
       possible_submitters.first

@@ -1,0 +1,9 @@
+<%= simple_form_for([account, email_address]) do |f| %>
+  <%= f.input :email %>
+
+  <p>
+    <hr />
+    <%= link_to "Cancel", account_email_addresses_path(account), class: "secondary button" %>
+    <%= f.submit class: "button"%>
+  </p>
+<% end %>

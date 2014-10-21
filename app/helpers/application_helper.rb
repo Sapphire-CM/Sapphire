@@ -3,6 +3,7 @@ module ApplicationHelper
     if @term_context.nil?
       @term_context = (
         current_controller != AccountsController &&
+        current_controller != EmailAddressesController &&
         current_controller != CoursesController &&
         current_controller != TermsController
         ) ||

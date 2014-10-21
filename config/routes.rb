@@ -6,6 +6,7 @@ Sapphire::Application.routes.draw do
   resources :accounts, except: [:new, :create] do
     get :change_password, on: :member
     patch :update_password, on: :member
+    resources :email_addresses
   end
 
   resources :courses, except: [:show]

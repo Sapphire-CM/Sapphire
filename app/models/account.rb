@@ -11,9 +11,9 @@ class Account < ActiveRecord::Base
   # devise already does this with the validatable-option: validates_uniqueness_of :email
   validates_presence_of :forename
   validates_presence_of :surname
-
   validates_uniqueness_of :matriculation_number, if: :matriculation_number?
   validates_format_of :matriculation_number, with: /\A[\d]{7}\z/, if: :matriculation_number?
+  validate :validate_no_email_address_with_same_email_exists
 
   has_many :lecturer_registrations, dependent: :destroy
   has_many :tutor_registrations, dependent: :destroy
@@ -22,8 +22,9 @@ class Account < ActiveRecord::Base
   has_many :student_groups, through: :student_registrations
   has_many :student_group_registrations, through: :student_groups
   has_many :submissions, through: :student_group_registrations
-  has_many :term_registrations
+  has_many :term_registrations, dependent: :destroy
   has_many :tutorial_groups, through: :term_registrations
+  has_many :email_addresses, dependent: :destroy
 
   serialize :options
 
@@ -102,5 +103,12 @@ class Account < ActiveRecord::Base
 
   def associated_with_term?(term)
     term_registrations.where(term_id: term.id).exists?
+  end
+
+  private
+  def validate_no_email_address_with_same_email_exists
+    if EmailAddress.where(email: self.email).exists?
+      errors.add(:email, "has already been taken")
+    end
   end
 end

@@ -1,0 +1,30 @@
+<% title account_edit_title(account), "Emails" %>
+
+<%= render "accounts/sidebar", account: account %>
+
+<% if @email_addresses.any? %>
+  <table class='small-12'>
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @email_addresses.each do |email_address| %>
+      <tr>
+        <td><%= email_address.email %></th>
+        <td class='text-right'>
+          <%= link_to "Edit", edit_account_email_address_path(account, email_address), class: "small button" %>
+          <%= link_to foundation_icon(:x), account_email_address_path(account, email_address), class: "small alert button", method: :delete, data: {confirm: "Are you sure?"} %></th>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No additional email addresses specified</p>
+<% end %>
+
+<p>
+  <%= link_to "Add", new_account_email_address_path(account), class: "small button" %>
+</p>

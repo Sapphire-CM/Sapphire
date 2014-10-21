@@ -1,6 +1,9 @@
-<% title "Edit your Account" %>
+<% title account_edit_title(@account) %>
 
-<div class="large-7 large-centered grid-center">
+<%= render "sidebar", account: @account %>
+
+
+<div class="large-12 columns large-centered grid-center">
   <%= simple_form_for @account do |f| %>
     <div class="row">
       <fieldset>

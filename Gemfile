@@ -81,6 +81,7 @@ group :development do
   gem 'capistrano', '~> 3.0' # deployment via ssh
   gem 'capistrano-rvm'       # capistrano plugin for rvm
   gem 'capistrano-rails'     # capistrano plugin for rails
+  gem 'capistrano-sidekiq'   # capistrano plugin for sidekiq
 end
 
 group :development, :test do

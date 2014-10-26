@@ -85,6 +85,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'sqlite3'
   gem 'mysql2'
   gem 'cucumber'
   gem 'cucumber-rails', require:false

@@ -353,6 +353,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
+    sqlite3 (1.3.9)
     squeel (1.1.1)
       activerecord (>= 3.0)
       activesupport (>= 3.0)
@@ -468,6 +469,7 @@ DEPENDENCIES
   spring-commands-cucumber
   spring-commands-rspec
   spring-commands-sidekiq
+  sqlite3
   squeel (~> 1.1)
   terminal-notifier-guard
   therubyracer

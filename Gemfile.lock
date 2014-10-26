@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:matthee/Sapphire-NNTP.git
+  remote: git://github.com/matthee/Sapphire-NNTP.git
   revision: be75fbe4b70e2d7bec3c7b83df47b5bfe8d36d44
   specs:
     nntp-client (0.0.2)

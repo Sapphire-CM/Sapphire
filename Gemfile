@@ -29,7 +29,7 @@ gem 'remotipart', '~> 1.2'        # fileuploads via ajax
 gem 'zipline'                     # streaming zips on the fly
 
 gem 'whenever'                    # cron tasks
-gem 'nntp-client', git: "git@github.com:matthee/Sapphire-NNTP.git"  # fetching newsgroup posts
+gem 'nntp-client', github: 'matthee/Sapphire-NNTP'  # fetching newsgroup posts
 gem 'mail'                        # fetching, delivering and parsing of emails
 
 gem 'coderay'                     # doing code-highlighting for submission_assets

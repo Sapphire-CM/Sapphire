@@ -19,7 +19,6 @@ class Service < ActiveRecord::Base
     ""
   end
 
-
   def perform!
 
   end

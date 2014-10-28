@@ -20,7 +20,7 @@ class TermRegistration < ActiveRecord::Base
   scope :staff, lambda { where(role: Roles::STAFF) }
   scope :with_accounts, lambda { includes(:account) }
   scope :for_account, lambda {|account| where(account_id: account.id)}
-  scope :for_email_addresses, lambda {|emails| joins(account: :email_addresses).where{accounts.email.in(my{ emails }) | email_addresses.email.in(my{ emails }) }}
+  scope :for_email_addresses, lambda {|emails| joins(:account).joins{account.email_addresses.outer}.where{accounts.email.in(my{ emails }) | email_addresses.email.in(my{ emails }) }}
   scope :ordered_by_matriculation_number, lambda { joins(:account).order{ account.matriculation_number.asc } }
   scope :ordered_by_name, lambda { joins(:account).order{ account.forename.asc }.order{ account.surname.asc } }
 

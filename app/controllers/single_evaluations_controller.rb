@@ -5,17 +5,18 @@ class SingleEvaluationsController < ApplicationController
     end
   end
 
+  before_action :set_submission_and_tutorial_group, only: :show
+
   def show
     @submission = Submission.find(params[:id])
     authorize SingleEvaluationPolicyRecord.new @submission
 
     @submission_assets = @submission.submission_assets.order(submitted_at: :desc)
 
-    submission_scope = Submission.for_exercise(@submission.exercise)
-    submission_scope = submission_scope.for_tutorial_group(@submission.student_group.tutorial_group) if @submission.student_group.present?
+    submission_scope = SubmissionScopingService.new(params, @tutorial_group).scoped_submissions(Submission.for_exercise(@submission.exercise))
 
-    @next_submission = submission_scope.next(@submission, :submitted_at)
-    @previous_submission = submission_scope.previous(@submission, :submitted_at)
+    @previous_submission = submission_scope.next(@submission, :submitted_at)
+    @next_submission = submission_scope.previous(@submission, :submitted_at)
 
     @exercise = @submission.exercise
     @evaluation_groups = @submission.submission_evaluation.evaluation_groups.includes([:rating_group, {evaluations: :rating}]).order{rating_group.ratings.row_order.asc}.order{rating_group.row_order.asc}
@@ -39,5 +40,12 @@ class SingleEvaluationsController < ApplicationController
     @submission_evaluation = @submission.submission_evaluation
     @submission_evaluation.evaluated_at = Time.now
     @submission_evaluation.save!
+  end
+
+  private
+  def set_submission_and_tutorial_group
+    @submission = Submission.find(params[:id])
+    @term = @submission.exercise.term
+    @tutorial_group = TutorialGroupScopingService.new(params, @term, current_account).current_tutorial_group
   end
 end

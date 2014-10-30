@@ -33,12 +33,21 @@ module SingleEvaluationsHelper
 
   def previous_single_evaluation_button(submission)
     css_class = "small secondary button expand" + (submission.blank? ? " disabled" : "")
-    link_to "« Prev", single_evaluation_submission_path(submission), class: css_class
+    link_to "« Prev", single_evaluation_submission_path(scoping_options(submission)), class: css_class
   end
 
   def next_single_evaluation_button(submission)
     css_class = "small button expand" + (submission.blank? ? " disabled" : "")
-    link_to "Next »", single_evaluation_submission_path(submission), class: css_class
+    link_to "Next »", single_evaluation_submission_path(scoping_options(submission)), class: css_class
+  end
+
+  def scoping_options(submission)
+    options = {}
+    options[:id] = submission.id if submission.present?
+    %i(submission_scope tutorial_group_id).each do |param|
+      options[param] = params[param] if params[param].present?
+    end
+    options
   end
 
   def single_evaluation_pluralized_points(points)

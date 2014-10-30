@@ -97,23 +97,10 @@ class StaffSubmissionsController < ApplicationController
   end
 
   def set_tutorial_group
-    @tutorial_group = if params[:tutorial_group_id].present?
-      @term.tutorial_groups.find(params[:tutorial_group_id])
-    else
-      current_account.tutorial_groups.where(term: @term).first.presence || @term.tutorial_groups.first
-    end
+    @tutorial_group = TutorialGroupScopingService.new(params, @term, current_account).current_tutorial_group
   end
 
   def set_submissions
-    scoped_submissions = @exercise.submissions.order(submitted_at: :desc)
-
-    @submissions = case params[:submission_scope]
-    when "unmatched"
-      scoped_submissions.unmatched
-    when "all"
-      scoped_submissions
-    else
-      scoped_submissions.for_tutorial_group(@tutorial_group)
-    end
+    @submissions = SubmissionScopingService.new(params, @tutorial_group).scoped_submissions(@exercise.submissions)
   end
 end

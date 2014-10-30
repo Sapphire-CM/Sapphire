@@ -24,17 +24,7 @@ class StaffSubmissionsController < ApplicationController
 
     @submission_count = @submissions.count
     @submissions = @submissions.includes({exercise_registrations: {term_registration: :account}}, :submission_evaluation, :exercise).load
-
-    respond_to do |format|
-      format.html do
-        @submissions = @submissions.page(params[:page]).per(20)
-      end
-      format.zip do
-        file_path = @exercise.title.parameterize.gsub(/-+/, "-")
-
-        zipline zip_files(@submissions, file_path), "#{file_path}.zip"
-      end
-    end
+    @submissions = @submissions.page(params[:page]).per(20)
   end
 
   def new
@@ -119,19 +109,5 @@ class StaffSubmissionsController < ApplicationController
     else
       current_account.tutorial_groups.where(term: @term).first.presence || @term.tutorial_groups.first
     end
-  end
-
-  def zip_files(submissions, prefix = "")
-    files = []
-    submissions.each do |submission|
-      group_name = submission.student_group.title.parameterize
-
-      submission.submission_assets.each do |submission_asset|
-        if File.exists? submission_asset.file.to_s
-          files << [File.new(submission_asset.file.to_s), File.join(prefix, group_name, File.basename(submission_asset.file.to_s))]
-        end
-      end
-    end
-    files
   end
 end

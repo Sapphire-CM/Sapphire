@@ -20,6 +20,7 @@ class Submission < ActiveRecord::Base
   scope :for_tutorial_group, lambda { |tutorial_group| joins {exercise_registrations.term_registration} .where { term_registrations.tutorial_group_id == my {tutorial_group.id} }}
   scope :for_student_group, lambda {|student_group| joins(:student_group_registration).where{student_group_registration.student_group_id == my {student_group.id}}}
   scope :for_account, lambda {|account| joins(:term_registrations).where(term_registrations: {account_id: account.id})}
+  scope :unmatched, lambda { joins{ exercise_registrations.outer }.where{exercise_registrations.id == nil} }
   scope :with_evaluation, lambda { joins(:submission_evaluation).where.not(submission_evaluation: {evaluator: nil}) }
   scope :ordered_by_student_group, lambda { references(:student_groups).order("student_groups.title ASC") }
   scope :ordered_by_exercises, lambda { joins(:exercise).order{ exercises.row_order }}

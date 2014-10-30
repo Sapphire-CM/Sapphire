@@ -6,6 +6,7 @@ class StaffSubmissionsController < ApplicationController
 
   before_action :set_exercise_and_term
   before_action :set_tutorial_group
+  before_action :set_submissions, only: :index
   before_action :set_submission, only: [:show, :update]
   before_action :set_student_groups, only: [:new, :create, :edit, :update]
 
@@ -17,10 +18,7 @@ class StaffSubmissionsController < ApplicationController
 
 
   def index
-    @submissions = @exercise.submissions
     authorize SubmissionPolicyRecord.new @exercise, @tutorial_group
-
-    @submissions = @submissions.for_tutorial_group(@tutorial_group) if @tutorial_group.present?
 
     @submission_count = @submissions.count
     @submissions = @submissions.includes({exercise_registrations: {term_registration: :account}}, :submission_evaluation, :exercise).load
@@ -31,7 +29,6 @@ class StaffSubmissionsController < ApplicationController
     @submission = @exercise.submissions.new
     @submission.submitted_at = Time.now
     authorize @submission
-
     @submission.submission_assets.build
   end
 
@@ -101,13 +98,22 @@ class StaffSubmissionsController < ApplicationController
 
   def set_tutorial_group
     @tutorial_group = if params[:tutorial_group_id].present?
-      if params[:tutorial_group_id] == "all"
-        nil
-      else
-        @term.tutorial_groups.find(params[:tutorial_group_id])
-      end
+      @term.tutorial_groups.find(params[:tutorial_group_id])
     else
       current_account.tutorial_groups.where(term: @term).first.presence || @term.tutorial_groups.first
+    end
+  end
+
+  def set_submissions
+    scoped_submissions = @exercise.submissions.order(submitted_at: :desc)
+
+    @submissions = case params[:submission_scope]
+    when "unmatched"
+      scoped_submissions.unmatched
+    when "all"
+      scoped_submissions
+    else
+      scoped_submissions.for_tutorial_group(@tutorial_group)
     end
   end
 end

@@ -4,33 +4,34 @@ module SubmissionsHelper
   end
 
   def submissions_tutorial_group_dropdown(current_tutorial_group)
-
-    button_title = if current_tutorial_group
-      tutorial_group_title(current_tutorial_group)
-    else
+    button_title = case params[:submission_scope]
+    when "all"
       "All Tutorial groups"
+    when "unmatched"
+      "Unmatched Submissions"
+    else
+      tutorial_group_title(current_tutorial_group)
     end
 
     link = link_to(button_title, '#', data: {dropdown: "tutorial_group_dropdown"}, class: "small button dropdown")
 
     dropdown = content_tag :ul, id: "tutorial_group_dropdown", class: "f-dropdown" do
-      content = ""
+      content = []
 
-      ([nil] + @term.tutorial_groups).each  do |tutorial_group|
+      content << content_tag(:li, link_to("All", {submission_scope: "all", q: params[:q]}).html_safe)
+
+      @term.tutorial_groups.each  do |subject|
         content << content_tag(:li) do
-          if tutorial_group.present?
-            title = tutorial_group_title(tutorial_group)
-            id = tutorial_group.id
-          else
-            title = "All"
-            id = "all"
-          end
+          title = tutorial_group_title(subject)
+          id = subject.id
 
-          link_to(h(title), {tutorial_group_id: id, q: params[:q]})
+          link_to(h(title), {submission_scope: "tutorial_group", tutorial_group_id: id, q: params[:q]})
         end.html_safe
       end
 
-      content.html_safe
+      content << content_tag(:li, link_to("Unmatched", {submission_scope: "unmatched", q: params[:q]}).html_safe)
+
+      content.join.html_safe
     end
 
 

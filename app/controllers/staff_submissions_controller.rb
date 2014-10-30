@@ -1,9 +1,4 @@
 class StaffSubmissionsController < ApplicationController
-  # enable streaming
-  include ActionController::Streaming
-  # enable zipline
-  include Zipline
-
   before_action :set_exercise_and_term
   before_action :set_tutorial_group
   before_action :set_submissions, only: :index

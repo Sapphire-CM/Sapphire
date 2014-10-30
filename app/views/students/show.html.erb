@@ -1,4 +1,4 @@
-<% title course_term_title, @term_registration.account.fullname %>
+<% title course_term_title, account_fullname_with_matriculation_number(@term_registration.account) %>
 
 <%= render "terms/sidebar", term: current_term %>
 

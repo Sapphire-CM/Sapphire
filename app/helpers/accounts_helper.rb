@@ -17,6 +17,10 @@ module AccountsHelper
     end
   end
 
+  def account_fullname_with_matriculation_number(account)
+    "#{account.fullname} (#{account.matriculation_number})"
+  end
+
   def account_edit_title(account)
     "Edit #{current_account == account ? "your account" : "#{account.fullname}'s account"}"
   end

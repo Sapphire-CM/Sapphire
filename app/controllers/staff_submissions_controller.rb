@@ -6,6 +6,7 @@ class StaffSubmissionsController < ApplicationController
 
   before_action :set_exercise_and_term
   before_action :set_tutorial_group
+  before_action :set_submissions, only: :index
   before_action :set_submission, only: [:show, :update]
   before_action :set_student_groups, only: [:new, :create, :edit, :update]
 
@@ -17,10 +18,7 @@ class StaffSubmissionsController < ApplicationController
 
 
   def index
-    @submissions = @exercise.submissions
     authorize SubmissionPolicyRecord.new @exercise, @tutorial_group
-
-    @submissions = @submissions.for_tutorial_group(@tutorial_group) if @tutorial_group.present?
 
     @submission_count = @submissions.count
     @submissions = @submissions.includes({exercise_registrations: {term_registration: :account}}, :submission_evaluation, :exercise).load
@@ -31,7 +29,6 @@ class StaffSubmissionsController < ApplicationController
     @submission = @exercise.submissions.new
     @submission.submitted_at = Time.now
     authorize @submission
-
     @submission.submission_assets.build
   end
 
@@ -100,14 +97,10 @@ class StaffSubmissionsController < ApplicationController
   end
 
   def set_tutorial_group
-    @tutorial_group = if params[:tutorial_group_id].present?
-      if params[:tutorial_group_id] == "all"
-        nil
-      else
-        @term.tutorial_groups.find(params[:tutorial_group_id])
-      end
-    else
-      current_account.tutorial_groups.where(term: @term).first.presence || @term.tutorial_groups.first
-    end
+    @tutorial_group = TutorialGroupScopingService.new(params, @term, current_account).current_tutorial_group
+  end
+
+  def set_submissions
+    @submissions = SubmissionScopingService.new(params, @tutorial_group).scoped_submissions(@exercise.submissions)
   end
 end

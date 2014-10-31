@@ -57,7 +57,9 @@ class Submission < ActiveRecord::Base
   end
 
   def result_published?
-    student_group.present? && exercise.result_published_for?(student_group.tutorial_group)
+    exercise_registrations.select do |exercise_registration|
+      exercise_registration.exercise.result_published_for?(exercise_registration.term_registration.tutorial_group)
+    end.present?
   end
 
   def visible_for_student?(account)

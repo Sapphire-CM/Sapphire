@@ -4,6 +4,9 @@ class StudentResultsPolicy < PunditBasePolicy
   end
 
   def show?
-    user.admin? || (record.subject.result_published? && record.subject.exercise_registrations.for_student(user).exists?)
+    user.admin? || (
+      record.subject.result_published? &&
+      record.subject.exercise_registrations.for_student(user).exists?
+    )
   end
 end

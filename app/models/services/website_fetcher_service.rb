@@ -12,12 +12,11 @@ class WebsiteFetcherService < Service
     end
 
     def submission_file_links
-      Rails.logger.info "retrieving filelist for #{identifier}"
+      Rails.logger.info "retrieving filelist for #{identifier} (account: #{account.id})"
 
       url = "http://www.student.tugraz.at/cgi-bin/filelist.csh?#{identifier}"
 
-      agent = Mechanize.new
-      file_list_page = agent.get(url)
+      file_list_page = Mechanize.new.get(url)
 
       page_links = file_list_page.links.select { |l| l.href !~ /\/$/}
 

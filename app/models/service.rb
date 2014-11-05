@@ -8,7 +8,7 @@ class Service < ActiveRecord::Base
   scope :active, lambda { where(active: true) }
 
   def self.service_classes
-    [NewsgroupFetcherService]
+    [NewsgroupFetcherService, WebsiteFetcherService]
   end
 
   def self.policy_class

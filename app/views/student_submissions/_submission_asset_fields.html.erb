@@ -1,0 +1,10 @@
+
+<div class='row nested-fields'>
+  <div class='small-1 columns'>
+    <%= link_to_remove_association(foundation_icon(:x), f, class: "tiny alert button") %>
+  </div>
+  <div class='small-11 columns'>
+    <%= f.input :file, as: :file, label: submission_asset_file_label(@exercise, f.object) %>
+  </div>
+  <hr />
+</div>

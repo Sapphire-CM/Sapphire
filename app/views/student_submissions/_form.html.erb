@@ -9,8 +9,12 @@
     <% end %>
 
     <%= f.simple_fields_for :submission_assets do |sa_f| %>
-      <%= sa_f.input :file, as: :file, label: submission_asset_file_label(@exercise) %>
+      <%= render "submission_asset_fields", f: sa_f %>
     <% end %>
-    <%= f.submit @submission.new_record? ? "Upload Submission" : "Update Submission", class: "small button" %>
+
+    <p>
+      <%= link_to_add_association "Add File", f, :submission_assets, class: "small button" %>
+      <%= f.submit @submission.new_record? ? "Upload Submission" : "Update Submission", class: "small button" %>
+    </p>
   <% end %>
 <% end %>

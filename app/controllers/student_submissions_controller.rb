@@ -49,7 +49,7 @@ class StudentSubmissionsController < ApplicationController
 
   private
   def submission_params
-    params.require(:submission).permit(submission_assets_attributes: [:id, :file])
+    params.require(:submission).permit(submission_assets_attributes: [:id, :file, :_destroy])
   end
 
   def ensure_submission_param

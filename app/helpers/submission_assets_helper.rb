@@ -21,9 +21,14 @@ module SubmissionAssetsHelper
     end
   end
 
-  def submission_asset_file_label(exercise)
-     title = "#{exercise.title} .pdf file"
-     title << " (max. #{number_to_human_size exercise.maximum_upload_size})" if exercise.enable_max_upload_size
+  def submission_asset_file_label(exercise, submission_asset = nil)
+     title = "#{exercise.title} file"
+
+     additional_information = []
+     additional_information << "currently: #{File.basename submission_asset.file.to_s}" if submission_asset.present? && submission_asset.file.to_s.present?
+     additional_information << "max. #{number_to_human_size exercise.maximum_upload_size}" if exercise.enable_max_upload_size
+
+     title << " (#{additional_information.join(", ")})" if additional_information.any?
      title
   end
 

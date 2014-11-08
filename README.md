@@ -2,6 +2,16 @@
 
 This project is intended to be used to evaluate students during a course-term based on submissions with a variety of ratings.
 
+## Requirements
+
+* Ruby 2.1.0 or higher
+* Database
+    - PostgreSQL or
+    - sqlite3 (only basic support, no background jobs)
+* Redis
+* Sidekiq
+* working SMPT server for email delivery
+
 ## Contributors
 * Matthias Link
 * Thomas Kriechbaumer

@@ -15,6 +15,7 @@
         <th>Type</th>
         <th>Status</th>
         <th>created at</th>
+        <th>last status change</th>
         <th></th>
       </tr>
     </thead>
@@ -24,6 +25,7 @@
         <td><%= export.type.underscore.humanize %></td>
         <td><%= export.status %></td>
         <td><%= l export.created_at, format: :short %></td>
+        <td><%= l export.updated_at, format: :short %></td>
         <td class='text-right'>
           <% if export.finished? %>
             <%= link_to foundation_icon(:download) + " download (#{number_to_human_size File.size(export.file.to_s)})", download_term_export_path(current_term, export),class: "small button" %>

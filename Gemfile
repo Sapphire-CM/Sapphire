@@ -87,6 +87,7 @@ end
 group :development, :test do
   gem 'sqlite3'
   gem 'mysql2'
+  gem 'pg'
   gem 'cucumber'
   gem 'cucumber-rails', require:false
   gem 'rspec-rails'

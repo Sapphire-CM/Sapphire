@@ -10,7 +10,7 @@ This project is intended to be used to evaluate students during a course-term ba
     - sqlite3 (only basic support, no background jobs)
 * Redis
 * Sidekiq
-* working SMPT server for email delivery
+* working SMTP server for email delivery
 
 ## Contributors
 * Matthias Link

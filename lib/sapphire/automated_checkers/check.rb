@@ -41,7 +41,7 @@ module Sapphire
           universe.run self, &@check
         rescue StandardError => e
           Rails.logger.info e.to_s
-          Rails.logger.info e.backtrace
+          Rails.logger.info e.backtrace.join("\n")
           failed!
         end
       end

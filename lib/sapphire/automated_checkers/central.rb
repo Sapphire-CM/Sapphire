@@ -44,9 +44,9 @@ module Sapphire
         submission_checkers_to_run = Hash.new {|h,k| h[k] = Array.new }
 
         submission.exercise.ratings.automated_ratings.each do |rating|
-          if check = check_for_identifier(rating.automated_checker_identifier)
+          if check = check_for_identifier(rating.automated_checker_identifier)            
             if check.checker_class.checks_assets? || check.checker_class.checks_asset_files?
-              assets_checkers_to_run[check.checker_class] << rating
+              assets_checkers_to_run[check.checker_class] << rating              
             else
               submission_checkers_to_run[check.checker_class] << rating
             end
@@ -59,8 +59,10 @@ module Sapphire
           run_checker_with_subject_submission_and_ratings(checker, submission, submission, ratings)
         end
 
+      
         submission.submission_assets.each do |asset|
           assets_checkers_to_run.each do |checker, ratings|
+            
             if checker.asset_identifier? asset.asset_identifier
               if checker.checks_asset_files?() && checker.content_type?(asset.content_type)
                 run_checker_with_subject_submission_and_ratings(checker, File.open(asset.file.path), submission, ratings)
@@ -70,15 +72,16 @@ module Sapphire
             end
           end
         end
+        
       end
 
       def run_checker_with_subject_submission_and_ratings(checker, subject, submission, ratings)
         c = checker.create
-        c.prepare_subject(subject, submission.student_group, submission.exercise)
+        c.prepare_subject(subject, submission)
 
         ratings.each do |rating|
           check = c.perform_check(rating.automated_checker_identifier)
-          #Rails.logger.info "Checking: #{check.title} - #{rating.title} ... #{check.status}"
+          Rails.logger.info "Checking: #{check.title} - #{rating.title} ... #{check.status}"
 
           evaluation = submission.submission_evaluation.evaluation_for_rating(rating)
           evaluation.checked_automatically = true

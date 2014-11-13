@@ -23,6 +23,7 @@ class SubmissionAsset < ActiveRecord::Base
     ZIP = "application/zip"
     PLAIN_TEXT = "text/plain"
     FAVICON = "image/x-icon"
+    PDF = "application/pdf"
 
     IMAGES = [JPEG, PNG]
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141021100449) do
+ActiveRecord::Schema.define(version: 20141119104256) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -115,6 +115,7 @@ ActiveRecord::Schema.define(version: 20141021100449) do
     t.integer  "maximum_upload_size"
     t.boolean  "enable_student_uploads",       default: true
     t.boolean  "enable_max_upload_size"
+    t.integer  "visible_points"
   end
 
   add_index "exercises", ["term_id"], name: "index_exercises_on_term_id", using: :btree

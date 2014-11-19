@@ -25,17 +25,10 @@
           <tr>
             <td><%= exercise.title %></td>
 
-            <% if exercise.enable_min_required_points %>
-              <td class='text-center'><%= exercise.min_required_points %></td>
-            <% else %>
-              <td class='text-center'>&nbsp;</td>
-            <% end %>
 
-            <% if exercise.enable_max_total_points %>
-              <td class='text-center'><%= exercise.max_total_points %></td>
-            <% else %>
-              <td class='text-center'><%= exercise.points %></td>
-            <% end %>
+            <td class='text-center'><%= exercise.min_required_points if exercise.enable_min_required_points %></td>
+
+            <td class='text-center'><%= exercise.archievable_points %></td>
           </tr>
         <% end %>
         <tr>

@@ -17,7 +17,9 @@
             <tr>
               <td><%= submission.exercise.title %></td>
               <td><%= submission.submitted_at.present? ? l(submission.submitted_at, format: :short) : "unknown" %></td>
-              <td><%= exercise_result @student_registration, submission.exercise %></td>
+              <td>
+                <%= exercise_result @student_registration, submission.exercise %> / <%= submission.exercise.archievable_points %>
+              </td>
             </tr>
           <% end %>
         </tbody>

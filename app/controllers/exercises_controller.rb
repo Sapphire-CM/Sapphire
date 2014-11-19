@@ -62,6 +62,7 @@ class ExercisesController < ApplicationController
         :late_deadline,
         :group_submission,
         :points,
+        :visible_points,
         :enable_min_required_points,
         :enable_max_total_points,
         :enable_student_uploads,

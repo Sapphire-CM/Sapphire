@@ -17,7 +17,7 @@
       <% @exercise_registrations.each do |exercise_registration| %>
       <tr>
         <td><%= exercise_registration.exercise.title %></td>
-        <td><%= exercise_registration.points %>/<%= exercise_registration.exercise.points %></td>
+        <td><%= exercise_registration.points %>/<%= exercise_registration.exercise.archievable_points %></td>
         <td class='text-right'>
           <%= link_to "Show", exercise_submission_path(exercise_registration.exercise, exercise_registration.submission), class: "small button" %>
           <%= link_to "Evaluate", single_evaluation_path(exercise_registration.submission), class: "small button" %>
@@ -28,7 +28,7 @@
     <tfoot>
       <tr>
         <th>Sum:</th>
-        <th><%= @term_registration.points %>/<%= @term_registration.term.points %></th>
+        <th><%= @term_registration.points %>/<%= @term_registration.term.archievable_points %></th>
         <th colspan='2'></th>
       </tr>
 

@@ -11,3 +11,5 @@ set :linked_files, %w{config/database.yml config/mail.yml}
 set :linked_dirs, %w{bin log emails uploads persistent tmp/pids}
 
 set :log_level, :debug
+
+set :bundle_binstubs, nil

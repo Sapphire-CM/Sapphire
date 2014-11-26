@@ -55,7 +55,7 @@ class TermRegistration < ActiveRecord::Base
   end
 
   def all_minimum_points_reached?
-    !term.exercises.mandatory_exercises.where.not(id: exercises).exists? &&
+    !term.exercises.mandatory_exercises.where.not(id: exercises.unscoped).exists? &&
       exercise_registrations.find {|exercise_registration| !exercise_registration.minimum_points_reached? } .blank?
   end
 

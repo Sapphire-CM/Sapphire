@@ -12,6 +12,7 @@ class Exercise < ActiveRecord::Base
 
   scope :group_exercises, lambda { where(group_submission: true)}
   scope :solitary_exercises, lambda { where(group_submission: false)}
+  scope :mandatory_exercises, lambda { where(enable_min_required_points: true) }
 
   has_many :result_publications, dependent: :destroy
   has_many :student_group_registrations, dependent: :destroy

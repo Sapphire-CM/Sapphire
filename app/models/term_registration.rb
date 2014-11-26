@@ -42,7 +42,7 @@ class TermRegistration < ActiveRecord::Base
 
   def update_points
     self.points = exercise_registrations.sum(:points)
-    self.positive_grade = positive_grade_archived?
+    self.positive_grade = positive_grade_possible?
   end
 
   def update_points!
@@ -66,7 +66,7 @@ class TermRegistration < ActiveRecord::Base
     exercise_registrations.any?
   end
 
-  def positive_grade_archived?
-    all_minimum_points_reached? && all_exercises_submitted?
+  def positive_grade_possible?
+    all_minimum_points_reached? && any_exercise_submitted?
   end
 end

@@ -18,35 +18,44 @@ module Sapphire
           @mail.body.to_s
         end
 
-        failed! if body =~/\|/
+        failed! if body =~ /\|/
       end
 
-      check :mail_to_wrong_tutor, "Email has not been sent to apphire-submissions-inm-2013@iicm.tu-graz.ac.at" do
+      check :mail_to_wrong_tutor, "Email has not been sent to sapphire-submissions-inm-2014-ex31@iicm.edu" do
         mails = [@mail.to, @mail.cc].compact.flatten
-        failed! if !mails.include?("sapphire-submissions-inm-2013@iicm.tu-graz.ac.at") && !mails.include?("sapphire-submissions-inm-2013@iicm.edu")
+        failed! if !mails.include?("sapphire-submissions-inm-2014-ex31@iicm.tu-graz.ac.at") && !mails.include?("sapphire-submissions-inm-2014-ex31@iicm.edu")
       end
 
-      check :tutor_not_in_to, "sapphire-submissions-inm-2013@iicm.tu-graz.ac.at is in \"To\"" do
-        failed! if !@mail.to.include?("sapphire-submissions-inm-2013@iicm.tu-graz.ac.at") && !@mail.to.include?("sapphire-submissions-inm-2013@iicm.edu")
+      check :tutor_not_in_to, "sapphire-submissions-inm-2014@iicm.tu-graz.ac.at is in \"To\"" do
+        failed! if !@mail.to.include?("sapphire-submissions-inm-2014-ex31@iicm.tu-graz.ac.at") && !@mail.to.include?("sapphire-submissions-inm-2014-ex31@iicm.edu")
       end
 
       check :mail_to_self, "Mail has been also sent to student" do
         success = false
 
-        mails = [@mail.to, @mail.cc].compact.flatten
-        mails.compact!
-        mails.uniq!
-        mails.map!(&:downcase)
+        mails = [@mail.to, @mail.cc].flatten.compact.uniq.map(&:downcase)
 
-        student_group.students.each do |student|
-          success = true if mails.include? student.email.downcase
+        term_registrations.map(&:account).each do |account|
+          emails_for_account = []
+          emails_for_account << account.email
+          emails_for_account += account.email_addresses.map(&:email)
+
+          if (mails & emails_for_account).any?
+            success = true
+            break
+          end
         end
+
         failed! unless success
       end
 
       check :mail_to_self_in_to, "Student's email is in \"To\"" do
-        student_group.students.each do |student|
-          if @mail.to.include? student.email
+        term_registrations.map(&:account).each do |account|
+          emails = []
+          emails << account.email
+          emails += account.email_addresses.map(&:email)
+
+          if (@mail.to & emails).any?
             failed!
             break
           end
@@ -58,12 +67,13 @@ module Sapphire
         failed! if @mail.subject.blank?
       end
 
-      check :subject_conforming, "Subject conforms to \"inm-ws2013-tN-ex31-surname-forename-mnr\"" do
+      check :subject_conforming, "Subject conforms to \"inm-ws2014-tN-ex31-surname-forename-mnr\"" do
         success = false
 
         subject = @mail.subject
-        student_group.students.each do |student|
-          subject_expected = "inm-ws2013-#{student_group.tutorial_group.title}-ex31-#{to_ascii student.surname}-#{to_ascii student.forename.split(/[\s\-]+/,2).first}-#{student.matriculation_number}".downcase
+        term_registrations.each do |term_registration|
+          student = term_registration.account
+          subject_expected = "inm-ws2014-#{term_registration.tutorial_group.title}-ex31-#{to_ascii student.surname}-#{to_ascii student.forename.split(/[\s\-]+/,2).first}-#{student.matriculation_number}".downcase
 
           if subject == subject_expected
             success = true

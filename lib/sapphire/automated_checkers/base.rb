@@ -90,8 +90,8 @@ module Sapphire
         @prepare_block = prepare_block
       end
 
-      def prepare_subject(subject, student_group, exercise)
-        @universe = CheckUniverse.new(@prepare_block, subject, student_group, exercise)
+      def prepare_subject(subject, submission)
+        @universe = CheckUniverse.new(@prepare_block, subject, submission)
       end
 
       def perform_check(identifier)

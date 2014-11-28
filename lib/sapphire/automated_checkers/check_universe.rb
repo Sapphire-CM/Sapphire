@@ -5,8 +5,9 @@ require "ostruct"
 module Sapphire
   module AutomatedCheckers
     class CheckUniverse
-      class CheckData < Struct.new(:subject, :check, :student_group, :exercise)
+      class CheckData < Struct.new(:subject, :check, :submission)
         delegate :unknown!, :failed!, :success!, :status, to: :check
+        delegate :exercise, :student_group, :term_registrations, to: :submission
 
         def to_ascii(string)
           string.gsub(/[äöüßéá]/) do |match|
@@ -22,11 +23,10 @@ module Sapphire
         end
       end
 
-      def initialize(prepare_block, subject, student_group, exercise)
+      def initialize(prepare_block, subject, submission)
         @data = CheckData.new
         @data.subject = subject
-        @data.student_group = student_group
-        @data.exercise = exercise
+        @data.submission = submission
         @data.instance_eval(&prepare_block) if prepare_block.present?
       end
 

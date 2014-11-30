@@ -73,11 +73,11 @@ module Sapphire
       end
 
       def stylesheet_asset(identifier)
-        submission.submission_assets.stylesheets.where(file: identifier).first
+        submission.submission_assets.stylesheets.where{lower(file) == my {identifier.downcase}}.first
       end
 
       def image_asset(identifier)
-        submission.submission_assets.images.where(file: identifier).first
+        submission.submission_assets.images.where{lower(file) == my {identifier.downcase}}.first
       end
 
       def displayable?

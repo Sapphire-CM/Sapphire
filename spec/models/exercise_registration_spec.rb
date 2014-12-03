@@ -7,9 +7,8 @@ describe ExerciseRegistration do
   it { should belong_to(:term_registration)}
   it { should validate_presence_of(:exercise_id) }
   it { should validate_presence_of(:term_registration_id) }
-  it { should_not validate_presence_of(:student_group_id) }
   it { should validate_presence_of(:submission_id) }
-  it { should validate_numericality_of(:points).allow_nil.only_integer }
+  it { should validate_numericality_of(:points).only_integer }
 
   context "submission points" do
     let(:submission) do

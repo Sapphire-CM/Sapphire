@@ -10,10 +10,10 @@ describe ResultPublication do
   it "should be able to tell if the results are concealed" do
     result_publication = FactoryGirl.create(:result_publication, published: true)
 
-    result_publication.concealed?.should be_false
+    result_publication.concealed?.should be_falsey
     result_publication.published = false
 
-    result_publication.concealed?.should be_true
+    result_publication.concealed?.should be_truthy
   end
 
   it "should be able to set published with publish!" do
@@ -21,7 +21,7 @@ describe ResultPublication do
     result_publication.publish!
 
     result_publication.reload
-    result_publication.published?.should be_true
+    result_publication.published?.should be_truthy
   end
 
   it "should be able to set published with conceal!" do
@@ -29,7 +29,7 @@ describe ResultPublication do
     result_publication.conceal!
 
     result_publication.reload
-    result_publication.concealed?.should be_true
+    result_publication.concealed?.should be_truthy
   end
 
   it "should be initially concealed" do
@@ -37,7 +37,7 @@ describe ResultPublication do
     tutorial_group = FactoryGirl.create(:exercise, term: exercise.term)
 
     exercise.result_publications.each do |result_publication|
-      expect(result_publication.published === false).to be_true
+      expect(result_publication.published === false).to be_truthy
     end
   end
 

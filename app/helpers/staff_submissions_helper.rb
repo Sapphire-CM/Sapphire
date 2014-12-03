@@ -9,6 +9,5 @@ module StaffSubmissionsHelper
         "Submission of unknown student group"
       end
     end
-
   end
 end

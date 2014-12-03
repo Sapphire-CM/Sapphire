@@ -48,7 +48,7 @@ class TutorialGroup < ActiveRecord::Base
   private
   def ensure_result_publications
     term.exercises.each do |exercise|
-      ResultPublication.create(tutorial_group: self, exercise: exercise)
+      ResultPublication.find_or_create_by(tutorial_group_id: self.id, exercise: exercise)
     end
   end
 end

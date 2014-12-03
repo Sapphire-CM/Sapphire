@@ -9,8 +9,7 @@ describe TermPolicy do
     let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
     let(:user) do
       account = FactoryGirl.create(:account)
-      student_group = FactoryGirl.create(:student_group, tutorial_group: tutorial_group)
-      student_registration = FactoryGirl.create(:student_registration, student: account, student_group: student_group)
+      FactoryGirl.create(:term_registration, :student, account: account, term: term, tutorial_group: tutorial_group)
       account
     end
 
@@ -29,7 +28,7 @@ describe TermPolicy do
   context "as a tutor" do
     let(:user) {
       account = FactoryGirl.create(:account, :tutor)
-      FactoryGirl.create(:tutor_registration, tutor: account, tutorial_group: tutorial_group)
+      FactoryGirl.create(:term_registration, :tutor, account: account, term: term, tutorial_group: tutorial_group)
       account
     }
     let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }

@@ -1,17 +1,22 @@
 module ControllerHelpers
-  def sign_in(account = create(:account))
+  def sign_in(account = FactoryGirl.create(:account))
     if account.nil?
-      request.env['warden'].stub(:authenticate!).
-        and_throw(:warden, {:scope => :account})
-      controller.stub :current_account => nil
+      allow(request.env['warden']).to receive(:authenticate!)
+        .and_throw(:warden, scope: :account)
+
+      allow(controller).to receive(:current_account)
+        .and_return(nil)
     else
-      request.env['warden'].stub :authenticate! => account
-      controller.stub :current_account => account
+      allow(request.env['warden']).to receive(:authenticate!)
+        .and_return(account)
+
+      allow(controller).to receive(:current_account)
+        .and_return(account)
     end
   end
 end
 
 RSpec.configure do |config|
-  config.include Devise::TestHelpers, :type => :controller
-  config.include ControllerHelpers, :type => :controller
+  config.include Devise::TestHelpers, type: :controller
+  config.include ControllerHelpers, type: :controller
 end

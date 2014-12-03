@@ -28,8 +28,13 @@ describe TermRegistration do
   context "lecturers" do
     let(:subject) { build :term_registration, :lecturer }
 
-    # does not work - for what reason ever, `validate_absence_of` raises an error
-    # it { should validate_absence_of :tutorial_group_id }
+    it "should validate absence of tutorial_group_id" do
+      subject.tutorial_group = nil
+      expect(subject).to be_valid
+
+      subject.tutorial_group = FactoryGirl.create(:tutorial_group)
+      expect(subject).not_to be_valid
+    end
   end
 
   context "scopes" do

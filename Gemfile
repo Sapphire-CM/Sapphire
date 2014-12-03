@@ -42,6 +42,8 @@ gem 'cocoon'                      # for nested upload forms
 gem 'sidekiq'                     # async jobs in background, used for imports
 gem 'sinatra', '>= 1.3.0', :require => nil    # small rack framework, used for sidekiq ui
 
+gem 'proximal_records'            # providing next and previous record functionality, used for single evaluations
+
 group :production do
   gem 'therubyracer'
 end

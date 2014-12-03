@@ -77,7 +77,7 @@ group :development do
   # gem 'bullet'              # logs and supposes optimizations for db queries
   # gem 'sextant'             # route /rails/routes for displaying all routes
 
-  gem 'capistrano', '~> 3.0' # deployment via ssh
+  gem 'capistrano', '~> 3.2.0' # deployment via ssh
   gem 'capistrano-rvm'       # capistrano plugin for rvm
   gem 'capistrano-rails'     # capistrano plugin for rails
   gem 'capistrano-sidekiq'   # capistrano plugin for sidekiq

@@ -23,14 +23,14 @@ describe ExercisePolicy do
 
     context "as a lecturer" do
       let(:user) { FactoryGirl.create(:account, :lecturer) }
-      let(:term) { user.lecturer_registrations.first.term }
+      let(:term) { user.term_registrations.lecturers.first.term }
 
       it { should permit_authorization :index }
     end
 
     context "as a tutor" do
       let(:user) { FactoryGirl.create(:account, :tutor) }
-      let(:term) { user.tutor_registrations.first.term }
+      let(:term) {  user.term_registrations.tutors.first.term }
 
       it { should permit_authorization :index }
     end
@@ -38,7 +38,7 @@ describe ExercisePolicy do
 
     context "as a student" do
       let(:user) { FactoryGirl.create(:account, :student)}
-      let(:term) { user.student_registrations.first.term}
+      let(:term) { user.term_registrations.students.first.term}
 
       it { should permit_authorization :index }
     end
@@ -61,7 +61,7 @@ describe ExercisePolicy do
 
     context "as a lecturer" do
       let(:user) { FactoryGirl.create(:account, :lecturer) }
-      let(:term) { user.lecturer_registrations.first.term }
+      let(:term) { user.term_registrations.lecturers.first.term }
 
       it { should permit_authorization :new}
       it { should permit_authorization :create}
@@ -72,7 +72,7 @@ describe ExercisePolicy do
 
     context "as a tutor" do
       let(:user) { FactoryGirl.create(:account, :tutor) }
-      let(:term) { user.tutor_registrations.first.term }
+      let(:term) { user.term_registrations.tutors.first.term }
 
       it { should_not permit_authorization :new}
       it { should_not permit_authorization :create}
@@ -83,7 +83,7 @@ describe ExercisePolicy do
 
     context "as a student" do
       let(:user) { FactoryGirl.create(:account, :student)}
-      let(:term) { user.student_registrations.first.term}
+      let(:term) { user.term_registrations.students.first.term}
 
       it { should_not permit_authorization :new}
       it { should_not permit_authorization :create}

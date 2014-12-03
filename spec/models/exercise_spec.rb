@@ -6,10 +6,10 @@ describe Exercise do
 
   it "should be able to set student uploads" do
     exercise = FactoryGirl.create(:exercise, allow_student_uploads: true)
-    exercise.allow_student_uploads?.should be_true
+    exercise.allow_student_uploads?.should be_truthy
 
     exercise = FactoryGirl.create(:exercise, allow_student_uploads: false)
-    exercise.allow_student_uploads?.should be_false
+    exercise.allow_student_uploads?.should be_falsey
   end
 
   it "should ensure result publications on create" do

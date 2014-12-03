@@ -10,7 +10,7 @@ describe TermRegistration do
 
   it "should respond to #negative_grade" do
     term_registration = build(:term_registration, positive_grade: true)
-    expect(term_registration.negative_grade?).to be_false
+    expect(term_registration.negative_grade?).to be_falsey
   end
 
   context "students" do
@@ -28,7 +28,13 @@ describe TermRegistration do
   context "lecturers" do
     let(:subject) { build :term_registration, :lecturer }
 
-    it { should validate_absence_of :tutorial_group_id }
+    it "should validate absence of tutorial_group_id" do
+      subject.tutorial_group = nil
+      expect(subject).to be_valid
+
+      subject.tutorial_group = FactoryGirl.create(:tutorial_group)
+      expect(subject).not_to be_valid
+    end
   end
 
   context "scopes" do

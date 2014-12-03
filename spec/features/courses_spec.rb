@@ -7,7 +7,7 @@ describe "Courses" do
     let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
     let(:student) do
       student = FactoryGirl.create(:account)
-      FactoryGirl.create(:student_registration, tutorial_group: tutorial_group, student: student)
+      FactoryGirl.create(:term_registration, :student, account: student, term: term, tutorial_group: tutorial_group)
       student
     end
 

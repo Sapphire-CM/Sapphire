@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :service do
+    exercise
     type ""
-    properties "MyText"
+    properties {}
   end
 end

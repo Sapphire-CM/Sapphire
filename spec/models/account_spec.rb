@@ -8,8 +8,7 @@ describe Account do
     let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
     let(:user) do
       account = FactoryGirl.create(:account)
-      student_group = FactoryGirl.create(:student_group, tutorial_group: tutorial_group)
-      student_registration = FactoryGirl.create(:student_registration, student: account, student_group: student_group)
+      FactoryGirl.create(:term_registration, :student, account: account, term: term, tutorial_group: tutorial_group)
       account
     end
 

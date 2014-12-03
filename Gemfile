@@ -47,6 +47,8 @@ group :production do
 end
 
 group :development do
+  gem 'mysql2'                    # MySQL database connector
+
   gem 'guard'
   gem 'guard-pow'
 
@@ -83,11 +85,6 @@ group :development do
   gem 'capistrano-sidekiq'   # capistrano plugin for sidekiq
 end
 
-group :development, :test do
-  gem 'sqlite3'
-  gem 'mysql2'
-end
-
 group :test do
   gem 'cucumber'
   gem 'cucumber-rails', require:false
@@ -104,8 +101,4 @@ group :test do
   gem 'poltergeist'               # PhantomJS, headless Webkit
   # gem 'selenium-webdriver'      # Selenium, Firefox webdriver
   # gem 'capybara-webkit'         # Webkit headless webdriver
-end
-
-group :production, :development, :test do
-  gem 'pg'                        # PostgreSQL database connector
 end

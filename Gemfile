@@ -100,7 +100,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'database_cleaner'
 
-  gem 'simplecov', '~> 0.7.1'     # test-coverage reports (upgrade when https://github.com/colszowka/simplecov/issues/281 is resolved)
+  gem 'simplecov'                 # test-coverage reports
 
   gem 'capybara'
   gem 'poltergeist'               # PhantomJS, headless Webkit

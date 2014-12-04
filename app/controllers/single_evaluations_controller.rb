@@ -15,10 +15,11 @@ class SingleEvaluationsController < ApplicationController
 
     submission_scope = SubmissionScopingService.new(params, @tutorial_group).scoped_submissions(Submission.for_exercise(@submission.exercise))
 
-    @previous_submission, @next_submission = @submission.proximal_records(submission_scope)
+    @previous_submission = submission_scope.next(@submission, :submitted_at)
+    @next_submission = submission_scope.previous(@submission, :submitted_at)
 
     @exercise = @submission.exercise
-    @evaluation_groups = @submission.submission_evaluation.evaluation_groups.includes([:rating_group, {evaluations: :rating}]).references(:all).order{rating_group.ratings.row_order.asc}.order{rating_group.row_order.asc}
+    @evaluation_groups = @submission.submission_evaluation.evaluation_groups.includes([:rating_group, {evaluations: :rating}]).order{rating_group.ratings.row_order.asc}.order{rating_group.row_order.asc}
     @term = @exercise.term
   end
 

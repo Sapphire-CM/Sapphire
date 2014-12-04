@@ -17,6 +17,8 @@ class StudentGroup < ActiveRecord::Base
   scope :solitary, lambda { where(solitary: true) }
   scope :multiple, lambda { where(solitary: false) }
 
+  validates :tutorial_group, presence: true
+
   def submission_evaluations
     @submission_evaluations ||= SubmissionEvaluation.where{submission_id.in(my {self.submissions.joins{exercise}.where{exercise.term_id == my{term.id}}.pluck(:id)})}
   end

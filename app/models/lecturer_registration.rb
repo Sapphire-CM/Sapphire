@@ -3,4 +3,7 @@ class LecturerRegistration < ActiveRecord::Base
   belongs_to :term
 
   has_one :course, through: :term
+
+  validates :lecturer, presence: true
+  validates :term, presence: true
 end

@@ -1,8 +1,7 @@
 class Course < ActiveRecord::Base
   has_many :terms, dependent: :destroy
 
-  validates_presence_of :title
-  validates_uniqueness_of :title
+  validates :title, presence: true, uniqueness: true
 
   scope :unlocked, lambda { where(locked: false) }
   scope :associated_with, lambda {|account| joins(terms: :term_registrations).where(term_registrations: {account_id: account.id}).uniq }

@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :submission do
-    submitted_at {Time.now}
+    submitted_at { Time.now }
     exercise
     association :submitter, factory: :account
 

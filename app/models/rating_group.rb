@@ -6,13 +6,13 @@ class RatingGroup < ActiveRecord::Base
   has_many :ratings, dependent: :destroy
   has_many :evaluation_groups, dependent: :destroy
 
-  validates_presence_of :title
-  validates_uniqueness_of :title, scope: :exercise_id
-
-  validate :min_max_points_range, :points_in_range
-  validates_presence_of :points, unless: Proc.new { |rating_group|
+  validates :exercise, presence: true
+  validates :title, presence: true, uniqueness: { scope: :exercise }
+  validates :points, presence: true, unless: Proc.new { |rating_group|
     rating_group.global == true
   }
+
+  validate :min_max_points_range, :points_in_range
 
   after_create :create_evaluation_groups
   after_save :update_exercise_points, if: lambda { |rg| rg.points_changed? || rg.max_points_changed? }

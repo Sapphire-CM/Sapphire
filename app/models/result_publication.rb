@@ -2,11 +2,11 @@ class ResultPublication < ActiveRecord::Base
   belongs_to :exercise
   belongs_to :tutorial_group
 
-  validates_presence_of :exercise, :tutorial_group
-  validates_uniqueness_of :exercise_id, scope: :tutorial_group_id
-
   scope :published, lambda { where(published: true) }
   scope :concealed, lambda { where(published: false) }
+
+  validates :exercise, presence: true, uniqueness: { scope: :tutorial_group }
+  validates :tutorial_group, presence: true
 
   def self.for(exercise: nil, tutorial_group: nil)
     where(exercise_id: exercise.id, tutorial_group_id: tutorial_group.id).first

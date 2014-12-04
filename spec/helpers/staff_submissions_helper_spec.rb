@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe StaffSubmissionsHelper do
   describe "staff_submission_title" do

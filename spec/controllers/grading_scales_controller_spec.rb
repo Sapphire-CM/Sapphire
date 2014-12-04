@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe GradingScalesController do
   let(:course) { term.course }

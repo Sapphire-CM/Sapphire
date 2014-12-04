@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ResultPublication do
   it "should be respond to concealed?" do

@@ -7,7 +7,7 @@ FactoryGirl.define do
     title { generate :student_group_title }
 
     factory :student_group_with_students do
-      ignore do
+      transient do
         students_count 4
       end
 
@@ -19,7 +19,7 @@ FactoryGirl.define do
     factory :solitary_student_group do
       solitary true
 
-      ignore do
+      transient do
         students_count 1
       end
 
@@ -29,7 +29,7 @@ FactoryGirl.define do
     end
 
     factory :student_group_for_student do
-      ignore do
+      transient do
         student { FactoryGirl.create(:account) }
       end
 

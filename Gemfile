@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.0.6'
 
+gem 'pg'                          # PostgreSQL database connector
+
 gem 'jquery-rails'                # Use jquery as the JavaScript library
 gem 'jquery-ui-rails'
 gem 'jquery-mousewheel-rails'     # jquery MouseWheel support
@@ -47,8 +49,6 @@ group :production do
 end
 
 group :development do
-  gem 'mysql2'                    # MySQL database connector
-
   gem 'guard'
   gem 'guard-pow'
 
@@ -87,17 +87,28 @@ end
 
 group :test do
   gem 'cucumber'
-  gem 'cucumber-rails', require:false
+  gem 'cucumber-rails', require: false
+
   gem 'rspec-rails'
+
   gem 'guard-rspec'
   gem 'guard-cucumber'
-  gem 'terminal-notifier-guard'
+
   gem 'shoulda-matchers'
-  gem 'capybara'
-  gem 'database_cleaner'
+  gem 'terminal-notifier-guard'
+
   gem 'factory_girl_rails'
+  gem 'database_cleaner'
+
   gem 'simplecov', '~> 0.7.1'     # test-coverage reports (upgrade when https://github.com/colszowka/simplecov/issues/281 is resolved)
+
+  gem 'capybara'
   gem 'poltergeist'               # PhantomJS, headless Webkit
   # gem 'selenium-webdriver'      # Selenium, Firefox webdriver
   # gem 'capybara-webkit'         # Webkit headless webdriver
+end
+
+group :development, :test do
+  gem 'mysql2'                    # MySQL database connector
+  gem 'sqlite3'                   # sqlite3 database connector
 end

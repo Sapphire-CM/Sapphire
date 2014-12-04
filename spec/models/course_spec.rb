@@ -68,7 +68,7 @@ describe Course do
 
     it "should not scope courses when using viewable_for" do
       courses = FactoryGirl.create_list(:course, 5)
-      expect(Course.viewable_for(account)).to include(*courses.sort_by(&:id))
+      expect(Course.viewable_for(account).sort_by(&:id)).to eq(courses.sort_by(&:id))
     end
   end
 end

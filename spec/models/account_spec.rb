@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Account do
-  it { should have_many :term_registrations }
+  it { is_expected.to have_many :term_registrations }
 
   context "student" do
     let(:term) {FactoryGirl.create(:term)}

@@ -18,34 +18,34 @@ describe "Courses" do
     it "should display a link to the current course" do
       visit root_path
 
-      page.should have_content(course.title)
-      page.should have_link(term.title)
+      expect(page).to have_content(course.title)
+      expect(page).to have_link(term.title)
     end
 
     it "should not display links to terms to unassociated terms" do
       other_term = create(:term)
-      page.should_not have_link other_term.title
+      expect(page).not_to have_link other_term.title
     end
 
     it "should not display unassociated courses" do
       other_course = create(:course)
-      page.should_not have_content(other_course.title)
+      expect(page).not_to have_content(other_course.title)
     end
 
     it "should not have add or edit links" do
       visit root_path
 
-      page.should_not have_link("Add Course")
-      page.should_not have_selector("a[title='Add Term']")
-      page.should_not have_selector("a.index_entry_edit")
-      page.should_not have_selector("a.index_entry_remove")
+      expect(page).not_to have_link("Add Course")
+      expect(page).not_to have_selector("a[title='Add Term']")
+      expect(page).not_to have_selector("a.index_entry_edit")
+      expect(page).not_to have_selector("a.index_entry_remove")
     end
 
     it "should not render empty tds" do
       visit root_path
 
       page.all("td").each do |table_cell|
-        table_cell.text.should_not be_blank
+        expect(table_cell.text).not_to be_blank
       end
     end
   end

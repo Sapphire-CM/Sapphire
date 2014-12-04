@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TutorialGroup do
-  it { should have_many :term_registrations }
+  it { is_expected.to have_many :term_registrations }
 
   let(:course) { create(:course) }
   let(:term) { create(:term, course: course)}
@@ -10,7 +10,7 @@ describe TutorialGroup do
     FactoryGirl.create_list(:exercise, 4, term: term)
     tutorial_group = FactoryGirl.create(:tutorial_group, term: term)
 
-    tutorial_group.result_publications.count.should eq(4)
+    expect(tutorial_group.result_publications.count).to eq(4)
   end
 
   it "should destroy result publications on delete" do

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Term do
-  it { should have_many(:term_registrations) }
+  it { is_expected.to have_many(:term_registrations) }
 
   context "ordinary account" do
     let(:account) { FactoryGirl.create(:account) }

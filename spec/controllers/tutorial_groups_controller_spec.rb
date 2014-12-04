@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe TutorialGroupsController do
+  include_context 'active_admin_session_context'
+
   describe 'GET #index' do
-    include_context "authenticated admin"
     let(:term) { create(:term) }
 
     it "assigns @term" do

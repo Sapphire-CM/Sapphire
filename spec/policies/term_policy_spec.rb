@@ -13,16 +13,16 @@ describe TermPolicy do
       account
     end
 
-    it { should permit_authorization :student }
-    it { should_not permit_authorization :tutor }
+    it { is_expected.to permit_authorization :student }
+    it { is_expected.not_to permit_authorization :tutor }
   end
 
   context "as an admin" do
     let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
     let(:user) { FactoryGirl.create(:account, :admin) }
 
-    it { should_not permit_authorization :student }
-    it { should_not permit_authorization :tutor }
+    it { is_expected.not_to permit_authorization :student }
+    it { is_expected.not_to permit_authorization :tutor }
   end
 
   context "as a tutor" do
@@ -33,7 +33,7 @@ describe TermPolicy do
     }
     let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
 
-    it { should_not permit_authorization :student }
-    it { should permit_authorization :tutor }
+    it { is_expected.not_to permit_authorization :student }
+    it { is_expected.to permit_authorization :tutor }
   end
 end

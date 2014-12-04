@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 describe TermRegistration do
-  it { should validate_presence_of :account_id }
-  it { should validate_presence_of :term_id }
-  it { should validate_presence_of :role }
-  it { should ensure_inclusion_of(:role).in_array Roles::ALL }
-  it { should validate_uniqueness_of(:account_id).scoped_to(:term_id)}
-  it { should have_many :exercise_registrations }
+  it { is_expected.to validate_presence_of :account_id }
+  it { is_expected.to validate_presence_of :term_id }
+  it { is_expected.to validate_presence_of :role }
+  it { is_expected.to ensure_inclusion_of(:role).in_array Roles::ALL }
+  it { is_expected.to validate_uniqueness_of(:account_id).scoped_to(:term_id)}
+  it { is_expected.to have_many :exercise_registrations }
 
   it "should respond to #negative_grade" do
     term_registration = build(:term_registration, positive_grade: true)
@@ -16,13 +16,13 @@ describe TermRegistration do
   context "students" do
     let(:subject) { build :term_registration, :student }
 
-    it { should validate_presence_of :tutorial_group_id }
+    it { is_expected.to validate_presence_of :tutorial_group_id }
   end
 
   context "tutors" do
     let(:subject) { build :term_registration, :tutor }
 
-    it { should validate_presence_of :tutorial_group_id }
+    it { is_expected.to validate_presence_of :tutorial_group_id }
   end
 
   context "lecturers" do

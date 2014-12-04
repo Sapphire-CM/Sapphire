@@ -59,5 +59,5 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 require 'capybara/poltergeist'
 Capybara.javascript_driver = :poltergeist
 
-require "simplecov"
+require 'simplecov'
 SimpleCov.command_name 'Cucumber'

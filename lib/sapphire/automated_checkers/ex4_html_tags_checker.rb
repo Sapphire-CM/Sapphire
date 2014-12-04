@@ -42,7 +42,7 @@ module Sapphire
 
 
       %w(script iframe canvas hr br).each do |tag|
-        check "#{tag}_tag_present".to_sym, "No #{tag}-tag used in any of the files" do
+        check "#{tag}_tag_present".to_sym, "#{tag}-tag used in any of the files" do
           failed! if @check_if_css_exists_in_any_file.call(tag)
         end
       end

@@ -2,6 +2,8 @@
 
 This project is intended to be used to evaluate students during a course-term based on submissions with a variety of ratings.
 
+[![Build Status](https://magnum.travis-ci.com/matthee/Sapphire.svg?token=pEdNnsdfG21w5iAAhDJf&branch=master)](https://magnum.travis-ci.com/matthee/Sapphire)
+
 ## Requirements
 
 * Ruby 2.1.0 or higher

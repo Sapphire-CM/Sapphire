@@ -11,7 +11,9 @@ class Submission < ActiveRecord::Base
   has_many :exercise_registrations, dependent: :destroy
   has_many :term_registrations, through: :exercise_registrations
 
-  validates_presence_of :submitted_at, :exercise
+  validates :submitter, presence: true
+  validates :submitted_at, presence: true
+
   validate :student_group_and_exercise_uniqueness
   validate :upload_size_below_exercise_maximum_upload_size
 

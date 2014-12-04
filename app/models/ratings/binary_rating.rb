@@ -1,5 +1,5 @@
 class BinaryRating < Rating
-  validates_presence_of :value
+  validates :value, presence: true
 
   def initialize(*args)
     raise "Cannot directly instantiate a BinaryRating" if self.class == BinaryRating

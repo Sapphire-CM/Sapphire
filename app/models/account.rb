@@ -8,12 +8,6 @@ class Account < ActiveRecord::Base
          :validatable,
          :lockable
 
-  # devise already does this with the validatable-option: validates_uniqueness_of :email
-  validates_presence_of :forename
-  validates_presence_of :surname
-  validates_uniqueness_of :matriculation_number, if: :matriculation_number?
-  validates_format_of :matriculation_number, with: /\A[\d]{7}\z/, if: :matriculation_number?
-  validate :validate_no_email_address_with_same_email_exists
 
   has_many :lecturer_registrations, dependent: :destroy
   has_many :tutor_registrations, dependent: :destroy
@@ -27,6 +21,12 @@ class Account < ActiveRecord::Base
   has_many :email_addresses, dependent: :destroy
 
   serialize :options
+
+  # devise already does this with the validatable-option: validates_uniqueness_of :email
+  validates :forename, presence: true
+  validates :surname, presence: true
+  validates :matriculation_number, uniqueness: true, format: { with: /\A[\d]{7}\z/ }, if: :matriculation_number?
+  validate :validate_no_email_address_with_same_email_exists
 
   scope :search, lambda {|query|
     rel = all

@@ -17,8 +17,8 @@ class TutorialGroup < ActiveRecord::Base
 
   after_create :ensure_result_publications
 
-  validates_presence_of :title
-  validates_uniqueness_of :title, scope: :term_id
+  validates :term, presence: true
+  validates :title, presence: true, uniqueness: { scope: :term_id }
 
   def student_has_submission_for_exercise?(student, exercise)
     @values ||= begin

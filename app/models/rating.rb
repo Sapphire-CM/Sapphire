@@ -10,7 +10,9 @@ class Rating < ActiveRecord::Base
   has_many :evaluations, dependent: :destroy
   has_many :submission_evaluations, through: :evaluations
 
-  validates_presence_of :title, :type
+  validates :rating_group, presence: true
+  validates :title, presence: true
+  validates :type, presence: true
 
   validate :rating_type_validation
 

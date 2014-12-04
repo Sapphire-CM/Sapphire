@@ -7,8 +7,9 @@ class Evaluation < ActiveRecord::Base
   has_one :submission, through: :submission_evaluation
   has_one :rating_group, through: :evaluation_group
 
+  validates :evaluation_group, presence: true
+  validates :rating, presence: true
   validate :validate_evaluation_type
-  validates_presence_of :evaluation_group
 
   after_create :update_result!, if: lambda { |eval| eval.value_changed? }
   after_update :update_result!, if: lambda { |eval| eval.value_changed? }

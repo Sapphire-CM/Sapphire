@@ -1,10 +1,9 @@
 class SubmissionExport < Export
   prop_accessor :base_path, :solitary_path, :group_path, :extract_zips, :include_solitary_submissions, :include_group_submissions
 
-  validates_presence_of :base_path
-  validates_presence_of :solitary_path, if: :include_solitary_submissions?
-  validates_presence_of :group_path, if: :include_group_submissions?
-
+  validates :base_path, presence: true
+  validates :solitary_path, presence: true, if: :include_solitary_submissions?
+  validates :group_path, presence: true, if: :include_group_submissions?
 
   def perform!
     raise ExportError unless persisted?
@@ -14,7 +13,6 @@ class SubmissionExport < Export
       generate_zip!(dir)
     end
   end
-
 
   def prepare_zip!(directory)
     term.submissions.find_each do |submission|

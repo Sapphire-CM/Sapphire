@@ -4,4 +4,7 @@ class StudentRegistration < ActiveRecord::Base
 
   has_one :tutorial_group, through: :student_group
   has_one :term, through: :tutorial_group
+
+  validates :student, presence: true
+  validates :student_group, presence: true
 end

@@ -2,7 +2,9 @@ class SubmissionAsset < ActiveRecord::Base
   belongs_to :submission
   mount_uploader :file, SubmissionAssetUploader
 
-  validates_presence_of :file, :submission
+  validates :submission, presence: true
+  validates :file, presence: true
+
   before_save :update_submitted_at, if: :file_changed?
 
   scope :stylesheets, lambda { where(content_type: Mime::STYLESHEET)}

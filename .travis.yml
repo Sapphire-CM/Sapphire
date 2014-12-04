@@ -15,7 +15,7 @@ before_script:
   - cp config/database.yml.travis config/database.yml
   - mysql -e 'create database sapphire_test'
   - psql -c 'create database sapphire_test' -U postgres
-  - RAILS_ENV=test bundle exec rake db:setup
+  - RAILS_ENV=test bundle exec rake db:create db:migrate db:test:prepare
   - RAILS_ENV=test bundle exec sidekiq -d -L /tmp/sidekiq.log
 
 script:

@@ -67,9 +67,9 @@ module Sapphire
         stylesheets = submission.submission_assets.stylesheets
 
         success = true
-        @files.keys.each do |filename|
+        @files.values.each do |file|
           stylesheets.each do |submission_asset|
-            if html.css("link[href=#{File.basename(submission_asset.file.to_s)}]").empty?
+            if file.css("link[href=#{File.basename(submission_asset.file.to_s)}]").empty?
               success = false
               failed!
               break

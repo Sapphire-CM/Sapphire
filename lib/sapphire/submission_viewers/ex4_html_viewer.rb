@@ -45,7 +45,7 @@ module Sapphire
           end
         end
 
-        body.css('a').each do |link|
+        body.css('a[href]').each do |link|
           link['href'] = submission_html_path(File.basename link['href'] || "") unless link['href'] =~ EXTERNAL_LINK
         end
 

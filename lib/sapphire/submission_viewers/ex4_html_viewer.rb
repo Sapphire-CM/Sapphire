@@ -3,7 +3,7 @@ module Sapphire
     class Ex4HTMLViewer < Base
       include Rails.application.routes.url_helpers
 
-      EXTERNAL_LINK = /^\s*(https?:\/\/|mailto\:|\#)/
+      EXTERNAL_LINK = /^\s*(https?:\/\/|mailto\:|\#|tel\:)/
 
       attr_reader :assets
       def setup

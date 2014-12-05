@@ -3,8 +3,10 @@ class ExerciseRegistration < ActiveRecord::Base
   belongs_to :term_registration
   belongs_to :submission
 
-  validates_presence_of :exercise_id, :term_registration_id, :submission_id
-  validates_numericality_of :points, only_integer: true, allow_nil: true
+  validates :exercise, presence: true
+  validates :term_registration, presence: true
+  validates :submission, presence: true
+  validates :points, numericality: { only_integer: true }, allow_nil: true
 
   before_create :update_points
   after_save :update_term_registration_points, if: :points_changed?

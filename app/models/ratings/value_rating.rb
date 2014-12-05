@@ -1,5 +1,6 @@
 class ValueRating < Rating
-  validates_presence_of :min_value, :max_value
+  validates :min_value, presence: true
+  validates :max_value, presence: true
   validate :all_values_range
 
   def evaluation_class

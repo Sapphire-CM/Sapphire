@@ -16,7 +16,7 @@ Sapphire::Application.routes.draw do
 
     resource :grading_scale, only: [:edit, :update]
 
-    resources :exercises do
+    resources :exercises, except: [:show] do
       resources :services, only: [:index, :edit, :update]
     end
 

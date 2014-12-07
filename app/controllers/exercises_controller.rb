@@ -10,7 +10,6 @@ class ExercisesController < ApplicationController
     raise Pundit::NotAuthorizedError unless ExercisePolicy.new(pundit_user, @term).index?
   end
 
-
   def new
     @term = Term.find(params[:term_id])
     @exercise = @term.exercises.build
@@ -47,30 +46,30 @@ class ExercisesController < ApplicationController
   end
 
   private
-    def set_context
-      @exercise = Exercise.find(params[:id] || params[:exercise_id])
-      @term = @exercise.term
-      authorize @exercise
-    end
 
-    def exercise_params
-      params.require(:exercise).permit(
-        :term_id,
-        :title,
-        :description,
-        :deadline,
-        :late_deadline,
-        :group_submission,
-        :points,
-        :visible_points,
-        :enable_min_required_points,
-        :enable_max_total_points,
-        :enable_student_uploads,
-        :enable_max_upload_size,
-        :max_total_points,
-        :min_required_points,
-        :submission_viewer_identifier,
-        :maximum_upload_size)
-    end
+  def set_context
+    @exercise = Exercise.find(params[:id] || params[:exercise_id])
+    @term = @exercise.term
+    authorize @exercise
+  end
 
+  def exercise_params
+    params.require(:exercise).permit(
+      :term_id,
+      :title,
+      :description,
+      :deadline,
+      :late_deadline,
+      :group_submission,
+      :points,
+      :visible_points,
+      :enable_min_required_points,
+      :enable_max_total_points,
+      :enable_student_uploads,
+      :enable_max_upload_size,
+      :max_total_points,
+      :min_required_points,
+      :submission_viewer_identifier,
+      :maximum_upload_size)
+  end
 end

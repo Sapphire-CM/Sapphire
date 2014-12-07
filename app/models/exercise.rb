@@ -23,7 +23,8 @@ class Exercise < ActiveRecord::Base
   has_many :ratings, through: :rating_groups
   has_many :services
 
-  validates :title, presence: true
+  validates :term, presence: true
+  validates :title, presence: true, uniqueness: { scope: :term_id }
   validates :min_required_points, presence: true, if: :enable_min_required_points
   validates :max_total_points, presence: true, if: :enable_max_total_points
   validates :maximum_upload_size, presence: true, if: :enable_max_upload_size

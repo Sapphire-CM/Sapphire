@@ -31,7 +31,7 @@ Sapphire::Application.routes.draw do
     end
 
     resources :tutorial_groups do
-      get :points_overview
+      get :points_overview, on: :member
     end
 
     resources :grading_reviews, only: [:index, :show]

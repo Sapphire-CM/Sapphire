@@ -8,16 +8,16 @@ Feature: Publishing results
       And there is an exercise "Ex 1: HE-Plan" in term "SS 2014"
       And there is a tutorial group "T1" in term "SS 2014"
 
-  Scenario: Navigating to the result publications
-    Given I am logged in as an admin
-      And I am on the home page
-    When I click on link "SS 2014"
-     And I click on link "Exercises"
-     And I click on link "Ex 1: HE-Plan"
-     And I click on link "Administrate"
-     And I click on link "Publish Results"
-    Then I should see "T1"
-     And I should see a button with "Publish T1"
+  # Scenario: Navigating to the result publications
+  #   Given I am logged in as an admin
+  #     And I am on the home page
+  #   When I click on link "SS 2014"
+  #    And I click on link "Exercises"
+  #    And I click on link "Ex 1: HE-Plan"
+  #    And I click on link "Administrate"
+  #    And I click on link "Publish Results"
+  #   Then I should see "T1"
+  #    And I should see a button with "Publish T1"
 
   Scenario: Publishing and concealing results
     Given I am logged in as an admin

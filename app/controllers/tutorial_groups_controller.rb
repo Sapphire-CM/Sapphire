@@ -7,9 +7,7 @@ class TutorialGroupsController < ApplicationController
     end
   end
 
-  before_action :set_context, only: [:show, :edit, :update, :destroy,
-    :new_tutor_registration, :create_tutor_registration, :clear_tutor_registration,
-    :points_overview]
+  before_action :set_context, only: [:show, :edit, :update, :destroy, :points_overview]
 
   def index
     @tutorial_groups = @term.tutorial_groups.merge policy_scope(TutorialGroup.all)
@@ -60,23 +58,16 @@ class TutorialGroupsController < ApplicationController
   end
 
   private
-    def set_context
-      @tutorial_group = current_term.tutorial_groups.find(params[:id] || params[:tutorial_group_id])
-      authorize @tutorial_group
-    end
 
-    def tutorial_group_params
-      params.require(:tutorial_group).permit(
-        :term_id,
-        :title,
-        :description)
-    end
+  def set_context
+    @tutorial_group = current_term.tutorial_groups.find(params[:id] || params[:tutorial_group_id])
+    authorize @tutorial_group
+  end
 
-    def save_registration_and_redirect(registration)
-      if registration.save
-        redirect_to tutorial_group_path(@tutorial_group), notice: "New registration successfully added."
-      else
-        redirect_to tutorial_group_path(@tutorial_group), alert: "Registration failed!"
-      end
-    end
+  def tutorial_group_params
+    params.require(:tutorial_group).permit(
+      :term_id,
+      :title,
+      :description)
+  end
 end

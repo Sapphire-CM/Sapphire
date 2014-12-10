@@ -69,7 +69,7 @@ module Sapphire
         success = true
         @files.values.each do |file|
           stylesheets.each do |submission_asset|
-            if file.css("link[href=#{File.basename(submission_asset.file.to_s)}]").empty?
+            if file.css("link[href='#{File.basename(submission_asset.file.to_s)}']").empty?
               success = false
               failed!
               break
@@ -84,8 +84,18 @@ module Sapphire
         failed! unless @check_if_css_exists_in_all_files.call("meta[charset=UTF-8], meta[charset=utf-8]")
       end
 
-      check :utf_8_telephone_icon_missing, "UTF-8 telephone icon is missing" do
-        failed! unless submission.submission_assets.htmls.find { |submission_asset| submission_asset.file.read['📞'] }.present?
+      check :no_html_entities_used, "No HTML entities used" do
+        allowed_entities = ["&amp;", "&lt;", "&gt;", "&apos;", "&quot;", "&#xA0;"]
+        submission.submission_assets.htmls.each do |submission_asset|
+          contents = submission_asset.file.read
+
+          matches = contents.scan(/\&[^;]+;/)
+          if matches.any? && matches.find {|match_data| !allowed_entities.include?(match_data.first) }.present?
+            failed!
+            puts submission.submitter.fullname
+            break
+          end
+        end
       end
     end
   end

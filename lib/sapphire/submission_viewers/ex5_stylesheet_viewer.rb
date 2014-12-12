@@ -12,6 +12,12 @@ module Sapphire
       def view_options
 
       end
+
+      def asset_options
+        assets.map do |asset|
+          [File.basename(asset.file.to_s), Rails.application.routes.url_helpers.submission_asset_path(asset)]
+        end
+      end
     end
   end
 end

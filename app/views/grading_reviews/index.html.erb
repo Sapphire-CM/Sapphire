@@ -21,6 +21,7 @@
           <th>Forename</th>
           <th>Surname</th>
           <th>Matriculation Number</th>
+          <th>Tutorial Group</th>
           <th></th>
         </tr>
       </thead>
@@ -30,6 +31,7 @@
           <td><%= highlight_search(term_registration.account.forename, params[:q]) %></td>
           <td><%= highlight_search(term_registration.account.surname, params[:q]) %></td>
           <td><%= highlight_search(term_registration.account.matriculation_number, params[:q]) %></td>
+          <td><%= tutorial_group_title(term_registration.tutorial_group) %></td>
           <td><%= link_to "Show", term_grading_review_path(current_term, term_registration), class: "small button" %></td>
         </tr>
         <% end %>

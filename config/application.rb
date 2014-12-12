@@ -35,6 +35,8 @@ module Sapphire
 
     config.i18n.enforce_available_locales = true
 
+    config.assets.precompile += %w( jquery.js )
+
     config.generators do |g|
       g.test_framework :rspec, fixture: true
       g.fixture_replacement :factory_girl, dir: 'spec/factories'

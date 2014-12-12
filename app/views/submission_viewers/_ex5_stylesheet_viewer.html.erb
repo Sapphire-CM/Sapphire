@@ -1,3 +1,4 @@
+<% content_for :head do %>
 <style type="text/css" media="screen">
 /* ============= */
 /* = reset.css = */
@@ -602,12 +603,10 @@ pre {
 }
 
 </style>
-
-<style type='text/css' id='studentstyle'></style>
-
 <%= render "toolbar_style" %>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<link rel="stylesheet" id='studentstyle' type="text/css" title="no title" />
+<%= javascript_include_tag("jquery") %>
 <script type="text/javascript" charset="utf-8">
 $(function(){
   var styles = $('#styles').data("styles");
@@ -629,23 +628,14 @@ $(function(){
   });
 
   function apply_style(style) {
-    $("style#studentstyle").text(style);
+    $("link#studentstyle").attr("href", style);
   }
 
   apply_style($("#styleselector").val());
 })
 </script>
+<% end %>
 
-<div id='toolbar'>
-  <%= link_to "Back", single_evaluation_path(@submission) %>
-  <%= submission_title(@submission) %>
-
-  <select id='styleselector'>
-    <% viewer.assets.each do |asset| %>
-      <option value='<%= asset.file.read.to_s.force_encoding("UTF-8").gsub(/\n/, "")  %>'><%= File.basename asset.file.to_s %></option>
-    <% end %>
-  </select>
-</div>
 <div id="mysite">
 
 
@@ -1094,3 +1084,10 @@ et nulla.
 </footer>
 
 </div>  <!-- mysite -->
+
+<div id='toolbar'>
+  <%= link_to "Back", single_evaluation_path(@submission) %>
+  <%= submission_title(@submission) %>
+
+  <%= select_tag(:styleselector, options_for_select(viewer.asset_options)) %>
+</div>

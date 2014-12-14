@@ -140,6 +140,10 @@ class GradingScaleService
     grading_range_for(grade).maximum_points
   end
 
+  def max_ui_points_for(grade)
+    grading_range_for(grade).maximum_ui_points
+  end
+
   private
   def grading_range_for(grade)
     @grading_ranges.find {|scale| scale.grade == grade} || GradingRange.new(self, 0, nil, {positive: false, not_graded: true})

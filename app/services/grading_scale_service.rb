@@ -120,7 +120,7 @@ class GradingScaleService
     @term_registrations.graded.count
   end
 
-  def ungraded_students_count
+  def ungraded_count
     @term_registrations.ungraded.count
   end
 

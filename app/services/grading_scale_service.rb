@@ -2,11 +2,12 @@ class GradingScaleService
   class GradingRange
     attr_accessor :grading_scale, :grade, :range
 
-    def initialize(grading_scale, grade, range, is_positive)
+    def initialize(grading_scale, grade, range, options)
       @grading_scale = grading_scale
       @grade = grade
       @range = range
-      @is_positive = is_positive
+      @is_positive = options[:positive]
+      @not_graded = options[:not_graded].nil? ? false : options[:not_graded]
     end
 
     def include?(points)
@@ -14,20 +15,32 @@ class GradingScaleService
     end
 
     def matches?(term_registration)
-      if @is_positive
-        include?(term_registration.points) && term_registration.positive_grade?
+      if @not_graded && !term_registration.receives_grade?
+        true
       else
-        include?(term_registration.points) || term_registration.negative_grade?
+        if term_registration.receives_grade?
+          if @is_positive
+            include?(term_registration.points) && term_registration.positive_grade?
+          else
+            include?(term_registration.points) || term_registration.negative_grade?
+          end
+        else
+          false
+        end
       end
     end
 
     def students
       @students ||= begin
         term_registrations = @grading_scale.term_registrations
-        if @is_positive
-          term_registrations.where {(points >> my{range}) & sift(:positive_grades) }
+        if @not_graded
+          term_registrations.ungraded
         else
-          term_registrations.where {(points >> my{range}) | sift(:negative_grades) }
+          if @is_positive
+            term_registrations.graded.where {(points >> my{range}) & sift(:positive_grades) }
+          else
+            term_registrations.graded.where {(points >> my{range}) | sift(:negative_grades) }
+          end
         end
       end
     end
@@ -76,7 +89,7 @@ class GradingScaleService
 
   def percent_for(grade)
     if total_count > 0
-      (count_for(grade).to_f / total_count) * 100
+      (count_for(grade).to_f / graded_count) * 100
     else
       0
     end
@@ -103,8 +116,12 @@ class GradingScaleService
     @grading_ranges.map(&:student_count).sum
   end
 
+  def graded_count
+    @term_registrations.graded.count
+  end
+
   def ungraded_students_count
-    @term_registrations.count - total_count
+    @term_registrations.ungraded.count
   end
 
   def min_points_for(grade)
@@ -117,7 +134,7 @@ class GradingScaleService
 
   private
   def grading_range_for(grade)
-    @grading_ranges.find {|scale| scale.grade == grade} || GradingRange.new(self, 0, nil, false)
+    @grading_ranges.find {|scale| scale.grade == grade} || GradingRange.new(self, 0, nil, {positive: false, not_graded: true})
   end
 
   def setup_grading_ranges!
@@ -132,7 +149,7 @@ class GradingScaleService
     (grading_scale.size - 1).times do |i|
       positive_grade = i != grading_scale.size - 2
 
-      @grading_ranges << GradingRange.new(self, i + 1, Range.new(grading_scale[i + 1], grading_scale[i] - 1), positive_grade)
+      @grading_ranges << GradingRange.new(self, i + 1, Range.new(grading_scale[i + 1], grading_scale[i] - 1), {positive: positive_grade, not_graded: false})
     end
   end
 end

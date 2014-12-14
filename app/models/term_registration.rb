@@ -15,8 +15,12 @@ class TermRegistration < ActiveRecord::Base
   validates_presence_of :tutorial_group_id, unless: :lecturer?
   validates_absence_of :tutorial_group_id, if: :lecturer?
 
-  scope :positive_grades, lambda { where(positive_grade: true) }
-  scope :negative_grades, lambda { where(positive_grade: false) }
+  scope :graded, lambda { where(receives_grade: true) }
+  scope :ungraded, lambda { where(receives_grade: false) }
+
+  scope :positive_grades, lambda { graded.where(positive_grade: true) }
+  scope :negative_grades, lambda { graded.where(positive_grade: false) }
+
   scope :staff, lambda { where(role: Roles::STAFF) }
   scope :with_accounts, lambda { includes(:account) }
   scope :for_account, lambda {|account| where(account_id: account.id)}
@@ -43,6 +47,7 @@ class TermRegistration < ActiveRecord::Base
   def update_points
     self.points = exercise_registrations.sum(:points)
     self.positive_grade = positive_grade_possible?
+    self.receives_grade = should_receive_grade?
   end
 
   def update_points!
@@ -69,5 +74,9 @@ class TermRegistration < ActiveRecord::Base
 
   def positive_grade_possible?
     all_minimum_points_reached? && any_exercise_submitted?
+  end
+
+  def should_receive_grade?
+    any_exercise_submitted?
   end
 end

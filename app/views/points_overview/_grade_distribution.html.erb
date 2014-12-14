@@ -15,7 +15,7 @@
           </td>
           <td class='minimum-width'>-</td>
           <td class='minimum-width text-right'>
-            <%= grading_range.maximum_points %>
+            <%= grading_range.maximum_ui_points %>
           </td>
           <td class='minimum-width text-right'>
             <%= grading_range.student_count %>
@@ -25,12 +25,18 @@
           </td>
         </tr>
       <% end %>
+      <tr>
+        <th>Sum</th>
+        <td colspan='3'></td>
+        <td class='text-right minimum-width'><%= grading_scale.graded_count %></td>
+        <td></td>
+      </tr>
       <tr><td colspan='6'><hr></td></tr>
       <tr>
         <td class='minimum-width text-center'>0</td>
         <td colspan='3'>&nbsp;</td>
         <td class='minimum-width text-right'>
-          <%= grading_scale.ungraded_students_count %>
+          <%= grading_scale.ungraded_count %>
         </td>
         <td>
         </td>

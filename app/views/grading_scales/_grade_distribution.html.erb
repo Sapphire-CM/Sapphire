@@ -25,7 +25,7 @@
           </td>
           <td class='minimum-width'>-</td>
           <td class='minimum-width text-right'>
-            <%= grading_scale.max_points_for(grade) %>
+            <%= grading_scale_max_points_with_ui_points(grading_scale, grade) %>
           </td>
           <td class='minimum-width text-right'>
             <%= grading_scale.count_for(grade) %>
@@ -40,7 +40,7 @@
         <td class='minimum-width text-center'>0</td>
         <td colspan='3'>&nbsp;</td>
         <td class='minimum-width text-right'>
-          <%= grading_scale.ungraded_students_count %>
+          <%= grading_scale.ungraded_count %>
         </td>
         <td>
         </td>

@@ -76,7 +76,7 @@ class GradingScaleService
   end
 
   def maximum_ui_points
-    @maximum_ui_points = @term.exercises.map(&:archievable_points).sum
+    @maximum_ui_points ||= @term.exercises.map(&:archievable_points).sum
   end
 
   def grades

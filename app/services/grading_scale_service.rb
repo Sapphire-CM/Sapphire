@@ -56,6 +56,10 @@ class GradingScaleService
     def maximum_points
       @range.end
     end
+
+    def maximum_ui_points
+      [@grading_scale.maximum_ui_points, maximum_points].min
+    end
   end
 
   attr_reader :term, :term_registrations
@@ -69,6 +73,10 @@ class GradingScaleService
       @term_registrations = term.term_registrations.students
     end
     setup_grading_ranges!
+  end
+
+  def maximum_ui_points
+    @maximum_ui_points = @term.exercises.map(&:archievable_points).sum
   end
 
   def grades

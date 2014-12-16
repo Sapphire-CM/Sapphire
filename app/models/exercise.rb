@@ -64,7 +64,7 @@ class Exercise < ActiveRecord::Base
     !group_submission?
   end
 
-  def archievable_points
+  def achievable_points
     visible_points.presence || (self.enable_max_total_points ? max_total_points : points)
   end
 

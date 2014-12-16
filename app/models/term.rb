@@ -90,8 +90,8 @@ class Term < ActiveRecord::Base
     distribution
   end
 
-  def archievable_points
-    exercises.map(&:archievable_points).sum
+  def achievable_points
+    exercises.sum(&:achievable_points)
   end
 
   def participated?(student)

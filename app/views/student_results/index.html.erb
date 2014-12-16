@@ -16,7 +16,7 @@
     <% @exercise_registrations.each do |exercise_registration| %>
       <tr>
         <td><%= exercise_registration.exercise.title %></td>
-        <td><%= exercise_registration.exercise.archievable_points %></td>
+        <td><%= exercise_registration.exercise.achievable_points %></td>
 
         <% if @term_registration.tutorial_group.results_published_for?(exercise_registration.exercise) %>
           <% sum += exercise_registration.points %>

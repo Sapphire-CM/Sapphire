@@ -16,7 +16,7 @@
           <% if evaluation.is_a? BinaryEvaluation %>
             <%= rating_points_description evaluation.rating %>
           <% else %>
-            <%= evaluation.value %>
+            <%= evaluation.points %>
           <% end %>
           </td>
         </tr>

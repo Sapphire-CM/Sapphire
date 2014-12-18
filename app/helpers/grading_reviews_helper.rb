@@ -11,6 +11,6 @@ module GradingReviewsHelper
       groups_to_show << {group: evaluation_group, evaluations: evaluations_to_show} if evaluations_to_show.any?
     end
 
-    render "evaluations_list", groups: groups_to_show.sort_by{|g| g[:group].rating_group.row_order}
+    render "grading_review/evaluations_list", groups: groups_to_show.sort_by{|g| g[:group].rating_group.row_order}
   end
 end

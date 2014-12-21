@@ -1,19 +1,19 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ResultPublication do
   it "should be respond to concealed?" do
     result_publication = FactoryGirl.build(:result_publication)
 
-    result_publication.should respond_to(:concealed?)
+    expect(result_publication).to respond_to(:concealed?)
   end
 
   it "should be able to tell if the results are concealed" do
     result_publication = FactoryGirl.create(:result_publication, published: true)
 
-    result_publication.concealed?.should be_false
+    expect(result_publication.concealed?).to be_falsey
     result_publication.published = false
 
-    result_publication.concealed?.should be_true
+    expect(result_publication.concealed?).to be_truthy
   end
 
   it "should be able to set published with publish!" do
@@ -21,7 +21,7 @@ describe ResultPublication do
     result_publication.publish!
 
     result_publication.reload
-    result_publication.published?.should be_true
+    expect(result_publication.published?).to be_truthy
   end
 
   it "should be able to set published with conceal!" do
@@ -29,7 +29,7 @@ describe ResultPublication do
     result_publication.conceal!
 
     result_publication.reload
-    result_publication.concealed?.should be_true
+    expect(result_publication.concealed?).to be_truthy
   end
 
   it "should be initially concealed" do
@@ -37,7 +37,7 @@ describe ResultPublication do
     tutorial_group = FactoryGirl.create(:exercise, term: exercise.term)
 
     exercise.result_publications.each do |result_publication|
-      expect(result_publication.published === false).to be_true
+      expect(result_publication.published === false).to be_truthy
     end
   end
 
@@ -45,6 +45,6 @@ describe ResultPublication do
     exercise = FactoryGirl.create(:exercise)
     tutorial_group = FactoryGirl.create(:tutorial_group, term: exercise.term)
 
-    ResultPublication.for(exercise: exercise, tutorial_group: tutorial_group).should be_kind_of(ResultPublication)
+    expect(ResultPublication.for(exercise: exercise, tutorial_group: tutorial_group)).to be_kind_of(ResultPublication)
   end
 end

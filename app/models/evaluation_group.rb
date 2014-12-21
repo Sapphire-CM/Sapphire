@@ -4,6 +4,9 @@ class EvaluationGroup < ActiveRecord::Base
 
   has_many :evaluations, dependent: :delete_all
 
+  validate :rating_group, presence: true
+  validate :submission_evaluation, presence: true
+
   before_create :calc_result
   after_create :create_evaluations
   after_update :update_submission_evaluation_results, if: lambda {|eg| eg.points_changed? || eg.percent_changed?}

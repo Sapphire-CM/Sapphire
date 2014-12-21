@@ -9,7 +9,7 @@
 
     <%#= sidenav_item(:calendar, "Meeting Time", '#') %>
 
-    <%= sidenav_item(:list_thumbnails, "Points Overview", term_points_overview_path(term)) %>
+    <%= sidenav_item(:list_thumbnails, "Points Overview", points_overview_term_path(term)) %>
   <% else %>
     <%= sidenav_item(:megaphone, "Results", term_results_path(@term)) %>
   <% end %>

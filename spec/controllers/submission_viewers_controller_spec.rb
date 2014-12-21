@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe SubmissionViewersController do
   describe "GET 'show'" do
@@ -11,8 +11,8 @@ describe SubmissionViewersController do
 
       get 'show', id: submission.id
 
-      response.status.should eq(200)
-      response.should be_success
+      expect(response.status).to eq(200)
+      expect(response).to be_success
     end
   end
 end

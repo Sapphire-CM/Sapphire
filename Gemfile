@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 4.0.0'
+gem 'rails', '4.0.6'
+
+gem 'pg'                          # PostgreSQL database connector
 
 gem 'jquery-rails'                # Use jquery as the JavaScript library
 gem 'jquery-ui-rails'
@@ -83,26 +85,30 @@ group :development do
   gem 'capistrano-sidekiq'   # capistrano plugin for sidekiq
 end
 
-group :development, :test do
-  gem 'sqlite3'
-  gem 'mysql2'
+group :test do
   gem 'cucumber'
-  gem 'cucumber-rails', require:false
+  gem 'cucumber-rails', require: false
+
   gem 'rspec-rails'
+
   gem 'guard-rspec'
   gem 'guard-cucumber'
+
+  gem 'shoulda-matchers'
   gem 'terminal-notifier-guard'
-  gem 'shoulda'
-  gem 'shoulda-matchers-pundit'
-  gem 'capybara'
-  gem 'database_cleaner'
+
   gem 'factory_girl_rails'
-  gem 'simplecov', '~> 0.7.1'     # test-coverage reports (upgrade when https://github.com/colszowka/simplecov/issues/281 is resolved)
+  gem 'database_cleaner'
+
+  gem 'simplecov'                 # test-coverage reports
+
+  gem 'capybara'
   gem 'poltergeist'               # PhantomJS, headless Webkit
   # gem 'selenium-webdriver'      # Selenium, Firefox webdriver
   # gem 'capybara-webkit'         # Webkit headless webdriver
 end
 
-group :production, :development, :test do
-  gem 'pg'                        # PostgreSQL database connector
+group :development, :test do
+  gem 'mysql2'                    # MySQL database connector
+  gem 'sqlite3'                   # sqlite3 database connector
 end

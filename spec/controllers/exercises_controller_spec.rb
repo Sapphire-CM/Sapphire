@@ -1,33 +1,127 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'rails_helper'
 
-describe ExercisesController do
-  let(:term) { create(:term) }
+RSpec.describe ExercisesController do
+  render_views
+  include_context 'active_admin_session_context'
 
-  before :each do
-    sign_in(user)
+  let(:valid_attributes) do
+    {
+      exercise: {
+        title: 'Some Title',
+        description: 'Some longer description text.',
+      }
+    }
   end
 
-  context "student" do
-    let(:tutorial_group) { create(:tutorial_group, term: term) }
-    let(:student_group) { create(:student_group, tutorial_group: tutorial_group) }
-    let(:user) do
-      account = create(:account)
-      FactoryGirl.create(:student_registration, student: account, student_group: student_group)
+  let(:invalid_attributes) do
+    {
+      exercise: {
+        title: 'Some Existing Title',
+        description: 'Some longer description text.',
+      }
+    }
+  end
 
-      account
-    end
+  let(:term) { FactoryGirl.create :term }
 
-    it "should assign @exercises" do
-      exercises = FactoryGirl.create_list(:exercise, 5, term: term)
+  let(:exercise) { FactoryGirl.create :exercise, term: term }
+
+  describe 'GET index' do
+    it 'assigns all exercises as @exercises' do
+      FactoryGirl.create_list :exercise, 4, term: term
 
       get :index, term_id: term.id
 
-      expect(assigns(:exercises)).to eq(exercises)
+      expect(response).to have_http_status(:success)
+      expect(assigns(:exercises)).to eq(term.exercises)
+    end
+  end
+
+  describe 'GET new' do
+    it 'assigns a new exercise as @exercise' do
+      xhr :get, :new, term_id: term.id
+
+      expect(response).to have_http_status(:success)
+      expect(assigns(:exercise)).to be_a_new(Exercise)
+    end
+  end
+
+  describe 'POST create' do
+    describe 'with valid params' do
+      it 'creates a new Exercise' do
+        valid_attributes[:exercise][:term_id] = term.id
+
+        expect {
+          post :create, valid_attributes
+        }.to change(Exercise, :count).by(1)
+
+        expect(response).to redirect_to(term_exercises_path(term))
+        expect(assigns(:exercise)).to be_a(Exercise)
+        expect(assigns(:exercise)).to be_persisted
+      end
     end
 
-    it "should assign @term" do
-      get :index, term_id: term.id
-      expect(assigns(:term)).to eq(term)
+    describe 'with invalid params' do
+      it 'assigns a newly created but unsaved exercise as @exercise' do
+        FactoryGirl.create :exercise, term: term, title: invalid_attributes[:exercise][:title]
+        invalid_attributes[:exercise][:term_id] = term.id
+
+        post :create, invalid_attributes
+
+        expect(response).to have_http_status(:success)
+        expect(response).to render_template(:new)
+        expect(assigns(:exercise)).to be_a_new(Exercise)
+      end
+    end
+  end
+
+  describe 'GET edit' do
+    it 'assigns the requested exercise as @exercise' do
+      get :edit, id: exercise.id
+
+      expect(response).to have_http_status(:success)
+      expect(assigns(:exercise)).to eq(exercise)
+    end
+  end
+
+  describe 'PUT update' do
+    describe 'with valid params' do
+      it 'updates the requested exercise' do
+        valid_attributes[:id] = exercise.id
+
+        put :update, valid_attributes
+
+        exercise.reload
+        expect(response).to redirect_to(edit_exercise_path(exercise))
+        expect(assigns(:exercise)).to eq(exercise)
+        expect(exercise.title).to eq valid_attributes[:exercise][:title]
+        expect(exercise.description).to eq valid_attributes[:exercise][:description]
+      end
+    end
+
+    describe 'with invalid params' do
+      it 'assigns the requested exercise as @exercise' do
+        FactoryGirl.create :exercise, term: term, title: invalid_attributes[:exercise][:title]
+        invalid_attributes[:id] = exercise.id
+
+        put :update, invalid_attributes
+
+        expect(response).to have_http_status(:success)
+        expect(response).to render_template(:edit)
+        expect(assigns(:exercise)).to eq(exercise)
+      end
+    end
+  end
+
+  describe 'DELETE destroy' do
+    it 'destroys the requested exercise' do
+      exercise.reload # trigger creation
+
+      expect {
+        xhr :delete, :destroy, id: exercise.id
+      }.to change(Exercise, :count).by(-1)
+
+      expect(response).to redirect_to(term_exercises_path(term))
     end
   end
 end

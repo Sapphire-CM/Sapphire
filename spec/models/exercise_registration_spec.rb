@@ -1,15 +1,14 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ExerciseRegistration do
-  it { should belong_to(:exercise)}
-  it { should belong_to(:submission)}
-  it { should_not belong_to(:student_group)}
-  it { should belong_to(:term_registration)}
-  it { should validate_presence_of(:exercise_id) }
-  it { should validate_presence_of(:term_registration_id) }
-  it { should_not validate_presence_of(:student_group_id) }
-  it { should validate_presence_of(:submission_id) }
-  it { should validate_numericality_of(:points).allow_nil.only_integer }
+  it { is_expected.to belong_to(:exercise)}
+  it { is_expected.to belong_to(:submission)}
+  it { is_expected.not_to belong_to(:student_group)}
+  it { is_expected.to belong_to(:term_registration)}
+  it { is_expected.to validate_presence_of(:exercise) }
+  it { is_expected.to validate_presence_of(:term_registration) }
+  it { is_expected.to validate_presence_of(:submission) }
+  it { is_expected.to validate_numericality_of(:points).only_integer }
 
   context "submission points" do
     let(:submission) do

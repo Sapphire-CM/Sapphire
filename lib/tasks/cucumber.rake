@@ -4,7 +4,6 @@
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
 
-ENV["RAILS_ENV"] ||= 'test'
 
 unless ARGV.any? {|a| a =~ /^gems/} # Don't load anything when running the gems:* tasks
 

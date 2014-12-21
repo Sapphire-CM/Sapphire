@@ -1,15 +1,14 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'rails_helper'
 
 describe Account do
-  it { should have_many :term_registrations }
+  it { is_expected.to have_many :term_registrations }
 
   context "student" do
     let(:term) {FactoryGirl.create(:term)}
     let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
     let(:user) do
       account = FactoryGirl.create(:account)
-      student_group = FactoryGirl.create(:student_group, tutorial_group: tutorial_group)
-      student_registration = FactoryGirl.create(:student_registration, student: account, student_group: student_group)
+      FactoryGirl.create(:term_registration, :student, account: account, term: term, tutorial_group: tutorial_group)
       account
     end
 

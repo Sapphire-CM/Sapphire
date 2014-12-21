@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'rails_helper'
 
 describe GradingScalePolicy do
   let(:term_policy_record) do
@@ -15,32 +15,32 @@ describe GradingScalePolicy do
     let(:user) { FactoryGirl.create(:account, :admin) }
     let(:term) { FactoryGirl.create(:term) }
 
-    it { should permit_authorization :edit }
-    it { should permit_authorization :update}
+    it { is_expected.to permit_authorization :edit }
+    it { is_expected.to permit_authorization :update}
   end
 
   context "as a lecturer" do
     let(:user) { FactoryGirl.create(:account, :lecturer) }
-    let(:term) { user.lecturer_registrations.first.term }
+    let(:term) { user.term_registrations.lecturers.first.term }
 
-    it { should permit_authorization :edit}
-    it { should permit_authorization :update}
+    it { is_expected.to permit_authorization :edit}
+    it { is_expected.to permit_authorization :update}
   end
 
   context "as a tutor" do
     let(:user) { FactoryGirl.create(:account, :tutor) }
-    let(:term) { user.tutor_registrations.first.term }
+    let(:term) { user.term_registrations.tutors.first.term }
 
-    it {should_not permit_authorization :edit}
-    it {should_not permit_authorization :update}
+    it {is_expected.not_to permit_authorization :edit}
+    it {is_expected.not_to permit_authorization :update}
   end
 
   context "as a student" do
     let(:user) { FactoryGirl.create(:account, :student)}
-    let(:term) { user.student_registrations.first.term}
+    let(:term) { user.term_registrations.students.first.term }
 
-    it { should_not permit_authorization :edit }
-    it { should_not permit_authorization :update}
+    it { is_expected.not_to permit_authorization :edit }
+    it { is_expected.not_to permit_authorization :update}
   end
 
 end

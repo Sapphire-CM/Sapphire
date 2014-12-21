@@ -7,7 +7,6 @@ class Import::StudentImport < ActiveRecord::Base
   IMPORTABLE_ATTRIBUTES = [:group, :email, :forename, :surname, :matriculation_number, :comment].freeze
   STATES = ["pending", "imported", "failed"].freeze
 
-  # associations
   belongs_to :term
 
   mount_uploader :file, Import::StudentImportsUploader
@@ -15,9 +14,8 @@ class Import::StudentImport < ActiveRecord::Base
   serialize :import_mapping, Import::ImportMapping
   serialize :import_result, Hash
 
-  # validations
-  validates_presence_of :file, :term_id
-  validates_inclusion_of :status, in: STATES
+  validates :term, presence: true
+  validates :file, presence: true, inclusion: { in: STATES }
 
   def initialize(*args)
     super *args

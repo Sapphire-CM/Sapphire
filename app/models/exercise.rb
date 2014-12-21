@@ -23,16 +23,16 @@ class Exercise < ActiveRecord::Base
   has_many :ratings, through: :rating_groups
   has_many :services
 
+  validates :term, presence: true
+  validates :title, presence: true, uniqueness: { scope: :term_id }
+  validates :min_required_points, presence: true, if: :enable_min_required_points
+  validates :max_total_points, presence: true, if: :enable_max_total_points
+  validates :maximum_upload_size, presence: true, if: :enable_max_upload_size
 
   before_save :update_points, if: lambda { |exercise| exercise.enable_max_total_points_changed? || exercise.max_total_points_changed? }
   after_create :ensure_result_publications
   after_save :update_term_points, if: :points_changed?
   after_save :recalculate_term_registrations_results, if: lambda {|exercise| exercise.enable_min_required_points_changed? || exercise.min_required_points_changed? || exercise.points_changed?}
-
-  validates_presence_of :title
-  validates_presence_of :min_required_points, if: Proc.new { enable_min_required_points }
-  validates_presence_of :max_total_points, if: Proc.new { enable_max_total_points }
-  validates_presence_of :maximum_upload_size, if: Proc.new { enable_max_upload_size }
 
   def update_points
     self.points = self.rating_groups(true).map {|rg| rg.max_points || rg.points}.compact.sum || 0

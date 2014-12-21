@@ -32,36 +32,10 @@ class TermPolicy < PunditBasePolicy
     user.lecturer_of_term?(record)
   end
 
-  def new_lecturer_registration?
-    user.admin? ||
-    user.lecturer_of_any_term_in_course?(record.course)
-  end
-
-  def create_lecturer_registration?
-    user.admin? ||
-    user.lecturer_of_any_term_in_course?(record.course)
-  end
-
-  def clear_lecturer_registration?
-    user.admin? ||
-    user.lecturer_of_any_term_in_course?(record.course)
-  end
-
-  def grading_scale?
-    user.admin? ||
-    user.lecturer_of_term?(record)
-  end
-
-  def update_grading_scale?
-    user.admin? ||
-    user.lecturer_of_term?(record)
-  end
-
   def points_overview?
     user.admin? ||
     user.staff_of_term?(record)
   end
-
 
   def student?
     user.student_of_term?(record)

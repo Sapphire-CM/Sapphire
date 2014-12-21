@@ -9,11 +9,11 @@ class TermRegistration < ActiveRecord::Base
   has_many :exercises, -> { uniq }, through: :exercise_registrations
   has_many :submissions, through: :exercise_registrations
 
-  validates_presence_of :account_id, :term_id, :role
-  validates_inclusion_of :role, :in => Roles::ALL
-  validates_uniqueness_of :account_id, scope: :term_id
-  validates_presence_of :tutorial_group_id, unless: :lecturer?
-  validates_absence_of :tutorial_group_id, if: :lecturer?
+  validates :account, presence: true, uniqueness: { scope: :term_id }
+  validates :term, presence: true
+  validates :tutorial_group, presence: true, unless: :lecturer?
+  validates :tutorial_group, absence: true, if: :lecturer?
+  validates :role, presence: true, inclusion: { in: Roles::ALL }
 
   scope :graded, lambda { where(receives_grade: true) }
   scope :ungraded, lambda { where(receives_grade: false) }

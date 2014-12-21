@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ResultPublicationsController do
   before :each do
@@ -40,7 +40,7 @@ describe ResultPublicationsController do
       it "should update the publication status of a tutorial group" do
         patch :update, url_params.merge({result_publication: {published: true}})
 
-        exercise.result_published_for?(tutorial_groups.first).should be_true
+        expect(exercise.result_published_for?(tutorial_groups.first)).to be_truthy
       end
 
       it "should present a different flash message if the publication status is not updated" do

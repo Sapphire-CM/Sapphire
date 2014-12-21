@@ -1,14 +1,10 @@
 class Course < ActiveRecord::Base
   has_many :terms, dependent: :destroy
 
-  validates_presence_of :title
-  validates_uniqueness_of :title
+  validates :title, presence: true, uniqueness: true
 
   scope :unlocked, lambda { where(locked: false) }
-
-  def self.associated_with(account)
-    joins(:terms).where(terms: {id: Term.associated_with(account).pluck(:id)}).uniq
-  end
+  scope :associated_with, lambda {|account| joins(terms: :term_registrations).where(term_registrations: {account_id: account.id}).uniq }
 
   def unlocked?
     !locked?
@@ -23,6 +19,6 @@ class Course < ActiveRecord::Base
   end
 
   def associated_with?(account)
-    Course.associated_with(account).where(id: self.id).exists?
+    Course.associated_with(account).exists?(id: self.id)
   end
 end

@@ -11,16 +11,12 @@ Sapphire::Application.routes.draw do
 
   resources :courses, except: [:show]
 
-  resources :terms do
-    get :new_lecturer_registration
-    post :create_lecturer_registration
-    delete :clear_lecturer_registration
-
-    post :update_grading_scale
-    get :points_overview
+  resources :terms, except: [:index] do
+    get :points_overview, on: :member
 
     resource :grading_scale, only: [:edit, :update]
-    resources :exercises do
+
+    resources :exercises, except: [:show] do
       resources :services, only: [:index, :edit, :update]
     end
 
@@ -29,13 +25,15 @@ Sapphire::Application.routes.draw do
     end
 
     resources :students
+
     resources :exports do
       get :download, on: :member
     end
 
     resources :tutorial_groups do
-      get :points_overview
+      get :points_overview, on: :member
     end
+
     resources :grading_reviews, only: [:index, :show]
 
     resources :results, only: [:index, :show], controller: :student_results
@@ -75,12 +73,8 @@ Sapphire::Application.routes.draw do
     end
   end
 
-  resources :submissions, only: :show do
-    resource :evaluation, controller: 'submission_evaluations', except: [:destroy]
-  end
-
+  resources :submissions, only: :show
   resources :submission_viewers
-  resources :submission_evaluations, except: [:destroy]
   resources :submission_assets, only: [:show, :new, :create]
   resources :single_evaluations
 

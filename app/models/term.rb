@@ -19,8 +19,8 @@ class Term < ActiveRecord::Base
   has_one :lecturer_registration, dependent: :destroy
   delegate :lecturer, to: :lecturer_registration, allow_nil: true
 
-  validates_presence_of :title, :course_id
-  validates_uniqueness_of :title, scope: :course_id
+  validates :course, presence: true
+  validates :title, presence: true, uniqueness: { scope: :course }
 
   before_save :improve_grading_scale
   before_save :improve_points

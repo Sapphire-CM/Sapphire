@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'rails_helper'
 
 describe Course do
   it "should scope to current term" do
@@ -14,27 +14,26 @@ describe Course do
 
     t = terms[0]
     tg = FactoryGirl.create(:tutorial_group, term: t)
-    FactoryGirl.create(:tutor_registration, tutor: account, tutorial_group: tg)
+    FactoryGirl.create(:term_registration, :tutor, account: account, term: t, tutorial_group: tg)
 
     t = terms[1]
-    FactoryGirl.create(:lecturer_registration, lecturer: account, term: t)
+    FactoryGirl.create(:term_registration, :lecturer, account: account, term: t)
 
     t = terms[2]
     tg = FactoryGirl.create(:tutorial_group, term: t)
-    sg = FactoryGirl.create(:student_group, tutorial_group: tg)
-    sgr = FactoryGirl.create(:student_registration, student: account, student_group: sg)
+    FactoryGirl.create(:term_registration, :student, account: account, term: t, tutorial_group: tg)
 
-    expect(Course.associated_with(account).sort_by(&:id)).to eq(courses.first(3).order(:id))
+    expect(Course.associated_with(account).sort_by(&:id)).to eq(courses[0..2].sort_by(&:id))
   end
 
-  it "should be able to determine whether a student is associated with a course" do
+  it "should be able to determine whether a lecturer is associated with a course" do
     account = FactoryGirl.create(:account)
     term = FactoryGirl.create(:term)
 
-    expect(term.course.associated_with? account).to be_false
+    expect(term.course.associated_with? account).to be_falsey
 
-    lecturer_registration = FactoryGirl.create(:lecturer_registration, term: term)
-    expect(term.course.associated_with? lecturer_registration.lecturer).to be_true
+    FactoryGirl.create(:term_registration, :lecturer, account: account, term: term)
+    expect(term.course.associated_with? account).to be_truthy
   end
 
   context "ordinary account" do
@@ -51,15 +50,14 @@ describe Course do
 
       t = terms[0]
       tg = FactoryGirl.create(:tutorial_group, term: t)
-      FactoryGirl.create(:tutor_registration, tutor: account, tutorial_group: tg)
+      FactoryGirl.create(:term_registration, :tutor, account: account, term: t, tutorial_group: tg)
 
       t = terms[1]
-      FactoryGirl.create(:lecturer_registration, lecturer: account, term: t)
+      FactoryGirl.create(:term_registration, :lecturer, account: account, term: t)
 
       t = terms[2]
       tg = FactoryGirl.create(:tutorial_group, term: t)
-      sg = FactoryGirl.create(:student_group, tutorial_group: tg)
-      sgr = FactoryGirl.create(:student_registration, student: account, student_group: sg)
+      FactoryGirl.create(:term_registration, :student, account: account, term: t, tutorial_group: tg)
 
       expect(Course.viewable_for(account).sort_by(&:id)).to eq(courses.first(3))
     end
@@ -70,7 +68,7 @@ describe Course do
 
     it "should not scope courses when using viewable_for" do
       courses = FactoryGirl.create_list(:course, 5)
-      expect(Course.viewable_for(account).sort_by(&:id)).to eq(courses)
+      expect(Course.viewable_for(account).sort_by(&:id)).to eq(courses.sort_by(&:id))
     end
   end
 end

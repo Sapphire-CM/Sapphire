@@ -1,34 +1,42 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe TermRegistration do
-  it { should validate_presence_of :account_id }
-  it { should validate_presence_of :term_id }
-  it { should validate_presence_of :role }
-  it { should ensure_inclusion_of(:role).in_array Roles::ALL }
-  it { should validate_uniqueness_of(:account_id).scoped_to(:term_id)}
-  it { should have_many :exercise_registrations }
+  it { is_expected.to validate_presence_of :account }
+  it { is_expected.to validate_presence_of :term }
+  it { is_expected.to validate_presence_of :role }
+  it { is_expected.to validate_inclusion_of(:role).in_array(Roles::ALL) }
+  it { is_expected.to have_many :exercise_registrations }
+
+  # this currently failes because of https://github.com/thoughtbot/shoulda-matchers/issues/535
+  # it { is_expected.to validate_uniqueness_of(:account).scoped_to(:term_id)}
 
   it "should respond to #negative_grade" do
     term_registration = build(:term_registration, positive_grade: true)
-    expect(term_registration.negative_grade?).to be_false
+    expect(term_registration.negative_grade?).to be_falsey
   end
 
   context "students" do
     let(:subject) { build :term_registration, :student }
 
-    it { should validate_presence_of :tutorial_group_id }
+    it { is_expected.to validate_presence_of :tutorial_group }
   end
 
   context "tutors" do
     let(:subject) { build :term_registration, :tutor }
 
-    it { should validate_presence_of :tutorial_group_id }
+    it { is_expected.to validate_presence_of :tutorial_group }
   end
 
   context "lecturers" do
     let(:subject) { build :term_registration, :lecturer }
 
-    it { should validate_absence_of :tutorial_group_id }
+    it "should validate absence of tutorial_group_id" do
+      subject.tutorial_group = nil
+      expect(subject).to be_valid
+
+      subject.tutorial_group = FactoryGirl.create(:tutorial_group)
+      expect(subject).not_to be_valid
+    end
   end
 
   context "scopes" do

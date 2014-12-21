@@ -17,16 +17,18 @@ class StudentResultsController < ApplicationController
   end
 
   def show
-    @term_registration = current_term.term_registrations.for_account(current_account).first
+    @term_registration = current_term.term_registrations.find_by_account_id(current_account.id)
     @exercise = current_term.exercises.find(params[:id])
-    @exercise_registration = @term_registration.exercise_registrations.for_exercise(@exercise).first
-    @submission = @exercise_registration.submission
+    @exercise_registration = @term_registration.exercise_registrations.find_by_exercise_id(@exercise.id)
 
-    authorize StudentResultsPolicyRecord.new(@submission)
 
-    if @submission.present?
+    if @exercise_registration.present? && @submission = @exercise_registration.submission
+      authorize StudentResultsPolicyRecord.new(@submission)
+
       @submission_evaluation = @submission.submission_evaluation
     else
+      authorize current_term
+
       redirect_to exercise_student_submission_path(@exercise), notice: "You have not submitted any files for grading"
     end
   end

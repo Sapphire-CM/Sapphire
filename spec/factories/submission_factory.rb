@@ -1,13 +1,13 @@
 FactoryGirl.define do
   factory :submission do
-    submitted_at {Time.now}
+    submitted_at { Time.now }
     exercise
     association :submitter, factory: :account
 
     student_group_registration nil
 
     trait :with_student_group_registration do
-      ignore do
+      transient do
         student_group_title "G1-01"
       end
 
@@ -25,7 +25,7 @@ FactoryGirl.define do
     end
 
     trait :for_tutorial_group do
-      ignore do
+      transient do
         tutorial_group { create :tutorial_group }
       end
 

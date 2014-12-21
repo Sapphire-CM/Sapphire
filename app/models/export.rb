@@ -7,11 +7,12 @@ class Export < ActiveRecord::Base
   end
 
   belongs_to :term
-
   mount_uploader :file, ExportsUploader
 
   enum status: [:pending, :running, :finished, :failed]
   polymorphic submission: "SubmissionExport"
+
+  validates :term, presence: true
 
   before_create :assign_default_status
 

@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'rails_helper'
 
 describe Exercise do
   let(:course) { create(:course) }
@@ -6,17 +6,17 @@ describe Exercise do
 
   it "should be able to set student uploads" do
     exercise = FactoryGirl.create(:exercise, allow_student_uploads: true)
-    exercise.allow_student_uploads?.should be_true
+    expect(exercise.allow_student_uploads?).to be_truthy
 
     exercise = FactoryGirl.create(:exercise, allow_student_uploads: false)
-    exercise.allow_student_uploads?.should be_false
+    expect(exercise.allow_student_uploads?).to be_falsey
   end
 
   it "should ensure result publications on create" do
     FactoryGirl.create_list(:tutorial_group, 4, term: term)
     exercise = FactoryGirl.create(:exercise, term: term)
 
-    exercise.result_publications.count.should eq(4)
+    expect(exercise.result_publications.count).to eq(4)
   end
 
   it "should destroy result publications on delete" do

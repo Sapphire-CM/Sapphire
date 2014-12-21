@@ -91,7 +91,7 @@ class Term < ActiveRecord::Base
   end
 
   def achievable_points
-    exercises.sum(&:achievable_points)
+    exercises.to_a.sum(&:achievable_points)
   end
 
   def participated?(student)

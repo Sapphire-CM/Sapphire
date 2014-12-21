@@ -5,12 +5,14 @@ class SubmissionExport < Export
   validates :solitary_path, presence: true, if: :include_solitary_submissions?
   validates :group_path, presence: true, if: :include_group_submissions?
 
+  include ZipGeneration
+
   def perform!
     raise ExportError unless persisted?
 
     Dir.mktmpdir do |dir|
       prepare_zip!(dir)
-      generate_zip!(dir)
+      generate_zip_and_assign_to_file!(dir)
     end
   end
 
@@ -22,23 +24,6 @@ class SubmissionExport < Export
         end
       end
     end
-  end
-
-  def generate_zip!(directory)
-    zips_path = Rails.root.join("tmp/exports")
-    FileUtils.mkdir_p(zips_path)
-
-    zip_filename = File.join(zips_path, "#{term.course.title.parameterize}-#{term.title.parameterize}-#{self.id}.zip")
-    FileUtils.rm(zip_filename) if File.exist? zip_filename
-
-    # this ensures that there is at least one file to create a zip for
-    # otherwise the zip command fails and therefore this export fails
-    File.write(File.join(directory, 'export.txt'), "Export created on #{Time.now}")
-
-    cmd = %Q{cd "#{directory}" && zip -r "#{zip_filename}" *}
-    `#{cmd}`
-
-    self.file = File.open(zip_filename)
   end
 
   def include_solitary_submissions?

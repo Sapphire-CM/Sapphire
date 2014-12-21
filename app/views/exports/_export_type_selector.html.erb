@@ -1,3 +1,4 @@
 <h4>Please Choose an Export</h4>
 
-<%= link_to "Submission Export", new_term_export_path(current_term, type: "submission") %>
+<%= link_to "Submission Export", new_term_export_path(current_term, type: "submission"), class: "small button" %>
+<%= link_to "Excel Spreadsheet Export", new_term_export_path(current_term, type: "excel_spreadsheet"), class: "small button" %>

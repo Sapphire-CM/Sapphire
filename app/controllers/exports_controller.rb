@@ -58,7 +58,6 @@ class ExportsController < ApplicationController
     redirect_to term_exports_path(current_term), notice: "Export successfully deleted"
   end
 
-
   private
   def exports_scope
     current_term.exports

@@ -1,5 +1,4 @@
 class TermRegistration < ActiveRecord::Base
-  extend Enum
   include Roles
 
   belongs_to :account

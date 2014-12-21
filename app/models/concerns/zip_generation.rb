@@ -1,5 +1,5 @@
 module ZipGeneration
-  extend ActiveRecord::Concern
+  extend ActiveSupport::Concern
 
   def generate_zip_and_assign_to_file!(directory)
     zips_path = Rails.root.join("tmp/exports")

@@ -8,7 +8,7 @@ Feature: Password reset
       And I am on the password reset page
      When I fill in "Email" with "john.doe@student.tugraz.at"
       And I click on button "Reset"
-     Then I should see "You will receive an email with instructions about how to reset your password in a few minutes."
+     Then I should see "You will receive an email with instructions on how to reset your password in a few minutes."
 
   Scenario: User with incorrect email
     Given no account with email "john.doe@student.tugraz.at" exists

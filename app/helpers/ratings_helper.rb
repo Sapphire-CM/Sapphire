@@ -9,6 +9,18 @@ module RatingsHelper
     ]
   end
 
+  def rating_points_description(rating)
+    if rating.is_a? BinaryNumberRating
+      "#{rating.value}"
+    elsif rating.is_a? BinaryPercentRating
+      "#{rating.value} %"
+    elsif rating.is_a? ValueNumberRating
+      "#{rating.min_value} ... #{rating.max_value}"
+    elsif rating.is_a? ValuePercentRating
+      "#{rating.min_value} ... #{rating.max_value} %"
+    end
+  end
+
   def automated_checks_form_collection
     Sapphire::AutomatedCheckers::Central.registered_checkers.inject([]) do |groups, checker|
       groups << checker

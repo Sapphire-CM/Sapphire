@@ -105,18 +105,6 @@ module LayoutHelper
     content_tag :li, link_to(title, path, options), class: classes.join(" ")
   end
 
-  def rating_points_description(rating)
-    if rating.is_a? BinaryNumberRating
-      "#{rating.value}"
-    elsif rating.is_a? BinaryPercentRating
-      "#{rating.value} %"
-    elsif rating.is_a? ValueNumberRating
-      "#{rating.min_value} ... #{rating.max_value}"
-    elsif rating.is_a? ValuePercentRating
-      "#{rating.min_value} ... #{rating.max_value} %"
-    end
-  end
-
   def rating_group_full_title(rating_group)
     full_title = rating_group.title
     full_title += ": #{rating_group_subtitle_points(rating_group)}" if not rating_group.global

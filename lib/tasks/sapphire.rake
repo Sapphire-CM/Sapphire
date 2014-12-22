@@ -43,8 +43,6 @@ namespace :sapphire do
     case args[:responder]
     when 'web_research'
       load 'lib/email/inm/web_research.rb'
-    when 'style_sheets'
-      load 'lib/email/inm/style_sheets.rb'
     else
       raise 'no responder type defined!'
     end

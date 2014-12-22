@@ -43,6 +43,8 @@ class Account < ActiveRecord::Base
     scope "#{group}_for_term".to_sym, lambda {|term| joins(:term_registrations).where(term_registrations: {term_id: term.id}).merge(TermRegistration.send(group)) }
   end
 
+  scope :admins, lambda { where(admin: true) }
+
   def initialize(*args)
     super *args
     self.options ||= Hash.new

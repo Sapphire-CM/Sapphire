@@ -1,0 +1,11 @@
+Dear <%= @recipient.fullname %>,
+
+An export for <%= @course.title %> <%= @term.title %> has finished processing.
+
+It can be downloaded from
+
+  <%= download_term_export_url(@term, @export) %>
+
+Have a nice day,
+
+Your Sapphire Team

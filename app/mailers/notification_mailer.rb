@@ -11,4 +11,13 @@ class NotificationMailer < ActionMailer::Base
 
     mail(to: @student.email, subject: "[Sapphire] Results published for #{result_publication.exercise.title}")
   end
+
+  def export_finished_notification(recipient, export)
+    @export = export
+    @term = export.term
+    @course = @term.course
+    @recipient = recipient
+
+    mail(to: recipient.email, subject: "[Sapphire] Export finished")
+  end
 end

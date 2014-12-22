@@ -1,4 +1,6 @@
 class SingleEvaluationsController < ApplicationController
+  include ScopingHelpers
+
   SingleEvaluationPolicyRecord = Struct.new :submission do
     def policy_class
       SingleEvaluationPolicy
@@ -13,7 +15,7 @@ class SingleEvaluationsController < ApplicationController
 
     @submission_assets = @submission.submission_assets.order(submitted_at: :desc)
 
-    submission_scope = SubmissionScopingService.new(params, @tutorial_group).scoped_submissions(Submission.for_exercise(@submission.exercise))
+    submission_scope = scoped_submissions(@tutorial_group, Submission.for_exercise(@submission.exercise))
 
     @previous_submission = submission_scope.next(@submission, :submitted_at)
     @next_submission = submission_scope.previous(@submission, :submitted_at)
@@ -46,6 +48,6 @@ class SingleEvaluationsController < ApplicationController
   def set_submission_and_tutorial_group
     @submission = Submission.find(params[:id])
     @term = @submission.exercise.term
-    @tutorial_group = TutorialGroupScopingService.new(params, @term, current_account).current_tutorial_group
+    @tutorial_group = current_tutorial_group(@term)
   end
 end

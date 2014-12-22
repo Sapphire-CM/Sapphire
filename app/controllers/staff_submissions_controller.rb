@@ -1,4 +1,6 @@
 class StaffSubmissionsController < ApplicationController
+  include ScopingHelpers
+
   before_action :set_exercise_and_term
   before_action :set_tutorial_group
   before_action :set_submissions, only: :index
@@ -92,10 +94,10 @@ class StaffSubmissionsController < ApplicationController
   end
 
   def set_tutorial_group
-    @tutorial_group = TutorialGroupScopingService.new(params, @term, current_account).current_tutorial_group
+    @tutorial_group = current_tutorial_group(@term)
   end
 
   def set_submissions
-    @submissions = SubmissionScopingService.new(params, @tutorial_group).scoped_submissions(@exercise.submissions)
+    @submissions = scoped_submissions(@tutorial_group, @exercise.submissions)
   end
 end

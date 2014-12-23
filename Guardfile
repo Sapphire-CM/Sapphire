@@ -1,6 +1,10 @@
 # A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
+guard :bundler do
+  watch('Gemfile')
+end
+
 guard 'pow' do
   watch('.powrc')
   watch('.powenv')
@@ -11,6 +15,11 @@ guard 'pow' do
   watch('config/environment.rb')
   watch(%r{^config/environments/.*\.rb$})
   watch(%r{^config/initializers/.*\.rb$})
+end
+
+guard 'sidekiq', config: 'config/sidekiq.yml' do
+  watch(%r{^app/models/exports/(.*)\.rb$})
+  watch(%r{^app/workers/(.*)\.rb$})
 end
 
 guard :rspec, all_after_pass: true, cmd: "spring rspec" do

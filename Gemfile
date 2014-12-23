@@ -52,7 +52,9 @@ end
 
 group :development do
   gem 'guard'
+  gem 'guard-bundler'
   gem 'guard-pow'
+  gem 'guard-sidekiq'
 
   gem 'pry'
   gem 'pry-rails'
@@ -98,6 +100,8 @@ group :test do
   gem 'guard-cucumber'
 
   gem 'shoulda-matchers'
+
+  gem 'terminal-notifier'
   gem 'terminal-notifier-guard'
 
   gem 'factory_girl_rails'

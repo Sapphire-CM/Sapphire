@@ -6,6 +6,16 @@ GIT
     simplecov-html (0.8.0)
 
 GIT
+  remote: git://github.com/danielrhodes/squeel.git
+  revision: 7d4fca19a0aa2aa6e688e381fd4d2c822c79921c
+  branch: master
+  specs:
+    squeel (1.2.2)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
+      polyamorous (~> 1.1.0)
+
+GIT
   remote: git://github.com/matthee/Sapphire-NNTP.git
   revision: 4508c2798688623cbccdecbea61b3ec46de3bd15
   specs:
@@ -424,10 +434,6 @@ GEM
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
     sqlite3 (1.3.10)
-    squeel (1.2.2)
-      activerecord (>= 3.0)
-      activesupport (>= 3.0)
-      polyamorous (~> 1.1.0)
     sshkit (1.6.1)
       colorize (>= 0.7.0)
       net-scp (>= 1.1.2)
@@ -548,7 +554,7 @@ DEPENDENCIES
   spring-commands-rspec
   spring-commands-sidekiq
   sqlite3
-  squeel (~> 1.1)
+  squeel (~> 1.1)!
   terminal-notifier
   terminal-notifier-guard
   thin

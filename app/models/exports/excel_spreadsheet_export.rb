@@ -16,11 +16,14 @@ class ExcelSpreadsheetExport < Export
   include RatingsHelper
 
   private
-  LIGHT_RED_COLOR = 63
-  RED_COLOR = 62
+
   BLACK_COLOR = 8
-  BORDER_THICKNESS = 2
+  SILVER_COLOR = 22
+  RED_COLOR = 62
   LIGHT_GREEN_COLOR = 61
+  LIGHT_RED_COLOR = 63
+
+  BORDER_THICKNESS = 2
 
   def generate_spreadsheets!(dir)
     term.tutorial_groups.each do |tutorial_group|
@@ -80,16 +83,17 @@ class ExcelSpreadsheetExport < Export
   def setup_workbook(workbook)
     styles = Hash.new
 
-    workbook.set_custom_color(LIGHT_RED_COLOR, 249, 135, 136)
-    workbook.set_custom_color(RED_COLOR, 249, 108, 108)
+    workbook.set_custom_color(SILVER_COLOR, 230, 230, 230)
+    workbook.set_custom_color(RED_COLOR, 251, 149, 149)
     workbook.set_custom_color(LIGHT_GREEN_COLOR, 243, 240, 191)
+    workbook.set_custom_color(LIGHT_RED_COLOR, 253, 207, 207)
 
     title_row_attrs = {bold: 1, font_size: 14}
     styles[:title_row] = workbook.add_format title_row_attrs
     styles[:title_row_left] = workbook.add_format title_row_attrs.merge({left: BORDER_THICKNESS, left_color: BLACK_COLOR})
     styles[:title_row_underlined] = workbook.add_format title_row_attrs.merge({bottom: BORDER_THICKNESS, bottom_color: BLACK_COLOR})
 
-    summary_flipped_title_attrs = {rotation: 90, bg_color: "silver", align: "center"}
+    summary_flipped_title_attrs = {rotation: 90, bg_color: SILVER_COLOR, align: "center"}
     styles[:summary_flipped_title] = workbook.add_format summary_flipped_title_attrs
     styles[:summary_flipped_title_underlined] = workbook.add_format summary_flipped_title_attrs.merge({bottom: BORDER_THICKNESS, bottom_color: BLACK_COLOR})
 
@@ -97,7 +101,7 @@ class ExcelSpreadsheetExport < Export
     styles[:title_cell] = workbook.add_format align: "center"
     styles[:title_cell_underlined] = workbook.add_format align: "center", bottom: BORDER_THICKNESS, bottom_color: BLACK_COLOR
 
-    summary_title_cell_attrs = {bg_color: "silver", align: "center"}
+    summary_title_cell_attrs = {bg_color: SILVER_COLOR, align: "center"}
     styles[:summary_title_cell] = workbook.add_format summary_title_cell_attrs
     styles[:summary_title_cell_underlined] = workbook.add_format summary_title_cell_attrs.merge({bottom: BORDER_THICKNESS, bottom_color: BLACK_COLOR})
 

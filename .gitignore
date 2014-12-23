@@ -1,25 +1,25 @@
 # Ignore bundler config
 /.bundle
 
-# Ignore textmate configuration
-/.tm_properties
-
-# Ignore the default SQLite database.
-/db/*.sqlite3
-
 # Ignore database.yml because this file depends on the current setup
 /config/database.yml
 
 # Ignore mail.yml because it is only needed in production and depends on the current setup
 /config/mail.yml
 
+# Ignore the default SQLite database.
+/db/*.sqlite3
+
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
-/uploads
-/emails
-/persistent
+
+# Ignore storage files
 /exports
+/persistent
+/uploads
+
+# Ignore code testing coverage
 /coverage
 
 # Ignore all database dumps
@@ -31,6 +31,9 @@
 
 # rerun informations for cucumber
 /rerun.txt
+
+# Ignore textmate configuration
+/.tm_properties
 
 # Ignore SublimeText files
 *.sublime-project

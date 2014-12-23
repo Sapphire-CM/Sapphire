@@ -1,0 +1,7 @@
+address: 'imap.example.com'
+port: 993
+enable_ssl: true
+authentication: 'PLAIN'
+user_name: 'some_username'
+password: 'some!password'
+from_address: 'Some Body <some-body@example.com>'

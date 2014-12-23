@@ -5,7 +5,7 @@ module ZipGeneration
     zips_path = Rails.root.join("tmp/exports")
     FileUtils.mkdir_p(zips_path)
 
-    zip_filename = File.join(zips_path, "#{term.course.title.parameterize}-#{term.title.parameterize}-#{self.id}.zip")
+    zip_filename = File.join(zips_path, "#{term.course.title.parameterize}-#{term.title.parameterize}-#{Time.now.strftime "%Y%m%d-%H%M"}-#{self.id}.zip")
     FileUtils.rm(zip_filename) if File.exist? zip_filename
 
     # this ensures that there is at least one file to create a zip for

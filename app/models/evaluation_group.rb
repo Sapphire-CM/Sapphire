@@ -4,8 +4,8 @@ class EvaluationGroup < ActiveRecord::Base
 
   has_many :evaluations, dependent: :delete_all
 
-  validate :rating_group, presence: true
-  validate :submission_evaluation, presence: true
+  validates :rating_group, presence: true
+  validates :submission_evaluation, presence: true
 
   before_create :calc_result
   after_create :create_evaluations

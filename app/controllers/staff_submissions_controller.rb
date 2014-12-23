@@ -13,7 +13,6 @@ class StaffSubmissionsController < ApplicationController
     end
   end
 
-
   def index
     authorize SubmissionPolicyRecord.new @exercise, @tutorial_group
 

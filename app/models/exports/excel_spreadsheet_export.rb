@@ -1,7 +1,9 @@
 class ExcelSpreadsheetExport < Export
-  prop_accessor :summary, :exercises, :student_overview
-
   include ZipGeneration
+  include TutorsHelper
+  include TutorialGroupsHelper
+
+  prop_accessor :summary, :exercises, :student_overview
 
   def perform!
     raise ExportError unless persisted?
@@ -50,7 +52,7 @@ class ExcelSpreadsheetExport < Export
     term_registrations = tutorial_group.student_term_registrations.includes(:account, :exercise_registrations).order {account.forename} .order {account.surname}
 
     if summary?
-      add_summary(workbook, styles, term_registrations)
+      add_summary(workbook, styles, tutorial_group, term_registrations)
     end
 
     if exercises?
@@ -78,6 +80,18 @@ class ExcelSpreadsheetExport < Export
 
 
     "#{parts.join("-").downcase.parameterize}.xls"
+  end
+
+  def reset_row
+    @row_index = 0
+  end
+
+  def next_row
+    @row_index += 1
+  end
+
+  def same_row
+    @row_index
   end
 
   def setup_workbook(workbook)
@@ -134,26 +148,29 @@ class ExcelSpreadsheetExport < Export
     styles
   end
 
-  def add_summary(workbook, styles, term_registrations)
+  def add_summary(workbook, styles, tutorial_group, term_registrations)
     students = term_registrations.map(&:account)
 
     grading_scale = GradingScaleService.new(term, term_registrations)
 
     worksheet = workbook.add_worksheet("summary")
-    worksheet.set_column 0,0, 20
-    worksheet.set_column 1, students.count, 4
+    reset_row
 
-    worksheet.write 0, 0, "Matrikelnr.", styles[:title_row]
-    worksheet.write_row 0, 1, students.map {|student| student.matriculation_number}, styles[:summary_flipped_title]
+    worksheet.write same_row, 0, "#{term.course.title} #{term.title} - #{tutorial_group_title tutorial_group}", styles[:title_row]
 
-    worksheet.write 1, 0, "sbox-alias", styles[:title_row]
-    worksheet.write_row 1, 1, students.map {|student| sbox_alias(student)}, styles[:summary_flipped_title]
+    next_row
 
-    worksheet.write 2, 0, "Vorname", styles[:title_row]
-    worksheet.write_row 2, 1, students.map {|student| student.forename}, styles[:summary_flipped_title]
+    worksheet.write next_row, 0, "Matrikelnr.", styles[:title_row]
+    worksheet.write_row same_row, 1, students.map {|student| student.matriculation_number}, styles[:summary_flipped_title]
 
-    worksheet.write 3, 0, "Nachname", styles[:title_row_underlined]
-    worksheet.write_row 3, 1, students.map {|student| student.surname}, styles[:summary_flipped_title_underlined]
+    worksheet.write next_row, 0, "sbox-alias", styles[:title_row]
+    worksheet.write_row same_row, 1, students.map {|student| sbox_alias(student)}, styles[:summary_flipped_title]
+
+    worksheet.write next_row, 0, "Vorname", styles[:title_row]
+    worksheet.write_row same_row, 1, students.map {|student| student.forename}, styles[:summary_flipped_title]
+
+    worksheet.write next_row, 0, "Nachname", styles[:title_row_underlined]
+    worksheet.write_row same_row, 1, students.map {|student| student.surname}, styles[:summary_flipped_title_underlined]
 
     term.exercises.each_with_index do |exercise, index|
       results = []
@@ -164,25 +181,27 @@ class ExcelSpreadsheetExport < Export
 
       worksheet_row = index + 4
 
-      worksheet.write worksheet_row, 0, "#{index + 1} #{exercise.title}", styles[:title_row_left]
-      worksheet.write_row worksheet_row, 1, results, styles[:result_cell]
+      worksheet.write next_row, 0, "#{index + 1} #{exercise.title}", styles[:title_row_left]
+      worksheet.write_row same_row, 1, results, styles[:result_cell]
     end
 
-    row_index = term.exercises.count + 3
-    worksheet.write row_index, 0, "total points", styles[:total_points_title]
-    worksheet.write_row row_index, 1, term_registrations.map(&:points), styles[:total_points_cell]
+    worksheet.write next_row, 0, "total points", styles[:total_points_title]
+    worksheet.write_row same_row, 1, term_registrations.map(&:points), styles[:total_points_cell]
 
-    row_index += 1
-    worksheet.write row_index, 0, "grade", styles[:grade_title]
-    worksheet.write_row row_index, 1, term_registrations.map {|tr| grading_scale.grade_for_term_registration(tr)} , styles[:grade_cell]
+    worksheet.write next_row, 0, "grade", styles[:grade_title]
+    worksheet.write_row same_row, 1, term_registrations.map {|tr| grading_scale.grade_for_term_registration(tr)} , styles[:grade_cell]
 
-    row_index += 2
+    # set column widths
+    worksheet.set_column 0, 0, 20
+    worksheet.set_column 1, students.count, 4
 
-    # setting row heights
+    # set row heights
     worksheet.set_row 0, 50
-    worksheet.set_row 1, 100
+    worksheet.set_row 1, 50
     worksheet.set_row 2, 100
     worksheet.set_row 3, 100
+    worksheet.set_row 4, 100
+    worksheet.set_row 5, 100
 
     worksheet
   end

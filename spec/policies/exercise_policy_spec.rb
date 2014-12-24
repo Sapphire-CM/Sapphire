@@ -1,14 +1,6 @@
 require 'rails_helper'
 
 describe ExercisePolicy do
-  let(:index_exercise_policy_record) do
-    Struct.new :term do
-      def policy_class
-        ExercisePolicy
-      end
-    end
-  end
-
   let(:term) { FactoryGirl.create(:term) }
   let(:exercise) { FactoryGirl.create(:exercise, term: term) }
 
@@ -34,7 +26,6 @@ describe ExercisePolicy do
 
       it { is_expected.to permit_authorization :index }
     end
-
 
     context "as a student" do
       let(:user) { FactoryGirl.create(:account, :student)}

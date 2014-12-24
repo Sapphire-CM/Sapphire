@@ -1,10 +1,4 @@
 class StudentSubmissionsController < ApplicationController
-  SubmissionPolicyRecord = Struct.new :exercise, :tutorial_group do
-    def policy_class
-      SubmissionPolicy
-    end
-  end
-
   before_action :set_exercise_and_term
   before_action :set_submission, only: [:show, :update]
   before_action :ensure_submission_param, only: [:create, :update]

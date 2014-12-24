@@ -21,7 +21,6 @@
 //= require foundation
 //= require turbolinks
 //= require jquery.remotipart
-//= require jquery.mousewheel
 //= require cocoon
 //= require vendor
 //= require_tree .

@@ -133,6 +133,8 @@ GEM
       activemodel (>= 3.0)
       activesupport (>= 3.0)
       request_store (~> 1.0)
+    email_validator (1.5.0)
+      activemodel
     erubis (2.7.0)
     eventmachine (1.0.3)
     execjs (2.2.2)
@@ -445,6 +447,7 @@ DEPENDENCIES
   database_cleaner
   devise (~> 3.2)
   draper
+  email_validator
   factory_girl_rails
   flash_render
   foundation-icons-sass-rails (~> 3.0)

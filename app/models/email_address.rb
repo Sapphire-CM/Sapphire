@@ -2,7 +2,7 @@ class EmailAddress < ActiveRecord::Base
   belongs_to :account
 
   validates :account, presence: true
-  validates :email, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: true, email: true
   validate :validate_no_account_with_same_email_exists
 
   private

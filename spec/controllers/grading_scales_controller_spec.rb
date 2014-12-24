@@ -1,6 +1,11 @@
 require 'rails_helper'
 
-describe GradingScalesController do
+RSpec.describe GradingScalesController do
+#  render_views
+#  include_context 'active_admin_session_context'
+
+  it 'needs to be implemented'
+
   let(:course) { term.course }
   let(:term) { create(:term) }
 

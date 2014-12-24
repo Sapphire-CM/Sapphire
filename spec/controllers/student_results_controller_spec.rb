@@ -1,6 +1,11 @@
 require 'rails_helper'
 
-describe StudentResultsController do
+RSpec.describe StudentResultsController do
+#  render_views
+#  include_context 'active_admin_session_context'
+
+  it 'needs to be implemented'
+
   context "GET #show" do
     before :each do
       sign_in(user)

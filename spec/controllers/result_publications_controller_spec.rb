@@ -1,6 +1,11 @@
 require 'rails_helper'
 
-describe ResultPublicationsController do
+RSpec.describe ResultPublicationsController do
+#  render_views
+#  include_context 'active_admin_session_context'
+
+  it 'needs to be implemented'
+
   before :each do
     sign_in(user)
   end

@@ -11,7 +11,6 @@ class StudentSubmissionsController < ApplicationController
       return
     end
 
-    @term = @submission.exercise.term
     @submission_assets = @submission.submission_assets
   end
 
@@ -24,6 +23,7 @@ class StudentSubmissionsController < ApplicationController
         redirect_to exercise_student_submission_path(@exercise), notice: "Successfully uploaded submission"
       end
     else
+      @submission = creation_service.model
       render :show
     end
   end
@@ -42,14 +42,6 @@ class StudentSubmissionsController < ApplicationController
   end
 
   private
-  def submission_params
-    params.require(:submission).permit(submission_assets_attributes: [:id, :file, :_destroy])
-  end
-
-  def ensure_submission_param
-    redirect_to exercise_student_submission_path(@exercise), notice: "Please choose a file to upload" unless params[:submission].present?
-  end
-
   def set_exercise_and_term
     @exercise = Exercise.find params[:exercise_id]
     @term = @exercise.term
@@ -59,5 +51,13 @@ class StudentSubmissionsController < ApplicationController
     @submission = Submission.select(Submission.quoted_table_name + '.*').for_account(current_account).for_exercise(@exercise).first_or_initialize
 
     authorize @submission
+  end
+
+  def submission_params
+    params.require(:submission).permit(submission_assets_attributes: [:id, :file, :_destroy])
+  end
+
+  def ensure_submission_param
+    redirect_to exercise_student_submission_path(@exercise), notice: "Please choose a file to upload" unless params[:submission].present?
   end
 end

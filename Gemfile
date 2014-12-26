@@ -80,6 +80,7 @@ group :development do
   gem 'rails-erd'           # Entity-Relation Diagrams of models
   gem 'quiet_assets'        # suppresses logging of assets files
   gem 'letter_opener'       # local email sender to HTML pages
+  gem 'traceroute'          # detects unused routes and actions
   # gem 'brakeman'            # common security problems checker
   # gem 'bullet'              # logs and supposes optimizations for db queries
   # gem 'sextant'             # route /rails/routes for displaying all routes

@@ -7,7 +7,6 @@ class StudentResultsController < ApplicationController
     end
   end
 
-
   def index
     authorize StudentResultsPolicyRecord.new(current_term)
 
@@ -20,7 +19,6 @@ class StudentResultsController < ApplicationController
     @term_registration = current_term.term_registrations.find_by_account_id(current_account.id)
     @exercise = current_term.exercises.find(params[:id])
     @exercise_registration = @term_registration.exercise_registrations.find_by_exercise_id(@exercise.id)
-
 
     if @exercise_registration.present? && @submission = @exercise_registration.submission
       authorize StudentResultsPolicyRecord.new(@submission)

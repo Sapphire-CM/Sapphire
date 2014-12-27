@@ -1,3 +1,7 @@
+$(document).on 'click', '#point_range_toggle_button', (e) ->
+  toggle_point_range_fields(this)
+  e.preventDefault()
+
 @toggle_point_range_fields = (button) ->
   $button= $(button)
   $form = $button.closest("form")
@@ -10,8 +14,6 @@
 
   update_button_title(!fields_shown)
 
-
-
 @initRatingGroupForm = ->
   $form = $('#rating_group_form')
 
@@ -21,7 +23,7 @@
     $points_input = $('#rating_group_points')
     $min_points_input = $fields.find("#rating_group_min_points")
     $max_points_input = $fields.find("#rating_group_max_points")
-    
+
     if is_using_default_values($points_input, $min_points_input, $max_points_input)
       $fields.hide()
       points = parseInt $points_input.val()
@@ -43,7 +45,7 @@
       points = parseInt $points_input.val()
       min_points = parseInt $min_points_input.val()
       max_points = parseInt $max_points_input.val()
-      
+
       if is_using_default_values($points_input, $min_points_input, $max_points_input)
         if points >= 0
           alert("here!")
@@ -57,8 +59,6 @@
           $min_points_input.val("#{points}")
       is_using_default_values($points_input, $min_points_input, $max_points_input)
       update_button_title()
-
-
 
     $min_points_input.change ->
       points = parseInt $points_input.val()
@@ -91,8 +91,6 @@
         $min_points_input.val("#{max_points}")
       is_using_default_values($points_input, $min_points_input, $max_points_input)
       update_button_title()
-
-
 
 update_button_title = (fields_shown) ->
   $button = $("#point_range_toggle_button")

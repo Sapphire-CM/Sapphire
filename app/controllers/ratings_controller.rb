@@ -14,7 +14,7 @@ class RatingsController < ApplicationController
   end
 
   def create
-    unless (params[:rating] && params[:rating][:type]) || Object.const_defined?(params[:rating][:type])
+    unless params[:rating] && params[:rating][:type] && Object.const_defined?(params[:rating][:type].classify)
       @rating = @rating_group.ratings.new
       authorize RatingPolicyRecord.new @rating
       render :new, alert: 'Invalid type!'
@@ -80,5 +80,4 @@ class RatingsController < ApplicationController
         :multiplication_factor,
         :automated_checker_identifier)
     end
-
 end

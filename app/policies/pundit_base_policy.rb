@@ -13,4 +13,16 @@ class PunditBasePolicy
     @user = user
     @record = record
   end
+
+  def self.with(record)
+    klass = self
+    record.define_singleton_method(:policy_class) do
+      # remove monkey-patched method
+      # so that any further policy query (in a view) returns the original policy
+      self.singleton_class.send :undef_method, :policy_class
+
+      klass
+    end
+    record
+  end
 end

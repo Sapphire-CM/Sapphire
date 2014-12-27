@@ -14,8 +14,7 @@
     <%= sidenav_item(:megaphone, "Results", term_results_path(@term)) %>
   <% end %>
 
-
-  <% if policy(term).update? %>
+  <% if policy(@term).update? %>
     <li class='divider'></li>
     <%= sidenav_item(:pencil, "Administrate", edit_term_path(term), term_sidebar_administrative_active?) %>
   <% end %>

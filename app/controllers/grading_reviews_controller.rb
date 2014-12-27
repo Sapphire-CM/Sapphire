@@ -1,20 +1,14 @@
 class GradingReviewsController < ApplicationController
   include TermContext
 
-  class GradingReviewPolicyRecord < Struct.new(:user, :term)
-    def policy_class
-      GradingReviewPolicy
-    end
-  end
-
   def index
-    authorize GradingReviewPolicyRecord.new(current_account, current_term)
+    authorize GradingReviewPolicy.with current_term
 
     @term_registrations = current_term.term_registrations.students.search(params[:q]).load if params[:q].present?
   end
 
   def show
-    authorize GradingReviewPolicyRecord.new(current_account, current_term)
+    authorize GradingReviewPolicy.with current_term
 
     @student_registration = current_term.term_registrations.students.find(params[:id])
     @student = @student_registration.account

@@ -1,6 +1,6 @@
 class ExportPolicy < PunditBasePolicy
   def index?
-    authorized?
+    authorized? record
   end
 
   def show?
@@ -8,15 +8,15 @@ class ExportPolicy < PunditBasePolicy
   end
 
   def new?
-    authorized?
+    authorized? record
   end
 
   def create?
-    authorized?
+    authorized? record
   end
 
   def download?
-    show?
+    authorized?
   end
 
   def destroy?
@@ -24,7 +24,8 @@ class ExportPolicy < PunditBasePolicy
   end
 
   private
-  def authorized?
-    user.admin? || user.lecturer_of_term?(record.term)
+
+  def authorized?(r = nil)
+    user.admin? || user.lecturer_of_term?(r || record.term)
   end
 end

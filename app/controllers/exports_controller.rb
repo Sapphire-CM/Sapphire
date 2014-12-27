@@ -1,17 +1,11 @@
 class ExportsController < ApplicationController
   include TermContext
 
-  class ExportPolicyRecord < Struct.new(:term)
-    def policy_class
-      ExportPolicy
-    end
-  end
-
-  before_action :fetch_export, only: [:show, :download, :destroy]
+  before_action :fetch_export, only: [:download, :destroy]
 
   def index
     @exports = current_term.exports.order(created_at: :desc)
-    authorize ExportPolicyRecord.new(current_term)
+    authorize ExportPolicy.with current_term
   end
 
   def new
@@ -21,12 +15,12 @@ class ExportsController < ApplicationController
       @export.term = current_term
       authorize @export
     else
-      authorize ExportPolicyRecord.new(current_term)
+      authorize ExportPolicy.with current_term
     end
   end
 
   def create
-    authorize ExportPolicyRecord.new(current_term)
+    authorize ExportPolicy.with current_term
 
     @export_type = params[:type]
     if Export.valid_type?(@export_type) && @export = Export.new_from_type(@export_type, export_params)

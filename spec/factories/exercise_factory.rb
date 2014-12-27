@@ -28,5 +28,11 @@ FactoryGirl.define do
     trait :no_upload_allowed do
       enable_student_uploads false
     end
+
+    trait :with_ratings do
+      after :create do |exercise|
+        FactoryGirl.create_list :rating_group, 4, :with_ratings, exercise: exercise
+      end
+    end
   end
 end

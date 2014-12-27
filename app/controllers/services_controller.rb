@@ -18,7 +18,6 @@ class ServicesController < ApplicationController
   def edit
   end
 
-
   def update
     if @service.update(service_params)
       redirect_to term_exercise_services_path(current_term, current_exercise)

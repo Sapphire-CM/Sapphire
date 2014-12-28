@@ -58,7 +58,6 @@ Sapphire::Application.routes.draw do
       end
     end
 
-    resource :evaluation, controller: 'exercise_evaluations_table'
     resource :submission, as: :student_submission, controller: "student_submissions"
 
     resources :submissions, controller: "staff_submissions"

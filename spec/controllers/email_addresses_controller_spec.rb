@@ -49,9 +49,9 @@ RSpec.describe EmailAddressesController do
       it 'creates a new EmailAddress' do
         valid_attributes[:account_id] = account.id
 
-        expect {
+        expect do
           post :create, valid_attributes
-        }.to change(EmailAddress, :count).by(1)
+        end.to change(EmailAddress, :count).by(1)
 
         expect(response).to redirect_to(account_email_addresses_path(account))
         expect(assigns(:email_address)).to be_a(EmailAddress)
@@ -114,9 +114,9 @@ RSpec.describe EmailAddressesController do
     it 'destroys the requested email_address' do
       email_address.reload # trigger creation
 
-      expect {
+      expect do
         delete :destroy, account_id: account.id, id: email_address.id
-      }.to change(EmailAddress, :count).by(-1)
+      end.to change(EmailAddress, :count).by(-1)
 
       expect(response).to redirect_to(account_email_addresses_path(account))
     end

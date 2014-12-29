@@ -28,7 +28,7 @@ RSpec.describe StudentsController do
     it 'assigns the requested exercise_registrations as @exercise_registrations' do
       term = FactoryGirl.create :term
       term_registration = FactoryGirl.create :term_registration, term: term
-      exercise_registration = FactoryGirl.create :exercise_registration, term_registration: term_registration
+      FactoryGirl.create :exercise_registration, term_registration: term_registration
 
       get :show, term_id: term.id, id: term_registration.id
 

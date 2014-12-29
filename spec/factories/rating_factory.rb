@@ -1,9 +1,9 @@
 FactoryGirl.define do
-  sequence(:rating_title) {|n| "Rating #{n}"}
+  sequence(:rating_title) { |n| "Rating #{n}" }
   factory :rating do
     rating_group
-    title {generate :rating_title}
-    description {generate :lorem_ipsum}
+    title { generate :rating_title }
+    description { generate :lorem_ipsum }
     type 'BinaryRating'
     value 10
     max_value 20

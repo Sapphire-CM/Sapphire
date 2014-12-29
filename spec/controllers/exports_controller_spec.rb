@@ -77,9 +77,9 @@ RSpec.describe ExportsController do
         it 'does not create a new Export' do
           valid_attributes[:term_id] = term.id
 
-          expect {
+          expect do
             post :create, valid_attributes
-          }.not_to change(Export, :count)
+          end.not_to change(Export, :count)
 
           expect(response).to redirect_to(new_term_export_path(term))
         end
@@ -90,9 +90,9 @@ RSpec.describe ExportsController do
           valid_attributes[:term_id] = term.id
           valid_attributes[:type] = 'foobar'
 
-          expect {
+          expect do
             post :create, valid_attributes
-          }.not_to change(Export, :count)
+          end.not_to change(Export, :count)
 
           expect(response).to redirect_to(new_term_export_path(term))
         end
@@ -108,9 +108,9 @@ RSpec.describe ExportsController do
               valid_attributes[:export][property] = property if valid_attributes[:export][property].blank?
             end
 
-            expect {
+            expect do
               post :create, valid_attributes
-            }.to change(Export, :count).by(1)
+            end.to change(Export, :count).by(1)
 
             expect(response).to redirect_to(term_exports_path(term))
             expect(assigns(:export)).to be_a(Export)
@@ -126,9 +126,9 @@ RSpec.describe ExportsController do
           invalid_attributes[:term_id] = term.id
           invalid_attributes[:type] = 'submission'
 
-          expect {
+          expect do
             post :create, invalid_attributes
-          }.not_to change(SubmissionExport, :count)
+          end.not_to change(SubmissionExport, :count)
 
           expect(response).to have_http_status(:success)
           expect(response).to render_template(:new)
@@ -144,9 +144,9 @@ RSpec.describe ExportsController do
           invalid_attributes[:term_id] = term.id
           invalid_attributes[:type] = 'excel_spreadsheet'
 
-          expect {
+          expect do
             post :create, invalid_attributes
-          }.not_to change(ExcelSpreadsheetExport, :count)
+          end.not_to change(ExcelSpreadsheetExport, :count)
 
           expect(response).to have_http_status(:success)
           expect(response).to render_template(:new)
@@ -161,9 +161,9 @@ RSpec.describe ExportsController do
     it 'destroys the requested export' do
       export.reload # trigger creation
 
-      expect {
+      expect do
         delete :destroy, term_id: term.id, id: export.id
-      }.to change(Export, :count).by(-1)
+      end.to change(Export, :count).by(-1)
 
       expect(response).to redirect_to(term_exports_path(term))
     end

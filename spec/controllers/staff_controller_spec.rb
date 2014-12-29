@@ -47,9 +47,9 @@ RSpec.describe StaffController do
           }
         }
 
-        expect {
+        expect do
           post :create, valid_attributes
-        }.to change(TermRegistration, :count).by(1)
+        end.to change(TermRegistration, :count).by(1)
 
         expect(response).to redirect_to(term_staff_index_path(term))
         expect(assigns(:term_registration).term).to eq(term)
@@ -68,9 +68,9 @@ RSpec.describe StaffController do
           }
         }
 
-        expect {
+        expect do
           post :create, valid_attributes
-        }.to change(TermRegistration, :count).by(1)
+        end.to change(TermRegistration, :count).by(1)
 
         expect(response).to redirect_to(term_staff_index_path(term))
         expect(assigns(:term_registration).term).to eq(term)
@@ -89,9 +89,9 @@ RSpec.describe StaffController do
           }
         }
 
-        expect {
+        expect do
           post :create, invalid_attributes
-        }.to change(TermRegistration, :count).by(0)
+        end.to change(TermRegistration, :count).by(0)
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:new)
@@ -104,9 +104,9 @@ RSpec.describe StaffController do
     it 'destroys the requested term_registration' do
       term_registration.reload # trigger creation
 
-      expect {
+      expect do
         xhr :delete, :destroy, term_id: term.id, id: term_registration.id
-      }.to change(TermRegistration, :count).by(-1)
+      end.to change(TermRegistration, :count).by(-1)
 
       expect(response).to redirect_to(term_staff_index_path(term))
     end

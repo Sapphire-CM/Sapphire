@@ -51,9 +51,9 @@ RSpec.describe TutorialGroupsController do
       it 'creates a new TutorialGroup' do
         valid_attributes[:term_id] = term.id
 
-        expect {
+        expect do
           post :create, valid_attributes
-        }.to change(TutorialGroup, :count).by(1)
+        end.to change(TutorialGroup, :count).by(1)
 
         expect(response).to redirect_to(term_tutorial_group_path(term, assigns(:tutorial_group)))
         expect(assigns(:tutorial_group)).to be_a(TutorialGroup)
@@ -119,9 +119,9 @@ RSpec.describe TutorialGroupsController do
     it 'destroys the requested tutorial_group' do
       tutorial_group.reload # trigger creation
 
-      expect {
+      expect do
         delete :destroy, term_id: term.id, id: tutorial_group.id
-      }.to change(TutorialGroup, :count).by(-1)
+      end.to change(TutorialGroup, :count).by(-1)
 
       expect(response).to redirect_to(term_path(term))
     end

@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :export do
-    type ""
+    type ''
     status 1
     term
     file nil

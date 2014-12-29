@@ -51,11 +51,11 @@ RSpec.describe StudentSubmissionsController do
               }
             end
 
-            expect {
-              expect {
+            expect do
+              expect do
                 post :create, valid_attributes
-              }.to change(SubmissionAsset, :count).by(assets_count)
-            }.to change(Submission, :count).by(1)
+              end.to change(SubmissionAsset, :count).by(assets_count)
+            end.to change(Submission, :count).by(1)
 
             expect(response).to redirect_to(exercise_student_submission_path(exercise))
           end
@@ -76,11 +76,11 @@ RSpec.describe StudentSubmissionsController do
           }
         }
 
-        expect {
-          expect {
+        expect do
+          expect do
             post :create, invalid_attributes
-          }.to change(SubmissionAsset, :count).by(0)
-        }.to change(Submission, :count).by(1)
+          end.to change(SubmissionAsset, :count).by(0)
+        end.to change(Submission, :count).by(1)
 
         expect(response).to redirect_to(exercise_student_submission_path(exercise))
       end
@@ -114,11 +114,11 @@ RSpec.describe StudentSubmissionsController do
 
         submission.update! submitted_at: 42.days.ago
 
-        expect {
-          expect {
+        expect do
+          expect do
             put :update, valid_attributes
-          }.to change(SubmissionAsset, :count).by(0)
-        }.to change(Submission, :count).by(0)
+          end.to change(SubmissionAsset, :count).by(0)
+        end.to change(Submission, :count).by(0)
 
         submission.reload
         expect(response).to redirect_to(exercise_student_submission_path(exercise))

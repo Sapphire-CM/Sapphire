@@ -56,9 +56,9 @@ RSpec.describe RatingGroupsController do
       it 'creates a new RatingGroup' do
         valid_attributes[:exercise_id] = exercise.id
 
-        expect {
+        expect do
           xhr :post, :create, valid_attributes
-        }.to change(RatingGroup, :count).by(1)
+        end.to change(RatingGroup, :count).by(1)
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:_insert_index_entry)
@@ -125,9 +125,9 @@ RSpec.describe RatingGroupsController do
     it 'destroys the requested rating_group' do
       rating_group.reload # trigger creation
 
-      expect {
+      expect do
         xhr :delete, :destroy, exercise_id: exercise.id, id: rating_group.id
-      }.to change(RatingGroup, :count).by(-1)
+      end.to change(RatingGroup, :count).by(-1)
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:_remove_index_entry)

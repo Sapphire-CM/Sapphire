@@ -28,10 +28,10 @@ RSpec.describe SingleEvaluationsController do
       it 'updates the requested term' do
         submission_evaluation.update! updated_at: 42.days.ago
 
-        expect {
+        expect do
           xhr :put, :update, id: evaluation.id
           submission_evaluation.reload
-        }.to change(submission_evaluation, :updated_at)
+        end.to change(submission_evaluation, :updated_at)
 
         expect(response).to have_http_status(:success)
         expect(assigns(:evaluation)).to eq(evaluation)

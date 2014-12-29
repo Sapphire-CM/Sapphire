@@ -47,9 +47,9 @@ RSpec.describe CoursesController do
   describe 'POST create' do
     describe 'with valid params' do
       it 'creates a new Course' do
-        expect {
+        expect do
           xhr :post, :create, valid_attributes
-        }.to change(Course, :count).by(1)
+        end.to change(Course, :count).by(1)
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:_insert_index_entry)
@@ -114,9 +114,9 @@ RSpec.describe CoursesController do
     it 'destroys the requested course' do
       course.reload # trigger creation
 
-      expect {
+      expect do
         xhr :delete, :destroy, id: course.id
-      }.to change(Course, :count).by(-1)
+      end.to change(Course, :count).by(-1)
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:_remove_index_entry)

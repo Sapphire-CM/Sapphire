@@ -78,10 +78,10 @@ RSpec.describe AccountsController do
         valid_attributes[:account][:password] = 'asdfghjkl'
         valid_attributes[:account][:password_confirmation] = valid_attributes[:account][:password]
 
-        expect {
+        expect do
           put :update, valid_attributes
           account.reload
-        }.to change(account, :encrypted_password)
+        end.to change(account, :encrypted_password)
 
         expect(response).to redirect_to(root_path)
       end
@@ -105,10 +105,10 @@ RSpec.describe AccountsController do
           invalid_attributes[:account][:password] = 'asdfghjkl'
           invalid_attributes[:account][:password_confirmation] = invalid_attributes[:account][:password]
 
-          expect {
+          expect do
             put :update, invalid_attributes
             account.reload
-          }.not_to change(account, :encrypted_password)
+          end.not_to change(account, :encrypted_password)
 
           expect(response).to render_template(:edit)
           expect(assigns(:account)).to eq(account)
@@ -120,10 +120,10 @@ RSpec.describe AccountsController do
           invalid_attributes[:account][:password] = 'asdfghjkl'
           invalid_attributes[:account][:password_confirmation] = 'foobar'
 
-          expect {
+          expect do
             put :update, invalid_attributes
             account.reload
-          }.not_to change(account, :encrypted_password)
+          end.not_to change(account, :encrypted_password)
 
           expect(response).to render_template(:edit)
           expect(assigns(:account)).to eq(account)
@@ -136,9 +136,9 @@ RSpec.describe AccountsController do
     it 'destroys the requested account' do
       account.reload # trigger creation
 
-      expect {
+      expect do
         delete :destroy, id: account.id
-      }.to change(Account, :count).by(-1)
+      end.to change(Account, :count).by(-1)
 
       expect(response).to redirect_to(accounts_path)
     end

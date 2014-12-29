@@ -56,11 +56,11 @@ RSpec.describe StaffSubmissionsController do
               }
             end
 
-            expect {
-              expect {
+            expect do
+              expect do
                 post :create, valid_attributes
-              }.to change(SubmissionAsset, :count).by(assets_count)
-            }.to change(Submission, :count).by(1)
+              end.to change(SubmissionAsset, :count).by(assets_count)
+            end.to change(Submission, :count).by(1)
 
             expect(response).to redirect_to(exercise_submission_path(exercise, assigns(:submission)))
           end
@@ -98,11 +98,11 @@ RSpec.describe StaffSubmissionsController do
           }
         }
 
-        expect {
-          expect {
+        expect do
+          expect do
             post :update, valid_attributes
-          }.to change(SubmissionAsset, :count).by(0)
-        }.to change(Submission, :count).by(0)
+          end.to change(SubmissionAsset, :count).by(0)
+        end.to change(Submission, :count).by(0)
 
         expect(response).to redirect_to(exercise_submission_path(exercise, assigns(:submission)))
       end
@@ -117,9 +117,9 @@ RSpec.describe StaffSubmissionsController do
     it 'destroys the requested submission' do
       submission.reload # trigger creation
 
-      expect {
+      expect do
         delete :destroy, exercise_id: exercise.id, id: submission.id
-      }.to change(Submission, :count).by(-1)
+      end.to change(Submission, :count).by(-1)
 
       expect(response).to redirect_to(exercise_submissions_path(exercise))
     end

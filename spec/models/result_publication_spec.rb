@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 describe ResultPublication do
-  it "should be respond to concealed?" do
+  it 'is respond to concealed?' do
     result_publication = FactoryGirl.build(:result_publication)
 
     expect(result_publication).to respond_to(:concealed?)
   end
 
-  it "should be able to tell if the results are concealed" do
+  it 'is able to tell if the results are concealed' do
     result_publication = FactoryGirl.create(:result_publication, published: true)
 
     expect(result_publication.concealed?).to be_falsey
@@ -16,7 +16,7 @@ describe ResultPublication do
     expect(result_publication.concealed?).to be_truthy
   end
 
-  it "should be able to set published with publish!" do
+  it 'is able to set published with publish!' do
     result_publication = FactoryGirl.create(:result_publication, published: false)
     result_publication.publish!
 
@@ -24,7 +24,7 @@ describe ResultPublication do
     expect(result_publication.published?).to be_truthy
   end
 
-  it "should be able to set published with conceal!" do
+  it 'is able to set published with conceal!' do
     result_publication = FactoryGirl.create(:result_publication, published: true)
     result_publication.conceal!
 
@@ -32,7 +32,7 @@ describe ResultPublication do
     expect(result_publication.concealed?).to be_truthy
   end
 
-  it "should be initially concealed" do
+  it 'is initially concealed' do
     exercise = FactoryGirl.create(:exercise)
     tutorial_group = FactoryGirl.create(:exercise, term: exercise.term)
 
@@ -41,7 +41,7 @@ describe ResultPublication do
     end
   end
 
-  it "should be able to fetch result publication for a given exercise and tutorial group" do
+  it 'is able to fetch result publication for a given exercise and tutorial group' do
     exercise = FactoryGirl.create(:exercise)
     tutorial_group = FactoryGirl.create(:tutorial_group, term: exercise.term)
 

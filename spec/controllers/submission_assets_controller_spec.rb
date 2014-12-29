@@ -54,9 +54,9 @@ RSpec.describe SubmissionAssetsController do
         valid_attributes[:submission_asset][:file] = Rack::Test::UploadedFile.new(submission_asset.file.to_s, 'text/html')
         valid_attributes[:submission_asset][:submission_id] = submission.id
 
-        expect {
+        expect do
           xhr :post, :create, valid_attributes
-        }.to change(SubmissionAsset, :count).by(1)
+        end.to change(SubmissionAsset, :count).by(1)
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:create)

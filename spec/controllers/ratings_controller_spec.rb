@@ -45,9 +45,9 @@ RSpec.describe RatingsController do
         valid_attributes[:exercise_id] = exercise.id
         valid_attributes[:rating_group_id] = rating_group.id
 
-        expect {
+        expect do
           xhr :post, :create, valid_attributes
-        }.to change(Rating, :count).by(1)
+        end.to change(Rating, :count).by(1)
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:_insert_index_entry)
@@ -77,9 +77,9 @@ RSpec.describe RatingsController do
         invalid_attributes[:rating_group_id] = rating_group.id
         invalid_attributes[:rating][:type] = nil
 
-        expect {
+        expect do
           xhr :post, :create, invalid_attributes
-        }.to change(Rating, :count).by(0)
+        end.to change(Rating, :count).by(0)
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:new)
@@ -92,9 +92,9 @@ RSpec.describe RatingsController do
         invalid_attributes[:rating_group_id] = rating_group.id
         invalid_attributes[:rating][:type] = 'foo_bar'
 
-        expect {
+        expect do
           xhr :post, :create, invalid_attributes
-        }.to change(Rating, :count).by(0)
+        end.to change(Rating, :count).by(0)
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:new)
@@ -152,9 +152,9 @@ RSpec.describe RatingsController do
     it 'destroys the requested rating' do
       rating.reload # trigger creation
 
-      expect {
+      expect do
         xhr :delete, :destroy, exercise_id: exercise.id, rating_group_id: rating_group.id, id: rating.id
-      }.to change(Rating, :count).by(-1)
+      end.to change(Rating, :count).by(-1)
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:_remove_index_entry)

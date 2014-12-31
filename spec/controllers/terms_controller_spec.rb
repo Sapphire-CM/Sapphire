@@ -69,7 +69,7 @@ RSpec.describe TermsController do
         valid_attributes[:term][:copy_grading_scale] = '1'
         valid_attributes[:term][:copy_exercises] = '1'
 
-        expect(TermCopyWorker).to receive(:perform_async).with(kind_of(Numeric), source_term.id.to_s, anything())
+        expect(TermCopyJob).to receive(:perform_later).with(kind_of(Numeric), source_term.id.to_s, anything())
 
         expect do
           xhr :post, :create, valid_attributes

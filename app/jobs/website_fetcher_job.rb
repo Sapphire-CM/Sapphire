@@ -1,5 +1,5 @@
-class WebsiteFetcherWorker
-  include Sidekiq::Worker
+class WebsiteFetcherJob < ActiveJob::Base
+  queue_as :default
 
   def perform(service_id, term_registration_id)
     service = Service.find(service_id)

@@ -121,7 +121,7 @@ module Import::Importer
     if term_registration.save
       if new_record
         import_result.imported_term_registrations += 1
-        NotificationWorker.welcome_notification term_registration
+        NotificationJob.welcome_notification term_registration
       end
     else
       import_result.success = false

@@ -19,7 +19,7 @@ end
 
 guard 'sidekiq', config: 'config/sidekiq.yml' do
   watch(%r{^app/models/exports/(.*)\.rb$})
-  watch(%r{^app/workers/(.*)\.rb$})
+  watch(%r{^app/jobs/(.*)\.rb$})
 end
 
 guard :rspec, all_after_pass: true, cmd: "spring rspec" do

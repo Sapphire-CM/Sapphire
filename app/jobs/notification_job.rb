@@ -1,25 +1,25 @@
-class NotificationWorker
-  include Sidekiq::Worker
+class NotificationJob < ActiveJob::Base
+  queue_as :default
 
   def self.result_publication_notifications(result_publication)
-    self.perform_async(:result_publication, result_publication.id)
+    perform_later 'result_publication', result_publication.id
   end
 
   def self.export_finished_notifications(export)
-    self.perform_async(:export_finished, export.id)
+    perform_later 'export_finished', export.id
   end
 
   def self.welcome_notification(term_registration)
-    self.perform_async(:welcome, term_registration.id)
+    perform_later 'welcome', term_registration.id
   end
 
   def perform(type, *args)
-    case type.to_sym
-    when :result_publication
+    case type
+    when 'result_publication'
       result_publication_notifications(*args)
-    when :export_finished
+    when 'export_finished'
       export_finished_notifications(*args)
-    when :welcome
+    when 'welcome'
       welcome_notification(*args)
     end
   end

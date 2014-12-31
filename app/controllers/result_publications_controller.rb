@@ -20,7 +20,7 @@ class ResultPublicationsController < ApplicationController
         "Successfully updated result publication"
       end
 
-      NotificationWorker.result_publication_notifications(@result_publicaton) if @result_publicaton.published?
+      NotificationJob.result_publication_notifications(@result_publicaton) if @result_publicaton.published?
 
       redirect_to exercise_result_publications_path(@exercise), notice: msg
     end

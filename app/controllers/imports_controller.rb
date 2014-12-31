@@ -43,7 +43,7 @@ class ImportsController < ApplicationController
   def update
     if @import.update(import_params)
       @import.pending!
-      ImportWorker.perform_async(@import.id)
+      ImportJob.perform_later @import.id
       redirect_to results_term_import_path(@term, @import)
     else
       render :show

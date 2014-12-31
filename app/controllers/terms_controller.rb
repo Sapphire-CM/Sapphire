@@ -24,7 +24,7 @@ class TermsController < ApplicationController
           exercises: @term.copy_exercises?,
           grading_scale: @term.copy_grading_scale?
         }
-        TermCopyWorker.perform_async(@term.id, @term.source_term_id, options)
+        TermCopyJob.perform_later @term.id, @term.source_term_id, options
 
         flash[:notice] = "Term has been successfully created, the previous term is being copied in the background"
       else

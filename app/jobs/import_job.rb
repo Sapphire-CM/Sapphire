@@ -1,5 +1,5 @@
-class ImportWorker
-  include Sidekiq::Worker
+class ImportJob < ActiveJob::Base
+  queue_as :default
 
   def perform(import_id)
     import = Import.find(import_id)

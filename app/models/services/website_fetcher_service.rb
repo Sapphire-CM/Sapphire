@@ -32,14 +32,13 @@ class WebsiteFetcherService < Service
     end
   end
 
-
   def title
     "Website Fetcher"
   end
 
   def perform!
     exercise.term.term_registrations.students.each do |term_registration|
-      WebsiteFetcherWorker.perform_async(self.id, term_registration.id)
+      WebsiteFetcherJob.perform_later self.id, term_registration.id
     end
   end
 

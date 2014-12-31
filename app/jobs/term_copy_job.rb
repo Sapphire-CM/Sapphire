@@ -1,5 +1,5 @@
-class TermCopyWorker
-  include Sidekiq::Worker
+class TermCopyJob < ActiveJob::Base
+  queue_as :default
 
   def perform(term_id, source_term_id, options)
     term = Term.find(term_id)

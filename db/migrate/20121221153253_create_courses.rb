@@ -5,9 +5,9 @@ class CreateCourses < ActiveRecord::Migration
       t.text :description
       t.references :course_leader
 
-      t.timestamps
+      t.timestamps null: false
     end
-    
+
     add_index :courses, :course_leader_id
   end
 end

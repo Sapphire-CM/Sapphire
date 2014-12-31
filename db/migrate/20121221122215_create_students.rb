@@ -9,7 +9,7 @@ class CreateStudents < ActiveRecord::Migration
       t.string :email
       t.datetime :registration_date
 
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :students, :tutorial_group_id
     add_index :students, :submission_group_id

@@ -5,7 +5,7 @@ class CreateEvaluations < ActiveRecord::Migration
       t.references :student
       t.references :rating
 
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :evaluations, :student_id
     add_index :evaluations, :rating_id

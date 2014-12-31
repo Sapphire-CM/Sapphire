@@ -6,7 +6,7 @@ class CreateExports < ActiveRecord::Migration
       t.belongs_to :term, index: true
       t.string :file
       t.text :properties
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

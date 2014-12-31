@@ -24,8 +24,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.string   "forename"
     t.string   "surname"
     t.string   "matriculation_number"
@@ -43,8 +43,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
   create_table "courses", force: true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.boolean  "locked",      default: true
   end
 
@@ -53,8 +53,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
   create_table "email_addresses", force: true do |t|
     t.string   "email"
     t.integer  "account_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "email_addresses", ["account_id"], name: "index_email_addresses_on_account_id"
@@ -65,8 +65,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
     t.float    "percent"
     t.integer  "rating_group_id"
     t.integer  "submission_evaluation_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   add_index "evaluation_groups", ["rating_group_id"], name: "index_evaluation_groups_on_rating_group_id"
@@ -75,8 +75,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
   create_table "evaluations", force: true do |t|
     t.boolean  "checked"
     t.integer  "rating_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.string   "type"
     t.integer  "value"
     t.integer  "evaluation_group_id"
@@ -91,8 +91,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
     t.integer  "term_registration_id"
     t.integer  "submission_id"
     t.integer  "points"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   add_index "exercise_registrations", ["exercise_id"], name: "index_exercise_registrations_on_exercise_id"
@@ -102,8 +102,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
   create_table "exercises", force: true do |t|
     t.integer  "term_id"
     t.string   "title"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
     t.text     "description"
     t.datetime "deadline"
     t.datetime "late_deadline"
@@ -131,8 +131,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
     t.integer  "term_id"
     t.string   "file"
     t.text     "properties"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "exports", ["term_id"], name: "index_exports_on_term_id"
@@ -209,8 +209,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
   create_table "lecturer_registrations", force: true do |t|
     t.integer  "account_id"
     t.integer  "term_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "lecturer_registrations", ["account_id"], name: "index_lecturer_registrations_on_account_id"
@@ -220,8 +220,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
     t.integer  "exercise_id"
     t.string   "title"
     t.integer  "points"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.text     "description"
     t.boolean  "global"
     t.integer  "min_points"
@@ -237,8 +237,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
     t.integer  "rating_group_id"
     t.string   "title"
     t.integer  "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.text     "description"
     t.string   "type"
     t.integer  "max_value"
@@ -254,8 +254,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
     t.integer  "exercise_id"
     t.integer  "tutorial_group_id"
     t.boolean  "published",         default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   add_index "result_publications", ["exercise_id", "tutorial_group_id"], name: "index_result_publications_on_exercise_id_and_tutorial_group_id", unique: true
@@ -267,15 +267,15 @@ ActiveRecord::Schema.define(version: 20150111112731) do
     t.boolean  "active",      default: false
     t.string   "type"
     t.text     "properties"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "student_group_registrations", force: true do |t|
     t.integer  "exercise_id"
     t.integer  "student_group_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   add_index "student_group_registrations", ["exercise_id"], name: "index_student_group_registrations_on_exercise_id"
@@ -284,8 +284,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
   create_table "student_groups", force: true do |t|
     t.string   "title"
     t.integer  "tutorial_group_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.boolean  "solitary"
     t.integer  "points"
     t.boolean  "active",            default: true
@@ -296,8 +296,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
 
   create_table "student_registrations", force: true do |t|
     t.integer  "account_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.string   "comment"
     t.integer  "student_group_id"
   end
@@ -310,8 +310,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
     t.string   "file"
     t.string   "content_type"
     t.datetime "submitted_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.string   "asset_identifier"
     t.string   "import_identifier"
   end
@@ -323,8 +323,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
     t.integer  "evaluator_id"
     t.string   "evaluator_type"
     t.datetime "evaluated_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.integer  "evaluation_result"
     t.boolean  "plagiarized"
   end
@@ -335,8 +335,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
   create_table "submissions", force: true do |t|
     t.integer  "exercise_id"
     t.datetime "submitted_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.integer  "student_group_registration_id"
     t.integer  "submitter_id"
   end
@@ -351,8 +351,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
     t.integer  "account_id"
     t.integer  "term_id"
     t.integer  "tutorial_group_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.boolean  "receives_grade"
     t.integer  "role",              default: 0
   end
@@ -365,8 +365,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
   create_table "terms", force: true do |t|
     t.string   "title"
     t.integer  "course_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.text     "description"
     t.integer  "row_order"
     t.text     "grading_scale"
@@ -379,8 +379,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
   create_table "tutor_registrations", force: true do |t|
     t.integer  "account_id"
     t.integer  "tutorial_group_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   add_index "tutor_registrations", ["account_id"], name: "index_tutor_registrations_on_account_id"
@@ -389,8 +389,8 @@ ActiveRecord::Schema.define(version: 20150111112731) do
   create_table "tutorial_groups", force: true do |t|
     t.string   "title"
     t.integer  "term_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.text     "description"
   end
 

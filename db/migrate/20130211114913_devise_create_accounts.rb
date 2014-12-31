@@ -34,7 +34,7 @@ class DeviseCreateAccounts < ActiveRecord::Migration
       # t.string :authentication_token
 
 
-      t.timestamps
+      t.timestamps null: false
     end
 
     add_index :accounts, :email,                :unique => true

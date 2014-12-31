@@ -6,7 +6,7 @@ class CreateTermRegistrationsOld < ActiveRecord::Migration
       t.references :term
       t.references :student
 
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :term_registrations, :tutorial_group_id
     add_index :term_registrations, :term_id

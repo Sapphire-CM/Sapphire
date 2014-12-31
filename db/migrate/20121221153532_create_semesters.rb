@@ -5,9 +5,9 @@ class CreateSemesters < ActiveRecord::Migration
       t.boolean :active
       t.references :course
 
-      t.timestamps
+      t.timestamps null: false
     end
-    
+
     add_index :semesters, :course_id
   end
 end

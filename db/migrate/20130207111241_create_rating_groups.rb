@@ -5,7 +5,7 @@ class CreateRatingGroups < ActiveRecord::Migration
       t.string :title
       t.integer :points
 
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :rating_groups, :exercise_id
   end

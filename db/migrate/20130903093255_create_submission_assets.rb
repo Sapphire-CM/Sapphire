@@ -6,7 +6,7 @@ class CreateSubmissionAssets < ActiveRecord::Migration
       t.string :content_type
       t.datetime :submitted_at
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

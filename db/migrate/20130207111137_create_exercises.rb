@@ -4,7 +4,7 @@ class CreateExercises < ActiveRecord::Migration
       t.references :term
       t.string :title
 
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :exercises, :term_id
   end

@@ -31,7 +31,7 @@ class NotificationWorker
 
     tutorial_group = result_publication.tutorial_group
     tutorial_group.student_term_registrations.includes(:account).each do |student_term_registration|
-      NotificationMailer.result_publication_notification(student_term_registration, result_publication).deliver
+      NotificationMailer.result_publication_notification(student_term_registration, result_publication).deliver_later
     end
   end
 
@@ -40,7 +40,7 @@ class NotificationWorker
 
     recipients = (Account.admins + Account.lecturers_for_term(export.term)).uniq
     recipients.each do |recipient|
-      NotificationMailer.export_finished_notification(recipient, export).deliver
+      NotificationMailer.export_finished_notification(recipient, export).deliver_later
     end
   end
 
@@ -51,9 +51,9 @@ class NotificationWorker
 
     welcome_back = TermRegistration.where(account: account).where.not(term: term).exists?
     if welcome_back
-      NotificationMailer.welcome_back_notification(account, term).deliver
+      NotificationMailer.welcome_back_notification(account, term).deliver_later
     else
-      NotificationMailer.welcome_notification(account, term).deliver
+      NotificationMailer.welcome_notification(account, term).deliver_later
     end
   end
 end

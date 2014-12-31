@@ -21,8 +21,8 @@ gem 'jquery-turbolinks'           # Turbolinks jquery plugin for DOM ready event
 gem 'ranked-model'                # manages sort-position of ratings
 gem 'email_validator'             # provides ActiveRecord validation for email addresses
 
-gem 'compass-rails',   '~> 1.1'   # Compass intregration into assets-pipeline
-gem 'sass-rails',      '~> 4.0'   # Use SCSS for stylesheets
+gem 'compass-rails',   '~> 2.0', '>= 2.0.2' # Compass intregration into assets-pipeline
+gem 'sass-rails',      '~> 5.0'   # Use SCSS for stylesheets
 gem 'coffee-rails',    '~> 4.0'   # Use CoffeeScript for .js.coffee assets and views
 gem 'uglifier',        '>= 1.3'   # Use Uglifier as compressor for JavaScript assets
 gem 'zurb-foundation', '~> 4.3.0'

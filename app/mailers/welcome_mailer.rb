@@ -10,6 +10,7 @@ class WelcomeMailer < ActionMailer::Base
 
   def welcome_back_notification(account, term)
     @account = account
+    @term = term
     mail(to: account.email, subject: "Welcome Back to Sapphire (#{course_term_title(term)})")
   end
 

@@ -1,12 +1,19 @@
-Welcome back to Sapphire, the course management system used by
+Welcome Back to Sapphire!
+
+The course management system used by
 Prof. Andrews at IICM:
 
   <%= root_url %>
 
 
-Your user name is:
+Sapphire is used to collect submissions to (some of) the exercises and
+to provide you with feedback regarding your points and grade.
 
-  User: <%= @account.email %>
+You have been registered for <%= course_term_title(@term) %>.
+
+Here are your login credentials:
+
+  Email: <%= @account.email %>
 
 
 If you have forgotten your Sapphire password, please use

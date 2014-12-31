@@ -3,12 +3,12 @@
 <%= render "exercises/edit_header" %>
 
 <div id='rating_group_index_entries'>
-  <p class='index_entry_none rating_group <%= 'hide' if @exercise.rating_groups.any? %>'>
+  <p class='index_entry_none rating_group <%= 'hide' if @rating_groups.any? %>'>
     No rating groups present.
   </p>
 
-  <% if @exercise.rating_groups.any? %>
-    <%= render collection: @exercise.rating_groups.rank(:row_order), partial: 'rating_groups/index_entry', as: :rating_group %>
+  <% if @rating_groups.any? %>
+    <%= render collection: @rating_groups.rank(:row_order), partial: 'rating_groups/index_entry', as: :rating_group %>
   <% end %>
 </div>
 

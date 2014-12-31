@@ -1,5 +1,14 @@
 <%= simple_form_for export, url: term_exports_path(current_term), as: :export do |f| %>
   <%= hidden_field_tag :type, export_type %>
+
+  <% if @export.errors.any? %>
+    <% @export.errors.full_messages.each do |msg| %>
+      <div data-alert class="alert-box alert">
+        <%= msg %>
+      </div>
+    <% end %>
+  <% end %>
+
   <%= export_options_for(export, f) %>
 
   <p>

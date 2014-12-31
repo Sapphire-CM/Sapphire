@@ -3,10 +3,10 @@ require 'rails_helper'
 describe Term do
   it { is_expected.to have_many(:term_registrations) }
 
-  context "ordinary account" do
+  context 'ordinary account' do
     let(:account) { FactoryGirl.create(:account) }
 
-    it "should scope all terms associated with an account" do
+    it 'scopes all terms associated with an account' do
       terms = FactoryGirl.create_list(:term, 5)
 
       t = terms[0]
@@ -20,11 +20,10 @@ describe Term do
       tg = FactoryGirl.create(:tutorial_group, term: t)
       FactoryGirl.create(:term_registration, :student, account: account, term: t, tutorial_group: tg)
 
-
       expect(Term.associated_with(account).sort_by(&:id)).to eq(terms.first(3))
     end
 
-    it "should be able to determine whether an account is associated with this term" do
+    it 'is able to determine whether an account is associated with this term' do
       term = FactoryGirl.create(:term)
 
       expect(term.associated_with? account).to be_falsey

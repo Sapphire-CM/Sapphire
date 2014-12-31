@@ -10,6 +10,7 @@ class RatingGroupsController < ApplicationController
 
   def index
     authorize RatingGroupPolicyRecord.new(@term)
+    @rating_groups = @exercise.rating_groups
   end
 
   def new

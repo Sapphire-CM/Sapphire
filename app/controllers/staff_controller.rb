@@ -18,14 +18,12 @@ class StaffController < ApplicationController
     @term_registration = TermRegistration.new
     @term_registration.term = current_term
     @term_registration.role = Roles::LECTURER
-    authorize(@term_registration)
+    authorize @term_registration
   end
 
   def create
-    @term_registration = TermRegistration.new(term_registration_params)
-    @term_registration.term = current_term
-
-    authorize(@term_registration)
+    @term_registration = current_term.term_registrations.new(term_registration_params)
+    authorize @term_registration
 
     if @term_registration.save
       redirect_to term_staff_index_path(current_term)
@@ -45,7 +43,7 @@ class StaffController < ApplicationController
   def search
     @accounts = Account.search(params[:q]).limit(100)
     @search_terms = params[:q]
-    authorize(StaffPolicyRecord.new(current_account, current_term))
+    authorize StaffPolicyRecord.new(current_account, current_term)
   end
 
   private

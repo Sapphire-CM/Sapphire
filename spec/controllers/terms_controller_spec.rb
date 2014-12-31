@@ -49,9 +49,9 @@ RSpec.describe TermsController do
       it 'creates a new Term' do
         valid_attributes[:term][:course_id] = course.id
 
-        expect {
+        expect do
           xhr :post, :create, valid_attributes
-        }.to change(Term, :count).by(1)
+        end.to change(Term, :count).by(1)
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:_insert_index_entry)
@@ -117,9 +117,9 @@ RSpec.describe TermsController do
     it 'destroys the requested term' do
       term.reload # trigger creation
 
-      expect {
+      expect do
         xhr :delete, :destroy, id: term.id
-      }.to change(Term, :count).by(-1)
+      end.to change(Term, :count).by(-1)
 
       expect(response).to redirect_to(root_path)
     end

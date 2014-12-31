@@ -4,9 +4,7 @@ Sapphire::Application.routes.draw do
   devise_for :accounts, skip: :registration
 
   resources :accounts, except: [:new, :create] do
-    get :change_password, on: :member
-    patch :update_password, on: :member
-    resources :email_addresses
+    resources :email_addresses, except: [:show]
   end
 
   resources :courses, except: [:show]
@@ -20,13 +18,13 @@ Sapphire::Application.routes.draw do
       resources :services, only: [:index, :edit, :update]
     end
 
-    resources :staff do
+    resources :staff, except: [:show, :edit, :update] do
       post :search, on: :collection
     end
 
-    resources :students
+    resources :students, only: [:index, :show]
 
-    resources :exports do
+    resources :exports, except: [:show, :edit, :update] do
       get :download, on: :member
     end
 
@@ -39,16 +37,7 @@ Sapphire::Application.routes.draw do
     resources :results, only: [:index, :show], controller: :student_results
   end
 
-  resources :tutorial_groups do
-    get :new_tutor_registration
-    post :create_tutor_registration
-    delete :clear_tutor_registration
-
-    resources :student_groups do
-      get :new_student_registration
-      post :create_student_registration
-    end
-  end
+  resources :tutorial_groups
 
   resources :exercises, except: [:show, :index] do
     resources :rating_groups, except: :show do
@@ -58,24 +47,23 @@ Sapphire::Application.routes.draw do
       end
     end
 
-    resource :submission, as: :student_submission, controller: "student_submissions"
+    resource :submission, only: [:show, :create, :update], as: :student_submission, controller: "student_submissions"
 
-    resources :submissions, controller: "staff_submissions"
+    resources :submissions, except: [:show], controller: "staff_submissions"
     resources :result_publications, only: [:index, :update]
     resource :results, controller: 'student_results', as: :student_results, only: :show
   end
 
   namespace :import do
-    resources :student_imports do
+    resources :student_imports, except: [:edit] do
       get :full_mapping_table, on: :member
       get :results, on: :member
     end
   end
 
-  resources :submissions, only: :show
-  resources :submission_viewers
+  resources :submission_viewers, only: [:show]
   resources :submission_assets, only: [:show, :new, :create]
-  resources :single_evaluations
+  resources :single_evaluations, only: [:show, :update]
 
   authenticate :account, lambda { |u| u.admin? } do
     mount Sidekiq::Web => '/sidekiq'

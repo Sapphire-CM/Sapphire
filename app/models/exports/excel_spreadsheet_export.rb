@@ -5,6 +5,12 @@ class ExcelSpreadsheetExport < Export
 
   prop_accessor :summary, :exercises, :student_overview
 
+  validate do
+    unless summary? || exercises? || student_overview?
+      errors.add(:base, 'nothing to export')
+    end
+  end
+
   def perform!
     raise ExportError unless persisted?
 

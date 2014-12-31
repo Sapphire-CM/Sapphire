@@ -8,7 +8,7 @@ FactoryGirl.define do
 
     trait :with_student_group_registration do
       transient do
-        student_group_title "G1-01"
+        student_group_title 'G1-01'
       end
 
       after(:create) do |instance, evaluator|
@@ -30,7 +30,7 @@ FactoryGirl.define do
       end
 
       after(:create) do |instance, evaluator|
-        student_group = create(:student_group_with_students, tutorial_group: evaluator.tutorial_group, solitary: instance.exercise.solitary_submission? )
+        student_group = create(:student_group_with_students, tutorial_group: evaluator.tutorial_group, solitary: instance.exercise.solitary_submission?)
         instance.assign_to(student_group)
         instance.save!
       end

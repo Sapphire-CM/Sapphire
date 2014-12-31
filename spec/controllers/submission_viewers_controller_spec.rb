@@ -1,18 +1,19 @@
 require 'rails_helper'
 
-describe SubmissionViewersController do
-  describe "GET 'show'" do
-    it "returns http success" do
-      admin = FactoryGirl.create(:account, :admin)
-      sign_in(admin)
+RSpec.describe SubmissionViewersController do
+  render_views
+  include_context 'active_admin_session_context'
 
+  describe 'GET show' do
+    it 'assigns the requested viewer as @viewer' do
       exercise = FactoryGirl.create(:exercise, :with_viewer)
       submission = FactoryGirl.create(:submission, exercise: exercise)
 
       get 'show', id: submission.id
 
-      expect(response.status).to eq(200)
-      expect(response).to be_success
+      expect(response).to have_http_status(:success)
+      expect(assigns(:submission)).to eq(submission)
+      expect(assigns(:viewer)).to be_present
     end
   end
 end

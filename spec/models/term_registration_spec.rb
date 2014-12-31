@@ -10,27 +10,27 @@ describe TermRegistration do
   # this currently failes because of https://github.com/thoughtbot/shoulda-matchers/issues/535
   # it { is_expected.to validate_uniqueness_of(:account).scoped_to(:term_id)}
 
-  it "should respond to #negative_grade" do
+  it 'responds to #negative_grade' do
     term_registration = build(:term_registration, positive_grade: true)
     expect(term_registration.negative_grade?).to be_falsey
   end
 
-  context "students" do
+  context 'students' do
     let(:subject) { build :term_registration, :student }
 
     it { is_expected.to validate_presence_of :tutorial_group }
   end
 
-  context "tutors" do
+  context 'tutors' do
     let(:subject) { build :term_registration, :tutor }
 
     it { is_expected.to validate_presence_of :tutorial_group }
   end
 
-  context "lecturers" do
+  context 'lecturers' do
     let(:subject) { build :term_registration, :lecturer }
 
-    it "should validate absence of tutorial_group_id" do
+    it 'validates absence of tutorial_group_id' do
       subject.tutorial_group = nil
       expect(subject).to be_valid
 
@@ -39,34 +39,34 @@ describe TermRegistration do
     end
   end
 
-  context "scopes" do
+  context 'scopes' do
     before :all do
       create(:term_registration, :lecturer)
       create_list(:term_registration, 2, :tutor)
       create_list(:term_registration, 5, :student)
     end
 
-    it "should scope all lecturers" do
-      expect(TermRegistration.lecturers).to eq(TermRegistration.where(role: "lecturer"))
+    it 'scopes all lecturers' do
+      expect(TermRegistration.lecturers).to eq(TermRegistration.where(role: 'lecturer'))
       expect(TermRegistration.lecturers.count).to eq(1)
     end
 
-    it "should scope all tutors" do
-      expect(TermRegistration.tutors).to eq(TermRegistration.where(role: "tutor"))
+    it 'scopes all tutors' do
+      expect(TermRegistration.tutors).to eq(TermRegistration.where(role: 'tutor'))
       expect(TermRegistration.tutors.count).to eq(2)
     end
 
-    it "should scope all students" do
-      expect(TermRegistration.students).to eq(TermRegistration.where(role: "student"))
+    it 'scopes all students' do
+      expect(TermRegistration.students).to eq(TermRegistration.where(role: 'student'))
       expect(TermRegistration.students.count).to eq(5)
     end
 
-    it "should order by matriculation number" do
-      expect(TermRegistration.students.ordered_by_matriculation_number).to eq(TermRegistration.students.joins(:account).order{ account.matriculation_number.asc })
+    it 'orders by matriculation number' do
+      expect(TermRegistration.students.ordered_by_matriculation_number).to eq(TermRegistration.students.joins(:account).order { account.matriculation_number.asc })
     end
   end
 
-  context "updating points" do
+  context 'updating points' do
     let(:term) { create :term }
     let(:exercises) { create_list :exercise, 2, term: term }
     let(:term_registration) do
@@ -80,7 +80,7 @@ describe TermRegistration do
       ExerciseRegistration.update_all(points: 12)
     end
 
-    it "should update points correctly" do
+    it 'updates points correctly' do
       term_registration.update!(points: nil)
       term_registration.update_points!
 

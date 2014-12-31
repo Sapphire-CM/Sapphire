@@ -39,10 +39,14 @@ class ExportsController < ApplicationController
       else
         render :new
       end
-
     else
       redirect_to new_term_export_path(current_term), alert: "Exporter not found"
     end
+  end
+
+  def destroy
+    @export.destroy
+    redirect_to term_exports_path(current_term), notice: "Export successfully deleted"
   end
 
   def download
@@ -53,22 +57,13 @@ class ExportsController < ApplicationController
     end
   end
 
-  def destroy
-    @export.destroy
-    redirect_to term_exports_path(current_term), notice: "Export successfully deleted"
-  end
-
   private
-  def exports_scope
-    current_term.exports
-  end
-
   def export_params
     params.require(:export).permit Export.class_from_type(@export_type).properties
   end
 
   def fetch_export
-    @export = exports_scope.find(params[:id])
+    @export = current_term.exports.find(params[:id])
     authorize @export
   end
 end

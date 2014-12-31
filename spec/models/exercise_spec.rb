@@ -2,9 +2,9 @@ require 'rails_helper'
 
 describe Exercise do
   let(:course) { create(:course) }
-  let(:term) { create(:term, course: course)}
+  let(:term) { create(:term, course: course) }
 
-  it "should be able to set student uploads" do
+  it 'is able to set student uploads' do
     exercise = FactoryGirl.create(:exercise, allow_student_uploads: true)
     expect(exercise.allow_student_uploads?).to be_truthy
 
@@ -12,23 +12,23 @@ describe Exercise do
     expect(exercise.allow_student_uploads?).to be_falsey
   end
 
-  it "should ensure result publications on create" do
+  it 'ensures result publications on create' do
     FactoryGirl.create_list(:tutorial_group, 4, term: term)
     exercise = FactoryGirl.create(:exercise, term: term)
 
     expect(exercise.result_publications.count).to eq(4)
   end
 
-  it "should destroy result publications on delete" do
+  it 'destroys result publications on delete' do
     FactoryGirl.create_list(:tutorial_group, 4, term: term)
     exercise = FactoryGirl.create(:exercise, term: term)
 
-    expect {
+    expect do
       exercise.destroy
-    }.to change {ResultPublication.count}.by(-4)
+    end.to change { ResultPublication.count }.by(-4)
   end
 
-  it "should be able to fetch result publication for a given tutorial group" do
+  it 'is able to fetch result publication for a given tutorial group' do
     tutorial_groups = FactoryGirl.create_list(:tutorial_group, 4, term: term)
     exercise = FactoryGirl.create(:exercise, term: term)
 
@@ -38,7 +38,7 @@ describe Exercise do
     expect(result_publication.tutorial_group).to eq(tutorial_groups[1])
   end
 
-  it "should be able to determine result publication status for a given tutorial group" do
+  it 'is able to determine result publication status for a given tutorial group' do
     tutorial_groups = FactoryGirl.create_list(:tutorial_group, 4, term: term)
     exercise = FactoryGirl.create(:exercise, term: term)
 

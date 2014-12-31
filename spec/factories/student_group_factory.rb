@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  sequence(:student_group_title) {|n| "Group #{n}"}
+  sequence(:student_group_title) { |n| "Group #{n}" }
   factory :student_group do
     tutorial_group
     active true

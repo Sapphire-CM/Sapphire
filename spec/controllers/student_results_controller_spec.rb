@@ -1,72 +1,50 @@
 require 'rails_helper'
 
-describe StudentResultsController do
-  context "GET #show" do
-    before :each do
-      sign_in(user)
+RSpec.describe StudentResultsController do
+  render_views
+  include_context 'active_student_session_context'
+
+  let(:term) { FactoryGirl.create :term }
+  let(:exercise) { FactoryGirl.create :exercise, term: term }
+  let(:tutorial_group) { FactoryGirl.create :tutorial_group, term: term }
+  let(:submission) { FactoryGirl.create :submission, exercise: exercise }
+  let(:term_registration) { @current_account.term_registrations.first }
+
+  before :each do
+    term_registration.update! term: term, tutorial_group: tutorial_group
+    exercise.result_publications.update_all published: true
+  end
+
+  describe 'GET index' do
+    it 'assigns all exercise_registrations as @exercise_registrations' do
+      FactoryGirl.create_list :course, 4
+
+      get :index, term_id: term.id
+
+      expect(response).to have_http_status(:success)
+      expect(assigns(:exercise_registrations)).to match_array(term_registration.exercise_registrations)
+    end
+  end
+
+  describe 'GET show' do
+    context 'when a submission exists' do
+      it 'assigns the requested submission as @submission' do
+        SubmissionCreationService.new(@current_account, submission).save
+
+        get :show, term_id: term.id, id: exercise.id
+
+        expect(assigns[:submission]).to eq(submission)
+        expect(assigns[:submission_evaluation]).to eq(submission.submission_evaluation)
+        expect(assigns[:term]).to eq(term)
+        expect(assigns[:exercise]).to eq(exercise)
+      end
     end
 
-    let(:perform_action) {
-      get :show, id: exercise.id, term_id: term.id
-    }
+    context 'when no submission exists' do
+      it 'redirects to submission path' do
+        get :show, id: exercise.id, term_id: term.id
 
-    context "as a student" do
-      let(:user) {
-        user = create(:account)
-        FactoryGirl.create(:term_registration, :student, account: user, term: term, tutorial_group: tutorial_group)
-        user
-      }
-
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-      let(:term) { FactoryGirl.create(:term) }
-
-      let(:course) { term.course }
-      let(:exercise) {
-        exercise = create(:exercise, term: term)
-        exercise.result_publications.update_all(published: true)
-        exercise
-      }
-
-      context "when a submission exists" do
-        let(:submission) {
-          submission = create(:submission, exercise: exercise)
-          scs = SubmissionCreationService.new(user, submission)
-          scs.save
-
-          submission
-        }
-        let(:submission_evaluation) { submission.submission_evaluation }
-
-        before :each do
-          submission
-        end
-
-        it "should assign @submission" do
-          perform_action
-          expect(assigns[:submission]).to eq(submission)
-        end
-
-        it "should assign @submission_evaluation" do
-          perform_action
-          expect(assigns[:submission_evaluation]).to eq(submission_evaluation)
-        end
-
-        it "should assign @term" do
-          perform_action
-          expect(assigns[:term]).to eq(term)
-        end
-
-        it "should assign @exercise" do
-          perform_action
-          expect(assigns[:exercise]).to eq(exercise)
-        end
-      end
-
-      context "when no submission exists" do
-        it "should redirect to submission path" do
-          perform_action
-          expect(response).not_to be_ok
-        end
+        expect(response).to redirect_to(exercise_student_submission_path(exercise))
       end
     end
   end

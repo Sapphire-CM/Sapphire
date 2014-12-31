@@ -1,14 +1,17 @@
+require: rubocop-rspec
+
 AllCops:
-  Includes:
+  Include:
     - Rakefile
     - config.ru
-  Excludes:
-    - bin/**
-    - config/**
-    - db/**
-    - public/**
-    - spec/**
-    - tmp/**
+  Exclude:
+    - bin/**/*
+    - config/**/*
+    - db/**/*
+    - public/**/*
+    - tmp/**/*
+    - spec/spec_helper.rb
+    - spec/rails_helper.rb
     - !ruby/regexp /old_and_unused\.rb$/
   RunRailsCops: true
 
@@ -39,3 +42,8 @@ CaseIndentation:
 SingleLineMethods:
   Enabled: false
 
+TrailingComma:
+  Enabled: false
+
+RSpec/DescribedClass:
+  Enabled: false

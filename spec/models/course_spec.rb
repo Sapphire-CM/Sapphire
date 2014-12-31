@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Course do
-  it "should scope to current term" do
+  it 'scopes to current term' do
     account = FactoryGirl.create(:account)
 
     courses = FactoryGirl.create_list(:course, 5)
@@ -26,7 +26,7 @@ describe Course do
     expect(Course.associated_with(account).sort_by(&:id)).to eq(courses[0..2].sort_by(&:id))
   end
 
-  it "should be able to determine whether a lecturer is associated with a course" do
+  it 'is able to determine whether a lecturer is associated with a course' do
     account = FactoryGirl.create(:account)
     term = FactoryGirl.create(:term)
 
@@ -36,10 +36,10 @@ describe Course do
     expect(term.course.associated_with? account).to be_truthy
   end
 
-  context "ordinary account" do
+  context 'ordinary account' do
     let(:account) { FactoryGirl.create(:account) }
 
-    it "should scope all courses associated with an account when using viewable_for" do
+    it 'scopes all courses associated with an account when using viewable_for' do
       courses = FactoryGirl.create_list(:course, 5)
       terms = []
       terms << FactoryGirl.create(:term, course: courses[0])
@@ -63,10 +63,10 @@ describe Course do
     end
   end
 
-  context "admin account" do
+  context 'admin account' do
     let(:account) { FactoryGirl.create(:account, :admin) }
 
-    it "should not scope courses when using viewable_for" do
+    it 'does not scope courses when using viewable_for' do
       courses = FactoryGirl.create_list(:course, 5)
       expect(Course.viewable_for(account).sort_by(&:id)).to eq(courses.sort_by(&:id))
     end

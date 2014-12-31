@@ -51,9 +51,9 @@ RSpec.describe ExercisesController do
       it 'creates a new Exercise' do
         valid_attributes[:exercise][:term_id] = term.id
 
-        expect {
+        expect do
           post :create, valid_attributes
-        }.to change(Exercise, :count).by(1)
+        end.to change(Exercise, :count).by(1)
 
         expect(response).to redirect_to(term_exercises_path(term))
         expect(assigns(:exercise)).to be_a(Exercise)
@@ -117,9 +117,9 @@ RSpec.describe ExercisesController do
     it 'destroys the requested exercise' do
       exercise.reload # trigger creation
 
-      expect {
+      expect do
         xhr :delete, :destroy, id: exercise.id
-      }.to change(Exercise, :count).by(-1)
+      end.to change(Exercise, :count).by(-1)
 
       expect(response).to redirect_to(term_exercises_path(term))
     end

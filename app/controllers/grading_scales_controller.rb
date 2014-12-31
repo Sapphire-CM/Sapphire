@@ -1,10 +1,4 @@
 class GradingScalesController < ApplicationController
-  GradingScalePolicyRecord = Struct.new :term do
-    def policy_class
-      GradingScalePolicy
-    end
-  end
-
   before_action :fetch_term, only: [:edit, :update]
 
   def edit
@@ -19,7 +13,7 @@ class GradingScalesController < ApplicationController
   private
   def fetch_term
     @term = Term.find(params[:term_id])
-    authorize GradingScalePolicyRecord.new(@term)
+    authorize GradingScalePolicy.with @term
   end
 
   def term_params

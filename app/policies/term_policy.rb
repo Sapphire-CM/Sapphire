@@ -18,12 +18,12 @@ class TermPolicy < PunditBasePolicy
   end
 
   def edit?
-    @edit ||= user.admin? ||
+    user.admin? ||
     user.lecturer_of_term?(record)
   end
 
   def update?
-    @edit ||= user.admin? ||
+    user.admin? ||
     user.lecturer_of_term?(record)
   end
 

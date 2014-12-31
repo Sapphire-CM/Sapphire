@@ -8,11 +8,13 @@ class AccountPolicy < PunditBasePolicy
   end
 
   def edit?
-    user.admin? || user == record
+    user.admin? ||
+    user == record
   end
 
   def update?
-    user.admin? || user == record
+    user.admin? ||
+    user == record
   end
 
   def destroy?
@@ -20,10 +22,12 @@ class AccountPolicy < PunditBasePolicy
   end
 
   def change_password?
-    user.admin? || user == record
+    user.admin? ||
+    user == record
   end
 
   def update_password?
-    user.admin? || user == record
+    user.admin? ||
+    user == record
   end
 end

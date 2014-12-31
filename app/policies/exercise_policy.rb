@@ -1,10 +1,12 @@
 class ExercisePolicy < PunditBasePolicy
   def index?
-    user.admin? || record.associated_with?(user)
+    user.admin? ||
+    record.associated_with?(user)
   end
 
   def show?
-    user.admin? || record.term.associated_with?(user)
+    user.admin? ||
+    record.term.associated_with?(user)
   end
 
   def new?

@@ -1,15 +1,9 @@
 class SingleEvaluationsController < ApplicationController
   include ScopingHelpers
 
-  SingleEvaluationPolicyRecord = Struct.new :submission do
-    def policy_class
-      SingleEvaluationPolicy
-    end
-  end
-
   def show
     @submission = Submission.find(params[:id])
-    authorize SingleEvaluationPolicyRecord.new @submission
+    authorize SingleEvaluationPolicy.with @submission
 
     @term = @submission.exercise.term
     @tutorial_group = current_tutorial_group(@term)
@@ -32,7 +26,7 @@ class SingleEvaluationsController < ApplicationController
   def update
     @evaluation = Evaluation.find(params[:id])
     @submission = @evaluation.submission
-    authorize SingleEvaluationPolicyRecord.new @submission
+    authorize SingleEvaluationPolicy.with @submission
 
     @rating = @evaluation.rating
 

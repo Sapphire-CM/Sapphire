@@ -1,30 +1,30 @@
 class EmailAddressPolicy < PunditBasePolicy
   def index?
-    permitted?
+    user.admin? ||
+    user == record
   end
 
   def new?
-    create?
+    user.admin? ||
+    user == record.account
   end
 
   def create?
-    permitted?
+    user.admin? ||
+    user == record.account
   end
 
   def edit?
-    update?
+    user.admin? ||
+    user == record.account
   end
 
   def update?
-    permitted?
+    user.admin? ||
+    user == record.account
   end
 
   def destroy?
-    permitted?
-  end
-
-  private
-  def permitted?
     user.admin? ||
     user == record.account
   end

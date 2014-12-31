@@ -3,27 +3,23 @@ class EmailAddressesController < ApplicationController
 
   before_action :fetch_email_address, only: [:edit, :update, :destroy]
 
-  class EmailAddressPolicyRecord < Struct.new(:account)
-    def policy_class
-      EmailAddressPolicy
-    end
-  end
-
   def index
-    authorize EmailAddressPolicyRecord.new(account)
+    authorize EmailAddressPolicy.with account
     @email_addresses = account.email_addresses
   end
 
   def new
     @email_address = EmailAddress.new
-    @email_address.account = account
     authorize @email_address
+
+    @email_address.account = account
   end
 
   def create
     @email_address = EmailAddress.new(email_params)
-    @email_address.account = account
     authorize @email_address
+
+    @email_address.account = account
 
     if @email_address.save
       redirect_to account_email_addresses_path(account), notice: "Added #{@email_address.email} to this account"

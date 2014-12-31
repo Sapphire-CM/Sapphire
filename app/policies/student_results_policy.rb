@@ -1,6 +1,7 @@
 class StudentResultsPolicy < PunditBasePolicy
   def index?
-    user.admin? || user.student_of_term?(record.subject)
+    user.admin? ||
+    user.student_of_term?(record.subject)
   end
 
   def show?

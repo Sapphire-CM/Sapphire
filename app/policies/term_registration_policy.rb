@@ -1,6 +1,6 @@
 class TermRegistrationPolicy < PunditBasePolicy
   def new?
-    create?
+    user.admin? || user.lecturer_of_term?(record.term)
   end
 
   def create?

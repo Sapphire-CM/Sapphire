@@ -1,9 +1,9 @@
 class ResultPublicationsController < ApplicationController
-  skip_after_action :verify_authorized, only: :index
-
   before_action :set_context
 
   def index
+    authorize ResultPublication
+
     @result_publications = @exercise.result_publications
       .joins(:tutorial_group)
       .includes(tutorial_group: {tutor_term_registrations: :account})

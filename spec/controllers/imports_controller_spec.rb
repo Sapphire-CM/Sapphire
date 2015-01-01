@@ -51,7 +51,6 @@ RSpec.describe ImportsController do
 
       expect(response).to have_http_status(:success)
       expect(assigns(:import)).to be_a_new(Import)
-      expect(assigns(:imports)).to eq(term.imports)
     end
   end
 

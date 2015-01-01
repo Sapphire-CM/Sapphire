@@ -8,8 +8,6 @@ class ImportsController < ApplicationController
   def new
     @term = Term.find(params[:term_id])
 
-    @imports = @term.imports.decorate
-
     @import = Import.new
     @import.term = @term
     @import.import_options[:matching_groups] = "both" if @term.group_submissions?
@@ -22,7 +20,6 @@ class ImportsController < ApplicationController
     authorize @import
 
     @term = @import.term
-    @imports = @term.imports.decorate if @term
 
     if not @import.save
       return render :new

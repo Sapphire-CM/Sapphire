@@ -1,4 +1,4 @@
-<%= simple_form_for [@student_import] do |f| %>
+<%= simple_form_for [@term, @import] do |f| %>
   <%= f.fields_for :import_mapping do |fb| %>
 
     <div class='row'>
@@ -32,7 +32,7 @@
   <div class="row" id="load_more_entries">
     <div class='large-12 columns'>
       <p>
-        <%= link_to "Load all entries", full_mapping_table_import_student_import_path(@student_import), remote: true, class: "tiny button" %>
+        <%= link_to "Load all entries", full_mapping_table_term_import_path(@term, @import), remote: true, class: "tiny button" %>
       </p>
     </div>
   </div>

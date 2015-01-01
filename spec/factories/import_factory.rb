@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :student_import, class: Import::StudentImport do
+  factory :import do
     term
     file { File.open prepare_static_test_file 'import_data.csv' }
     status :pending

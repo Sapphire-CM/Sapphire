@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150101154619) do
+ActiveRecord::Schema.define(version: 20150101210727) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -132,20 +132,18 @@ ActiveRecord::Schema.define(version: 20150101154619) do
 
   add_index "exports", ["term_id"], name: "index_exports_on_term_id", using: :btree
 
-  create_table "import_student_imports", force: true do |t|
+  create_table "imports", force: true do |t|
     t.integer  "term_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "file"
-    t.string   "format"
     t.integer  "status"
-    t.integer  "line_count"
     t.text     "import_options"
     t.text     "import_mapping"
     t.text     "import_result"
   end
 
-  add_index "import_student_imports", ["term_id"], name: "index_import_student_imports_on_term_id", using: :btree
+  add_index "imports", ["term_id"], name: "index_imports_on_term_id", using: :btree
 
   create_table "lecturer_registrations", force: true do |t|
     t.integer  "account_id"

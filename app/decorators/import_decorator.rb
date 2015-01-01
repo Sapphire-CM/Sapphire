@@ -1,6 +1,4 @@
-class Import::StudentImportDecorator < Draper::Decorator
-  decorates :"import/student_import"
-
+class ImportDecorator < Draper::Decorator
   delegate_all
 
   def term_title
@@ -29,7 +27,11 @@ class Import::StudentImportDecorator < Draper::Decorator
     mapping = model.import_mapping
     column_count = model.column_count
 
-    h.render "import/student_imports/mapping_table", mapping: mapping, column_count: column_count, headers: headers, values: values, importable_attributes: model.class::IMPORTABLE_ATTRIBUTES, student_import: model
+    h.render 'imports/mapping_table',
+      mapping: mapping,
+      column_count: column_count,
+      headers: headers,
+      values: values,
+      importable_attributes: model.class::IMPORTABLE_ATTRIBUTES
   end
-
 end

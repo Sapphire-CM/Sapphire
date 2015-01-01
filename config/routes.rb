@@ -24,6 +24,11 @@ Sapphire::Application.routes.draw do
 
     resources :students, only: [:index, :show]
 
+    resources :imports, except: [:index, :edit] do
+      get :full_mapping_table, on: :member
+      get :results, on: :member
+    end
+
     resources :exports, except: [:show, :edit, :update] do
       get :download, on: :member
     end
@@ -35,6 +40,7 @@ Sapphire::Application.routes.draw do
     resources :grading_reviews, only: [:index, :show]
 
     resources :results, only: [:index, :show], controller: :student_results
+
   end
 
   resources :tutorial_groups
@@ -52,13 +58,6 @@ Sapphire::Application.routes.draw do
     resources :submissions, except: [:show], controller: "staff_submissions"
     resources :result_publications, only: [:index, :update]
     resource :results, controller: 'student_results', as: :student_results, only: :show
-  end
-
-  namespace :import do
-    resources :student_imports, except: [:index, :edit] do
-      get :full_mapping_table, on: :member
-      get :results, on: :member
-    end
   end
 
   resources :submission_viewers, only: [:show]

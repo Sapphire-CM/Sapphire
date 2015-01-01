@@ -3,7 +3,7 @@ class Import::ImportMapping
   include ActiveModel::Conversion
   extend ActiveModel::Naming
 
-  attr_accessor *Import::StudentImport::IMPORTABLE_ATTRIBUTES
+  attr_accessor *Import::IMPORTABLE_ATTRIBUTES
   attr_reader :lookup_table
 
   def initialize(hash = nil)
@@ -12,7 +12,7 @@ class Import::ImportMapping
     unless hash.nil?
       hash.each do |column, value|
         value = value.to_s.to_sym
-        if Import::StudentImport::IMPORTABLE_ATTRIBUTES.include? value
+        if Import::IMPORTABLE_ATTRIBUTES.include? value
           self.send("#{value}=".to_sym, column)
         end
       end
@@ -31,7 +31,7 @@ class Import::ImportMapping
   def prepare_lookup_table
     @lookup_table = Hash.new
 
-    Import::StudentImport::IMPORTABLE_ATTRIBUTES.each do |key|
+    Import::IMPORTABLE_ATTRIBUTES.each do |key|
       value = self.send key
       @lookup_table[value.to_s] = key unless value.nil?
     end

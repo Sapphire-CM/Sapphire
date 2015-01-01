@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Import::Importer do
   it 'imports successfully', sidekiq: :inline do
     term = FactoryGirl.create :term
-    student_import = FactoryGirl.create :student_import, term: term
+    student_import = FactoryGirl.create :import, term: term
 
     expect {
     expect {

@@ -18,7 +18,7 @@ class Import::StudentImport < ActiveRecord::Base
   enum status: [:pending, :running, :finished, :failed]
 
   validates :term, presence: true
-  # validates :file, presence: true
+  validates :file, presence: true
 
   def initialize(*args)
     super *args

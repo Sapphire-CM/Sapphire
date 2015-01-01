@@ -33,8 +33,7 @@ namespace :sapphire do
       puts ex
       puts "#{Time.now}: Importing ID #{student_import.id} failed."
 
-      student_import.import_result[:running] = false
-      student_import.status = 'failed'
+      student_import.status = :failed
       student_import.save!
     end
   end

@@ -11,7 +11,7 @@ class Import::ImportMapping
 
     unless hash.nil?
       hash.each do |column, value|
-        value = value.to_sym
+        value = value.to_s.to_sym
         if Import::StudentImport::IMPORTABLE_ATTRIBUTES.include? value
           self.send("#{value}=".to_sym, column)
         end

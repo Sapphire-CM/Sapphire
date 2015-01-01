@@ -51,7 +51,6 @@ module Import::Importer
     processed_rows = 0
     total_rows = values.length
     import_result[:total_rows] = total_rows
-    import_result[:running] = true
     import_result[:problems] = []
 
 
@@ -90,13 +89,11 @@ module Import::Importer
       end
     end
 
-    import_result[:running] = false
     self.status = :finished
     self.save!
   end
 
-
-private
+  private
 
   def create_student_account(row)
     student = Account.find_or_initialize_by(matriculation_number: row[import_mapping.matriculation_number.to_i])

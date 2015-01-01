@@ -2,6 +2,6 @@
   <%= subnav_item(:clipboard_pencil, "Term", edit_term_path(@term), params[:controller] == "terms") %>
   <%= subnav_item(:list_thumbnails, "Grading Scale", edit_term_grading_scale_path(@term), params[:controller] == "grading_scales") %>
   <%= subnav_item(:torsos, "Staff", term_staff_index_path(@term), params[:controller] == "staff") %>
-  <%= subnav_item(:upload, "Imports", new_import_student_import_path(term_id: @term), params[:controller] == "import/student_imports") %>
+  <%= subnav_item(:upload, "Imports", new_import_student_import_path(term_id: @term.id), params[:controller] == "import/student_imports") %>
   <%= subnav_item(:download, "Exports", term_exports_path(@term), params[:controller] == "exports") %>
 </dl>

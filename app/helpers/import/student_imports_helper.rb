@@ -6,7 +6,7 @@ module Import::StudentImportsHelper
   end
 
   def student_import_progress_bar_status(student_import)
-    unless student_import.import_result[:running]
+    unless student_import.running?
       if student_import.import_result[:success]
         "success"
       else

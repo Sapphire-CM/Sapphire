@@ -21,8 +21,10 @@ class Import::StudentImportsController < ApplicationController
     @student_import = Import::StudentImport.new(student_import_params)
     authorize @student_import
 
+    @term = @student_import.term
+    @student_imports = @term.student_imports.decorate if @term
+
     if not @student_import.save
-      @term = @student_import.term
       return render :new
     end
 
@@ -30,7 +32,6 @@ class Import::StudentImportsController < ApplicationController
 
     @student_import.parse_csv
 
-    @term = @student_import.term
     if @student_import.encoding_error?
       render :new, alert: "Error with file encoding! UTF8-like is required."
     elsif @student_import.parsing_error?
@@ -44,9 +45,9 @@ class Import::StudentImportsController < ApplicationController
   end
 
   def update
-    @student_import.status = :running
-    @student_import.import_result = {
-      running: true,
+    p = student_import_params
+    p[:status] = :running
+    p[:import_result] = {
       total_rows: 0,
       processed_rows: 0,
       imported_students: 0,
@@ -54,10 +55,10 @@ class Import::StudentImportsController < ApplicationController
       imported_term_registrations: 0,
       imported_student_groups: 0,
       imported_student_registrations: 0,
-      problems: []
+      problems: [],
     }
 
-    if @student_import.save && @student_import.update(student_import_params)
+    if @student_import.save && @student_import.update(p)
       ImportWorker.perform_async(@student_import.id)
       redirect_to results_import_student_import_path(@student_import)
     end
@@ -73,7 +74,7 @@ class Import::StudentImportsController < ApplicationController
 
   def destroy
     @student_import.destroy
-    redirect_to term_import_student_import_path(@term)
+    redirect_to new_import_student_import_path(term_id: @term.id)
   end
 
   private

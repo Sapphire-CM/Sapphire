@@ -1,17 +1,15 @@
 class Import::StudentImportsController < ApplicationController
   before_action :set_student_import, only: [:show, :edit, :update, :destroy, :full_mapping_table, :results]
 
-  def index
-    authorize Import::StudentImport
-    @student_imports = Import::StudentImport.all.decorate
-  end
-
   def show
     @student_import = Import::StudentImport.find(params[:id]).decorate
   end
 
   def new
     @term = Term.find(params[:term_id])
+
+    @student_imports = @term.student_imports.decorate
+
     @student_import = Import::StudentImport.new
     @student_import.term = @term
     @student_import.import_options[:matching_groups] = "both" if @term.group_submissions?

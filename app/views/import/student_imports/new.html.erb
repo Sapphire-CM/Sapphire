@@ -1,6 +1,44 @@
-<% title "#{course_term_title}", "Upload CSV" %>
+<% title course_term_title, 'Import Students' %>
 
-<%= render "terms/edit_header" %>
-<%= render "terms/sidebar", term: @term %>
+<%= render 'terms/edit_header' %>
+<%= render 'terms/sidebar', term: @term %>
 
+<% if @student_imports.any? %>
+  <h2 class="subheader">Existing Imports</h2>
+  <div class='row'>
+    <div class='columns'>
+      <table class='large-12'>
+        <thead>
+          <th>Filename</th>
+          <th>Created At</th>
+          <th>Updated At</th>
+          <th>Status</th>
+          <th colspan="2"></th>
+        </thead>
+        <tbody>
+          <% @student_imports.each do |student_import| %>
+            <tr>
+              <td><%= student_import.filename %></td>
+              <td><%= student_import.created_at %></td>
+              <td><%= student_import.updated_at %></td>
+              <td><%= student_import.status %></td>
+              <td>
+                <%= link_to foundation_icon(:magnifying_glass),
+                  import_student_import_path(student_import) %>
+              </td>
+              <td>
+                <%= link_to foundation_icon(:x),
+                  import_student_import_path(student_import),
+                  method: :delete,
+                  data: { confirm: "Are you sure?" } %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>
+
+<h2 class="subheader">New Import from CSV</h2>
 <%= render "form" %>

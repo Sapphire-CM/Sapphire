@@ -55,7 +55,7 @@ Sapphire::Application.routes.draw do
   end
 
   namespace :import do
-    resources :student_imports, except: [:edit] do
+    resources :student_imports, except: [:index, :edit] do
       get :full_mapping_table, on: :member
       get :results, on: :member
     end

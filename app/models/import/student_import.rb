@@ -1,21 +1,24 @@
 require "csv"
 
 class Import::StudentImport < ActiveRecord::Base
+  extend Enum
   include Import::Parser
   include Import::Importer
 
   IMPORTABLE_ATTRIBUTES = [:group, :email, :forename, :surname, :matriculation_number, :comment].freeze
-  STATES = ["pending", "imported", "failed"].freeze
 
   belongs_to :term
 
   mount_uploader :file, Import::StudentImportsUploader
+
   serialize :import_options, Hash
   serialize :import_mapping, Import::ImportMapping
   serialize :import_result, Hash
 
+  enum status: [:pending, :running, :finished, :failed]
+
   validates :term, presence: true
-  validates :file, presence: true, inclusion: { in: STATES }
+  # validates :file, presence: true
 
   def initialize(*args)
     super *args
@@ -23,6 +26,8 @@ class Import::StudentImport < ActiveRecord::Base
     @parsed = false
     @encoding_error = false
     @parsing_error = false
+
+    self.status = :pending
 
     import_options[:matching_groups]        ||= "first"
     import_options[:tutorial_groups_regexp] ||= '\AT(?<tutorial>[\d]+)\z'
@@ -47,23 +52,6 @@ class Import::StudentImport < ActiveRecord::Base
   def import_mapping=(val)
     val = Import::ImportMapping.new(val) unless val.class == Import::ImportMapping
     write_attribute :import_mapping, val
-  end
-
-
-  def pending?
-    self.status == 'pending'
-  end
-
-  def failed?
-    self.status == 'failed'
-  end
-
-  def imported?
-    self.status == 'imported'
-  end
-
-  def parsed?
-    !!@parsed_file
   end
 
   def encoding_error?

@@ -91,7 +91,7 @@ module Import::Importer
     end
 
     import_result[:running] = false
-    self.status = 'imported'
+    self.status = :finished
     self.save!
   end
 

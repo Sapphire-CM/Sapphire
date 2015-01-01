@@ -16,8 +16,8 @@ class Import::StudentImportDecorator < Draper::Decorator
   end
 
   def students_count
-    if model.imported?
-      200
+    if model.finished?
+      200 # TODO ?!?
     else
       h.content_tag :span, "?", class: "grey"
     end

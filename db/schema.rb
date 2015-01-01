@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141214172313) do
+ActiveRecord::Schema.define(version: 20150101154619) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -138,7 +138,7 @@ ActiveRecord::Schema.define(version: 20141214172313) do
     t.datetime "updated_at"
     t.string   "file"
     t.string   "format"
-    t.string   "status"
+    t.integer  "status"
     t.integer  "line_count"
     t.text     "import_options"
     t.text     "import_mapping"

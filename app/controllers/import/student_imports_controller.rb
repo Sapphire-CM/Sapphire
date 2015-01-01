@@ -21,8 +21,6 @@ class Import::StudentImportsController < ApplicationController
 
   def create
     @student_import = Import::StudentImport.new(student_import_params)
-    @student_import.status = 'pending'
-
     authorize @student_import
 
     if not @student_import.save
@@ -48,7 +46,7 @@ class Import::StudentImportsController < ApplicationController
   end
 
   def update
-    @student_import.status = 'pending'
+    @student_import.status = :running
     @student_import.import_result = {
       running: true,
       total_rows: 0,

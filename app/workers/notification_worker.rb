@@ -9,8 +9,8 @@ class NotificationWorker
     self.perform_async(:export_finished, export.id)
   end
 
-  def self.welcome_notification(term_registration, welcome_back)
-    self.perform_async(:welcome, term_registration.id, welcome_back)
+  def self.welcome_notification(term_registration)
+    self.perform_async(:welcome, term_registration.id)
   end
 
   def perform(type, *args)
@@ -44,7 +44,7 @@ class NotificationWorker
     end
   end
 
-  def welcome_notification(term_registration_id, welcome_back)
+  def welcome_notification(term_registration_id)
     term_registration = TermRegistration.find(term_registration_id)
     account = term_registration.account
     term = term_registration.term

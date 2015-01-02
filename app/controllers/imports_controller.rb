@@ -90,9 +90,7 @@ class ImportsController < ApplicationController
           :decimal_separator,
           :thousands_separator,
         ],
-        import_mapping_attributes: [
-          *ImportMapping::IMPORTABLE
-        ]
+        import_mapping_attributes: ImportMapping::IMPORTABLE
       )
     end
 end

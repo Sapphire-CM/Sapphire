@@ -5,7 +5,7 @@ class ImportResult < ActiveRecord::Base
 
   validates :import, presence: true
 
-  after_create -> { reset! }
+  after_create :reset!
 
   def reset!
     self.update! success: false,

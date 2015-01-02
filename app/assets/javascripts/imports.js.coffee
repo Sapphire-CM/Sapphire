@@ -17,29 +17,29 @@ $ ->
         true
 
 $ ->
-  $('#import_student_import_import_options_matching_groups_first').change ->
-    elem = $('#import_student_import_import_options_tutorial_groups_regexp')
+  $('#import_import_options_matching_groups_first').change ->
+    elem = $('#import_import_options_tutorial_groups_regexp')
     $(elem).prop("disabled", !$(this).is(':checked'))
 
-    elem = $('#import_student_import_import_options_student_groups_regexp')
+    elem = $('#import_import_options_student_groups_regexp')
     $(elem).prop("disabled", "disabled") if $(this).is(':checked')
 
-  $('#import_student_import_import_options_matching_groups_both').change ->
-    elem = $('#import_student_import_import_options_tutorial_groups_regexp')
+  $('#import_import_options_matching_groups_both').change ->
+    elem = $('#import_import_options_tutorial_groups_regexp')
     $(elem).prop("disabled", "disabled") if $(this).is(':checked')
 
-    elem = $('#import_student_import_import_options_student_groups_regexp')
+    elem = $('#import_import_options_student_groups_regexp')
     $(elem).prop("disabled", !$(this).is(':checked'))
 
-  $('#import_student_import_import_options_matching_groups_first').trigger 'change'
-  $('#import_student_import_import_options_matching_groups_both').trigger 'change'
-
+  $('#import_import_options_matching_groups_first').trigger 'change'
+  $('#import_import_options_matching_groups_both').trigger 'change'
 
 $ ->
   $('div.row.sync-height > div.columns > div.panel').syncHeight({ 'updateOnResize': true})
 
-
-
-
-
-
+$ ->
+  $(document).on 'change', 'select.import_mapping', ->
+    key = $(this).val()
+    value = $(this).data('index')
+    console.log "#{key} -> #{value}"
+    $("input[name='import[import_mapping_attributes][#{key}]']").val(value)

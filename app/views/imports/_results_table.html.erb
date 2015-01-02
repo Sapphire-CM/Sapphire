@@ -1,0 +1,84 @@
+<div id="results_table">
+  <% if @import.pending? || @import.running? %>
+    <div class="row">
+      <div class="large-12 columns">
+        <h1>Working... </h1>
+
+        <p><%= @import.import_result.processed_rows %> of <%= @import.import_result.total_rows %> rows processed...</p>
+
+        <script type="text/javascript">
+          setTimeout(function() {
+            $.ajax("<%= results_term_import_path(@term, @import) %>", { dataType: 'script' })
+          }, 2000);
+        </script>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="large-12 columns">
+      <div class="progress large-12 <%= import_progress_bar_status(@import) %> round">
+        <span class="meter" style="width: <%= @import.import_result.progress %>%"></span>
+      </div>
+
+      <h2>Statistics</h2>
+
+      <table>
+        <thead>
+          <th>Property</th>
+          <th>Status</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Import Job Status</td>
+            <td><%= @import.status %></td>
+          </tr>
+          <tr>
+            <td>Processed rows</td>
+            <td><%= @import.import_result.processed_rows %></td>
+          </tr>
+          <tr>
+            <td>Total rows</td>
+            <td><%= @import.import_result.total_rows %></td>
+          </tr>
+          <tr>
+            <td>Created student accounts</td>
+            <td><%= @import.import_result.imported_students %></td>
+          </tr>
+          <tr>
+            <td>Created tutorial groups</td>
+            <td><%= @import.import_result.imported_tutorial_groups %></td>
+          </tr>
+          <tr>
+            <td>Created student groups</td>
+            <td><%= @import.import_result.imported_student_groups %></td>
+          </tr>
+          <tr>
+            <td>Created student registrations</td>
+            <td><%= @import.import_result.imported_student_registrations %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns">
+      <% if @import.import_result.import_errors.any? %>
+        <h2>Problems</h2>
+
+        <div class="panel">
+          <% @import.import_result.import_errors.each do |error| %>
+            <fieldset>
+              <p><%= error.row %></p>
+              <p><%= error.entry %></p>
+              <p><%= error.message %></p>
+            </fieldset>
+          <% end %>
+        </div>
+      <% else %>
+        <p>No errors.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

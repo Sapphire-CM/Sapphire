@@ -1,81 +1,65 @@
 module Import::Importer
-
   def smart_guess_new_import_mapping
-    smart_guessed_import_mapping = Import::ImportMapping.new
-
     # guess mapping from content
-    if values.any?
-      row = values.first
+    row = values.first
+    row.each_index do |cell_index|
 
-      row.each_index do |cell_index|
-        if /\A(T|G)[\d]{1}/ =~ row[cell_index]
-          smart_guessed_import_mapping.group ||= cell_index
-          next
-        end
-
-        if /.+@.+\..+/ =~ row[cell_index]
-          smart_guessed_import_mapping.email ||= cell_index
-          next
-        end
-
-        if /\A[\d]{7}\z/ =~ row[cell_index]
-          smart_guessed_import_mapping.matriculation_number ||= cell_index
-          next
-        end
+      if /\A(T|G)[\d]{1}/ =~ row[cell_index]
+        import_mapping.group ||= cell_index
+        next
       end
-    end
+
+      if /.+@.+\..+/ =~ row[cell_index]
+        import_mapping.email ||= cell_index
+        next
+      end
+
+      if /\A[\d]{7}\z/ =~ row[cell_index]
+        import_mapping.matriculation_number ||= cell_index
+        next
+      end
+    end if values.any?
 
     # hard coded values of headers
     headers.each_index do |cell_index|
       if /.*Vorname.*/ =~ headers[cell_index]
-        smart_guessed_import_mapping.forename ||= cell_index
+        import_mapping.forename ||= cell_index
         next
       end
 
       if /.*Nachname.*/ =~ headers[cell_index]
-        smart_guessed_import_mapping.surname ||= cell_index
+        import_mapping.surname ||= cell_index
         next
       end
 
       if /.*Anmerkung.*/ =~ headers[cell_index]
-        smart_guessed_import_mapping.comment ||= cell_index
+        import_mapping.comment ||= cell_index
         next
       end
     end if headers
 
-    self.import_mapping = smart_guessed_import_mapping
-    self.save!
+    import_mapping.save!
   end
 
-  def import
-    processed_rows = 0
-    total_rows = values.length
-    import_result[:total_rows] = total_rows
-    import_result[:running] = true
-    import_result[:problems] = []
-
+  def import!
+    import_result.update! processed_rows: 0, total_rows: values.length
 
     values.each do |row|
-      processed_rows += 1
-      progress = processed_rows.to_f / total_rows.to_f * 100.0
-
-      import_result[:progress] = progress.round
-      import_result[:processed_rows] = processed_rows
-      save!
+      import_result.increment! :processed_rows
 
       account = create_student_account row
       group_title = row[import_mapping.group.to_i]
       student_group_title = []
 
-      case import_options[:matching_groups]
-      when 'first'
-        regexp = Regexp.new import_options[:tutorial_groups_regexp]
+      case import_options.matching_groups.to_sym
+      when :first
+        regexp = Regexp.new import_options.tutorial_groups_regexp
         m = regexp.match group_title
 
         tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
         create_term_registration row, account, tutorial_group
-      when 'both'
-        regexp = Regexp.new import_options[:student_groups_regexp]
+      when :both
+        regexp = Regexp.new import_options.student_groups_regexp
         m = regexp.match group_title
 
         tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
@@ -84,19 +68,13 @@ module Import::Importer
         term_registration create_term_registration row, account, tutorial_group
 
         # TODO: add student to student_group
-
       else
-        raise # unknown value for :matching_groups
+        raise "ImportOption matching_groups: #{import_options.matching_groups}" # unknown value for :matching_groups
       end
     end
-
-    import_result[:running] = false
-    self.status = 'imported'
-    self.save!
   end
 
-
-private
+  private
 
   def create_student_account(row)
     student = Account.find_or_initialize_by(matriculation_number: row[import_mapping.matriculation_number.to_i])
@@ -108,29 +86,29 @@ private
 
     new_record = student.new_record?
     if student.save
-      import_result[:imported_students] += 1 if new_record
+      import_result.imported_students += 1 if new_record
     else
-      import_result[:success] = false
-      import_result[:problems] << create_problem_definition(row, student.errors.full_messages)
+      import_result.success = false
+      create_problem_definition row, student.errors.full_messages
     end
 
-    save!
+    import_result.save!
 
     student
   end
 
   def create_tutorial_group(title)
-    tutorial_group = term.tutorial_groups.find_or_initialize_by(title: title)
+    tutorial_group = import.term.tutorial_groups.find_or_initialize_by(title: title)
 
     new_record = tutorial_group.new_record?
     if tutorial_group.save
-      import_result[:imported_tutorial_groups] += 1 if new_record
+      import_result.imported_tutorial_groups += 1 if new_record
     else
-      import_result[:success] = false
-      import_result[:problems] << create_problem_definition(row, tutorial_group.errors.full_messages)
+      import_result.success = false
+      create_problem_definition row, tutorial_group.errors.full_messages
     end
 
-    save!
+    import_result.save!
 
     tutorial_group
   end
@@ -142,15 +120,15 @@ private
     new_record = term_registration.new_record?
     if term_registration.save
       if new_record
-        import_result[:imported_term_registrations] += 1
+        import_result.imported_term_registrations += 1
         NotificationWorker.welcome_notification term_registration
       end
     else
-      import_result[:success] = false
-      import_result[:problems] << create_problem_definition(row, term_registration.errors.full_messages)
+      import_result.success = false
+      create_problem_definition row, term_registration.errors.full_messages
     end
 
-    save!
+    import_result.save!
 
     term_registration
   end
@@ -161,13 +139,13 @@ private
 
     new_record = student_group.new_record?
     if student_group.save
-      import_result[:imported_student_groups] += 1 if new_record
+      import_result.imported_student_groups += 1 if new_record
     else
-      import_result[:success] = false
-      import_result[:problems] << create_problem_definition(row, student_group.errors.full_messages)
+      import_result.success = false
+      create_problem_definition row, student_group.errors.full_messages
     end
 
-    save!
+    import_result.save!
 
     student_group
   end
@@ -185,13 +163,13 @@ private
 
     new_record = registration.new_record?
     if registration.save
-      import_result[:imported_student_registrations] += 1 if new_record
+      import_result.imported_student_registrations += 1 if new_record
     else
-      import_result[:success] = false
-      import_result[:problems] << create_problem_definition(row, registration.errors.full_messages)
+      import_result.success = false
+      create_problem_definition row, registration.errors.full_messages
     end
 
-    save!
+    import_result.save!
 
     registration
   end
@@ -206,6 +184,6 @@ private
       comment: row[import_mapping.comment.to_i]
     }
 
-    { entry: entry, problem: full_messages}
+    import_result.import_errors.create row: row.to_s, entry: entry.to_s, message: full_messages.to_s
   end
 end

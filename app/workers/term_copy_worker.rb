@@ -5,6 +5,6 @@ class TermCopyWorker
     term = Term.find(term_id)
     source_term = term.course.terms.find(source_term_id)
 
-    TermCopyingService.new(term, source_term, options.with_indifferent_access).perform!
+    TermCopyService.new(term, source_term, options.with_indifferent_access).perform!
   end
 end

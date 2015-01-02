@@ -1,5 +1,8 @@
-<%= simple_form_for [@student_import] do |f| %>
-  <%= f.fields_for :import_mapping do |fb| %>
+<%= simple_form_for [@term, @import] do |f| %>
+  <%= f.simple_fields_for :import_mapping do |ff| %>
+    <% ImportMapping::IMPORTABLE.each do |attr| %>
+      <%= ff.hidden_field attr, class: 'import_mapping' %>
+    <% end %>
 
     <div class='row'>
       <div class='large-12 columns'>
@@ -8,20 +11,28 @@
             <thead>
               <tr>
                 <% column_count.times do |i| %>
-                  <td><%= mapping_table_header i, importable_attributes, mapping, fb %></td>
+                  <td>
+                    <%= select_tag "mapping_column_#{i}",
+                      options_for_select([''] + ImportMapping::IMPORTABLE),
+                      class: 'import_mapping',
+                      data: { index: i } %>
+                  </td>
                 <% end %>
               </tr>
 
               <% if headers.any? %>
                 <tr>
-                  <% for header in headers %>
+                  <% headers.each do |header| %>
                     <th><%= header.html_safe %></th>
                   <% end %>
                 </tr>
               <% end %>
             </thead>
             <tbody>
-              <%= render collection: values, partial:'mapping_table_entries', as: :row, locals: { column_count: column_count } %>
+              <%= render collection: values,
+                partial: 'mapping_table_entries',
+                as: :row,
+                locals: { column_count: column_count } %>
             </tbody>
           </table>
         </div>
@@ -32,7 +43,7 @@
   <div class="row" id="load_more_entries">
     <div class='large-12 columns'>
       <p>
-        <%= link_to "Load all entries", full_mapping_table_import_student_import_path(@student_import), remote: true, class: "tiny button" %>
+        <%= link_to "Load all entries", full_mapping_table_term_import_path(@term, @import), remote: true, class: "tiny button" %>
       </p>
     </div>
   </div>

@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141214172313) do
+ActiveRecord::Schema.define(version: 20150101233545) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -70,11 +73,11 @@ ActiveRecord::Schema.define(version: 20141214172313) do
 
   create_table "evaluations", force: true do |t|
     t.boolean  "checked"
-    t.integer  "value"
     t.integer  "rating_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type"
+    t.integer  "value"
     t.integer  "evaluation_group_id"
     t.boolean  "checked_automatically"
   end
@@ -132,20 +135,69 @@ ActiveRecord::Schema.define(version: 20141214172313) do
 
   add_index "exports", ["term_id"], name: "index_exports_on_term_id", using: :btree
 
-  create_table "import_student_imports", force: true do |t|
+  create_table "import_errors", force: true do |t|
+    t.integer  "import_result_id"
+    t.string   "row"
+    t.string   "entry"
+    t.string   "message"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  create_table "import_mappings", force: true do |t|
+    t.integer  "import_id"
+    t.integer  "group"
+    t.integer  "email"
+    t.integer  "forename"
+    t.integer  "surname"
+    t.integer  "matriculation_number"
+    t.integer  "comment"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  create_table "import_options", force: true do |t|
+    t.integer  "import_id"
+    t.integer  "matching_groups"
+    t.string   "tutorial_groups_regexp"
+    t.string   "student_groups_regexp"
+    t.boolean  "headers_on_first_line",  default: true
+    t.string   "column_separator"
+    t.string   "quote_char"
+    t.string   "decimal_separator"
+    t.string   "thousands_separator"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+  end
+
+  create_table "import_results", force: true do |t|
+    t.integer  "import_id"
+    t.boolean  "success",                        default: false
+    t.boolean  "encoding_error",                 default: false
+    t.boolean  "parsing_error",                  default: false
+    t.integer  "total_rows"
+    t.integer  "processed_rows"
+    t.integer  "imported_students"
+    t.integer  "imported_tutorial_groups"
+    t.integer  "imported_term_registrations"
+    t.integer  "imported_student_groups"
+    t.integer  "imported_student_registrations"
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+  end
+
+  create_table "imports", force: true do |t|
     t.integer  "term_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "file"
-    t.string   "format"
-    t.string   "status"
-    t.integer  "line_count"
+    t.integer  "status"
     t.text     "import_options"
     t.text     "import_mapping"
     t.text     "import_result"
   end
 
-  add_index "import_student_imports", ["term_id"], name: "index_import_student_imports_on_term_id", using: :btree
+  add_index "imports", ["term_id"], name: "index_imports_on_term_id", using: :btree
 
   create_table "lecturer_registrations", force: true do |t|
     t.integer  "account_id"

@@ -1,9 +1,4 @@
-class Import::StudentImportPolicy < PunditBasePolicy
-  def index?
-    user.admin? ||
-    user.lecturer_of_term?(record)
-  end
-
+class ImportPolicy < PunditBasePolicy
   def show?
     user.admin? ||
     user.lecturer_of_term?(record)

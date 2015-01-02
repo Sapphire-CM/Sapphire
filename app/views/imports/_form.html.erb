@@ -42,8 +42,7 @@
                 </div>
               </div>
               <div class="row">
-                <%= ff.input_field :tutorial_groups_regexp,
-                  value: @import.import_options.tutorial_groups_regexp, class: 'regex' %>
+                <%= ff.input_field :tutorial_groups_regexp, class: 'regex' %>
               </div>
             </li>
             <li class="import-setting">
@@ -59,9 +58,7 @@
                 </div>
               </div>
               <div class="row">
-                <%= ff.input_field :student_groups_regexp,
-                  value: @import.import_options.student_groups_regexp,
-                  class: 'regex'  %>
+                <%= ff.input_field :student_groups_regexp, class: 'regex'  %>
               </div>
             </li>
           </ul>
@@ -82,9 +79,7 @@
               </div>
               <div class='row'>
                 <div class='text-center'>
-                  <%= ff.check_box :headers_on_first_line,
-                    checked: @import.import_options.headers_on_first_line,
-                    data: { customforms: 'disabled' } %>
+                  <%= ff.check_box :headers_on_first_line, data: { customforms: 'disabled' } %>
                 </div>
               </div>
             </li>
@@ -96,9 +91,7 @@
               </div>
               <div class='row'>
                 <div>
-                  <%= ff.input_field :column_separator,
-                    value: @import.import_options.column_separator,
-                    class: 'file-format-centered' %>
+                  <%= ff.input_field :column_separator, class: 'file-format-centered' %>
                 </div>
               </div>
             </li>
@@ -110,9 +103,7 @@
               </div>
               <div class='row'>
                 <div>
-                  <%= ff.input_field :quote_char,
-                    value: @import.import_options.quote_char,
-                    class: "file-format-centered" %>
+                  <%= ff.input_field :quote_char, class: "file-format-centered" %>
                 </div>
               </div>
             </li>
@@ -124,9 +115,7 @@
               </div>
               <div class='row'>
                 <div>
-                  <%= ff.input_field :decimal_separator,
-                    value: @import.import_options.decimal_separator,
-                    class: "file-format-centered" %>
+                  <%= ff.input_field :decimal_separator, class: "file-format-centered" %>
                 </div>
               </div>
             </li>
@@ -138,9 +127,7 @@
               </div>
               <div class='row'>
                 <div>
-                  <%= ff.input_field :thousands_separator,
-                    value: @import.import_options.thousands_separator,
-                    class: "file-format-centered" %>
+                  <%= ff.input_field :thousands_separator, class: "file-format-centered" %>
                 </div>
               </div>
             </li>

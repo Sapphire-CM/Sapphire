@@ -22,6 +22,7 @@ class ExcelSpreadsheetExport < Export
 
   include PointsOverviewHelper
   include RatingsHelper
+  include ActiveSupport::NumberHelper
 
   private
 
@@ -133,6 +134,27 @@ class ExcelSpreadsheetExport < Export
     styles[:grade_title] = workbook.add_format bold: 1
     styles[:grade_cell] = workbook.add_format align: "center", bold: 1, bg_color: RED_COLOR
 
+    grading_scale_title_cell_attrs = {bg_color: RED_COLOR, align: "center", bold: 1, top: BORDER_THICKNESS, top_color: BLACK_COLOR, bottom: BORDER_THICKNESS, bottom_color: BLACK_COLOR}
+    styles[:grading_scale_title] = workbook.add_format grading_scale_title_cell_attrs
+    styles[:grading_scale_title_first] = workbook.add_format grading_scale_title_cell_attrs.merge({left: BORDER_THICKNESS, left_color: BLACK_COLOR})
+    styles[:grading_scale_title_last] = workbook.add_format grading_scale_title_cell_attrs.merge({right: BORDER_THICKNESS, right_color: BLACK_COLOR})
+
+    styles[:grading_scale_grade_title] = workbook.add_format({bold: 1, bg_color: LIGHT_GREEN_COLOR, left: BORDER_THICKNESS, left_color: BLACK_COLOR})
+
+    grading_scale_footer_cell_attrs = {bg_color: RED_COLOR, bold: 1, top: BORDER_THICKNESS, top_color: BLACK_COLOR}
+    styles[:grading_scale_sum_title] = workbook.add_format grading_scale_footer_cell_attrs.merge({left: BORDER_THICKNESS, left_color: BLACK_COLOR})
+    styles[:grading_scale_sum_inner] = workbook.add_format grading_scale_footer_cell_attrs
+    styles[:grading_scale_sum_inner_last] = workbook.add_format grading_scale_footer_cell_attrs.merge(right: BORDER_THICKNESS, right_color: BLACK_COLOR)
+
+    grading_scale_footer_last_row_cell_attrs = grading_scale_footer_cell_attrs.merge({bottom: BORDER_THICKNESS, bottom_color: BLACK_COLOR})
+    styles[:grading_scale_footer_title] = workbook.add_format grading_scale_footer_last_row_cell_attrs.merge({left: BORDER_THICKNESS, left_color: BLACK_COLOR})
+    styles[:grading_scale_footer_inner] = workbook.add_format grading_scale_footer_last_row_cell_attrs
+    styles[:grading_scale_footer_inner_last] = workbook.add_format grading_scale_footer_last_row_cell_attrs.merge({right: BORDER_THICKNESS, right_color: BLACK_COLOR})
+
+    grading_scale_inner = {bg_color: SILVER_COLOR, align: "right"}
+    styles[:grading_scale_inner] = workbook.add_format grading_scale_inner
+    styles[:grading_scale_inner_last] = workbook.add_format grading_scale_inner.merge({right: BORDER_THICKNESS, left: BLACK_COLOR})
+
     styles[:exercise_title_cell] = workbook.add_format bold: 1, font_size: 20,
       align: "center", valign: "vcenter",
       bottom: BORDER_THICKNESS, bottom_color: BLACK_COLOR,
@@ -160,6 +182,19 @@ class ExcelSpreadsheetExport < Export
     grading_scale = GradingScaleService.new(term, term_registrations)
 
     worksheet = workbook.add_worksheet("summary")
+
+    # set column widths
+    worksheet.set_column 0, 0, 20
+    worksheet.set_column 1, students.count, 4
+
+    # set row heights
+    worksheet.set_row 0, 50
+    worksheet.set_row 1, 50
+    worksheet.set_row 2, 100
+    worksheet.set_row 3, 100
+    worksheet.set_row 4, 100
+    worksheet.set_row 5, 100
+
     reset_row
 
     worksheet.write same_row, 0, "#{term.course.title} #{term.title} - #{tutorial_group_title tutorial_group}", styles[:title_row]
@@ -197,17 +232,30 @@ class ExcelSpreadsheetExport < Export
     worksheet.write next_row, 0, "grade", styles[:grade_title]
     worksheet.write_row same_row, 1, term_registrations.map {|tr| grading_scale.grade_for_term_registration(tr)} , styles[:grade_cell]
 
-    # set column widths
-    worksheet.set_column 0, 0, 20
-    worksheet.set_column 1, students.count, 4
+    next_row
+    worksheet.merge_range next_row, 1, same_row, 2, "Grade", styles[:grading_scale_title_first]
+    worksheet.merge_range same_row, 3, same_row, 4, "Points", styles[:grading_scale_title]
+    worksheet.merge_range same_row, 5, same_row, 6, "Students", styles[:grading_scale_title]
+    worksheet.merge_range same_row, 7, same_row, 8, "Percent", styles[:grading_scale_title_last]
 
-    # set row heights
-    worksheet.set_row 0, 50
-    worksheet.set_row 1, 50
-    worksheet.set_row 2, 100
-    worksheet.set_row 3, 100
-    worksheet.set_row 4, 100
-    worksheet.set_row 5, 100
+    grading_scale.grading_ranges.each do |grading_range|
+      worksheet.merge_range next_row, 1, same_row, 2, grading_range.grade, styles[:grading_scale_grade_title]
+      worksheet.merge_range same_row, 3, same_row, 4, "#{grading_range.minimum_points} - #{grading_range.maximum_ui_points}", styles[:grading_scale_inner]
+      worksheet.merge_range same_row, 5, same_row, 6, grading_range.student_count, styles[:grading_scale_inner]
+      worksheet.merge_range same_row, 7, same_row, 8, number_to_percentage(grading_scale.percent_for(grading_range.grade), precision: 1), styles[:grading_scale_inner_last]
+    end
+
+    worksheet.merge_range next_row, 1, same_row, 2, "Sum", styles[:grading_scale_sum_title]
+    worksheet.merge_range same_row, 3, same_row, 4, "", styles[:grading_scale_sum_inner]
+    worksheet.merge_range same_row, 5, same_row, 6, grading_scale.graded_count, styles[:grading_scale_sum_inner]
+    worksheet.merge_range same_row, 7, same_row, 8, '', styles[:grading_scale_sum_inner_last]
+
+    worksheet.merge_range next_row, 1, same_row, 2, "Ungraded", styles[:grading_scale_footer_title]
+    worksheet.merge_range same_row, 3, same_row, 4, "", styles[:grading_scale_footer_inner]
+    worksheet.merge_range same_row, 5, same_row, 6, grading_scale.ungraded_count, styles[:grading_scale_footer_inner]
+    worksheet.merge_range same_row, 7, same_row, 8, '', styles[:grading_scale_footer_inner_last]
+
+
 
     worksheet
   end
@@ -258,7 +306,7 @@ class ExcelSpreadsheetExport < Export
     end
 
     row_index = 2
-    exercise.rating_groups.each do |rating_group|
+    exercise.rating_groups.rank(:row_order).each do |rating_group|
       worksheet.write(row_index, 0, rating_group.title, styles[:rating_group_title_cell])
       worksheet.write(row_index, 1, rating_group.points, styles[:rating_group_points_cell])
       worksheet.write_row(row_index, 2, students.map {|s| stud_rg_eg[s][rating_group] || "-"}, styles[:student_rating_group_points_cell])

@@ -3,5 +3,5 @@ class ImportMapping < ActiveRecord::Base
 
   validates :import, presence: true
 
-  IMPORTABLE = %i(group email forename surname matriculation_number comment)
+  IMPORTABLE = %i(group email forename surname matriculation_number comment).freeze
 end

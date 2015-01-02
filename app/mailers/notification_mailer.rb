@@ -19,7 +19,7 @@ class NotificationMailer < ActionMailer::Base
     @course = @term.course
     @recipient = recipient
 
-    mail(to: recipient.email, subject: "[Sapphire] Export finished: #{course_term_title(term)}")
+    mail(to: recipient.email, subject: "[Sapphire] Export finished: #{course_term_title(@term)}")
   end
 
   def welcome_notification(account, term)

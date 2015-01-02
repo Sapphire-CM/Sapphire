@@ -1,5 +1,8 @@
 <%= simple_form_for [@term, @import] do |f| %>
   <%= f.simple_fields_for :import_mapping do |ff| %>
+    <% ImportMapping::IMPORTABLE.each do |attr| %>
+      <%= ff.hidden_field attr, class: 'import_mapping' %>
+    <% end %>
 
     <div class='row'>
       <div class='large-12 columns'>
@@ -8,7 +11,12 @@
             <thead>
               <tr>
                 <% column_count.times do |i| %>
-                  <td><%= mapping_table_header i, @import.import_mapping, ff %></td>
+                  <td>
+                    <%= select_tag "mapping_column_#{i}",
+                      options_for_select([''] + ImportMapping::IMPORTABLE),
+                      class: 'import_mapping',
+                      data: { index: i } %>
+                  </td>
                 <% end %>
               </tr>
 
@@ -21,7 +29,10 @@
               <% end %>
             </thead>
             <tbody>
-              <%= render collection: values, partial:'mapping_table_entries', as: :row, locals: { column_count: column_count } %>
+              <%= render collection: values,
+                partial: 'mapping_table_entries',
+                as: :row,
+                locals: { column_count: column_count } %>
             </tbody>
           </table>
         </div>

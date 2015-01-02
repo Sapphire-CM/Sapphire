@@ -36,3 +36,10 @@ $ ->
 
 $ ->
   $('div.row.sync-height > div.columns > div.panel').syncHeight({ 'updateOnResize': true})
+
+$ ->
+  $(document).on 'change', 'select.import_mapping', ->
+    key = $(this).val()
+    value = $(this).data('index')
+    console.log "#{key} -> #{value}"
+    $("input[name='import[import_mapping_attributes][#{key}]']").val(value)

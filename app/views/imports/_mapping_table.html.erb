@@ -12,10 +12,7 @@
               <tr>
                 <% column_count.times do |i| %>
                   <td>
-                    <%= select_tag "mapping_column_#{i}",
-                      options_for_select([''] + ImportMapping::IMPORTABLE),
-                      class: 'import_mapping',
-                      data: { index: i } %>
+                    <%= mapping_column_select i %>
                   </td>
                 <% end %>
               </tr>

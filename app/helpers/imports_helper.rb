@@ -1,10 +1,10 @@
 module ImportsHelper
-  def mapping_table_header(index, importable_attributes, mapping, form_builder)
-    current_value = mapping[index]
+  def mapping_table_header(index, import_mapping, form_builder)
+    current_value = import_mapping.swapped[index]
 
     form_builder.input_field index.to_s,
       as: :select,
-      collection: importable_attributes,
+      collection: ImportMapping::IMPORTABLE,
       selected: current_value,
       include_blank: true,
       class: 'import-mapping'

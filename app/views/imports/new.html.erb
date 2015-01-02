@@ -18,17 +18,17 @@
         <tbody>
           <% @term.imports.decorate.each do |import| %>
             <tr>
-              <td><%= import.filename %></td>
+              <td><%= File.basename import.file.to_s %></td>
               <td><%= import.created_at %></td>
               <td><%= import.updated_at %></td>
               <td><%= import.status %></td>
               <td>
                 <%= link_to foundation_icon(:magnifying_glass),
-                  term_import_path(import) %>
+                  term_import_path(@term, import) %>
               </td>
               <td>
                 <%= link_to foundation_icon(:x),
-                  term_import_path(import),
+                  term_import_path(@term, import),
                   method: :delete,
                   data: { confirm: "Are you sure?" } %>
               </td>

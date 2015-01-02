@@ -1,5 +1,5 @@
 <%= simple_form_for [@term, @import] do |f| %>
-  <%= f.fields_for :import_mapping do |fb| %>
+  <%= f.simple_fields_for :import_mapping do |ff| %>
 
     <div class='row'>
       <div class='large-12 columns'>
@@ -8,13 +8,13 @@
             <thead>
               <tr>
                 <% column_count.times do |i| %>
-                  <td><%= mapping_table_header i, importable_attributes, mapping, fb %></td>
+                  <td><%= mapping_table_header i, @import.import_mapping, ff %></td>
                 <% end %>
               </tr>
 
               <% if headers.any? %>
                 <tr>
-                  <% for header in headers %>
+                  <% headers.each do |header| %>
                     <th><%= header.html_safe %></th>
                   <% end %>
                 </tr>

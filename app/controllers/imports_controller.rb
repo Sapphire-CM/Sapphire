@@ -10,7 +10,9 @@ class ImportsController < ApplicationController
 
     @import = Import.new
     @import.term = @term
-    @import.import_options[:matching_groups] = "both" if @term.group_submissions?
+    @import.build_import_options
+
+    @import.import_options.matching_groups = :both if @term.group_submissions?
 
     authorize @import
   end

@@ -1,7 +1,7 @@
 <%= simple_form_for [@term, @import], html: {class: "custom"} do |f| %>
   <%= f.input :term_id, as: :hidden %>
 
-  <%= f.simple_fields_for :import_options do |b| %>
+  <%= f.simple_fields_for :import_options do |ff| %>
     <div class="row sync-height">
       <div class="large-4 columns">
         <div class="panel">
@@ -32,34 +32,34 @@
             <li class="import-setting">
               <div class="row">
                 <div class='large-12 large-centered text-center'>
-                  <%= b.label "Match tutorial groups", required: false %>
+                  <%= ff.label "Match tutorial groups", required: false %>
                 </div>
               </div>
               <div class="row">
                 <div class='large-12 large-centered text-center'>
-                  <%= b.radio_button :matching_groups, "first",
+                  <%= ff.radio_button :matching_groups, "first",
                     checked: @import.import_options.matching_groups == "first" %>
                 </div>
               </div>
               <div class="row">
-                <%= b.input_field :tutorial_groups_regexp,
+                <%= ff.input_field :tutorial_groups_regexp,
                   value: @import.import_options.tutorial_groups_regexp, class: 'regex' %>
               </div>
             </li>
             <li class="import-setting">
               <div class="row">
                 <div class='large-12 large-centered text-center'>
-                  <%= b.label "Match tutorial and student groups", required: false %>
+                  <%= ff.label "Match tutorial and student groups", required: false %>
                 </div>
               </div>
               <div class="row">
                 <div class='large-12 large-centered text-center'>
-                  <%= b.radio_button :matching_groups, "both",
+                  <%= ff.radio_button :matching_groups, "both",
                     checked: @import.import_options.matching_groups == "both"  %>
                 </div>
               </div>
               <div class="row">
-                <%= b.input_field :student_groups_regexp,
+                <%= ff.input_field :student_groups_regexp,
                   value: @import.import_options.student_groups_regexp,
                   class: 'regex'  %>
               </div>
@@ -77,12 +77,12 @@
             <li class="import-setting">
               <div class='row'>
                 <div class='large-12 large-centered text-center'>
-                  <%= b.label :headers_on_first_line %>
+                  <%= ff.label :headers_on_first_line %>
                 </div>
               </div>
               <div class='row'>
                 <div class='text-center'>
-                  <%= b.check_box :headers_on_first_line,
+                  <%= ff.check_box :headers_on_first_line,
                     checked: @import.import_options.headers_on_first_line,
                     data: { customforms: 'disabled' } %>
                 </div>
@@ -91,12 +91,12 @@
             <li class="import-setting">
               <div class='row'>
                 <div class='large-12 large-centered text-center'>
-                  <%= b.label :column_separator %>
+                  <%= ff.label :column_separator %>
                 </div>
               </div>
               <div class='row'>
                 <div>
-                  <%= b.input_field :column_separator,
+                  <%= ff.input_field :column_separator,
                     value: @import.import_options.column_separator,
                     class: 'file-format-centered' %>
                 </div>
@@ -105,12 +105,12 @@
             <li class="import-setting">
               <div class='row'>
                 <div class='large-12 large-centered text-center'>
-                  <%= b.label :quote_char %>
+                  <%= ff.label :quote_char %>
                 </div>
               </div>
               <div class='row'>
                 <div>
-                  <%= b.input_field :quote_char,
+                  <%= ff.input_field :quote_char,
                     value: @import.import_options.quote_char,
                     class: "file-format-centered" %>
                 </div>
@@ -119,12 +119,12 @@
             <li class="import-setting">
               <div class='row'>
                 <div class='large-12 large-centered text-center'>
-                  <%= b.label :decimal_separator %>
+                  <%= ff.label :decimal_separator %>
                 </div>
               </div>
               <div class='row'>
                 <div>
-                  <%= b.input_field :decimal_separator,
+                  <%= ff.input_field :decimal_separator,
                     value: @import.import_options.decimal_separator,
                     class: "file-format-centered" %>
                 </div>
@@ -133,12 +133,12 @@
             <li class="import-setting">
               <div class='row'>
                 <div class='large-12 large-centered text-center'>
-                  <%= b.label :thousands_separator %>
+                  <%= ff.label :thousands_separator %>
                 </div>
               </div>
               <div class='row'>
                 <div>
-                  <%= b.input_field :thousands_separator,
+                  <%= ff.input_field :thousands_separator,
                     value: @import.import_options.thousands_separator,
                     class: "file-format-centered" %>
                 </div>
@@ -152,7 +152,7 @@
 
   <div class='row'>
     <div class='large-12 large-centered columns text-center'>
-      <%= f.submit "Next", class: "button" %>
+      <%= f.submit "Next", class: "button with-bottom-margin" %>
     </div>
   </div>
 <% end %>

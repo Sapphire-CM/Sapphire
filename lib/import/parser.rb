@@ -1,11 +1,12 @@
 module Import::Parser
   def parse_csv
-    csv_options = {}
-    csv_options[:col_sep] = import_options.column_separator || ";"
-    csv_options[:quote_char] = import_options.quote_char || "\""
+    csv_options = {
+      col_sep: import_options.column_separator,
+      quote_char: import_options.quote_char,
+    }
 
-    # not used: import_options.decimal_separator || ","
-    # not used: import_options.thousands_separator || "."
+    # not used: import_options.decimal_separator
+    # not used: import_options.thousands_separator
 
     @headers = []
     @values = []

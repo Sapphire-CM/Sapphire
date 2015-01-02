@@ -173,6 +173,8 @@ ActiveRecord::Schema.define(version: 20150101233545) do
   create_table "import_results", force: true do |t|
     t.integer  "import_id"
     t.boolean  "success",                        default: false
+    t.boolean  "encoding_error",                 default: false
+    t.boolean  "parsing_error",                  default: false
     t.integer  "total_rows"
     t.integer  "processed_rows"
     t.integer  "imported_students"

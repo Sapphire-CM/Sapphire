@@ -31,19 +31,19 @@ module Import::Parser
 
   def load_csv_text
     begin
-      text = File.open(self.file.to_s, "r").read
+      text = File.open(import.file.to_s, 'r').read
       text = text.force_encoding("UTF-8").gsub("\xEF\xBB\xBF".force_encoding("UTF-8"), '')
     rescue Exception => e
-      @encoding_error = true
+      import_result.update! encoding_error: true
       text = "" # empty string should not harm anybody else
     end
   end
 
   def parse_csv_line(line, csv_options)
     begin
-      values = CSV.parse_line(line, csv_options).keep_if {|cell| cell.present?}
+      values = CSV.parse_line(line, csv_options).keep_if { |cell| cell.present? }
     rescue CSV::MalformedCSVError => e
-      @parsing_error = true
+      import_result.update! parsing_error: true
       values = [line]
     end
 

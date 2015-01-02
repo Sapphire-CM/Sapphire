@@ -22,16 +22,13 @@ class ImportDecorator < Draper::Decorator
   end
 
   def mapping_table
-    headers = model.headers
-    values = model.values.first(5)
-    mapping = model.import_mapping
-    column_count = model.column_count
+    import_service = ImportService.new(model)
 
     h.render 'imports/mapping_table',
-      mapping: mapping,
-      column_count: column_count,
-      headers: headers,
-      values: values,
+      mapping: model.import_mapping,
+      headers: import_service.headers,
+      values: import_service.values.first(5),
+      column_count: import_service.column_count,
       importable_attributes: (ImportMapping.columns.map(&:name) - ['id', 'import_id'])
   end
 end

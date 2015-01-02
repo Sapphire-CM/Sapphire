@@ -1,18 +1,4 @@
-class TermCopyingService
-  include ActiveModel::Model
-
-  attr_accessor :term
-
-  def self.copy_async(term)
-    options = {
-      lecturers: term.copy_lecturer?,
-      exercises: term.copy_exercises?,
-      grading_scale: term.copy_grading_scale?
-    }
-
-    TermCopyWorker.perform_async(term.id, term.source_term_id, options)
-  end
-
+class TermCopyService
   def initialize(term, source_term, options = {})
     @term = term
     @source_term = source_term
@@ -32,6 +18,7 @@ class TermCopyingService
   end
 
   private
+
   def copy_lecturers!
     puts "Copying Lecturer"
     @source_term.term_registrations.lecturers.each do |lecturer_registration|

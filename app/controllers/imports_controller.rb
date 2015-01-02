@@ -27,22 +27,22 @@ class ImportsController < ApplicationController
 
     # TODO: add validation for import_options
 
-    @import.parse_csv
+    import_service = ImportService.new(@import)
 
-    if @import.encoding_error?
+    if import_service.encoding_error?
       render :new, alert: "Error with file encoding! UTF8-like is required."
-    elsif @import.parsing_error?
+    elsif import_service.parsing_error?
       render :new, alert: "Error during parsing! Corrupt data detected."
     else
       # everything worked
-      @import.smart_guess_new_import_mapping
+      import_service.smart_guess_new_import_mapping
       redirect_to term_import_path(@term, @import)
     end
   end
 
   def update
     if @import.update(import_params)
-      @import.prepare_run!
+      @import.pending!
       ImportWorker.perform_async(@import.id)
       redirect_to results_term_import_path(@term, @import)
     else
@@ -51,8 +51,9 @@ class ImportsController < ApplicationController
   end
 
   def full_mapping_table
-    @entries = @import.values
-    @column_count = @import.column_count
+    import_service = ImportService.new(@import)
+    @entries = import_service.values
+    @column_count = import_service.column_count
   end
 
   def results

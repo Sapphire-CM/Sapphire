@@ -9,7 +9,7 @@ RSpec.describe ImportsController do
       import: {
         term_id: term.id,
         file: Rack::Test::UploadedFile.new(prepare_static_test_file('import_data.csv'), 'text/csv'),
-        import_options: {
+        import_options_attributes: {
           matching_groups: 'first',
           tutorial_groups_regexp: "\\AT(?<tutorial>[\\d]+)\\z",
           headers_on_first_line: '1',
@@ -121,8 +121,8 @@ RSpec.describe ImportsController do
       expect(response).to have_http_status(:success)
       expect(assigns(:term)).to eq(term)
       expect(assigns(:import)).to eq(import)
-      expect(assigns(:entries)).to eq(import.values)
-      expect(assigns(:column_count)).to eq(import.column_count)
+      expect(assigns(:entries)).to eq(ImportService.new(import).values)
+      expect(assigns(:column_count)).to eq(ImportService.new(import).column_count)
     end
   end
 

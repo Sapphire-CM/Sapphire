@@ -32,6 +32,8 @@ class SplitImportModel < ActiveRecord::Migration
       t.references :import
 
       t.boolean :success, default: false
+      t.boolean :encoding_error, default: false
+      t.boolean :parsing_error, default: false
       t.integer :total_rows
       t.integer :processed_rows
       t.integer :imported_students

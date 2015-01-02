@@ -74,8 +74,7 @@ module Import::Importer
       end
     end
 
-    self.status = :finished
-    self.save!
+    import.finished!
   end
 
   private
@@ -102,7 +101,7 @@ module Import::Importer
   end
 
   def create_tutorial_group(title)
-    tutorial_group = term.tutorial_groups.find_or_initialize_by(title: title)
+    tutorial_group = import.term.tutorial_groups.find_or_initialize_by(title: title)
 
     new_record = tutorial_group.new_record?
     if tutorial_group.save

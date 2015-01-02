@@ -1,5 +1,5 @@
 <div id="results_table">
-  <% if @import.import_result[:running] %>
+  <% if @import.pending? || @import.running? %>
     <div class="row">
       <div class="large-12 columns">
         <h1>Working... </h1>
@@ -70,15 +70,9 @@
         <div class="panel">
           <% @import.import_result.import_errors.each do |error| %>
             <fieldset>
-              <%= error.row %>
-            </fieldset>
-
-            <fieldset>
-              <%= error.entry %>
-            </fieldset>
-
-            <fieldset>
-              <%= error.message %>
+              <p><%= error.row %></p>
+              <p><%= error.entry %></p>
+              <p><%= error.message %></p>
             </fieldset>
           <% end %>
         </div>

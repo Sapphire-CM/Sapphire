@@ -68,13 +68,10 @@ module Import::Importer
         term_registration create_term_registration row, account, tutorial_group
 
         # TODO: add student to student_group
-
       else
         raise "ImportOption matching_groups: #{import_options.matching_groups}" # unknown value for :matching_groups
       end
     end
-
-    import.finished!
   end
 
   private

@@ -57,9 +57,6 @@ class ImportsController < ApplicationController
   end
 
   def results
-    if @import.finished?
-      return js_redirect_to term_import_path(@term, @import)
-    end
   end
 
   def destroy
@@ -93,13 +90,8 @@ class ImportsController < ApplicationController
           :decimal_separator,
           :thousands_separator,
         ],
-        import_mappings_attributes: [
-          :group,
-          :email,
-          :forename,
-          :surname,
-          :matriculation_number,
-          :comment,
+        import_mapping_attributes: [
+          *ImportMapping::IMPORTABLE
         ]
       )
     end

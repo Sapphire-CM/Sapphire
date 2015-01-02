@@ -20,8 +20,7 @@ class Import < ActiveRecord::Base
   accepts_nested_attributes_for :import_mapping
 
   after_initialize do
-    @parsed = false
-    self.status = :pending
+    self.status ||= :pending
   end
 
   private

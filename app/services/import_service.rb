@@ -4,7 +4,7 @@ class ImportService
   include Import::Parser
   include Import::Importer
 
-  attr_reader :import, :import_options, :import_mapping, :import_result
+  attr_accessor :import, :import_options, :import_mapping, :import_result
 
   def initialize(import)
     @import = import
@@ -14,8 +14,8 @@ class ImportService
   end
 
   def perform!
-    import.running!
-    import_result.reset!
+    @import.update! status: :running
+    @import_result.reset!
 
     begin
       import!
@@ -23,6 +23,8 @@ class ImportService
       import.failed!
       raise e
     end
+
+    @import.update! status: :finished
   end
 
   def headers
@@ -47,11 +49,11 @@ class ImportService
 
   def encoding_error?
     parse_csv unless @parsed
-    import_result.encoding_error?
+    @import_result.encoding_error?
   end
 
   def parsing_error?
     parse_csv unless @parsed
-    import_result.parsing_error?
+    @import_result.parsing_error?
   end
 end

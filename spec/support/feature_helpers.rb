@@ -1,12 +1,12 @@
 module FeatureHelpers
   def ensure_logged_out!
-    unless @account.nil?
+    unless @current_account.nil?
       visit destroy_account_session_path
-      @account = nil
+      @current_account = nil
     end
   end
 
-  def sign_in(account = create(:account))
+  def sign_in(account = FactoryGirl.create(:account))
     ensure_logged_out!
 
     visit new_account_session_path
@@ -14,7 +14,7 @@ module FeatureHelpers
     fill_in 'Password', with: account.password
     click_on 'Sign in'
 
-    @account = account
+    @current_account = account
   end
 end
 

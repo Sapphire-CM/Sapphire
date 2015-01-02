@@ -1,5 +1,5 @@
 class NotificationMailer < ActionMailer::Base
-  default from: 'sapphire@sapphire.iicm.tugraz.at'
+  default from: 'sapphire-no-reply@iicm.tugraz.at'
   helper :layout
 
   def result_publication_notification(term_registration, result_publication)

@@ -14,7 +14,7 @@ class NotificationWorker
   end
 
   def perform(type, *args)
-    case type
+    case type.to_sym
     when :result_publication
       result_publication_notifications(*args)
     when :export_finished

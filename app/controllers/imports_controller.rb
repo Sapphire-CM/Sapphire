@@ -21,11 +21,9 @@ class ImportsController < ApplicationController
 
     @term = @import.term
 
-    if not @import.save
+    unless @import.save
       return render :new
     end
-
-    # TODO: add validation for import_options
 
     import_service = ImportService.new(@import)
 

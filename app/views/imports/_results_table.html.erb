@@ -4,11 +4,11 @@
       <div class="large-12 columns">
         <h1>Working... </h1>
 
-        <p><%= @import.import_result[:processed_rows] %> of <%= @import.import_result[:total_rows] %> rows processed...</p>
+        <p><%= @import.import_result.processed_rows %> of <%= @import.import_result.total_rows %> rows processed...</p>
 
         <script type="text/javascript">
           setTimeout(function() {
-            $.ajax("<%= results_term_import_path(@import) %>", { dataType: 'script' })
+            $.ajax("<%= results_term_import_path(@term, @import) %>", { dataType: 'script' })
           }, 2000);
         </script>
       </div>
@@ -17,7 +17,9 @@
 
   <div class="row">
     <div class="large-12 columns">
-      <div class="progress large-12 <%= import_progress_bar_status(@import) %> round"><span class="meter" style="width: <%= @import.import_result[:progress] %>%"></span></div>
+      <div class="progress large-12 <%= import_progress_bar_status(@import) %> round">
+        <span class="meter" style="width: <%= @import.import_result.progress %>%"></span>
+      </div>
 
       <h2>Statistics</h2>
 
@@ -33,27 +35,27 @@
           </tr>
           <tr>
             <td>Processed rows</td>
-            <td><%= @import.import_result[:processed_rows] %></td>
+            <td><%= @import.import_result.processed_rows %></td>
           </tr>
           <tr>
             <td>Total rows</td>
-            <td><%= @import.import_result[:total_rows] %></td>
+            <td><%= @import.import_result.total_rows %></td>
           </tr>
           <tr>
             <td>Created student accounts</td>
-            <td><%= @import.import_result[:imported_students] %></td>
+            <td><%= @import.import_result.imported_students %></td>
           </tr>
           <tr>
             <td>Created tutorial groups</td>
-            <td><%= @import.import_result[:imported_tutorial_groups] %></td>
+            <td><%= @import.import_result.imported_tutorial_groups %></td>
           </tr>
           <tr>
             <td>Created student groups</td>
-            <td><%= @import.import_result[:imported_student_groups] %></td>
+            <td><%= @import.import_result.imported_student_groups %></td>
           </tr>
           <tr>
             <td>Created student registrations</td>
-            <td><%= @import.import_result[:imported_student_registrations] %></td>
+            <td><%= @import.import_result.imported_student_registrations %></td>
           </tr>
         </tbody>
       </table>
@@ -62,37 +64,22 @@
 
   <div class="row">
     <div class="large-12 columns">
-      <% if @import.import_result[:problems].any? %>
+      <% if @import.import_result.import_errors.any? %>
         <h2>Problems</h2>
 
         <div class="panel">
-          <% @import.import_result[:problems].each do |problem| %>
-            <table>
-              <thead>
-                <th>Group</th>
-                <th>Forename</th>
-                <th>Surname</th>
-                <th>Email</th>
-                <th>Matriculation number</th>
-                <th>Comment</th>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><%= problem[:entry][:group] %></td>
-                  <td><%= problem[:entry][:forename] %></td>
-                  <td><%= problem[:entry][:surname] %></td>
-                  <td><%= problem[:entry][:email] %></td>
-                  <td><%= problem[:entry][:matriculation_number] %></td>
-                  <td><%= problem[:entry][:comment] %></td>
-                </tr>
-              </tbody>
-            </table>
+          <% @import.import_result.import_errors.each do |error| %>
+            <fieldset>
+              <%= error.row %>
+            </fieldset>
 
-            <ul class="disc">
-              <% problem[:problem].each do |item| %>
-                <li><%= item %></li>
-              <% end %>
-            </ul>
+            <fieldset>
+              <%= error.entry %>
+            </fieldset>
+
+            <fieldset>
+              <%= error.message %>
+            </fieldset>
           <% end %>
         </div>
       <% else %>

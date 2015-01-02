@@ -5,53 +5,35 @@ class Import < ActiveRecord::Base
   include Import::Parser
   include Import::Importer
 
-  IMPORTABLE_ATTRIBUTES = [:group, :email, :forename, :surname, :matriculation_number, :comment].freeze
-
   belongs_to :term
 
   mount_uploader :file, ImportsUploader
 
-  serialize :import_options, Hash
-  serialize :import_mapping, Import::ImportMapping
-  serialize :import_result, Hash
+  has_one :import_options, dependent: :destroy
+  has_one :import_mapping, dependent: :destroy
+  has_one :import_result, dependent: :destroy
 
   enum status: [:pending, :running, :finished, :failed]
 
   validates :term, presence: true
   validates :file, presence: true
 
-  def initialize(*args)
-    super *args
+  after_create :create_associations
 
+  accepts_nested_attributes_for :import_options
+  accepts_nested_attributes_for :import_mapping
+
+  after_initialize do
     @parsed = false
     @encoding_error = false
     @parsing_error = false
 
     self.status = :pending
-
-    import_options[:matching_groups]        ||= "first"
-    import_options[:tutorial_groups_regexp] ||= '\AT(?<tutorial>[\d]+)\z'
-    import_options[:student_groups_regexp]  ||= '\AG(?<tutorial>[\d]+)-(?<student>[\d]+)\z'
-
-    import_options[:headers_on_first_line]  ||= "1"
-    import_options[:column_separator]       ||= ";"
-    import_options[:quote_char]             ||= "\""
-    import_options[:decimal_separator]      ||= ","
-    import_options[:thousands_separator]    ||= "."
   end
 
-  def import_mapping
-    if read_attribute(:import_mapping).nil?
-      write_attribute :import_mapping, Import::ImportMapping.new
-      read_attribute :import_mapping
-    else
-      read_attribute :import_mapping
-    end
-  end
-
-  def import_mapping=(val)
-    val = Import::ImportMapping.new(val) unless val.class == Import::ImportMapping
-    write_attribute :import_mapping, val
+  def prepare_run!
+    self.pending!
+    import_result.reset!
   end
 
   def encoding_error?
@@ -80,5 +62,13 @@ class Import < ActiveRecord::Base
     else
       0
     end
+  end
+
+  private
+
+  def create_associations
+    ImportOptions.create! import: self
+    ImportMapping.create! import: self
+    ImportResult.create! import: self
   end
 end

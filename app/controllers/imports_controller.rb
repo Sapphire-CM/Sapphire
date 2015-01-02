@@ -38,26 +38,15 @@ class ImportsController < ApplicationController
       @import.smart_guess_new_import_mapping
       redirect_to term_import_path(@term, @import)
     end
-
   end
 
   def update
-    p = import_params
-    p[:status] = :running
-    p[:import_result] = {
-      total_rows: 0,
-      processed_rows: 0,
-      imported_students: 0,
-      imported_tutorial_groups: 0,
-      imported_term_registrations: 0,
-      imported_student_groups: 0,
-      imported_student_registrations: 0,
-      problems: [],
-    }
-
-    if @import.save && @import.update(p)
+    if @import.update(import_params)
+      @import.prepare_run!
       ImportWorker.perform_async(@import.id)
       redirect_to results_term_import_path(@term, @import)
+    else
+      render :show
     end
   end
 
@@ -67,6 +56,9 @@ class ImportsController < ApplicationController
   end
 
   def results
+    if @import.finished?
+      return js_redirect_to term_import_path(@term, @import)
+    end
   end
 
   def destroy
@@ -90,10 +82,24 @@ class ImportsController < ApplicationController
         :status,
         :line_count,
         :import_mapping,
-        import_options: [
-          :matching_groups, :tutorial_groups_regexp, :student_groups_regexp,
-          :headers_on_first_line, :column_separator, :quote_char, :decimal_separator,
-          :thousands_separator ]
-        )
+        import_options_attributes: [
+          :matching_groups,
+          :tutorial_groups_regexp,
+          :student_groups_regexp,
+          :headers_on_first_line,
+          :column_separator,
+          :quote_char,
+          :decimal_separator,
+          :thousands_separator,
+        ],
+        import_mappings_attributes: [
+          :group,
+          :email,
+          :forename,
+          :surname,
+          :matriculation_number,
+          :comment,
+        ]
+      )
     end
 end

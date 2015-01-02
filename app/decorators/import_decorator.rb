@@ -32,6 +32,6 @@ class ImportDecorator < Draper::Decorator
       column_count: column_count,
       headers: headers,
       values: values,
-      importable_attributes: model.class::IMPORTABLE_ATTRIBUTES
+      importable_attributes: (ImportMapping.columns.map(&:name) - ['id', 'import_id'])
   end
 end

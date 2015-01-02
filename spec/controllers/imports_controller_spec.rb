@@ -94,7 +94,6 @@ RSpec.describe ImportsController do
         }.to change(import, :updated_at)
 
         expect(response).to redirect_to(results_term_import_path(term, import))
-        expect(import.running?).to eq(true)
       end
     end
 

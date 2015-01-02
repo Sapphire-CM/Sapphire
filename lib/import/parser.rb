@@ -1,12 +1,11 @@
 module Import::Parser
-
   def parse_csv
     csv_options = {}
-    csv_options[:col_sep] = import_options[:column_separator] || ";"
-    csv_options[:quote_char] = import_options[:quote_char] || "\""
+    csv_options[:col_sep] = import_options.column_separator || ";"
+    csv_options[:quote_char] = import_options.quote_char || "\""
 
-    # not used: import_options[:decimal_separator] || ","
-    # not used: import_options[:thousands_separator] || "."
+    # not used: import_options.decimal_separator || ","
+    # not used: import_options.thousands_separator || "."
 
     @headers = []
     @values = []
@@ -18,7 +17,7 @@ module Import::Parser
 
       values = parse_csv_line(line, csv_options)
 
-      if index == 0 && import_options[:headers_on_first_line] == "1"
+      if index == 0 && import_options.headers_on_first_line
         @headers = values
       else
         @values << values
@@ -28,7 +27,7 @@ module Import::Parser
     true
   end
 
-private
+  private
 
   def load_csv_text
     begin
@@ -50,5 +49,4 @@ private
 
     values
   end
-
 end

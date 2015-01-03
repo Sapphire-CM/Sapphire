@@ -78,6 +78,28 @@ RSpec.describe ImportsController do
         expect(response).to render_template(:new)
         expect(assigns(:import)).to be_a_new(Import)
       end
+
+      it 'shows an encoding related error message' do
+        invalid_attributes[:term_id] = term.id
+        invalid_attributes[:import][:file] = Rack::Test::UploadedFile.new(prepare_static_test_file('import_data_invalid_encoding.csv'), 'text/csv')
+
+        post :create, invalid_attributes
+
+        expect(response).to have_http_status(:success)
+        expect(response).to render_template(:new)
+        expect(flash[:alert]).to eq('Error with file encoding! UTF8-like is required.')
+      end
+
+      it 'shows an parsing related error message' do
+        invalid_attributes[:term_id] = term.id
+        invalid_attributes[:import][:file] = Rack::Test::UploadedFile.new(prepare_static_test_file('import_data_invalid_parsing.csv'), 'text/csv')
+
+        post :create, invalid_attributes
+
+        expect(response).to have_http_status(:success)
+        expect(response).to render_template(:new)
+        expect(flash[:alert]).to eq('Error during parsing! Corrupt data detected.')
+      end
     end
   end
 

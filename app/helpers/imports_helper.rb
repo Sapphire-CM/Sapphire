@@ -8,4 +8,13 @@ module ImportsHelper
       end
     end
   end
+
+  def import_mapping_table(import)
+    import_service = ImportService.new(import)
+
+    render 'imports/mapping_table',
+      headers: import_service.headers,
+      values: import_service.values.first(5),
+      column_count: import_service.column_count
+  end
 end

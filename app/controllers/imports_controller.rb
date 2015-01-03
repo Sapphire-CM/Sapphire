@@ -2,7 +2,7 @@ class ImportsController < ApplicationController
   before_action :set_import, only: [:show, :edit, :update, :destroy, :full_mapping_table, :results]
 
   def show
-    @import = Import.find(params[:id]).decorate
+    @import = Import.find(params[:id])
   end
 
   def new

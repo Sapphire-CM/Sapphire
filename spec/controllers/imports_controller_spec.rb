@@ -41,7 +41,6 @@ RSpec.describe ImportsController do
       expect(response).to have_http_status(:success)
       expect(assigns(:term)).to eq(term)
       expect(assigns(:import)).to eq(import)
-      expect(assigns(:import)).to be_decorated
     end
   end
 

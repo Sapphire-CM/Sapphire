@@ -16,7 +16,7 @@
           <th colspan="2"></th>
         </thead>
         <tbody>
-          <% @term.imports.decorate.each do |import| %>
+          <% @term.imports.each do |import| %>
             <tr>
               <td><%= File.basename import.file.to_s %></td>
               <td><%= import.created_at %></td>

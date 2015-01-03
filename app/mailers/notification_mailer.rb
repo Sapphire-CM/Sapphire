@@ -10,7 +10,7 @@ class NotificationMailer < ActionMailer::Base
     @student = term_registration.account
     @term = term_registration.term
 
-    mail(to: @student.email, subject: "[Sapphire] Results published for #{result_publication.exercise.title}")
+    mail(to: @student.email, subject: "[Sapphire] Results published for #{@exercise.title}")
   end
 
   def export_finished_notification(recipient, export)
@@ -24,15 +24,16 @@ class NotificationMailer < ActionMailer::Base
 
   def welcome_notification(account, term)
     @account = account
+    @term = term
 
-    mail(to: account.email, subject: "[Sapphire] Welcome - #{course_term_title(term)}")
+    mail(to: account.email, subject: "[Sapphire] Welcome - #{course_term_title(@term)}")
   end
 
   def welcome_back_notification(account, term)
     @account = account
     @term = term
 
-    mail(to: account.email, subject: "[Sapphire] Welcome Back - #{course_term_title(term)}")
+    mail(to: account.email, subject: "[Sapphire] Welcome Back - #{course_term_title(@term)}")
   end
 
   private

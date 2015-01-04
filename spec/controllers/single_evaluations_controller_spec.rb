@@ -6,9 +6,10 @@ RSpec.describe SingleEvaluationsController do
 
   let(:term) { FactoryGirl.create :term }
   let(:exercise) { FactoryGirl.create :exercise, :with_ratings, term: term }
+  let(:rating_group) { exercise.rating_groups.first }
+
   let(:submission) { FactoryGirl.create_list(:submission, 3, exercise: exercise)[1] }
   let(:submission_evaluation) { submission.submission_evaluation }
-  let(:evaluation) { submission_evaluation.evaluations.first }
 
   describe 'GET show' do
     it 'assigns the requested submission as @submission' do
@@ -25,18 +26,51 @@ RSpec.describe SingleEvaluationsController do
 
   describe 'PUT update' do
     describe 'with valid params' do
-      it 'updates the requested term' do
-        submission_evaluation.update! updated_at: 42.days.ago
+      context 'with a BinaryRating' do
+        [BinaryNumberRating, BinaryPercentRating, PlagiarismRating].each do |type|
+          [true, false].each do |checked|
+            it 'updates the requested evaluation' do
+              rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s
+              evaluation = submission_evaluation.evaluations.where(rating_id: rating.id).first
+              evaluation.update! value: (checked ? 0 : 1)
+              submission_evaluation.update! updated_at: 42.days.ago
 
-        expect do
-          xhr :put, :update, id: evaluation.id
-          submission_evaluation.reload
-        end.to change(submission_evaluation, :updated_at)
+              expect do
+                xhr :put, :update, id: evaluation.id
+                submission_evaluation.reload
+                evaluation.reload
+              end.to change(submission_evaluation, :updated_at)
 
-        expect(response).to have_http_status(:success)
-        expect(assigns(:evaluation)).to eq(evaluation)
-        expect(assigns(:submission)).to eq(submission)
-        expect(assigns(:submission_evaluation)).to eq(submission_evaluation)
+              expect(response).to have_http_status(:success)
+              expect(assigns(:evaluation)).to eq(evaluation)
+              expect(assigns(:submission)).to eq(submission)
+              expect(assigns(:submission_evaluation)).to eq(submission_evaluation)
+              expect(evaluation.value == 1).to eq(checked)
+            end
+          end
+        end
+      end
+
+      context 'with a ValueRating' do
+        [ValueNumberRating, ValuePercentRating].each do |type|
+          it 'updates the requested evaluation' do
+            rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s, max_value: 50
+            evaluation = submission_evaluation.evaluations.where(rating_id: rating.id).first
+            submission_evaluation.update! updated_at: 42.days.ago
+
+            expect do
+              xhr :put, :update, id: evaluation.id, evaluation: { value: '42' }
+              submission_evaluation.reload
+              evaluation.reload
+            end.to change(submission_evaluation, :updated_at)
+
+            expect(response).to have_http_status(:success)
+            expect(assigns(:evaluation)).to eq(evaluation)
+            expect(assigns(:submission)).to eq(submission)
+            expect(assigns(:submission_evaluation)).to eq(submission_evaluation)
+            expect(evaluation.value).to eq(42)
+          end
+        end
       end
     end
 

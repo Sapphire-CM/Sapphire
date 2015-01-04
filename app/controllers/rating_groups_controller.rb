@@ -42,7 +42,8 @@ class RatingGroupsController < ApplicationController
   end
 
   def update_position
-    @rating_group.update(params.require(:rating_group).permit(:row_order_position))
+    update_params = params.require(:rating_group).permit(:row_order_position)
+    @rating_group.update update_params
     render nothing: true
   end
 

@@ -20,9 +20,9 @@ class TermsController < ApplicationController
     if @term.save
       if @term.needs_copying?
         options = {
-          lecturers: term.copy_lecturer?,
-          exercises: term.copy_exercises?,
-          grading_scale: term.copy_grading_scale?
+          lecturers: @term.copy_lecturer?,
+          exercises: @term.copy_exercises?,
+          grading_scale: @term.copy_grading_scale?
         }
         TermCopyWorker.perform_async(@term.id, @term.source_term_id, options)
 

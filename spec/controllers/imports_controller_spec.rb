@@ -45,11 +45,28 @@ RSpec.describe ImportsController do
   end
 
   describe 'GET new' do
-    it 'assigns a new import as @import' do
-      get :new, term_id: term.id
+    context 'with existing imports to list' do
+      it 'assigns a new import as @import' do
+        FactoryGirl.create_list :import, 4, term: term
 
-      expect(response).to have_http_status(:success)
-      expect(assigns(:import)).to be_a_new(Import)
+        get :new, term_id: term.id
+
+        expect(response).to have_http_status(:success)
+        expect(response).to render_template(:_import_list)
+        expect(response).to render_template(:new)
+        expect(assigns(:import)).to be_a_new(Import)
+      end
+    end
+
+    context 'without existing imports to list' do
+      it 'assigns a new import as @import' do
+        get :new, term_id: term.id
+
+        expect(response).to have_http_status(:success)
+        expect(response).not_to render_template(:_import_list)
+        expect(response).to render_template(:new)
+        expect(assigns(:import)).to be_a_new(Import)
+      end
     end
   end
 

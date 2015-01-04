@@ -68,5 +68,9 @@ Sapphire::Application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/rails/emails"
+  end
+
   root to: 'courses#index'
 end

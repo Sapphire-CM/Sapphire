@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150101233545) do
+ActiveRecord::Schema.define(version: 20150104110050) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,9 +192,6 @@ ActiveRecord::Schema.define(version: 20150101233545) do
     t.datetime "updated_at"
     t.string   "file"
     t.integer  "status"
-    t.text     "import_options"
-    t.text     "import_mapping"
-    t.text     "import_result"
   end
 
   add_index "imports", ["term_id"], name: "index_imports_on_term_id", using: :btree

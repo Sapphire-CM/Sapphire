@@ -37,6 +37,15 @@ RSpec.describe TutorialGroupsController do
     end
   end
 
+  describe 'GET show' do
+    it 'assigns the requested tutorial_group as @tutorial_group' do
+      get :show, term_id: term.id, id: tutorial_group.id
+
+      expect(response).to have_http_status(:success)
+      expect(assigns(:tutorial_group)).to eq(tutorial_group)
+    end
+  end
+
   describe 'GET new' do
     it 'assigns a new tutorial_group as @tutorial_group' do
       xhr :get, :new, term_id: term.id

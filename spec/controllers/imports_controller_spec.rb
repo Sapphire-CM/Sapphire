@@ -10,7 +10,7 @@ RSpec.describe ImportsController do
         term_id: term.id,
         file: Rack::Test::UploadedFile.new(prepare_static_test_file('import_data.csv'), 'text/csv'),
         import_options_attributes: {
-          matching_groups: 'first',
+          matching_groups: 'first_match',
           tutorial_groups_regexp: "\\AT(?<tutorial>[\\d]+)\\z",
           headers_on_first_line: '1',
           column_separator: ';',

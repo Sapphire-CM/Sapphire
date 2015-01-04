@@ -3,12 +3,12 @@ class ImportOptions < ActiveRecord::Base
 
   belongs_to :import
 
-  enum matching_groups: [:first, :both]
+  enum matching_groups: [:first_match, :both_matches]
 
   validates :import, presence: true
 
   after_initialize do
-    self.matching_groups        ||= :first
+    self.matching_groups        ||= :first_match
     self.tutorial_groups_regexp ||= '\AT(?<tutorial>[\d]+)\z'
     self.student_groups_regexp  ||= '\AG(?<tutorial>[\d]+)-(?<student>[\d]+)\z'
     self.headers_on_first_line  ||= true

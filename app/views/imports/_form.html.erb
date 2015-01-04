@@ -37,8 +37,8 @@
               </div>
               <div class="row">
                 <div class='large-12 large-centered text-center'>
-                  <%= ff.radio_button :matching_groups, "first",
-                    checked: @import.import_options.matching_groups == "first" %>
+                  <%= ff.radio_button :matching_groups, "first_match",
+                    checked: @import.import_options.matching_groups == "first_match" %>
                 </div>
               </div>
               <div class="row">
@@ -53,8 +53,8 @@
               </div>
               <div class="row">
                 <div class='large-12 large-centered text-center'>
-                  <%= ff.radio_button :matching_groups, "both",
-                    checked: @import.import_options.matching_groups == "both"  %>
+                  <%= ff.radio_button :matching_groups, "both_matches",
+                    checked: @import.import_options.matching_groups == "both_matches"  %>
                 </div>
               </div>
               <div class="row">

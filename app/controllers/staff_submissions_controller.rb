@@ -2,7 +2,7 @@ class StaffSubmissionsController < ApplicationController
   include ScopingHelpers
 
   before_action :set_context
-  before_action :set_submission, only: [:edit, :update, :destroy]
+  before_action :set_submission, only: [:show, :edit, :update, :destroy]
   before_action :set_student_groups, only: [:new, :create, :edit, :update]
 
   SubmissionPolicyRecord = Struct.new :exercise, :tutorial_group do
@@ -25,6 +25,9 @@ class StaffSubmissionsController < ApplicationController
     authorize @submission
 
     @submission.submission_assets.build
+  end
+
+  def show
   end
 
   def create

@@ -28,6 +28,15 @@ RSpec.describe StaffSubmissionsController do
     end
   end
 
+  describe 'GET show' do
+    it 'assigns the requested submission as @submission' do
+      get :show, exercise_id: exercise.id, id: submission.id
+
+      expect(response).to have_http_status(:success)
+      expect(assigns(:submission)).to eq(submission)
+    end
+  end
+
   describe 'GET new' do
     it 'assigns a new submission as @submission' do
       get :new, exercise_id: exercise.id

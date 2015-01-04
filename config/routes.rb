@@ -55,7 +55,7 @@ Sapphire::Application.routes.draw do
 
     resource :submission, only: [:show, :create, :update], as: :student_submission, controller: "student_submissions"
 
-    resources :submissions, except: [:show], controller: "staff_submissions"
+    resources :submissions, controller: "staff_submissions"
     resources :result_publications, only: [:index, :update]
     resource :results, controller: 'student_results', as: :student_results, only: :show
   end

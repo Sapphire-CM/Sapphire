@@ -52,13 +52,13 @@ module Import::Importer
       student_group_title = []
 
       case import_options.matching_groups.to_sym
-      when :first
+      when :first_match
         regexp = Regexp.new import_options.tutorial_groups_regexp
         m = regexp.match group_title
 
         tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
         create_term_registration row, account, tutorial_group
-      when :both
+      when :both_matches
         regexp = Regexp.new import_options.student_groups_regexp
         m = regexp.match group_title
 

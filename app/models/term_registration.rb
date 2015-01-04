@@ -1,4 +1,5 @@
 class TermRegistration < ActiveRecord::Base
+  extend Enum
   include Roles
 
   belongs_to :account
@@ -9,11 +10,12 @@ class TermRegistration < ActiveRecord::Base
   has_many :exercises, -> { uniq }, through: :exercise_registrations
   has_many :submissions, through: :exercise_registrations
 
+  enum role: Roles::ALL
+
   validates :account, presence: true, uniqueness: { scope: :term_id }
   validates :term, presence: true
   validates :tutorial_group, presence: true, unless: :lecturer?
   validates :tutorial_group, absence: true, if: :lecturer?
-  validates :role, presence: true, inclusion: { in: Roles::ALL }
 
   scope :graded, lambda { where(receives_grade: true) }
   scope :ungraded, lambda { where(receives_grade: false) }
@@ -37,7 +39,7 @@ class TermRegistration < ActiveRecord::Base
   end
 
   Roles::ALL.each do |role|
-    scope role.to_s.pluralize.to_sym, lambda { where(role: role.to_s) }
+    scope role.pluralize.to_sym, lambda { send(role) }
   end
 
   def self.search(query)
@@ -53,6 +55,10 @@ class TermRegistration < ActiveRecord::Base
   def update_points!
     update_points
     save!
+  end
+
+  def staff?
+    STAFF.map { |r| send "#{r}?" }.any?
   end
 
   def negative_grade?

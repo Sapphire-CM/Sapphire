@@ -43,10 +43,11 @@ class StaffController < ApplicationController
   end
 
   private
+
   def term_registration_params
     permitted_params = [:account_id, :role]
     permitted_params << :tutorial_group_id if params[:term_registration][:role] == Roles::TUTOR
-    params.require(:term_registration).permit permitted_params
+    params.require(:term_registration).permit(permitted_params)
   end
 
   def setup_form_context

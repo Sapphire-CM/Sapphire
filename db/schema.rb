@@ -11,14 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150104110050) do
+ActiveRecord::Schema.define(version: 20150105112938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: true do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                  default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20150104110050) do
     t.integer  "failed_attempts",        default: 0
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.boolean  "admin"
+    t.boolean  "admin",                  default: false
   end
 
   add_index "accounts", ["email"], name: "index_accounts_on_email", unique: true, using: :btree
@@ -334,7 +334,6 @@ ActiveRecord::Schema.define(version: 20150104110050) do
   add_index "submissions", ["submitter_id"], name: "index_submissions_on_submitter_id", using: :btree
 
   create_table "term_registrations", force: true do |t|
-    t.string   "role"
     t.integer  "points"
     t.boolean  "positive_grade",    default: false, null: false
     t.integer  "account_id"
@@ -343,6 +342,7 @@ ActiveRecord::Schema.define(version: 20150104110050) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "receives_grade"
+    t.integer  "role",              default: 0
   end
 
   add_index "term_registrations", ["account_id"], name: "index_term_registrations_on_account_id", using: :btree

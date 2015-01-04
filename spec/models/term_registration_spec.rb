@@ -3,8 +3,6 @@ require 'rails_helper'
 describe TermRegistration do
   it { is_expected.to validate_presence_of :account }
   it { is_expected.to validate_presence_of :term }
-  it { is_expected.to validate_presence_of :role }
-  it { is_expected.to validate_inclusion_of(:role).in_array(Roles::ALL) }
   it { is_expected.to have_many :exercise_registrations }
 
   # this currently failes because of https://github.com/thoughtbot/shoulda-matchers/issues/535
@@ -47,17 +45,20 @@ describe TermRegistration do
     end
 
     it 'scopes all lecturers' do
-      expect(TermRegistration.lecturers).to eq(TermRegistration.where(role: 'lecturer'))
+      expect(TermRegistration.lecturer).to eq(TermRegistration.lecturers)
+      expect(TermRegistration.lecturers).to eq(TermRegistration.where(role: Roles::LECTURER))
       expect(TermRegistration.lecturers.count).to eq(1)
     end
 
     it 'scopes all tutors' do
-      expect(TermRegistration.tutors).to eq(TermRegistration.where(role: 'tutor'))
+      expect(TermRegistration.tutor).to eq(TermRegistration.tutors)
+      expect(TermRegistration.tutors).to eq(TermRegistration.where(role: Roles::TUTOR))
       expect(TermRegistration.tutors.count).to eq(2)
     end
 
     it 'scopes all students' do
-      expect(TermRegistration.students).to eq(TermRegistration.where(role: 'student'))
+      expect(TermRegistration.student).to eq(TermRegistration.students)
+      expect(TermRegistration.students).to eq(TermRegistration.where(role: Roles::STUDENT))
       expect(TermRegistration.students.count).to eq(5)
     end
 

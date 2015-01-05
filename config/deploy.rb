@@ -13,3 +13,7 @@ set :linked_dirs, %w{log uploads persistent tmp/pids}
 set :log_level, :info
 
 set :bundle_binstubs, nil
+
+set :default_env, {
+  'PATH' => 'PATH=$PATH:/home/sapphire/bin'
+}

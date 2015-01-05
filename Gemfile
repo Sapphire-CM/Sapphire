@@ -48,10 +48,6 @@ gem 'sinatra', '>= 1.3.0', :require => nil    # small rack framework, used for s
 gem 'writeexcel'                  # exporting excel spreadsheets
 gem 'multi_logger'                # custom log files
 
-group :production do
-  gem 'therubyracer'
-end
-
 group :development do
   gem 'guard'
   gem 'guard-bundler'

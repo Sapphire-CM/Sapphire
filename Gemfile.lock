@@ -197,10 +197,13 @@ GEM
     kaminari (0.16.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
-    launchy (2.4.2)
+    launchy (2.4.3)
       addressable (~> 2.3)
-    letter_opener (1.2.0)
+    letter_opener (1.3.0)
       launchy (~> 2.2)
+    letter_opener_web (1.2.3)
+      letter_opener (~> 1.0)
+      rails (>= 3.2)
     libv8 (3.16.14.3)
     listen (2.8.3)
       celluloid (>= 0.15.2)
@@ -463,7 +466,7 @@ DEPENDENCIES
   jquery-turbolinks
   jquery-ui-rails
   kaminari
-  letter_opener
+  letter_opener_web
   mail
   mechanize
   multi_logger

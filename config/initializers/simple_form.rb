@@ -1,7 +1,7 @@
 module SimpleForm
   module Inputs
     class DatePickerInput < StringInput
-      def input
+      def input(wrapper_options)
         value = object.send(attribute_name) if object.respond_to? attribute_name
         input_html_options[:value] ||= value.strftime("%Y-%m-%d") if value.present?
 
@@ -31,7 +31,7 @@ end
 module SimpleForm
   module Inputs
     class DatetimePickerInput < StringInput
-      def input
+      def input(wrapper_options)
         value = object.send(attribute_name) if object.respond_to? attribute_name
         input_html_options[:value] ||= value.strftime("%Y-%m-%d %H:%M") if value.present?
 

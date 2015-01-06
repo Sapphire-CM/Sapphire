@@ -133,4 +133,26 @@ RSpec.describe RatingGroupsController do
       expect(response).to render_template(:_remove_index_entry)
     end
   end
+
+  describe 'POST update_position' do
+    it 'changes the row_order_position of the rating_group' do
+      FactoryGirl.create_list :rating_group, 4, exercise: exercise
+
+      attributes = {
+        exercise_id: exercise.id,
+        id: rating_group.id,
+        rating_group: {
+          row_order_position: '2',
+        }
+      }
+
+      expect do
+        xhr :post, :update_position, attributes
+        rating_group.reload
+      end.to change(rating_group, :row_order)
+
+      expect(response).to have_http_status(:success)
+      expect(response.body.strip).to be_empty
+    end
+  end
 end

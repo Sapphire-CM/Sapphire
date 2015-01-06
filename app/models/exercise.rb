@@ -72,15 +72,8 @@ class Exercise < ActiveRecord::Base
     TermRegistrationsPointsUpdateWorker.perform_async(term.id)
   end
 
-  def ensure_services
-    Service.service_classes.each do |service_class|
-      unless self.services.find { |s| s.is_a? service_class }
-        service_class.create(exercise: self)
-      end
-    end
-  end
-
   private
+
   def ensure_result_publications
     term.tutorial_groups.each do |tutorial_group|
       ResultPublication.find_or_create_by(exercise: self, tutorial_group: tutorial_group)

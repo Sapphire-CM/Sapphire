@@ -164,6 +164,7 @@ RSpec.describe RatingsController do
   describe 'POST update_position' do
     it 'changes the row_order_position of the rating' do
       new_rating_group = FactoryGirl.create :rating_group
+      FactoryGirl.create_list :rating, 4, rating_group: new_rating_group
 
       attributes = {
         exercise_id: exercise.id,
@@ -171,15 +172,18 @@ RSpec.describe RatingsController do
         id: rating.id,
         rating: {
           rating_group_id: new_rating_group.id,
-          position: '42',
+          row_order_position: '2',
         }
       }
 
-      xhr :post, :update_position, attributes
+      expect do
+        xhr :post, :update_position, attributes
+        rating.reload
+      end.to change(rating, :row_order)
 
-      rating.reload
       expect(response).to have_http_status(:success)
       expect(response.body).to eq(update_position_exercise_rating_group_rating_path(exercise, new_rating_group, rating))
+      expect(rating_group.ratings).not_to include rating
       expect(new_rating_group.ratings).to include rating
     end
   end

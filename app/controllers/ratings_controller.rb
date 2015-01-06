@@ -45,7 +45,7 @@ class RatingsController < ApplicationController
   end
 
   def update_position
-    update_params = { rating_group_id: params[:rating][:rating_group_id], row_order_position: params[:rating][:position]}
+    update_params = params.require(:rating).permit(:rating_group_id, :row_order_position)
     @rating.update(update_params)
 
     render text: "#{update_position_exercise_rating_group_rating_path(@exercise, @rating.rating_group, @rating)}"

@@ -64,10 +64,6 @@ class TermRegistration < ActiveRecord::Base
       exercise_registrations.find {|exercise_registration| !exercise_registration.minimum_points_reached? } .blank?
   end
 
-  def all_exercises_submitted?
-    term.exercises.count == exercises.count
-  end
-
   def any_exercise_submitted?
     exercise_registrations.any?
   end

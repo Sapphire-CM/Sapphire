@@ -63,7 +63,7 @@ $ ->
 
         if current_rg_id == new_rg_id
           post_url = $(ui.item).data('update-position-action')
-          data = rating: {rating_group_id: current_rg_id, position: ui.item.index()}
+          data = rating: {rating_group_id: current_rg_id, row_order_position: ui.item.index()}
           $.post post_url, data, (result) ->
             $this.data('update-position-action', result)
 

@@ -58,6 +58,28 @@ RSpec.describe TermsController do
         expect(assigns(:term)).to be_a(Term)
         expect(assigns(:term)).to be_persisted
       end
+
+      it 'creates and copies a new Term in the background' do
+        source_term = FactoryGirl.create(:term, course: course)
+        FactoryGirl.create_list :exercise, 4, :with_ratings, term: source_term
+
+        valid_attributes[:term][:course_id] = course.id
+        valid_attributes[:term][:source_term_id] = source_term.id
+        valid_attributes[:term][:copy_lecturer] = '1'
+        valid_attributes[:term][:copy_grading_scale] = '1'
+        valid_attributes[:term][:copy_exercises] = '1'
+
+        expect(TermCopyWorker).to receive(:perform_async).with(kind_of(Numeric), source_term.id.to_s, anything())
+
+        expect do
+          xhr :post, :create, valid_attributes
+        end.to change(Term, :count).by(1)
+
+        expect(response).to have_http_status(:success)
+        expect(response).to render_template(:_insert_index_entry)
+        expect(assigns(:term)).to be_a(Term)
+        expect(assigns(:term)).to be_persisted
+      end
     end
 
     describe 'with invalid params' do

@@ -107,6 +107,7 @@ group :test do
   gem 'database_cleaner'
 
   gem 'simplecov'                 # test-coverage reports
+  gem 'simplecov-html', github: 'Kriechi/simplecov-html', branch: 'fix-list-hiding' # html formatting of simplecov results
 
   gem 'capybara'
   gem 'poltergeist'               # PhantomJS, headless Webkit

@@ -15,6 +15,8 @@ class Evaluation < ActiveRecord::Base
   after_update :update_result!, if: lambda { |eval| eval.value_changed? }
   after_destroy :update_result!
 
+  scope :ranked, lambda { includes(:rating).order{rating.row_order.asc}.references(:rating) }
+
   scope :for_submission, lambda { |submission| joins{evaluation_group.submission_evaluation}.where{evaluation_group.submission_evaluation.submission_id == my{submission.id}}.readonly(false) }
   scope :for_exercise, lambda {|exercise| joins{submission}.where{submission.exercise_id == my {exercise.id} } }
   scope :automatically_checked, lambda {where{checked_automatically == true}}

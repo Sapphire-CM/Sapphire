@@ -14,6 +14,8 @@ class EvaluationGroup < ActiveRecord::Base
 
   delegate :title, to: :rating_group
 
+  scope :ranked, lambda { includes(:rating_group).order{rating_group.row_order.asc}.references(:rating_group) }
+
   def self.create_for_submission_evaluation(submission_evaluation)
     submission_evaluation.submission.exercise.rating_groups.each do |rating_group|
       create_for_submission_evaluation_and_rating_group(submission_evaluation, rating_group)

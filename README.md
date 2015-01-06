@@ -12,6 +12,10 @@ This project is intended to be used to evaluate students during a course-term ba
     - sqlite3 (only basic support, no background jobs)
 * Redis
 * Sidekiq
+* Node.js
+    - on the server for assets precompilation
+    - make sure it is part of PATH
+    - v0.10.35 or above
 * working SMTP server for email delivery
 
 ## Contributors

@@ -6,6 +6,7 @@ class ImportOptions < ActiveRecord::Base
   enum matching_groups: [:first_match, :both_matches]
 
   validates :import, presence: true
+  validates :import_id, uniqueness: true
 
   after_initialize do
     self.matching_groups        ||= :first_match

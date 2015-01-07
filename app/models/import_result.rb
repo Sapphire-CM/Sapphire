@@ -4,6 +4,7 @@ class ImportResult < ActiveRecord::Base
   has_many :import_errors, dependent: :destroy
 
   validates :import, presence: true
+  validates :import_id, uniqueness: true
 
   after_create :reset!
 

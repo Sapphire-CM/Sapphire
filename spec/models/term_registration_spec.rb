@@ -38,31 +38,30 @@ describe TermRegistration do
   end
 
   context 'scopes' do
-    before :all do
-      create(:term_registration, :lecturer)
-      create_list(:term_registration, 2, :tutor)
-      create_list(:term_registration, 5, :student)
-    end
+    let!(:lecturer_registrations) { FactoryGirl.create_list :term_registration, 3, :lecturer }
+    let!(:tutor_registrations) { FactoryGirl.create_list :term_registration, 5, :tutor }
+    let!(:student_registrations) { FactoryGirl.create_list :term_registration, 7, :student }
 
-    it 'scopes all lecturers' do
+    it 'scopes lecturers' do
       expect(TermRegistration.lecturer).to eq(TermRegistration.lecturers)
-      expect(TermRegistration.lecturers).to eq(TermRegistration.where(role: Roles::LECTURER))
-      expect(TermRegistration.lecturers.count).to eq(1)
+      expect(TermRegistration.lecturer).to match_array(lecturer_registrations)
     end
 
-    it 'scopes all tutors' do
+    it 'scopes tutors' do
       expect(TermRegistration.tutor).to eq(TermRegistration.tutors)
-      expect(TermRegistration.tutors).to eq(TermRegistration.where(role: Roles::TUTOR))
-      expect(TermRegistration.tutors.count).to eq(2)
+      expect(TermRegistration.tutor).to match_array(tutor_registrations)
     end
 
-    it 'scopes all students' do
+    it 'scopes students' do
       expect(TermRegistration.student).to eq(TermRegistration.students)
-      expect(TermRegistration.students).to eq(TermRegistration.where(role: Roles::STUDENT))
-      expect(TermRegistration.students.count).to eq(5)
+      expect(TermRegistration.student).to match_array(student_registrations)
     end
 
-    it 'orders by matriculation number' do
+    it 'scopes staff' do
+      expect(TermRegistration.staff.map(&:id)).to match_array(lecturer_registrations.map(&:id) + tutor_registrations.map(&:id))
+    end
+
+    it 'ordered by matriculation number' do
       expect(TermRegistration.students.ordered_by_matriculation_number).to eq(TermRegistration.students.joins(:account).order { account.matriculation_number.asc })
     end
   end

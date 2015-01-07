@@ -23,7 +23,7 @@ class TermRegistration < ActiveRecord::Base
   scope :positive_grades, lambda { graded.where(positive_grade: true) }
   scope :negative_grades, lambda { graded.where(positive_grade: false) }
 
-  scope :staff, lambda { where(role: Roles::STAFF) }
+  scope :staff, lambda { where(role: Roles::STAFF.map { |r| roles[r] }) }
   scope :with_accounts, lambda { includes(:account) }
   scope :for_account, lambda {|account| where(account_id: account.id)}
   scope :for_email_addresses, lambda {|emails| joins(:account).joins{account.email_addresses.outer}.where{accounts.email.in(my{ emails }) | email_addresses.email.in(my{ emails }) }}

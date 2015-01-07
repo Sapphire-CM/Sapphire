@@ -19,6 +19,14 @@ module ExercisesHelper
     end
   end
 
+  def conditional_submissions_link(exercise)
+    if exercise.term.tutorial_groups.any?
+      link_to exercise.title, rolebased_submission_path(exercise)
+    else
+      exercise.title
+    end
+  end
+
   def rolebased_submission_path(exercise)
     if policy(exercise.term).student?
       exercise_student_submission_path(exercise)

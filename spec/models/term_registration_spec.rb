@@ -3,8 +3,6 @@ require 'rails_helper'
 describe TermRegistration do
   it { is_expected.to validate_presence_of :account }
   it { is_expected.to validate_presence_of :term }
-  it { is_expected.to validate_presence_of :role }
-  it { is_expected.to validate_inclusion_of(:role).in_array(Roles::ALL) }
   it { is_expected.to have_many :exercise_registrations }
 
   # this currently failes because of https://github.com/thoughtbot/shoulda-matchers/issues/535
@@ -40,28 +38,30 @@ describe TermRegistration do
   end
 
   context 'scopes' do
-    before :all do
-      create(:term_registration, :lecturer)
-      create_list(:term_registration, 2, :tutor)
-      create_list(:term_registration, 5, :student)
+    let!(:lecturer_registrations) { FactoryGirl.create_list :term_registration, 3, :lecturer }
+    let!(:tutor_registrations) { FactoryGirl.create_list :term_registration, 5, :tutor }
+    let!(:student_registrations) { FactoryGirl.create_list :term_registration, 7, :student }
+
+    it 'scopes lecturers' do
+      expect(TermRegistration.lecturer).to eq(TermRegistration.lecturers)
+      expect(TermRegistration.lecturer).to match_array(lecturer_registrations)
     end
 
-    it 'scopes all lecturers' do
-      expect(TermRegistration.lecturers).to eq(TermRegistration.where(role: 'lecturer'))
-      expect(TermRegistration.lecturers.count).to eq(1)
+    it 'scopes tutors' do
+      expect(TermRegistration.tutor).to eq(TermRegistration.tutors)
+      expect(TermRegistration.tutor).to match_array(tutor_registrations)
     end
 
-    it 'scopes all tutors' do
-      expect(TermRegistration.tutors).to eq(TermRegistration.where(role: 'tutor'))
-      expect(TermRegistration.tutors.count).to eq(2)
+    it 'scopes students' do
+      expect(TermRegistration.student).to eq(TermRegistration.students)
+      expect(TermRegistration.student).to match_array(student_registrations)
     end
 
-    it 'scopes all students' do
-      expect(TermRegistration.students).to eq(TermRegistration.where(role: 'student'))
-      expect(TermRegistration.students.count).to eq(5)
+    it 'scopes staff' do
+      expect(TermRegistration.staff.map(&:id)).to match_array(lecturer_registrations.map(&:id) + tutor_registrations.map(&:id))
     end
 
-    it 'orders by matriculation number' do
+    it 'ordered by matriculation number' do
       expect(TermRegistration.students.ordered_by_matriculation_number).to eq(TermRegistration.students.joins(:account).order { account.matriculation_number.asc })
     end
   end

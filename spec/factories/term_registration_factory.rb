@@ -3,22 +3,21 @@ FactoryGirl.define do
     points 0
     account
     term
-    role 'student'
+    role :student
     tutorial_group
 
-    # explicit redefinition - in case we want to change the default role later on
     trait :student do
-      role 'student'
+      role :student
       tutorial_group
     end
 
     trait :tutor do
-      role 'tutor'
+      role :tutor
       tutorial_group
     end
 
     trait :lecturer do
-      role 'lecturer'
+      role :lecturer
       tutorial_group nil
     end
   end

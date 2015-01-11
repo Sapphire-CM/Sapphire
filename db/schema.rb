@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150111110420) do
+ActiveRecord::Schema.define(version: 20150111112731) do
 
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "",    null: false
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
   end
 
   add_index "accounts", ["email"], name: "index_accounts_on_email", unique: true
+  add_index "accounts", ["matriculation_number"], name: "index_accounts_on_matriculation_number", unique: true
   add_index "accounts", ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
 
   create_table "courses", force: true do |t|
@@ -47,6 +48,8 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.boolean  "locked",      default: true
   end
 
+  add_index "courses", ["title"], name: "index_courses_on_title", unique: true
+
   create_table "email_addresses", force: true do |t|
     t.string   "email"
     t.integer  "account_id"
@@ -55,6 +58,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
   end
 
   add_index "email_addresses", ["account_id"], name: "index_email_addresses_on_account_id"
+  add_index "email_addresses", ["email"], name: "index_email_addresses_on_email", unique: true
 
   create_table "evaluation_groups", force: true do |t|
     t.integer  "points"
@@ -119,6 +123,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
   end
 
   add_index "exercises", ["term_id"], name: "index_exercises_on_term_id"
+  add_index "exercises", ["title", "term_id"], name: "index_exercises_on_title_and_term_id", unique: true
 
   create_table "exports", force: true do |t|
     t.string   "type"
@@ -209,7 +214,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
   end
 
   add_index "lecturer_registrations", ["account_id"], name: "index_lecturer_registrations_on_account_id"
-  add_index "lecturer_registrations", ["term_id"], name: "index_lecturer_registrations_on_term_id"
+  add_index "lecturer_registrations", ["term_id"], name: "index_lecturer_registrations_on_term_id", unique: true
 
   create_table "rating_groups", force: true do |t|
     t.integer  "exercise_id"
@@ -226,6 +231,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
   end
 
   add_index "rating_groups", ["exercise_id"], name: "index_rating_groups_on_exercise_id"
+  add_index "rating_groups", ["title", "exercise_id"], name: "index_rating_groups_on_title_and_exercise_id", unique: true
 
   create_table "ratings", force: true do |t|
     t.integer  "rating_group_id"
@@ -252,6 +258,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.datetime "updated_at"
   end
 
+  add_index "result_publications", ["exercise_id", "tutorial_group_id"], name: "index_result_publications_on_exercise_id_and_tutorial_group_id", unique: true
   add_index "result_publications", ["exercise_id"], name: "index_result_publications_on_exercise_id"
   add_index "result_publications", ["tutorial_group_id"], name: "index_result_publications_on_tutorial_group_id"
 
@@ -323,7 +330,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
   end
 
   add_index "submission_evaluations", ["evaluator_id"], name: "index_submission_evaluations_on_evaluator_id"
-  add_index "submission_evaluations", ["submission_id"], name: "index_submission_evaluations_on_submission_id"
+  add_index "submission_evaluations", ["submission_id"], name: "index_submission_evaluations_on_submission_id", unique: true
 
   create_table "submissions", force: true do |t|
     t.integer  "exercise_id"
@@ -350,6 +357,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.integer  "role",              default: 0
   end
 
+  add_index "term_registrations", ["account_id", "term_id"], name: "index_term_registrations_on_account_id_and_term_id", unique: true
   add_index "term_registrations", ["account_id"], name: "index_term_registrations_on_account_id"
   add_index "term_registrations", ["term_id"], name: "index_term_registrations_on_term_id"
   add_index "term_registrations", ["tutorial_group_id"], name: "index_term_registrations_on_tutorial_group_id"
@@ -366,6 +374,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
   end
 
   add_index "terms", ["course_id"], name: "index_terms_on_course_id"
+  add_index "terms", ["title", "course_id"], name: "index_terms_on_title_and_course_id", unique: true
 
   create_table "tutor_registrations", force: true do |t|
     t.integer  "account_id"
@@ -386,5 +395,6 @@ ActiveRecord::Schema.define(version: 20150111110420) do
   end
 
   add_index "tutorial_groups", ["term_id"], name: "index_tutorial_groups_on_term_id"
+  add_index "tutorial_groups", ["title", "term_id"], name: "index_tutorial_groups_on_title_and_term_id", unique: true
 
 end

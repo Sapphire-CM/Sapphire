@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150105112938) do
+ActiveRecord::Schema.define(version: 20150111110420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,6 +144,8 @@ ActiveRecord::Schema.define(version: 20150105112938) do
     t.datetime "updated_at",       null: false
   end
 
+  add_index "import_errors", ["import_result_id"], name: "index_import_errors_on_import_result_id", using: :btree
+
   create_table "import_mappings", force: true do |t|
     t.integer  "import_id"
     t.integer  "group"
@@ -155,6 +157,8 @@ ActiveRecord::Schema.define(version: 20150105112938) do
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
   end
+
+  add_index "import_mappings", ["import_id"], name: "index_import_mappings_on_import_id", unique: true, using: :btree
 
   create_table "import_options", force: true do |t|
     t.integer  "import_id"
@@ -169,6 +173,8 @@ ActiveRecord::Schema.define(version: 20150105112938) do
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
   end
+
+  add_index "import_options", ["import_id"], name: "index_import_options_on_import_id", unique: true, using: :btree
 
   create_table "import_results", force: true do |t|
     t.integer  "import_id"
@@ -185,6 +191,8 @@ ActiveRecord::Schema.define(version: 20150105112938) do
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
   end
+
+  add_index "import_results", ["import_id"], name: "index_import_results_on_import_id", unique: true, using: :btree
 
   create_table "imports", force: true do |t|
     t.integer  "term_id"

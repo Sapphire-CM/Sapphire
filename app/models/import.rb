@@ -26,7 +26,10 @@ class Import < ActiveRecord::Base
   private
 
   def create_associations
-    ImportOptions.create! import: self
+    # could be created via nested attributes
+    ImportOptions.find_or_create_by! import: self
+
+    # must exist at all times
     ImportMapping.create! import: self
     ImportResult.create! import: self
   end

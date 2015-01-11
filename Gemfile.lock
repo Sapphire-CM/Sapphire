@@ -107,6 +107,7 @@ GEM
       compass (>= 0.12.2)
       sprockets (<= 2.11.0)
     connection_pool (2.1.0)
+    consistency_fail (0.3.3)
     css_parser (1.3.5)
       addressable
     cucumber (1.3.17)
@@ -445,6 +446,7 @@ DEPENDENCIES
   coderay
   coffee-rails (~> 4.0)
   compass-rails (~> 1.1)
+  consistency_fail
   css_parser
   cucumber
   cucumber-rails

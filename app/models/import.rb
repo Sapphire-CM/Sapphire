@@ -1,6 +1,4 @@
 class Import < ActiveRecord::Base
-  extend Enum
-
   belongs_to :term
 
   mount_uploader :file, ImportsUploader

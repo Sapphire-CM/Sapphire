@@ -69,7 +69,7 @@ class Exercise < ActiveRecord::Base
   end
 
   def recalculate_term_registrations_results
-    TermRegistrationsPointsUpdateWorker.perform_async(term.id)
+    TermRegistrationsPointsUpdateJob.perform_later term.id
   end
 
   private

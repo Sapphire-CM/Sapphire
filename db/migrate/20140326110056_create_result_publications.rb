@@ -5,7 +5,7 @@ class CreateResultPublications < ActiveRecord::Migration
       t.belongs_to :tutorial_group, index: true
       t.boolean :published, default: false
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 

@@ -7,9 +7,9 @@ class RefactorAccountClasses < ActiveRecord::Migration
     add_column    :accounts, :forename, :string
     add_column    :accounts, :surname, :string
     add_column    :accounts, :matriculum_number, :string
-    
+
     remove_column :courses, :course_leader_id
-    
+
     remove_column :terms, :active
     add_column    :terms, :description, :string
 
@@ -19,7 +19,7 @@ class RefactorAccountClasses < ActiveRecord::Migration
       t.integer  :account_id
       t.integer  :term_id
       t.datetime :registered_at
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :lecturer_term_registrations, ["account_id"], :name => "index_lecturer_term_registrations_on_account_id"
     add_index :lecturer_term_registrations, ["term_id"], :name => "index_lecturer_term_registrations_on_term_id"
@@ -28,7 +28,7 @@ class RefactorAccountClasses < ActiveRecord::Migration
       t.integer  :account_id
       t.integer  :tutorial_group_id
       t.datetime :registered_at
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :tutor_term_registrations, ["account_id"], :name => "index_tutor_term_registrations_on_account_id"
     add_index :tutor_term_registrations, ["tutorial_group_id"], :name => "index_tutor_term_registrations_on_tutorial_group_id"
@@ -37,7 +37,7 @@ class RefactorAccountClasses < ActiveRecord::Migration
       t.integer  :account_id
       t.integer  :tutorial_group_id
       t.datetime :registered_at
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :student_term_registrations, ["account_id"], :name => "index_student_term_registrations_on_account_id"
     add_index :student_term_registrations, ["tutorial_group_id"], :name => "index_student_term_registrations_on_tutorial_group_id"

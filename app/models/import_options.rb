@@ -1,6 +1,4 @@
 class ImportOptions < ActiveRecord::Base
-  extend Enum
-
   belongs_to :import
 
   enum matching_groups: [:first_match, :both_matches]

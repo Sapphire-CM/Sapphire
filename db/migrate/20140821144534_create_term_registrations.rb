@@ -8,7 +8,7 @@ class CreateTermRegistrations < ActiveRecord::Migration
       t.belongs_to :term, index: true
       t.belongs_to :tutorial_group, index: true
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

@@ -17,10 +17,6 @@ class SingleEvaluationsController < ApplicationController
     @exercise = @submission.exercise
     @term = @exercise.term
     @evaluation_groups = @submission.submission_evaluation.evaluation_groups
-      .includes([:rating_group, {evaluations: :rating}])
-      .order{rating_group.ratings.row_order.asc}
-      .order{rating_group.row_order.asc}
-      .references(:rating_group)
   end
 
   def update

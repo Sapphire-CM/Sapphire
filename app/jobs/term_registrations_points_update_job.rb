@@ -1,5 +1,5 @@
-class TermRegistrationsPointsUpdateWorker
-  include Sidekiq::Worker
+class TermRegistrationsPointsUpdateJob < ActiveJob::Base
+  queue_as :default
 
   def perform(term_id)
     ActiveRecord::Base.transaction do

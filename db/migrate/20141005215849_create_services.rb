@@ -6,7 +6,7 @@ class CreateServices < ActiveRecord::Migration
       t.string :type
       t.text :properties
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

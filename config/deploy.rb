@@ -7,7 +7,7 @@ set :branch, ENV["REVISION"] || ENV["BRANCH_NAME"] || "master"
 
 set :stages, %w(staging production)
 
-set :linked_files, %w{config/database.yml config/mail.yml config/schedule.rb}
+set :linked_files, %w{config/database.yml config/mail.yml config/schedule.rb config/secrets.yml}
 set :linked_dirs, %w{log uploads persistent tmp/pids}
 
 set :log_level, :info

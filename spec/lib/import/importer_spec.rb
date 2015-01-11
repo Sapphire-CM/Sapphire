@@ -8,7 +8,7 @@ RSpec.describe Import::Importer do
     expect {
     expect {
     expect {
-      ImportWorker.perform_async(import.id)
+      ImportJob.perform_later import.id
     }.to change(ActionMailer::Base.deliveries, :count).by(8)
     }.to change(TutorialGroup, :count).by(4)
     }.to change(Account, :count).by(8)

@@ -35,7 +35,7 @@ class AutoResponderMailer < ActionMailer::Base
     )
 
     message.charset = 'UTF-8'
-    message.deliver
+    message.deliver_later
 
     File.open("emails/response/#{mail_filename message}", 'w') do |f|
       f.write(message.to_s)

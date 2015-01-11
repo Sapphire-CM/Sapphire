@@ -4,7 +4,7 @@ class CreateStudentGroups < ActiveRecord::Migration
       t.integer :exercise_id
       t.integer :student_group_id
 
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :student_group_registrations, [:exercise_id], :name => "index_student_group_registrations_on_exercise_id"
     add_index :student_group_registrations, [:student_group_id], :name => "index_student_group_registrations_on_student_group_id"
@@ -13,7 +13,7 @@ class CreateStudentGroups < ActiveRecord::Migration
       t.string :title
       t.integer :tutorial_group_id
 
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :student_groups, ["tutorial_group_id"], :name => "index_student_groups_on_tutorial_group_id"
 

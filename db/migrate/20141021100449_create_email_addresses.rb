@@ -4,7 +4,7 @@ class CreateEmailAddresses < ActiveRecord::Migration
       t.string :email
       t.belongs_to :account, index: true
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

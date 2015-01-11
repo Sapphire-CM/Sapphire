@@ -52,17 +52,17 @@ module LayoutHelper
   end
 
   def flash_class_for(key)
-    classes = ["alert-box"]
+    classes = ['alert-box']
 
-    if key == :notice
-      classes << "success"
-    elsif key == :error || key == :alert
-      classes << "alert"
-    elsif key == :secondary
-      classes << "secondary"
+    if key == 'notice'
+      classes << 'success'
+    elsif key == 'error' || key == 'alert'
+      classes << 'alert'
+    elsif key == 'secondary'
+      classes << 'secondary'
     end
 
-    classes.join(" ")
+    classes.join(' ')
   end
 
 

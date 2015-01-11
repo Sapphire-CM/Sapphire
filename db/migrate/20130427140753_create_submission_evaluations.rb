@@ -6,7 +6,7 @@ class CreateSubmissionEvaluations < ActiveRecord::Migration
       t.string :evaluator_type
       t.datetime :evaluated_at
 
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :submission_evaluations, :submission_id
     add_index :submission_evaluations, :evaluator_id

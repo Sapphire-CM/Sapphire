@@ -6,7 +6,7 @@ class CreateEvaluationGroups < ActiveRecord::Migration
       t.belongs_to :rating_group, index: true
       t.belongs_to :submission_evaluation, index: true
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

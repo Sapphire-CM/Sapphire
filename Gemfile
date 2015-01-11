@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.0.6'
+gem 'rails', '~> 4.2.0'
 
 gem 'pg'                          # PostgreSQL database connector
 
@@ -9,20 +9,20 @@ gem 'jquery-ui-rails'
 gem 'jquery-mousewheel-rails'     # jquery MouseWheel support
 
 gem 'simple_form', '~> 3.0'       # forms
+gem 'devise',      '~> 3.2'       # user authentication
+gem 'squeel',      '~> 1.1', github: 'danielrhodes/squeel', branch: 'master'       # easy DSL
 gem 'carrierwave'                 # fileuploads
-gem 'squeel', '~> 1.1'            # easy DSL
 gem 'draper'                      # decorators
 gem 'kaminari'                    # pagination
 gem 'flash_render'                # render method with notice/alerts
-gem 'devise', '~> 3.2'            # user authentication
 gem 'pundit'                      # authorization based on controller actions and policies
 gem 'turbolinks'                  # Turbolinks makes following links in your web application faster
 gem 'jquery-turbolinks'           # Turbolinks jquery plugin for DOM ready events
 gem 'ranked-model'                # manages sort-position of ratings
 gem 'email_validator'             # provides ActiveRecord validation for email addresses
 
-gem 'compass-rails',   '~> 1.1'   # Compass intregration into assets-pipeline
-gem 'sass-rails',      '~> 4.0'   # Use SCSS for stylesheets
+gem 'compass-rails',   '~> 2.0', '>= 2.0.2' # Compass intregration into assets-pipeline
+gem 'sass-rails',      '~> 5.0'   # Use SCSS for stylesheets
 gem 'coffee-rails',    '~> 4.0'   # Use CoffeeScript for .js.coffee assets and views
 gem 'uglifier',        '>= 1.3'   # Use Uglifier as compressor for JavaScript assets
 gem 'zurb-foundation', '~> 4.3.0'
@@ -43,7 +43,7 @@ gem 'nokogiri'                    # for parsing HTML-Files
 gem 'cocoon'                      # for nested upload forms
 
 gem 'sidekiq'                     # async jobs in background, used for imports
-gem 'sinatra', '>= 1.3.0', :require => nil    # small rack framework, used for sidekiq ui
+gem 'sinatra', '>= 1.3.0', require: false    # small rack framework, used for sidekiq ui
 
 gem 'writeexcel'                  # exporting excel spreadsheets
 gem 'multi_logger'                # custom log files

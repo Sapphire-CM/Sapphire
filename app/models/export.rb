@@ -1,5 +1,4 @@
 class Export < ActiveRecord::Base
-  extend Enum
   include SerializedProperties
   include Polymorphable
 

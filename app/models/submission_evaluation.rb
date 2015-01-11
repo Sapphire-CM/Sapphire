@@ -10,7 +10,8 @@ class SubmissionEvaluation < ActiveRecord::Base
   has_many :ratings, through: :evaluations
   has_many :rating_groups, through: :ratings
 
-  validates :submission, presence: true, uniqueness: true
+  validates :submission, presence: true
+  validates :submission_id, uniqueness: true
 
   after_create :create_evaluation_groups
   after_save :update_exercise_results, if: :evaluation_result_changed?

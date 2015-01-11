@@ -7,7 +7,7 @@ class RatingGroup < ActiveRecord::Base
   has_many :evaluation_groups, dependent: :destroy
 
   validates :exercise, presence: true
-  validates :title, presence: true, uniqueness: { scope: :exercise }
+  validates :title, presence: true, uniqueness: { scope: :exercise_id }
   validates :points, presence: true, unless: Proc.new { |rating_group|
     rating_group.global == true
   }

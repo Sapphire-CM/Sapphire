@@ -5,7 +5,8 @@ class ResultPublication < ActiveRecord::Base
   scope :published, lambda { where(published: true) }
   scope :concealed, lambda { where(published: false) }
 
-  validates :exercise, presence: true, uniqueness: { scope: :tutorial_group }
+  validates :exercise, presence: true
+  validates :exercise_id, uniqueness: { scope: :tutorial_group_id }
   validates :tutorial_group, presence: true
 
   def self.for(exercise: nil, tutorial_group: nil)

@@ -78,6 +78,7 @@ group :development do
   gem 'quiet_assets'        # suppresses logging of assets files
   gem 'letter_opener_web'   # local email sender to HTML pages
   gem 'traceroute'          # detects unused routes and actions
+  gem 'consistency_fail'    # detects missing unique indexes
   # gem 'brakeman'            # common security problems checker
   # gem 'bullet'              # logs and supposes optimizations for db queries
   # gem 'sextant'             # route /rails/routes for displaying all routes

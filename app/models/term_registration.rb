@@ -12,7 +12,8 @@ class TermRegistration < ActiveRecord::Base
 
   enum role: Roles::ALL
 
-  validates :account, presence: true, uniqueness: { scope: :term_id }
+  validates :account, presence: true
+  validates :account_id, uniqueness: { scope: :term_id }
   validates :term, presence: true
   validates :tutorial_group, presence: true, unless: :lecturer?
   validates :tutorial_group, absence: true, if: :lecturer?

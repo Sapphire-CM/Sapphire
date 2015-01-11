@@ -20,7 +20,7 @@ class Term < ActiveRecord::Base
   delegate :lecturer, to: :lecturer_registration, allow_nil: true
 
   validates :course, presence: true
-  validates :title, presence: true, uniqueness: { scope: :course }
+  validates :title, presence: true, uniqueness: { scope: :course_id }
 
   before_save :improve_grading_scale
   before_save :improve_points

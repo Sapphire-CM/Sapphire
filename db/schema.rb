@@ -13,9 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20150111110420) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "accounts", force: true do |t|
     t.string   "email",                  default: "",    null: false
     t.string   "encrypted_password",     default: "",    null: false
@@ -39,8 +36,8 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.boolean  "admin",                  default: false
   end
 
-  add_index "accounts", ["email"], name: "index_accounts_on_email", unique: true, using: :btree
-  add_index "accounts", ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true, using: :btree
+  add_index "accounts", ["email"], name: "index_accounts_on_email", unique: true
+  add_index "accounts", ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
 
   create_table "courses", force: true do |t|
     t.string   "title"
@@ -57,7 +54,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.datetime "updated_at"
   end
 
-  add_index "email_addresses", ["account_id"], name: "index_email_addresses_on_account_id", using: :btree
+  add_index "email_addresses", ["account_id"], name: "index_email_addresses_on_account_id"
 
   create_table "evaluation_groups", force: true do |t|
     t.integer  "points"
@@ -68,8 +65,8 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.datetime "updated_at"
   end
 
-  add_index "evaluation_groups", ["rating_group_id"], name: "index_evaluation_groups_on_rating_group_id", using: :btree
-  add_index "evaluation_groups", ["submission_evaluation_id"], name: "index_evaluation_groups_on_submission_evaluation_id", using: :btree
+  add_index "evaluation_groups", ["rating_group_id"], name: "index_evaluation_groups_on_rating_group_id"
+  add_index "evaluation_groups", ["submission_evaluation_id"], name: "index_evaluation_groups_on_submission_evaluation_id"
 
   create_table "evaluations", force: true do |t|
     t.boolean  "checked"
@@ -82,8 +79,8 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.boolean  "checked_automatically"
   end
 
-  add_index "evaluations", ["evaluation_group_id"], name: "index_evaluations_on_evaluation_group_id", using: :btree
-  add_index "evaluations", ["rating_id"], name: "index_evaluations_on_rating_id", using: :btree
+  add_index "evaluations", ["evaluation_group_id"], name: "index_evaluations_on_evaluation_group_id"
+  add_index "evaluations", ["rating_id"], name: "index_evaluations_on_rating_id"
 
   create_table "exercise_registrations", force: true do |t|
     t.integer  "exercise_id"
@@ -94,9 +91,9 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.datetime "updated_at"
   end
 
-  add_index "exercise_registrations", ["exercise_id"], name: "index_exercise_registrations_on_exercise_id", using: :btree
-  add_index "exercise_registrations", ["submission_id"], name: "index_exercise_registrations_on_submission_id", using: :btree
-  add_index "exercise_registrations", ["term_registration_id"], name: "index_exercise_registrations_on_term_registration_id", using: :btree
+  add_index "exercise_registrations", ["exercise_id"], name: "index_exercise_registrations_on_exercise_id"
+  add_index "exercise_registrations", ["submission_id"], name: "index_exercise_registrations_on_submission_id"
+  add_index "exercise_registrations", ["term_registration_id"], name: "index_exercise_registrations_on_term_registration_id"
 
   create_table "exercises", force: true do |t|
     t.integer  "term_id"
@@ -121,7 +118,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.integer  "visible_points"
   end
 
-  add_index "exercises", ["term_id"], name: "index_exercises_on_term_id", using: :btree
+  add_index "exercises", ["term_id"], name: "index_exercises_on_term_id"
 
   create_table "exports", force: true do |t|
     t.string   "type"
@@ -133,7 +130,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.datetime "updated_at"
   end
 
-  add_index "exports", ["term_id"], name: "index_exports_on_term_id", using: :btree
+  add_index "exports", ["term_id"], name: "index_exports_on_term_id"
 
   create_table "import_errors", force: true do |t|
     t.integer  "import_result_id"
@@ -144,7 +141,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.datetime "updated_at",       null: false
   end
 
-  add_index "import_errors", ["import_result_id"], name: "index_import_errors_on_import_result_id", using: :btree
+  add_index "import_errors", ["import_result_id"], name: "index_import_errors_on_import_result_id"
 
   create_table "import_mappings", force: true do |t|
     t.integer  "import_id"
@@ -158,7 +155,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.datetime "updated_at",           null: false
   end
 
-  add_index "import_mappings", ["import_id"], name: "index_import_mappings_on_import_id", unique: true, using: :btree
+  add_index "import_mappings", ["import_id"], name: "index_import_mappings_on_import_id", unique: true
 
   create_table "import_options", force: true do |t|
     t.integer  "import_id"
@@ -174,7 +171,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.datetime "updated_at",                            null: false
   end
 
-  add_index "import_options", ["import_id"], name: "index_import_options_on_import_id", unique: true, using: :btree
+  add_index "import_options", ["import_id"], name: "index_import_options_on_import_id", unique: true
 
   create_table "import_results", force: true do |t|
     t.integer  "import_id"
@@ -192,7 +189,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.datetime "updated_at",                                     null: false
   end
 
-  add_index "import_results", ["import_id"], name: "index_import_results_on_import_id", unique: true, using: :btree
+  add_index "import_results", ["import_id"], name: "index_import_results_on_import_id", unique: true
 
   create_table "imports", force: true do |t|
     t.integer  "term_id"
@@ -202,7 +199,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.integer  "status"
   end
 
-  add_index "imports", ["term_id"], name: "index_imports_on_term_id", using: :btree
+  add_index "imports", ["term_id"], name: "index_imports_on_term_id"
 
   create_table "lecturer_registrations", force: true do |t|
     t.integer  "account_id"
@@ -211,8 +208,8 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.datetime "updated_at"
   end
 
-  add_index "lecturer_registrations", ["account_id"], name: "index_lecturer_registrations_on_account_id", using: :btree
-  add_index "lecturer_registrations", ["term_id"], name: "index_lecturer_registrations_on_term_id", using: :btree
+  add_index "lecturer_registrations", ["account_id"], name: "index_lecturer_registrations_on_account_id"
+  add_index "lecturer_registrations", ["term_id"], name: "index_lecturer_registrations_on_term_id"
 
   create_table "rating_groups", force: true do |t|
     t.integer  "exercise_id"
@@ -228,7 +225,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.integer  "row_order"
   end
 
-  add_index "rating_groups", ["exercise_id"], name: "index_rating_groups_on_exercise_id", using: :btree
+  add_index "rating_groups", ["exercise_id"], name: "index_rating_groups_on_exercise_id"
 
   create_table "ratings", force: true do |t|
     t.integer  "rating_group_id"
@@ -245,7 +242,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.string   "automated_checker_identifier"
   end
 
-  add_index "ratings", ["rating_group_id"], name: "index_ratings_on_rating_group_id", using: :btree
+  add_index "ratings", ["rating_group_id"], name: "index_ratings_on_rating_group_id"
 
   create_table "result_publications", force: true do |t|
     t.integer  "exercise_id"
@@ -255,8 +252,8 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.datetime "updated_at"
   end
 
-  add_index "result_publications", ["exercise_id"], name: "index_result_publications_on_exercise_id", using: :btree
-  add_index "result_publications", ["tutorial_group_id"], name: "index_result_publications_on_tutorial_group_id", using: :btree
+  add_index "result_publications", ["exercise_id"], name: "index_result_publications_on_exercise_id"
+  add_index "result_publications", ["tutorial_group_id"], name: "index_result_publications_on_tutorial_group_id"
 
   create_table "services", force: true do |t|
     t.integer  "exercise_id"
@@ -274,8 +271,8 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.datetime "updated_at"
   end
 
-  add_index "student_group_registrations", ["exercise_id"], name: "index_student_group_registrations_on_exercise_id", using: :btree
-  add_index "student_group_registrations", ["student_group_id"], name: "index_student_group_registrations_on_student_group_id", using: :btree
+  add_index "student_group_registrations", ["exercise_id"], name: "index_student_group_registrations_on_exercise_id"
+  add_index "student_group_registrations", ["student_group_id"], name: "index_student_group_registrations_on_student_group_id"
 
   create_table "student_groups", force: true do |t|
     t.string   "title"
@@ -288,7 +285,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.string   "topic_identifier"
   end
 
-  add_index "student_groups", ["tutorial_group_id"], name: "index_student_groups_on_tutorial_group_id", using: :btree
+  add_index "student_groups", ["tutorial_group_id"], name: "index_student_groups_on_tutorial_group_id"
 
   create_table "student_registrations", force: true do |t|
     t.integer  "account_id"
@@ -298,8 +295,8 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.integer  "student_group_id"
   end
 
-  add_index "student_registrations", ["account_id"], name: "index_student_registrations_on_account_id", using: :btree
-  add_index "student_registrations", ["student_group_id"], name: "index_student_registrations_on_student_group_id", using: :btree
+  add_index "student_registrations", ["account_id"], name: "index_student_registrations_on_account_id"
+  add_index "student_registrations", ["student_group_id"], name: "index_student_registrations_on_student_group_id"
 
   create_table "submission_assets", force: true do |t|
     t.integer  "submission_id"
@@ -312,7 +309,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.string   "import_identifier"
   end
 
-  add_index "submission_assets", ["submission_id"], name: "index_submission_assets_on_submission_id", using: :btree
+  add_index "submission_assets", ["submission_id"], name: "index_submission_assets_on_submission_id"
 
   create_table "submission_evaluations", force: true do |t|
     t.integer  "submission_id"
@@ -325,8 +322,8 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.boolean  "plagiarized"
   end
 
-  add_index "submission_evaluations", ["evaluator_id"], name: "index_submission_evaluations_on_evaluator_id", using: :btree
-  add_index "submission_evaluations", ["submission_id"], name: "index_submission_evaluations_on_submission_id", using: :btree
+  add_index "submission_evaluations", ["evaluator_id"], name: "index_submission_evaluations_on_evaluator_id"
+  add_index "submission_evaluations", ["submission_id"], name: "index_submission_evaluations_on_submission_id"
 
   create_table "submissions", force: true do |t|
     t.integer  "exercise_id"
@@ -337,9 +334,9 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.integer  "submitter_id"
   end
 
-  add_index "submissions", ["exercise_id"], name: "index_submissions_on_exercise_id", using: :btree
-  add_index "submissions", ["student_group_registration_id"], name: "index_submissions_on_student_group_registration_id", using: :btree
-  add_index "submissions", ["submitter_id"], name: "index_submissions_on_submitter_id", using: :btree
+  add_index "submissions", ["exercise_id"], name: "index_submissions_on_exercise_id"
+  add_index "submissions", ["student_group_registration_id"], name: "index_submissions_on_student_group_registration_id"
+  add_index "submissions", ["submitter_id"], name: "index_submissions_on_submitter_id"
 
   create_table "term_registrations", force: true do |t|
     t.integer  "points"
@@ -353,9 +350,9 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.integer  "role",              default: 0
   end
 
-  add_index "term_registrations", ["account_id"], name: "index_term_registrations_on_account_id", using: :btree
-  add_index "term_registrations", ["term_id"], name: "index_term_registrations_on_term_id", using: :btree
-  add_index "term_registrations", ["tutorial_group_id"], name: "index_term_registrations_on_tutorial_group_id", using: :btree
+  add_index "term_registrations", ["account_id"], name: "index_term_registrations_on_account_id"
+  add_index "term_registrations", ["term_id"], name: "index_term_registrations_on_term_id"
+  add_index "term_registrations", ["tutorial_group_id"], name: "index_term_registrations_on_tutorial_group_id"
 
   create_table "terms", force: true do |t|
     t.string   "title"
@@ -368,7 +365,7 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.integer  "points"
   end
 
-  add_index "terms", ["course_id"], name: "index_terms_on_course_id", using: :btree
+  add_index "terms", ["course_id"], name: "index_terms_on_course_id"
 
   create_table "tutor_registrations", force: true do |t|
     t.integer  "account_id"
@@ -377,8 +374,8 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.datetime "updated_at"
   end
 
-  add_index "tutor_registrations", ["account_id"], name: "index_tutor_registrations_on_account_id", using: :btree
-  add_index "tutor_registrations", ["tutorial_group_id"], name: "index_tutor_registrations_on_tutorial_group_id", using: :btree
+  add_index "tutor_registrations", ["account_id"], name: "index_tutor_registrations_on_account_id"
+  add_index "tutor_registrations", ["tutorial_group_id"], name: "index_tutor_registrations_on_tutorial_group_id"
 
   create_table "tutorial_groups", force: true do |t|
     t.string   "title"
@@ -388,6 +385,6 @@ ActiveRecord::Schema.define(version: 20150111110420) do
     t.text     "description"
   end
 
-  add_index "tutorial_groups", ["term_id"], name: "index_tutorial_groups_on_term_id", using: :btree
+  add_index "tutorial_groups", ["term_id"], name: "index_tutorial_groups_on_term_id"
 
 end

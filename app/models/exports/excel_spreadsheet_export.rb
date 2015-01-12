@@ -56,7 +56,15 @@ class ExcelSpreadsheetExport < Export
     workbook = WriteExcel.new(File.join(directory, xls_filename(tutorial_group)))
     styles = setup_workbook(workbook)
 
-    term_registrations = tutorial_group.student_term_registrations.includes(:account, :exercise_registrations).order {account.forename} .order {account.surname}
+    term_registrations = tutorial_group.student_term_registrations
+      .includes(:account, :exercise_registrations)
+      .order{account.forename.asc}
+      .references(:account)
+
+    term_registrations = term_registrations
+      .includes(:account)
+      .order{account.surname.asc}
+      .references(:account)
 
     if summary?
       add_summary(workbook, styles, tutorial_group, term_registrations)
@@ -79,12 +87,12 @@ class ExcelSpreadsheetExport < Export
     parts = []
 
     parts << term.course.title
+    parts << term.title
     parts << tutorial_group.title
 
     tutorial_group.tutor_term_registrations.includes(:account).each do |term_registration|
       parts << term_registration.account.forename
     end
-
 
     "#{parts.join("-").downcase.parameterize}.xls"
   end

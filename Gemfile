@@ -114,6 +114,8 @@ group :test do
   gem 'poltergeist'               # PhantomJS, headless Webkit
   # gem 'selenium-webdriver'      # Selenium, Firefox webdriver
   # gem 'capybara-webkit'         # Webkit headless webdriver
+
+  gem 'rubyzip'
 end
 
 group :development, :test do

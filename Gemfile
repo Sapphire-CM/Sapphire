@@ -10,7 +10,7 @@ gem 'jquery-mousewheel-rails'     # jquery MouseWheel support
 
 gem 'simple_form', '~> 3.0'       # forms
 gem 'devise',      '~> 3.2'       # user authentication
-gem 'squeel',      '~> 1.1', github: 'danielrhodes/squeel', branch: 'master'       # easy DSL
+gem 'squeel',      '~> 1.2'       # easy DSL
 gem 'carrierwave'                 # fileuploads
 gem 'draper'                      # decorators
 gem 'kaminari'                    # pagination

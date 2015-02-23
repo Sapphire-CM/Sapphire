@@ -15,7 +15,6 @@ class Exercise < ActiveRecord::Base
   scope :mandatory_exercises, lambda { where(enable_min_required_points: true) }
 
   has_many :result_publications, dependent: :destroy
-  has_many :student_group_registrations, dependent: :destroy
   has_many :student_groups, through: :student_group_registrations
   has_many :submissions
   has_many :submission_evaluations, through: :submissions

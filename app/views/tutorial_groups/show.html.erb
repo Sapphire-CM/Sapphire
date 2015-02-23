@@ -20,17 +20,16 @@
             <tr>
               <td>
                 <%= student_group.title %>
-                <%= "<br /><em>inactive</em>".html_safe unless student_group.active? %>
               </td>
-              <td><%= student_group.students.count %></td>
+              <td><%= student_group.term_registrations.count %></td>
               <td>
                 <% student_group.students.order(:matriculation_number).each do |student| %>
                   <%= "#{student.matriculation_number}, #{student.fullname}" %><br/>
                 <% end %>
               </td>
               <td class='right-aligned'>
-                <%= link_to foundation_icon(:page_edit), edit_tutorial_group_student_group_path(@tutorial_group, student_group) %>
-                <%= link_to foundation_icon(:x), tutorial_group_student_group_path(@tutorial_group, student_group), method: :delete, data: { confirm: "Are you sure?" } %>
+                <%= link_to foundation_icon(:page_edit), edit_term_student_group_path(current_term, student_group) %>
+                <%= link_to foundation_icon(:x), term_student_group_path(current_term, student_group), method: :delete, data: { confirm: "Are you sure?" } %>
               </td>
             </tr>
             <% end %>

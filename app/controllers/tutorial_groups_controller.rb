@@ -15,7 +15,7 @@ class TutorialGroupsController < ApplicationController
   end
 
   def show
-    @student_groups = @tutorial_group.student_groups.where(solitary: false).order(:title)
+    @student_groups = @tutorial_group.student_groups.order(:title)
     @student_term_registrations = @tutorial_group.student_term_registrations.ordered_by_name.with_accounts
   end
 

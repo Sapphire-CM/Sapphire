@@ -4,6 +4,7 @@ class TermRegistration < ActiveRecord::Base
   belongs_to :account
   belongs_to :term
   belongs_to :tutorial_group
+  belongs_to :student_group
 
   has_many :exercise_registrations
   has_many :exercises, -> { uniq }, through: :exercise_registrations

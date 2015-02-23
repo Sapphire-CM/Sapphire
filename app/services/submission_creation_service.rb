@@ -29,6 +29,12 @@ class SubmissionCreationService
     result
   end
 
+  def save!
+    ensure_model_setup!
+    @submission.save!
+    create_exercise_registrations!
+  end
+
   private
   def ensure_model_setup!
     setup_model! unless model_setup?

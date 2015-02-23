@@ -1,0 +1,21 @@
+<% title @term.title, pluralize(@student_groups_count, "Student Groups") %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Tutorial Group</th>
+      <th>Students</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @student_groups.each do |student_group| %>
+      <tr>
+        <td><%= student_group.title %></td>
+        <td><%= tutorial_group_title student_group.tutorial_group %></td>
+        <td><%= student_group.students.count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

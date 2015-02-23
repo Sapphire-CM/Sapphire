@@ -44,6 +44,7 @@ Rails.application.routes.draw do
 
     resources :results, only: [:index, :show], controller: :student_results
 
+    resources :student_groups
   end
 
   resources :tutorial_groups

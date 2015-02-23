@@ -72,7 +72,7 @@ class Term < ActiveRecord::Base
   end
 
   def group_submissions?
-    exercises.group_exercises.exists?
+    exercises.group_exercises.any?
   end
 
   def grade_for_points(points)

@@ -16,6 +16,7 @@ class TermRegistration < ActiveRecord::Base
   validates :term, presence: true
   validates :tutorial_group, presence: true, unless: :lecturer?
   validates :tutorial_group, absence: true, if: :lecturer?
+  validates :student_group, absence: true, unless: :student?
 
   scope :graded, lambda { where(receives_grade: true) }
   scope :ungraded, lambda { where(receives_grade: false) }

@@ -6,6 +6,7 @@
       <th>Title</th>
       <th>Tutorial Group</th>
       <th>Students</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -14,6 +15,7 @@
         <td><%= student_group.title %></td>
         <td><%= tutorial_group_title student_group.tutorial_group %></td>
         <td><%= student_group.students.count %></td>
+        <td><%= link_to "Edit", edit_term_student_group_path(current_term, student_group) %></td>
       </tr>
     <% end %>
   </tbody>

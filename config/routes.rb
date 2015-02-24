@@ -41,10 +41,11 @@ Rails.application.routes.draw do
     end
 
     resources :grading_reviews, only: [:index, :show]
-
     resources :results, only: [:index, :show], controller: :student_results
 
-    resources :student_groups
+    resources :student_groups do
+      post :search_students, on: :collection
+    end
   end
 
   resources :tutorial_groups

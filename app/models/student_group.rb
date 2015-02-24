@@ -9,7 +9,6 @@ class StudentGroup < ActiveRecord::Base
   scope :for_tutorial_group, lambda { |tutorial_group| where(tutorial_group_id: tutorial_group.id) }
 
 
-
   validates :tutorial_group, presence: true
 
 

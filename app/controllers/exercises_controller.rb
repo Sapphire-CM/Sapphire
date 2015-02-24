@@ -45,7 +45,6 @@ class ExercisesController < ApplicationController
   end
 
   private
-
   def set_context
     @exercise = Exercise.find(params[:id] || params[:exercise_id])
     authorize @exercise

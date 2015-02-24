@@ -1,0 +1,28 @@
+<%= cache term_registration do %>
+  <div class='term-registration-entry' data-term-registration-id='<%= term_registration.id %>'>
+    <div class='row title-row'>
+      <div class='small-9 columns'>
+        <span class='name'><%= term_registration.account.fullname %></span>
+      </div>
+      <div class='small-3 columns text-right'>
+        <span class='matriculation-number'><%= term_registration.account.matriculation_number %></span>
+      </div>
+    </div>
+    <div class='row subtitle-row'>
+      <div class='small-6 columns'>
+        <span class='student-group'>
+          <% if term_registration.student_group.present? %>
+            <%= term_registration.student_group.title %>
+          <% else %>
+            <%= content_tag(:em, "No Group") %>
+          <% end %>
+        </span>
+      </div>
+      <div class='small-6 columns text-right'>
+        <span class='tutorial-group'>
+          <%= tutorial_group_title term_registration.tutorial_group %>
+        </span>
+      </div>
+    </div>
+  </div>
+<% end %>

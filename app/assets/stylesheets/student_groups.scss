@@ -1,0 +1,16 @@
+.student-group-editor {
+  .term-registration-entry {
+    border-bottom: thin solid #ddd;
+    padding: 1em;
+    background-color: white;
+
+    &.ui-sortable-helper {
+      border-top: thin solid #ddd;
+    }
+
+    .title-row {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+  }
+}

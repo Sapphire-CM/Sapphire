@@ -27,7 +27,7 @@ FactoryGirl.define do
       end
 
       after(:create) do |term_registration, evaluator|
-        term_registration.student_group = evaluator.student_group
+        term_registration.update(student_group: evaluator.student_group)
       end
     end
   end

@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :import do
     term
-    file { File.open prepare_static_test_file 'import_data.csv' }
+    file { prepare_static_test_file 'import_data.csv', open: true }
     status :pending
 
     after :create do |import|

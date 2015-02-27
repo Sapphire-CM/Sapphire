@@ -64,7 +64,7 @@ module Import::Importer
 
         tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
 
-        student_group = create_student_group group_title, false, tutorial_group
+        student_group = create_student_group group_title, tutorial_group
         term_registration create_term_registration row, account, tutorial_group
 
         # TODO: add student to student_group
@@ -133,9 +133,8 @@ module Import::Importer
     term_registration
   end
 
-  def create_student_group(title, solitary, tutorial_group)
+  def create_student_group(title, tutorial_group)
     student_group = tutorial_group.student_groups.find_or_initialize_by(title: title)
-    student_group.solitary = solitary
 
     new_record = student_group.new_record?
     if student_group.save

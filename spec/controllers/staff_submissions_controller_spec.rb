@@ -26,6 +26,16 @@ RSpec.describe StaffSubmissionsController do
         expect(response).to have_http_status(:success)
       end
     end
+
+    context 'without any tutorial groups' do
+      it 'works' do
+        TutorialGroup.destroy_all
+
+        get :index, exercise_id: exercise.id
+
+        expect(response).to have_http_status(:success)
+      end
+    end
   end
 
   describe 'GET show' do

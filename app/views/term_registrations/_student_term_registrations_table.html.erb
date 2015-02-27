@@ -1,0 +1,20 @@
+<table class='large-12'>
+  <thead>
+    <th>Forename</th>
+    <th>Surname</th>
+    <th>Matriculation Number</th>
+    <th>Email</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <% term_registrations.each do |term_registration|  %>
+    <tr>
+      <td><%= term_registration.account.forename %></td>
+      <td><%= term_registration.account.surname %></td>
+      <td><%= term_registration.account.matriculation_number %></td>
+      <td><%= mail_to term_registration.account.email %></td>
+      <td><%= link_to "show", term_student_path(current_term, term_registration) %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

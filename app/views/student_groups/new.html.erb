@@ -1,0 +1,7 @@
+<% title(current_term.title, "New Student Group") %>
+
+<% if @tutorial_groups.any? %>
+  <%= render "form", term: current_term, student_group: @student_group, tutorial_groups: @tutorial_groups %>
+<% else %>
+  <p>Please make sure to </p>
+<% end %>

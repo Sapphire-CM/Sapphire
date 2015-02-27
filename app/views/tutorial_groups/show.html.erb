@@ -46,26 +46,7 @@
     <p class="title" data-section-title><a href="#">Students</a></p>
     <div class="content" data-section-content>
       <% if @student_term_registrations.any? %>
-        <table class='large-12'>
-          <thead>
-            <th>Forename</th>
-            <th>Surname</th>
-            <th>Matriculation Number</th>
-            <th>Email</th>
-            <th></th>
-          </thead>
-          <tbody>
-            <% @student_term_registrations.each do |student_term_registration|  %>
-            <tr>
-              <td><%= student_term_registration.account.forename %></td>
-              <td><%= student_term_registration.account.surname %></td>
-              <td><%= student_term_registration.account.matriculation_number %></td>
-              <td><%= mail_to student_term_registration.account.email %></td>
-              <td><%= link_to "show", term_student_path(current_term, student_term_registration) %></td>
-            </tr>
-            <% end %>
-          </tbody>
-        </table>
+        <%= render "term_registrations/student_term_registrations_table", term_registrations: @student_term_registrations %>
       <% else %>
         <p>No students present.</p>
       <% end %>

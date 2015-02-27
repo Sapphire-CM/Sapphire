@@ -1,6 +1,10 @@
 module TutorialGroupsHelper
   def tutorial_group_title(tutorial_group)
-    "#{tutorial_group.title} - #{tutor_names tutorial_group.tutor_accounts}"
+    if tutorial_group
+      "#{tutorial_group.title} - #{tutor_names tutorial_group.tutor_accounts}"
+    else
+      "none"
+    end
   end
 
   def tutorial_group_select_params(tutorial_groups)

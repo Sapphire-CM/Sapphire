@@ -2,9 +2,14 @@ FactoryGirl.define do
   sequence(:lorem_ipsum) { |n| "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. #{n}" }
 end
 
-def prepare_static_test_file(file)
+def prepare_static_test_file(file, open: true)
   src_file = File.join Rails.root, 'spec', 'support', 'data', file
   dst_file = File.join Rails.root, 'tmp', file
   FileUtils.cp src_file, dst_file
-  dst_file
+
+  if open
+    File.open dst_file
+  else
+    dst_file
+  end
 end

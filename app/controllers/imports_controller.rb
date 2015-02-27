@@ -26,6 +26,7 @@ class ImportsController < ApplicationController
     unless @import.save
       return render :new
     end
+    @import.reload
 
     import_service = ImportService.new(@import)
 
@@ -79,7 +80,6 @@ class ImportsController < ApplicationController
         :format,
         :status,
         :line_count,
-        :import_mapping,
         import_options_attributes: [
           :matching_groups,
           :tutorial_groups_regexp,

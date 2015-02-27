@@ -14,19 +14,20 @@ class Import < ActiveRecord::Base
 
   after_create :create_associations
 
-  accepts_nested_attributes_for :import_options
-  accepts_nested_attributes_for :import_mapping
+  accepts_nested_attributes_for :import_options, update_only: true
+  accepts_nested_attributes_for :import_mapping, update_only: true
 
   after_initialize do
     self.status ||= :pending
+
+    if persisted?
+      self.import_options ||= ImportOptions.find_or_create_by! import: self
+    end
   end
 
   private
 
   def create_associations
-    # could be created via nested attributes
-    ImportOptions.find_or_create_by! import: self
-
     # must exist at all times
     ImportMapping.create! import: self
     ImportResult.create! import: self

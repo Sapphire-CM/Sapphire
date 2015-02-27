@@ -72,7 +72,7 @@ RSpec.describe ImportsController do
 
   describe 'POST create' do
     describe 'with valid params' do
-      it 'creates a new StudentImport' do
+      it 'creates a new StudentImport with default values' do
         valid_attributes[:term_id] = term.id
 
         expect do
@@ -82,6 +82,23 @@ RSpec.describe ImportsController do
         expect(response).to redirect_to(term_import_path(term, assigns(:import)))
         expect(assigns(:import)).to be_a(Import)
         expect(assigns(:import)).to be_persisted
+      end
+
+      it 'creates a new StudentImport with non-default values' do
+        valid_attributes[:term_id] = term.id
+        valid_attributes[:import][:file] = Rack::Test::UploadedFile.new(prepare_static_test_file('import_data_commas_single_quotes.csv'), 'text/csv')
+        valid_attributes[:import][:import_options_attributes][:column_separator] = ','
+        valid_attributes[:import][:import_options_attributes][:quote_char] = "'"
+
+        expect do
+          post :create, valid_attributes
+        end.to change(Import, :count).by(1)
+
+        expect(response).to redirect_to(term_import_path(term, assigns(:import)))
+        expect(assigns(:import)).to be_a(Import)
+        expect(assigns(:import)).to be_persisted
+        expect(assigns(:import).import_options.column_separator).to eq(',')
+        expect(assigns(:import).import_options.quote_char).to eq("'")
       end
     end
 

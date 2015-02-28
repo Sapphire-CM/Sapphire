@@ -65,9 +65,9 @@ module Import::Importer
         tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
 
         student_group = create_student_group group_title, tutorial_group
-        term_registration create_term_registration row, account, tutorial_group
+        term_registration = create_term_registration row, account, tutorial_group
 
-        # TODO: add student to student_group
+        term_registration.update(student_group: student_group)
       else
         raise "ImportOption matching_groups: #{import_options.matching_groups}" # unknown value for :matching_groups
       end

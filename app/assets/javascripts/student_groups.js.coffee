@@ -1,11 +1,3 @@
-#
-#  student_groups.js.coffee
-#  Sapphire
-#
-#  Created by Matthias Link on 2015-02-23.
-#  Copyright 2015 Matthias Link. All rights reserved.
-#
-
 class Timer
   constructor: (@timeout_interval, @callback) ->
     @timeout = undefined

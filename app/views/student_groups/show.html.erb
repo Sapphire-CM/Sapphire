@@ -17,7 +17,7 @@
     <p class="title" data-section-title><a href="#panel2">Submissions</a></p>
     <div class="content" data-section-content>
       <% if @submissions.any? %>
-        <table>
+        <table class='large-12'>
           <thead>
             <tr>
               <th>Exercise</th>
@@ -53,3 +53,5 @@
     </div>
   </section>
 </div>
+
+<p><%= link_to "Edit", edit_term_student_group_path(current_term, @student_group), class: "small primary button" %></p>

@@ -1,5 +1,5 @@
 <% if @term_registrations.any? %>
-  $(".student-list-container").html("<%=j render(collection: @term_registrations, partial: 'term_registration') %>");
+  $(".student-list-container").html("<%=j render(collection: @term_registrations, partial: 'term_registration') %>").trigger("change");
 <% else %>
-  $(".student-list-container").html("No results found")
+  $(".student-list-container").html("No results found").trigger("change");
 <% end %>

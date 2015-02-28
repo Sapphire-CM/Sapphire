@@ -27,13 +27,21 @@ class StudentGroupsController < ApplicationController
     authorize @student_group
 
     if @student_group.term == current_term && @student_group.save
-      redirect_to term_student_group_path(current_term, @student_group)
+      redirect_to term_student_group_path(current_term, @student_group), notice: "Successfully created student group"
     else
       render :new
     end
   end
 
   def edit
+  end
+
+  def update
+    if @student_group.update(student_group_params)
+      redirect_to term_student_group_path(current_term, @student_group), notice: "Successfully updated student group"
+    else
+      render :new
+    end
   end
 
   def search_students
@@ -43,7 +51,7 @@ class StudentGroupsController < ApplicationController
 
   private
   def student_group_params
-    params.require(:student_group).permit(:title, :tutorial_group_id)
+    params.require(:student_group).permit(:title, :tutorial_group_id, term_registration_ids: [])
   end
 
   def set_student_group

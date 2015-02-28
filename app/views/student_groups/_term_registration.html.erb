@@ -1,5 +1,7 @@
 <%= cache term_registration do %>
   <div class='term-registration-entry' data-term-registration-id='<%= term_registration.id %>'>
+    <span class='remove-button alert'>
+      <%= link_to foundation_icon(:x), '#', data: {confirm: "Are you sure?"} %></span>
     <div class='row title-row'>
       <div class='small-9 columns'>
         <span class='name'><%= term_registration.account.fullname %></span>

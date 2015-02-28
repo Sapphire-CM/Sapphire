@@ -1,31 +1,3 @@
-class Timer
-  constructor: (@timeout_interval, @callback) ->
-    @timeout = undefined
-
-  start: ->
-    @reset()
-
-  reset: ->
-    if @timeout
-      clearTimeout(@timeout)
-
-    self = @
-    @timeout = setTimeout ->
-
-      self._clear_timeout()
-      self._perform_callback()
-    , @timeout_interval
-
-  clear: ->
-    if @timeout
-      clearTimeout(@timeout)
-
-  _perform_callback: ->
-    @callback()
-
-  _clear_timeout:()->
-    @timeout = undefined
-
 get_entry_id = ($entry) ->
   $entry.data("term-registration-id")
 
@@ -89,13 +61,5 @@ $ ->
     $search_form = $editor.find(".search-form")
     $search_input = $search_form.find("input[type=search]")
 
-    timer = new Timer 300, ->
-      if $search_input.val().length > 3
-        $search_form.submit()
-
-    $search_input.on "keydown", (e)=>
-      if e.which == 13
-        $search_form.submit()
-        timer.clear()
-      else
-        timer.reset()
+    $search_input.on "search", (e)=>
+      $search_form.submit()

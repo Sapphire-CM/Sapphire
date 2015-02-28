@@ -16,7 +16,7 @@
     <div class='panel'>
       <%= form_tag(search_students_term_student_groups_path(term), remote: true, class: "search-form") do %>
         <%= label_tag :q, "Search for students" %>
-        <%= search_field_tag(:q) %>
+        <%= search_field_tag(:q, "", incremental: 'incremental') %>
       <% end %>
       <hr />
       <div class='student-list-container'>

@@ -56,10 +56,10 @@ $ ->
   if $editor.length > 0
     $student_group_list = $editor.find(".student-group-list-container")
     $students_list = $editor.find(".student-list-container")
-    $form = $($student_group_list.parents("form")[0]);
+    $form = $student_group_list.closest("form");
 
     $form.on "click", ".remove-button a", ->
-      $entry = $($(@).parents(".term-registration-entry")[0])
+      $entry = $(@).closest(".term-registration-entry")
       $entry.remove()
       update_student_ids($form)
       deactivate_existing_students($students_list, $student_group_list)

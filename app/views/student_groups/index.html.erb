@@ -1,6 +1,6 @@
-<% title @term.title, pluralize(@student_groups_count, "Student Groups") %>
+<% title tutorial_group_title(current_tutorial_group), pluralize(@student_groups_count, "Student Groups") %>
 
-<%= render "terms/sidebar", term: current_term %>
+<%= render "tutorial_groups/sidebar", tutorial_group: current_tutorial_group %>
 
 <% if @student_groups_count > 0 %>
   <table class='large-12'>
@@ -19,8 +19,8 @@
           <td><%= tutorial_group_title student_group.tutorial_group %></td>
           <td><%= student_group.students.count %></td>
           <td class='text-right'>
-            <%= link_to "Show", term_student_group_path(current_term, student_group), class: "tiny primary button" %>
-            <%= link_to "Edit", edit_term_student_group_path(current_term, student_group), class: "tiny primary button" %>
+            <%= link_to "Show", term_tutorial_group_student_group_path(current_term, current_tutorial_group, student_group), class: "tiny primary button" %>
+            <%= link_to "Edit", edit_term_tutorial_group_student_group_path(current_term, current_tutorial_group, student_group), class: "tiny primary button" %>
           </td>
         </tr>
       <% end %>
@@ -30,4 +30,4 @@
   <p>No student groups present</p>
 <% end %>
 
-<%= link_to "New Student Group", new_term_student_group_path(current_term), class: "small primary button" %>
+<%= link_to "New Student Group", new_term_tutorial_group_student_group_path(current_term, current_tutorial_group), class: "small primary button" %>

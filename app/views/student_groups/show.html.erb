@@ -1,6 +1,6 @@
-<%= title(course_term_title, @student_group.title) %>
+<%= title(tutorial_group_title(current_tutorial_group), @student_group.title) %>
 
-<%= render "terms/sidebar", term: current_term %>
+<%= render "tutorial_groups/sidebar", tutorial_group: current_tutorial_group %>
 
 <div class="section-container auto" data-section>
   <section class="active">
@@ -54,4 +54,4 @@
   </section>
 </div>
 
-<p><%= link_to "Edit", edit_term_student_group_path(current_term, @student_group), class: "small primary button" %></p>
+<p><%= link_to "Edit", edit_term_tutorial_group_student_group_path(current_term, current_tutorial_group, @student_group), class: "small primary button" %></p>

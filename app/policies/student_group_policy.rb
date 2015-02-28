@@ -23,6 +23,10 @@ class StudentGroupPolicy < PunditBasePolicy
     authorized?(record)
   end
 
+  def destroy?
+    authorized?(record)
+  end
+
   def search_students?
     authorized?(record)
   end

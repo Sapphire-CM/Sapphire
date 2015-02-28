@@ -1,5 +1,5 @@
 class StudentGroup < ActiveRecord::Base
-  belongs_to :tutorial_group
+  belongs_to :tutorial_group, inverse_of: :student_groups
 
   has_one :term, through: :tutorial_group
   has_many :term_registrations
@@ -10,7 +10,7 @@ class StudentGroup < ActiveRecord::Base
   scope :for_tutorial_group, lambda { |tutorial_group| where(tutorial_group_id: tutorial_group.id) }
 
   validates :title, presence: true
-  validates :tutorial_group, presence: true
+  validates :tutorial_group_id, presence: true
 
   def update_points!
     self.points = self.submission_evaluations.pluck(:evaluation_result).sum

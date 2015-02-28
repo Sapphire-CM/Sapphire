@@ -5,7 +5,6 @@
 
   <% if current_account.admin? || policy(@term).staff? %>
     <%= sidenav_item(:torsos, "Tutorial Groups", term_tutorial_groups_path(term)) %>
-    <%= sidenav_item(:torsos, "Student Groups", term_student_groups_path(term), params[:controller] == "student_groups") %>
     <%= sidenav_item(:torso, "Students", term_students_path(term), params[:controller] == "students") %>
 
     <%#= sidenav_item(:calendar, "Meeting Time", '#') %>

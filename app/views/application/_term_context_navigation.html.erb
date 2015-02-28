@@ -3,34 +3,36 @@
 
   <%= render 'course_term_navigation' %>
 
-  <li class='divider'></li>
+  <% if @term.ready? %>
+    <li class='divider'></li>
 
-  <li class='has-dropdown'>
-    <%= link_to "Exercises", term_exercises_path(@term) %>
-    <ul class='dropdown'>
-      <% if (exercises = @term.exercises(true)).any? %>
-        <% exercises.each do |exercise| %>
-          <li><%= exercise_topbar_link exercise %></li>
+    <li class='has-dropdown'>
+      <%= link_to "Exercises", term_exercises_path(@term) %>
+      <ul class='dropdown'>
+        <% if (exercises = @term.exercises(true)).any? %>
+          <% exercises.each do |exercise| %>
+            <li><%= exercise_topbar_link exercise %></li>
+          <% end %>
+        <% else %>
+          <li><%= link_to "(no exercises)", '#' %></li>
         <% end %>
-      <% else %>
-        <li><%= link_to "(no exercises)", '#' %></li>
-      <% end %>
-    </ul>
-  </li>
+      </ul>
+    </li>
 
-  <% unless policy(@term).student? %>
-  <li class='has-dropdown'>
-    <%= link_to "Tutorial Groups", term_tutorial_groups_path(@term) %>
-    <ul class='dropdown'>
-      <% if (tutorial_groups = @term.tutorial_groups(true).includes(:term).joins(:term)).any? %>
-        <% tutorial_groups.each do |tutorial_group| %>
-          <li><%= link_to tutorial_group_title(tutorial_group), term_tutorial_group_path(@term, tutorial_group) %></li>
+    <% unless policy(@term).student? %>
+    <li class='has-dropdown'>
+      <%= link_to "Tutorial Groups", term_tutorial_groups_path(@term) %>
+      <ul class='dropdown'>
+        <% if (tutorial_groups = @term.tutorial_groups(true).includes(:term).joins(:term)).any? %>
+          <% tutorial_groups.each do |tutorial_group| %>
+            <li><%= link_to tutorial_group_title(tutorial_group), term_tutorial_group_path(@term, tutorial_group) %></li>
+          <% end %>
+        <% else %>
+          <li><%= link_to "(no tutorial groups)", '#' %></li>
         <% end %>
-      <% else %>
-        <li><%= link_to "(no tutorial groups)", '#' %></li>
-      <% end %>
-    </ul>
-    <li><%= link_to "Grading Review", term_grading_reviews_path(@term) %></li>
-  </li>
+      </ul>
+      <li><%= link_to "Grading Review", term_grading_reviews_path(@term) %></li>
+    </li>
+    <% end %>
   <% end %>
 </ul>

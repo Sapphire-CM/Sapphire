@@ -19,6 +19,7 @@ class TermsController < ApplicationController
 
     if @term.save
       if @term.needs_copying?
+        @term.preparing!
         options = {
           lecturers: @term.copy_lecturer?,
           exercises: @term.copy_exercises?,

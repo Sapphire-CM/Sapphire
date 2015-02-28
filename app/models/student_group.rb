@@ -2,7 +2,7 @@ class StudentGroup < ActiveRecord::Base
   belongs_to :tutorial_group, inverse_of: :student_groups
 
   has_one :term, through: :tutorial_group
-  has_many :term_registrations
+  has_many :term_registrations, dependent: :nullify
   has_many :students, through: :term_registrations, class_name: "Account", source: :account
   has_many :submissions, dependent: :nullify
 

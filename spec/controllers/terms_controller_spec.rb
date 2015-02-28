@@ -32,6 +32,34 @@ RSpec.describe TermsController do
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term)).to eq(term)
+      expect(response).to render_template(:_sidebar)
+    end
+
+    describe 'copying values from previous term' do
+      before :each do
+        term.preparing!
+      end
+
+      it 'hides the navigation sidebar' do
+        get :show, id: term.id
+
+        expect(response).to have_http_status(:success)
+        expect(response).not_to render_template(:_sidebar)
+      end
+
+      it 'hides the main navigation items' do
+        get :show, id: term.id
+
+        expect(response).to have_http_status(:success)
+        expect(response).not_to have_content("Exercises")
+      end
+
+      it 'shows a stand by message' do
+        get :show, id: term.id
+
+        expect(response).to have_http_status(:success)
+        expect(response.body).to have_content("stand by")
+      end
     end
   end
 
@@ -57,6 +85,7 @@ RSpec.describe TermsController do
         expect(response).to render_template(:_insert_index_entry)
         expect(assigns(:term)).to be_a(Term)
         expect(assigns(:term)).to be_persisted
+        expect(assigns(:term)).to be_ready
       end
 
       it 'creates and copies a new Term in the background' do
@@ -79,6 +108,7 @@ RSpec.describe TermsController do
         expect(response).to render_template(:_insert_index_entry)
         expect(assigns(:term)).to be_a(Term)
         expect(assigns(:term)).to be_persisted
+        expect(assigns(:term)).not_to be_ready
       end
     end
 

@@ -47,4 +47,8 @@ class MigrateStudentGroupsToDatamodelV2 < ActiveRecord::Migration
     # no more student group registrations needed
     drop_table :student_group_registrations
   end
+
+  def down
+    raise ActiveRecord::IrreversibleMigration
+  end
 end

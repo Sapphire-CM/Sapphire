@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150301172408) do
+ActiveRecord::Schema.define(version: 20150301175541) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -300,16 +300,14 @@ ActiveRecord::Schema.define(version: 20150301172408) do
   create_table "submissions", force: :cascade do |t|
     t.integer  "exercise_id"
     t.datetime "submitted_at"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-    t.integer  "student_group_registration_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.integer  "submitter_id"
     t.integer  "student_group_id"
   end
 
   add_index "submissions", ["exercise_id"], name: "index_submissions_on_exercise_id"
   add_index "submissions", ["student_group_id"], name: "index_submissions_on_student_group_id"
-  add_index "submissions", ["student_group_registration_id"], name: "index_submissions_on_student_group_registration_id"
   add_index "submissions", ["submitter_id"], name: "index_submissions_on_submitter_id"
 
   create_table "term_registrations", force: :cascade do |t|

@@ -26,7 +26,7 @@ class StudentGroupsController < ApplicationController
     @student_group.tutorial_group = current_tutorial_group
     authorize @student_group
 
-    if @student_group.term == current_term && @student_group.save
+    if @student_group.save
       redirect_to term_tutorial_group_student_group_path(current_term, current_tutorial_group, @student_group), notice: "Successfully created student group"
     else
       render :new
@@ -40,7 +40,7 @@ class StudentGroupsController < ApplicationController
     if @student_group.update(student_group_params)
       redirect_to term_tutorial_group_student_group_path(current_term, current_tutorial_group, @student_group), notice: "Successfully updated student group"
     else
-      render :new
+      render :edit
     end
   end
 
@@ -51,7 +51,17 @@ class StudentGroupsController < ApplicationController
 
   def search_students
     authorize StudentGroupPolicy.with current_term
-    @term_registrations = current_term.term_registrations.students.search(params[:q]).includes(:account, :tutorial_group, :student_group).page(params[:p]).per(10)
+
+    if params[:q].blank?
+      render nothing: true, status: :bad_request
+      return
+    end
+
+    @term_registrations = current_term.term_registrations.students.includes(:account, :tutorial_group, :student_group).search(params[:q]).page(params[:p]).per(10)
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   private

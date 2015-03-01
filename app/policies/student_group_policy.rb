@@ -12,7 +12,7 @@ class StudentGroupPolicy < PunditBasePolicy
   end
 
   def create?
-    authorized?(record)
+    authorized?
   end
 
   def edit?
@@ -20,11 +20,11 @@ class StudentGroupPolicy < PunditBasePolicy
   end
 
   def update?
-    authorized?(record)
+    authorized?
   end
 
   def destroy?
-    authorized?(record)
+    authorized?
   end
 
   def search_students?

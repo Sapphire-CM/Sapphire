@@ -44,7 +44,7 @@ RSpec.describe TermsController do
         get :show, id: term.id
 
         expect(response).to have_http_status(:success)
-        expect(response).not_to render_template(:_sidebar)
+        expect(response).not_to render_template(:sidebar)
       end
 
       it 'hides the main navigation items' do

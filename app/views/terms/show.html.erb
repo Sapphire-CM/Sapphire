@@ -1,7 +1,12 @@
 <% title course_term_title, "Dashboard" %>
 
-<%= render "sidebar", term: @term %>
 
-<div class='panel'>
-  <h5>No recent Activities</h5>
-</div>
+<% if @term.ready? %>
+  <%= render "sidebar", term: @term %>
+
+  <div class='panel'>
+    <h5>No recent Activities</h5>
+  </div>
+<% else %>
+  <p>This term is currently being prepared with data from a previous term. Please stand by.</p>
+<% end %>

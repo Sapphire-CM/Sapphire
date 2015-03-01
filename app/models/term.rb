@@ -3,6 +3,7 @@ class Term < ActiveRecord::Base
   ranks :row_order, with_same: :course_id
 
   serialize :grading_scale, Array
+  enum status: [:ready, :preparing]
 
   belongs_to :course
 

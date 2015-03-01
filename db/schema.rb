@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150223104307) do
+ActiveRecord::Schema.define(version: 20150228122409) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -357,12 +357,13 @@ ActiveRecord::Schema.define(version: 20150223104307) do
   create_table "terms", force: :cascade do |t|
     t.string   "title"
     t.integer  "course_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.text     "description"
     t.integer  "row_order"
     t.text     "grading_scale"
     t.integer  "points"
+    t.integer  "status",        default: 0
   end
 
   add_index "terms", ["course_id"], name: "index_terms_on_course_id"

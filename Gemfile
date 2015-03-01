@@ -48,12 +48,7 @@ gem 'sinatra', '>= 1.3.0', require: false    # small rack framework, used for si
 gem 'writeexcel'                  # exporting excel spreadsheets
 gem 'multi_logger'                # custom log files
 
-group :development do
-  gem 'guard'
-  gem 'guard-bundler'
-  gem 'guard-pow'
-  gem 'guard-sidekiq'
-
+group :development, :test do
   gem 'pry'
   gem 'pry-rails'
 
@@ -64,6 +59,13 @@ group :development do
   gem 'pry-byebug'
   gem 'bond'
   gem 'jist'
+end
+
+group :development do
+  gem 'guard'
+  gem 'guard-bundler'
+  gem 'guard-pow'
+  gem 'guard-sidekiq'
 
   gem 'spring'                    # application preloader for development environments
   gem 'spring-commands-cucumber'  # adding cucumber command to spring

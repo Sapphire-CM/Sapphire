@@ -8,7 +8,8 @@ class RemoveStudentRegistrations < ActiveRecord::Migration
       t.belongs_to  :account
       t.belongs_to  :student_group
       t.string      :comment
-      t.timestamps
+
+      t.timestamps null: false
     end
   end
 end

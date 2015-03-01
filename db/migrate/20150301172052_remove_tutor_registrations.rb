@@ -8,7 +8,7 @@ class RemoveTutorRegistrations < ActiveRecord::Migration
       t.belongs_to  :account
       t.belongs_to  :tutorial_group
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

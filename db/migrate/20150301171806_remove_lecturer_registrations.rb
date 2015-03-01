@@ -8,7 +8,7 @@ class RemoveLecturerRegistrations < ActiveRecord::Migration
       t.belongs_to  :account
       t.belongs_to  :term
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

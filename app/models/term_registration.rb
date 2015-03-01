@@ -4,6 +4,7 @@ class TermRegistration < ActiveRecord::Base
   belongs_to :account
   belongs_to :term
   belongs_to :tutorial_group
+  belongs_to :student_group
 
   has_many :exercise_registrations
   has_many :exercises, -> { uniq }, through: :exercise_registrations
@@ -16,6 +17,7 @@ class TermRegistration < ActiveRecord::Base
   validates :term, presence: true
   validates :tutorial_group, presence: true, unless: :lecturer?
   validates :tutorial_group, absence: true, if: :lecturer?
+  validates :student_group, absence: true, unless: :student?
 
   scope :graded, lambda { where(receives_grade: true) }
   scope :ungraded, lambda { where(receives_grade: false) }

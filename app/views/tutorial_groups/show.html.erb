@@ -3,70 +3,11 @@
 <%= render "sidebar", tutorial_group: @tutorial_group %>
 
 <div class="section-container tabs" data-section="tabs">
-  <% if @tutorial_group.term.group_submissions? %>
   <section class="active">
-    <p class="title" data-section-title><a href="#">Student groups</a></p>
-    <div class="content" data-section-content>
-      <% if @student_groups.any? %>
-        <table class='large-12'>
-          <thead>
-            <th>Group</th>
-            <th>Students count</th>
-            <th>Students</th>
-            <th></th>
-          </thead>
-          <tbody>
-            <% @student_groups.each do |student_group|  %>
-            <tr>
-              <td>
-                <%= student_group.title %>
-                <%= "<br /><em>inactive</em>".html_safe unless student_group.active? %>
-              </td>
-              <td><%= student_group.students.count %></td>
-              <td>
-                <% student_group.students.order(:matriculation_number).each do |student| %>
-                  <%= "#{student.matriculation_number}, #{student.fullname}" %><br/>
-                <% end %>
-              </td>
-              <td class='right-aligned'>
-                <%= link_to foundation_icon(:page_edit), edit_tutorial_group_student_group_path(@tutorial_group, student_group) %>
-                <%= link_to foundation_icon(:x), tutorial_group_student_group_path(@tutorial_group, student_group), method: :delete, data: { confirm: "Are you sure?" } %>
-              </td>
-            </tr>
-            <% end %>
-          </tbody>
-        </table>
-      <% else %>
-        <p>No student groups present.</p>
-      <% end %>
-    </div>
-  </section>
-  <% end %>
-
-  <section class="<%= 'active' unless @tutorial_group.term.group_submissions? %>">
     <p class="title" data-section-title><a href="#">Students</a></p>
     <div class="content" data-section-content>
       <% if @student_term_registrations.any? %>
-        <table class='large-12'>
-          <thead>
-            <th>Forename</th>
-            <th>Surname</th>
-            <th>Matriculation Number</th>
-            <th>Email</th>
-            <th></th>
-          </thead>
-          <tbody>
-            <% @student_term_registrations.each do |student_term_registration|  %>
-            <tr>
-              <td><%= student_term_registration.account.forename %></td>
-              <td><%= student_term_registration.account.surname %></td>
-              <td><%= student_term_registration.account.matriculation_number %></td>
-              <td><%= mail_to student_term_registration.account.email %></td>
-              <td><%= link_to "show", term_student_path(current_term, student_term_registration) %></td>
-            </tr>
-            <% end %>
-          </tbody>
-        </table>
+        <%= render "term_registrations/student_term_registrations_table", term_registrations: @student_term_registrations %>
       <% else %>
         <p>No students present.</p>
       <% end %>

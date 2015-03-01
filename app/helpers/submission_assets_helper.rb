@@ -1,22 +1,28 @@
 module SubmissionAssetsHelper
   def inline_submission_asset(submission_asset)
-    case submission_asset.content_type
-    when SubmissionAsset::Mime::NEWSGROUP_POST then
-      inline_newsgroup_post_asset(submission_asset)
-    when SubmissionAsset::Mime::EMAIL then
-      inline_email_asset(submission_asset)
-    when SubmissionAsset::Mime::STYLESHEET then
-      inline_css_asset(submission_asset)
-    when SubmissionAsset::Mime::HTML then
-      inline_html_asset(submission_asset)
-    when SubmissionAsset::Mime::JPEG || SubmissionAsset::Mime::PNG then
-      inline_image_asset(submission_asset)
-    when SubmissionAsset::Mime::PLAIN_TEXT then
-      inline_plain_text_asset(submission_asset)
-    else
+    unless File.exist?(submission_asset.file.to_s)
       content_tag :div, class: "panel" do
-        content = "<strong>Cannot display inline version of this asset</strong> ".html_safe
-        content << link_to("View raw", submission_asset_path(submission_asset), class: "tiny button", target: "_blank")
+        content = "<strong>Cannot display this asset, as the associated file seems to be missing</strong> ".html_safe
+      end
+    else
+      case submission_asset.content_type
+      when SubmissionAsset::Mime::NEWSGROUP_POST then
+        inline_newsgroup_post_asset(submission_asset)
+      when SubmissionAsset::Mime::EMAIL then
+        inline_email_asset(submission_asset)
+      when SubmissionAsset::Mime::STYLESHEET then
+        inline_css_asset(submission_asset)
+      when SubmissionAsset::Mime::HTML then
+        inline_html_asset(submission_asset)
+      when SubmissionAsset::Mime::JPEG || SubmissionAsset::Mime::PNG then
+        inline_image_asset(submission_asset)
+      when SubmissionAsset::Mime::PLAIN_TEXT then
+        inline_plain_text_asset(submission_asset)
+      else
+        content_tag :div, class: "panel" do
+          content = "<strong>Cannot display inline version of this asset</strong> ".html_safe
+          content << link_to("View raw", submission_asset_path(submission_asset), class: "tiny button", target: "_blank")
+        end
       end
     end
   end

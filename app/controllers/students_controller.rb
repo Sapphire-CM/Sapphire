@@ -14,6 +14,7 @@ class StudentsController < ApplicationController
     @term_registration = students_scope.find(params[:id])
     @exercise_registrations = @term_registration.exercise_registrations.ordered_by_exercise.includes(:exercise).load
     @grading_scale = GradingScaleService.new(current_term, [@term_registration])
+    @student_group = @term_registration.student_group
   end
 
   private

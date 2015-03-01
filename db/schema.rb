@@ -11,9 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150111211840) do
+ActiveRecord::Schema.define(version: 20150223104307) do
 
-  create_table "accounts", force: true do |t|
+  create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
     t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
@@ -24,8 +24,8 @@ ActiveRecord::Schema.define(version: 20150111211840) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.string   "forename"
     t.string   "surname"
     t.string   "matriculation_number"
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
   add_index "accounts", ["matriculation_number"], name: "index_accounts_on_matriculation_number", unique: true
   add_index "accounts", ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
 
-  create_table "courses", force: true do |t|
+  create_table "courses", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
     t.datetime "created_at",                 null: false
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
 
   add_index "courses", ["title"], name: "index_courses_on_title", unique: true
 
-  create_table "email_addresses", force: true do |t|
+  create_table "email_addresses", force: :cascade do |t|
     t.string   "email"
     t.integer  "account_id"
     t.datetime "created_at", null: false
@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
   add_index "email_addresses", ["account_id"], name: "index_email_addresses_on_account_id"
   add_index "email_addresses", ["email"], name: "index_email_addresses_on_email", unique: true
 
-  create_table "evaluation_groups", force: true do |t|
+  create_table "evaluation_groups", force: :cascade do |t|
     t.integer  "points"
     t.float    "percent"
     t.integer  "rating_group_id"
@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
   add_index "evaluation_groups", ["rating_group_id"], name: "index_evaluation_groups_on_rating_group_id"
   add_index "evaluation_groups", ["submission_evaluation_id"], name: "index_evaluation_groups_on_submission_evaluation_id"
 
-  create_table "evaluations", force: true do |t|
+  create_table "evaluations", force: :cascade do |t|
     t.boolean  "checked"
     t.integer  "rating_id"
     t.datetime "created_at",            null: false
@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
   add_index "evaluations", ["evaluation_group_id"], name: "index_evaluations_on_evaluation_group_id"
   add_index "evaluations", ["rating_id"], name: "index_evaluations_on_rating_id"
 
-  create_table "exercise_registrations", force: true do |t|
+  create_table "exercise_registrations", force: :cascade do |t|
     t.integer  "exercise_id"
     t.integer  "term_registration_id"
     t.integer  "submission_id"
@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
   add_index "exercise_registrations", ["submission_id"], name: "index_exercise_registrations_on_submission_id"
   add_index "exercise_registrations", ["term_registration_id"], name: "index_exercise_registrations_on_term_registration_id"
 
-  create_table "exercises", force: true do |t|
+  create_table "exercises", force: :cascade do |t|
     t.integer  "term_id"
     t.string   "title"
     t.datetime "created_at",                                  null: false
@@ -125,7 +125,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
   add_index "exercises", ["term_id"], name: "index_exercises_on_term_id"
   add_index "exercises", ["title", "term_id"], name: "index_exercises_on_title_and_term_id", unique: true
 
-  create_table "exports", force: true do |t|
+  create_table "exports", force: :cascade do |t|
     t.string   "type"
     t.integer  "status"
     t.integer  "term_id"
@@ -137,7 +137,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
 
   add_index "exports", ["term_id"], name: "index_exports_on_term_id"
 
-  create_table "import_errors", force: true do |t|
+  create_table "import_errors", force: :cascade do |t|
     t.integer  "import_result_id"
     t.string   "row"
     t.string   "entry"
@@ -148,7 +148,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
 
   add_index "import_errors", ["import_result_id"], name: "index_import_errors_on_import_result_id"
 
-  create_table "import_mappings", force: true do |t|
+  create_table "import_mappings", force: :cascade do |t|
     t.integer  "import_id"
     t.integer  "group"
     t.integer  "email"
@@ -162,7 +162,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
 
   add_index "import_mappings", ["import_id"], name: "index_import_mappings_on_import_id", unique: true
 
-  create_table "import_options", force: true do |t|
+  create_table "import_options", force: :cascade do |t|
     t.integer  "import_id"
     t.integer  "matching_groups"
     t.string   "tutorial_groups_regexp"
@@ -178,7 +178,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
 
   add_index "import_options", ["import_id"], name: "index_import_options_on_import_id", unique: true
 
-  create_table "import_results", force: true do |t|
+  create_table "import_results", force: :cascade do |t|
     t.integer  "import_id"
     t.boolean  "success",                        default: false
     t.boolean  "encoding_error",                 default: false
@@ -196,17 +196,17 @@ ActiveRecord::Schema.define(version: 20150111211840) do
 
   add_index "import_results", ["import_id"], name: "index_import_results_on_import_id", unique: true
 
-  create_table "imports", force: true do |t|
+  create_table "imports", force: :cascade do |t|
     t.integer  "term_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string   "file"
     t.integer  "status"
   end
 
   add_index "imports", ["term_id"], name: "index_imports_on_term_id"
 
-  create_table "lecturer_registrations", force: true do |t|
+  create_table "lecturer_registrations", force: :cascade do |t|
     t.integer  "account_id"
     t.integer  "term_id"
     t.datetime "created_at", null: false
@@ -216,7 +216,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
   add_index "lecturer_registrations", ["account_id"], name: "index_lecturer_registrations_on_account_id"
   add_index "lecturer_registrations", ["term_id"], name: "index_lecturer_registrations_on_term_id", unique: true
 
-  create_table "rating_groups", force: true do |t|
+  create_table "rating_groups", force: :cascade do |t|
     t.integer  "exercise_id"
     t.string   "title"
     t.integer  "points"
@@ -233,7 +233,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
   add_index "rating_groups", ["exercise_id"], name: "index_rating_groups_on_exercise_id"
   add_index "rating_groups", ["title", "exercise_id"], name: "index_rating_groups_on_title_and_exercise_id", unique: true
 
-  create_table "ratings", force: true do |t|
+  create_table "ratings", force: :cascade do |t|
     t.integer  "rating_group_id"
     t.string   "title"
     t.integer  "value"
@@ -250,7 +250,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
 
   add_index "ratings", ["rating_group_id"], name: "index_ratings_on_rating_group_id"
 
-  create_table "result_publications", force: true do |t|
+  create_table "result_publications", force: :cascade do |t|
     t.integer  "exercise_id"
     t.integer  "tutorial_group_id"
     t.boolean  "published",         default: false
@@ -262,7 +262,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
   add_index "result_publications", ["exercise_id"], name: "index_result_publications_on_exercise_id"
   add_index "result_publications", ["tutorial_group_id"], name: "index_result_publications_on_tutorial_group_id"
 
-  create_table "services", force: true do |t|
+  create_table "services", force: :cascade do |t|
     t.integer  "exercise_id"
     t.boolean  "active",      default: false
     t.string   "type"
@@ -271,30 +271,16 @@ ActiveRecord::Schema.define(version: 20150111211840) do
     t.datetime "updated_at",                  null: false
   end
 
-  create_table "student_group_registrations", force: true do |t|
-    t.integer  "exercise_id"
-    t.integer  "student_group_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-  end
-
-  add_index "student_group_registrations", ["exercise_id"], name: "index_student_group_registrations_on_exercise_id"
-  add_index "student_group_registrations", ["student_group_id"], name: "index_student_group_registrations_on_student_group_id"
-
-  create_table "student_groups", force: true do |t|
+  create_table "student_groups", force: :cascade do |t|
     t.string   "title"
     t.integer  "tutorial_group_id"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.boolean  "solitary"
-    t.integer  "points"
-    t.boolean  "active",            default: true
-    t.string   "topic_identifier"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   add_index "student_groups", ["tutorial_group_id"], name: "index_student_groups_on_tutorial_group_id"
 
-  create_table "student_registrations", force: true do |t|
+  create_table "student_registrations", force: :cascade do |t|
     t.integer  "account_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
@@ -305,7 +291,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
   add_index "student_registrations", ["account_id"], name: "index_student_registrations_on_account_id"
   add_index "student_registrations", ["student_group_id"], name: "index_student_registrations_on_student_group_id"
 
-  create_table "submission_assets", force: true do |t|
+  create_table "submission_assets", force: :cascade do |t|
     t.integer  "submission_id"
     t.string   "file"
     t.string   "content_type"
@@ -318,7 +304,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
 
   add_index "submission_assets", ["submission_id"], name: "index_submission_assets_on_submission_id"
 
-  create_table "submission_evaluations", force: true do |t|
+  create_table "submission_evaluations", force: :cascade do |t|
     t.integer  "submission_id"
     t.integer  "evaluator_id"
     t.string   "evaluator_type"
@@ -332,20 +318,22 @@ ActiveRecord::Schema.define(version: 20150111211840) do
   add_index "submission_evaluations", ["evaluator_id"], name: "index_submission_evaluations_on_evaluator_id"
   add_index "submission_evaluations", ["submission_id"], name: "index_submission_evaluations_on_submission_id", unique: true
 
-  create_table "submissions", force: true do |t|
+  create_table "submissions", force: :cascade do |t|
     t.integer  "exercise_id"
     t.datetime "submitted_at"
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.integer  "student_group_registration_id"
     t.integer  "submitter_id"
+    t.integer  "student_group_id"
   end
 
   add_index "submissions", ["exercise_id"], name: "index_submissions_on_exercise_id"
+  add_index "submissions", ["student_group_id"], name: "index_submissions_on_student_group_id"
   add_index "submissions", ["student_group_registration_id"], name: "index_submissions_on_student_group_registration_id"
   add_index "submissions", ["submitter_id"], name: "index_submissions_on_submitter_id"
 
-  create_table "term_registrations", force: true do |t|
+  create_table "term_registrations", force: :cascade do |t|
     t.integer  "points"
     t.boolean  "positive_grade",    default: false, null: false
     t.integer  "account_id"
@@ -355,14 +343,18 @@ ActiveRecord::Schema.define(version: 20150111211840) do
     t.datetime "updated_at",                        null: false
     t.boolean  "receives_grade"
     t.integer  "role",              default: 0
+    t.integer  "student_group_id"
   end
 
   add_index "term_registrations", ["account_id", "term_id"], name: "index_term_registrations_on_account_id_and_term_id", unique: true
   add_index "term_registrations", ["account_id"], name: "index_term_registrations_on_account_id"
+  add_index "term_registrations", ["points"], name: "index_term_registrations_on_points"
+  add_index "term_registrations", ["positive_grade"], name: "index_term_registrations_on_positive_grade"
+  add_index "term_registrations", ["student_group_id"], name: "index_term_registrations_on_student_group_id"
   add_index "term_registrations", ["term_id"], name: "index_term_registrations_on_term_id"
   add_index "term_registrations", ["tutorial_group_id"], name: "index_term_registrations_on_tutorial_group_id"
 
-  create_table "terms", force: true do |t|
+  create_table "terms", force: :cascade do |t|
     t.string   "title"
     t.integer  "course_id"
     t.datetime "created_at",    null: false
@@ -376,7 +368,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
   add_index "terms", ["course_id"], name: "index_terms_on_course_id"
   add_index "terms", ["title", "course_id"], name: "index_terms_on_title_and_course_id", unique: true
 
-  create_table "tutor_registrations", force: true do |t|
+  create_table "tutor_registrations", force: :cascade do |t|
     t.integer  "account_id"
     t.integer  "tutorial_group_id"
     t.datetime "created_at",        null: false
@@ -386,7 +378,7 @@ ActiveRecord::Schema.define(version: 20150111211840) do
   add_index "tutor_registrations", ["account_id"], name: "index_tutor_registrations_on_account_id"
   add_index "tutor_registrations", ["tutorial_group_id"], name: "index_tutor_registrations_on_tutorial_group_id"
 
-  create_table "tutorial_groups", force: true do |t|
+  create_table "tutorial_groups", force: :cascade do |t|
     t.string   "title"
     t.integer  "term_id"
     t.datetime "created_at",  null: false

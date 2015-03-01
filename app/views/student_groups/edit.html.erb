@@ -1,0 +1,18 @@
+<% title tutorial_group_title(current_tutorial_group), "Edit Student Group" %>
+
+<%= render "tutorial_groups/sidebar", tutorial_group: current_tutorial_group %>
+
+<%= render "form", term: current_term, tutorial_group: current_tutorial_group, student_group: @student_group %>
+
+<hr />
+<div class='panel alert callout'>
+  <h4>DANGER ZONE!</h4>
+
+  <p>
+    Deleting a student group implies removing the submissions' references to this group as well.
+    Additionally, all associated students will no longer be in a student group, even though
+    they won't be removed completely from the course.
+  </p>
+
+  <%= link_to "Delete Student Group", term_tutorial_group_student_group_path(current_term, current_tutorial_group, @student_group), method: :delete, data: {confirm: "Are you sure?"}, class: "small alert button" %>
+</div>

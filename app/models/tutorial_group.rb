@@ -5,7 +5,7 @@ class TutorialGroup < ActiveRecord::Base
   default_scope { includes(:tutor_term_registrations).order(:title) }
 
   has_many :result_publications, dependent: :destroy
-  has_many :student_groups, dependent: :destroy
+  has_many :student_groups, dependent: :destroy, inverse_of: :tutorial_group
 
   has_many :term_registrations
   has_many :student_term_registrations, lambda { students }, source: :term_registrations, class_name: "TermRegistration"

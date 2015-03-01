@@ -15,7 +15,7 @@ class StaffSubmissionsController < ApplicationController
     authorize SubmissionPolicyRecord.new @exercise, @tutorial_group
 
     @submissions = scoped_submissions(@tutorial_group, @exercise.submissions)
-    @submissions = @submissions.includes({exercise_registrations: {term_registration: :account}}, :submission_evaluation, :exercise).load
+    @submissions = @submissions.uniq.includes({exercise_registrations: {term_registration: :account}}, :submission_evaluation, :exercise).load
     @submission_count = @submissions.count
     @submissions = @submissions.page(params[:page])
   end
@@ -85,15 +85,10 @@ class StaffSubmissionsController < ApplicationController
   end
 
   def set_student_groups
-    @student_groups = @term.student_groups.active.order(:title)
+    @student_groups = @term.student_groups.order(:title)
 
     @student_groups = @student_groups.for_tutorial_group(@tutorial_group) if @tutorial_group.present?
 
-    @student_groups = if @exercise.group_submission?
-      @student_groups.multiple
-    else
-      @student_groups.solitary
-    end
     @student_groups
   end
 end

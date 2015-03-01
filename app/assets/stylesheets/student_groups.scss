@@ -1,0 +1,46 @@
+@import "foundation_variables";
+
+.student-group-editor {
+  .term-registration-entry {
+    border-bottom: thin solid #ddd;
+    padding: 1em;
+    background-color: white;
+    position: relative;
+
+    &.ui-sortable-helper {
+      border-top: thin solid #ddd;
+    }
+
+    &.deactivated {
+      color: #888;
+    }
+
+    .title-row {
+      .name, .matriculation-number {
+        font-weight: bold;
+      }
+    }
+
+    &:hover {
+      .remove-button {
+        display: block;
+
+        &.hidden {
+          display: none;
+        }
+      }
+    }
+
+    .remove-button {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      display: none;
+      cursor: pointer;
+
+      a {
+        color: $alert-color;
+      }
+    }
+  }
+}

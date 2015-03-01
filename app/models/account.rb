@@ -79,9 +79,8 @@ class Account < ActiveRecord::Base
 
 
   def staff_of_term?(term)
-    term_registrations.where(role: Roles::STAFF, term: term).exists?
+    term_registrations.staff.where(term: term).exists?
   end
-
 
   def lecturer_of_term?(term)
     term_registrations.lecturers.where(term_id: term.id).exists?

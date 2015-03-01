@@ -1,0 +1,30 @@
+<div class='row student-group-editor'>
+  <div class='small-6 columns'>
+    <%= simple_form_for([term, tutorial_group, student_group]) do |f| %>
+      <%= f.input :title %>
+
+      <div class='student-group-list-container panel'>
+        <%= render collection: f.object.term_registrations, partial: "term_registration" %>
+      </div>
+
+      <hr />
+      <p>
+        <%= link_to "Cancel", student_group_form_cancel_path(student_group), class: "small secondary button" %>
+        <%= f.submit class: "small primary button" %>
+      </p>
+
+    <% end %>
+  </div>
+  <div class='small-6 columns'>
+    <div class='panel'>
+      <%= form_tag(search_students_term_tutorial_group_student_groups_path(term, tutorial_group), remote: true, class: "search-form") do %>
+        <%= label_tag :q, "Search for students" %>
+        <%= search_field_tag(:q, "", incremental: 'incremental') %>
+      <% end %>
+      <hr />
+      <div class='student-list-container'>
+        <p class='placeholder'>Start Typing in order to fetch students</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -42,7 +42,12 @@ module SubmissionsHelper
     exercise = submission.exercise
     if submission.exercise_registrations.any?
       if exercise.group_submission?
-        submission.student_group.title
+        if submission.student_group_id?
+          submission.student_group.title
+        else
+          content_tag(:em, "unknown student group")
+        end
+
       else
         student = submission.exercise_registrations.map(&:term_registration).first.account
         "#{student.fullname} (#{student.matriculation_number})"

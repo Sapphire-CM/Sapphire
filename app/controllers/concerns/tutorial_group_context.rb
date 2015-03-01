@@ -14,7 +14,6 @@ module TutorialGroupContext
   end
 
   included do
-
     before_action :fetch_tutorial_group
     helper_method :current_tutorial_group
   end

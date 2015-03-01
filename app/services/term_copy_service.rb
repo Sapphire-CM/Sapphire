@@ -11,11 +11,11 @@ class TermCopyService
 
   def perform!
     ActiveRecord::Base.transaction do
-      @term.update(status: :preparing)
+      @term.preparing!
       copy_lecturers! if @copy_lecturers
       copy_exercises! if @copy_exercises
       copy_grading_scale! if @copy_grading_scale
-      @term.update(status: :ready)
+      @term.ready!
     end
   end
 

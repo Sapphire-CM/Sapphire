@@ -8,14 +8,6 @@ class Account < ActiveRecord::Base
          :validatable,
          :lockable
 
-
-  has_many :lecturer_registrations, dependent: :destroy
-  has_many :tutor_registrations, dependent: :destroy
-  has_many :student_registrations, dependent: :destroy
-
-  has_many :student_groups, through: :student_registrations
-  has_many :student_group_registrations, through: :student_groups
-  has_many :submissions, through: :student_group_registrations
   has_many :term_registrations, dependent: :destroy
   has_many :tutorial_groups, through: :term_registrations
   has_many :email_addresses, dependent: :destroy

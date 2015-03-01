@@ -17,9 +17,6 @@ class Term < ActiveRecord::Base
 
   has_many :exports
 
-  has_one :lecturer_registration, dependent: :destroy
-  delegate :lecturer, to: :lecturer_registration, allow_nil: true
-
   validates :course, presence: true
   validates :title, presence: true, uniqueness: { scope: :course_id }
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150228122409) do
+ActiveRecord::Schema.define(version: 20150301175541) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -206,16 +206,6 @@ ActiveRecord::Schema.define(version: 20150228122409) do
 
   add_index "imports", ["term_id"], name: "index_imports_on_term_id"
 
-  create_table "lecturer_registrations", force: :cascade do |t|
-    t.integer  "account_id"
-    t.integer  "term_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "lecturer_registrations", ["account_id"], name: "index_lecturer_registrations_on_account_id"
-  add_index "lecturer_registrations", ["term_id"], name: "index_lecturer_registrations_on_term_id", unique: true
-
   create_table "rating_groups", force: :cascade do |t|
     t.integer  "exercise_id"
     t.string   "title"
@@ -280,17 +270,6 @@ ActiveRecord::Schema.define(version: 20150228122409) do
 
   add_index "student_groups", ["tutorial_group_id"], name: "index_student_groups_on_tutorial_group_id"
 
-  create_table "student_registrations", force: :cascade do |t|
-    t.integer  "account_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.string   "comment"
-    t.integer  "student_group_id"
-  end
-
-  add_index "student_registrations", ["account_id"], name: "index_student_registrations_on_account_id"
-  add_index "student_registrations", ["student_group_id"], name: "index_student_registrations_on_student_group_id"
-
   create_table "submission_assets", force: :cascade do |t|
     t.integer  "submission_id"
     t.string   "file"
@@ -321,16 +300,14 @@ ActiveRecord::Schema.define(version: 20150228122409) do
   create_table "submissions", force: :cascade do |t|
     t.integer  "exercise_id"
     t.datetime "submitted_at"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-    t.integer  "student_group_registration_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.integer  "submitter_id"
     t.integer  "student_group_id"
   end
 
   add_index "submissions", ["exercise_id"], name: "index_submissions_on_exercise_id"
   add_index "submissions", ["student_group_id"], name: "index_submissions_on_student_group_id"
-  add_index "submissions", ["student_group_registration_id"], name: "index_submissions_on_student_group_registration_id"
   add_index "submissions", ["submitter_id"], name: "index_submissions_on_submitter_id"
 
   create_table "term_registrations", force: :cascade do |t|
@@ -368,16 +345,6 @@ ActiveRecord::Schema.define(version: 20150228122409) do
 
   add_index "terms", ["course_id"], name: "index_terms_on_course_id"
   add_index "terms", ["title", "course_id"], name: "index_terms_on_title_and_course_id", unique: true
-
-  create_table "tutor_registrations", force: :cascade do |t|
-    t.integer  "account_id"
-    t.integer  "tutorial_group_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-  end
-
-  add_index "tutor_registrations", ["account_id"], name: "index_tutor_registrations_on_account_id"
-  add_index "tutor_registrations", ["tutorial_group_id"], name: "index_tutor_registrations_on_tutorial_group_id"
 
   create_table "tutorial_groups", force: :cascade do |t|
     t.string   "title"

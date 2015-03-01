@@ -116,13 +116,16 @@ RSpec.describe StudentSubmissionsController do
 
         expect do
           expect do
-            put :update, valid_attributes
-          end.to change(SubmissionAsset, :count).by(0)
-        end.to change(Submission, :count).by(0)
+            expect do
+              put :update, valid_attributes
+            end.to change(SubmissionAsset, :count).by(0)
+          end.to change(Submission, :count).by(0)
 
-        submission.reload
+          submission.reload
+
+        end.to change(submission, :submitted_at)
+
         expect(response).to redirect_to(exercise_student_submission_path(exercise))
-        expect(submission.submitted_at).to be_within(1).of Time.now
       end
     end
 

@@ -1,6 +1,4 @@
 class Submission < ActiveRecord::Base
-  attr_accessor :student_group_id
-
   belongs_to :exercise
   belongs_to :submitter, :class_name => "Account", :foreign_key => "submitter_id"
   belongs_to :student_group
@@ -50,10 +48,6 @@ class Submission < ActiveRecord::Base
 
   def visible_for_student?(account)
     term_registrations.students.where(account_id: account.id).exists?
-  end
-
-  def student_group_id
-    @student_group_id || student_group.try(:id)
   end
 
   private

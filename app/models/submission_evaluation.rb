@@ -33,6 +33,11 @@ class SubmissionEvaluation < ActiveRecord::Base
 
   def update_exercise_results
     submission.exercise_registrations.each(&:update_points!)
+
+    if submission.student_group.present?
+      submission.student_group.update_points!
+    end
+    true
   end
 
   def evaluation_for_rating(rating)

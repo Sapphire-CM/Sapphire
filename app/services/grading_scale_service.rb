@@ -116,6 +116,30 @@ class GradingScaleService
     end
   end
 
+  def average_grade_for_student_group(student_group)
+    grades = student_group.term_registrations.map { |tr| grade_for_term_registration(tr) }
+
+    stats = grades.inject(Hash.new {|h,k| h[k] = 0}) do |hash, grade|
+      hash[grade] += 1
+      hash
+    end
+
+    student_count = 0
+    grade_sum = 0
+    stats.each do |grade, count|
+      if grade > 0
+        grade_sum += grade * count
+        student_count += count
+      end
+    end
+
+    if student_count > 0
+      (grade_sum.to_f / student_count)
+    else
+      0
+    end
+  end
+
   def range_for(grade)
     grading_range_for(grade).range
   end

@@ -67,12 +67,17 @@ class ExcelSpreadsheetExport < Export
       .references(:account)
 
     if summary?
-      add_summary(workbook, styles, tutorial_group, term_registrations)
+      add_student_group_summary(workbook, styles, tutorial_group, term_registrations) if term.group_submissions?
+      add_student_summary(workbook, styles, tutorial_group, term_registrations)
     end
 
     if exercises?
-      term.exercises.includes(rating_groups: :ratings).each do |exercise|
-        add_exercise(workbook, styles, tutorial_group, term_registrations, exercise)
+      term.exercises.each do |exercise|
+        if exercise.group_submission?
+          add_group_exercise(workbook, styles, tutorial_group, term_registrations, exercise)
+        else
+          add_solitary_exercise(workbook, styles, tutorial_group, term_registrations, exercise)
+        end
       end
     end
 
@@ -184,7 +189,58 @@ class ExcelSpreadsheetExport < Export
     styles
   end
 
-  def add_summary(workbook, styles, tutorial_group, term_registrations)
+  def add_student_group_summary(workbook, styles, tutorial_group, term_registrations)
+    student_groups = tutorial_group.student_groups.order(:title)
+
+    grading_scale = GradingScaleService.new(term, term_registrations)
+
+    worksheet = workbook.add_worksheet("group summary")
+
+    # set column widths
+    worksheet.set_column 0, 0, 20
+    worksheet.set_column 1, student_groups.count, 4
+
+    # set row heights
+    worksheet.set_row 0, 50
+    worksheet.set_row 1, 50
+    worksheet.set_row 2, 100
+
+    reset_row
+
+    worksheet.write same_row, 0, "#{term.course.title} #{term.title} - #{tutorial_group_title tutorial_group}", styles[:title_row]
+
+    next_row
+
+    worksheet.write next_row, 0, "Student Group", styles[:title_row_underlined]
+    worksheet.write_row same_row, 1, student_groups.map {|student_group| student_group.title}, styles[:summary_flipped_title_underlined]
+
+    term.exercises.group_exercises.each_with_index do |exercise, index|
+      results = []
+
+      student_groups.each do |student_group|
+        submission = student_group.submissions.find_by(exercise: exercise)
+
+        results << if submission.present?
+          submission.submission_evaluation.evaluation_result
+        else
+          "na"
+        end
+      end
+
+      worksheet_row = index + 4
+
+      worksheet.write next_row, 0, "#{index + 1} #{exercise.title}", styles[:title_row_left]
+      worksheet.write_row same_row, 1, results, styles[:result_cell]
+    end
+
+    worksheet.write next_row, 0, "total points", styles[:total_points_title]
+    worksheet.write_row same_row, 1, student_groups.map(&:points), styles[:total_points_cell]
+
+    worksheet.write next_row, 0, "average grade", styles[:grade_title]
+    worksheet.write_row same_row, 1, student_groups.map {|student_group| grading_scale.average_grade_for_student_group(student_group) }, styles[:grade_cell]
+  end
+
+  def add_student_summary(workbook, styles, tutorial_group, term_registrations)
     students = term_registrations.map(&:account)
 
     grading_scale = GradingScaleService.new(term, term_registrations)
@@ -241,6 +297,7 @@ class ExcelSpreadsheetExport < Export
     worksheet.write_row same_row, 1, term_registrations.map {|tr| grading_scale.grade_for_term_registration(tr)} , styles[:grade_cell]
 
     next_row
+
     worksheet.merge_range next_row, 1, same_row, 2, "Grade", styles[:grading_scale_title_first]
     worksheet.merge_range same_row, 3, same_row, 4, "Points", styles[:grading_scale_title]
     worksheet.merge_range same_row, 5, same_row, 6, "Students", styles[:grading_scale_title]
@@ -262,13 +319,81 @@ class ExcelSpreadsheetExport < Export
     worksheet.merge_range same_row, 3, same_row, 4, "", styles[:grading_scale_footer_inner]
     worksheet.merge_range same_row, 5, same_row, 6, grading_scale.ungraded_count, styles[:grading_scale_footer_inner]
     worksheet.merge_range same_row, 7, same_row, 8, '', styles[:grading_scale_footer_inner_last]
+    worksheet
+  end
 
+  def add_group_exercise(workbook, styles, tutorial_group, term_registrations, exercise)
+    puts "EXPORTING EXERCISE: #{exercise.title.upcase}"
+    student_groups = tutorial_group.student_groups
 
+    worksheet = workbook.add_worksheet(exercise.title.gsub(/[^A-Za-z0-9\ ]/, ""))
+    worksheet.merge_range 0,0,1,1, exercise.title, styles[:exercise_title_cell]
+
+    worksheet.write_row 0, 2, student_groups.map {|sg| sg.title }, styles[:flipped_title]
+    worksheet.write_row 1, 2, (1..student_groups.length).to_a, styles[:title_cell_underlined]
+
+    # stud_rat_ev[student][rating] =~ ("x" | \d)
+    stud_rat_ev = Hash.new {|h,k| h[k] = Hash.new  }
+
+    # stud_rg_eg[student][rating_group] =~ \d
+    stud_rg_eg = Hash.new {|h,k| h[k] = Hash.new }
+
+    # stud_results[student] =~ \d
+    stud_results = Hash.new
+
+    key_paths = [:student_group, {submission_evaluation: {evaluation_groups: [:rating_group, {evaluations: :rating}]}}]
+
+    exercise.submissions.for_tutorial_group(tutorial_group).includes(key_paths).joins(key_paths).each do |sub|
+      se = sub.submission_evaluation
+      student_group = sub.student_group
+
+      if student_group.present?
+        stud_results[student_group] = se.evaluation_result
+
+        se.evaluation_groups.each do |eg|
+          stud_rg_eg[student_group][eg.rating_group] = eg.points
+
+          eg.evaluations.each do |ev|
+            stud_rat_ev[student_group][ev.rating] = if ev.is_a? BinaryEvaluation
+              if ev.value.to_i == 1
+               "x"
+              else
+               ""
+              end
+            else
+              ev.value || ""
+            end
+          end
+        end
+      end
+    end
+
+    row_index = 2
+    exercise.rating_groups.rank(:row_order).includes(:ratings).each do |rating_group|
+      worksheet.write(row_index, 0, rating_group.title, styles[:rating_group_title_cell])
+      worksheet.write(row_index, 1, rating_group.points, styles[:rating_group_points_cell])
+      worksheet.write_row(row_index, 2, student_groups.map {|sg| stud_rg_eg[sg][rating_group] || "-"}, styles[:student_rating_group_points_cell])
+      row_index += 1
+
+      rating_group.ratings.each do |rating|
+        worksheet.write(row_index, 0, rating.title, styles[:rating_title_cell])
+        worksheet.write(row_index, 1, rating_points_description(rating), styles[:rating_points_cell])
+        worksheet.write_row(row_index, 2, student_groups.map {|sg| stud_rat_ev[sg][rating] || "-"}, styles[:evaluation_cell])
+        row_index += 1
+      end
+    end
+
+    worksheet.merge_range(row_index, 0, row_index, 1, "Points reached", styles[:exercise_points_title_cell])
+    worksheet.write_row(row_index, 2, student_groups.map {|sg| stud_results[sg] || 0 }, styles[:exercise_points_cell])
+
+    worksheet.set_column 0,0, 30
+    worksheet.set_column 1,1, 7
+    worksheet.set_column 2, (student_groups.length+1), 4
 
     worksheet
   end
 
-  def add_exercise(workbook, styles, tutorial_group, term_registrations, exercise)
+  def add_solitary_exercise(workbook, styles, tutorial_group, term_registrations, exercise)
     students = term_registrations.map(&:account)
 
     worksheet = workbook.add_worksheet(exercise.title.gsub(/[^A-Za-z0-9\ ]/, ""))
@@ -286,8 +411,9 @@ class ExcelSpreadsheetExport < Export
     # stud_results[student] =~ \d
     stud_results = Hash.new
 
-    exercise.submissions.for_tutorial_group(tutorial_group).includes(exercise_registrations: {term_registration: :account},
-    submission_evaluation: {evaluation_groups: [:rating_group, evaluations: :rating]}).each do |sub|
+    key_paths = {exercise_registrations: {term_registration: :account}, submission_evaluation: {evaluation_groups: [:rating_group, evaluations: :rating]}}
+
+    exercise.submissions.for_tutorial_group(tutorial_group).includes(key_paths).joins(key_paths).each do |sub|
       se = sub.submission_evaluation
 
       sub.exercise_registrations.each do |exercise_registration|
@@ -314,7 +440,7 @@ class ExcelSpreadsheetExport < Export
     end
 
     row_index = 2
-    exercise.rating_groups.rank(:row_order).each do |rating_group|
+    exercise.rating_groups.rank(:row_order).includes(:ratings).each do |rating_group|
       worksheet.write(row_index, 0, rating_group.title, styles[:rating_group_title_cell])
       worksheet.write(row_index, 1, rating_group.points, styles[:rating_group_points_cell])
       worksheet.write_row(row_index, 2, students.map {|s| stud_rg_eg[s][rating_group] || "-"}, styles[:student_rating_group_points_cell])
@@ -339,21 +465,26 @@ class ExcelSpreadsheetExport < Export
   end
 
   def add_student_overview(workbook, styles, tutorial_group, term_registrations)
-    students = term_registrations.map(&:account)
 
     worksheet = workbook.add_worksheet("students")
     row_index = 0
     worksheet.set_column 1, 3, 20
     worksheet.set_column 4, 6, 40
 
+
     worksheet.write_row row_index, 0, ["Gruppe", "Familienname", "Vorname", "Matrikelnummer", "E-Mail", "Username", "TUG Student Website"], styles[:student_overview_title]
     row_index += 1
 
-    students.each_with_index do |student, index|
+    term_registrations.each_with_index do |term_registration, index|
+      student = term_registration.account
+
+      group_title = "#{tutorial_group.title} #{index + 1}"
+      group_title << " - #{term_registration.student_group.title}" if term_registration.student_group.present?
+
       username = sbox_alias(student)
       website = "www.student.tugraz.at/#{username}"
 
-      worksheet.write_row row_index, 0, ["#{tutorial_group.title} #{index + 1}", student.surname, student.forename, student.matriculation_number, student.email, username, website]
+      worksheet.write_row row_index, 0, [group_title, student.surname, student.forename, student.matriculation_number, student.email, username, website]
       row_index += 1
     end
 

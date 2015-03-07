@@ -5,6 +5,7 @@ class StudentGroup < ActiveRecord::Base
   has_many :term_registrations, dependent: :nullify
   has_many :students, through: :term_registrations, class_name: "Account", source: :account
   has_many :submissions, dependent: :nullify
+  has_many :submission_evaluations, through: :submissions
 
   scope :for_term, lambda { |term| joins{tutorial_group.term}.where{tutorial_group.term.id == my{term.id}} }
   scope :for_tutorial_group, lambda { |tutorial_group| where(tutorial_group_id: tutorial_group.id) }

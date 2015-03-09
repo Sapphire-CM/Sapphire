@@ -58,13 +58,10 @@ class ExcelSpreadsheetExport < Export
 
     term_registrations = tutorial_group.student_term_registrations
       .includes(:account, :exercise_registrations)
-      .order{account.forename.asc}
       .references(:account)
+      .order{ account.surname.asc }
+      .order{ account.forename.asc }
 
-    term_registrations = term_registrations
-      .includes(:account)
-      .order{account.surname.asc}
-      .references(:account)
 
     if summary?
       add_student_group_summary(workbook, styles, tutorial_group, term_registrations) if term.group_submissions?

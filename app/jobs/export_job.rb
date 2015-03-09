@@ -5,6 +5,6 @@ class ExportJob < ActiveJob::Base
     export = Export.find(export_id)
     export.perform_export!
 
-    NotificationWorker.export_finished_notifications(export)
+    NotificationJob.export_finished_notifications(export)
   end
 end

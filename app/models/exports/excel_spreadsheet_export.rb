@@ -320,8 +320,7 @@ class ExcelSpreadsheetExport < Export
   end
 
   def add_group_exercise(workbook, styles, tutorial_group, term_registrations, exercise)
-    puts "EXPORTING EXERCISE: #{exercise.title.upcase}"
-    student_groups = tutorial_group.student_groups
+    student_groups = tutorial_group.student_groups.order(:title)
 
     worksheet = workbook.add_worksheet(exercise.title.gsub(/[^A-Za-z0-9\ ]/, ""))
     worksheet.merge_range 0,0,1,1, exercise.title, styles[:exercise_title_cell]
@@ -462,7 +461,6 @@ class ExcelSpreadsheetExport < Export
   end
 
   def add_student_overview(workbook, styles, tutorial_group, term_registrations)
-
     worksheet = workbook.add_worksheet("students")
     row_index = 0
     worksheet.set_column 1, 3, 20

@@ -33,20 +33,24 @@ class GradingScaleService
     def students
       @students ||= begin
         term_registrations = @grading_scale.term_registrations
-        if @not_graded
-          term_registrations.ungraded
-        else
-          if @is_positive
-            term_registrations.graded.where {(points >> my{range}) & sift(:positive_grades) }
+        if term_registrations.present?
+          if @not_graded
+            term_registrations.ungraded
           else
-            term_registrations.graded.where {(points >> my{range}) | sift(:negative_grades) }
+            if @is_positive
+              term_registrations.graded.where {(points >> my{range}) & sift(:positive_grades) }
+            else
+              term_registrations.graded.where {(points >> my{range}) | sift(:negative_grades) }
+            end
           end
+        else
+          []
         end
       end
     end
 
     def student_count
-      @student_count ||= students.count
+      @student_count ||= students.length
     end
 
     def minimum_points
@@ -64,14 +68,11 @@ class GradingScaleService
 
   attr_reader :term, :term_registrations
 
-  def initialize(term, term_registrations = nil)
+  def initialize(term, term_registrations = false)
     @term = term
 
-    if term_registrations.present?
-      @term_registrations = term_registrations
-    else
-      @term_registrations = term.term_registrations.students
-    end
+    @term_registrations = term_registrations if term_registrations.present?
+
     setup_grading_ranges!
   end
 
@@ -149,11 +150,19 @@ class GradingScaleService
   end
 
   def graded_count
-    @term_registrations.graded.count
+    if @term_registrations.present?
+      @term_registrations.graded.count
+    else
+      0
+    end
   end
 
   def ungraded_count
-    @term_registrations.ungraded.count
+    if @term_registrations.present?
+      @term_registrations.ungraded.count
+    else
+      0
+    end
   end
 
   def min_points_for(grade)

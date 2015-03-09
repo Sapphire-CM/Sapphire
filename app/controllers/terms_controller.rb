@@ -63,7 +63,7 @@ class TermsController < ApplicationController
   end
 
   def points_overview
-    @grading_scale = GradingScaleService.new(@term)
+    @grading_scale = GradingScaleService.new(@term, @term.term_registrations.students)
   end
 
   private

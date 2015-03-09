@@ -140,6 +140,6 @@ class SubmissionExport < Export
   end
 
   def grading_scale
-    @grading_scale ||= GradingScaleService.new(term)
+    @grading_scale ||= GradingScaleService.new(term, term.term_registrations.students)
   end
 end

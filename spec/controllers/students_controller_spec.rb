@@ -25,6 +25,9 @@ RSpec.describe StudentsController do
   end
 
   describe 'GET show' do
+    let(:tutorial_group) { create(:tutorial_group, term: term) }
+    let(:term_registration) {create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
+    let(:student_group) { create(:student_group, tutorial_group: tutorial_group) }
     it 'assigns the requested exercise_registrations as @exercise_registrations' do
       term = FactoryGirl.create :term
       term_registration = FactoryGirl.create :term_registration, term: term
@@ -34,6 +37,22 @@ RSpec.describe StudentsController do
 
       expect(response).to have_http_status(:success)
       expect(assigns(:exercise_registrations)).to match_array(term_registration.exercise_registrations)
+    end
+
+    it 'assigns @tutorial_group' do
+      get :show, term_id: term.id, id: term_registration.id
+
+      expect(response).to have_http_status(:success)
+      expect(assigns(:tutorial_group)).to eq(tutorial_group)
+    end
+
+    it 'assigns @student_group, if one is present' do
+      term_registration.update(student_group: student_group)
+
+      get :show, term_id: term.id, id: term_registration.id
+
+      expect(response).to have_http_status(:success)
+      expect(assigns(:student_group)).to eq(student_group)
     end
   end
 end

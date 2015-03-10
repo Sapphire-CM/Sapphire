@@ -43,3 +43,15 @@ $ ->
     value = $(this).data('index')
     console.log "#{key} -> #{value}"
     $("input[name='import[import_mapping_attributes][#{key}]']").val(value)
+
+  schedule_poll = ->
+    $results_table = $('#results_table')
+
+    if $results_table.length > 0 && $results_table.data("poll")
+      setTimeout(->
+        $.getScript($results_table.data("poll-url"))
+        schedule_poll()
+      , 1000)
+
+  if $('#results_table').length > 0
+    schedule_poll()

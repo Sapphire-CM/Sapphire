@@ -1,16 +1,10 @@
-<div id="results_table">
+<div id="results_table" data-poll='<%=  @import.pending? || @import.running? ? 'true' : 'false' %>' data-poll-url='<%= results_term_import_path(@term, @import) %>'>
   <% if @import.pending? || @import.running? %>
     <div class="row">
       <div class="large-12 columns">
         <h1>Working... </h1>
 
         <p><%= @import.import_result.processed_rows %> of <%= @import.import_result.total_rows %> rows processed...</p>
-
-        <script type="text/javascript">
-          setTimeout(function() {
-            $.ajax("<%= results_term_import_path(@term, @import) %>", { dataType: 'script' })
-          }, 2000);
-        </script>
       </div>
     </div>
   <% end %>

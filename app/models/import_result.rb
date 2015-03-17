@@ -15,8 +15,7 @@ class ImportResult < ActiveRecord::Base
       imported_students: 0,
       imported_tutorial_groups: 0,
       imported_term_registrations: 0,
-      imported_student_groups: 0,
-      imported_student_registrations: 0
+      imported_student_groups: 0
 
     import_errors.destroy_all
   end

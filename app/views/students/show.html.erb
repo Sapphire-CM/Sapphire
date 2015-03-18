@@ -42,4 +42,4 @@
   <p>No Submissions for this student</p>
 <% end %>
 
-<p><strong>Grade: <%= @grading_scale.grade_for_term_registration(@term_registration) %></strong></p>
+<p><strong>Grade: <%= current_term.grading_scale.grade_for_term_registration(@term_registration) %></strong></p>

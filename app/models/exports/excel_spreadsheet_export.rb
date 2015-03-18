@@ -189,7 +189,7 @@ class ExcelSpreadsheetExport < Export
   def add_student_group_summary(workbook, styles, tutorial_group, term_registrations)
     student_groups = tutorial_group.student_groups.order(:title)
 
-    grading_scale = GradingScaleService.new(term, term_registrations)
+    grading_scale = term.grading_scale(term_registrations)
 
     worksheet = workbook.add_worksheet("group summary")
 
@@ -240,7 +240,7 @@ class ExcelSpreadsheetExport < Export
   def add_student_summary(workbook, styles, tutorial_group, term_registrations)
     students = term_registrations.map(&:account)
 
-    grading_scale = GradingScaleService.new(term, term_registrations)
+    grading_scale = term.grading_scale(term_registrations)
 
     worksheet = workbook.add_worksheet("summary")
 

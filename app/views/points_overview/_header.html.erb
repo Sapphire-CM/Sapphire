@@ -9,7 +9,7 @@
 
 <div class='row'>
   <div class='small-12 large-6 columns'>
-    <%= render partial: 'points_overview/grade_distribution', locals: { grading_scale: grading_scale } %>
+    <%= render 'points_overview/grade_distribution', grading_scale: grading_scale %>
   </div>
 
   <div class='small-12 large-6 columns'>
@@ -24,7 +24,6 @@
         <% term.exercises.each do |exercise| %>
           <tr>
             <td><%= exercise.title %></td>
-
 
             <td class='text-center'><%= exercise.min_required_points if exercise.enable_min_required_points %></td>
 

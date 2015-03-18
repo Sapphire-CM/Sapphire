@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150307172608) do
+ActiveRecord::Schema.define(version: 20150317233148) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -340,7 +340,7 @@ ActiveRecord::Schema.define(version: 20150307172608) do
     t.text     "description"
     t.integer  "row_order"
     t.text     "grading_scale"
-    t.integer  "points"
+    t.integer  "points",        default: 0
     t.integer  "status",        default: 0
   end
 

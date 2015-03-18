@@ -21,7 +21,6 @@ class Term < ActiveRecord::Base
   validates :title, presence: true, uniqueness: { scope: :course_id }
 
   before_save :improve_grading_scale
-  before_save :improve_points
 
   default_scope { rank(:row_order) }
   scope :associated_with, lambda {|account| joins(:term_registrations).where(term_registrations: {account_id: account.id}) }
@@ -46,10 +45,6 @@ class Term < ActiveRecord::Base
     end
 
     self.grading_scale
-  end
-
-  def improve_points
-    self.points ||= 0
   end
 
   def update_points!

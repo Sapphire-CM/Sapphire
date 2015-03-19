@@ -13,37 +13,38 @@ AllCops:
     - spec/spec_helper.rb
     - spec/rails_helper.rb
     - !ruby/regexp /old_and_unused\.rb$/
+    - persistent/auto_responder_paper_data.rb
   RunRailsCops: true
 
-Debugger:
-  Enabled: false
-
-EndAlignment:
-  Enabled: false
-
-BlockAlignment:
-  Enabled: false
-
-LineLength:
-  Enabled: false
-
-Documentation:
-  Enabled: false
-
-MethodLength:
-  Enabled: false
-
-UnlessElse:
-  Enabled: false
-
-CaseIndentation:
-  Enabled: false
-
-SingleLineMethods:
-  Enabled: false
-
-TrailingComma:
-  Enabled: false
-
 RSpec/DescribedClass:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Lint/EndAlignment:
+  AlignWith: variable
+
+Style/Documentation:
+  Enabled: false
+
+Style/AlignHash:
+  Enabled: false
+
+Style/AlignParameters:
+  Enabled: false
+
+Style/TrailingComma:
+  Enabled: false
+
+Style/FirstParameterIndentation:
+  Enabled: false
+
+Style/MultilineOperationIndentation:
+  Enabled: false
+
+Style/Lambda:
   Enabled: false

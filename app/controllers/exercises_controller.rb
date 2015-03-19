@@ -22,7 +22,7 @@ class ExercisesController < ApplicationController
     @term = @exercise.term
 
     if @exercise.save
-      redirect_to term_exercises_path(@term), notice: "Exercise was successfully created."
+      redirect_to term_exercises_path(@term), notice: 'Exercise was successfully created.'
     else
       render :new
     end
@@ -33,7 +33,7 @@ class ExercisesController < ApplicationController
 
   def update
     if @exercise.update(exercise_params)
-      redirect_to edit_exercise_path(@exercise), notice:  "Exercise was successfully updated."
+      redirect_to edit_exercise_path(@exercise), notice:  'Exercise was successfully updated.'
     else
       render :edit
     end
@@ -41,10 +41,11 @@ class ExercisesController < ApplicationController
 
   def destroy
     @exercise.destroy
-    redirect_to term_exercises_path(@term), notice: "Exercise was successfully deleted."
+    redirect_to term_exercises_path(@term), notice: 'Exercise was successfully deleted.'
   end
 
   private
+
   def set_context
     @exercise = Exercise.find(params[:id] || params[:exercise_id])
     authorize @exercise

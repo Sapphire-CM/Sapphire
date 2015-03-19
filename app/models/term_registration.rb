@@ -28,10 +28,10 @@ class TermRegistration < ActiveRecord::Base
 
   scope :staff, lambda { where(role: Roles::STAFF.map { |r| roles[r] }) }
   scope :with_accounts, lambda { includes(:account) }
-  scope :for_account, lambda {|account| where(account_id: account.id)}
-  scope :for_email_addresses, lambda {|emails| joins(:account).joins{account.email_addresses.outer}.where{accounts.email.in(my{ emails }) | email_addresses.email.in(my{ emails }) }}
-  scope :ordered_by_matriculation_number, lambda { joins(:account).order{ account.matriculation_number.asc } }
-  scope :ordered_by_name, lambda { joins(:account).order{ account.forename.asc }.order{ account.surname.asc } }
+  scope :for_account, lambda { |account| where(account_id: account.id) }
+  scope :for_email_addresses, lambda { |emails| joins(:account).joins { account.email_addresses.outer }.where { accounts.email.in(my { emails }) | email_addresses.email.in(my { emails }) } }
+  scope :ordered_by_matriculation_number, lambda { joins(:account).order { account.matriculation_number.asc } }
+  scope :ordered_by_name, lambda { joins(:account).order { account.forename.asc }.order { account.surname.asc } }
 
   sifter :positive_grades do
     positive_grade == true
@@ -69,8 +69,8 @@ class TermRegistration < ActiveRecord::Base
   end
 
   def all_minimum_points_reached?
-    !term.exercises.mandatory_exercises.where.not(id: exercise_registrations.unscoped.select("exercise_id")).exists? &&
-      exercise_registrations.find {|exercise_registration| !exercise_registration.minimum_points_reached? } .blank?
+    !term.exercises.mandatory_exercises.where.not(id: exercise_registrations.unscoped.select('exercise_id')).exists? &&
+      exercise_registrations.find { |exercise_registration| !exercise_registration.minimum_points_reached? } .blank?
   end
 
   def any_exercise_submitted?

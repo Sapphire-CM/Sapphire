@@ -8,9 +8,9 @@ module GradingReviewsHelper
         evaluations_to_show << evaluation if (evaluation.is_a?(BinaryEvaluation) && evaluation.value == 1) || (!evaluation.is_a?(BinaryEvaluation) && evaluation.value.present?)
       end
 
-      groups_to_show << {group: evaluation_group, evaluations: evaluations_to_show} if evaluations_to_show.any?
+      groups_to_show << { group: evaluation_group, evaluations: evaluations_to_show } if evaluations_to_show.any?
     end
 
-    render "grading_reviews/evaluations_list", groups: groups_to_show.sort_by{|g| g[:group].rating_group.row_order}
+    render 'grading_reviews/evaluations_list', groups: groups_to_show.sort_by { |g| g[:group].rating_group.row_order }
   end
 end

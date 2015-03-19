@@ -9,12 +9,12 @@ class EvaluationGroup < ActiveRecord::Base
 
   before_create :calc_result
   after_create :create_evaluations
-  after_update :update_submission_evaluation_results, if: lambda {|eg| eg.points_changed? || eg.percent_changed?}
+  after_update :update_submission_evaluation_results, if: lambda { |eg| eg.points_changed? || eg.percent_changed? }
   after_destroy :update_submission_evaluation_results
 
   delegate :title, to: :rating_group
 
-  scope :ranked, lambda { includes(:rating_group).order{rating_group.row_order.asc}.references(:rating_group) }
+  scope :ranked, lambda { includes(:rating_group).order { rating_group.row_order.asc }.references(:rating_group) }
 
   def self.create_for_submission_evaluation(submission_evaluation)
     submission_evaluation.submission.exercise.rating_groups.each do |rating_group|
@@ -23,7 +23,7 @@ class EvaluationGroup < ActiveRecord::Base
   end
 
   def self.create_for_submission_evaluation_and_rating_group(submission_evaluation, rating_group)
-    eg = self.new
+    eg = new
     eg.rating_group = rating_group
     eg.points = rating_group.points
     eg.submission_evaluation = submission_evaluation
@@ -31,22 +31,22 @@ class EvaluationGroup < ActiveRecord::Base
   end
 
   def update_result!
-    self.calc_result
+    calc_result
     self.save!
   end
 
   def calc_result
-    points_sum = self.rating_group.points || 0
+    points_sum = rating_group.points || 0
     percent_product = 1
 
-    self.evaluations.includes(:rating).each do |evaluation|
+    evaluations.includes(:rating).each do |evaluation|
       points_sum += evaluation.points
       percent_product *= evaluation.percent
     end
 
-    if points_sum < (min_points = self.rating_group.min_points || 0)
+    if points_sum < (min_points = rating_group.min_points || 0)
       points_sum = min_points
-    elsif points_sum > (max_points = self.rating_group.max_points || rating_group.points || 0)
+    elsif points_sum > (max_points = rating_group.max_points || rating_group.points || 0)
       points_sum = max_points
     end
 
@@ -62,11 +62,12 @@ class EvaluationGroup < ActiveRecord::Base
   end
 
   private
-    def update_submission_evaluation_results
-      self.submission_evaluation.calc_results!
-    end
 
-    def create_evaluations
-      Evaluation.create_for_evaluation_group(self)
-    end
+  def update_submission_evaluation_results
+    submission_evaluation.calc_results!
+  end
+
+  def create_evaluations
+    Evaluation.create_for_evaluation_group(self)
+  end
 end

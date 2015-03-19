@@ -21,6 +21,7 @@ class ServicesController < ApplicationController
   end
 
   private
+
   def fetch_service
     @service = current_exercise.services.find(params[:id])
     authorize @service

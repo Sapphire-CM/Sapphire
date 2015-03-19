@@ -2,19 +2,19 @@ load 'persistent/auto_responder_paper_data.rb'
 
 def execute(mail, exercise)
   term_registration = submitter_for_email(mail, exercise)
-  raise "term registration not found for email" unless term_registration
+  fail 'term registration not found for email' unless term_registration
 
   student = term_registration.account
-  raise "student not found in database" unless student
+  fail 'student not found in database' unless student
 
   tutorial_group = term_registration.tutorial_group
-  raise "tutorial_group not found in database" unless tutorial_group
+  fail 'tutorial_group not found in database' unless tutorial_group
 
   tutorial_group_index = tutorial_group.term.tutorial_groups.index tutorial_group
-  raise "tutorial_group_index not found in term" unless tutorial_group_index
+  fail 'tutorial_group_index not found in term' unless tutorial_group_index
 
   student_index = tutorial_group.student_accounts.index student
-  raise "student index not found in tutorial group" unless student_index
+  fail 'student index not found in tutorial group' unless student_index
 
   famous_person = $famous_persons[tutorial_group_index][student_index % 5]
 
@@ -40,14 +40,13 @@ def execute(mail, exercise)
     f.write mail.to_s
   end
 
-  Rails.logger.autoresponder.info """
+  Rails.logger.autoresponder.info ''"
     AutoResponder: Web Research: Sent email to #{student.fullname}, #{student.matriculation_number}
       Person: #{famous_person[:name]}
-  """
+  "''
 end
 
-def create_email_text(famous_person, tutorial_group, student, tutorial_group_index)
-
+def create_email_text(famous_person, tutorial_group, _student, _tutorial_group_index)
   text = <<-EOF
 Web Research
 ------------
@@ -72,7 +71,7 @@ and upload the PDF file before the corresponding deadline.
 
 EOF
 
-text << "-- \n" + <<-EOF
+  text << "-- \n" + <<-EOF
 Good luck!
 #{tutorial_group.tutor.forename} #{tutorial_group.title}
 EOF

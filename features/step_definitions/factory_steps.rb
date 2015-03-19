@@ -35,8 +35,7 @@ Given(/^there is a (group|solitary) exercise "(.*?)" for term "(.*?)" of course 
   course = FactoryGirl.create(:course, title: course_title) unless course = Course.where(title: course_title).first
   term = FactoryGirl.create(:term, course: course, title: term_title) unless term = course.terms.where(title: term_title).first
 
-
-  if exercise_type == "group"
+  if exercise_type == 'group'
     FactoryGirl.create(:exercise, :group_exercise, title: title, term: term)
   else
     FactoryGirl.create(:exercise, title: title, term: term)
@@ -67,13 +66,13 @@ Given(/^there are these rating groups for "(.*?)"$/) do |ex_title, table|
   exercise = Exercise.where(title: ex_title).first_or_create
 
   table.hashes.each do |hash|
-    FactoryGirl.create :rating_group, hash.symbolize_keys.merge({exercise: exercise})
+    FactoryGirl.create :rating_group, hash.symbolize_keys.merge(exercise: exercise)
   end
 end
 
 Given(/^there are these courses$/) do |table|
   table.hashes.each do |line|
-    FactoryGirl.create(:course, title: line["title"])
+    FactoryGirl.create(:course, title: line['title'])
   end
 end
 
@@ -85,8 +84,7 @@ Given(/^there are these terms for "(.*?)"$/) do |course_title, table|
   end
 end
 
-
-Given(/^I have got (\d+) points for "([^"]*?)" of course "([^"]*?)" in term "([^"]*?)"$/) do |points, exercise_title, course_title, term_title|
+Given(/^I have got (\d+) points for "([^"]*?)" of course "([^"]*?)" in term "([^"]*?)"$/) do |points, _exercise_title, course_title, term_title|
   course = FactoryGirl.create(:course, title: title) unless course = Course.where(title: course_title).first
   term = FactoryGirl.create(:term, course: course, title: title) unless term = course.terms.where(title: term_title).first
   exercise = FactoryGirl.create(:exercise, term: term, title: title) unless exercise = term.exercises.where(title: title).first
@@ -98,9 +96,7 @@ Given(/^I have got (\d+) points for "([^"]*?)" of course "([^"]*?)" in term "([^
   submission_evaluation = submission.submission_evaluation
   submission_evaluation.evaluation_result = points
   submission_evaluation.save!(validate: false)
-
 end
-
 
 Given(/^there are these exercises for term "([^"]*?)" for course "([^"]*?)"$/) do |term_title, course_title, table|
   course = FactoryGirl.create(:course) unless course = Course.where(title: course_title).first
@@ -110,7 +106,6 @@ Given(/^there are these exercises for term "([^"]*?)" for course "([^"]*?)"$/) d
     FactoryGirl.create(:exercise, term: term, title: row[:title])
   end
 end
-
 
 Given(/^I am in a group for term "(.*?)" of course "(.*?)" with following users$/) do |term_title, course_title, students_table|
   StudentGroup.destroy_all

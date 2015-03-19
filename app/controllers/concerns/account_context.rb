@@ -12,7 +12,5 @@ module AccountContext
     @account = Account.find(params[:account_id])
   end
 
-  def account
-    @account
-  end
+  attr_reader :account
 end

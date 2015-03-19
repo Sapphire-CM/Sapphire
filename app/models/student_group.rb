@@ -3,18 +3,18 @@ class StudentGroup < ActiveRecord::Base
 
   has_one :term, through: :tutorial_group
   has_many :term_registrations, dependent: :nullify
-  has_many :students, through: :term_registrations, class_name: "Account", source: :account
+  has_many :students, through: :term_registrations, class_name: 'Account', source: :account
   has_many :submissions, dependent: :nullify
   has_many :submission_evaluations, through: :submissions
 
-  scope :for_term, lambda { |term| joins{tutorial_group.term}.where{tutorial_group.term.id == my{term.id}} }
+  scope :for_term, lambda { |term| joins { tutorial_group.term }.where { tutorial_group.term.id == my { term.id } } }
   scope :for_tutorial_group, lambda { |tutorial_group| where(tutorial_group_id: tutorial_group.id) }
 
   validates :title, presence: true
   validates :tutorial_group_id, presence: true
 
   def update_points!
-    self.points = self.submission_evaluations.pluck(:evaluation_result).sum
+    self.points = submission_evaluations.pluck(:evaluation_result).sum
     self.save!
   end
 end

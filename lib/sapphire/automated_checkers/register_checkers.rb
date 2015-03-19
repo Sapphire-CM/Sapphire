@@ -5,4 +5,3 @@ Sapphire::AutomatedCheckers::Central.register Sapphire::AutomatedCheckers::Ex31C
 Sapphire::AutomatedCheckers::Central.register Sapphire::AutomatedCheckers::Ex4HTMLTagsChecker
 Sapphire::AutomatedCheckers::Central.register Sapphire::AutomatedCheckers::Ex5Checker
 Sapphire::AutomatedCheckers::Central.register Sapphire::AutomatedCheckers::Ex5GraztimesStyleChecker
-

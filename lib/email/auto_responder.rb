@@ -87,7 +87,6 @@ def import_submission_for_submitter!(exercise, submitter_registration, raw_post,
   submission_asset.save!
 end
 
-
 def submitter_for_email(parsed_email, exercise)
   emails = []
   emails += parsed_email.from
@@ -109,12 +108,12 @@ def setup_submission_asset(submission_asset, raw_post, parsed_post)
 end
 
 def write_submission_file(raw_post)
-  tmp_file = Tempfile.new("sapphire-submission")
-  tmp_file.write raw_post.force_encoding("UTF-8")
+  tmp_file = Tempfile.new('sapphire-submission')
+  tmp_file.write raw_post.force_encoding('UTF-8')
   tmp_file
 end
 
-def add_submitter_for_submission(exercise, submission, submitter_registration, parsed_post)
+def add_submitter_for_submission(exercise, submission, submitter_registration, _parsed_post)
   submission.submitter = submitter_registration.account
   ExerciseRegistration.create!(exercise: exercise, term_registration: TermRegistration.find(submitter_registration.id), submission: submission)
 end
@@ -129,20 +128,18 @@ def create_unkown_submission!(exercise, raw_post, parsed_post)
 end
 
 def process_email(mail, exercise)
-  begin
-    execute mail, exercise
-  rescue Exception => e
-    File.open("emails/failure/#{mail_filename mail}", 'w') do |f|
-      f.write mail.to_s
-    end
-
-    Rails.logger.autoresponder.error """
-      AutoResponder: Error with email. No response email sent.
-        Message-Id: #{mail.message_id.parameterize}
-        From: #{mail.from.join ', '}
-        Subject: #{mail.subject}
-        Exception: #{e.to_s}
-    """
-    Rails.logger.error e.backtrace.join("\n")
+  execute mail, exercise
+rescue Exception => e
+  File.open("emails/failure/#{mail_filename mail}", 'w') do |f|
+    f.write mail.to_s
   end
+
+  Rails.logger.autoresponder.error ''"
+    AutoResponder: Error with email. No response email sent.
+      Message-Id: #{mail.message_id.parameterize}
+      From: #{mail.from.join ', '}
+      Subject: #{mail.subject}
+      Exception: #{e}
+  "''
+  Rails.logger.error e.backtrace.join("\n")
 end

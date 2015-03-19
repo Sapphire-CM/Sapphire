@@ -11,24 +11,25 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private
-    def pundit_user
-      current_account
-    end
 
-    def user_not_authorized
-      destination = request.referer || new_account_session_path
-      alert = 'You are not authorized to perform this action.'
+  def pundit_user
+    current_account
+  end
 
-      if request.xhr?
-        js_redirect_to destination, alert: alert
-      else
-        redirect_to destination, alert: alert
-      end
-    end
+  def user_not_authorized
+    destination = request.referer || new_account_session_path
+    alert = 'You are not authorized to perform this action.'
 
-    def js_redirect_to(path, flashes={})
-      flashes.each { |key, value| flash[key] = value }
-      render js: "window.location = '#{path}';"
+    if request.xhr?
+      js_redirect_to destination, alert: alert
+    else
+      redirect_to destination, alert: alert
     end
-    helper_method :js_redirect_to
+  end
+
+  def js_redirect_to(path, flashes = {})
+    flashes.each { |key, value| flash[key] = value }
+    render js: "window.location = '#{path}';"
+  end
+  helper_method :js_redirect_to
 end

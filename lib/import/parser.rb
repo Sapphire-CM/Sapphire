@@ -27,19 +27,16 @@ module Import::Parser
   private
 
   def load_csv_text
-    begin
-      text = File.open(import.file.to_s, 'r').read
-      text = text.force_encoding("UTF-8").gsub("\xEF\xBB\xBF".force_encoding("UTF-8"), '')
-      text.split(/\n/)
-    rescue Exception => e
-      import_result.update! encoding_error: true
-      text = [] # no lines
-    end
-  end
+    text = File.open(import.file.to_s, 'r').read
+    text = text.force_encoding('UTF-8').gsub("\xEF\xBB\xBF".force_encoding('UTF-8'), '')
+    text.split(/\n/)
+  rescue Exception => e
+    import_result.update! encoding_error: true
+    text = []   end
 
   def parse_csv_line(line, csv_options)
     begin
-      values = CSV.parse_line(line.strip, csv_options).keep_if { |cell| cell.present? }
+      values = CSV.parse_line(line.strip, csv_options).keep_if(&:present?)
     rescue CSV::MalformedCSVError => e
       import_result.update! parsing_error: true
       values = [line]

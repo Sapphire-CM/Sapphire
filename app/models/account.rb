@@ -1,5 +1,5 @@
 class Account < ActiveRecord::Base
-  DEFAULT_PASSWORD = "sapphire%{matriculation_number}"
+  DEFAULT_PASSWORD = 'sapphire%{matriculation_number}'
 
   devise :database_authenticatable,
          :recoverable,
@@ -25,21 +25,21 @@ class Account < ActiveRecord::Base
 
     query.split(/\s+/).each do |part|
       part = "%#{part}%"
-      rel = rel.where {(forename =~ part) | (surname =~ part) | (matriculation_number=~ part) | (email=~ part)}
+      rel = rel.where { (forename =~ part) | (surname =~ part) | (matriculation_number =~ part) | (email =~ part) }
     end
 
     rel
   }
 
   %i(students tutors lecturers).each do |group|
-    scope "#{group}_for_term".to_sym, lambda {|term| joins(:term_registrations).where(term_registrations: {term_id: term.id}).merge(TermRegistration.send(group)) }
+    scope "#{group}_for_term".to_sym, lambda { |term| joins(:term_registrations).where(term_registrations: { term_id: term.id }).merge(TermRegistration.send(group)) }
   end
 
   scope :admins, lambda { where(admin: true) }
 
   def initialize(*args)
     super *args
-    self.options ||= Hash.new
+    self.options ||= {}
   end
 
   def fullname
@@ -61,14 +61,13 @@ class Account < ActiveRecord::Base
   end
 
   def tutorial_group_for_term(term)
-    student_group = student_groups.joins(:tutorial_group).where(tutorial_group: {term: term}).first
+    student_group = student_groups.joins(:tutorial_group).where(tutorial_group: { term: term }).first
     student_group.tutorial_group
   end
 
   def default_password
-    DEFAULT_PASSWORD % {matriculation_number: self.matriculation_number}
+    DEFAULT_PASSWORD % { matriculation_number: matriculation_number }
   end
-
 
   def staff_of_term?(term)
     term_registrations.staff.where(term: term).exists?
@@ -99,9 +98,10 @@ class Account < ActiveRecord::Base
   end
 
   private
+
   def validate_no_email_address_with_same_email_exists
-    if EmailAddress.where(email: self.email).exists?
-      errors.add(:email, "has already been taken")
+    if EmailAddress.where(email: email).exists?
+      errors.add(:email, 'has already been taken')
     end
   end
 end

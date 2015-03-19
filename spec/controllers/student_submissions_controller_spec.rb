@@ -122,7 +122,6 @@ RSpec.describe StudentSubmissionsController do
           end.to change(Submission, :count).by(0)
 
           submission.reload
-
         end.to change(submission, :submitted_at)
 
         expect(response).to redirect_to(exercise_student_submission_path(exercise))

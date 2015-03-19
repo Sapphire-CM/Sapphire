@@ -1,6 +1,6 @@
 class TermsController < ApplicationController
   before_action :set_term, only: [:show, :edit, :update, :destroy,
-    :points_overview]
+                                  :points_overview]
 
   def show
     @tutorial_groups = @term.tutorial_groups
@@ -27,9 +27,9 @@ class TermsController < ApplicationController
         }
         TermCopyJob.perform_later @term.id, @term.source_term_id, options
 
-        flash[:notice] = "Term has been successfully created, the previous term is being copied in the background"
+        flash[:notice] = 'Term has been successfully created, the previous term is being copied in the background'
       else
-        flash[:notice] = "Term has been successfully created"
+        flash[:notice] = 'Term has been successfully created'
       end
 
       respond_to do |format|
@@ -49,7 +49,7 @@ class TermsController < ApplicationController
   def update
     if @term.update(term_params)
       respond_to do |format|
-        format.html { redirect_to term_path(@term), notice: "Term has been successfully updated" }
+        format.html { redirect_to term_path(@term), notice: 'Term has been successfully updated' }
         format.js
       end
     else

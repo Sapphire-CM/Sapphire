@@ -11,7 +11,7 @@ RSpec.describe ImportsController do
         file: Rack::Test::UploadedFile.new(prepare_static_test_file('import_data.csv'), 'text/csv'),
         import_options_attributes: {
           matching_groups: 'first_match',
-          tutorial_groups_regexp: "\\AT(?<tutorial>[\\d]+)\\z",
+          tutorial_groups_regexp: '\\AT(?<tutorial>[\\d]+)\\z',
           headers_on_first_line: '1',
           column_separator: ';',
           quote_char: '"',
@@ -143,10 +143,10 @@ RSpec.describe ImportsController do
         valid_attributes[:term_id] = term.id
         valid_attributes[:id] = import.id
 
-        expect {
+        expect do
           put :update, valid_attributes
           import.reload
-        }.to change(import, :updated_at)
+        end.to change(import, :updated_at)
 
         expect(response).to redirect_to(results_term_import_path(term, import))
       end

@@ -7,25 +7,25 @@ class SubmissionAsset < ActiveRecord::Base
 
   before_save :update_submitted_at, if: :file_changed?
 
-  scope :stylesheets, lambda { where(content_type: Mime::STYLESHEET)}
-  scope :htmls, lambda { where(content_type: Mime::HTML)}
-  scope :images, lambda { where{content_type.in(Mime::IMAGES)} }
+  scope :stylesheets, lambda { where(content_type: Mime::STYLESHEET) }
+  scope :htmls, lambda { where(content_type: Mime::HTML) }
+  scope :images, lambda { where { content_type.in(Mime::IMAGES) } }
 
-  scope :for_exercise, lambda { |exercise| joins(:submission).where(submissions: {exercise_id: exercise.id}) }
+  scope :for_exercise, lambda { |exercise| joins(:submission).where(submissions: { exercise_id: exercise.id }) }
 
   delegate :submitter, to: :submission
 
   class Mime
-    NEWSGROUP_POST = "text/newsgroup"
-    EMAIL = "text/email"
-    STYLESHEET = "text/css"
-    HTML = "text/html"
-    JPEG = "image/jpeg"
-    PNG = "image/png"
-    ZIP = "application/zip"
-    PLAIN_TEXT = "text/plain"
-    FAVICON = "image/x-icon"
-    PDF = "application/pdf"
+    NEWSGROUP_POST = 'text/newsgroup'
+    EMAIL = 'text/email'
+    STYLESHEET = 'text/css'
+    HTML = 'text/html'
+    JPEG = 'image/jpeg'
+    PNG = 'image/png'
+    ZIP = 'application/zip'
+    PLAIN_TEXT = 'text/plain'
+    FAVICON = 'image/x-icon'
+    PDF = 'application/pdf'
 
     IMAGES = [JPEG, PNG]
   end

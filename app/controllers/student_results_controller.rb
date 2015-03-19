@@ -27,7 +27,7 @@ class StudentResultsController < ApplicationController
     else
       authorize current_term
 
-      redirect_to exercise_student_submission_path(@exercise), notice: "You have not submitted any files for grading"
+      redirect_to exercise_student_submission_path(@exercise), notice: 'You have not submitted any files for grading'
     end
   end
 end

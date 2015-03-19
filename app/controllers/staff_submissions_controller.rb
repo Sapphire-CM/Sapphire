@@ -15,7 +15,7 @@ class StaffSubmissionsController < ApplicationController
     authorize SubmissionPolicyRecord.new @exercise, @tutorial_group
 
     @submissions = scoped_submissions(@tutorial_group, @exercise.submissions)
-    @submissions = @submissions.uniq.includes({exercise_registrations: {term_registration: :account}}, :submission_evaluation, :exercise).load
+    @submissions = @submissions.uniq.includes({ exercise_registrations: { term_registration: :account } }, :submission_evaluation, :exercise).load
     @submission_count = @submissions.count
     @submissions = @submissions.page(params[:page])
   end
@@ -38,7 +38,7 @@ class StaffSubmissionsController < ApplicationController
     @submission.submitted_at = Time.now
 
     if @submission.save
-      redirect_to [@exercise, @submission], notice: "Submission successfully created"
+      redirect_to [@exercise, @submission], notice: 'Submission successfully created'
     else
       @submission.submission_assets.build
       render :new
@@ -50,7 +50,7 @@ class StaffSubmissionsController < ApplicationController
 
   def update
     if @submission.update(submission_params)
-      redirect_to exercise_submission_path(@exercise, @submission), notice: "Submission successfully updated"
+      redirect_to exercise_submission_path(@exercise, @submission), notice: 'Submission successfully updated'
     else
       render :edit
     end
@@ -62,6 +62,7 @@ class StaffSubmissionsController < ApplicationController
   end
 
   private
+
   def submission_params
     params.require(:submission).permit(
       :submitted_at,

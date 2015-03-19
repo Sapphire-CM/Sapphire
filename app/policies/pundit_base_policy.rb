@@ -8,7 +8,7 @@ class PunditBasePolicy
   end
 
   def initialize(user, record)
-    raise Pundit::NotAuthorizedError, "must be logged in" unless user
+    fail Pundit::NotAuthorizedError, 'must be logged in' unless user
 
     @user = user
     @record = record
@@ -19,7 +19,7 @@ class PunditBasePolicy
     record.define_singleton_method(:policy_class) do
       # remove monkey-patched method
       # so that any further policy query (in a view) returns the original policy
-      self.singleton_class.send :undef_method, :policy_class
+      singleton_class.send :undef_method, :policy_class
 
       klass
     end

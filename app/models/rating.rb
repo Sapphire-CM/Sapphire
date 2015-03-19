@@ -2,7 +2,7 @@ class Rating < ActiveRecord::Base
   belongs_to :rating_group
 
   include RankedModel
-  ranks :row_order, with_same: :rating_group_id, class_name: "Rating"
+  ranks :row_order, with_same: :rating_group_id, class_name: 'Rating'
 
   default_scope { includes(:rating_group).rank(:row_order) }
 
@@ -17,10 +17,10 @@ class Rating < ActiveRecord::Base
   validate :rating_type_validation
 
   after_create :create_evaluations
-  after_update :update_evaluations, if: lambda {|rating| rating.value_changed? || rating.max_value_changed? || rating.min_value_changed? || rating.multiplication_factor_changed?}
-  after_update :move_evaluations, if: lambda {|rating| rating.rating_group_id_changed? }
+  after_update :update_evaluations, if: lambda { |rating| rating.value_changed? || rating.max_value_changed? || rating.min_value_changed? || rating.multiplication_factor_changed? }
+  after_update :move_evaluations, if: lambda { |rating| rating.rating_group_id_changed? }
 
-  scope :automated_ratings, lambda { where {automated_checker_identifier != nil && automated_checker_identifier != ""} }
+  scope :automated_ratings, lambda { where { !automated_checker_identifier.nil? && automated_checker_identifier != '' } }
 
   def initialize(*args)
     super *args
@@ -34,11 +34,11 @@ class Rating < ActiveRecord::Base
   end
 
   def evaluation_class
-    raise NotImplementedError
+    fail NotImplementedError
   end
 
   def rating_type_validation
-    errors.add(:type, "must be a specific rating") if self.type == "Rating"
+    errors.add(:type, 'must be a specific rating') if type == 'Rating'
   end
 
   def build_evaluation
@@ -58,20 +58,21 @@ class Rating < ActiveRecord::Base
   end
 
   private
+
   def create_evaluations
     Evaluation.create_for_rating(self)
   end
 
   def update_evaluations
-    self.evaluations.each(&:update_result!)
+    evaluations.each(&:update_result!)
   end
 
   def move_evaluations
-    self.evaluations.each do |evaluation|
+    evaluations.each do |evaluation|
       submission_evaluation = evaluation.submission_evaluation
 
       evaluation_group = evaluation.evaluation_group
-      new_evaluations_group = submission_evaluation.evaluation_groups.where(rating_group_id: self.rating_group_id).first
+      new_evaluations_group = submission_evaluation.evaluation_groups.where(rating_group_id: rating_group_id).first
 
       evaluation.evaluation_group = new_evaluations_group
       evaluation.save!

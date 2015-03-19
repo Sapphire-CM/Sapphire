@@ -8,12 +8,12 @@ class TutorialGroup < ActiveRecord::Base
   has_many :student_groups, dependent: :destroy, inverse_of: :tutorial_group
 
   has_many :term_registrations
-  has_many :student_term_registrations, lambda { students }, source: :term_registrations, class_name: "TermRegistration"
-  has_many :tutor_term_registrations, lambda { tutors }, source: :term_registrations, class_name: "TermRegistration"
+  has_many :student_term_registrations, lambda { students }, source: :term_registrations, class_name: 'TermRegistration'
+  has_many :tutor_term_registrations, lambda { tutors }, source: :term_registrations, class_name: 'TermRegistration'
 
-  has_many :registered_accounts, through: :term_registrations, class_name: "Account", source: :account
-  has_many :student_accounts, through: :student_term_registrations, class_name: "Account", source: :account
-  has_many :tutor_accounts, through: :tutor_term_registrations, class_name: "Account", source: :account
+  has_many :registered_accounts, through: :term_registrations, class_name: 'Account', source: :account
+  has_many :student_accounts, through: :student_term_registrations, class_name: 'Account', source: :account
+  has_many :tutor_accounts, through: :tutor_term_registrations, class_name: 'Account', source: :account
 
   after_create :ensure_result_publications
 
@@ -46,9 +46,10 @@ class TutorialGroup < ActiveRecord::Base
   end
 
   private
+
   def ensure_result_publications
     term.exercises.each do |exercise|
-      ResultPublication.find_or_create_by(tutorial_group_id: self.id, exercise: exercise)
+      ResultPublication.find_or_create_by(tutorial_group_id: id, exercise: exercise)
     end
   end
 end

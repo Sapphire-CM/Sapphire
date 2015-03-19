@@ -4,21 +4,21 @@ class NewsgroupFetcherService < Service
   prop_accessor :server_url, :newsgroups, :fetch_initial, :fetch_followups
 
   def title
-    "Newsgroup Fetcher"
+    'Newsgroup Fetcher'
   end
 
   def fetch_initial?
-    fetch_initial == "1"
+    fetch_initial == '1'
   end
 
   def fetch_followups?
-    fetch_followups == "1"
+    fetch_followups == '1'
   end
 
   def perform!
-    raise InvalidStateException.new("cannot import non-solitary newsgroup posts") unless exercise.solitary_submission?
+    fail InvalidStateException.new('cannot import non-solitary newsgroup posts') unless exercise.solitary_submission?
 
-    @client = NNTP::Client::Session.new(self.server_url)
+    @client = NNTP::Client::Session.new(server_url)
 
     fetchable_newsgroups.each do |ng|
       import_submissions_for ng
@@ -28,10 +28,11 @@ class NewsgroupFetcherService < Service
   end
 
   private
-  def fetchable_newsgroups
-    requested_ngs = self.newsgroups.split
 
-    @client.newsgroups.select {|ng| requested_ngs.include? ng.title }
+  def fetchable_newsgroups
+    requested_ngs = newsgroups.split
+
+    @client.newsgroups.select { |ng| requested_ngs.include? ng.title }
   end
 
   def import_submissions_for(newsgroup)
@@ -45,7 +46,7 @@ class NewsgroupFetcherService < Service
   end
 
   def should_import?(post)
-    (fetch_initial? && post.header["References"].blank?) || (fetch_followups? && post.header["References"].present?)
+    (fetch_initial? && post.header['References'].blank?) || (fetch_followups? && post.header['References'].present?)
   end
 
   def import_post(raw_post, parsed_post)
@@ -115,17 +116,16 @@ class NewsgroupFetcherService < Service
     submission_asset.import_identifier = parsed_post.message_id
   end
 
-  def add_submitter_for_submission(submission, submitter_registration, parsed_post)
+  def add_submitter_for_submission(submission, submitter_registration, _parsed_post)
     submission.submitter = submitter_registration.account
     ExerciseRegistration.create!(exercise: exercise, term_registration: TermRegistration.find(submitter_registration.id), submission: submission)
   end
 
   def write_submission_file(raw_post)
-    tmp_file = Tempfile.new("sapphire-submission")
-    tmp_file.write raw_post.force_encoding("UTF-8")
+    tmp_file = Tempfile.new('sapphire-submission')
+    tmp_file.write raw_post.force_encoding('UTF-8')
     tmp_file
   end
-
 
   def submitter_for_post(parsed_post)
     emails = []

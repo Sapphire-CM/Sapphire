@@ -1,11 +1,9 @@
 module TutorsHelper
   def tutor_names(tutors)
     if tutors.present? && tutors.any?
-      tutors.map do |tutor|
-        tutor.fullname
-      end.join(", ")
+      tutors.map(&:fullname).join(', ')
     else
-      "(no tutor)"
+      '(no tutor)'
     end
   end
 end

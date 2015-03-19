@@ -9,7 +9,7 @@ class Export < ActiveRecord::Base
   mount_uploader :file, ExportsUploader
 
   enum status: [:pending, :running, :finished, :failed]
-  polymorphic submission: "SubmissionExport", excel_spreadsheet: "ExcelSpreadsheetExport"
+  polymorphic submission: 'SubmissionExport', excel_spreadsheet: 'ExcelSpreadsheetExport'
 
   validates :term, presence: true
 
@@ -33,15 +33,16 @@ class Export < ActiveRecord::Base
     raise e
   end
 
-
   protected
+
   def create_export_file(filename)
-    tmp_file = Tempfile.new(filename, Rails.root.join("tmp"))
+    tmp_file = Tempfile.new(filename, Rails.root.join('tmp'))
     tmp_file.persist
     tmp_file
   end
 
   private
+
   def assign_default_status
     self.status = :pending
   end

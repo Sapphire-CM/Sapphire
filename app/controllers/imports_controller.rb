@@ -31,9 +31,9 @@ class ImportsController < ApplicationController
     import_service = ImportService.new(@import)
 
     if import_service.encoding_error?
-      render :new, alert: "Error with file encoding! UTF8-like is required."
+      render :new, alert: 'Error with file encoding! UTF8-like is required.'
     elsif import_service.parsing_error?
-      render :new, alert: "Error during parsing! Corrupt data detected."
+      render :new, alert: 'Error during parsing! Corrupt data detected.'
     else
       # everything worked
       import_service.smart_guess_new_import_mapping
@@ -66,31 +66,32 @@ class ImportsController < ApplicationController
   end
 
   private
-    def set_import
-      @import = Import.find(params[:id])
-      @term = @import.term
-      authorize @import
-    end
 
-    def import_params
-      params.require(:import).permit(
-        :term_id,
-        :file,
-        :file_cache,
-        :format,
-        :status,
-        :line_count,
-        import_options_attributes: [
-          :matching_groups,
-          :tutorial_groups_regexp,
-          :student_groups_regexp,
-          :headers_on_first_line,
-          :column_separator,
-          :quote_char,
-          :decimal_separator,
-          :thousands_separator,
-        ],
-        import_mapping_attributes: ImportMapping::IMPORTABLE
-      )
-    end
+  def set_import
+    @import = Import.find(params[:id])
+    @term = @import.term
+    authorize @import
+  end
+
+  def import_params
+    params.require(:import).permit(
+      :term_id,
+      :file,
+      :file_cache,
+      :format,
+      :status,
+      :line_count,
+      import_options_attributes: [
+        :matching_groups,
+        :tutorial_groups_regexp,
+        :student_groups_regexp,
+        :headers_on_first_line,
+        :column_separator,
+        :quote_char,
+        :decimal_separator,
+        :thousands_separator,
+      ],
+      import_mapping_attributes: ImportMapping::IMPORTABLE
+    )
+  end
 end

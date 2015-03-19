@@ -1,8 +1,8 @@
 module Sapphire
   module AutomatedCheckers
     class Ex5GraztimesStyleChecker < Base
-      content_types "text/css"
-      asset_identifier "stylesheet/graztimes"
+      content_types 'text/css'
+      asset_identifier 'stylesheet/graztimes'
 
       prepare do
         @css = CssParser::Parser.new
@@ -11,8 +11,8 @@ module Sapphire
         ActiveRecord::Base.logger = nil
       end
 
-      check :sizes, "No px used" do
-        @css.each_selector do |selector, declarations, specivity|
+      check :sizes, 'No px used' do
+        @css.each_selector do |_selector, declarations, _specivity|
           if declarations =~ /px/
             failed!
             break

@@ -53,25 +53,26 @@ class RatingGroupsController < ApplicationController
   end
 
   private
-    def set_context
-      @exercise = Exercise.find(params[:exercise_id])
-      @term = @exercise.term
-    end
 
-    def set_rating_group
-      @rating_group = @exercise.rating_groups.find(params[:id])
-      authorize @rating_group
-    end
+  def set_context
+    @exercise = Exercise.find(params[:exercise_id])
+    @term = @exercise.term
+  end
 
-    def rating_group_params
-      params.require(:rating_group).permit(
-        :exercise_id,
-        :title,
-        :description,
-        :global,
-        :points,
-        :min_points,
-        :max_points,
-        :enable_range_points)
-    end
+  def set_rating_group
+    @rating_group = @exercise.rating_groups.find(params[:id])
+    authorize @rating_group
+  end
+
+  def rating_group_params
+    params.require(:rating_group).permit(
+      :exercise_id,
+      :title,
+      :description,
+      :global,
+      :points,
+      :min_points,
+      :max_points,
+      :enable_range_points)
+  end
 end

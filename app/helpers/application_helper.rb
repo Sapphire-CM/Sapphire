@@ -7,14 +7,14 @@ module ApplicationHelper
         current_controller != CoursesController &&
         current_controller != TermsController
         ) ||
-      (params[:controller] == "terms" && params[:action] != "index") || (params[:term_id])
+      (params[:controller] == 'terms' && params[:action] != 'index') || (params[:term_id])
     end
 
     @term_context
   end
 
   def current_controller
-    (params[:controller]+"_controller").camelize.constantize
+    (params[:controller] + '_controller').camelize.constantize
   end
 
   def coderay(code, lang = :ruby)
@@ -25,7 +25,7 @@ module ApplicationHelper
     id = Time.now.to_i.to_s
 
     indicator = content_tag :div, id: 'ajax-load-indicator', class: 'grid-center' do
-      image_tag "ajax-loader.svg"
+      image_tag 'ajax-loader.svg'
     end
 
     content_tag :div, id: id do

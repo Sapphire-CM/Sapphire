@@ -1,6 +1,6 @@
-#encoding: utf-8
+# encoding: utf-8
 
-require "ostruct"
+require 'ostruct'
 
 module Sapphire
   module AutomatedCheckers
@@ -12,14 +12,14 @@ module Sapphire
         def to_ascii(string)
           string.gsub(/[äöüßéá]/) do |match|
             case match
-              when "ä" then 'ae'
-              when "ö" then 'oe'
-              when "ü" then 'ue'
-              when "ß" then 'ss'
-              when "é" then 'e'
-              when "á" then 'a'
+              when 'ä' then 'ae'
+              when 'ö' then 'oe'
+              when 'ü' then 'ue'
+              when 'ß' then 'ss'
+              when 'é' then 'e'
+              when 'á' then 'a'
             end
-          end.force_encoding("US-ASCII")
+          end.force_encoding('US-ASCII')
         end
       end
 
@@ -29,7 +29,6 @@ module Sapphire
         @data.submission = submission
         @data.instance_eval(&prepare_block) if prepare_block.present?
       end
-
 
       def run(check, &block)
         new_data = @data.dup

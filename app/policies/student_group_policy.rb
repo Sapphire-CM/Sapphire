@@ -32,6 +32,7 @@ class StudentGroupPolicy < PunditBasePolicy
   end
 
   private
+
   def authorized?(r = nil)
     user.admin? || user.lecturer_of_term?(r || record.term)
   end

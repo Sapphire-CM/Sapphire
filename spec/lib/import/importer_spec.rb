@@ -6,14 +6,14 @@ RSpec.describe Import::Importer do
       term = FactoryGirl.create :term
       import = FactoryGirl.create :import, term: term
 
-      expect {
-      expect {
-      expect {
-        ImportJob.perform_later import.id
-        import.reload
-      }.to change(ActionMailer::Base.deliveries, :count).by(8)
-      }.to change(TutorialGroup, :count).by(4)
-      }.to change(Account, :count).by(8)
+      expect do
+        expect do
+          expect do
+            ImportJob.perform_later import.id
+            import.reload
+          end.to change(ActionMailer::Base.deliveries, :count).by(8)
+        end.to change(TutorialGroup, :count).by(4)
+      end.to change(Account, :count).by(8)
 
       expect(import.import_result.success).to eq(true)
       expect(import.import_result.import_errors.length).to eq(0)
@@ -30,16 +30,16 @@ RSpec.describe Import::Importer do
       import.reload
       import.import_options.update! matching_groups: :both_matches
 
-      expect {
-      expect {
-      expect {
-      expect {
-        ImportJob.perform_later import.id
-        import.reload
-      }.to change(ActionMailer::Base.deliveries, :count).by(7)
-      }.to change(TutorialGroup, :count).by(2)
-      }.to change(StudentGroup, :count).by(4)
-      }.to change(Account, :count).by(7)
+      expect do
+        expect do
+          expect do
+            expect do
+              ImportJob.perform_later import.id
+              import.reload
+            end.to change(ActionMailer::Base.deliveries, :count).by(7)
+          end.to change(TutorialGroup, :count).by(2)
+        end.to change(StudentGroup, :count).by(4)
+      end.to change(Account, :count).by(7)
 
       expect(import.import_result.success).to eq(false)
       expect(import.import_result.import_errors.length).to eq(1)

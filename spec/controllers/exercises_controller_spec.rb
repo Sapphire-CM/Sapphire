@@ -32,8 +32,9 @@ RSpec.describe ExercisesController do
 
       get :index, term_id: term.id
 
+      term.reload
       expect(response).to have_http_status(:success)
-      expect(assigns(:exercises)).to eq(term.exercises)
+      expect(assigns(:exercises)).to match_array(term.exercises)
     end
   end
 

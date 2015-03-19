@@ -20,7 +20,7 @@
         <td><%= term_registration.account.matriculation_number %></td>
         <td><%= tutorial_group_title term_registration.tutorial_group %></td>
         <td><%= term_registration.points %></td>
-        <td><%= @grading_scale.grade_for_term_registration(term_registration) %></td>
+        <td><%= current_term.grading_scale.grade_for_term_registration(term_registration) %></td>
         <td>
           <%= link_to "Show", term_student_path(current_term, term_registration) %>
         </td>

@@ -37,14 +37,16 @@ RSpec.describe GradingScalesController do
       let(:grading_scale_params) { [[0, '5'], [100, '4'], [120, '3'], [140, '2'], [160, '1']] }
 
       it 'updates the grading scale' do
-        term = create(:term, grading_scale: [[0, '5'], [100, '4'], [120, '3'], [140, '2'], [160, '1']])
+        term = FactoryGirl.create :term, points: 200
+        term.send(:write_attribute, :grading_scale, grading_scale_params)
+        term.reload
 
-        patch :update, term_id: term.id, term: { grading_scale: { '1' => '180' } }
+        expect {
+          patch :update, term_id: term.id, term: { grading_scale: { '1' => '180' } }
+          term.reload
+        }.to change { term.read_attribute(:grading_scale) }
+
         expect(subject).to redirect_to(edit_term_grading_scale_path(term))
-
-        term = Term.find(term.id)
-
-        expect(term.grading_scale).to eq([[0, '5'], [100, '4'], [120, '3'], [140, '2'], [180, '1']])
       end
     end
   end

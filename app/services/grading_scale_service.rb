@@ -97,7 +97,7 @@ class GradingScaleService
   end
 
   def percent_for(grade)
-    if total_count > 0
+    if graded_count > 0
       (count_for(grade).to_f / graded_count) * 100
     else
       0
@@ -135,7 +135,7 @@ class GradingScaleService
     end
 
     if student_count > 0
-      (grade_sum.to_f / student_count)
+      grade_sum.to_f / student_count
     else
       0
     end
@@ -146,7 +146,7 @@ class GradingScaleService
   end
 
   def total_count
-    @grading_ranges.map(&:student_count).sum
+    @grading_ranges.sum(&:student_count)
   end
 
   def graded_count

@@ -8,6 +8,8 @@ describe TutorialGroup do
 
   it 'ensures result publications on create' do
     FactoryGirl.create_list(:exercise, 4, term: term)
+    term.reload
+
     tutorial_group = FactoryGirl.create(:tutorial_group, term: term)
 
     expect(tutorial_group.result_publications.count).to eq(4)
@@ -15,6 +17,8 @@ describe TutorialGroup do
 
   it 'destroys result publications on delete' do
     FactoryGirl.create_list(:exercise, 4, term: term)
+    term.reload
+
     tutorial_group = FactoryGirl.create(:tutorial_group, term: term)
 
     expect do

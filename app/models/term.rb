@@ -11,11 +11,11 @@ class Term < ActiveRecord::Base
   has_many :tutorial_groups, dependent: :destroy
   has_many :submissions, through: :exercises
   has_many :student_groups, through: :tutorial_groups
-  has_many :imports, dependent: :destroy
   has_many :term_registrations, dependent: :destroy
   has_many :exercise_registrations, through: :term_registrations
 
-  has_many :exports
+  has_many :imports, dependent: :destroy
+  has_many :exports, dependent: :destroy
 
   validates :course, presence: true
   validates :title, presence: true, uniqueness: { scope: :course_id }
@@ -75,7 +75,7 @@ class Term < ActiveRecord::Base
 
   def grade_distribution(students)
     distribution = Hash.new(0)
-    grades = students.map{|s| [s.grade_for_term(self), s] }
+    grades = students.map { |s| [s.grade_for_term(self), s] }
 
     grades.each do |v|
       distribution[v] += 1

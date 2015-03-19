@@ -42,34 +42,30 @@ module Import::Importer
   end
 
   def import!
-    import_result.update! processed_rows: 0, total_rows: values.length
+    import_result.update! success: true, processed_rows: 0, total_rows: values.length
 
     values.each do |row|
       import_result.increment! :processed_rows
 
-      account = create_student_account row
       group_title = row[import_mapping.group.to_i]
-      student_group_title = []
 
-      case import_options.matching_groups.to_sym
-      when :first_match
-        regexp = Regexp.new import_options.tutorial_groups_regexp
-        m = regexp.match group_title
+      matcher = import_options.matching_groups.to_sym == :first_match ? 'tutorial' : 'student'
+      regexp = Regexp.new import_options.send("#{matcher}_groups_regexp")
+      m = regexp.match group_title
 
-        tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
-        create_term_registration row, account, tutorial_group
-      when :both_matches
-        regexp = Regexp.new import_options.student_groups_regexp
-        m = regexp.match group_title
+      unless m.present? && m.names.map(&:to_sym).include?(:tutorial) && m[:tutorial].present?
+        import_result.update! success: false
+        create_problem_definition row, "regexp did not match: #{group_title} - #{regexp}"
+        next
+      end
 
-        tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
+      account = create_student_account row
+      tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
+      term_registration = create_term_registration row, account, tutorial_group
 
+      if import_options.matching_groups.to_sym == :both_matches
         student_group = create_student_group group_title, tutorial_group
-        term_registration = create_term_registration row, account, tutorial_group
-
-        term_registration.update(student_group: student_group)
-      else
-        raise "ImportOption matching_groups: #{import_options.matching_groups}" # unknown value for :matching_groups
+        term_registration.update! student_group: student_group
       end
     end
   end
@@ -147,30 +143,6 @@ module Import::Importer
     import_result.save!
 
     student_group
-  end
-
-  def create_student_registration(row, student, student_group, tutorial_group)
-    all_students = tutorial_group.student_groups.flat_map{ |sg| sg.students }
-    if !all_students.empty? && all_students.include?(student)
-      registration = student_group.student_registrations.find_or_initialize_by(account_id: student.id)
-    else
-      registration = student_group.student_registrations.new
-      registration.student = student
-    end
-
-    registration.comment = row[import_mapping.comment.to_i] if import_mapping.comment
-
-    new_record = registration.new_record?
-    if registration.save
-      import_result.imported_student_registrations += 1 if new_record
-    else
-      import_result.success = false
-      create_problem_definition row, registration.errors.full_messages
-    end
-
-    import_result.save!
-
-    registration
   end
 
   def create_problem_definition(row, full_messages)

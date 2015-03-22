@@ -84,7 +84,7 @@ Given(/^there are these terms for "(.*?)"$/) do |course_title, table|
   end
 end
 
-Given(/^I have got (\d+) points for "([^"]*?)" of course "([^"]*?)" in term "([^"]*?)"$/) do |points, _exercise_title, course_title, term_title|
+Given(/^I have got (\d+) points for "[^"]*?" of course "([^"]*?)" in term "([^"]*?)"$/) do |points, course_title, term_title|
   course = FactoryGirl.create(:course, title: title) unless course = Course.where(title: course_title).first
   term = FactoryGirl.create(:term, course: course, title: title) unless term = course.terms.where(title: term_title).first
   exercise = FactoryGirl.create(:exercise, term: term, title: title) unless exercise = term.exercises.where(title: title).first

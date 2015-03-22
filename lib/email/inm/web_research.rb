@@ -18,7 +18,7 @@ def execute(mail, exercise)
 
   famous_person = $famous_persons[tutorial_group_index][student_index % 5]
 
-  email_body = create_email_text famous_person, tutorial_group, student, tutorial_group_index
+  email_body = create_email_text famous_person, tutorial_group
   AutoResponderMailer.response(
     to: mail.from,
     bcc: tutorial_group.tutor.email,
@@ -46,7 +46,7 @@ def execute(mail, exercise)
   "''
 end
 
-def create_email_text(famous_person, tutorial_group, _student, _tutorial_group_index)
+def create_email_text(famous_person, tutorial_group)
   text = <<-EOF
 Web Research
 ------------

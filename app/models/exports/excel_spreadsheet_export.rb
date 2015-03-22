@@ -70,7 +70,7 @@ class ExcelSpreadsheetExport < Export
     if exercises?
       term.exercises.each do |exercise|
         if exercise.group_submission?
-          add_group_exercise(workbook, styles, tutorial_group, term_registrations, exercise)
+          add_group_exercise(workbook, styles, tutorial_group, exercise)
         else
           add_solitary_exercise(workbook, styles, tutorial_group, term_registrations, exercise)
         end
@@ -318,7 +318,7 @@ class ExcelSpreadsheetExport < Export
     worksheet
   end
 
-  def add_group_exercise(workbook, styles, tutorial_group, _term_registrations, exercise)
+  def add_group_exercise(workbook, styles, tutorial_group, exercise)
     student_groups = tutorial_group.student_groups.order(:title)
 
     worksheet = workbook.add_worksheet(exercise.title.gsub(/[^A-Za-z0-9\ ]/, ''))

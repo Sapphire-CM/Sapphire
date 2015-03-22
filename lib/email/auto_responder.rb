@@ -77,7 +77,7 @@ def import_submission_for_submitter!(exercise, submitter_registration, raw_post,
     submission.save!
   else
     submission = Submission.create!(exercise: exercise, submitted_at: date)
-    add_submitter_for_submission(exercise, submission, submitter_registration, parsed_post)
+    add_submitter_for_submission(exercise, submission, submitter_registration)
     submission.save!
   end
 
@@ -113,7 +113,7 @@ def write_submission_file(raw_post)
   tmp_file
 end
 
-def add_submitter_for_submission(exercise, submission, submitter_registration, _parsed_post)
+def add_submitter_for_submission(exercise, submission, submitter_registration)
   submission.submitter = submitter_registration.account
   ExerciseRegistration.create!(exercise: exercise, term_registration: TermRegistration.find(submitter_registration.id), submission: submission)
 end

@@ -100,7 +100,7 @@ class NewsgroupFetcherService < Service
       submission.save!
     else
       submission = Submission.create!(exercise: exercise, submitted_at: date)
-      add_submitter_for_submission(submission, submitter_registration, parsed_post)
+      add_submitter_for_submission(submission, submitter_registration)
       submission.save!
     end
 
@@ -116,7 +116,7 @@ class NewsgroupFetcherService < Service
     submission_asset.import_identifier = parsed_post.message_id
   end
 
-  def add_submitter_for_submission(submission, submitter_registration, _parsed_post)
+  def add_submitter_for_submission(submission, submitter_registration)
     submission.submitter = submitter_registration.account
     ExerciseRegistration.create!(exercise: exercise, term_registration: TermRegistration.find(submitter_registration.id), submission: submission)
   end

@@ -31,7 +31,7 @@ module Sapphire
       end
 
       def check_submissions(submissions)
-        submissions.each.with_index do |s, _i|
+        submissions.each do |s|
           print '.'
           check_submission(s)
         end

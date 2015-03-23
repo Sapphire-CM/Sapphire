@@ -22,6 +22,19 @@ RSpec.describe SingleEvaluationsController do
       expect(assigns(:previous_submission)).to be_a(Submission) if assigns(:previous_submission)
       expect(assigns(:next_submission)).to be_a(Submission) if assigns(:next_submission)
     end
+
+    context 'as a tutor' do
+      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
+      let(:tutor_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, tutorial_group: tutorial_group) }
+
+      it 'returns a successful response' do
+        sign_in(tutor_registration.account)
+
+        get :show, id: submission.id
+
+        expect(response).to have_http_status(:success)
+      end
+    end
   end
 
   describe 'PUT update' do
@@ -69,6 +82,38 @@ RSpec.describe SingleEvaluationsController do
             expect(assigns(:submission)).to eq(submission)
             expect(assigns(:submission_evaluation)).to eq(submission_evaluation)
             expect(evaluation.value).to eq(42)
+          end
+        end
+      end
+
+      context 'as a tutor' do
+        let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
+        let(:tutor_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, tutorial_group: tutorial_group) }
+
+        before :each do
+          sign_in(tutor_registration.account)
+        end
+
+        [BinaryNumberRating, BinaryPercentRating, PlagiarismRating].each do |type|
+          [true, false].each do |checked|
+            it 'updates the requested evaluation' do
+              rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s
+              evaluation = submission_evaluation.evaluations.where(rating_id: rating.id).first
+              evaluation.update! value: (checked ? 0 : 1)
+              submission_evaluation.update! updated_at: 42.days.ago
+
+              expect do
+                xhr :put, :update, id: evaluation.id
+                submission_evaluation.reload
+                evaluation.reload
+              end.to change(submission_evaluation, :updated_at)
+
+              expect(response).to have_http_status(:success)
+              expect(assigns(:evaluation)).to eq(evaluation)
+              expect(assigns(:submission)).to eq(submission)
+              expect(assigns(:submission_evaluation)).to eq(submission_evaluation)
+              expect(evaluation.value == 1).to eq(checked)
+            end
           end
         end
       end

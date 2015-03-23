@@ -22,6 +22,19 @@ RSpec.describe SingleEvaluationsController do
       expect(assigns(:previous_submission)).to be_a(Submission) if assigns(:previous_submission)
       expect(assigns(:next_submission)).to be_a(Submission) if assigns(:next_submission)
     end
+
+    context 'as a tutor' do
+      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
+      let(:tutor_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, tutorial_group: tutorial_group) }
+
+      it 'returns a successful response' do
+        sign_in(tutor_registration.account)
+
+        get :show, id: submission.id
+
+        expect(response).to have_http_status(:success)
+      end
+    end
   end
 
   describe 'PUT update' do

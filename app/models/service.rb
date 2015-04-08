@@ -3,6 +3,8 @@ class Service < ActiveRecord::Base
 
   belongs_to :exercise
 
+  has_one :term, through: :exercise
+
   validates_presence_of :exercise_id
   validates_exclusion_of :type, :in => %w( Service )
   scope :active, lambda { where(active: true) }

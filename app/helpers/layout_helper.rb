@@ -133,9 +133,7 @@ module LayoutHelper
     dropdown_identifier = "dropdown-button-#{SecureRandom.hex}"
 
     dropdown_classes = ['f-dropdown']
-    if options[:dropdown_class]
-      dropdown_classes << options[:dropdown_class]
-    end
+    dropdown_classes << options[:dropdown_class] if options[:dropdown_class]
 
     render 'dropdown_button', title: title, dropdown_identifier: dropdown_identifier, links: links, dropdown_classes: dropdown_classes.join(' ')
   end

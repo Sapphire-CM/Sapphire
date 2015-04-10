@@ -70,7 +70,7 @@ class Term < ActiveRecord::Base
 
   def grade_for_points(points)
     @grade_for_points ||= {}
-    @grade_for_points[points] ||= grading_scale.select { |lower, _grade| lower <= points }.last[1]
+    @grade_for_points[points] ||= grading_scale.reverse.find { |lower, _grade| lower <= points }[1]
   end
 
   def grade_distribution(students)

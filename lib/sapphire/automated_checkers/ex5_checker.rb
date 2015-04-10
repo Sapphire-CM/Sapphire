@@ -25,7 +25,7 @@ module Sapphire
 
       check :body_text, 'Body text is as specified' do
         body = if @mail.multipart?
-          part = @mail.parts.select { |part| part.content_type == 'text/plain' }.first
+          part = @mail.parts.find { |part| part.content_type == 'text/plain' }
           part = @mail.parts.first if part.blank?
           part.body.to_s
         else

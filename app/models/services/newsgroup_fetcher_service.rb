@@ -39,9 +39,7 @@ class NewsgroupFetcherService < Service
     newsgroup.posts.each do |post|
       parsed_post = Mail.new post.raw
 
-      if should_import? parsed_post
-        import_post post.raw, parsed_post
-      end
+      import_post post.raw, parsed_post if should_import? parsed_post
     end
   end
 

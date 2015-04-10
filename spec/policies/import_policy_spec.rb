@@ -23,7 +23,7 @@ RSpec.describe ImportPolicy do
     let(:account) { FactoryGirl.create(:account) }
 
     describe 'of the current term' do
-      let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term, account: account)}
+      let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term, account: account) }
 
       it { is_expected.to permit_authorization(:show) }
       it { is_expected.to permit_authorization(:new) }
@@ -36,7 +36,7 @@ RSpec.describe ImportPolicy do
     end
 
     describe 'of another term' do
-      let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, account: account)}
+      let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, account: account) }
 
       it { is_expected.not_to permit_authorization(:show) }
       it { is_expected.not_to permit_authorization(:new) }
@@ -54,7 +54,7 @@ RSpec.describe ImportPolicy do
       let(:account) { FactoryGirl.create(:account) }
 
       describe 'of the current term' do
-        let!(:term_registration) { FactoryGirl.create(:term_registration, role, term: term, account: account)}
+        let!(:term_registration) { FactoryGirl.create(:term_registration, role, term: term, account: account) }
 
         it { is_expected.not_to permit_authorization(:show) }
         it { is_expected.not_to permit_authorization(:new) }
@@ -67,7 +67,7 @@ RSpec.describe ImportPolicy do
       end
 
       describe 'of another term' do
-        let!(:term_registration) { FactoryGirl.create(:term_registration, role, account: account)}
+        let!(:term_registration) { FactoryGirl.create(:term_registration, role, account: account) }
 
         it { is_expected.not_to permit_authorization(:show) }
         it { is_expected.not_to permit_authorization(:new) }

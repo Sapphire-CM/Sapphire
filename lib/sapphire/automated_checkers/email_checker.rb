@@ -11,7 +11,7 @@ module Sapphire
 
         @extract_body = lambda do
           if @mail.multipart?
-            part = @mail.parts.select { |part| part.content_type == 'text/plain' }.first
+            part = @mail.parts.find { |part| part.content_type == 'text/plain' }
             part = @mail.parts.first if part.blank?
             part.body.to_s
           else
@@ -78,9 +78,7 @@ module Sapphire
           address = addresses.first
           known = false
           term_registrations.map(&:account).each do |student|
-            if student.email == address
-              known = true
-            end
+            known = true if student.email == address
           end
 
           failed! unless known
@@ -146,9 +144,7 @@ module Sapphire
         body = @extract_body.call.to_s
 
         signature = body.scan(/^-- \n(.*)^-/m).last   # may be Antivirus-Footer
-        if signature.blank?
-          signature = body.scan(/^-- \n(.*)\z/m).last
-        end
+        signature = body.scan(/^-- \n(.*)\z/m).last if signature.blank?
 
         failed! if signature && signature.last.gsub(/\s+\z/, '').split(/\n/).count > 4
       end

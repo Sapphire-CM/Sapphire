@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ExportPolicy do
   let(:term) { FactoryGirl.create(:term) }
-  let(:export) {FactoryGirl.create(:export, term: term) }
+  let(:export) { FactoryGirl.create(:export, term: term) }
 
   context 'as an admin' do
     let(:account) { FactoryGirl.create(:account, :admin) }
@@ -19,7 +19,7 @@ RSpec.describe ExportPolicy do
 
   context 'as a lecturer' do
     let(:account) { FactoryGirl.create(:account) }
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: current_term, account: account)}
+    let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: current_term, account: account) }
 
     describe 'of the given term' do
       let(:current_term) { term }
@@ -65,7 +65,7 @@ RSpec.describe ExportPolicy do
   %I(tutor student).each do |role|
     context "as a #{role}" do
       let(:account) { FactoryGirl.create(:account) }
-      let!(:term_registration) { FactoryGirl.create(:term_registration, role, term: current_term, account: account)}
+      let!(:term_registration) { FactoryGirl.create(:term_registration, role, term: current_term, account: account) }
 
       describe 'of the given term' do
         let(:current_term) { term }

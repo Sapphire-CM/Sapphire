@@ -61,7 +61,7 @@ class Account < ActiveRecord::Base
   end
 
   def tutorial_group_for_term(term)
-    student_group = student_groups.joins(:tutorial_group).where(tutorial_group: { term: term }).first
+    student_group = student_groups.joins(:tutorial_group).find_by(tutorial_group: { term: term })
     student_group.tutorial_group
   end
 

@@ -32,6 +32,7 @@ class ImportPolicy < PunditBasePolicy
   end
 
   private
+
   def authorized?
     user.admin? ||
     user.lecturer_of_term?(record.term)

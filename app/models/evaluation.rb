@@ -48,9 +48,7 @@ class Evaluation < ActiveRecord::Base
   def update_result!
     evaluation_group.update_result!
 
-    if rating.is_a?(PlagiarismRating)
-      submission_evaluation.update_plagiarized!
-    end
+    submission_evaluation.update_plagiarized! if rating.is_a?(PlagiarismRating)
   end
 
   private

@@ -23,9 +23,7 @@ class ImportsController < ApplicationController
 
     @term = @import.term
 
-    unless @import.save
-      return render :new
-    end
+    return render :new unless @import.save
     @import.reload
 
     import_service = ImportService.new(@import)

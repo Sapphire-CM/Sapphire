@@ -72,7 +72,7 @@ class Rating < ActiveRecord::Base
       submission_evaluation = evaluation.submission_evaluation
 
       evaluation_group = evaluation.evaluation_group
-      new_evaluations_group = submission_evaluation.evaluation_groups.where(rating_group_id: rating_group_id).first
+      new_evaluations_group = submission_evaluation.evaluation_groups.find_by(rating_group_id: rating_group_id)
 
       evaluation.evaluation_group = new_evaluations_group
       evaluation.save!

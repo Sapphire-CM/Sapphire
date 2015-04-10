@@ -13,6 +13,26 @@ describe TermRegistration do
     expect(term_registration.negative_grade?).to be_falsey
   end
 
+  context 'validations' do
+    let(:term) { FactoryGirl.create(:term) }
+    let(:another_term) { FactoryGirl.create(:term) }
+    let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
+
+    describe 'ensuring term consistency' do
+      it 'is valid when tutorial group is in the same term' do
+        term_registration = build(:term_registration, tutorial_group: tutorial_group, term: term)
+
+        expect(term_registration).to be_valid
+      end
+
+      it 'is not valid when term of tutorial group differs' do
+        term_registration = build(:term_registration, tutorial_group: tutorial_group, term: another_term)
+
+        expect(term_registration).not_to be_valid
+      end
+    end
+  end
+
   context 'students' do
     let(:subject) { build :term_registration, :student }
 

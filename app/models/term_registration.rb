@@ -18,6 +18,7 @@ class TermRegistration < ActiveRecord::Base
   validates :tutorial_group, presence: true, unless: :lecturer?
   validates :tutorial_group, absence: true, if: :lecturer?
   validates :student_group, absence: true, unless: :student?
+  validate :validate_term_consistency
 
   scope :graded, lambda { where(receives_grade: true) }
   scope :ungraded, lambda { where(receives_grade: false) }
@@ -82,5 +83,10 @@ class TermRegistration < ActiveRecord::Base
 
   def should_receive_grade?
     any_exercise_submitted?
+  end
+
+  private
+  def validate_term_consistency
+    errors.add(:term, "is not consistent") if tutorial_group.present? && term != tutorial_group.term
   end
 end

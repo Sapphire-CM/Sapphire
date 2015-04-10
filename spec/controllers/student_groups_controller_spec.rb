@@ -8,7 +8,7 @@ RSpec.describe StudentGroupsController, :type => :controller do
   let!(:tutorial_group) { create(:tutorial_group, term: term)}
   let(:student_group) {create(:student_group, tutorial_group: tutorial_group)}
 
-  let(:student_term_registrations) { create_list(:term_registration, 4, tutorial_group: tutorial_group) }
+  let(:student_term_registrations) { create_list(:term_registration, 4, term: term, tutorial_group: tutorial_group) }
 
   let(:valid_attributes) do
     {
@@ -148,7 +148,8 @@ RSpec.describe StudentGroupsController, :type => :controller do
 
   describe '#search_students' do
     let!(:student_registrations_in_term) { create_list(:term_registration, 4, :student, term: term, tutorial_group: create(:tutorial_group, term: term))}
-    let!(:student_registrations_in_another_term) { create_list(:term_registration, 4, :student, tutorial_group: create(:tutorial_group))}
+    let(:another_term) { create(:term, course: term.course) }
+    let!(:student_registrations_in_another_term) { create_list(:term_registration, 4, :student, term: another_term, tutorial_group: create(:tutorial_group, term: another_term))}
 
     it 'assigns @term_registrations with students of given term' do
       student_registrations_in_term.first(2).flat_map(&:account).each {|a| a.update!(forename: "Ron") }

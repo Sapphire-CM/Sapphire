@@ -3,14 +3,8 @@ class ServicesController < ApplicationController
 
   before_action :fetch_service, only: [:edit, :update]
 
-  class ServicesPolicyRecord < Struct.new(:term)
-    def policy_class
-      ServicePolicy
-    end
-  end
-
   def index
-    authorize ServicesPolicyRecord.new(current_term)
+    authorize ServicePolicy.with(current_term)
 
     @services = current_exercise.services
   end

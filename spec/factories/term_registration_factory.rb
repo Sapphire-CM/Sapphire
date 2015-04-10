@@ -4,16 +4,14 @@ FactoryGirl.define do
     account
     term
     role :student
-    tutorial_group
+    tutorial_group { FactoryGirl.create(:tutorial_group, term: term) }
 
     trait :student do
       role :student
-      tutorial_group
     end
 
     trait :tutor do
       role :tutor
-      tutorial_group
     end
 
     trait :lecturer do

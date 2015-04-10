@@ -35,13 +35,14 @@ describe ExercisePolicy do
     end
   end
 
-  context do
+  context 'members' do
     subject { Pundit.policy(user, exercise) }
 
     context 'as an admin' do
       let(:user) { FactoryGirl.create(:account, :admin) }
       let(:exercise) { FactoryGirl.create(:exercise, term: term) }
 
+      it { is_expected.to permit_authorization :show }
       it { is_expected.to permit_authorization :new }
       it { is_expected.to permit_authorization :create }
       it { is_expected.to permit_authorization :edit }
@@ -53,6 +54,7 @@ describe ExercisePolicy do
       let(:user) { FactoryGirl.create(:account, :lecturer) }
       let(:term) { user.term_registrations.lecturers.first.term }
 
+      it { is_expected.to permit_authorization :show }
       it { is_expected.to permit_authorization :new }
       it { is_expected.to permit_authorization :create }
       it { is_expected.to permit_authorization :edit }
@@ -64,6 +66,7 @@ describe ExercisePolicy do
       let(:user) { FactoryGirl.create(:account, :tutor) }
       let(:term) { user.term_registrations.tutors.first.term }
 
+      it { is_expected.to permit_authorization :show }
       it { is_expected.not_to permit_authorization :new }
       it { is_expected.not_to permit_authorization :create }
       it { is_expected.not_to permit_authorization :edit }
@@ -75,6 +78,7 @@ describe ExercisePolicy do
       let(:user) { FactoryGirl.create(:account, :student) }
       let(:term) { user.term_registrations.students.first.term }
 
+      it { is_expected.to permit_authorization :show }
       it { is_expected.not_to permit_authorization :new }
       it { is_expected.not_to permit_authorization :create }
       it { is_expected.not_to permit_authorization :edit }

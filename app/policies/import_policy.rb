@@ -1,41 +1,39 @@
 class ImportPolicy < PunditBasePolicy
   def show?
-    user.admin? ||
-    user.lecturer_of_term?(record)
+    authorized?
   end
 
   def new?
-    user.admin? ||
-    user.lecturer_of_term?(record)
+    create?
   end
 
   def create?
-    user.admin? ||
-    user.lecturer_of_term?(record)
+    authorized?
   end
 
   def edit?
-    user.admin? ||
-    user.lecturer_of_term?(record)
+    update?
   end
 
   def update?
-    user.admin? ||
-    user.lecturer_of_term?(record)
+    authorized?
   end
 
   def destroy?
-    user.admin? ||
-    user.lecturer_of_term?(record)
+    authorized?
   end
 
   def full_mapping_table?
-    user.admin? ||
-    user.lecturer_of_term?(record)
+    authorized?
   end
 
   def results?
+    authorized?
+  end
+
+  private
+  def authorized?
     user.admin? ||
-    user.lecturer_of_term?(record)
+    user.lecturer_of_term?(record.term)
   end
 end

@@ -16,7 +16,7 @@ module SerializedProperties
 
       names.each do |name|
         define_method(name) do
-          self.properties[name]
+          properties[name]
         end
 
         define_method("#{name}=") do |value|
@@ -27,9 +27,9 @@ module SerializedProperties
     end
 
     private
+
     def ensure_properties_hash
       self.properties ||= {}
     end
   end
-
 end

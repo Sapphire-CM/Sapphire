@@ -2,11 +2,11 @@ module Sapphire
   module SubmissionViewers
     class Base
       def self.identifier
-        self.to_s.demodulize
+        to_s.demodulize
       end
 
       def self.title
-        self.to_s.demodulize.titleize
+        to_s.demodulize.titleize
       end
 
       attr_reader :submission
@@ -24,9 +24,7 @@ module Sapphire
         !!@toolbar
       end
 
-      def toolbar
-        @toolbar
-      end
+      attr_reader :toolbar
 
       def view
         self.class.to_s.demodulize.underscore

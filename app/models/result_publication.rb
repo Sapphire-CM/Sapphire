@@ -10,7 +10,7 @@ class ResultPublication < ActiveRecord::Base
   validates :tutorial_group, presence: true
 
   def self.for(exercise: nil, tutorial_group: nil)
-    where(exercise_id: exercise.id, tutorial_group_id: tutorial_group.id).first
+    find_by(exercise_id: exercise.id, tutorial_group_id: tutorial_group.id)
   end
 
   def concealed?

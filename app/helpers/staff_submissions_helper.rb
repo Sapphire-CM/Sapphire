@@ -6,7 +6,7 @@ module StaffSubmissionsHelper
       if submission.student_group.present?
         "Submission of #{submission.student_group.title}"
       else
-        "Submission of unknown student group"
+        'Submission of unknown student group'
       end
     end
   end

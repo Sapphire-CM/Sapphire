@@ -7,10 +7,11 @@ class GradingScalesController < ApplicationController
 
   def update
     @term.update_grading_scale!(term_params[:grading_scale])
-    redirect_to edit_term_grading_scale_path, notice: "Successfully updated grading scale"
+    redirect_to edit_term_grading_scale_path, notice: 'Successfully updated grading scale'
   end
 
   private
+
   def fetch_term
     @term = Term.find(params[:term_id])
     authorize GradingScalePolicy.with @term

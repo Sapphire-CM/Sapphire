@@ -51,14 +51,14 @@ RSpec.describe TermsController do
         get :show, id: term.id
 
         expect(response).to have_http_status(:success)
-        expect(response).not_to have_content("Exercises")
+        expect(response).not_to have_content('Exercises')
       end
 
       it 'shows a stand by message' do
         get :show, id: term.id
 
         expect(response).to have_http_status(:success)
-        expect(response.body).to have_content("stand by")
+        expect(response.body).to have_content('stand by')
       end
     end
   end
@@ -98,7 +98,7 @@ RSpec.describe TermsController do
         valid_attributes[:term][:copy_grading_scale] = '1'
         valid_attributes[:term][:copy_exercises] = '1'
 
-        expect(TermCopyJob).to receive(:perform_later).with(kind_of(Numeric), source_term.id.to_s, anything())
+        expect(TermCopyJob).to receive(:perform_later).with(kind_of(Numeric), source_term.id.to_s, anything)
 
         expect do
           xhr :post, :create, valid_attributes

@@ -16,7 +16,7 @@ module Sapphire
       end
 
       def self.create
-        self.new(@checks, @prepare_block)
+        new(@checks, @prepare_block)
       end
 
       def self.asset_identifier(identifier)
@@ -31,7 +31,6 @@ module Sapphire
           asset_identifier(identifier)
         end
       end
-
 
       def self.content_type(type)
         @content_types ||= []
@@ -82,7 +81,7 @@ module Sapphire
       end
 
       def self.title
-        @title ||= self.to_s.demodulize.titleize
+        @title ||= to_s.demodulize.titleize
       end
 
       def initialize(checks, prepare_block)

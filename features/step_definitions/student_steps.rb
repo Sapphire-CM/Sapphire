@@ -1,8 +1,5 @@
 Given(/^I am a student of "(.*?)" in term "(.*?)"$/) do |course_title, term_title|
-  unless @acc
-    @acc = FactoryGirl.create(:account, :student)
-  end
-
+  @acc = FactoryGirl.create(:account, :student) unless @acc
 
   course = FactoryGirl.create(:course, title: title) unless course = Course.where(title: course_title).first
   term = FactoryGirl.create(:term, course: course) unless term = course.terms.where(title: term_title).first

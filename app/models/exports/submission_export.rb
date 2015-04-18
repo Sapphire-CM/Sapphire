@@ -8,7 +8,7 @@ class SubmissionExport < Export
   include ZipGeneration
 
   def perform!
-    raise ExportError unless persisted?
+    fail ExportError unless persisted?
 
     Dir.mktmpdir do |dir|
       prepare_zip!(dir)
@@ -27,18 +27,19 @@ class SubmissionExport < Export
   end
 
   def include_solitary_submissions?
-    self.include_solitary_submissions == "1"
+    include_solitary_submissions == '1'
   end
 
   def include_group_submissions?
-    self.include_group_submissions == "1"
+    include_group_submissions == '1'
   end
 
   def extract_zips?
-    self.extract_zips == "1"
+    extract_zips == '1'
   end
 
   private
+
   def should_add?(submission_asset)
     exercise = submission_asset.submission.exercise
     exercise.group_submission? && include_group_submissions? || exercise.solitary_submission? && include_solitary_submissions?
@@ -59,7 +60,7 @@ class SubmissionExport < Export
     Zip::File.open(zip_path) do |archive|
       archive.entries.each do |entry|
         # ignoring directories - as mkdir_p is more reliable
-        next if entry.name[-1] == "/"
+        next if entry.name[-1] == '/'
 
         extraction_path = File.join(extraction_dir, entry.name)
         FileUtils.mkdir_p(File.dirname(extraction_path))
@@ -86,12 +87,12 @@ class SubmissionExport < Export
 
   def inferred_zip_path(submission_asset, filename, use_group_path)
     paths = []
-    paths << inferred_path(self.base_path, submission_asset)
+    paths << inferred_path(base_path, submission_asset)
 
     if use_group_path
-      paths << inferred_path(self.group_path, submission_asset)
+      paths << inferred_path(group_path, submission_asset)
     else
-      paths << inferred_path(self.solitary_path, submission_asset)
+      paths << inferred_path(solitary_path, submission_asset)
     end
 
     paths << filename
@@ -102,7 +103,7 @@ class SubmissionExport < Export
   def inferred_path(path, submission_asset)
     placeholders = extract_placeholders(path)
 
-    filled_placeholders = placeholders.map {|placeholder| [placeholder.to_sym, value_for_placeholder(placeholder, submission_asset)]}
+    filled_placeholders = placeholders.map { |placeholder| [placeholder.to_sym, value_for_placeholder(placeholder, submission_asset)] }
 
     path % Hash[filled_placeholders]
   end
@@ -113,12 +114,12 @@ class SubmissionExport < Export
 
   def value_for_placeholder(placeholder, submission_asset)
     value = case placeholder
-    when "student_group" then submission_asset.submission.student_group.try(:title)
-    when "exercise" then submission_asset.submission.exercise.try(:title)
-    when "av_grade" then average_grade_for(submission_asset.submission.term_registrations).to_s
-    when "course" then term.course.title
-    when "term" then term.title
-    when "matriculation_number" then matriculation_numbers_for(submission_asset.submission.term_registrations)
+    when 'student_group' then submission_asset.submission.student_group.try(:title)
+    when 'exercise' then submission_asset.submission.exercise.try(:title)
+    when 'av_grade' then average_grade_for(submission_asset.submission.term_registrations).to_s
+    when 'course' then term.course.title
+    when 'term' then term.title
+    when 'matriculation_number' then matriculation_numbers_for(submission_asset.submission.term_registrations)
     end
 
     value.present? ? value.parameterize : nil
@@ -126,17 +127,17 @@ class SubmissionExport < Export
 
   def average_grade_for(term_registrations)
     if term_registrations.any?
-      grades = term_registrations.map {|tr| grading_scale.grade_for_term_registration(tr) }
+      grades = term_registrations.map { |tr| grading_scale.grade_for_term_registration(tr) }
       average = grades.reduce(:+).to_f / grades.length
 
       average.round.to_s
     else
-      "x"
+      'x'
     end
   end
 
   def matriculation_numbers_for(term_registrations)
-    term_registrations.map { |tr| tr.account.matriculation_number }.join(" ")
+    term_registrations.map { |tr| tr.account.matriculation_number }.join(' ')
   end
 
   def grading_scale

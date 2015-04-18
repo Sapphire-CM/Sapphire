@@ -5,35 +5,34 @@ module SubmissionsHelper
 
   def submissions_tutorial_group_dropdown(current_tutorial_group)
     button_title = case params[:submission_scope]
-    when "all"
-      "All Tutorial groups"
-    when "unmatched"
-      "Unmatched Submissions"
+    when 'all'
+      'All Tutorial groups'
+    when 'unmatched'
+      'Unmatched Submissions'
     else
       tutorial_group_title(current_tutorial_group)
     end
 
-    link = link_to(button_title, '#', data: {dropdown: "tutorial_group_dropdown"}, class: "small button dropdown")
+    link = link_to(button_title, '#', data: { dropdown: 'tutorial_group_dropdown' }, class: 'small button dropdown')
 
-    dropdown = content_tag :ul, id: "tutorial_group_dropdown", class: "f-dropdown" do
+    dropdown = content_tag :ul, id: 'tutorial_group_dropdown', class: 'f-dropdown' do
       content = []
 
-      content << content_tag(:li, link_to("All", {submission_scope: "all", q: params[:q]}).html_safe)
+      content << content_tag(:li, link_to('All', submission_scope: 'all', q: params[:q]).html_safe)
 
       @term.tutorial_groups.each  do |subject|
         content << content_tag(:li) do
           title = tutorial_group_title(subject)
           id = subject.id
 
-          link_to(h(title), {submission_scope: "tutorial_group", tutorial_group_id: id, q: params[:q]})
+          link_to(h(title), submission_scope: 'tutorial_group', tutorial_group_id: id, q: params[:q])
         end.html_safe
       end
 
-      content << content_tag(:li, link_to("Unmatched", {submission_scope: "unmatched", q: params[:q]}).html_safe)
+      content << content_tag(:li, link_to('Unmatched', submission_scope: 'unmatched', q: params[:q]).html_safe)
 
       content.join.html_safe
     end
-
 
     link + dropdown
   end
@@ -45,7 +44,7 @@ module SubmissionsHelper
         if submission.student_group_id?
           submission.student_group.title
         else
-          content_tag(:em, "unknown student group")
+          content_tag(:em, 'unknown student group')
         end
 
       else
@@ -53,7 +52,7 @@ module SubmissionsHelper
         "#{student.fullname} (#{student.matriculation_number})"
       end
     else
-      "unknown author"
+      'unknown author'
     end
   end
 
@@ -61,7 +60,7 @@ module SubmissionsHelper
     if submission.student_group.present?
       tutorial_group_title(submission.student_group.tutorial_group)
     else
-      "unkown"
+      'unkown'
     end
   end
 
@@ -72,7 +71,7 @@ module SubmissionsHelper
 
   def submission_subtitle(submission)
     if policy(submission.exercise.term).student?
-      "Submission"
+      'Submission'
     else
       "Submission of #{submission.student_group.title}"
     end

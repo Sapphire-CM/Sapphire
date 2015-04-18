@@ -50,7 +50,7 @@ Then(/^have a break$/) do
   require 'pry'; binding.pry
 end
 
-When(/^I create a new term "(.*?)" on course "(.*?)"$/) do |term_title, course_title|
+When(/^I create a new term "(.*?)" on course "(.*?)"$/) do |_term_title, course_title|
   course = Course.where(title: course_title).first
   course_div = find_by_id("course_id_#{course.id}")
 
@@ -91,7 +91,6 @@ When(/^I delete the term "(.*?)" on course "(.*?)"$/) do |term_title, course_tit
   end
 end
 
-
 Then(/^I should find the term "(.*?)" on course "(.*?)"$/) do |term_title, course_title|
   course = Course.where(title: course_title).first
   course.terms.where(title: term_title).count == 1
@@ -111,16 +110,14 @@ end
 Then(/^I should see a table "([^"]*?)" with these elements$/) do |table_selector, table|
   within_table(table_selector) do
     table.hashes.each do |line|
-      should have_css("td, th", text: line["text"])
+      should have_css('td, th', text: line['text'])
     end
   end
 end
 
-
 When(/^I submit closest form to "(.*?)"$/) do |selector|
   page.execute_script("jQuery(\"#{selector}\").closest('form').submit();")
 end
-
 
 Then(/^I should see an input with "(.*?)"$/) do |value|
   page.should have_xpath("//input[@value='#{value}']")
@@ -146,7 +143,6 @@ end
 Then(/^save and open page$/) do
   save_and_open_page
 end
-
 
 When(/^I tick the check box "(.*?)"$/) do |check_box_title|
   check check_box_title

@@ -31,7 +31,7 @@ class TutorialGroupsController < ApplicationController
     authorize @tutorial_group
 
     if @tutorial_group.save
-      redirect_to term_tutorial_group_path(current_term, @tutorial_group), notice: "Tutorial group successfully created."
+      redirect_to term_tutorial_group_path(current_term, @tutorial_group), notice: 'Tutorial group successfully created.'
     else
       render :new
     end
@@ -42,7 +42,7 @@ class TutorialGroupsController < ApplicationController
 
   def update
     if @tutorial_group.update(tutorial_group_params)
-      redirect_to term_tutorial_group_path(current_term, @tutorial_group), notice: "Tutorial group successfully updated."
+      redirect_to term_tutorial_group_path(current_term, @tutorial_group), notice: 'Tutorial group successfully updated.'
     else
       render :edit
     end
@@ -50,9 +50,8 @@ class TutorialGroupsController < ApplicationController
 
   def destroy
     @tutorial_group.destroy
-    redirect_to @term, notice: "Tutorial group successfully deleted."
+    redirect_to @term, notice: 'Tutorial group successfully deleted.'
   end
-
 
   def points_overview
   end

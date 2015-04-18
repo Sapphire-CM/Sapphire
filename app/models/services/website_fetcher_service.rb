@@ -8,7 +8,7 @@ class WebsiteFetcherService < Service
     end
 
     def identifier
-      account.email.gsub(/@.*$/, "")
+      account.email.gsub(/@.*$/, '')
     end
 
     def submission_file_links
@@ -18,11 +18,11 @@ class WebsiteFetcherService < Service
 
       file_list_page = Mechanize.new.get(url)
 
-      page_links = file_list_page.links.select { |l| l.href !~ /\/$/}
+      page_links = file_list_page.links.select { |l| l.href !~ /\/$/ }
 
       regex = /#{identifier}\/inm\//
 
-      matching_links = page_links.select {|l| l.href =~ regex }
+      matching_links = page_links.select { |l| l.href =~ regex }
 
       if matching_links.any?
         matching_links
@@ -33,12 +33,12 @@ class WebsiteFetcherService < Service
   end
 
   def title
-    "Website Fetcher"
+    'Website Fetcher'
   end
 
   def perform!
     exercise.term.term_registrations.students.each do |term_registration|
-      WebsiteFetcherJob.perform_later self.id, term_registration.id
+      WebsiteFetcherJob.perform_later id, term_registration.id
     end
   end
 
@@ -86,11 +86,11 @@ class WebsiteFetcherService < Service
   end
 
   def content_type_for_download(download)
-    case download.response["content-type"]
-    when "application/xhtml+xml"
+    case download.response['content-type']
+    when 'application/xhtml+xml'
       SubmissionAsset::Mime::HTML
     else
-      download.response["content-type"]
+      download.response['content-type']
     end
   end
 end

@@ -81,6 +81,8 @@ group :development do
   gem 'letter_opener_web'   # local email sender to HTML pages
   gem 'traceroute'          # detects unused routes and actions
   gem 'consistency_fail'    # detects missing unique indexes
+  gem 'rubocop'                   # Ruby coding style checker and enforcer
+  gem 'rubocop-rspec'             # RuboCop plugin for RSpec files
   # gem 'brakeman'            # common security problems checker
   # gem 'bullet'              # logs and supposes optimizations for db queries
   # gem 'sextant'             # route /rails/routes for displaying all routes

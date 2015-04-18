@@ -23,28 +23,28 @@ class Term < ActiveRecord::Base
   before_save :improve_grading_scale
 
   default_scope { rank(:row_order) }
-  scope :associated_with, lambda {|account| joins(:term_registrations).where(term_registrations: {account_id: account.id}) }
+  scope :associated_with, lambda { |account| joins(:term_registrations).where(term_registrations: { account_id: account.id }) }
 
   def associated_with?(account)
-    Term.associated_with(account).where(id: self.id).exists?
+    Term.associated_with(account).where(id: id).exists?
   end
 
   def improve_grading_scale
     self.grading_scale = {
-       0 => '5',
+      0 => '5',
       51 => '4',
       64 => '3',
       80 => '2',
       90 => '1'
-    }.to_a if self.grading_scale.empty?
+    }.to_a if grading_scale.empty?
 
-    self.grading_scale.sort!
+    grading_scale.sort!
 
-    self.grading_scale.dup.reverse.each_with_index do |scale, index|
-      self.grading_scale[index][1] = "#{grading_scale.length - index}"
+    grading_scale.dup.reverse.each_with_index do |_scale, index|
+      grading_scale[index][1] = "#{grading_scale.length - index}"
     end
 
-    self.grading_scale
+    grading_scale
   end
 
   def update_points!
@@ -70,7 +70,7 @@ class Term < ActiveRecord::Base
 
   def grade_for_points(points)
     @grade_for_points ||= {}
-    @grade_for_points[points] ||= grading_scale.select{|lower, grade| lower <= points}.last[1]
+    @grade_for_points[points] ||= grading_scale.reverse.find { |lower, _grade| lower <= points }[1]
   end
 
   def grade_distribution(students)
@@ -91,10 +91,9 @@ class Term < ActiveRecord::Base
     exercise_registrations.for_student(student).exists?
   end
 
-
   def update_grading_scale!(new_grading_scale)
-    self.grading_scale.map! do |scale|
-      if (scale_to_update = new_grading_scale.select { |param| scale.last == param.last}).any?
+    grading_scale.map! do |scale|
+      if (scale_to_update = new_grading_scale.select { |param| scale.last == param.last }).any?
         scale_to_update.first
       else
         scale

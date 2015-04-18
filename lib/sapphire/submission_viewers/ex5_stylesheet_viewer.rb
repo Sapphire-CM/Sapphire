@@ -5,12 +5,9 @@ module Sapphire
         @assets = submission.submission_assets.where(content_type: SubmissionAsset::Mime::STYLESHEET).order(:file)
       end
 
-      def assets
-        @assets
-      end
+      attr_reader :assets
 
       def view_options
-
       end
 
       def asset_options

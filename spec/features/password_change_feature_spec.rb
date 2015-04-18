@@ -17,11 +17,10 @@ RSpec.describe 'Password Change' do
           fill_in 'Password', with: 'foobar'
           fill_in 'Password confirmation', with: 'foobar'
 
-          expect {
+          expect do
             click_button 'Save'
             current_account.reload
-          }.to change(current_account, :encrypted_password)
-
+          end.to change(current_account, :encrypted_password)
         end
       end
 
@@ -31,10 +30,10 @@ RSpec.describe 'Password Change' do
           fill_in 'Password', with: 'foobar'
           fill_in 'Password confirmation', with: 'bar'
 
-          expect {
+          expect do
             click_button 'Save'
             current_account.reload
-          }.not_to change(current_account, :encrypted_password)
+          end.not_to change(current_account, :encrypted_password)
 
           expect(page).to have_selector('.account_password_confirmation.error')
         end
@@ -47,10 +46,10 @@ RSpec.describe 'Password Change' do
         fill_in 'Password', with: 'foobar'
         fill_in 'Password confirmation', with: 'foobar'
 
-        expect {
+        expect do
           click_button 'Save'
           current_account.reload
-        }.not_to change(current_account, :encrypted_password)
+        end.not_to change(current_account, :encrypted_password)
 
         expect(page).to have_selector('.account_current_password.error')
       end

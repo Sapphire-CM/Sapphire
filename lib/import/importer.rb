@@ -3,7 +3,6 @@ module Import::Importer
     # guess mapping from content
     row = values.first
     row.each_index do |cell_index|
-
       if /\A(T|G)[\d]{1}/ =~ row[cell_index]
         import_mapping.group ||= cell_index
         next

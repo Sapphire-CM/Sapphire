@@ -13,7 +13,7 @@ class StudentGroupsController < ApplicationController
 
   def show
     @student_term_registrations = @student_group.term_registrations
-    @submissions = @student_group.submissions.joins(:exercise).includes(:exercise).order { exercise.row_order}
+    @submissions = @student_group.submissions.joins(:exercise).includes(:exercise).order { exercise.row_order }
   end
 
   def new
@@ -27,7 +27,7 @@ class StudentGroupsController < ApplicationController
     authorize @student_group
 
     if @student_group.save
-      redirect_to term_tutorial_group_student_group_path(current_term, current_tutorial_group, @student_group), notice: "Successfully created student group"
+      redirect_to term_tutorial_group_student_group_path(current_term, current_tutorial_group, @student_group), notice: 'Successfully created student group'
     else
       render :new
     end
@@ -38,7 +38,7 @@ class StudentGroupsController < ApplicationController
 
   def update
     if @student_group.update(student_group_params)
-      redirect_to term_tutorial_group_student_group_path(current_term, current_tutorial_group, @student_group), notice: "Successfully updated student group"
+      redirect_to term_tutorial_group_student_group_path(current_term, current_tutorial_group, @student_group), notice: 'Successfully updated student group'
     else
       render :edit
     end
@@ -65,6 +65,7 @@ class StudentGroupsController < ApplicationController
   end
 
   private
+
   def student_group_params
     params.require(:student_group).permit(:title, term_registration_ids: [])
   end

@@ -1,4 +1,4 @@
-require "singleton"
+require 'singleton'
 
 module Sapphire
   module SubmissionViewers
@@ -43,5 +43,4 @@ module Sapphire
   end
 end
 
-
-load File.join(File.dirname(__FILE__), "register_viewers.rb")
+load File.join(File.dirname(__FILE__), 'register_viewers.rb')

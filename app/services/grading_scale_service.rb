@@ -38,9 +38,9 @@ class GradingScaleService
             term_registrations.ungraded
           else
             if @is_positive
-              term_registrations.graded.where {(points >> my{range}) & sift(:positive_grades) }
+              term_registrations.graded.where { (points >> my { range }) & sift(:positive_grades) }
             else
-              term_registrations.graded.where {(points >> my{range}) | sift(:negative_grades) }
+              term_registrations.graded.where { (points >> my { range }) | sift(:negative_grades) }
             end
           end
         else
@@ -84,9 +84,7 @@ class GradingScaleService
     @grading_ranges.map(&:grade)
   end
 
-  def grading_ranges
-    @grading_ranges
-  end
+  attr_reader :grading_ranges
 
   def students_for(grade)
     grading_range_for(grade).students
@@ -111,7 +109,7 @@ class GradingScaleService
   def grade_for_term_registration(term_registration)
     term_registration.exercise_registrations.load
     if term_registration.any_exercise_submitted?
-      @grading_ranges.find {|grading_range|  grading_range.matches? term_registration }.grade
+      @grading_ranges.find { |grading_range|  grading_range.matches? term_registration }.grade
     else
       0
     end
@@ -120,7 +118,7 @@ class GradingScaleService
   def average_grade_for_student_group(student_group)
     grades = student_group.term_registrations.map { |tr| grade_for_term_registration(tr) }
 
-    stats = grades.inject(Hash.new {|h,k| h[k] = 0}) do |hash, grade|
+    stats = grades.inject(Hash.new { |h, k| h[k] = 0 }) do |hash, grade|
       hash[grade] += 1
       hash
     end
@@ -178,8 +176,9 @@ class GradingScaleService
   end
 
   private
+
   def grading_range_for(grade)
-    @grading_ranges.find {|scale| scale.grade == grade} || GradingRange.new(self, 0, nil, {positive: false, not_graded: true})
+    @grading_ranges.find { |scale| scale.grade == grade } || GradingRange.new(self, 0, nil, positive: false, not_graded: true)
   end
 
   def setup_grading_ranges!
@@ -194,7 +193,7 @@ class GradingScaleService
     (grading_scale.size - 1).times do |i|
       positive_grade = i != grading_scale.size - 2
 
-      @grading_ranges << GradingRange.new(self, i + 1, Range.new(grading_scale[i + 1], grading_scale[i] - 1), {positive: positive_grade, not_graded: false})
+      @grading_ranges << GradingRange.new(self, i + 1, Range.new(grading_scale[i + 1], grading_scale[i] - 1), positive: positive_grade, not_graded: false)
     end
   end
 end

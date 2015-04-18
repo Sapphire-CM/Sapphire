@@ -5,7 +5,7 @@ class TermNew < Term
     attr_accessor attribute
 
     define_method "#{attribute}?" do
-      !self.send(attribute).to_i.zero?
+      !send(attribute).to_i.zero?
     end
   end
 

@@ -8,10 +8,10 @@ class Exercise < ActiveRecord::Base
   delegate :course, to: :term
 
   default_scope { rank(:row_order) }
-  scope :for_evaluations_table, lambda { includes(submissions: [{submission_evaluation: {evaluation_groups: [:rating_group, {evaluations: :rating}]}}, {student_group_registration: {student_group: :students}}])}
+  scope :for_evaluations_table, lambda { includes(submissions: [{ submission_evaluation: { evaluation_groups: [:rating_group, { evaluations: :rating }] } }, { student_group_registration: { student_group: :students } }]) }
 
-  scope :group_exercises, lambda { where(group_submission: true)}
-  scope :solitary_exercises, lambda { where(group_submission: false)}
+  scope :group_exercises, lambda { where(group_submission: true) }
+  scope :solitary_exercises, lambda { where(group_submission: false) }
   scope :mandatory_exercises, lambda { where(enable_min_required_points: true) }
 
   has_many :result_publications, dependent: :destroy
@@ -31,10 +31,10 @@ class Exercise < ActiveRecord::Base
   before_save :update_points, if: lambda { |exercise| exercise.enable_max_total_points_changed? || exercise.max_total_points_changed? }
   after_create :ensure_result_publications
   after_save :update_term_points, if: :points_changed?
-  after_save :recalculate_term_registrations_results, if: lambda {|exercise| exercise.enable_min_required_points_changed? || exercise.min_required_points_changed? || exercise.points_changed?}
+  after_save :recalculate_term_registrations_results, if: lambda { |exercise| exercise.enable_min_required_points_changed? || exercise.min_required_points_changed? || exercise.points_changed? }
 
   def update_points
-    self.points = self.rating_groups(true).map {|rg| rg.max_points || rg.points}.compact.sum || 0
+    self.points = rating_groups(true).map { |rg| rg.max_points || rg.points }.compact.sum || 0
     self.points = max_total_points if enable_max_total_points && points > max_total_points
   end
 
@@ -64,7 +64,7 @@ class Exercise < ActiveRecord::Base
   end
 
   def achievable_points
-    visible_points.presence || (self.enable_max_total_points ? max_total_points : points)
+    visible_points.presence || (enable_max_total_points ? max_total_points : points)
   end
 
   def recalculate_term_registrations_results

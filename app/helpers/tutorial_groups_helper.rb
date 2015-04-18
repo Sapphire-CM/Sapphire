@@ -3,7 +3,7 @@ module TutorialGroupsHelper
     if tutorial_group
       "#{tutorial_group.title} - #{tutor_names tutorial_group.tutor_accounts}"
     else
-      "none"
+      'none'
     end
   end
 
@@ -15,9 +15,9 @@ module TutorialGroupsHelper
 
   def set_tutor_label
     if @tutorial_group.tutor.blank?
-      "Set tutor"
+      'Set tutor'
     else
-      "Change tutor"
+      'Change tutor'
     end
   end
 end

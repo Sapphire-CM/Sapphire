@@ -6,9 +6,10 @@ class EmailAddress < ActiveRecord::Base
   validate :validate_no_account_with_same_email_exists
 
   private
+
   def validate_no_account_with_same_email_exists
-    if Account.where(email: self.email).exists?
-      errors.add(:email, "has already been taken")
+    if Account.where(email: email).exists?
+      errors.add(:email, 'has already been taken')
     end
   end
 end

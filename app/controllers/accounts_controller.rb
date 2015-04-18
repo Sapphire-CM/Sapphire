@@ -36,32 +36,33 @@ class AccountsController < ApplicationController
   end
 
   private
-    def set_account
-      @account = Account.find(params[:id])
-      authorize @account
-    end
 
-    def account_params
-      params_everybody = [
-        :options
-      ]
+  def set_account
+    @account = Account.find(params[:id])
+    authorize @account
+  end
 
-      params_admin = [
-        :forename,
-        :surname,
-        :matriculation_number
-      ]
+  def account_params
+    params_everybody = [
+      :options
+    ]
 
-      params_password = [
-        :current_password,
-        :password,
-        :password_confirmation
-      ]
+    params_admin = [
+      :forename,
+      :surname,
+      :matriculation_number
+    ]
 
-      permitted_params = params_everybody.dup
-      permitted_params << params_password.dup if params[:account] && params[:account][:password].present?
-      permitted_params << params_admin.dup if current_account.admin?
+    params_password = [
+      :current_password,
+      :password,
+      :password_confirmation
+    ]
 
-      p = params.require(:account).permit(permitted_params)
-    end
+    permitted_params = params_everybody.dup
+    permitted_params << params_password.dup if params[:account] && params[:account][:password].present?
+    permitted_params << params_admin.dup if current_account.admin?
+
+    p = params.require(:account).permit(permitted_params)
+  end
 end

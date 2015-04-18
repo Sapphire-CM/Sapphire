@@ -11,7 +11,7 @@ class ValueEvaluation < Evaluation
 
   def percent
     if value.present? && rating.is_a?(ValuePercentRating)
-      1 + value.to_f/100.0
+      1 + value.to_f / 100.0
     else
       1
     end

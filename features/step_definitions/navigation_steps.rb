@@ -1,10 +1,10 @@
 def visit_page(page_name)
   case page_name
-  when "the home" then
+  when 'the home' then
     visit root_path
-  when "the account sign in"
+  when 'the account sign in'
     visit new_account_session_path
-  when "the password reset"
+  when 'the password reset'
     visit new_account_password_path
   else
     visit path_to(page_name)
@@ -44,7 +44,7 @@ When(/^I navigate to the results publication page of exercise "(.*?)"$/) do |exe
 end
 
 When(/^I attach "(.*?)" to "(.*?)"$/) do |filename, input|
-  attach_file(input, File.join(Rails.root, "spec/support/data", filename))
+  attach_file(input, File.join(Rails.root, 'spec/support/data', filename))
 end
 
 Given(/^I am on the submissions page of exercise "(.*?)"$/) do |exercise_title|

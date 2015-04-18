@@ -1,5 +1,4 @@
 module ExercisesHelper
-
   def exercise_topbar_link(exercise)
     link_to exercise.title, rolebased_submission_path(exercise)
   end
@@ -36,9 +35,9 @@ module ExercisesHelper
   end
 
   def exercise_sidebar_administrate_active?
-    params[:controller] == "result_publications" ||
-    params[:controller] == "rating_groups" ||
-    params[:controller] == "services" ||
-    (params[:controller] == "exercises" && params[:action] == "edit")
+    params[:controller] == 'result_publications' ||
+    params[:controller] == 'rating_groups' ||
+    params[:controller] == 'services' ||
+    (params[:controller] == 'exercises' && params[:action] == 'edit')
   end
 end

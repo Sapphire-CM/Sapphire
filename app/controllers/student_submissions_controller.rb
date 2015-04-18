@@ -20,7 +20,7 @@ class StudentSubmissionsController < ApplicationController
 
     if creation_service.save
       if policy(@term).student?
-        redirect_to exercise_student_submission_path(@exercise), notice: "Successfully uploaded submission"
+        redirect_to exercise_student_submission_path(@exercise), notice: 'Successfully uploaded submission'
       end
     else
       @submission = creation_service.model
@@ -34,7 +34,7 @@ class StudentSubmissionsController < ApplicationController
 
     if @submission.save
       if policy(@term).student?
-        redirect_to exercise_student_submission_path(@exercise), notice: "Successfully updated submission"
+        redirect_to exercise_student_submission_path(@exercise), notice: 'Successfully updated submission'
       end
     else
       render :show
@@ -42,6 +42,7 @@ class StudentSubmissionsController < ApplicationController
   end
 
   private
+
   def set_exercise_and_term
     @exercise = Exercise.find params[:exercise_id]
     @term = @exercise.term
@@ -58,6 +59,6 @@ class StudentSubmissionsController < ApplicationController
   end
 
   def ensure_submission_param
-    redirect_to exercise_student_submission_path(@exercise), notice: "Please choose a file to upload" unless params[:submission].present?
+    redirect_to exercise_student_submission_path(@exercise), notice: 'Please choose a file to upload' unless params[:submission].present?
   end
 end

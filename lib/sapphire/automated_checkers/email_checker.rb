@@ -1,23 +1,23 @@
-#encoding: utf-8
+# encoding: utf-8
 
 module Sapphire
   module AutomatedCheckers
     class EmailChecker < Base
       checks_asset_files!
-      content_types "text/email", "text/newsgroup"
+      content_types 'text/email', 'text/newsgroup'
 
       prepare do
         @mail = Mail.new(subject.read)
 
-        @extract_body = lambda {
+        @extract_body = lambda do
           if @mail.multipart?
-            part = @mail.parts.select {|part| part.content_type == 'text/plain'}.first
+            part = @mail.parts.find { |part| part.content_type == 'text/plain' }
             part = @mail.parts.first if part.blank?
             part.body.to_s
           else
             @mail.body.to_s
           end
-        }
+        end
       end
 
       check :real_name, "Real name in \"From:\"" do
@@ -25,22 +25,19 @@ module Sapphire
         success = false
         term_registrations.each do |term_registration|
           student = term_registration.account
-          from = @mail.header['From'].value.split("<",2).first.strip.downcase
+          from = @mail.header['From'].value.split('<', 2).first.strip.downcase
           names = []
           names << student.forename.split(/s+/).first.downcase
           names << student.surname.split(/s+/).first.downcase
 
-          names.compact.map {|n| n.force_encoding("UTF-8")}.each do |name|
-
+          names.compact.map { |n| n.force_encoding('UTF-8') }.each do |name|
             name.split(/\s+/).each do |split_name|
               if from.include? to_ascii(split_name)
                 success = true
                 break
               end
             end
-
           end
-
         end
         failed! unless success
         success! if success
@@ -81,23 +78,21 @@ module Sapphire
           address = addresses.first
           known = false
           term_registrations.map(&:account).each do |student|
-            if student.email == address
-              known = true
-            end
+            known = true if student.email == address
           end
 
           failed! unless known
         end
       end
 
-      check :body_utf8_charset, "Charset in body is UTF-8" do
+      check :body_utf8_charset, 'Charset in body is UTF-8' do
         if ct = @mail.header['Content-Type'].to_s.downcase
-          failed! unless ct.include? "charset=utf-8"
+          failed! unless ct.include? 'charset=utf-8'
         end
 
         if @mail.multipart?
           @mail.parts.each do |part|
-            if part.content_type.downcase.include?("charset=iso")
+            if part.content_type.downcase.include?('charset=iso')
               failed!
               break
             end
@@ -105,17 +100,17 @@ module Sapphire
         end
       end
 
-      check :client, "Correct email- or newsgroup-client" do
+      check :client, 'Correct email- or newsgroup-client' do
         agent = @mail.header['User-Agent'].to_s
 
         if agent.present?
           failed! if agent =~ /Internet Messaging Program/
         else
-          failed! if (h = @mail.header['NNTP-Posting-Host'].to_s).present? && h.include?("webnews")
+          failed! if (h = @mail.header['NNTP-Posting-Host'].to_s).present? && h.include?('webnews')
         end
       end
 
-      check :ascii_headers, "Headers contain only ASCII characters" do
+      check :ascii_headers, 'Headers contain only ASCII characters' do
         if to_ascii(@mail.subject) == @mail.subject
           success!
         else
@@ -123,7 +118,7 @@ module Sapphire
         end
       end
 
-      check :has_no_html_part, "Has no HTML part" do
+      check :has_no_html_part, 'Has no HTML part' do
         if @mail.parts.length > 1
           @mail.parts.each do |part|
             if part.content_type !~ /plain/i
@@ -134,7 +129,7 @@ module Sapphire
         end
       end
 
-      check :signature_presence, "Any signature present?" do
+      check :signature_presence, 'Any signature present?' do
         body = @extract_body.call.to_s
 
         success = false
@@ -145,16 +140,13 @@ module Sapphire
         failed! unless success
       end
 
-      check :signature_length, "Signature has less than 4 lines" do
+      check :signature_length, 'Signature has less than 4 lines' do
         body = @extract_body.call.to_s
 
         signature = body.scan(/^-- \n(.*)^-/m).last   # may be Antivirus-Footer
-        if signature.blank?
-          signature = body.scan(/^-- \n(.*)\z/m).last
-        end
+        signature = body.scan(/^-- \n(.*)\z/m).last if signature.blank?
 
-        failed! if signature && signature.last.gsub(/\s+\z/, "").split(/\n/).count > 4
-
+        failed! if signature && signature.last.gsub(/\s+\z/, '').split(/\n/).count > 4
       end
 
       check :signature_separator, "Signature seperator is \"-- \"" do
@@ -167,7 +159,7 @@ module Sapphire
         failed! if sig_found && body !~ /^-- $/
       end
 
-      check :line_length, "Line length is below 76 characters" do
+      check :line_length, 'Line length is below 76 characters' do
         @extract_body.call.to_s.split(/\n/).each do |line|
           next if line =~ /(http|https|ftp|news):\/\//
 
@@ -178,8 +170,7 @@ module Sapphire
         end
       end
 
-
-      check :subject_7bit_ascii, "Subject contains only 7-bit ASCII characters" do
+      check :subject_7bit_ascii, 'Subject contains only 7-bit ASCII characters' do
         failed! if to_ascii(@mail.subject) != @mail.subject
       end
     end

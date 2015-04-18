@@ -1,6 +1,6 @@
 class PlagiarismRating < BinaryPercentRating
   def title
-    "plagiarism"
+    'plagiarism'
   end
 
   def value

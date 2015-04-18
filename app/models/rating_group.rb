@@ -8,7 +8,7 @@ class RatingGroup < ActiveRecord::Base
 
   validates :exercise, presence: true
   validates :title, presence: true, uniqueness: { scope: :exercise_id }
-  validates :points, presence: true, unless: Proc.new { |rating_group|
+  validates :points, presence: true, unless: proc { |rating_group|
     rating_group.global == true
   }
 
@@ -21,16 +21,16 @@ class RatingGroup < ActiveRecord::Base
     exercise.update_points!
   end
 
-  after_update :update_evaluation_group_results, if: lambda {|rating_group| rating_group.points_changed? || rating_group.min_points_changed? || rating_group.max_points_changed? || rating_group.global_changed?}
+  after_update :update_evaluation_group_results, if: lambda { |rating_group| rating_group.points_changed? || rating_group.min_points_changed? || rating_group.max_points_changed? || rating_group.global_changed? }
 
   after_initialize do
     begin
-      if self.try(:enable_range_points)
+      if try(:enable_range_points)
         if points > 0
           self.min_points ||= 0
-          self.max_points ||= self.points
+          self.max_points ||= points
         else
-          self.min_points ||= self.points
+          self.min_points ||= points
           self.max_points ||= 0
         end
       else
@@ -47,16 +47,17 @@ class RatingGroup < ActiveRecord::Base
   end
 
   def points_in_range
-    errors.add :points, 'must be between minimum points and maximum points' if self.min_points && self.max_points && ! (self.min_points..self.max_points).include?(self.points)
+    errors.add :points, 'must be between minimum points and maximum points' if self.min_points && self.max_points && ! (self.min_points..self.max_points).include?(points)
   end
 
   private
+
   def update_evaluation_group_results
-    self.evaluation_groups.each(&:update_result!)
+    evaluation_groups.each(&:update_result!)
   end
 
   def create_evaluation_groups
-    self.exercise.submission_evaluations.each do |se|
+    exercise.submission_evaluations.each do |se|
       EvaluationGroup.create_for_submission_evaluation_and_rating_group(se, self)
     end
   end
@@ -69,5 +70,4 @@ class RatingGroup < ActiveRecord::Base
   #                  late deadline:      -50%
   #                  misc. subtractions: -42 points
   #                  misc. bonus:        +21 points
-
 end

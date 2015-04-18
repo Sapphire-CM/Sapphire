@@ -8,48 +8,47 @@ module Sapphire
       attr_reader :assets
       def setup
         if asset.present?
-          @contents = asset.file.read.force_encoding("UTF-8")
+          @contents = asset.file.read.force_encoding('UTF-8')
           @doc = Nokogiri::HTML(@contents)
           @displayable = true
         end
       end
 
-
       def stylesheets
         @doc.css('link[rel=stylesheet]').each do |stylesheet|
           unless stylesheet['href'] =~ EXTERNAL_LINK
-            asset = stylesheet_asset(File.basename(stylesheet['href'] || ""))
-            stylesheet["href"] =  submission_asset_path(asset) if asset.present?
+            asset = stylesheet_asset(File.basename(stylesheet['href'] || ''))
+            stylesheet['href'] =  submission_asset_path(asset) if asset.present?
           end
         end
       end
 
       def headers
-        head_elements = @doc.css("head").dup
-        head_elements.css("link[rel=stylesheet]").each do |stylesheet|
+        head_elements = @doc.css('head').dup
+        head_elements.css('link[rel=stylesheet]').each do |stylesheet|
           unless stylesheet['href'] =~ EXTERNAL_LINK
-            asset = stylesheet_asset(File.basename(stylesheet['href'] || ""))
+            asset = stylesheet_asset(File.basename(stylesheet['href'] || ''))
             stylesheet['href'] =  submission_asset_path(asset) if asset.present?
           end
         end
-        head_elements.search("title").remove
-        head_elements.children().to_s.html_safe
+        head_elements.search('title').remove
+        head_elements.children.to_s.html_safe
       end
 
       def body
-        body = @doc.css("body").dup
+        body = @doc.css('body').dup
         body.css('img').each do |img|
           unless img['src'] =~ EXTERNAL_LINK
-            asset = image_asset(File.basename(img['src'] || ""))
+            asset = image_asset(File.basename(img['src'] || ''))
             img['src'] =  submission_asset_path(asset) if asset.present?
           end
         end
 
         body.css('a[href]').each do |link|
-          link['href'] = submission_html_path(File.basename link['href'] || "") unless link['href'] =~ EXTERNAL_LINK
+          link['href'] = submission_html_path(File.basename link['href'] || '') unless link['href'] =~ EXTERNAL_LINK
         end
 
-        body.children().to_s.html_safe
+        body.children.to_s.html_safe
       end
 
       def asset
@@ -73,11 +72,11 @@ module Sapphire
       end
 
       def stylesheet_asset(identifier)
-        submission.submission_assets.stylesheets.where{lower(file) == my {identifier.downcase}}.first
+        submission.submission_assets.stylesheets.where { lower(file) == my { identifier.downcase } }.first
       end
 
       def image_asset(identifier)
-        submission.submission_assets.images.where{lower(file) == my {identifier.downcase}}.first
+        submission.submission_assets.images.where { lower(file) == my { identifier.downcase } }.first
       end
 
       def displayable?
@@ -85,7 +84,6 @@ module Sapphire
       end
 
       def view_options
-
       end
     end
   end

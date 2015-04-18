@@ -1,32 +1,31 @@
 require 'rails_helper'
 
-RSpec.describe StudentGroupsController, :type => :controller do
+RSpec.describe StudentGroupsController, type: :controller do
   render_views
   include_context 'active_lecturer_session_context'
 
   let!(:term) { @current_account.term_registrations.lecturer.first.term }
-  let!(:tutorial_group) { create(:tutorial_group, term: term)}
-  let(:student_group) {create(:student_group, tutorial_group: tutorial_group)}
+  let!(:tutorial_group) { create(:tutorial_group, term: term) }
+  let(:student_group) { create(:student_group, tutorial_group: tutorial_group) }
 
   let(:student_term_registrations) { create_list(:term_registration, 4, term: term, tutorial_group: tutorial_group) }
 
   let(:valid_attributes) do
     {
-      title: "G4-05",
+      title: 'G4-05',
       term_registration_ids: student_term_registrations.map(&:id)
     }
   end
 
   let(:invalid_attributes) do
     {
-      title: "",
+      title: '',
       term_registration_ids: []
     }
   end
 
-  let(:path_options) { {term_id: term.id, tutorial_group_id: tutorial_group.id} }
-  let(:path_options_with_student_group) { path_options.merge({id: student_group.id})}
-
+  let(:path_options) { { term_id: term.id, tutorial_group_id: tutorial_group.id } }
+  let(:path_options_with_student_group) { path_options.merge(id: student_group.id) }
 
   describe 'GET #index' do
     let!(:student_groups) { create_list(:student_group, 4, tutorial_group: tutorial_group) }
@@ -42,7 +41,7 @@ RSpec.describe StudentGroupsController, :type => :controller do
   describe '#show' do
     let!(:student_term_registrations) { create_list(:term_registration, 4, :student, student_group: student_group, term: term, tutorial_group: tutorial_group) }
     let!(:exercises) { create_list(:exercise, 2, term: term) }
-    let!(:submissions) { exercises.map {|exercise| create(:submission, exercise: exercise, student_group: student_group)} }
+    let!(:submissions) { exercises.map { |exercise| create(:submission, exercise: exercise, student_group: student_group) } }
 
     it 'assigns @student_group' do
       get :show, path_options_with_student_group
@@ -64,7 +63,6 @@ RSpec.describe StudentGroupsController, :type => :controller do
       expect(response).to have_http_status(:success)
       expect(assigns(:student_term_registrations)).to match_array(student_term_registrations)
     end
-
   end
 
   describe '#new' do
@@ -84,7 +82,7 @@ RSpec.describe StudentGroupsController, :type => :controller do
           post :create, path_options.merge(student_group: valid_attributes)
         end.to change(StudentGroup, :count).by 1
 
-        expect(assigns(:student_group).title).to eq("G4-05")
+        expect(assigns(:student_group).title).to eq('G4-05')
         expect(assigns(:student_group).term_registrations).to match_array(student_term_registrations)
       end
     end
@@ -100,7 +98,6 @@ RSpec.describe StudentGroupsController, :type => :controller do
         expect(assigns(:student_group)).to be_a_new(StudentGroup)
         expect(assigns(:student_group).errors).to be_present
       end
-
     end
   end
 
@@ -119,7 +116,7 @@ RSpec.describe StudentGroupsController, :type => :controller do
         put :update, path_options_with_student_group.merge(student_group: valid_attributes)
 
         student_group.reload
-        expect(student_group.title).to eq("G4-05")
+        expect(student_group.title).to eq('G4-05')
         expect(student_group.term_registrations).to match_array(student_term_registrations)
       end
     end
@@ -147,14 +144,14 @@ RSpec.describe StudentGroupsController, :type => :controller do
   end
 
   describe '#search_students' do
-    let!(:student_registrations_in_term) { create_list(:term_registration, 4, :student, term: term, tutorial_group: create(:tutorial_group, term: term))}
+    let!(:student_registrations_in_term) { create_list(:term_registration, 4, :student, term: term, tutorial_group: create(:tutorial_group, term: term)) }
     let(:another_term) { create(:term, course: term.course) }
-    let!(:student_registrations_in_another_term) { create_list(:term_registration, 4, :student, term: another_term, tutorial_group: create(:tutorial_group, term: another_term))}
+    let!(:student_registrations_in_another_term) { create_list(:term_registration, 4, :student, term: another_term, tutorial_group: create(:tutorial_group, term: another_term)) }
 
     it 'assigns @term_registrations with students of given term' do
-      student_registrations_in_term.first(2).flat_map(&:account).each {|a| a.update!(forename: "Ron") }
+      student_registrations_in_term.first(2).flat_map(&:account).each { |a| a.update!(forename: 'Ron') }
 
-      xhr :get, :search_students, path_options.merge(q: "Ron")
+      xhr :get, :search_students, path_options.merge(q: 'Ron')
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term_registrations)).to match_array(student_registrations_in_term.first(2))
@@ -168,9 +165,9 @@ RSpec.describe StudentGroupsController, :type => :controller do
     end
 
     it 'issues search when q parameter is present' do
-      expect(TermRegistration).to receive(:search).with("Ron Burgundy").and_return(TermRegistration.where(id: student_registrations_in_term.first.id))
+      expect(TermRegistration).to receive(:search).with('Ron Burgundy').and_return(TermRegistration.where(id: student_registrations_in_term.first.id))
 
-      xhr :get, :search_students, path_options.merge(q: "Ron Burgundy")
+      xhr :get, :search_students, path_options.merge(q: 'Ron Burgundy')
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term_registrations)).to eq(student_registrations_in_term.first(1))

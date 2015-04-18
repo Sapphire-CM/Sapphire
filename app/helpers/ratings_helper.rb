@@ -31,7 +31,7 @@ module RatingsHelper
     if check = Sapphire::AutomatedCheckers::Central.check_for_identifier(identifier)
       "#{check.title} (#{check.checker_class.title})"
     else
-      "unknown"
+      'unknown'
     end
   end
 end

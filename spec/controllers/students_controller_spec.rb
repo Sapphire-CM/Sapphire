@@ -41,7 +41,7 @@ RSpec.describe StudentsController do
 
   describe 'GET show' do
     let(:tutorial_group) { create(:tutorial_group, term: term) }
-    let(:term_registration) {create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
+    let(:term_registration) { create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
     let(:student_group) { create(:student_group, tutorial_group: tutorial_group) }
 
     it 'assigns the requested exercise_registrations as @exercise_registrations' do

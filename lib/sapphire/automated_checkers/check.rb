@@ -13,7 +13,6 @@ module Sapphire
         end
       end
 
-
       def initialize(identifier, title, check, checker_class)
         @identifier = identifier
         @title = title
@@ -26,14 +25,12 @@ module Sapphire
       end
 
       def identifier
-        "#{@checker_class.to_s.demodulize}::#{@identifier.to_s}"
+        "#{@checker_class.to_s.demodulize}::#{@identifier}"
       end
 
-      def status
-        @status
-      end
+      attr_reader :status
 
-      def check!(checker, universe)
+      def check!(_checker, universe)
         unknown!
 
         begin

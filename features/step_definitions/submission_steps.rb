@@ -7,10 +7,9 @@ Then(/^there should be (\d+) submissions of different student groups$/) do |expe
   real_count.should eq expected_count.to_i
 
   Submission.includes(:student_group_registration)
-    .map {|submission| submission.student_group_registration.student_group_id}.uniq
+    .map { |submission| submission.student_group_registration.student_group_id }.uniq
     .length.should eq real_count
 end
-
 
 Given(/^I have submitted a submission "(.*?)" for "(.*?)"$/) do |filename, exercise_title|
   exercise = FactoryGirl.create(:exercise, title: exercise_title, group_submission: false) unless exercise = Exercise.where(title: exercise_title).first
@@ -24,12 +23,10 @@ Given(/^I have submitted a submission "(.*?)" for "(.*?)"$/) do |filename, exerc
   end
 
   submission = FactoryGirl.create(:submission, exercise: exercise)
-  FactoryGirl.create(:submission_asset, file: File.open(File.join(Rails.root, "spec/support/data", filename)), submission: submission)
+  FactoryGirl.create(:submission_asset, file: File.open(File.join(Rails.root, 'spec/support/data', filename)), submission: submission)
   submission.assign_to_account(@acc)
   submission.save
 end
-
-
 
 Given(/^there are (\d+) submissions for "(.*?)" of term "(.*?)" of course "(.*?)" for tutorial group "(.*?)"$/) do |submission_count, exercise_title, term_title, course_title, tutorial_group_title|
   course = FactoryGirl.create(:course, title: course_title) unless course = Course.where(title: course_title).first

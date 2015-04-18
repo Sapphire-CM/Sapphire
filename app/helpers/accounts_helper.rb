@@ -22,6 +22,6 @@ module AccountsHelper
   end
 
   def account_edit_title(account)
-    "Edit #{current_account == account ? "your account" : "#{account.fullname}'s account"}"
+    "Edit #{current_account == account ? 'your account' : "#{account.fullname}'s account"}"
   end
 end

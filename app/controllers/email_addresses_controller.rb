@@ -33,7 +33,7 @@ class EmailAddressesController < ApplicationController
 
   def update
     if @email_address.update(email_params)
-      redirect_to account_email_addresses_path(account), notice: "Successfully updated email address"
+      redirect_to account_email_addresses_path(account), notice: 'Successfully updated email address'
     else
       render :edit
     end
@@ -45,6 +45,7 @@ class EmailAddressesController < ApplicationController
   end
 
   private
+
   def email_params
     params.require(:email_address).permit(:email)
   end

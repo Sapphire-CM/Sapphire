@@ -6,7 +6,7 @@ class ResultPublicationsController < ApplicationController
 
     @result_publications = @exercise.result_publications
       .joins(:tutorial_group)
-      .includes(tutorial_group: {tutor_term_registrations: :account})
+      .includes(tutorial_group: { tutor_term_registrations: :account })
   end
 
   def update
@@ -14,10 +14,10 @@ class ResultPublicationsController < ApplicationController
     authorize @result_publicaton
 
     if @result_publicaton.update(result_publication_params)
-      msg = if @result_publicaton.previous_changes.keys.include?("published")
-        "Successfully #{@result_publicaton.published? ? "published" : "concealed"} results for #{@result_publicaton.exercise.title} for #{@result_publicaton.tutorial_group.title}"
+      msg = if @result_publicaton.previous_changes.keys.include?('published')
+        "Successfully #{@result_publicaton.published? ? 'published' : 'concealed'} results for #{@result_publicaton.exercise.title} for #{@result_publicaton.tutorial_group.title}"
       else
-        "Successfully updated result publication"
+        'Successfully updated result publication'
       end
 
       NotificationJob.result_publication_notifications(@result_publicaton) if @result_publicaton.published?

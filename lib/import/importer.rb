@@ -59,7 +59,7 @@ module Import::Importer
       end
 
       account = create_student_account row
-      tutorial_group = create_tutorial_group "T#{m[:tutorial]}"
+      tutorial_group = create_tutorial_group m[:tutorial]
       term_registration = create_term_registration row, account, tutorial_group
 
       if import_options.matching_groups.to_sym == :both_matches

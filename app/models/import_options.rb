@@ -8,7 +8,7 @@ class ImportOptions < ActiveRecord::Base
 
   after_initialize do
     self.matching_groups            ||= :first_match
-    self.tutorial_groups_regexp     ||= '\AT(?<tutorial>[\d]+)\z'
+    self.tutorial_groups_regexp     ||= '\A(?<tutorial>T[\d]+)\z'
     self.student_groups_regexp      ||= '\AG(?<tutorial>[\d]+)-(?<student>[\d]+)\z'
     self.column_separator           ||= ';'
     self.quote_char                 ||= '"'

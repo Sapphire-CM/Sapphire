@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   resources :terms, except: [:index] do
     get :points_overview, on: :member
+    post :send_welcome_notifications, on: :member
 
     resource :grading_scale, only: [:edit, :update]
 

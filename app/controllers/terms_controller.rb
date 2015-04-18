@@ -1,6 +1,6 @@
 class TermsController < ApplicationController
   before_action :set_term, only: [:show, :edit, :update, :destroy,
-                                  :points_overview]
+                                  :points_overview, :send_welcome_notifications]
 
   def show
     @tutorial_groups = @term.tutorial_groups
@@ -64,6 +64,11 @@ class TermsController < ApplicationController
 
   def points_overview
     @grading_scale = GradingScaleService.new(@term, @term.term_registrations.students)
+  end
+
+  def send_welcome_notifications
+    NotificationJob.welcome_notifications_for_term(@term)
+    redirect_to term_path(@term), notice: 'Welcome Notifications successfully queued for sending'
   end
 
   private

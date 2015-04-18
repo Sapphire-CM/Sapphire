@@ -6,11 +6,37 @@
 <%= render "form" %>
 
 <hr />
+<div class='panel secondary'>
+  <h4>DANGER ZONE!</h4>
+
+  <p>
+    Send Welcome Notifications to all registered students of this term.
+
+    <% if @term.imports.includes(:import_options).exists?(import_options: { send_welcome_notifications: true }) %>
+      It looks like an import job ALREADY sent the notifications.
+    <% else %>
+      It looks like no import job was configured to send notifications, but somebody else might have triggered this already!
+    <% end %>
+  </p>
+
+  <%= link_to "Send Welcome Notifications",
+    send_welcome_notifications_term_path(@term),
+    method: :post,
+    data: {confirm: "Are you sure?"},
+    class: "small secondary button" %>
+
+</div>
+
+<hr />
 <div class='panel alert callout'>
   <h4>DANGER ZONE!</h4>
 
-  <p>Deleting a Term deletes all associated exercises, tutorial_groups and submissions as well.</p>
+  <p>Deleting a Term deletes all associated exercises, tutorial groups and submissions as well.</p>
 
-  <%= link_to "Delete Term", term_path, method: :delete, data: {confirm: "Are you sure?"}, class: "small alert button" %>
+  <%= link_to "Delete Term",
+    term_path,
+    method: :delete,
+    data: {confirm: "Are you sure?"},
+    class: "small alert button" %>
 
 </div>

@@ -28,6 +28,7 @@ Rails.application.routes.draw do
     resources :students, only: [:index, :show]
 
     resources :imports, except: [:index, :edit] do
+      get :file, on: :member
       get :full_mapping_table, on: :member
       get :results, on: :member
     end

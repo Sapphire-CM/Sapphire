@@ -92,6 +92,7 @@ class ImportsController < ApplicationController
         :quote_char,
         :decimal_separator,
         :thousands_separator,
+        :send_welcome_notifications,
       ],
       import_mapping_attributes: ImportMapping::IMPORTABLE
     )

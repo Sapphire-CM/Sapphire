@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150317233148) do
+ActiveRecord::Schema.define(version: 20150418170929) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -167,13 +167,14 @@ ActiveRecord::Schema.define(version: 20150317233148) do
     t.integer  "matching_groups"
     t.string   "tutorial_groups_regexp"
     t.string   "student_groups_regexp"
-    t.boolean  "headers_on_first_line",  default: true
+    t.boolean  "headers_on_first_line",      default: true
     t.string   "column_separator"
     t.string   "quote_char"
     t.string   "decimal_separator"
     t.string   "thousands_separator"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.boolean  "send_welcome_notifications", default: true
   end
 
   add_index "import_options", ["import_id"], name: "index_import_options_on_import_id", unique: true

@@ -14,11 +14,17 @@ This project is intended to be used to evaluate students during a course-term ba
 * Sidekiq
 * Node.js
     - on the server for assets precompilation
-    - make sure it is part of PATH
+    - make sure it is part of `$PATH`
     - v0.10.35 or above
 * working SMTP server for email delivery
 
+## Useful Links
+
+* [Foundation 4](http://foundation.zurb.com/docs/v/4.3.2/)
+* [Foundation Icon Fonts 3](http://zurb.com/playground/foundation-icon-fonts-3)
+
 ## Contributors
+
 * Matthias Link
 * Thomas Kriechbaumer
 

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Import::Parser do
+RSpec.describe Import::FileParser do
   let(:term) { FactoryGirl.create :term }
   let(:import) { FactoryGirl.create :import, term: term }
   let(:import_service) { ImportService.new(import) }

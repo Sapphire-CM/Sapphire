@@ -1,7 +1,7 @@
 require 'csv'
 
 class ImportService
-  include Import::Parser
+  include Import::FileParser
   include Import::Importer
 
   attr_accessor :import, :import_options, :import_mapping, :import_result
@@ -28,12 +28,12 @@ class ImportService
   end
 
   def headers
-    parse_csv unless @headers
+    parse_import_file unless @parsed
     @headers
   end
 
   def values
-    parse_csv unless @values
+    parse_import_file unless @parsed
     @values
   end
 
@@ -48,12 +48,12 @@ class ImportService
   end
 
   def encoding_error?
-    parse_csv unless @parsed
+    parse_import_file unless @parsed
     @import_result.encoding_error?
   end
 
   def parsing_error?
-    parse_csv unless @parsed
+    parse_import_file unless @parsed
     @import_result.parsing_error?
   end
 end

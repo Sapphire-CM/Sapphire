@@ -29,8 +29,12 @@
           <% end %>
         </td>
         <td>
-          <%= link_to "Show", exercise_submission_path(submission.exercise, submission), class: "small small-12 button" %>
-          <%= link_to "Evaluate", single_evaluation_path(submission, submission_scope: params[:submission_scope], tutorial_group_id: params[:tutorial_group_id]), class: "small  small-12 button" %>
+          <%= link_to "Show", exercise_submission_path(submission.exercise, submission),
+            class: "small small-12 button" %>
+          <%= link_to "Evaluate",
+            single_evaluation_path(submission, submission_scope: params[:submission_scope],
+            tutorial_group_id: params[:tutorial_group_id]),
+            class: "small small-12 button no-bottom-margin" %>
         </td>
       </tr>
       <% end %>

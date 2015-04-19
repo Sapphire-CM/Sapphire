@@ -133,6 +133,24 @@
             </li>
           </ul>
         </div>
+
+        <div class="panel">
+          <h3 class="subheader">Import Settings</h3>
+          <div class="flex-row-center">
+            <div>
+              <div class='row'>
+                <div class='large-12 large-centered text-center'>
+                  <%= ff.label :send_welcome_notifications %>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='text-center'>
+                  <%= ff.check_box :send_welcome_notifications, data: { customforms: 'disabled' } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   <% end %>

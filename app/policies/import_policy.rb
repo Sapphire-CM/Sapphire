@@ -23,6 +23,10 @@ class ImportPolicy < PunditBasePolicy
     authorized?
   end
 
+  def file?
+    authorized?
+  end
+
   def full_mapping_table?
     authorized?
   end

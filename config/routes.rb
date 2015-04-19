@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   resources :terms, except: [:index] do
     get :points_overview, on: :member
+    post :send_welcome_notifications, on: :member
 
     resource :grading_scale, only: [:edit, :update]
 
@@ -28,6 +29,7 @@ Rails.application.routes.draw do
     resources :students, only: [:index, :show]
 
     resources :imports, except: [:index, :edit] do
+      get :file, on: :member
       get :full_mapping_table, on: :member
       get :results, on: :member
     end

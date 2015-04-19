@@ -1,5 +1,5 @@
 class ImportsController < ApplicationController
-  before_action :set_import, only: [:show, :edit, :update, :destroy, :full_mapping_table, :results]
+  before_action :set_import, only: [:show, :edit, :update, :destroy, :file, :full_mapping_table, :results]
 
   def show
     @import = Import.find(params[:id])
@@ -49,6 +49,10 @@ class ImportsController < ApplicationController
     end
   end
 
+  def file
+    send_file @import.file.to_s
+  end
+
   def full_mapping_table
     import_service = ImportService.new(@import)
     @entries = import_service.values
@@ -88,6 +92,7 @@ class ImportsController < ApplicationController
         :quote_char,
         :decimal_separator,
         :thousands_separator,
+        :send_welcome_notifications,
       ],
       import_mapping_attributes: ImportMapping::IMPORTABLE
     )

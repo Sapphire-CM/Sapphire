@@ -1,5 +1,5 @@
-module Import::Parser
-  def parse_csv
+module Import::FileParser
+  def parse_import_file
     csv_options = {
       col_sep: import_options.column_separator,
       quote_char: import_options.quote_char,
@@ -12,7 +12,7 @@ module Import::Parser
     @values = []
 
     load_csv_text.each_with_index do |line, index|
-      values = parse_csv_line(line, csv_options)
+      values = parse_import_line(line, csv_options)
 
       if index == 0 && import_options.headers_on_first_line
         @headers = values
@@ -21,7 +21,7 @@ module Import::Parser
       end
     end
 
-    true
+    @parsed = true
   end
 
   private
@@ -32,9 +32,10 @@ module Import::Parser
     text.split(/\n/)
   rescue Exception => e
     import_result.update! encoding_error: true
-    text = []   end
+    text = []
+  end
 
-  def parse_csv_line(line, csv_options)
+  def parse_import_line(line, csv_options)
     begin
       values = CSV.parse_line(line.strip, csv_options).keep_if(&:present?)
     rescue CSV::MalformedCSVError => e

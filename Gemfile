@@ -12,7 +12,6 @@ gem 'simple_form', '~> 3.0'       # forms
 gem 'devise',      '~> 3.2'       # user authentication
 gem 'squeel',      '~> 1.2'       # easy DSL
 gem 'carrierwave'                 # fileuploads
-gem 'draper'                      # decorators
 gem 'kaminari'                    # pagination
 gem 'flash_render'                # render method with notice/alerts
 gem 'pundit'                      # authorization based on controller actions and policies

@@ -22,6 +22,7 @@
 //= require turbolinks
 //= require jquery.remotipart
 //= require cocoon
+//= require local_time
 //= require vendor
 //= require_tree .
 

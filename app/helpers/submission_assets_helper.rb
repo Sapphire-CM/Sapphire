@@ -6,17 +6,19 @@ module SubmissionAssetsHelper
       end
     else
       case submission_asset.content_type
-      when SubmissionAsset::Mime::NEWSGROUP_POST then
+      when SubmissionAsset::Mime::PDF
+        inline_pdf_asset(submission_asset)
+      when SubmissionAsset::Mime::NEWSGROUP_POST
         inline_newsgroup_post_asset(submission_asset)
-      when SubmissionAsset::Mime::EMAIL then
+      when SubmissionAsset::Mime::EMAIL
         inline_email_asset(submission_asset)
-      when SubmissionAsset::Mime::STYLESHEET then
+      when SubmissionAsset::Mime::STYLESHEET
         inline_css_asset(submission_asset)
-      when SubmissionAsset::Mime::HTML then
+      when SubmissionAsset::Mime::HTML
         inline_html_asset(submission_asset)
-      when SubmissionAsset::Mime::JPEG || SubmissionAsset::Mime::PNG then
+      when SubmissionAsset::Mime::JPEG || SubmissionAsset::Mime::PNG
         inline_image_asset(submission_asset)
-      when SubmissionAsset::Mime::PLAIN_TEXT then
+      when SubmissionAsset::Mime::PLAIN_TEXT
         inline_plain_text_asset(submission_asset)
       else
         content_tag :div, class: 'panel' do
@@ -39,6 +41,10 @@ module SubmissionAssetsHelper
   end
 
   private
+
+  def inline_pdf_asset(submission_asset)
+    render 'submission_assets/pdf_panel', raw_url: submission_asset_path(submission_asset)
+  end
 
   def inline_newsgroup_post_asset(submission_asset)
     render 'submission_assets/code_panel', code: auto_link(inline_code(submission_asset.file.read, :email), sanitize: false, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)

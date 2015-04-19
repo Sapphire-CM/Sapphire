@@ -169,6 +169,19 @@ RSpec.describe ImportsController do
     end
   end
 
+  describe 'GET file' do
+    it 'sends a file' do
+      expect(controller).to receive(:send_file).with(import.file.to_s) {
+        # to prevent a 'missing template' error
+        controller.render nothing: true
+      }
+
+      get :file, term_id: term.id, id: import.id
+
+      expect(response).to have_http_status(:success)
+    end
+  end
+
   describe 'GET full_mapping_table' do
     it 'assigns the requested import as @import' do
       xhr :get, :full_mapping_table, term_id: term.id, id: import.id

@@ -15,6 +15,7 @@ RSpec.describe ImportPolicy do
     it { is_expected.to permit_authorization(:edit) }
     it { is_expected.to permit_authorization(:update) }
     it { is_expected.to permit_authorization(:destroy) }
+    it { is_expected.to permit_authorization(:file) }
     it { is_expected.to permit_authorization(:full_mapping_table) }
     it { is_expected.to permit_authorization(:results) }
   end
@@ -31,6 +32,7 @@ RSpec.describe ImportPolicy do
       it { is_expected.to permit_authorization(:edit) }
       it { is_expected.to permit_authorization(:update) }
       it { is_expected.to permit_authorization(:destroy) }
+      it { is_expected.to permit_authorization(:file) }
       it { is_expected.to permit_authorization(:full_mapping_table) }
       it { is_expected.to permit_authorization(:results) }
     end
@@ -44,6 +46,7 @@ RSpec.describe ImportPolicy do
       it { is_expected.not_to permit_authorization(:edit) }
       it { is_expected.not_to permit_authorization(:update) }
       it { is_expected.not_to permit_authorization(:destroy) }
+      it { is_expected.not_to permit_authorization(:file) }
       it { is_expected.not_to permit_authorization(:full_mapping_table) }
       it { is_expected.not_to permit_authorization(:results) }
     end
@@ -62,6 +65,7 @@ RSpec.describe ImportPolicy do
         it { is_expected.not_to permit_authorization(:edit) }
         it { is_expected.not_to permit_authorization(:update) }
         it { is_expected.not_to permit_authorization(:destroy) }
+        it { is_expected.not_to permit_authorization(:file) }
         it { is_expected.not_to permit_authorization(:full_mapping_table) }
         it { is_expected.not_to permit_authorization(:results) }
       end
@@ -75,6 +79,7 @@ RSpec.describe ImportPolicy do
         it { is_expected.not_to permit_authorization(:edit) }
         it { is_expected.not_to permit_authorization(:update) }
         it { is_expected.not_to permit_authorization(:destroy) }
+        it { is_expected.not_to permit_authorization(:file) }
         it { is_expected.not_to permit_authorization(:full_mapping_table) }
         it { is_expected.not_to permit_authorization(:results) }
       end

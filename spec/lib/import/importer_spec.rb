@@ -2,30 +2,49 @@ require 'rails_helper'
 
 RSpec.describe Import::Importer do
   context 'imports successfully' do
-    { true: 8, false: 0 }.each do |send_welcome_notifications, emails_delivered|
-      it "everything ok - send_welcome_notifications: #{send_welcome_notifications}", sidekiq: :inline do
-        term = FactoryGirl.create :term
-        import = FactoryGirl.create :import, term: term
-        import.reload
-        import.import_options.update! send_welcome_notifications: (send_welcome_notifications == :true)
+    def basic_import_test(new_accounts: 8, new_tutorial_groups: 4, send_welcome_notifications: true, emails_delivered: 8)
+      term = FactoryGirl.create :term
+      import = FactoryGirl.create :import, term: term
+      import.reload
+      import.import_options.update! send_welcome_notifications: send_welcome_notifications
 
+      expect do
         expect do
           expect do
-            expect do
-              ImportJob.perform_later import.id
-              import.reload
-            end.to change(ActionMailer::Base.deliveries, :count).by(emails_delivered)
-          end.to change(TutorialGroup, :count).by(4)
-        end.to change(Account, :count).by(8)
+            ImportJob.perform_later import.id
+            import.reload
 
-        expect(import.import_result.success).to eq(true)
-        expect(import.import_result.import_errors).to be_empty
+            import.import_result.inspect
+            import.import_result.import_errors.inspect
+          end.to change(ActionMailer::Base.deliveries, :count).by(emails_delivered)
+        end.to change(TutorialGroup, :count).by(new_tutorial_groups)
+      end.to change(Account, :count).by(new_accounts)
 
-        Account.all.each do |account|
-          term_registration = TermRegistration.find_by(term: term, account: account, role: 'student')
-          expect(term_registration).to be_present
-        end
+      expect(import.import_result.success).to eq(true)
+      expect(import.import_result.import_errors).to be_empty
+
+      Account.all.each do |account|
+        term_registration = TermRegistration.find_by(term: term, account: account, role: 'student')
+        expect(term_registration).to be_present
       end
+    end
+
+    it 'everything ok - standard', sidekiq: :inline do
+      basic_import_test
+    end
+
+    it 'everything ok - no welcome_notifications', sidekiq: :inline do
+      basic_import_test send_welcome_notifications: false, emails_delivered: 0
+    end
+
+    it 'everything ok - with existing account with email', sidekiq: :inline do
+      existing_account = FactoryGirl.create :account, email: 'owinkler@student.tugraz.at'
+      basic_import_test new_accounts: 7
+    end
+
+    it 'everything ok - with existing account with matriculation_number', sidekiq: :inline do
+      existing_account = FactoryGirl.create :account, matriculation_number: '1434949'
+      basic_import_test new_accounts: 7
     end
 
     it 'with faulty non-matching group regexp', sidekiq: :inline do

@@ -12,9 +12,10 @@
       <%= render "submission_asset_fields", f: sa_f %>
     <% end %>
 
-    <p>
-      <%= link_to_add_association "Add File", f, :submission_assets, class: "small button" %>
-      <%= f.submit @submission.new_record? ? "Upload Submission" : "Update Submission", class: "small button" %>
-    </p>
+    <%= link_to_add_association "Add File", f, :submission_assets, class: "small button" %>
   <% end %>
+
+  <p>
+    <%= f.submit @submission.new_record? ? "Upload Submission" : "Update Submission", class: "small button" %>
+  </p>
 <% end %>

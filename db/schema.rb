@@ -275,10 +275,11 @@ ActiveRecord::Schema.define(version: 20150423104522) do
     t.string   "file"
     t.string   "content_type"
     t.datetime "submitted_at"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.string   "asset_identifier"
     t.string   "import_identifier"
+    t.string   "path",              default: ""
   end
 
   add_index "submission_assets", ["submission_id"], name: "index_submission_assets_on_submission_id"
@@ -318,7 +319,7 @@ ActiveRecord::Schema.define(version: 20150423104522) do
     t.integer  "tutorial_group_id"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
-    t.boolean  "receives_grade",    default: true,  null: false
+    t.boolean  "receives_grade",    default: false, null: false
     t.integer  "role",              default: 0
     t.integer  "student_group_id"
   end

@@ -1,6 +1,7 @@
 <% if submission_assets.any? %>
   <table id='submission_assets_list' class='large-12'>
     <thead>
+      <th>Path</th>
       <th>Filename</th>
       <th>Submitted at</th>
       <th>Submitted by</th>
@@ -8,9 +9,36 @@
       <th></th>
     </thead>
     <tbody>
-      <%= render collection: submission_assets, partial: "student_submissions/submission_asset" %>
+      <% submission_assets.each do |submission_asset| %>
+        <tr>
+          <td>
+            <%= submission_asset.path %>
+          </td>
+          <td>
+            <%= File.basename submission_asset.file.to_s %>
+          </td>
+          <td class="minimum-width">
+            <% if submission_asset.submitted_at.present? %>
+              <%= local_time submission_asset.submitted_at, '%Y-%m-%d %H:%M' %>
+            <% else %>
+              unknown
+            <% end %>
+          </td>
+          <td>
+            <%= submission_asset.submitter.present? ? submission_asset.submitter.fullname : "unknown" %>
+          </td>
+          <td class="text-right">
+            <%= submission_asset.filesize %>
+          </td>
+          <td>
+            <%= link_to foundation_icon(:download),
+              submission_asset_path(submission_asset),
+              target: "_blank" %>
+          </td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
 <% else %>
-  <h5>This submission has no associated files</h5>
+  <h5>This submission has no associated files.</h5>
 <% end %>

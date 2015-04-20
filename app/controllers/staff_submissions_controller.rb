@@ -17,7 +17,6 @@ class StaffSubmissionsController < ApplicationController
     @submissions = scoped_submissions(@tutorial_group, @exercise.submissions)
     @submissions = @submissions.uniq.includes({ exercise_registrations: { term_registration: :account } }, :submission_evaluation, :exercise).load
     @submission_count = @submissions.count
-    @submissions = @submissions.page(params[:page])
   end
 
   def new

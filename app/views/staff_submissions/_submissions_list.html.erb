@@ -4,8 +4,8 @@
       <tr>
         <th>Student</th>
         <th>Submitted at</th>
-        <th>Evaluation Result</th>
         <th>Evaluated at</th>
+        <th>Result</th>
         <th></th>
       </tr>
     </thead>
@@ -13,25 +13,28 @@
       <% submissions.each do |submission| %>
       <tr>
         <td><%= submission_author submission %></td>
-        <td><%= l submission.submitted_at, format: :long %></td>
+        <td class="minimum-width"><%= local_time submission.submitted_at, '%Y-%m-%d %H:%M' %></td>
+        <td class="minimum-width">
+          <% if submission.submission_evaluation.evaluated_at.present? %>
+            <%= local_time submission.submission_evaluation.evaluated_at, '%Y-%m-%d %H:%M' %>
+          <% else %>
+            <em>not evaluated</em>
+          <% end %>
+        </td>
         <td>
-          <% if submission.submission_evaluation.present? %>
+          <% if submission.submission_evaluation.evaluated_at.present? && submission.submission_evaluation.present? %>
             <%= pluralize submission.submission_evaluation.evaluation_result, "point" %>
           <% else %>
-          <em>Not evaluated yet</em>
-
+            <em>not evaluated</em>
           <% end %>
         </td>
         <td>
-          <% if submission.submission_evaluation.evaluated_at.present? %>
-            <%= l submission.submission_evaluation.evaluated_at, format: :long %>
-          <% else %>
-            <em>Not evaluated yet</em>
-          <% end %>
-        </td>
-        <td>
-          <%= link_to "Show", exercise_submission_path(submission.exercise, submission), class: "small small-12 button" %>
-          <%= link_to "Evaluate", single_evaluation_path(submission, submission_scope: params[:submission_scope], tutorial_group_id: params[:tutorial_group_id]), class: "small  small-12 button" %>
+          <%= link_to "Show", exercise_submission_path(submission.exercise, submission),
+            class: "small small-12 button" %>
+          <%= link_to "Evaluate",
+            single_evaluation_path(submission, submission_scope: params[:submission_scope],
+            tutorial_group_id: params[:tutorial_group_id]),
+            class: "small small-12 button no-bottom-margin" %>
         </td>
       </tr>
       <% end %>

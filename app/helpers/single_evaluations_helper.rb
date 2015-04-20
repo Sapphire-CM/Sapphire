@@ -16,7 +16,11 @@ module SingleEvaluationsHelper
       link_to rating.title, single_evaluation_path(evaluation), id: single_evaluation_button_id(evaluation), method: 'put', data: { remote: true }, class: "#{css_class} tiny button expand"
     else
       simple_form_for evaluation.becomes(Evaluation), url: single_evaluation_path(evaluation), remote: true, html: { class: 'single-evaluation-form' } do |f|
-        f.input :value, label: rating.title
+        f.input :value,
+          label: rating.title,
+          placeholder: "#{rating.min_value} upto #{rating.max_value} points",
+          label_html: { title: (rating.description.presence || rating.title) },
+          input_html: { title: (rating.description.presence || rating.title) }
       end
     end
   end

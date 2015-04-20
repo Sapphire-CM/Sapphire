@@ -60,7 +60,10 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :submission, only: [:show, :create, :update], as: :student_submission, controller: "student_submissions"
+    resource :submission, only: [:show, :create, :update], as: :student_submission, controller: "student_submissions" do
+      get :catalog, on: :member
+      post :extract, on: :member
+    end
 
     resources :submissions, controller: "staff_submissions"
     resources :result_publications, only: [:index, :update]

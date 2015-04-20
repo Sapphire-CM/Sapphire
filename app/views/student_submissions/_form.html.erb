@@ -13,6 +13,10 @@
     <% end %>
 
     <%= link_to_add_association "Add File", f, :submission_assets, class: "small button" %>
+
+    <% if @submission.submission_assets.archives.any? %>
+      <%= link_to "Extract archives...", catalog_exercise_student_submission_path(@exercise), class: "small button" %>
+    <% end %>
   <% end %>
 
   <p>

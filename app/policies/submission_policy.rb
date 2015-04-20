@@ -59,4 +59,26 @@ class SubmissionPolicy < PunditBasePolicy
       (record.exercise.late_deadline.present? ? Time.now <= record.exercise.late_deadline : true)
     )
   end
+
+  def catalog?
+    user.admin? ||
+    user.staff_of_term?(record.exercise.term) ||
+    (
+      record.exercise.enable_student_uploads? &&
+      record.exercise.term.course.unlocked? &&
+      (record.exercise.late_deadline.present? ? Time.now <= record.exercise.late_deadline : true) &&
+      record.visible_for_student?(user)
+    )
+  end
+
+  def extract?
+    user.admin? ||
+    user.staff_of_term?(record.exercise.term) ||
+    (
+      record.exercise.enable_student_uploads? &&
+      record.exercise.term.course.unlocked? &&
+      (record.exercise.late_deadline.present? ? Time.now <= record.exercise.late_deadline : true) &&
+      record.visible_for_student?(user)
+    )
+  end
 end

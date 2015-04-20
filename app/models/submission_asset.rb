@@ -11,10 +11,13 @@ class SubmissionAsset < ActiveRecord::Base
   scope :htmls, lambda { where(content_type: Mime::HTML) }
   scope :images, lambda { where { content_type.in(Mime::IMAGES) } }
   scope :pdfs, lambda { where { content_type.in(Mime::PDF) } }
+  scope :archives, lambda { where { content_type.in(Mime::ZIP) } }
 
   scope :for_exercise, lambda { |exercise| joins(:submission).where(submissions: { exercise_id: exercise.id }) }
 
   delegate :submitter, to: :submission
+
+  after_save :set_content_type!
 
   class Mime
     NEWSGROUP_POST = 'text/newsgroup'
@@ -37,5 +40,9 @@ class SubmissionAsset < ActiveRecord::Base
 
   def update_submitted_at
     self.submitted_at = Time.now
+  end
+
+  def set_content_type!
+    update! content_type: MIME::Types.type_for(file.to_s).first.content_type if content_type.blank?
   end
 end

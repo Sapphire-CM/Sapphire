@@ -72,10 +72,18 @@ module Import::Importer
   private
 
   def create_student_account(row)
-    student = Account.find_or_initialize_by(matriculation_number: row[import_mapping.matriculation_number.to_i])
+    if student = Account.find_by(email: row[import_mapping.email.to_i]).presence
+      student.matriculation_number = row[import_mapping.matriculation_number.to_i]
+    elsif student = Account.find_by(matriculation_number: row[import_mapping.matriculation_number.to_i])
+      student.email = row[import_mapping.email.to_i]
+    else
+      student = Account.new
+      student.email = row[import_mapping.email.to_i]
+      student.matriculation_number = row[import_mapping.matriculation_number.to_i]
+    end
+
     student.forename = row[import_mapping.forename.to_i]
     student.surname = row[import_mapping.surname.to_i]
-    student.email = row[import_mapping.email.to_i]
 
     student.password = student.default_password if student.new_record?
 

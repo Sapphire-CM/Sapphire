@@ -1,39 +1,49 @@
 require 'rails_helper'
 
 describe Exercise do
-  let(:course) { create(:course) }
-  let(:term) { create(:term, course: course) }
+  let!(:term) { FactoryGirl.create :term }
+  let!(:tutorial_groups) { FactoryGirl.create_list :tutorial_group, 4, term: term }
+  subject { FactoryGirl.create :exercise, term: term }
+
+  context 'validates deadlines properly' do
+    it 'is not valid if deadline is missing and late_deadline is present' do
+      subject.deadline = nil
+      subject.late_deadline = Time.now
+      expect(subject).not_to be_valid
+    end
+
+    it 'is valid if late_deadline is after deadline' do
+      subject.deadline = Time.now
+      subject.late_deadline = Time.now + 1.day
+      expect(subject).to be_valid
+    end
+
+    it 'is not valid if late_deadline is before deadline' do
+      subject.deadline = Time.now + 1.day
+      subject.late_deadline = Time.now
+      expect(subject).not_to be_valid
+    end
+  end
 
   it 'ensures result publications on create' do
-    FactoryGirl.create_list(:tutorial_group, 4, term: term)
-    exercise = FactoryGirl.create(:exercise, term: term)
-
-    expect(exercise.result_publications.count).to eq(4)
+    expect(subject.result_publications.count).to eq(4)
   end
 
   it 'destroys result publications on delete' do
-    FactoryGirl.create_list(:tutorial_group, 4, term: term)
-    exercise = FactoryGirl.create(:exercise, term: term)
-
+    subject # trigger creation
     expect do
-      exercise.destroy
+      subject.destroy
     end.to change { ResultPublication.count }.by(-4)
   end
 
   it 'is able to fetch result publication for a given tutorial group' do
-    tutorial_groups = FactoryGirl.create_list(:tutorial_group, 4, term: term)
-    exercise = FactoryGirl.create(:exercise, term: term)
-
-    result_publication = exercise.result_publication_for(tutorial_groups[1])
+    result_publication = subject.result_publication_for(tutorial_groups[1])
 
     expect(result_publication).to be_present
     expect(result_publication.tutorial_group).to eq(tutorial_groups[1])
   end
 
   it 'is able to determine result publication status for a given tutorial group' do
-    tutorial_groups = FactoryGirl.create_list(:tutorial_group, 4, term: term)
-    exercise = FactoryGirl.create(:exercise, term: term)
-
-    expect(exercise.result_published_for? tutorial_groups[1]).to eq(false)
+    expect(subject.result_published_for? tutorial_groups[1]).to eq(false)
   end
 end

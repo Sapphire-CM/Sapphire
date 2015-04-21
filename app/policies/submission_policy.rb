@@ -35,7 +35,7 @@ class SubmissionPolicy < PunditBasePolicy
       record.exercise.enable_student_uploads? &&
       record.exercise.term.associated_with?(user) &&
       record.exercise.term.course.unlocked? &&
-      (record.exercise.late_deadline.present? ? Time.now <= record.exercise.late_deadline : true)
+      record.exercise.before_late_deadline?
     )
   end
 
@@ -45,7 +45,7 @@ class SubmissionPolicy < PunditBasePolicy
     (
       record.exercise.enable_student_uploads? &&
       record.exercise.term.course.unlocked? &&
-      (record.exercise.late_deadline.present? ? Time.now <= record.exercise.late_deadline : true) &&
+      record.exercise.before_late_deadline? &&
       record.visible_for_student?(user)
     )
   end
@@ -56,7 +56,7 @@ class SubmissionPolicy < PunditBasePolicy
     (
       record.student_group.students.where(id: user.id).exists? &&
       record.exercise.term.course.unlocked? &&
-      (record.exercise.late_deadline.present? ? Time.now <= record.exercise.late_deadline : true)
+      record.exercise.before_late_deadline?
     )
   end
 
@@ -66,7 +66,7 @@ class SubmissionPolicy < PunditBasePolicy
     (
       record.exercise.enable_student_uploads? &&
       record.exercise.term.course.unlocked? &&
-      (record.exercise.late_deadline.present? ? Time.now <= record.exercise.late_deadline : true) &&
+      record.exercise.before_late_deadline? &&
       record.visible_for_student?(user)
     )
   end
@@ -77,7 +77,7 @@ class SubmissionPolicy < PunditBasePolicy
     (
       record.exercise.enable_student_uploads? &&
       record.exercise.term.course.unlocked? &&
-      (record.exercise.late_deadline.present? ? Time.now <= record.exercise.late_deadline : true) &&
+      record.exercise.before_late_deadline? &&
       record.visible_for_student?(user)
     )
   end

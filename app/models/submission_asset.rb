@@ -19,6 +19,22 @@ class SubmissionAsset < ActiveRecord::Base
 
   after_save :set_content_type!
 
+  EXCLUDED_FILTER = [
+    # no operating system meta data files
+    %r{Thumbs.db}i,
+    %r{desktop.ini}i,
+    %r{.DS_Store}i,
+    %r{\A__MACOSX/}i,
+
+    # no version control files
+    %r{.svn/}i,
+    %r{.git/}i,
+    %r{.hg/}i,
+
+    # no plain folders
+    %r{/$}i,
+  ]
+
   class Mime
     NEWSGROUP_POST = 'text/newsgroup'
     EMAIL = 'text/email'

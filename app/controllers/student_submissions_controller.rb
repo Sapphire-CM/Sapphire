@@ -95,11 +95,11 @@ class StudentSubmissionsController < ApplicationController
     @files_to_extract ||= begin
       list = {}
       params[:submission_assets].each do |id, archive_params|
-        files = archive_params[:files].map { |_, ap| ap[:path] if ap[:extract] == '1' }.compact
-        list[id] = files if files.length > 0
-      end
+        files = archive_params.map { |_, ap| ap[:full_path] if ap[:extract] == '1' }.compact
+        files.reject! { |f| SubmissionAsset::EXCLUDED_FILTER.map { |e| f =~ e }.any? }
 
-      # filter with excluded regexes from view helper
+        list[id] = files if files.length > 0
+      end if params[:submission_assets]
 
       list
     end

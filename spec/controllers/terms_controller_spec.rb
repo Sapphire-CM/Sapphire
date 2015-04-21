@@ -51,7 +51,7 @@ RSpec.describe TermsController do
         get :show, id: term.id
 
         expect(response).to have_http_status(:success)
-        expect(response).not_to have_content('Exercises')
+        expect(response.body).not_to have_content('Exercises')
       end
 
       it 'shows a stand by message' do

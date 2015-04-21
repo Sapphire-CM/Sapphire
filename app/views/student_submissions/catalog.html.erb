@@ -8,7 +8,7 @@ will be submitted for <%= @exercise.title %>:
 
 <%= form_tag extract_exercise_student_submission_path(@exercise) do %>
   <% @archives.each do |archive| %>
-    <div class="panel">
+    <div class="panel archive_extract">
       <h3 class="subheader"><%= File.basename archive.file.to_s %></h3>
 
       <%= fields_for "submission_assets[#{archive.id}]" do |archive_form| %>
@@ -22,6 +22,11 @@ will be submitted for <%= @exercise.title %>:
           <% end %>
         <% end %>
       <% end %>
+
+      <span>
+        <%= link_to 'Check all', '#', class: 'check_all' %> |
+        <%= link_to 'Uncheck all', '#', class: 'uncheck_all' %>
+      </span>
     </div>
   <% end %>
 

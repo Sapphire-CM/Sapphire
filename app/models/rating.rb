@@ -22,9 +22,8 @@ class Rating < ActiveRecord::Base
 
   scope :automated_ratings, lambda { where { !automated_checker_identifier.nil? && automated_checker_identifier != '' } }
 
-  def initialize(*args)
-    super *args
-    self.multiplication_factor ||= 1.0
+  after_initialize do
+    self.multiplication_factor ||= 1.0 if attribute_present? :multiplication_factor
   end
 
   def self.new_from_type(params)

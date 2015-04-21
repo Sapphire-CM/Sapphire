@@ -37,8 +37,7 @@ class Account < ActiveRecord::Base
 
   scope :admins, lambda { where(admin: true) }
 
-  def initialize(*args)
-    super *args
+  after_initialize do
     self.options ||= {}
   end
 

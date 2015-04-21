@@ -67,8 +67,8 @@ Rails.application.routes.draw do
     resource :results, controller: 'student_results', as: :student_results, only: :show
   end
 
+  resources :submission_assets, only: [:show]
   resources :submission_viewers, only: [:show]
-  resources :submission_assets, only: [:show, :new, :create]
   resources :single_evaluations, only: [:show, :update]
 
   authenticate :account, lambda { |u| u.admin? } do

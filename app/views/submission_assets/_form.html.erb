@@ -1,5 +1,0 @@
-<%= simple_form_for @submission_asset, remote: true do |f| %>
-  <%= f.association :submission, as: :hidden %>
-  <%= f.input :file %>
-  <%= f.submit class: "small button" %>
-<% end %>

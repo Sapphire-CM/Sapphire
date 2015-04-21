@@ -10,6 +10,27 @@ describe ExerciseRegistration do
   it { is_expected.to validate_presence_of(:submission) }
   it { is_expected.to validate_numericality_of(:points).only_integer }
 
+  context 'uniqueness validation' do
+    context 'for solitary submission' do
+      it 'is uniqu' do
+        term = FactoryGirl.create :term
+        exercise = FactoryGirl.create :exercise, term: term
+        tutorial_group = FactoryGirl.create :tutorial_group, term: term
+        account = FactoryGirl.create :account
+        term_registration = FactoryGirl.create :term_registration, :student, account: account
+        submission = FactoryGirl.create :submission, exercise: exercise, submitter: account
+
+        ExerciseRegistration.create! exercise: exercise, term_registration: term_registration, submission: submission
+        subject = ExerciseRegistration.new exercise: exercise, term_registration: term_registration, submission: submission
+        expect(subject.save).to eq(false)
+      end
+    end
+
+    context 'for group submissions' do
+      it 'needs to be implemented'
+    end
+  end
+
   context 'submission points' do
     let(:submission) do
       sub = create :submission

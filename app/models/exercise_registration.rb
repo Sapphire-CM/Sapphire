@@ -8,6 +8,8 @@ class ExerciseRegistration < ActiveRecord::Base
   validates :submission, presence: true
   validates :points, numericality: { only_integer: true }, allow_nil: true
 
+  validates :exercise_id, uniqueness: { scope: [:term_registration_id, :submission_id] }
+
   before_create :update_points
   after_save :update_term_registration_points, if: :points_changed?
 

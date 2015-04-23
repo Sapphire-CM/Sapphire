@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150418170929) do
+ActiveRecord::Schema.define(version: 20150423104522) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20150418170929) do
     t.integer  "failed_attempts",        default: 0
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.boolean  "admin",                  default: false
+    t.boolean  "admin",                  default: false, null: false
   end
 
   add_index "accounts", ["email"], name: "index_accounts_on_email", unique: true
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20150418170929) do
     t.text     "description"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.boolean  "locked",      default: true
+    t.boolean  "locked",      default: true, null: false
   end
 
   add_index "courses", ["title"], name: "index_courses_on_title", unique: true
@@ -73,14 +73,14 @@ ActiveRecord::Schema.define(version: 20150418170929) do
   add_index "evaluation_groups", ["submission_evaluation_id"], name: "index_evaluation_groups_on_submission_evaluation_id"
 
   create_table "evaluations", force: :cascade do |t|
-    t.boolean  "checked"
+    t.boolean  "checked",               default: false, null: false
     t.integer  "rating_id"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.string   "type"
     t.integer  "value"
     t.integer  "evaluation_group_id"
-    t.boolean  "checked_automatically"
+    t.boolean  "checked_automatically", default: false, null: false
   end
 
   add_index "evaluations", ["evaluation_group_id"], name: "index_evaluations_on_evaluation_group_id"
@@ -102,23 +102,22 @@ ActiveRecord::Schema.define(version: 20150418170929) do
   create_table "exercises", force: :cascade do |t|
     t.integer  "term_id"
     t.string   "title"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.text     "description"
     t.datetime "deadline"
     t.datetime "late_deadline"
-    t.boolean  "enable_max_total_points"
+    t.boolean  "enable_max_total_points",      default: false, null: false
     t.integer  "max_total_points"
     t.integer  "row_order"
-    t.boolean  "group_submission"
+    t.boolean  "group_submission",             default: false, null: false
     t.integer  "points"
-    t.boolean  "enable_min_required_points"
+    t.boolean  "enable_min_required_points",   default: false, null: false
     t.integer  "min_required_points"
     t.string   "submission_viewer_identifier"
-    t.boolean  "allow_student_uploads"
     t.integer  "maximum_upload_size"
-    t.boolean  "enable_student_uploads",       default: true
-    t.boolean  "enable_max_upload_size"
+    t.boolean  "enable_student_uploads",       default: true,  null: false
+    t.boolean  "enable_max_upload_size",       default: false, null: false
     t.integer  "visible_points"
   end
 
@@ -167,23 +166,23 @@ ActiveRecord::Schema.define(version: 20150418170929) do
     t.integer  "matching_groups"
     t.string   "tutorial_groups_regexp"
     t.string   "student_groups_regexp"
-    t.boolean  "headers_on_first_line",      default: true
+    t.boolean  "headers_on_first_line",      default: true, null: false
     t.string   "column_separator"
     t.string   "quote_char"
     t.string   "decimal_separator"
     t.string   "thousands_separator"
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
-    t.boolean  "send_welcome_notifications", default: true
+    t.boolean  "send_welcome_notifications", default: true, null: false
   end
 
   add_index "import_options", ["import_id"], name: "index_import_options_on_import_id", unique: true
 
   create_table "import_results", force: :cascade do |t|
     t.integer  "import_id"
-    t.boolean  "success",                     default: false
-    t.boolean  "encoding_error",              default: false
-    t.boolean  "parsing_error",               default: false
+    t.boolean  "success",                     default: false, null: false
+    t.boolean  "encoding_error",              default: false, null: false
+    t.boolean  "parsing_error",               default: false, null: false
     t.integer  "total_rows"
     t.integer  "processed_rows"
     t.integer  "imported_students"
@@ -210,13 +209,13 @@ ActiveRecord::Schema.define(version: 20150418170929) do
     t.integer  "exercise_id"
     t.string   "title"
     t.integer  "points"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.text     "description"
-    t.boolean  "global"
+    t.boolean  "global",              default: false, null: false
     t.integer  "min_points"
     t.integer  "max_points"
-    t.boolean  "enable_range_points"
+    t.boolean  "enable_range_points", default: false, null: false
     t.integer  "row_order"
   end
 
@@ -243,7 +242,7 @@ ActiveRecord::Schema.define(version: 20150418170929) do
   create_table "result_publications", force: :cascade do |t|
     t.integer  "exercise_id"
     t.integer  "tutorial_group_id"
-    t.boolean  "published",         default: false
+    t.boolean  "published",         default: false, null: false
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
   end
@@ -254,7 +253,7 @@ ActiveRecord::Schema.define(version: 20150418170929) do
 
   create_table "services", force: :cascade do |t|
     t.integer  "exercise_id"
-    t.boolean  "active",      default: false
+    t.boolean  "active",      default: false, null: false
     t.string   "type"
     t.text     "properties"
     t.datetime "created_at",                  null: false
@@ -289,10 +288,10 @@ ActiveRecord::Schema.define(version: 20150418170929) do
     t.integer  "evaluator_id"
     t.string   "evaluator_type"
     t.datetime "evaluated_at"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "evaluation_result"
-    t.boolean  "plagiarized"
+    t.boolean  "plagiarized",       default: false, null: false
   end
 
   add_index "submission_evaluations", ["evaluator_id"], name: "index_submission_evaluations_on_evaluator_id"
@@ -319,7 +318,7 @@ ActiveRecord::Schema.define(version: 20150418170929) do
     t.integer  "tutorial_group_id"
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
-    t.boolean  "receives_grade"
+    t.boolean  "receives_grade",    default: true,  null: false
     t.integer  "role",              default: 0
     t.integer  "student_group_id"
   end

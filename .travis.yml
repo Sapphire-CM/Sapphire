@@ -1,7 +1,7 @@
+language: ruby
+
 notifications:
   email: false
-
-language: ruby
 
 cache: bundler
 
@@ -9,7 +9,7 @@ sudo: false
 
 rvm:
   - 2.1.1 # current production
-  - 2.2.0
+  - 2.2.2
 
 env:
   - DB=sqlite

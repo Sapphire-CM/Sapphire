@@ -68,11 +68,11 @@ module Sapphire
         success = true
         @files.values.each do |file|
           stylesheets.each do |submission_asset|
-            if file.css("link[href='#{File.basename(submission_asset.file.to_s)}']").empty?
-              success = false
-              failed!
-              break
-            end
+            next if file.css("link[href='#{File.basename(submission_asset.file.to_s)}']").present?
+
+            success = false
+            failed!
+            break
           end
 
           break unless success

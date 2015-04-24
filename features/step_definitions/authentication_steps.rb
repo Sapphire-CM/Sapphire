@@ -1,5 +1,5 @@
 def ensure_logged_out!
-  unless @acc.nil?
+  if @acc.present?
     visit destroy_account_session_path
     @acc = nil
   end
@@ -20,21 +20,18 @@ Given(/^I am not logged in$/) do
 end
 
 Given(/^I am logged in$/) do
-  unless @acc.nil?
-    visit destroy_account_session_path
-    @acc = nil
-  end
-
   @acc = FactoryGirl.create(:account)
-
-  sign_in(@acc)
+  sign_in @acc
 end
 
 Given(/^I am logged in as an? (student|admin)$/) do |role|
   sign_in case role
-  when 'student'  then FactoryGirl.create(:account, :student)
-  when 'lecturer' then FactoryGirl.create(:account, :lecturer)
-  when 'admin'    then FactoryGirl.create(:account, :admin)
+  when 'student'
+    FactoryGirl.create(:account, :student)
+  when 'lecturer'
+    FactoryGirl.create(:account, :lecturer)
+  when 'admin'
+    FactoryGirl.create(:account, :admin)
   end
 end
 
@@ -44,9 +41,9 @@ Given(/^I am logged in as a ([^\s]*?) for course "(.*?)"$/) do |role, course_tit
   account = FactoryGirl.create(:account)
 
   case role
-  when 'lecturer' then
+  when 'lecturer'
     FactoryGirl.create(:lecturer_registration, course: course, lecturer: account)
-  when 'student' then
+  when 'student'
     term = FactoryGirl.create(:term, course: course)
     tut_group = FactoryGirl.create(:tutorial_group, term: term)
     student_group = FactoryGirl.create(:student_group, term: term)

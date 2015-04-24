@@ -18,11 +18,8 @@ class WebsiteFetcherService < Service
 
       file_list_page = Mechanize.new.get(url)
 
-      page_links = file_list_page.links.select { |l| l.href !~ /\/$/ }
-
-      regex = /#{identifier}\/inm\//
-
-      matching_links = page_links.select { |l| l.href =~ regex }
+      page_links = file_list_page.links.select { |l| l.href !~ %r{/$} }
+      matching_links = page_links.select { |l| l.href =~ %r{#{identifier}/inm/} }
 
       if matching_links.any?
         matching_links
@@ -54,19 +51,19 @@ class WebsiteFetcherService < Service
 
         links.each do |link|
           import_id = link.href
-          unless submission.submission_assets.where(import_identifier: import_id).exists?
-            download = link.click
+          next if submission.submission_assets.where(import_identifier: import_id).exists?
 
-            submission_asset = SubmissionAsset.new(import_identifier: import_id, content_type: content_type_for_download(download))
+          download = link.click
 
-            path = File.join(dir, link.href)
-            FileUtils.mkdir_p(File.dirname(path))
+          submission_asset = SubmissionAsset.new(import_identifier: import_id, content_type: content_type_for_download(download))
 
-            download.save!(path)
+          path = File.join(dir, link.href)
+          FileUtils.mkdir_p(File.dirname(path))
 
-            submission_asset.file = File.open(path)
-            submission.submission_assets << submission_asset
-          end
+          download.save!(path)
+
+          submission_asset.file = File.open(path)
+          submission.submission_assets << submission_asset
         end
       end
     end

@@ -5,8 +5,9 @@ class Service < ActiveRecord::Base
 
   has_one :term, through: :exercise
 
-  validates_presence_of :exercise_id
-  validates_exclusion_of :type, in: %w( Service )
+  validates :exercise_id, presence: true
+  validates :type, exclusion: { in: %w(Service) }
+
   scope :active, lambda { where(active: true) }
 
   def self.service_classes

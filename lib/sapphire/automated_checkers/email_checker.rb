@@ -161,7 +161,7 @@ module Sapphire
 
       check :line_length, 'Line length is below 76 characters' do
         @extract_body.call.to_s.split(/\n/).each do |line|
-          next if line =~ /(http|https|ftp|news):\/\//
+          next if line =~ %r{(http|https|ftp|news)://}
 
           if line.length >= 76
             failed!

@@ -3,15 +3,15 @@ module Sapphire
     class Ex4HTMLViewer < Base
       include Rails.application.routes.url_helpers
 
-      EXTERNAL_LINK = /^\s*(https?:\/\/|mailto\:|\#|tel\:)/
+      EXTERNAL_LINK = %r{^\s*(https?://|mailto:|#|tel:)}
 
       attr_reader :assets
       def setup
-        if asset.present?
-          @contents = asset.file.read.force_encoding('UTF-8')
-          @doc = Nokogiri::HTML(@contents)
-          @displayable = true
-        end
+        return if asset.blank?
+
+        @contents = asset.file.read.force_encoding('UTF-8')
+        @doc = Nokogiri::HTML(@contents)
+        @displayable = true
       end
 
       def stylesheets

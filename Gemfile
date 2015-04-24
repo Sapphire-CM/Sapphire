@@ -68,7 +68,6 @@ group :development do
   gem 'guard-sidekiq'
 
   gem 'spring'                    # application preloader for development environments
-  gem 'spring-commands-cucumber'  # adding cucumber command to spring
   gem 'spring-commands-rspec'     # adding rspec command to spring
   gem 'spring-commands-sidekiq'   # adding sidekiq command to spring
 
@@ -95,13 +94,9 @@ group :development do
 end
 
 group :test do
-  gem 'cucumber'
-  gem 'cucumber-rails', require: false
-
   gem 'rspec-rails'
 
   gem 'guard-rspec'
-  gem 'guard-cucumber'
 
   gem 'shoulda-matchers'
 

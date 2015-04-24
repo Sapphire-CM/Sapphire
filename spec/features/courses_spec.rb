@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Courses' do
+RSpec.describe 'Courses Feature' do
   context 'student' do
     let(:course) { FactoryGirl.create(:course) }
     let(:term) { FactoryGirl.create(:term, course: course) }

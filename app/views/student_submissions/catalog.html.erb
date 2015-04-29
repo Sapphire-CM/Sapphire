@@ -1,0 +1,28 @@
+<% title 'Extract Uploaded Archive' %>
+
+<p>
+Your submission contains ZIP archives. Please choose the files you want to
+extract. The original ZIP file will be removed and only the extracted files
+will be submitted for <%= @exercise.title %>:
+</p>
+
+<%= form_tag extract_exercise_student_submission_path(@exercise) do %>
+  <% @archives.each do |archive| %>
+    <div class="panel">
+      <h3 class="subheader"><%= File.basename archive.file.to_s %></h3>
+
+      <%= fields_for "submission_assets[#{archive.id}]" do |archive_form| %>
+        <% extract_filelist(archive.file.to_s).each_with_index do |entry, index| %>
+          <%= archive_form.fields_for "file_#{index}" do |file_form| %>
+            <%= hidden_field_tag "#{file_form.object_name}[full_path]", entry.first %>
+            <%= file_form.label "extract" do %>
+              <%= file_form.check_box "extract" %> <%= entry.first %> (<%= entry.last %> bytes)
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= submit_tag 'Extract', class: 'button' %>
+<% end %>

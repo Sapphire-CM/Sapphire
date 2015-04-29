@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 module SingleEvaluationsHelper
   def single_evaluation_input(evaluation)
     rating = evaluation.rating
@@ -64,6 +62,12 @@ module SingleEvaluationsHelper
 
   def single_evaluation_button_id(evaluation)
     "evaluation_#{evaluation.id}"
+  end
+
+  def single_evaluation_asset_name(submission_asset)
+    asset_name = File.basename(submission_asset.file.to_s)
+    asset_name.prepend "#{submission_asset.path}/" if submission_asset.path.presence
+    shorten(asset_name, 60)
   end
 
   private

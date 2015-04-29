@@ -5,16 +5,34 @@ class SubmissionAsset < ActiveRecord::Base
   validates :submission, presence: true
   validates :file, presence: true
 
-  before_save :update_submitted_at, if: :file_changed?
+  before_save :set_submitted_at, if: :file_changed?
+  before_save :set_content_type, if: :file_changed?
 
   scope :stylesheets, lambda { where(content_type: Mime::STYLESHEET) }
   scope :htmls, lambda { where(content_type: Mime::HTML) }
   scope :images, lambda { where { content_type.in(Mime::IMAGES) } }
   scope :pdfs, lambda { where { content_type.in(Mime::PDF) } }
+  scope :archives, lambda { where { content_type.in(Mime::ZIP) } }
 
   scope :for_exercise, lambda { |exercise| joins(:submission).where(submissions: { exercise_id: exercise.id }) }
 
   delegate :submitter, to: :submission
+
+  EXCLUDED_FILTER = [
+    # no operating system meta data files
+    %r{Thumbs.db}i,
+    %r{desktop.ini}i,
+    %r{.DS_Store}i,
+    %r{\A__MACOSX/}i,
+
+    # no version control files
+    %r{.svn/}i,
+    %r{.git/}i,
+    %r{.hg/}i,
+
+    # no plain folders
+    %r{/$}i,
+  ]
 
   class Mime
     NEWSGROUP_POST = 'text/newsgroup'
@@ -35,7 +53,11 @@ class SubmissionAsset < ActiveRecord::Base
     file.file.try(:size) || 0
   end
 
-  def update_submitted_at
+  def set_submitted_at
     self.submitted_at = Time.now
+  end
+
+  def set_content_type
+    self.content_type = MIME::Types.type_for(file.to_s).first.content_type
   end
 end

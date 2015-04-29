@@ -39,6 +39,7 @@ gem 'rails_autolink'              # autolinking submitted newsgroup-posts and em
 gem 'css_parser'                  # for parsing css files
 gem 'mechanize'                   # grabing inm websites
 gem 'nokogiri'                    # for parsing HTML-Files
+gem 'rubyzip'                     # handling submission ZIP archives
 
 gem 'cocoon'                      # for nested upload forms
 
@@ -115,8 +116,6 @@ group :test do
   gem 'poltergeist'               # PhantomJS, headless Webkit
   # gem 'selenium-webdriver'      # Selenium, Firefox webdriver
   # gem 'capybara-webkit'         # Webkit headless webdriver
-
-  gem 'rubyzip'
 end
 
 group :development, :test do

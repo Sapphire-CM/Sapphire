@@ -27,11 +27,35 @@ class Exercise < ActiveRecord::Base
   validates :min_required_points, presence: true, if: :enable_min_required_points
   validates :max_total_points, presence: true, if: :enable_max_total_points
   validates :maximum_upload_size, presence: true, if: :enable_max_upload_size
+  validates :deadline, presence: true, if: lambda { |e| late_deadline.present? }
+  validate :deadlines_order
 
   before_save :update_points, if: lambda { |exercise| exercise.enable_max_total_points_changed? || exercise.max_total_points_changed? }
   after_create :ensure_result_publications
   after_save :update_term_points, if: :points_changed?
   after_save :recalculate_term_registrations_results, if: lambda { |exercise| exercise.enable_min_required_points_changed? || exercise.min_required_points_changed? || exercise.points_changed? }
+
+  def before_deadline?
+    deadline.present? ? Time.now <= deadline : true
+  end
+
+  def before_late_deadline?
+    late_deadline.present? ? Time.now <= late_deadline : before_deadline?
+  end
+
+  def past_deadline?
+    deadline.present? ? Time.now > deadline : false
+  end
+
+  def past_late_deadline?
+    late_deadline.present? ? Time.now > late_deadline : false
+  end
+
+  def within_late_submission_period?
+    (deadline.present? && late_deadline.present?) ?
+      Time.now > deadline && Time.now <= late_deadline :
+      false
+  end
 
   def update_points
     self.points = rating_groups(true).map { |rg| rg.max_points || rg.points }.compact.sum || 0
@@ -77,5 +101,11 @@ class Exercise < ActiveRecord::Base
     term.tutorial_groups.each do |tutorial_group|
       ResultPublication.find_or_create_by(exercise: self, tutorial_group: tutorial_group)
     end
+  end
+
+  def deadlines_order
+   if deadline.present? && late_deadline.present? && late_deadline < deadline
+     errors.add(:late_deadline, 'must be chronological after deadline')
+   end
   end
 end

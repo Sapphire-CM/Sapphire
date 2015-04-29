@@ -9,7 +9,9 @@ AllCops:
     - config/**/*
     - db/**/*
     - public/**/*
+    - uploads/**/*
     - tmp/**/*
+    - features/**/*
     - spec/spec_helper.rb
     - spec/rails_helper.rb
     - !ruby/regexp /old_and_unused\.rb$/
@@ -23,6 +25,15 @@ Metrics/LineLength:
   Enabled: false
 
 Metrics/MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
   Enabled: false
 
 Lint/EndAlignment:

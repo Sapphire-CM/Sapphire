@@ -134,8 +134,6 @@ class NewsgroupFetcherService < Service
 
     if possible_submitters.size == 1
       possible_submitters.first
-    else
-      nil
     end
   end
 end

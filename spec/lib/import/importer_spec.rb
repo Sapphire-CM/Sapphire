@@ -38,12 +38,12 @@ RSpec.describe Import::Importer do
     end
 
     it 'everything ok - with existing account with email', sidekiq: :inline do
-      existing_account = FactoryGirl.create :account, email: 'owinkler@student.tugraz.at'
+      FactoryGirl.create :account, email: 'owinkler@student.tugraz.at'
       basic_import_test new_accounts: 7
     end
 
     it 'everything ok - with existing account with matriculation_number', sidekiq: :inline do
-      existing_account = FactoryGirl.create :account, matriculation_number: '1434949'
+      FactoryGirl.create :account, matriculation_number: '1434949'
       basic_import_test new_accounts: 7
     end
 

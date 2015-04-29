@@ -53,16 +53,15 @@ end
 
 def import_email(email, exercise)
   submission_asset = SubmissionAsset.for_exercise(exercise).find_by_import_identifier(email.message_id)
+  return if submission_asset.blank?
 
-  unless submission_asset.present?
-    submitter_registration = submitter_for_email(email, exercise)
+  submitter_registration = submitter_for_email(email, exercise)
 
-    if submitter_registration.present?
-      import_submission_for_submitter!(exercise, submitter_registration, email.to_s, email)
-    else
-      # unkown submitter
-      create_unkown_submission!(exercise, email.to_s, email)
-    end
+  if submitter_registration.present?
+    import_submission_for_submitter!(exercise, submitter_registration, email.to_s, email)
+  else
+    # unkown submitter
+    create_unkown_submission!(exercise, email.to_s, email)
   end
 end
 
@@ -96,8 +95,6 @@ def submitter_for_email(parsed_email, exercise)
 
   if possible_submitters.size == 1
     possible_submitters.first
-  else
-    nil
   end
 end
 

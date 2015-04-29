@@ -43,7 +43,7 @@ class AccountsController < ApplicationController
   end
 
   def account_params
-    params_everybody = [
+    permitted_params = [
       :options
     ]
 
@@ -59,10 +59,9 @@ class AccountsController < ApplicationController
       :password_confirmation
     ]
 
-    permitted_params = params_everybody.dup
     permitted_params << params_password.dup if params[:account] && params[:account][:password].present?
     permitted_params << params_admin.dup if current_account.admin?
 
-    p = params.require(:account).permit(permitted_params)
+    params.require(:account).permit(permitted_params)
   end
 end

@@ -17,11 +17,11 @@ module Sapphire
 
       def register(*args)
         args.each do |checker|
-          if checker.ancestors.include? Base
-            @registered_checkers[checker.title.to_sym] = checker
-            checker.checks.each do |check|
-              @registered_checks[check.identifier] = check
-            end
+          next unless checker.ancestors.include? Base
+
+          @registered_checkers[checker.title.to_sym] = checker
+          checker.checks.each do |check|
+            @registered_checks[check.identifier] = check
           end
         end
       end
@@ -60,12 +60,12 @@ module Sapphire
 
         submission.submission_assets.each do |asset|
           assets_checkers_to_run.each do |checker, ratings|
-            if checker.asset_identifier? asset.asset_identifier
-              if checker.checks_asset_files? && checker.content_type?(asset.content_type)
-                run_checker_with_subject_submission_and_ratings(checker, File.open(asset.file.path), submission, ratings)
-              elsif checker.checks_assets?
-                run_checker_with_subject_submission_and_ratings(checker, asset, submission, ratings)
-              end
+            next unless checker.asset_identifier? asset.asset_identifier
+
+            if checker.checks_asset_files? && checker.content_type?(asset.content_type)
+              run_checker_with_subject_submission_and_ratings(checker, File.open(asset.file.path), submission, ratings)
+            elsif checker.checks_assets?
+              run_checker_with_subject_submission_and_ratings(checker, asset, submission, ratings)
             end
           end
         end

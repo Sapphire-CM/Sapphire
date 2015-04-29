@@ -217,13 +217,11 @@ class ExcelSpreadsheetExport < Export
         submission = student_group.submissions.find_by(exercise: exercise)
 
         results << if submission.present?
-                     submission.submission_evaluation.evaluation_result
-                   else
-                     'na'
+          submission.submission_evaluation.evaluation_result
+        else
+          'na'
         end
       end
-
-      worksheet_row = index + 4
 
       worksheet.write next_row, 0, "#{index + 1} #{exercise.title}", styles[:title_row_left]
       worksheet.write_row same_row, 1, results, styles[:result_cell]
@@ -279,8 +277,6 @@ class ExcelSpreadsheetExport < Export
       term_registrations.each do |term_registration|
         results << exercise_result(term_registration, exercise)
       end
-
-      worksheet_row = index + 4
 
       worksheet.write next_row, 0, "#{index + 1} #{exercise.title}", styles[:title_row_left]
       worksheet.write_row same_row, 1, results, styles[:result_cell]
@@ -341,23 +337,22 @@ class ExcelSpreadsheetExport < Export
     exercise.submissions.for_tutorial_group(tutorial_group).includes(key_paths).joins(key_paths).each do |sub|
       se = sub.submission_evaluation
       student_group = sub.student_group
+      next if student_group.blank?
 
-      if student_group.present?
-        stud_results[student_group] = se.evaluation_result
+      stud_results[student_group] = se.evaluation_result
 
-        se.evaluation_groups.each do |eg|
-          stud_rg_eg[student_group][eg.rating_group] = eg.points
+      se.evaluation_groups.each do |eg|
+        stud_rg_eg[student_group][eg.rating_group] = eg.points
 
-          eg.evaluations.each do |ev|
-            stud_rat_ev[student_group][ev.rating] = if ev.is_a? BinaryEvaluation
-              if ev.value.to_i == 1
-                'x'
-              else
-                ''
-              end
+        eg.evaluations.each do |ev|
+          stud_rat_ev[student_group][ev.rating] = if ev.is_a? BinaryEvaluation
+            if ev.value.to_i == 1
+              'x'
             else
-              ev.value || ''
+              ''
             end
+          else
+            ev.value || ''
           end
         end
       end

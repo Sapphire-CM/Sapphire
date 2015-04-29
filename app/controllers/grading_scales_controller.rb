@@ -20,13 +20,11 @@ class GradingScalesController < ApplicationController
   def term_params
     params.require(:term).permit(grading_scale: [[]]).tap do |whitelisted|
       whitelisted[:grading_scale] = params[:term][:grading_scale].map do |scale|
-        if scale.is_a?(Array) && scale.length == 2
-          scale[0] = scale[0].to_s
-          scale[1] = scale[1].to_i
-          scale.reverse
-        else
-          nil
-        end
+        next unless scale.is_a?(Array) && scale.length == 2
+
+        scale[0] = scale[0].to_s
+        scale[1] = scale[1].to_i
+        scale.reverse
       end.compact
     end
   end

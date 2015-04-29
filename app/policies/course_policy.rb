@@ -5,7 +5,7 @@ class CoursePolicy < PunditBasePolicy
         Course.all
       else
         Course.associated_with(user).includes(:terms).unlocked
-       end
+      end
     end
   end
 

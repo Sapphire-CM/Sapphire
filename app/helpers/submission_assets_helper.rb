@@ -2,7 +2,7 @@ module SubmissionAssetsHelper
   def inline_submission_asset(submission_asset)
     unless File.exist?(submission_asset.file.to_s)
       content_tag :div, class: 'panel' do
-        content = '<strong>Cannot display this asset, as the associated file seems to be missing</strong> '.html_safe
+        '<strong>Cannot display this asset, as the associated file seems to be missing</strong> '.html_safe
       end
     else
       case submission_asset.content_type

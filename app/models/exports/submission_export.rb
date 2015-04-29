@@ -67,9 +67,8 @@ class SubmissionExport < Export
         entry.extract(extraction_path)
       end
     end
-  rescue => e
-    puts "zip #{zip_path} could not be extracted, hardlinking original file"
-
+  rescue
+    # zip could not be extracted, hardlinking original file instead
     FileUtils.rm_r(extraction_dir)
     hardlink_file(zip_path, File.join(extraction_dir, File.basename(zip_path)))
   end
@@ -114,12 +113,18 @@ class SubmissionExport < Export
 
   def value_for_placeholder(placeholder, submission_asset)
     value = case placeholder
-    when 'student_group' then submission_asset.submission.student_group.try(:title)
-    when 'exercise' then submission_asset.submission.exercise.try(:title)
-    when 'av_grade' then average_grade_for(submission_asset.submission.term_registrations).to_s
-    when 'course' then term.course.title
-    when 'term' then term.title
-    when 'matriculation_number' then matriculation_numbers_for(submission_asset.submission.term_registrations)
+    when 'student_group'
+      submission_asset.submission.student_group.try(:title)
+    when 'exercise'
+      submission_asset.submission.exercise.try(:title)
+    when 'av_grade'
+      average_grade_for(submission_asset.submission.term_registrations).to_s
+    when 'course'
+      term.course.title
+    when 'term'
+      term.title
+    when 'matriculation_number'
+      matriculation_numbers_for(submission_asset.submission.term_registrations)
     end
 
     value.present? ? value.parameterize : nil

@@ -22,14 +22,14 @@ class TermCopyService
   private
 
   def copy_lecturers!
-    puts 'Copying Lecturer'
+    Rails.logger.info 'Copying Lecturer'
     @source_term.term_registrations.lecturers.each do |lecturer_registration|
       TermRegistration.create!(term: @term, account: lecturer_registration.account, role: TermRegistration::LECTURER)
     end
   end
 
   def copy_exercises!
-    puts 'Copying Exercises'
+    Rails.logger.info 'Copying Exercises'
     @source_term.exercises.includes(rating_groups: :ratings).each do |source_exercise|
       exercise = source_exercise.dup
       exercise.term = @term
@@ -50,7 +50,7 @@ class TermCopyService
   end
 
   def copy_grading_scale!
-    puts 'Copying Grading Scale'
+    Rails.logger.info 'Copying Grading Scale'
     @term.grading_scale = @source_term.grading_scale.dup
   end
 end

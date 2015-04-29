@@ -94,7 +94,7 @@ describe TermRegistration do
     end
 
     before :each do
-      registrations = exercises.map do |exercise|
+      exercises.each do |exercise|
         create :exercise_registration, exercise: exercise, term_registration: term_registration, submission: create(:submission)
       end
       ExerciseRegistration.update_all(points: 12)

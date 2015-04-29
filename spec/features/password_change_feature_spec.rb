@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Password Change' do
+RSpec.describe 'Password Change Feature' do
   context 'as student' do
     let(:current_account) { FactoryGirl.create :account }
 

@@ -4,14 +4,6 @@ describe Exercise do
   let(:course) { create(:course) }
   let(:term) { create(:term, course: course) }
 
-  it 'is able to set student uploads' do
-    exercise = FactoryGirl.create(:exercise, allow_student_uploads: true)
-    expect(exercise.allow_student_uploads?).to be_truthy
-
-    exercise = FactoryGirl.create(:exercise, allow_student_uploads: false)
-    expect(exercise.allow_student_uploads?).to be_falsey
-  end
-
   it 'ensures result publications on create' do
     FactoryGirl.create_list(:tutorial_group, 4, term: term)
     exercise = FactoryGirl.create(:exercise, term: term)

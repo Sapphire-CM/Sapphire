@@ -11,14 +11,6 @@ class GradingScale < ActiveRecord::Base
   scope :negatives, lambda { where(positive: false) }
   scope :for_grade, lambda { |grade| where(grade: grade).first }
 
-  # def self.next_better_grade
-  #   term.grading_scales.where(min_points: max_points + 1).first.presence
-  # end
-
-  # def self.previous_worse_grade
-  #   term.grading_scales.where(max_points: min_points - 1).first.presence
-  # end
-
   private
 
   def validate_point_range

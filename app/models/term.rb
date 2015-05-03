@@ -66,4 +66,12 @@ class Term < ActiveRecord::Base
   def participated?(student)
     exercise_registrations.for_student(student).exists?
   end
+
+  def valid_grading_scales?
+    gss = grading_scales.ordered.to_a
+    valid = gss[0..-3].map.with_index do |gs, index|
+      gs.min_points == gss[index+1].max_points + 1
+    end
+    valid.all?
+  end
 end

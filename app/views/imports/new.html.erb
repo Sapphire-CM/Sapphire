@@ -1,7 +1,6 @@
 <% title course_term_title, 'Import Students' %>
 
-<%= render 'terms/edit_header' %>
-<%= render 'terms/sidebar', term: @term %>
+<%= render 'terms/sidebar' %>
 
 <% if @term.imports.any? %>
   <%= render 'import_list' %>

@@ -20,9 +20,19 @@ class Term < ActiveRecord::Base
   validates :course, presence: true
   validates :title, presence: true, uniqueness: { scope: :course_id }
 
-
   default_scope { rank(:row_order) }
   scope :associated_with, lambda { |account| joins(:term_registrations).where(term_registrations: { account_id: account.id }) }
+
+  after_create do
+    grading_scales.create! [
+      { grade: "ungraded", not_graded: true, positive: false },
+      { grade: "5", positive: false, max_points: 50 },
+      { grade: "4", min_points: 51, max_points: 60 },
+      { grade: "3", min_points: 61, max_points: 84 },
+      { grade: "2", min_points: 85, max_points: 90 },
+      { grade: "1", min_points: 91, max_points: 100 },
+    ]
+  end
 
   def associated_with?(account)
     Term.associated_with(account).where(id: id).exists?

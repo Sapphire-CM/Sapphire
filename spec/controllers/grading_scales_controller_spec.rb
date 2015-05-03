@@ -20,7 +20,7 @@ RSpec.describe GradingScalesController do
       it 'works' do
         attributes = {
           term_id: term.id,
-          id: term.grading_scales.ordered.first,
+          id: term.grading_scales.negative,
           grading_scale: {
             max_points: 123,
           }
@@ -30,7 +30,7 @@ RSpec.describe GradingScalesController do
         term.reload
 
         expect(response).to redirect_to(term_grading_scales_path(term.id))
-        expect(term.grading_scales.ordered.first.max_points).to eq(123)
+        expect(term.grading_scales.negative.max_points).to eq(123)
       end
     end
 

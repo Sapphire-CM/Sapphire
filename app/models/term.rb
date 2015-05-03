@@ -43,6 +43,10 @@ class Term < ActiveRecord::Base
     self.save!
   end
 
+  def achievable_points
+    exercises.map(&:achievable_points).sum
+  end
+
   def lecturers
     Account.lecturers_for_term(self)
   end
@@ -57,25 +61,6 @@ class Term < ActiveRecord::Base
 
   def group_submissions?
     exercises.group_exercises.any?
-  end
-
-  def grade_for_points(points)
-    @grade_for_points ||= {}
-    @grade_for_points[points] ||= grading_scale.reverse.find { |lower, _grade| lower <= points }[1]
-  end
-
-  def grade_distribution(students)
-    distribution = Hash.new(0)
-    grades = students.map { |s| [s.grade_for_term(self), s] }
-
-    grades.each do |v|
-      distribution[v] += 1
-    end
-    distribution
-  end
-
-  def achievable_points
-    exercises.map(&:achievable_points).sum
   end
 
   def participated?(student)

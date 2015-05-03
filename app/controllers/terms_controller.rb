@@ -1,4 +1,5 @@
 class TermsController < ApplicationController
+  include TermContext
   before_action :set_term, only: [:show, :edit, :update, :destroy,
                                   :points_overview, :send_welcome_notifications]
 

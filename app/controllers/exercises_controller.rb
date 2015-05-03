@@ -1,4 +1,5 @@
 class ExercisesController < ApplicationController
+  include ExerciseContext
   before_action :set_context, only: [:edit, :update, :destroy]
 
   def index

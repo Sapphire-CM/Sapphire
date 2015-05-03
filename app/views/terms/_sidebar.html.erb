@@ -15,7 +15,7 @@
   <% if policy(current_term).update? %>
     <li class='divider'></li>
     <%= sidenav_item(:torsos, 'Staff', term_staff_index_path(current_term), params[:controller] == 'staff') %>
-    <%= sidenav_item(:list_thumbnails, 'Grading Scale', edit_term_grading_scale_path(current_term), params[:controller] == 'grading_scales') %>
+    <%= sidenav_item(:list_thumbnails, 'Grading Scale', term_grading_scales_path(current_term), params[:controller] == 'grading_scales') %>
     <%= sidenav_item(:upload, 'Imports', new_term_import_path(current_term), params[:controller] == 'imports') %>
     <%= sidenav_item(:download, 'Exports', term_exports_path(current_term), params[:controller] == 'exports') %>
     <%= sidenav_item(:pencil, 'Administrate', edit_term_path(current_term), params[:controller] == 'terms' && params[:action] == 'edit') %>

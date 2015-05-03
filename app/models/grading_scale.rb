@@ -6,6 +6,16 @@ class GradingScale < ActiveRecord::Base
   validates :max_points, uniqueness: { scope: :term_id }, if: :not_graded?
   validate :validate_point_range
 
+  scope :ordered, lambda { order(:grade) }
+
+  # def self.next_better_grade
+  #   term.grading_scales.where(min_points: max_points + 1).first.presence
+  # end
+
+  # def self.previous_worse_grade
+  #   term.grading_scales.where(max_points: min_points - 1).first.presence
+  # end
+
   private
 
   def validate_point_range

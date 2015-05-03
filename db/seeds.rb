@@ -17,7 +17,7 @@ terms = Term.create! [
 ]
 Term.all.map{ |obj| obj.row_order_position = :last; obj.save }
 
-lecturer_registrations = LecturerRegistration.create!({ term: course_hci.terms.first, lecturer: accounts[2] })
+TermRegistration.create! account: accounts[2], term: course_hci.terms.first, role: Roles::LECTURER
 
 tutorial_groups = [
   {title: "T1", description: "First tutorial group"},

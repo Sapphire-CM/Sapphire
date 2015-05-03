@@ -8,6 +8,8 @@ class GradingScale < ActiveRecord::Base
 
   scope :ordered, lambda { order(:grade) }
 
+  scope :for_grade, lambda { |grade| where(grade: grade).first }
+
   # def self.next_better_grade
   #   term.grading_scales.where(min_points: max_points + 1).first.presence
   # end

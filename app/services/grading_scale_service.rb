@@ -11,7 +11,7 @@ class GradingScaleService
     return 0 unless @term_registrations
 
     if grading_scale.not_graded
-      @term_registrations.ungraded
+      @term_registrations.ungraded.length
     else
       range = (grading_scale.min_points..grading_scale.max_points)
       tr = if grading_scale.positive
@@ -34,12 +34,12 @@ class GradingScaleService
   def grade_for(term_registration)
     if term_registration.receives_grade?
       gs = if term_registration.positive_grade?
-        @grading_scales.positives.where {
-          min_points >= my { term_registration.points } &
-          max_points <= my { term_registration.points }
+        @grading_scales.where {
+          (min_points <= my { term_registration.points }) &
+          (max_points >= my { term_registration.points })
         }.ordered.first
       else
-        @grading_scales.negatives.first
+        @grading_scales.ordered.negatives.first
       end
       gs.grade
     else

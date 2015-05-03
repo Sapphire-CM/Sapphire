@@ -23,11 +23,27 @@ class GradingScaleService
     end
   end
 
-  def percent_for(grade)
+  def percent_for(grading_scale)
     if graded_count > 0
-      (count_for(grade).to_f / graded_count.to_f) * 100.0
+      (count_for(grading_scale).to_f / graded_count.to_f) * 100.0
     else
       0.0
+    end
+  end
+
+  def grade_for(term_registration)
+    if term_registration.receives_grade?
+      gs = if term_registration.positive_grade?
+        @grading_scales.positives.where {
+          min_points >= my { term_registration.points } &
+          max_points <= my { term_registration.points }
+        }.ordered.first
+      else
+        @grading_scales.negatives.first
+      end
+      gs.grade
+    else
+      "0"
     end
   end
 

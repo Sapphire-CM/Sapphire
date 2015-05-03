@@ -188,7 +188,7 @@ class ExcelSpreadsheetExport < Export
   def add_student_group_summary(workbook, styles, tutorial_group, term_registrations)
     student_groups = tutorial_group.student_groups.order(:title)
 
-    grading_scale = GradingScaleService.new(term, term_registrations)
+    grading_scale_service = GradingScaleService.new(term, term_registrations)
 
     worksheet = workbook.add_worksheet('group summary')
 
@@ -231,13 +231,13 @@ class ExcelSpreadsheetExport < Export
     worksheet.write_row same_row, 1, student_groups.map(&:points), styles[:total_points_cell]
 
     worksheet.write next_row, 0, 'average grade', styles[:grade_title]
-    worksheet.write_row same_row, 1, student_groups.map { |student_group| grading_scale.average_grade_for_student_group(student_group) }, styles[:grade_cell]
+    worksheet.write_row same_row, 1, student_groups.map { |student_group| grading_scale_service.average_grade_for_student_group(student_group) }, styles[:grade_cell]
   end
 
   def add_student_summary(workbook, styles, tutorial_group, term_registrations)
     students = term_registrations.map(&:account)
 
-    grading_scale = GradingScaleService.new(term, term_registrations)
+    grading_scale_service = GradingScaleService.new(term, term_registrations)
 
     worksheet = workbook.add_worksheet('summary')
 
@@ -286,7 +286,7 @@ class ExcelSpreadsheetExport < Export
     worksheet.write_row same_row, 1, term_registrations.map(&:points), styles[:total_points_cell]
 
     worksheet.write next_row, 0, 'grade', styles[:grade_title]
-    worksheet.write_row same_row, 1, term_registrations.map { |tr| grading_scale.grade_for_term_registration(tr) }, styles[:grade_cell]
+    worksheet.write_row same_row, 1, term_registrations.map { |tr| grading_scale_service.grade_for(tr) }, styles[:grade_cell]
 
     next_row
 
@@ -295,21 +295,21 @@ class ExcelSpreadsheetExport < Export
     worksheet.merge_range same_row, 5, same_row, 6, 'Students', styles[:grading_scale_title]
     worksheet.merge_range same_row, 7, same_row, 8, 'Percent', styles[:grading_scale_title_last]
 
-    grading_scale.grading_ranges.each do |grading_range|
-      worksheet.merge_range next_row, 1, same_row, 2, grading_range.grade, styles[:grading_scale_grade_title]
-      worksheet.merge_range same_row, 3, same_row, 4, "#{grading_range.minimum_points} - #{grading_range.maximum_ui_points}", styles[:grading_scale_inner]
-      worksheet.merge_range same_row, 5, same_row, 6, grading_range.student_count, styles[:grading_scale_inner]
-      worksheet.merge_range same_row, 7, same_row, 8, number_to_percentage(grading_scale.percent_for(grading_range.grade), precision: 1), styles[:grading_scale_inner_last]
+    term.grading_scales.each do |grading_scale|
+      worksheet.merge_range next_row, 1, same_row, 2, grading_scale.grade, styles[:grading_scale_grade_title]
+      worksheet.merge_range same_row, 3, same_row, 4, "#{grading_scale.min_points} - #{grading_scale.max_points}", styles[:grading_scale_inner]
+      worksheet.merge_range same_row, 5, same_row, 6, grading_scale.student_count, styles[:grading_scale_inner]
+      worksheet.merge_range same_row, 7, same_row, 8, number_to_percentage(grading_scale_service.percent_for(grading_scale), precision: 1), styles[:grading_scale_inner_last]
     end
 
     worksheet.merge_range next_row, 1, same_row, 2, 'Sum', styles[:grading_scale_sum_title]
     worksheet.merge_range same_row, 3, same_row, 4, '', styles[:grading_scale_sum_inner]
-    worksheet.merge_range same_row, 5, same_row, 6, grading_scale.graded_count, styles[:grading_scale_sum_inner]
+    worksheet.merge_range same_row, 5, same_row, 6, grading_scale_service.graded_count, styles[:grading_scale_sum_inner]
     worksheet.merge_range same_row, 7, same_row, 8, '', styles[:grading_scale_sum_inner_last]
 
     worksheet.merge_range next_row, 1, same_row, 2, 'Ungraded', styles[:grading_scale_footer_title]
     worksheet.merge_range same_row, 3, same_row, 4, '', styles[:grading_scale_footer_inner]
-    worksheet.merge_range same_row, 5, same_row, 6, grading_scale.ungraded_count, styles[:grading_scale_footer_inner]
+    worksheet.merge_range same_row, 5, same_row, 6, grading_scale_service.ungraded_count, styles[:grading_scale_footer_inner]
     worksheet.merge_range same_row, 7, same_row, 8, '', styles[:grading_scale_footer_inner_last]
     worksheet
   end

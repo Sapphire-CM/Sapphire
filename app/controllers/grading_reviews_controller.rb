@@ -15,6 +15,6 @@ class GradingReviewsController < ApplicationController
 
     @exercises = current_term.exercises
     @submissions = @student_registration.submissions.ordered_by_exercises.includes(:exercise).includes(submission_evaluation: { evaluation_groups: [:rating_group, evaluations: :rating] })
-    @grading_scale = GradingScaleService.new(current_term)
+    @grading_scale_service = GradingScaleService.new(current_term)
   end
 end

@@ -31,7 +31,7 @@
               <%= registration.points || 0%>
             </td>
             <td class="text-center">
-              <%= grading_scale.grade_for_term_registration(registration) %>
+              <%= grading_scale_service.grade_for(registration) %>
             </td>
           </tr>
         <% end %>

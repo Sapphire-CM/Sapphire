@@ -6,7 +6,7 @@ class StudentResultsController < ApplicationController
 
     @term_registration = current_term.term_registrations.for_account(current_account).first
     @exercise_registrations = @term_registration.exercise_registrations.ordered_by_exercise
-    @grading_scale = GradingScaleService.new(current_term)
+    @grading_scale_service = GradingScaleService.new(current_term)
   end
 
   def show

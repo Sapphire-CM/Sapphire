@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150423104522) do
+ActiveRecord::Schema.define(version: 20150503101943) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -135,6 +135,21 @@ ActiveRecord::Schema.define(version: 20150423104522) do
   end
 
   add_index "exports", ["term_id"], name: "index_exports_on_term_id"
+
+  create_table "grading_scales", force: :cascade do |t|
+    t.integer  "term_id"
+    t.string   "grade",                      null: false
+    t.boolean  "not_graded", default: false, null: false
+    t.boolean  "positive",   default: true,  null: false
+    t.integer  "min_points", default: 0,     null: false
+    t.integer  "max_points", default: 0,     null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "grading_scales", ["grade"], name: "index_grading_scales_on_grade"
+  add_index "grading_scales", ["term_id", "grade"], name: "index_grading_scales_on_term_id_and_grade", unique: true
+  add_index "grading_scales", ["term_id"], name: "index_grading_scales_on_term_id"
 
   create_table "import_errors", force: :cascade do |t|
     t.integer  "import_result_id"
@@ -335,13 +350,12 @@ ActiveRecord::Schema.define(version: 20150423104522) do
   create_table "terms", force: :cascade do |t|
     t.string   "title"
     t.integer  "course_id"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.text     "description"
     t.integer  "row_order"
-    t.text     "grading_scale"
-    t.integer  "points",        default: 0
-    t.integer  "status",        default: 0
+    t.integer  "points",      default: 0
+    t.integer  "status",      default: 0
   end
 
   add_index "terms", ["course_id"], name: "index_terms_on_course_id"

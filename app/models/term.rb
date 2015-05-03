@@ -2,11 +2,11 @@ class Term < ActiveRecord::Base
   include RankedModel
   ranks :row_order, with_same: :course_id
 
-  serialize :grading_scale, Array
   enum status: [:ready, :preparing]
 
   belongs_to :course
 
+  has_many :grading_scales, dependent: :destroy
   has_many :exercises, dependent: :destroy
   has_many :tutorial_groups, dependent: :destroy
   has_many :submissions, through: :exercises
@@ -20,31 +20,12 @@ class Term < ActiveRecord::Base
   validates :course, presence: true
   validates :title, presence: true, uniqueness: { scope: :course_id }
 
-  before_save :improve_grading_scale
 
   default_scope { rank(:row_order) }
   scope :associated_with, lambda { |account| joins(:term_registrations).where(term_registrations: { account_id: account.id }) }
 
   def associated_with?(account)
     Term.associated_with(account).where(id: id).exists?
-  end
-
-  def improve_grading_scale
-    self.grading_scale = {
-      0 => '5',
-      51 => '4',
-      64 => '3',
-      80 => '2',
-      90 => '1'
-    }.to_a if grading_scale.empty?
-
-    grading_scale.sort!
-
-    grading_scale.dup.reverse.each_with_index do |_scale, index|
-      grading_scale[index][1] = "#{grading_scale.length - index}"
-    end
-
-    grading_scale
   end
 
   def update_points!
@@ -89,16 +70,5 @@ class Term < ActiveRecord::Base
 
   def participated?(student)
     exercise_registrations.for_student(student).exists?
-  end
-
-  def update_grading_scale!(new_grading_scale)
-    grading_scale.map! do |scale|
-      if (scale_to_update = new_grading_scale.select { |param| scale.last == param.last }).any?
-        scale_to_update.first
-      else
-        scale
-      end
-    end
-    self.save!
   end
 end

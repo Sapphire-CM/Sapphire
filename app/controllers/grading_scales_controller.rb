@@ -4,7 +4,7 @@ class GradingScalesController < ApplicationController
 
   def index
     @grading_scales = @term.grading_scales.where(not_graded: false).ordered
-    @grading_scale_service = GradingScaleService.new(@term, @term.term_registrations.students)
+    @grading_scale_service = GradingScaleService.new(@term)
   end
 
   def update

@@ -1,9 +1,9 @@
 class GradingScaleService
   attr_accessor :term, :term_registrations
 
-  def initialize(term, term_registrations = false)
+  def initialize(term, term_registrations = nil)
     @term = term
-    @term_registrations = term_registrations if term_registrations.present?
+    @term_registrations = term_registrations || term.term_registrations.students
     @grading_scales = @term.grading_scales
   end
 

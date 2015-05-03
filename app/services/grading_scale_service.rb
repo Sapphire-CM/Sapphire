@@ -55,18 +55,10 @@ class GradingScaleService
   end
 
   def graded_count
-    if @term_registrations.present?
-      @term_registrations.graded.count
-    else
-      0
-    end
+    @term_registrations.graded.count
   end
 
   def ungraded_count
-    if @term_registrations.present?
-      @term_registrations.ungraded.count
-    else
-      0
-    end
+    @term_registrations.ungraded.count
   end
 end

@@ -32,19 +32,19 @@ class GradingScaleService
   end
 
   def grade_for(term_registration)
-    if term_registration.receives_grade?
-      gs = if term_registration.positive_grade?
+    gs = if term_registration.receives_grade?
+      if term_registration.positive_grade?
         @grading_scales.where {
           (min_points <= my { term_registration.points }) &
           (max_points >= my { term_registration.points })
         }.ordered.first
       else
-        @grading_scales.ordered.negatives.first
+        @grading_scales.negative
       end
-      gs.grade
     else
-      "0"
+      @grading_scales.not_graded
     end
+    gs.grade
   end
 
   def graded_count

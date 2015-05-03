@@ -20,7 +20,7 @@ class RefactorGradingScale < ActiveRecord::Migration
       end
 
       # add ungraded entry
-      new_entries.unshift({ grade: "ungraded", not_graded: true, positive: false })
+      new_entries.unshift({ grade: '0', not_graded: true, positive: false })
 
       # set grade "5" to be non-positive
       new_entries.second[:positive] = false

@@ -25,12 +25,12 @@ class Term < ActiveRecord::Base
 
   after_create do
     grading_scales.create! [
-      { grade: "ungraded", not_graded: true, positive: false },
-      { grade: "5", positive: false, max_points: 50 },
-      { grade: "4", min_points: 51, max_points: 60 },
-      { grade: "3", min_points: 61, max_points: 84 },
-      { grade: "2", min_points: 85, max_points: 90 },
-      { grade: "1", min_points: 91, max_points: 100 },
+      { grade: '0', not_graded: true },
+      { grade: '5', positive: false, max_points: 50 },
+      { grade: '4', min_points: 51, max_points: 60 },
+      { grade: '3', min_points: 61, max_points: 84 },
+      { grade: '2', min_points: 85, max_points: 90 },
+      { grade: '1', min_points: 91, max_points: 100 },
     ]
   end
 
@@ -68,10 +68,16 @@ class Term < ActiveRecord::Base
   end
 
   def valid_grading_scales?
-    gss = grading_scales.ordered.to_a
-    valid = gss[0..-3].map.with_index do |gs, index|
+    gss = grading_scales.positives.ordered.to_a
+    gss << grading_scales.negative
+    checks = gss[0..-3].map.with_index do |gs, index|
       gs.min_points == gss[index+1].max_points + 1
     end
-    valid.all?
+
+    checks << (grading_scales.where(not_graded: true).length == 1)
+    checks << (grading_scales.where(positive: false, not_graded: false).length == 1)
+    checks << (grading_scales.where(positive: true, not_graded: false).length >= 1)
+
+    checks.all?
   end
 end

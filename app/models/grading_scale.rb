@@ -7,8 +7,9 @@ class GradingScale < ActiveRecord::Base
   validate :validate_point_range
 
   scope :ordered, lambda { order(:grade) }
-  scope :positives, lambda { where(positive: true) }
-  scope :negatives, lambda { where(positive: false) }
+  scope :positives, lambda { where(positive: true, not_graded: false) }
+  scope :negative, lambda { where(positive: false, not_graded: false).first }
+  scope :not_graded, lambda { where(not_graded: true).first }
   scope :for_grade, lambda { |grade| where(grade: grade).first }
 
   private

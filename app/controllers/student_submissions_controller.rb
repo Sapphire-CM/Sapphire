@@ -30,7 +30,7 @@ class StudentSubmissionsController < ApplicationController
       end
     else
       @submission = creation_service.model
-      render :show
+      render :show, alert: 'Submission upload failed!'
     end
   end
 

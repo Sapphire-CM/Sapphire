@@ -1,4 +1,5 @@
 <% title @exercise.title, submission_subtitle(@submission) %>
+
 <%= render "exercises/sidebar" %>
 
 <div class='panel'>
@@ -18,7 +19,11 @@
   <% end %>
 </div>
 
-<%= render "submission_assets_list", submission_assets: @submission.submission_assets %>
+<% if @submission.persisted? %>
+  <%= render "submission_assets_list", submission_assets: @submission.submission_assets %>
+<% else %>
+  <p><%= @submission.errors.full_messages %></p>
+<% end %>
 
 <% if policy(@submission).submit? %>
   <%= render "form" %>

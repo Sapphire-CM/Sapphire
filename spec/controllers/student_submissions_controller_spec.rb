@@ -81,6 +81,33 @@ RSpec.describe StudentSubmissionsController do
     end
 
     describe 'with invalid params' do
+      it 'shows an error if file is too large' do
+        exercise.update! enable_max_upload_size: true, maximum_upload_size: 42
+
+        invalid_attributes = {
+          exercise_id: exercise.id,
+          submission: {
+            submission_assets_attributes: {
+              '0' => {
+                file: Rack::Test::UploadedFile.new(prepare_static_test_file('submission.zip'), 'application/zip')
+              }
+            }
+          }
+        }
+
+        expect do
+          expect do
+            post :create, invalid_attributes
+          end.to change(SubmissionAsset, :count).by(0)
+        end.to change(Submission, :count).by(0)
+
+        expect(response).to have_http_status(:success)
+        expect(response).to render_template('show')
+        expect(flash[:alert]).to eq('Submission upload failed!')
+        expect(response.body).to have_content('Upload too large')
+        expect(assigns(:submission).errors.full_messages).to include('Upload too large')
+      end
+
       it 'redirects to submission page' do
         invalid_attributes = {
           exercise_id: exercise.id,

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'base64'
 
 RSpec.describe StudentSubmissionsController do
   render_views
@@ -245,6 +246,14 @@ RSpec.describe StudentSubmissionsController do
     let!(:submission) { FactoryGirl.create :submission, exercise: exercise, submitter: @current_account }
     let!(:exercise_registration) { FactoryGirl.create :exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission }
 
+    def file_extraction_params(file, extract = '1')
+      {
+        id: Base64.encode64(file),
+        full_path: file,
+        extract: extract,
+      }
+    end
+
     it 'extracts the checked files' do
       sa = submission.submission_assets.create file: prepare_static_test_file('submission_nested_archives.zip')
 
@@ -252,10 +261,10 @@ RSpec.describe StudentSubmissionsController do
         exercise_id: exercise.id,
         submission_assets: {
           sa.id.to_s => {
-            "file_0" => { full_path: 'simple_submission.txt', extract: '1' },
-            "file_1" => { full_path: 'import_data.csv', extract: '1' },
-            "file_2" => { full_path: 'some_folder/submission.zip', extract: '1' },
-            "file_3" => { full_path: 'some_other_folder/some_dir/import_data_invalid_parsing.csv', extract: '1' },
+            "file_0" => file_extraction_params('simple_submission.txt'),
+            "file_1" => file_extraction_params('import_data.csv'),
+            "file_2" => file_extraction_params('some_folder/submission.zip'),
+            "file_3" => file_extraction_params('some_other_folder/some_dir/import_data_invalid_parsing.csv'),
           }
         }
       }
@@ -286,9 +295,9 @@ RSpec.describe StudentSubmissionsController do
         exercise_id: exercise.id,
         submission_assets: {
           sa.id.to_s => {
-            "file_0" => { full_path: 'simple_submission.txt', extract: '1' },
-            "file_1" => { full_path: '.DS_Store', extract: '1' },
-            "file_2" => { full_path: '.git/config', extract: '1' },
+            "file_0" => file_extraction_params('simple_submission.txt'),
+            "file_1" => file_extraction_params('.DS_Store',),
+            "file_2" => file_extraction_params('.git/config'),
           }
         }
       }
@@ -312,7 +321,7 @@ RSpec.describe StudentSubmissionsController do
         exercise_id: exercise.id,
         submission_assets: {
           sa.id.to_s => {
-            "file_0" => { full_path: 'simple_submission.txt', extract: '1' },
+            "file_0" => file_extraction_params('simple_submission.txt'),
           }
         }
       }

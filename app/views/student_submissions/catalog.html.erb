@@ -14,9 +14,10 @@ will be submitted for <%= @exercise.title %>:
       <%= fields_for "submission_assets[#{archive.id}]" do |archive_form| %>
         <% extract_filelist(archive.file.to_s).each_with_index do |entry, index| %>
           <%= archive_form.fields_for "file_#{index}" do |file_form| %>
-            <%= hidden_field_tag "#{file_form.object_name}[full_path]", entry.first %>
+            <%= hidden_field_tag "#{file_form.object_name}[id]", entry[:id] %>
+            <%= hidden_field_tag "#{file_form.object_name}[full_path]", entry[:filename] %>
             <%= file_form.label "extract" do %>
-              <%= file_form.check_box "extract" %> <%= entry.first %> (<%= entry.last %> bytes)
+              <%= file_form.check_box "extract" %> <%= entry[:filename] %> (<%= entry[:size] %> bytes)
             <% end %>
           <% end %>
         <% end %>

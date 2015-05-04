@@ -1,4 +1,5 @@
 require 'zip'
+require 'base64'
 
 module StudentSubmissionsHelper
   def extract_filelist(archive)
@@ -6,7 +7,9 @@ module StudentSubmissionsHelper
     Zip::File.open(archive) do |zip_file|
       zip_file.each do |entry|
         if SubmissionAsset::EXCLUDED_FILTER.map { |e| entry.name !~ e }.all?
-          filelist << [entry.name, entry.size]
+          id = Base64.encode64(entry.name).strip
+          filename = entry.name.force_encoding('utf-8')
+          filelist << { id: id, filename: filename, size: entry.size }
         end
       end
     end

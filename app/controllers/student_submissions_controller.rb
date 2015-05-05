@@ -97,7 +97,7 @@ class StudentSubmissionsController < ApplicationController
       list = {}
       params[:submission_assets].each do |id, archive_params|
         files = archive_params.map { |_, ap| Base64.decode64(ap[:id]) if ap[:extract] == '1' }.compact
-        files.reject! { |f| SubmissionAsset::EXCLUDED_FILTER.any? { |e| f.clone.force_encoding('utf-8') =~ e } }
+        files.reject! { |f| SubmissionAsset::EXCLUDED_FILTER.any? { |e| view_context.encode_filename(f) =~ e } }
 
         list[id] = files if files.length > 0
       end if params[:submission_assets]

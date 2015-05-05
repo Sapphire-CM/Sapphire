@@ -1,4 +1,5 @@
 class GradingScalesController < ApplicationController
+  include TermContext
   before_action :fetch_term, only: [:edit, :update]
 
   def edit

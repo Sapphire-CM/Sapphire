@@ -1,7 +1,6 @@
 <% title course_term_title, "Staff" %>
 
-<%= render "terms/edit_header" %>
-<%= render "terms/sidebar", term: current_term %>
+<%= render 'terms/sidebar' %>
 
 <% if @term_registrations.any? %>
   <table class='small-12'>

@@ -1,7 +1,6 @@
 <% title course_term_title(current_term), "Exports" %>
 
-<%= render "terms/sidebar", term: current_term %>
-<%= render "terms/edit_header", term: current_term %>
+<%= render 'terms/sidebar' %>
 
 <div class='text-right'>
   <%= link_to "New Export", new_term_export_path(current_term), class: "small button" %>

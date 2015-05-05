@@ -1,6 +1,5 @@
 class EmailAddressesController < ApplicationController
   include AccountContext
-
   before_action :fetch_email_address, only: [:edit, :update, :destroy]
 
   def index

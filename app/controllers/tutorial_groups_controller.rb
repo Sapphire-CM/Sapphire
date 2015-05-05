@@ -1,17 +1,10 @@
 class TutorialGroupsController < ApplicationController
-  include TermContext
-
-  TutorialGroupPolicyRecord = Struct.new :user, :subject do
-    def policy_class
-      TutorialGroupPolicy
-    end
-  end
-
+  include TutorialGroupContext
   before_action :set_context, only: [:show, :edit, :update, :destroy, :points_overview]
 
   def index
     @tutorial_groups = @term.tutorial_groups.merge policy_scope(TutorialGroup.all)
-    authorize TutorialGroupPolicyRecord.new(current_account, current_term)
+    authorize TutorialGroupPolicy.with current_term
   end
 
   def show

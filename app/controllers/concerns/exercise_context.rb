@@ -8,13 +8,14 @@ module ExerciseContext
     helper_method :current_exercise
   end
 
-  private
-
   def current_exercise
     @exercise
   end
 
+  private
+
   def fetch_exercise
-    @exercise = current_term.exercises.find(params[:exercise_id])
+    id = params[:exercise_id]
+    @exercise = current_term.exercises.find_by_id(id) if id
   end
 end

@@ -1,4 +1,5 @@
 class ImportsController < ApplicationController
+  include TermContext
   before_action :set_import, only: [:show, :edit, :update, :destroy, :file, :full_mapping_table, :results]
 
   def show

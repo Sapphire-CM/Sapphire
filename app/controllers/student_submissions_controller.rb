@@ -97,7 +97,7 @@ class StudentSubmissionsController < ApplicationController
       list = {}
       params[:submission_assets].each do |id, archive_params|
         files = archive_params.map { |_, ap| Base64.decode64(ap[:id]) if ap[:extract] == '1' }.compact
-        files.reject! { |f| SubmissionAsset::EXCLUDED_FILTER.any? { |e| f.force_encoding('utf-8') =~ e } }
+        files.reject! { |f| SubmissionAsset::EXCLUDED_FILTER.any? { |e| f.clone.force_encoding('utf-8') =~ e } }
 
         list[id] = files if files.length > 0
       end if params[:submission_assets]
@@ -114,7 +114,7 @@ class StudentSubmissionsController < ApplicationController
       new_files_size = files_to_extract.map do |id, files|
         sa = @submission.submission_assets.find(id)
         Zip::File.open(sa.file.to_s) do |zip_file|
-          files.sum { |f| zip_file.find_entry(f).size }
+          files.sum { |f| zip_file.find_entry(f).try(:size) || 0 }
         end
       end.sum
 

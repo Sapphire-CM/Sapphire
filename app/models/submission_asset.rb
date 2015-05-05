@@ -23,6 +23,7 @@ class SubmissionAsset < ActiveRecord::Base
     %r{Thumbs.db}i,
     %r{desktop.ini}i,
     %r{.DS_Store}i,
+    %r{.directory}i,
     %r{\A__MACOSX/}i,
 
     # no version control files
@@ -58,6 +59,8 @@ class SubmissionAsset < ActiveRecord::Base
   end
 
   def set_content_type
-    self.content_type = MIME::Types.type_for(file.to_s).first.content_type
+    if file.to_s.present? && type = MIME::Types.type_for(file.to_s).first
+      self.content_type = type.content_type
+    end
   end
 end

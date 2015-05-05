@@ -21,7 +21,7 @@
 
 <% if @submission.persisted? %>
   <%= render "submission_assets_list", submission_assets: @submission.submission_assets %>
-<% else %>
+<% elsif @submission.errors.any? %>
   <p><%= @submission.errors.full_messages %></p>
 <% end %>
 

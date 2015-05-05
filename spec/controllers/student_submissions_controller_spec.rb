@@ -224,6 +224,8 @@ RSpec.describe StudentSubmissionsController do
       expect(response).to have_http_status(:success)
       expect(response.body).to have_content(File.basename(sa1.file.to_s))
       expect(response.body).to have_content(File.basename(sa2.file.to_s))
+      expect(response.body).to have_content('simple_submission.txt')
+      expect(response.body).to have_content('some_xa__x_xu__x_xo__x_x__x_nasty_file.txt')
       expect(assigns(:archives)).to match_array(submission.submission_assets.where(content_type: 'application/zip'))
     end
 
@@ -248,8 +250,7 @@ RSpec.describe StudentSubmissionsController do
 
     def file_extraction_params(file, extract = '1')
       {
-        id: Base64.encode64(file),
-        full_path: file,
+        id: Base64.encode64(file).strip,
         extract: extract,
       }
     end

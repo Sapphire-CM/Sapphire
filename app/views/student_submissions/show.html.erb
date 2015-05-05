@@ -9,10 +9,10 @@
         Deadline: <%= l @exercise.deadline, format: :unix %>
       </div>
       <div class='large-6 columns right-aligned'>
-        <% if @exercise.past_deadline? %>
+        <% if @exercise.before_deadline? %>
           <strong><%= distance_of_time_in_words @exercise.deadline, Time.now %></strong> left
         <% else %>
-          <strong>Deadline has passed <%= distance_of_time_in_words @exercise.deadline, Time.now%> ago</strong>
+          <strong>Deadline has passed <%= distance_of_time_in_words @exercise.deadline, Time.now %> ago</strong>
         <% end %>
       </div>
     </div>

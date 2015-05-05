@@ -6,17 +6,20 @@ This project is intended to be used to evaluate students during a course-term ba
 
 ## Requirements
 
-* Ruby 2.1.0 or higher
+* Ruby 2.1.6 or higher
 * Database
     - PostgreSQL or
     - sqlite3 (only basic support, no background jobs)
+    - check `config/database.yml`
 * Redis
 * Sidekiq
+    - check `config/sidekiq.yml`
 * Node.js
     - on the server for assets precompilation
     - make sure it is part of `$PATH`
     - v0.10.35 or above
 * working SMTP server for email delivery
+    - check `config/mail.yml`
 
 ## Useful Links
 

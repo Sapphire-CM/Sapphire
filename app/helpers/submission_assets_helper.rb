@@ -68,11 +68,13 @@ module SubmissionAssetsHelper
 
   def inline_plain_text_asset(submission_asset)
     contents = submission_asset.file.read
-    contents.force_encoding('UTF-8')
-    render 'submission_assets/code_panel', code: auto_link(contents, sanitize: true, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
+
+    contents.encode!('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+
+    render 'submission_assets/code_panel', code: auto_link(simple_format(contents), sanitize: true, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
   end
 
   def inline_code(code, lang)
-    coderay(code.force_encoding('UTF-8'), lang)
+    coderay(code.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: ''), lang)
   end
 end

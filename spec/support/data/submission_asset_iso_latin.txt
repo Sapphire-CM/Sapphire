@@ -1,0 +1,3 @@
+Submission containing special chars encoded with windows-iso latin 1
+
+ÖÄÜßöäü

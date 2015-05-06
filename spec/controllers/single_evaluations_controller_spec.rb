@@ -34,6 +34,15 @@ RSpec.describe SingleEvaluationsController do
 
         expect(response).to have_http_status(:success)
       end
+
+      it 'returns a successful response when showing ascii encoded files' do
+        FactoryGirl.create(:submission_asset, submission: submission, file: prepare_static_test_file('submission_asset_iso_latin.txt', open: true))
+
+        sign_in(tutor_registration.account)
+        get :show, id: submission.id
+        expect(response).to have_http_status(:success)
+      end
+
     end
   end
 

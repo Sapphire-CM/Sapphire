@@ -2,7 +2,7 @@ class CoursePolicy < PunditBasePolicy
   class Scope < Struct.new(:user, :scope)
     def resolve
       if user.admin?
-        Course.all
+        Course.all.includes(:terms)
       else
         Course.associated_with(user).includes(:terms).unlocked
       end

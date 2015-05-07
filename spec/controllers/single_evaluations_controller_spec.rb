@@ -41,6 +41,7 @@ RSpec.describe SingleEvaluationsController do
         sign_in(tutor_registration.account)
         get :show, id: submission.id
         expect(response).to have_http_status(:success)
+        expect(response.body).to have_content('Submission containing special chars')
       end
 
     end

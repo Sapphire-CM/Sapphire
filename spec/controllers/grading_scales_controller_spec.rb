@@ -1,50 +1,55 @@
 require 'rails_helper'
 
 RSpec.describe GradingScalesController do
-  #  render_views
-  #  include_context 'active_admin_session_context'
+  render_views
+  include_context 'active_admin_session_context'
 
-  it 'needs to be implemented'
+  let(:term) { FactoryGirl.create :term }
 
-  let(:course) { term.course }
-  let(:term) { create(:term) }
+  describe 'GET index' do
+    it 'renders the grading scale table' do
+      get :index, term_id: term.id
 
-  before(:each) do
-    sign_in(account)
-  end
-
-  describe 'GET /terms/:id/grading_scale/edit' do
-    context 'as an admin' do
-      let(:account) { create(:account, :admin) }
-
-      it 'assigns @term' do
-        get :edit, term_id: term.id
-
-        expect(assigns[:term]).to eq(term)
-      end
-
-      it 'assigns @grading_scale' do
-        get :edit, term_id: term.id
-
-        expect(assigns(:grading_scale)).to be_present
-      end
+      expect(response).to have_http_status(:success)
+      expect(response).to render_template('_grade_distribution')
     end
   end
 
-  describe 'PATCH /terms/:id/grading_scale' do
-    context 'as an admin' do
-      let(:account) { create(:account, :admin) }
-      let(:grading_scale_params) { [[0, '5'], [100, '4'], [120, '3'], [140, '2'], [160, '1']] }
+  describe 'POST update' do
+    context 'with valid params' do
+      it 'works' do
+        attributes = {
+          term_id: term.id,
+          id: term.grading_scales.negative,
+          grading_scale: {
+            max_points: 123,
+          }
+        }
 
-      it 'updates the grading scale' do
-        term = create(:term, grading_scale: [[0, '5'], [100, '4'], [120, '3'], [140, '2'], [160, '1']])
+        post :update, attributes
+        term.reload
 
-        patch :update, term_id: term.id, term: { grading_scale: { '1' => '180' } }
-        expect(subject).to redirect_to(edit_term_grading_scale_path(term))
+        expect(response).to redirect_to(term_grading_scales_path(term.id))
+        expect(term.grading_scales.negative.max_points).to eq(123)
+      end
+    end
 
-        term = Term.find(term.id)
+    context 'with invalid params' do
+      it 'shows an error message' do
+        attributes = {
+          term_id: term.id,
+          id: term.grading_scales.ordered.first,
+          grading_scale: {
+            max_points: 5
+          }
+        }
 
-        expect(term.grading_scale).to eq([[0, '5'], [100, '4'], [120, '3'], [140, '2'], [180, '1']])
+        post :update, attributes
+        term.reload
+
+        expect(response).to redirect_to(term_grading_scales_path(term.id))
+        expect(flash[:alert]).to eq('Failed updating grading scale!')
+        expect(term.grading_scales.ordered.first.max_points).not_to eq(5)
       end
     end
   end

@@ -66,6 +66,11 @@ input[type="file"] {
   width: auto;
 }
 
+input[type="number"].grading_scale {
+  width: auto;
+  text-align: center;
+}
+
 input[type="checkbox"].no-margin {
   margin-right: 0;
   margin-bottom: 0;

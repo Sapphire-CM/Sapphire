@@ -1,0 +1,31 @@
+<tr>
+  <th class='minimum-width text-center'>
+    <%= grading_scale.grade %>
+  </th>
+  <td class='minimum-width text-center'>
+    <%= simple_form_for grading_scale, url: term_grading_scale_path(grading_scale.term, grading_scale) do |f| %>
+      <%= f.check_box :positive %>
+    <% end %>
+  </td>
+  <td>
+    <%= simple_form_for grading_scale, url: term_grading_scale_path(grading_scale.term, grading_scale) do |f| %>
+      <%= f.input_field :min_points,
+        min: 0,
+        class: 'margin-none grading_scale' %>
+    <% end %>
+  </td>
+  <td class='minimum-width'>-</td>
+  <td>
+    <%= simple_form_for grading_scale, url: term_grading_scale_path(grading_scale.term, grading_scale) do |f| %>
+      <%= f.input_field :max_points,
+        min: 0,
+        class: 'margin-none grading_scale' %>
+    <% end %>
+  </td>
+  <td class='minimum-width text-right'>
+    <%= @grading_scale_service.count_for(grading_scale) %>
+  </td>
+  <td class='minimum-width text-right'>
+    <%= number_to_percentage @grading_scale_service.percent_for(grading_scale), precision: 1 %>
+  </td>
+</tr>

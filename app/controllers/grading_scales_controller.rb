@@ -1,14 +1,21 @@
 class GradingScalesController < ApplicationController
   include TermContext
-  before_action :fetch_term, only: [:edit, :update]
+  before_action :fetch_term, only: [:index, :update]
 
-  def edit
-    @grading_scale = GradingScaleService.new(@term, @term.term_registrations.students)
+  def index
+    @grading_scales = @term.grading_scales.where(not_graded: false).ordered
+    @grading_scale_service = GradingScaleService.new(@term)
+
+    flash[:alert] = "GradingScale is not valid" unless @term.valid_grading_scales?
   end
 
   def update
-    @term.update_grading_scale!(term_params[:grading_scale])
-    redirect_to edit_term_grading_scale_path, notice: 'Successfully updated grading scale'
+    @grading_scale = @term.grading_scales.find(params[:id])
+    if @grading_scale.update(grading_scale_params)
+      redirect_to term_grading_scales_path, notice: 'Successfully updated grading scale'
+    else
+      redirect_to term_grading_scales_path, alert: 'Failed updating grading scale!'
+    end
   end
 
   private
@@ -18,15 +25,7 @@ class GradingScalesController < ApplicationController
     authorize GradingScalePolicy.with @term
   end
 
-  def term_params
-    params.require(:term).permit(grading_scale: [[]]).tap do |whitelisted|
-      whitelisted[:grading_scale] = params[:term][:grading_scale].map do |scale|
-        next unless scale.is_a?(Array) && scale.length == 2
-
-        scale[0] = scale[0].to_s
-        scale[1] = scale[1].to_i
-        scale.reverse
-      end.compact
-    end
+  def grading_scale_params
+    params.require(:grading_scale).permit(:positive, :min_points, :max_points)
   end
 end

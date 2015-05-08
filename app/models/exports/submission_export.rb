@@ -132,7 +132,8 @@ class SubmissionExport < Export
 
   def average_grade_for(term_registrations)
     if term_registrations.any?
-      grades = term_registrations.map { |tr| grading_scale.grade_for_term_registration(tr) }
+      grading_scale_service = GradingScaleService.new(term)
+      grades = term_registrations.map { |tr| grading_scale_service.grade_for(tr) }
       average = grades.reduce(:+).to_f / grades.length
 
       average.round.to_s
@@ -143,9 +144,5 @@ class SubmissionExport < Export
 
   def matriculation_numbers_for(term_registrations)
     term_registrations.map { |tr| tr.account.matriculation_number }.join(' ')
-  end
-
-  def grading_scale
-    @grading_scale ||= GradingScaleService.new(term, term.term_registrations.students)
   end
 end

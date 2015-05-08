@@ -19,7 +19,7 @@ RSpec.describe StudentsController do
       expect(assigns(:term_registrations)).to include(*students)
       expect(assigns(:term_registrations)).not_to include(*tutors)
       expect(assigns(:term_registrations)).not_to include(*lecturers)
-      expect(assigns(:grading_scale)).to be_a(GradingScaleService)
+      expect(assigns(:grading_scale_service)).to be_a(GradingScaleService)
     end
 
     context 'as a tutor' do

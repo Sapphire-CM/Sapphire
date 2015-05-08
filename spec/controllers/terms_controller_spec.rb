@@ -181,7 +181,7 @@ RSpec.describe TermsController do
     it 'shows the points overview' do
       get :points_overview, id: term.id
 
-      expect(assigns(:grading_scale)).to be_a(GradingScaleService)
+      expect(assigns(:grading_scale_service)).to be_a(GradingScaleService)
     end
   end
 end

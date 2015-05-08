@@ -7,28 +7,28 @@
       <th>Percent</th>
     </thead>
     <tbody>
-      <% grading_scale.grading_ranges.each do |grading_range| %>
+      <% @term.grading_scales.each do |grading_scale| %>
         <tr>
-          <th class='minimum-width text-center'><%= grading_range.grade %></th>
+          <th class='minimum-width text-center'><%= grading_scale.grade %></th>
           <td class='text-right'>
-            <%= grading_range.minimum_points %>
+            <%= grading_scale.min_points %>
           </td>
           <td class='minimum-width'>-</td>
           <td class='minimum-width text-right'>
-            <%= grading_range.maximum_ui_points %>
+            <%= grading_scale.max_points %>
           </td>
           <td class='minimum-width text-right'>
-            <%= grading_range.student_count %>
+            <%= grading_scale_service.count_for(grading_scale) %>
           </td>
           <td class='minimum-width text-right'>
-            <%= number_to_percentage grading_scale.percent_for(grading_range.grade), precision: 1 %>
+            <%= number_to_percentage grading_scale_service.percent_for(grading_scale), precision: 1 %>
           </td>
         </tr>
       <% end %>
       <tr>
         <th>Sum</th>
         <td colspan='3'></td>
-        <td class='text-right minimum-width'><%= grading_scale.graded_count %></td>
+        <td class='text-right minimum-width'><%= grading_scale_service.graded_count %></td>
         <td></td>
       </tr>
       <tr><td colspan='6'><hr></td></tr>
@@ -36,7 +36,7 @@
         <td class='minimum-width text-center'>0</td>
         <td colspan='3'>&nbsp;</td>
         <td class='minimum-width text-right'>
-          <%= grading_scale.ungraded_count %>
+          <%= grading_scale_service.ungraded_count %>
         </td>
         <td>
         </td>

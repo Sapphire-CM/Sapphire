@@ -3,6 +3,21 @@ require 'rails_helper'
 describe Term do
   it { is_expected.to have_many(:term_registrations) }
 
+  context 'grading_scales' do
+    it 'creates all grading_scales with after_create' do
+      course = FactoryGirl.create :course
+      term = course.terms.create! title: 'new term'
+
+      expect(term.grading_scales.length).to eq(6)
+      expect(term.grading_scales.where(not_graded: true).length).to eq(1)
+      expect(term.grading_scales.where(positive: false, not_graded: false).length).to eq(1)
+      expect(term.grading_scales.where(positive: true, not_graded: false).length).to eq(4)
+      expect(term.grading_scales.positives.length).to eq(4)
+      expect(term.grading_scales.pluck(:grade)).to match_array(['1', '2', '3', '4', '5', '0'])
+      expect(term.valid_grading_scales?).to eq(true)
+    end
+  end
+
   context 'ordinary account' do
     let(:account) { FactoryGirl.create(:account) }
 

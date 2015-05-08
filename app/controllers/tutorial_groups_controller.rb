@@ -47,6 +47,10 @@ class TutorialGroupsController < ApplicationController
   end
 
   def points_overview
+    @term = @tutorial_group.term
+
+    term_registrations = @tutorial_group.term_registrations.students
+    @grading_scale_service = GradingScaleService.new(@term, term_registrations)
   end
 
   private

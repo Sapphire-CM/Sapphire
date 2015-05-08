@@ -1,5 +1,3 @@
-<%= render 'points_overview/header',
-  term: @tutorial_group.term,
-  grading_scale: GradingScaleService.new(@tutorial_group.term, @tutorial_group.term_registrations.students) %>
+<%= render 'points_overview/header', term: @term, grading_scale_service: @grading_scale_service %>
 
 <%= points_overview_for_tutorial_group(@tutorial_group) %>

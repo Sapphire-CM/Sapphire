@@ -5,6 +5,8 @@ class RatingGroupsController < ApplicationController
     end
   end
 
+  include EventSourcing
+
   before_action :set_context
   before_action :set_rating_group, only: [:edit, :update, :destroy, :update_position]
 
@@ -24,6 +26,7 @@ class RatingGroupsController < ApplicationController
     authorize @rating_group
 
     if @rating_group.save
+      event_service.rating_group_created!(@rating_group)
       render partial: 'rating_groups/insert_index_entry', locals: { rating_group: @rating_group }
     else
       render :new
@@ -34,7 +37,12 @@ class RatingGroupsController < ApplicationController
   end
 
   def update
-    if @rating_group.update(rating_group_params)
+    @rating_group.assign_attributes(rating_group_params)
+
+    if @rating_group.valid?
+      event_service.rating_group_updated!(@rating_group)
+      @rating_group.save
+
       render partial: 'rating_groups/replace_index_entry', locals: { rating_group: @rating_group }
     else
       render :edit
@@ -49,6 +57,7 @@ class RatingGroupsController < ApplicationController
 
   def destroy
     @rating_group.destroy
+    event_service.rating_group_destroyed!(@rating_group)
     render partial: 'rating_groups/remove_index_entry', locals: { rating_group: @rating_group }
   end
 

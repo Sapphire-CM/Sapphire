@@ -39,7 +39,10 @@ class StudentSubmissionsController < ApplicationController
     @submission.assign_attributes(submission_params)
     @submission.submitted_at = Time.now
 
-    if @submission.save
+    if @submission.valid?
+      EventCreationService.submission_updated!(@term, current_account, @submission)
+      @submission.save
+
       if policy(@term).student?
         if @submission.submission_assets.archives.any?
           redirect_to catalog_exercise_student_submission_path(@exercise)

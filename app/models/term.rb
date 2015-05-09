@@ -17,6 +17,8 @@ class Term < ActiveRecord::Base
   has_many :imports, dependent: :destroy
   has_many :exports, dependent: :destroy
 
+  has_many :events, dependent: :destroy
+
   validates :course, presence: true
   validates :title, presence: true, uniqueness: { scope: :course_id }
 

@@ -1,0 +1,3 @@
+<%= event_box(updated) do |event| %>
+  <%= event.account.fullname %> <strong>updated</strong> submission for <strong><%= link_to event.subject.exercise.title, exercise_student_submission_path(event.subject.exercise) %></strong>
+<% end %>

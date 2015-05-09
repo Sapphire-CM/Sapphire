@@ -6,6 +6,8 @@ class TermsController < ApplicationController
   def show
     @tutorial_groups = @term.tutorial_groups
     @exercises = @term.exercises
+
+    @events = policy_scope(Event).for_term(@term).time_ordered.limit(10)
   end
 
   def new

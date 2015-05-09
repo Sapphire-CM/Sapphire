@@ -1,0 +1,7 @@
+<%= event_box(destroyed) do |event| %>
+  <div class='title'>
+    <%= event.account.fullname %> <strong>removed</strong> rating
+    <strong><%= link_to "#{event.rating_group_title}/#{event.rating_title}", exercise_rating_groups_path(event.exercise_id, anchor: "rating_group_id_#{event.rating_group_id}") %></strong>
+    @ <%= event.exercise_title %>
+  </div>
+<% end %>

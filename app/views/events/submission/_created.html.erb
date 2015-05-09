@@ -1,0 +1,3 @@
+<%= event_box(created) do |event| %>
+  <%= event.account.fullname %> <strong>submissed</strong> <%= pluralize event.files.count, 'file' %> for <strong><%= link_to event.subject.exercise.title, exercise_student_submission_path(event.subject.exercise) %></strong>
+<% end %>

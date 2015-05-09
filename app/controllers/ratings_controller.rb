@@ -5,6 +5,8 @@ class RatingsController < ApplicationController
     end
   end
 
+  include EventSourcing
+
   before_action :set_context
   before_action :set_rating, only: [:edit, :update, :update_position, :destroy]
 
@@ -27,6 +29,7 @@ class RatingsController < ApplicationController
     authorize RatingPolicyRecord.new @rating
 
     if @rating.save
+      event_service.rating_created!(@rating)
       render partial: 'ratings/insert_index_entry', locals: { rating: @rating }
     else
       render :new, alert: 'Error saving!'
@@ -37,7 +40,12 @@ class RatingsController < ApplicationController
   end
 
   def update
-    if @rating.update(rating_params)
+    @rating.assign_attributes(rating_params)
+
+    if @rating.valid?
+      event_service.rating_updated!(@rating)
+      @rating.save
+
       render partial: 'ratings/replace_index_entry', locals: { rating: @rating }
     else
       render :edit
@@ -53,6 +61,7 @@ class RatingsController < ApplicationController
 
   def destroy
     @rating.destroy
+    event_service.rating_destroyed! @rating
     render partial: 'ratings/remove_index_entry', locals: { rating: @rating }
   end
 

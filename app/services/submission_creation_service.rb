@@ -28,6 +28,7 @@ class SubmissionCreationService
     ActiveRecord::Base.transaction do
       if result = @submission.save
         create_exercise_registrations!
+        create_event!
       end
     end
 
@@ -35,7 +36,6 @@ class SubmissionCreationService
   end
 
   private
-
   def ensure_model_setup!
     setup_model! unless model_setup?
   end
@@ -64,5 +64,9 @@ class SubmissionCreationService
         ExerciseRegistration.create!(submission: @submission, exercise: @submission.exercise, term_registration: term_registration)
       end
     end
+  end
+
+  def create_event!
+    EventService.submission_created!(@submission.exercise.term, @account, @submission)
   end
 end

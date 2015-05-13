@@ -20,6 +20,7 @@ gem 'jquery-turbolinks'           # Turbolinks jquery plugin for DOM ready event
 gem 'ranked-model'                # manages sort-position of ratings
 gem 'email_validator'             # provides ActiveRecord validation for email addresses
 gem 'local_time'                  # displays times and dates to users in their local time
+gem 'charlock_holmes'             # encoding detection for submitted submission assets
 
 gem 'compass-rails',   '~> 2.0', '>= 2.0.2' # Compass intregration into assets-pipeline
 gem 'sass-rails',      '~> 5.0'   # Use SCSS for stylesheets

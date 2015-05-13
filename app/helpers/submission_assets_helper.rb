@@ -47,19 +47,19 @@ module SubmissionAssetsHelper
   end
 
   def inline_newsgroup_post_asset(submission_asset)
-    render 'submission_assets/code_panel', code: auto_link(inline_code(submission_asset.file.read, :email), sanitize: false, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
+    render 'submission_assets/code_panel', code: auto_link(inline_code(submission_asset.utf8_contents, :email), sanitize: false, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
   end
 
   def inline_email_asset(submission_asset)
-    render 'submission_assets/code_panel', code: auto_link(inline_code(submission_asset.file.read, :email), sanitize: false, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
+    render 'submission_assets/code_panel', code: auto_link(inline_code(submission_asset.utf8_contents, :email), sanitize: false, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
   end
 
   def inline_css_asset(submission_asset)
-    render 'submission_assets/code_panel', code: inline_code(submission_asset.file.read, :css), raw_url: submission_asset_path(submission_asset)
+    render 'submission_assets/code_panel', code: inline_code(submission_asset.utf8_contents, :css), raw_url: submission_asset_path(submission_asset)
   end
 
   def inline_html_asset(submission_asset)
-    render 'submission_assets/code_panel', code: auto_link(inline_code(submission_asset.file.read, :html), sanitize: false, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
+    render 'submission_assets/code_panel', code: auto_link(inline_code(submission_asset.utf8_contents, :html), sanitize: false, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
   end
 
   def inline_image_asset(submission_asset)
@@ -67,14 +67,10 @@ module SubmissionAssetsHelper
   end
 
   def inline_plain_text_asset(submission_asset)
-    contents = submission_asset.file.read
-
-    contents.encode!('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
-
-    render 'submission_assets/code_panel', code: auto_link(simple_format(contents), sanitize: true, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
+    render 'submission_assets/code_panel', code: auto_link(simple_format(submission_asset.utf8_contents), sanitize: true, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
   end
 
   def inline_code(code, lang)
-    coderay(code.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: ''), lang)
+    coderay(code, lang)
   end
 end

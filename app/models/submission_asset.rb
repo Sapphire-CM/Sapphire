@@ -1,3 +1,5 @@
+require "charlock_holmes"
+
 class SubmissionAsset < ActiveRecord::Base
   belongs_to :submission
   mount_uploader :file, SubmissionAssetUploader
@@ -62,5 +64,12 @@ class SubmissionAsset < ActiveRecord::Base
     if file.to_s.present? && type = MIME::Types.type_for(file.to_s).first
       self.content_type = type.content_type
     end
+  end
+
+  def utf8_contents
+    contents = file.read
+    detection = CharlockHolmes::EncodingDetector.detect(contents)
+
+    CharlockHolmes::Converter.convert contents, detection[:encoding], 'UTF-8'
   end
 end

@@ -1,0 +1,1 @@
+alert('<%= "#{@evaluation.value} is invalid:\\n\\n#{@evaluation.errors.full_messages.map {|e| "• #{e}"}.join("\\n")}" %>');

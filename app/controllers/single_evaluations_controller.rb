@@ -35,8 +35,7 @@ class SingleEvaluationsController < ApplicationController
     @submission_evaluation = @submission.submission_evaluation
 
     if @evaluation.save
-      @submission_evaluation.evaluated_at = Time.now
-      @submission_evaluation.save!
+      @submission_evaluation.update(evaluated_at: Time.now)
     else
       render :update_error
     end

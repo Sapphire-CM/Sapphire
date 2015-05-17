@@ -31,10 +31,14 @@ class SingleEvaluationsController < ApplicationController
     else
       params[:evaluation][:value]
     end
-    @evaluation.save!
 
     @submission_evaluation = @submission.submission_evaluation
-    @submission_evaluation.evaluated_at = Time.now
-    @submission_evaluation.save!
+
+    if @evaluation.save
+      @submission_evaluation.evaluated_at = Time.now
+      @submission_evaluation.save!
+    else
+      render :update_error
+    end
   end
 end

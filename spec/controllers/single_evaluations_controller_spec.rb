@@ -130,7 +130,27 @@ RSpec.describe SingleEvaluationsController do
     end
 
     describe 'with invalid params' do
-      # can not happen
+      context 'with a ValueRating' do
+        [ValueNumberRating, ValuePercentRating].each do |type|
+          it 'returns a JS containing an alert' do
+            rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s, min_value: 0, max_value: 5, value: 3
+            evaluation = submission_evaluation.evaluations.where(rating_id: rating.id).first
+            submission_evaluation.update! updated_at: 42.days.ago
+
+            expect do
+              xhr :put, :update, id: evaluation.id, evaluation: { value: '42' }
+              submission_evaluation.reload
+              evaluation.reload
+            end.not_to change {evaluation.value}
+
+            expect(response).to have_http_status(:success)
+            expect(assigns(:evaluation)).to eq(evaluation)
+            expect(assigns(:submission)).to eq(submission)
+            expect(assigns(:submission_evaluation)).to eq(submission_evaluation)
+            expect(response.body).to include("alert")
+          end
+        end
+      end
     end
   end
 end

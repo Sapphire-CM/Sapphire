@@ -20,7 +20,7 @@ FactoryGirl.define do
       end
 
       after(:create) do |student_group, evaluator|
-        create(:term_registration, :with_student_group, student_group: student_group, account: evaluator.student)
+        create(:term_registration, :with_student_group, student_group: student_group, account: evaluator.student, tutorial_group: student_group.tutorial_group, term: student_group.tutorial_group.term)
       end
     end
   end

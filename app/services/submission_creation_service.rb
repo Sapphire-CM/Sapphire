@@ -67,6 +67,7 @@ class SubmissionCreationService
   end
 
   def create_event!
-    EventService.submission_created!(@submission.exercise.term, @account, @submission)
+    event_service = EventService.new(@account, @submission.exercise.term)
+    event_service.submission_created!(@submission)
   end
 end

@@ -12,7 +12,7 @@ class EventService
     Events::Submission::Updated.create(options_with_data(subject: submission))
   end
 
-  def submission_created!(term, account, submission)
+  def submission_created!(submission)
     data = {
       submission_id: submission.id,
       exercise_id: submission.exercise.id,

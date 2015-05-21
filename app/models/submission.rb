@@ -50,6 +50,10 @@ class Submission < ActiveRecord::Base
     term_registrations.students.where(account_id: account.id).exists?
   end
 
+  def submission_assets_changed?
+    submission_assets.any? { |sa| sa.changed? || sa.new_record? || sa.marked_for_destruction? }
+  end
+
   private
 
   def create_submission_evaluation

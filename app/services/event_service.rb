@@ -9,18 +9,11 @@ class EventService
   end
 
   def submission_updated!(term, account, submission)
-    Events::Submission::Updated.create(options_with_data(subject: submission))
+    Events::Submission::Updated.create(submission_options(submission))
   end
 
   def submission_created!(submission)
-    data = {
-      submission_id: submission.id,
-      exercise_id: submission.exercise.id,
-      exercise_title: submission.exercise.title,
-      files: submission.submission_assets.map {|sa| File.join(sa.path, File.basename(sa.file.to_s)) }
-    }
-
-    Events::Submission::Created.create(options(submission, data))
+    Events::Submission::Created.create(submission_options(submission))
   end
 
   def rating_created!(rating)
@@ -76,5 +69,48 @@ class EventService
       exercise_id: rating_group.exercise.id,
       points: rating_group.points
     }.merge(attributes)
+  end
+
+  def submission_options(submission, attributes = {})
+    options submission, {
+      submission_id: submission.id,
+      exercise_id: submission.exercise.id,
+      exercise_title: submission.exercise.title,
+      submission_assets: submission_assets_changes(submission)
+    }.merge(attributes)
+  end
+
+  def submission_assets_changes(submission)
+    submission_assets_changes = {
+      added: [],
+      updated: [],
+      destroyed: []
+    }
+
+    submission.submission_assets.each do |sa|
+      submission_asset_description = lambda {
+        {
+          file: File.basename(sa.file.to_s),
+          path: sa.path,
+          content_type: sa.content_type
+        }
+      }
+
+      if sa.new_record? || submission.new_record?
+        submission_assets_changes[:added] << submission_asset_description.call
+      elsif sa.marked_for_destruction?
+        submission_assets_changes[:destroyed] << submission_asset_description.call
+      elsif sa.changed?
+        if sa.changes.key? 'file'
+          submission_assets_changes[:updated] << {
+            file: sa.changes['file'].map { |file| File.basename(file.to_s) },
+            path: sa.path,
+            content_type: sa.content_type
+          }
+        end
+      end
+    end
+
+    submission_assets_changes
   end
 end

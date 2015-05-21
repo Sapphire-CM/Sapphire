@@ -1,3 +1,5 @@
 <%= event_box(created) do |event| %>
-  <%= event.account.fullname %> <strong>submissed</strong> <%= pluralize event.files.count, 'file' %> for <strong><%= link_to event.subject.exercise.title, exercise_student_submission_path(event.subject.exercise) %></strong>
+  <%= event.account.fullname %> <strong>uploaded <%= pluralize event.file_count, 'file' %></strong> for <strong><%= link_to event.subject.exercise.title, exercise_student_submission_path(event.subject.exercise) %></strong>
+
+  <%= render "events/submission/submission_assets_changes", submission_assets: event.submission_assets, event: event %>
 <% end %>

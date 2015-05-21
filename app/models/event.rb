@@ -12,6 +12,14 @@ class Event < ActiveRecord::Base
 
   serialize_hash :data
 
+  def self.data_reader(*args)
+    args.each do |arg|
+      define_method(arg) do
+        data[arg]
+      end
+    end
+  end
+
   def to_partial_path
     self.class.to_s.underscore
   end

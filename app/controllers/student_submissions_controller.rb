@@ -46,7 +46,7 @@ class StudentSubmissionsController < ApplicationController
       @submission.submitted_at = Time.now
 
       if @submission.valid?
-        event_service.submission_updated!(@term, current_account, @submission)
+        event_service.submission_updated!(@submission)
         @submission.save
 
         if policy(@term).student?

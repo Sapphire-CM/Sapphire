@@ -8,7 +8,7 @@ class EventService
     @term = term
   end
 
-  def submission_updated!(term, account, submission)
+  def submission_updated!(submission)
     Events::Submission::Updated.create(submission_options(submission))
   end
 

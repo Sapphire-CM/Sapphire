@@ -53,7 +53,7 @@ module SingleEvaluationsHelper
   end
 
   def single_evaluation_pluralized_points(_points)
-    pluralize @submission.submission_evaluation.evaluation_result, 'point'
+    "#{@submission.submission_evaluation.evaluation_result} of #{pluralize @submission.exercise.achievable_points, 'point'}"
   end
 
   def single_evaluation_evaluation_group_id(evaluation_group)

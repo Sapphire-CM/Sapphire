@@ -21,8 +21,6 @@ module SerializableHash
         define_method("#{attribute}=".to_sym) do |value|
           write_attribute(attribute, YAML.dump(value))
         end
-
-        validates attribute, presence: true
       end
     end
   end

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative '../behaviours/hash_serialization_behaviour'
 
 RSpec.describe SerializableHash do
   class SerializableHash::TestDouble
@@ -7,6 +8,8 @@ RSpec.describe SerializableHash do
     include ActiveModel::Validations
 
     include SerializableHash
+
+    serialize_hash :data
 
     def read_attribute(_attr)
     end
@@ -35,30 +38,7 @@ RSpec.describe SerializableHash do
     end
   end
 
-  context 'serialized #data hash' do
-    before :each do
-      model_class.serialize_hash(:data)
-    end
-
-    after :each do
-      model_class.instance_eval { remove_method :data }
-      model_class.instance_eval { remove_method :data= }
-    end
-
-    describe '#data' do
-      it 'deserializes YAML-encoded attribute' do
-        expect(model).to receive(:read_attribute).with(:data).and_return(YAML.dump({foo: 'bar'}))
-
-        expect(model.data).to match({foo: 'bar'})
-      end
-    end
-
-    describe '#data=' do
-      it 'serializes given hash and writes it to attribute as YAML' do
-        expect(model).to receive(:write_attribute).with(:data, YAML.dump({foo: 'bar'}))
-
-        model.data = {foo: 'bar'}
-      end
-    end
+  it_behaves_like 'hash serialization', %I(data) do
+    subject { model }
   end
 end

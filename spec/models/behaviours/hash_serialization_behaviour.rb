@@ -2,12 +2,22 @@ require 'rails_helper'
 
 RSpec.shared_examples 'hash serialization' do |hash_attributes|
   hash_attributes.each do |attribute|
-    it "provides ##{attribute}" do
-      expect(subject).to respond_to(attribute)
-    end
+    context "serialized ##{attribute} hash" do
+      describe "##{attribute}" do
+        it 'deserializes YAML-encoded attribute' do
+          expect(subject).to receive(:read_attribute).with(attribute).and_return(YAML.dump({foo: 'bar'}))
 
-    it "provides ##{attribute}=(hash)" do
-      expect(subject).to respond_to("#{attribute}=")
+          expect(subject.send(attribute)).to match({foo: 'bar'})
+        end
+      end
+
+      describe "##{attribute}=" do
+        it 'serializes given hash and writes it to attribute as YAML' do
+          expect(subject).to receive(:write_attribute).with(attribute, YAML.dump({foo: 'bar'}))
+
+          subject.send("#{attribute}=".to_sym, {foo: 'bar'})
+        end
+      end
     end
   end
 end

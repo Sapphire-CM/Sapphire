@@ -13,6 +13,16 @@ RSpec.describe Events::Submission::Created do
   it { is_expected.to have_data_reader(:submission_id) }
 
   describe '#file_count' do
-    it 'needs to be implemented'
+    it 'returns the submission assets count' do
+      subject.data = {
+        submission_assets: {
+          added: [1,2,3],
+          updated: [4,5],
+          destroyed: [6]
+        }
+      }
+
+      expect(subject.file_count).to eq(6)
+    end
   end
 end

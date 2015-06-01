@@ -9,11 +9,11 @@ class EventService
   end
 
   def submission_updated!(submission)
-    Events::Submission::Updated.create(submission_options(submission))
+    Events::Submission::Updated.create(submission_options(submission, false))
   end
 
   def submission_created!(submission)
-    Events::Submission::Created.create(submission_options(submission))
+    Events::Submission::Created.create(submission_options(submission, true))
   end
 
   def rating_created!(rating)
@@ -40,6 +40,14 @@ class EventService
     Events::RatingGroup::Destroyed.create(rating_group_options(rating_group))
   end
 
+  def result_publication_published!(result_publication)
+    Events::ResultPublication::Published.create(result_publication_options(result_publication))
+  end
+
+  def result_publication_concealed!(result_publication)
+    Events::ResultPublication::Concealed.create(result_publication_options(result_publication))
+  end
+
   private
   def options(subject, data = {})
     default_options.merge(subject: subject, data: data)
@@ -47,6 +55,15 @@ class EventService
 
   def default_options
     {term: term, account: account}
+  end
+
+  def result_publication_options(result_publication)
+    options result_publication, {
+      exercise_id: result_publication.exercise.id,
+      exercise_title: result_publication.exercise.title,
+      tutorial_group_id: result_publication.tutorial_group.id,
+      tutorial_group_title: result_publication.tutorial_group.title
+    }
   end
 
   def rating_options(rating, attributes = {})
@@ -71,16 +88,16 @@ class EventService
     }.merge(attributes)
   end
 
-  def submission_options(submission, attributes = {})
+  def submission_options(submission, new_record, attributes = {})
     options submission, {
       submission_id: submission.id,
       exercise_id: submission.exercise.id,
       exercise_title: submission.exercise.title,
-      submission_assets: submission_assets_changes(submission)
+      submission_assets: submission_assets_changes(submission, new_record)
     }.merge(attributes)
   end
 
-  def submission_assets_changes(submission)
+  def submission_assets_changes(submission, new_record)
     submission_assets_changes = {
       added: [],
       updated: [],
@@ -96,7 +113,7 @@ class EventService
         }
       }
 
-      if sa.new_record? || submission.new_record?
+      if sa.new_record? || new_record
         submission_assets_changes[:added] << submission_asset_description.call
       elsif sa.marked_for_destruction?
         submission_assets_changes[:destroyed] << submission_asset_description.call

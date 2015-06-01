@@ -10,13 +10,15 @@ class EventPolicy < PunditBasePolicy
             (
               term_registrations.id.in(my { TermRegistration.students }) &
               (
-                events.type.in(my { submission_event_types }) &
-                (
-                  events.subject_id.in( my { Submission.for_account(user) } )
-                )
+                (events.type.in(my { submission_event_types }) & events.subject_id.in( my { Submission.for_account(user) } )) |
+                (events.type.in(my { result_publication_event_types }) & events.subject_id.in(
+                  ResultPublication.where {
+                    tutorial_group_id.in(my { my {user.tutorial_groups} })
+                  }
+                ))
               )
             )
-          ) & (term_registrations.account_id == my {user.id})
+          ) & (term_registrations.account_id == my { user.id } )
         end
       end
     end
@@ -26,5 +28,8 @@ class EventPolicy < PunditBasePolicy
       [Events::Submission::Created, Events::Submission::Updated].map(&:to_s)
     end
 
+    def result_publication_event_types
+      [Events::ResultPublication::Published, Events::ResultPublication::Concealed]
+    end
   end
 end

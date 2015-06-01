@@ -26,12 +26,9 @@ class SubmissionCreationService
 
     result = false
     ActiveRecord::Base.transaction do
-      if result = @submission.valid?
+      if result = @submission.save
         create_event!
-        @submission.save
-
         create_exercise_registrations!
-
       end
     end
 

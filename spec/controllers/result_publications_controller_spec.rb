@@ -23,15 +23,21 @@ RSpec.describe ResultPublicationsController do
 
     context 'publish' do
       it 'updates the publication status of a tutorial group' do
-        put :update, url_params.merge(result_publication: { published: true })
+        expect do
+          put :update, url_params.merge(result_publication: { published: true })
+        end.to change(Events::ResultPublication::Published, :count).by(1)
 
         expect(exercise.result_published_for?(tutorial_groups.first)).to be_truthy
       end
     end
 
-    context 'unpublish' do
+    context 'conceal' do
       it 'shows a different flash message if the publication status is not updated' do
-        put :update, url_params.merge(result_publication: { published: false })
+        exercise.result_publication_for(tutorial_groups.first).update(published: true)
+
+        expect do
+          put :update, url_params.merge(result_publication: { published: false })
+        end.to change(Events::ResultPublication::Concealed, :count).by(1)
 
         expect(flash[:notice]).not_to be_empty
       end

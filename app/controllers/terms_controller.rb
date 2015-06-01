@@ -7,7 +7,7 @@ class TermsController < ApplicationController
     @tutorial_groups = @term.tutorial_groups
     @exercises = @term.exercises
 
-    @events = policy_scope(Event).for_term(@term).time_ordered.limit(10)
+    @events = policy_scope(Event).for_term(@term).includes(:account).time_ordered.limit(10)
   end
 
   def new
@@ -93,4 +93,11 @@ class TermsController < ApplicationController
       :copy_lecturer
     )
   end
+
+  def staff_account?
+    @staff_account = current_account.staff_of_term?(@term) if @staff_account.nil?
+
+    @staff_account
+  end
+  helper_method :staff_account?
 end

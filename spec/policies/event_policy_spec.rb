@@ -7,6 +7,7 @@ RSpec.describe EventPolicy do
 
     let(:term) { FactoryGirl.create(:term) }
     let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
+    let(:other_tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
     let(:student_group) { FactoryGirl.create(:student_group, tutorial_group: tutorial_group) }
 
     let(:student_term_registration) { FactoryGirl.create(:term_registration, :student, term: term, tutorial_group: tutorial_group, student_group: student_group) }
@@ -58,7 +59,8 @@ RSpec.describe EventPolicy do
       s
     end
 
-
+    let(:result_publication_of_tutorial_group) { solitary_exercise.result_publications.where(tutorial_group: tutorial_group).first }
+    let(:result_publication_of_other_tutorial_group) { solitary_exercise.result_publications.where(tutorial_group: other_tutorial_group).first }
 
     let(:group_member_account) do
       FactoryGirl.create(:account)
@@ -112,9 +114,24 @@ RSpec.describe EventPolicy do
       e
     end
 
+    let!(:result_publication_events_of_tutorial_group) do
+      e = []
+      e << event_service.result_publication_published!(result_publication_of_tutorial_group)
+      e << event_service.result_publication_concealed!(result_publication_of_tutorial_group)
+      e
+    end
+
+    let!(:result_publication_events_of_other_tutorial_group) do
+      e = []
+      e << event_service.result_publication_published!(result_publication_of_other_tutorial_group)
+      e << event_service.result_publication_concealed!(result_publication_of_other_tutorial_group)
+      e
+    end
+
 
     let(:all_events) { rating_events + rating_group_events + student_submission_events  +
-      submission_events_of_others + group_member_solitary_submission_events + submission_events_of_group_exercise }
+      submission_events_of_others + group_member_solitary_submission_events + submission_events_of_group_exercise +
+      result_publication_events_of_tutorial_group + result_publication_events_of_other_tutorial_group}
 
     subject { EventPolicy::Scope.new(account, Event.all) }
 
@@ -132,7 +149,7 @@ RSpec.describe EventPolicy do
       let(:account) { student_account }
 
       it 'returns only own submission events and group member submission events for group submissions' do
-        expect(subject.resolve).to match_array(student_submission_events + submission_events_of_group_exercise)
+        expect(subject.resolve).to match_array(student_submission_events + submission_events_of_group_exercise + result_publication_events_of_tutorial_group)
       end
     end
 

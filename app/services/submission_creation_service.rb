@@ -36,6 +36,7 @@ class SubmissionCreationService
   end
 
   private
+
   def ensure_model_setup!
     setup_model! unless model_setup?
   end

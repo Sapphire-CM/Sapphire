@@ -6,7 +6,7 @@ class GradingScalesController < ApplicationController
     @grading_scales = @term.grading_scales.where(not_graded: false).ordered
     @grading_scale_service = GradingScaleService.new(@term)
 
-    flash[:alert] = "GradingScale is not valid" unless @term.valid_grading_scales?
+    flash[:alert] = 'GradingScale is not valid' unless @term.valid_grading_scales?
   end
 
   def update

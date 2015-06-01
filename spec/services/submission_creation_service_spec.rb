@@ -4,7 +4,7 @@ RSpec.describe SubmissionCreationService do
   let(:term_registration) { create(:term_registration, :student, :with_student_group) }
   let(:term) { term_registration.term }
   let(:account) { term_registration.account }
-  let(:exercise) { create(:exercise, term: term)}
+  let(:exercise) { create(:exercise, term: term) }
   let(:submission) { Submission.new(exercise: exercise) }
   let(:student_group) { term_registration.student_group }
 
@@ -28,7 +28,7 @@ RSpec.describe SubmissionCreationService do
   end
 
   context 'solitary submissions' do
-    let(:exercise) { create(:exercise, term: term)}
+    let(:exercise) { create(:exercise, term: term) }
 
     describe '#model' do
       freeze_time
@@ -69,7 +69,7 @@ RSpec.describe SubmissionCreationService do
 
   context 'group submissions' do
     let(:tutorial_group) { term_registration.tutorial_group }
-    let(:exercise) { create(:exercise, :group_exercise, term: term)}
+    let(:exercise) { create(:exercise, :group_exercise, term: term) }
 
     describe '#save' do
       it 'creates a ExerciseRegistration and an Event' do

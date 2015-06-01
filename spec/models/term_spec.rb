@@ -13,7 +13,7 @@ describe Term do
       expect(term.grading_scales.where(positive: false, not_graded: false).length).to eq(1)
       expect(term.grading_scales.where(positive: true, not_graded: false).length).to eq(4)
       expect(term.grading_scales.positives.length).to eq(4)
-      expect(term.grading_scales.pluck(:grade)).to match_array(['1', '2', '3', '4', '5', '0'])
+      expect(term.grading_scales.pluck(:grade)).to match_array(%w(1 2 3 4 5 0))
       expect(term.valid_grading_scales?).to eq(true)
     end
   end

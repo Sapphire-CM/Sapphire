@@ -2,8 +2,8 @@ require 'rails_helper'
 require 'models/behaviours/event_behaviour'
 
 RSpec.describe Events::Submission::Updated do
-  it_behaves_like "an event" do
-    let(:partial_path) { "events/submission/updated" }
+  it_behaves_like 'an event' do
+    let(:partial_path) { 'events/submission/updated' }
   end
 
   it { is_expected.to have_data_reader(:submission_assets) }
@@ -48,7 +48,6 @@ RSpec.describe Events::Submission::Updated do
 
       expect(subject.only_additions?).to be_falsey
     end
-
 
     it 'returns false when only additions have been made' do
       subject.data = {
@@ -100,7 +99,6 @@ RSpec.describe Events::Submission::Updated do
       expect(subject.only_updates?).to be_falsey
     end
 
-
     it 'returns false when only updates have been made' do
       subject.data = {
         submission_assets: {
@@ -150,7 +148,6 @@ RSpec.describe Events::Submission::Updated do
 
       expect(subject.only_removals?).to be_falsey
     end
-
 
     it 'returns false when only removals have been made' do
       subject.data = {

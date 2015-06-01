@@ -7,7 +7,7 @@ class Event < ActiveRecord::Base
 
   validates :account, :term, presence: true
 
-  scope :for_term, lambda {|term| where(term: term) }
+  scope :for_term, lambda { |term| where(term: term) }
   scope :time_ordered, lambda { order(created_at: :desc) }
 
   serialize_hash :data

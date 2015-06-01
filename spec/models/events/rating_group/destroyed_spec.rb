@@ -2,8 +2,8 @@ require 'rails_helper'
 require 'models/behaviours/event_behaviour'
 
 RSpec.describe Events::RatingGroup::Destroyed do
-  it_behaves_like "an event" do
-    let(:partial_path) { "events/rating_group/destroyed" }
+  it_behaves_like 'an event' do
+    let(:partial_path) { 'events/rating_group/destroyed' }
   end
 
   it { is_expected.to have_data_reader(:exercise_title) }

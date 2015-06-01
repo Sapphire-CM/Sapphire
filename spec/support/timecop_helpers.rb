@@ -2,7 +2,7 @@ require 'timecop'
 
 module TimecopHelpers
   def freeze_time
-    let!(:now) {Time.now}
+    let!(:now) { Time.now }
 
     before(:each) do
       Timecop.freeze(now)
@@ -13,7 +13,6 @@ module TimecopHelpers
     end
   end
 end
-
 
 RSpec.configure do |config|
   config.extend TimecopHelpers

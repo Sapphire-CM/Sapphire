@@ -12,7 +12,7 @@ FactoryGirl.define do
           submission_id: subject.id,
           exercise_id: subject.exercise.id,
           exercise_title: subject.exercise.title,
-          files: subject.submission_assets.map {|sa| File.join(sa.path, File.basename(sa.file.to_s)) }
+          files: subject.submission_assets.map { |sa| File.join(sa.path, File.basename(sa.file.to_s)) }
         }
       }
     end

@@ -2,7 +2,7 @@ class EventService
   attr_reader :term, :account
 
   def initialize(account, term)
-    raise ArgumentError.new("No term specified") unless term.present?
+    fail ArgumentError.new('No term specified') unless term.present?
 
     @account = account
     @term = term
@@ -105,13 +105,13 @@ class EventService
     }
 
     submission.submission_assets.each do |sa|
-      submission_asset_description = lambda {
+      submission_asset_description = lambda do
         {
           file: File.basename(sa.file.to_s),
           path: sa.path,
           content_type: sa.content_type
         }
-      }
+      end
 
       if sa.new_record? || new_record
         submission_assets_changes[:added] << submission_asset_description.call

@@ -27,7 +27,7 @@ class Exercise < ActiveRecord::Base
   validates :min_required_points, presence: true, if: :enable_min_required_points
   validates :max_total_points, presence: true, if: :enable_max_total_points
   validates :maximum_upload_size, presence: true, if: :enable_max_upload_size
-  validates :deadline, presence: true, if: lambda { |e| late_deadline.present? }
+  validates :deadline, presence: true, if: lambda { |_e| late_deadline.present? }
   validate :deadlines_order
 
   before_save :update_points, if: lambda { |exercise| exercise.enable_max_total_points_changed? || exercise.max_total_points_changed? }
@@ -104,8 +104,8 @@ class Exercise < ActiveRecord::Base
   end
 
   def deadlines_order
-   if deadline.present? && late_deadline.present? && late_deadline < deadline
-     errors.add(:late_deadline, 'must be chronological after deadline')
-   end
+    if deadline.present? && late_deadline.present? && late_deadline < deadline
+      errors.add(:late_deadline, 'must be chronological after deadline')
+    end
   end
 end

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe EventPolicy do
-
   describe 'scoping' do
     let(:event_service) { EventService.new(account, term) }
 
@@ -26,7 +25,6 @@ RSpec.describe EventPolicy do
     let(:tutor_account) { tutor_term_registration.account }
     let(:lecturer_account) { lecturer_term_registration.account }
 
-
     let(:solitary_exercise) { FactoryGirl.create(:exercise, :with_ratings, term: term, group_submission: false) }
     let(:group_exercise) { FactoryGirl.create(:exercise, :with_ratings, term: term, group_submission: true) }
     let(:rating_group) { solitary_exercise.rating_groups.first }
@@ -44,13 +42,11 @@ RSpec.describe EventPolicy do
       s
     end
 
-
     let!(:solitary_submission_of_other_student) do
       s = FactoryGirl.create(:submission, exercise: solitary_exercise)
       FactoryGirl.create(:exercise_registration, exercise: solitary_exercise, term_registration: other_student_term_registration, submission: s)
       s
     end
-
 
     let(:group_submission) do
       s = FactoryGirl.create(:submission, exercise: group_exercise)
@@ -128,10 +124,10 @@ RSpec.describe EventPolicy do
       e
     end
 
-
-    let(:all_events) { rating_events + rating_group_events + student_submission_events  +
-      submission_events_of_others + group_member_solitary_submission_events + submission_events_of_group_exercise +
-      result_publication_events_of_tutorial_group + result_publication_events_of_other_tutorial_group}
+    let(:all_events) do
+      rating_events + rating_group_events + student_submission_events + submission_events_of_others + group_member_solitary_submission_events + submission_events_of_group_exercise +
+      result_publication_events_of_tutorial_group + result_publication_events_of_other_tutorial_group
+    end
 
     subject { EventPolicy::Scope.new(account, Event.all) }
 

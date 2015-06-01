@@ -73,7 +73,7 @@ class Term < ActiveRecord::Base
     gss = grading_scales.positives.ordered.to_a
     gss << grading_scales.negative
     checks = gss[0..-3].map.with_index do |gs, index|
-      gs.min_points == gss[index+1].max_points + 1
+      gs.min_points == gss[index + 1].max_points + 1
     end
 
     checks << (grading_scales.where(not_graded: true).length == 1)

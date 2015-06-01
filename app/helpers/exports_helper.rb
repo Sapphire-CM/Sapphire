@@ -12,11 +12,11 @@ module ExportsHelper
   def download_link_title(export)
     file = export.file.to_s
 
-    if File.exists? file
+    if File.exist? file
       size = File.size(file)
       foundation_icon(:download) + " download (#{number_to_human_size size})"
     else
-      "file missing"
+      'file missing'
     end
   end
 end

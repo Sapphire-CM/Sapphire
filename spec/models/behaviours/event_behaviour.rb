@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.shared_examples "an event" do
+RSpec.shared_examples 'an event' do
   it { is_expected.to belong_to(:subject) }
   it { is_expected.to belong_to(:account) }
   it { is_expected.to belong_to(:term) }

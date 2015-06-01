@@ -2,8 +2,8 @@ require 'rails_helper'
 require 'models/behaviours/event_behaviour'
 
 RSpec.describe Events::Submission::Created do
-  it_behaves_like "an event" do
-    let(:partial_path) { "events/submission/created" }
+  it_behaves_like 'an event' do
+    let(:partial_path) { 'events/submission/created' }
   end
 
   it { is_expected.to have_data_reader(:submission_assets) }
@@ -16,8 +16,8 @@ RSpec.describe Events::Submission::Created do
     it 'returns the submission assets count' do
       subject.data = {
         submission_assets: {
-          added: [1,2,3],
-          updated: [4,5],
+          added: [1, 2, 3],
+          updated: [4, 5],
           destroyed: [6]
         }
       }

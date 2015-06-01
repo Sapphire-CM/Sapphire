@@ -1,7 +1,7 @@
 module Events
   module Submission
     class Updated < ::Event
-      data_reader :submission_assets, :exercise_title, :exercise_id, :path
+      data_reader :submission_assets, :exercise_title, :exercise_id, :path, :submission_id
 
       def only_additions?
         submission_assets[:added].any? && submission_assets[:updated].empty? && submission_assets[:destroyed].empty?

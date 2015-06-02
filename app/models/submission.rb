@@ -4,7 +4,7 @@ class Submission < ActiveRecord::Base
   belongs_to :student_group
 
   has_one :submission_evaluation, dependent: :destroy
-  has_many :submission_assets, inverse_of: :submission
+  has_many :submission_assets, inverse_of: :submission, autosave: true
   has_many :exercise_registrations, dependent: :destroy
   has_many :term_registrations, through: :exercise_registrations
 

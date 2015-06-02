@@ -2,18 +2,19 @@ class EventService
   attr_reader :term, :account
 
   def initialize(account, term)
-    fail ArgumentError.new('No term specified') unless term.present?
+    fail ArgumentError.new('No account specified') unless account.is_a?(Account)
+    fail ArgumentError.new('No term specified') unless term.is_a?(Term)
 
     @account = account
     @term = term
   end
 
-  def submission_updated!(submission)
-    Events::Submission::Updated.create(submission_options(submission, false))
-  end
-
   def submission_created!(submission)
     Events::Submission::Created.create(submission_options(submission, true))
+  end
+
+  def submission_updated!(submission)
+    Events::Submission::Updated.create(submission_options(submission, false))
   end
 
   def rating_created!(rating)

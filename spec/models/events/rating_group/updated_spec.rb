@@ -10,6 +10,7 @@ RSpec.describe Events::RatingGroup::Updated do
   it { is_expected.to have_data_reader(:exercise_id) }
   it { is_expected.to have_data_reader(:rating_group_title) }
   it { is_expected.to have_data_reader(:rating_group_id) }
+  it { is_expected.to have_data_reader(:points) }
 
   describe '#tracked_changes' do
     it 'returns a hash with indifferent access' do

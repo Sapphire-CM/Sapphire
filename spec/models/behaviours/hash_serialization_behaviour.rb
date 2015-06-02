@@ -17,6 +17,12 @@ RSpec.shared_examples 'hash serialization' do |hash_attributes|
 
           subject.send("#{attribute}=".to_sym, foo: 'bar')
         end
+
+        it 'stores value in instance variable' do
+          expect(subject).to receive(:instance_variable_set).with("@#{attribute}", foo: 'bar')
+
+          subject.send("#{attribute}=".to_sym, foo: 'bar')
+        end
       end
     end
   end

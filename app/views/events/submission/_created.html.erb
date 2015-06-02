@@ -1,0 +1,13 @@
+<% if staff_account? %>
+  <%= event_box(created, :staff) do |event| %>
+    <%= event.account.fullname %> <strong>uploaded <%= pluralize event.file_count, 'file' %></strong> for <strong><%= link_to event.exercise_title, exercise_submission_path(event.exercise_id, event.submission_id) %></strong>
+
+    <%= render "events/submission/submission_assets_changes", submission_assets: event.submission_assets, event: event %>
+  <% end %>
+<% else %>
+  <%= event_box(created, :student) do |event| %>
+    <%= event.account.fullname %> <strong>uploaded <%= pluralize event.file_count, 'file' %></strong> for <strong><%= link_to event.exercise_title, exercise_student_submission_path(event.exercise_id) %></strong>
+
+    <%= render "events/submission/submission_assets_changes", submission_assets: event.submission_assets, event: event %>
+  <% end %>
+<% end %>

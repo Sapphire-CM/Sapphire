@@ -8,9 +8,9 @@ class GradingScale < ActiveRecord::Base
 
   scope :ordered, lambda { order(:grade) }
   scope :positives, lambda { where(positive: true, not_graded: false).ordered }
-  scope :negative, lambda { where(positive: false, not_graded: false).first }
-  scope :not_graded, lambda { where(not_graded: true).first }
-  scope :for_grade, lambda { |grade| where(grade: grade).first }
+  scope :negative, lambda { find_by(positive: false, not_graded: false) }
+  scope :not_graded, lambda { find_by(not_graded: true) }
+  scope :for_grade, lambda { |grade| find_by(grade: grade) }
 
   private
 

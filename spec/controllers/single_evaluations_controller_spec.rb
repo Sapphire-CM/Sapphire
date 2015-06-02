@@ -43,7 +43,6 @@ RSpec.describe SingleEvaluationsController do
         expect(response).to have_http_status(:success)
         expect(response.body).to have_content('Submission containing special chars')
       end
-
     end
   end
 

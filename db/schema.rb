@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150503101943) do
+ActiveRecord::Schema.define(version: 20150507095039) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -85,6 +85,20 @@ ActiveRecord::Schema.define(version: 20150503101943) do
 
   add_index "evaluations", ["evaluation_group_id"], name: "index_evaluations_on_evaluation_group_id"
   add_index "evaluations", ["rating_id"], name: "index_evaluations_on_rating_id"
+
+  create_table "events", force: :cascade do |t|
+    t.string   "type"
+    t.integer  "subject_id",   null: false
+    t.string   "subject_type", null: false
+    t.integer  "account_id",   null: false
+    t.integer  "term_id",      null: false
+    t.text     "data"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "events", ["account_id"], name: "index_events_on_account_id"
+  add_index "events", ["subject_type", "subject_id"], name: "index_events_on_subject_type_and_subject_id"
 
   create_table "exercise_registrations", force: :cascade do |t|
     t.integer  "exercise_id"

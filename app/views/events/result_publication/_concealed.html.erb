@@ -1,0 +1,13 @@
+<% if staff_account? %>
+  <%= event_box(concealed, :staff) do |event| %>
+    <%= event.account.fullname %> <strong>concealed results</strong>
+    for <strong><%= link_to event.exercise_title, exercise_submissions_path(event.exercise_id) %></strong>
+    for tutorial group <%= event.tutorial_group_title %>
+  <% end %>
+<% else %>
+  <%= event_box(concealed, :student) do |event| %>
+    <%= event.account.fullname %> <strong>concealed results</strong>
+    for <strong><%= link_to event.exercise_title, exercise_student_submission_path(event.exercise_id) %></strong>
+    for tutorial group <%= event.tutorial_group_title %>
+  <% end %>
+<% end %>

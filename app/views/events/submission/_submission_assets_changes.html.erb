@@ -1,0 +1,15 @@
+<div class='description'>
+  <ul>
+  <% submission_assets[:added].each do |change| %>
+    <li>Added <strong>'<%= event.path.present? ? File.join(change[:file]) : change[:file] %>'</strong></li>
+  <% end %>
+
+  <% submission_assets[:updated].each do |change| %>
+    <li>Replaced <strong>'<%= change[:file].first %>'</strong> with <strong>'<%= change[:file].last %>'</strong></li>
+  <% end %>
+
+  <% submission_assets[:destroyed].each do |change| %>
+    <li>Removed <strong>'<%= change[:file] %>'</strong></li>
+  <% end %>
+  </ul>
+</div>

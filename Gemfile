@@ -115,8 +115,11 @@ group :test do
 
   gem 'capybara'
   gem 'poltergeist'               # PhantomJS, headless Webkit
+
   # gem 'selenium-webdriver'      # Selenium, Firefox webdriver
   # gem 'capybara-webkit'         # Webkit headless webdriver
+
+  gem 'timecop'                   # improved time handling during tests
 end
 
 group :development, :test do

@@ -4,7 +4,7 @@ class Submission < ActiveRecord::Base
   belongs_to :student_group
 
   has_one :submission_evaluation, dependent: :destroy
-  has_many :submission_assets, inverse_of: :submission
+  has_many :submission_assets, inverse_of: :submission, autosave: true
   has_many :exercise_registrations, dependent: :destroy
   has_many :term_registrations, through: :exercise_registrations
 
@@ -48,6 +48,10 @@ class Submission < ActiveRecord::Base
 
   def visible_for_student?(account)
     term_registrations.students.where(account_id: account.id).exists?
+  end
+
+  def submission_assets_changed?
+    submission_assets.any? { |sa| sa.changed? || sa.new_record? || sa.marked_for_destruction? }
   end
 
   private

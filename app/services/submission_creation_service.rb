@@ -27,6 +27,7 @@ class SubmissionCreationService
     result = false
     ActiveRecord::Base.transaction do
       if result = @submission.save
+        create_event!
         create_exercise_registrations!
       end
     end
@@ -64,5 +65,10 @@ class SubmissionCreationService
         ExerciseRegistration.create!(submission: @submission, exercise: @submission.exercise, term_registration: term_registration)
       end
     end
+  end
+
+  def create_event!
+    event_service = EventService.new(@account, @submission.exercise.term)
+    event_service.submission_created!(@submission)
   end
 end

@@ -1,0 +1,16 @@
+<%= event_box(updated) do |event| %>
+  <div class='title'>
+    <%= event.account.fullname %> <strong>updated</strong>
+
+    <% if event.tracked_changes.count == 1 %>
+      <% change = event.tracked_changes.keys.first %>
+      <%= change %> of rating <strong><%= link_to "#{event.rating_group_title}/#{event.rating_title}", exercise_rating_groups_path(event.exercise_id, anchor: "rating_group_id_#{event.rating_group_id}") %></strong> from '<%= event.tracked_changes[change].first %>' to '<%= event.tracked_changes[change].last %>'
+    <% else %>
+      rating <strong><%= link_to "#{event.rating_group_title}/#{event.rating_title}", exercise_rating_groups_path(event.exercise_id, anchor: "rating_group_id_#{event.rating_group_id}") %></strong>
+    <% end %>
+    @ <%= event.exercise_title %>
+  </div>
+  <% if event.tracked_changes.length > 1 %>
+    <%= render "events/tracked_changes", tracked_changes: event.tracked_changes %>
+  <% end %>
+<% end %>

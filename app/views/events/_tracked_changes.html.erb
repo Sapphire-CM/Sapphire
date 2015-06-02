@@ -1,0 +1,17 @@
+<div class='description'>
+  <h6>Changes</h6>
+  <ul class='circle'>
+    <% tracked_changes.each do |attribute, change| %>
+      <li>
+        <% if change.first.present? && change.last.present? %>
+          Updated <strong><%= attribute.humanize %></strong>
+          from <strong>'<%= change.first %>'</strong> to <strong>'<%= change.last %>'</strong>
+        <% elsif change.first.present? %>
+          Removed <strong>'<%= change.first %>'</strong> from <strong><%= attribute.humanize %></strong>
+        <% else %>
+          Inserted <strong>'<%= change.last %>'</strong> into <strong><%= attribute.humanize %></strong>
+        <% end %>
+        </li>
+    <% end %>
+  </ul>
+</div>

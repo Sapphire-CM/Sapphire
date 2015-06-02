@@ -1,0 +1,11 @@
+<%= cache [event, cache_identifier].compact do %>
+  <%= content_tag :div, class: css_classes do %>
+    <div class='time'>
+      <%= local_time(event.created_at) %>
+    </div>
+    <div class='content'>
+      <%= content %>
+    </div>
+  <% end %>
+  <hr />
+<% end %>

@@ -93,9 +93,7 @@ def submitter_for_email(parsed_email, exercise)
 
   possible_submitters = exercise.term.term_registrations.for_email_addresses(emails).load
 
-  if possible_submitters.size == 1
-    possible_submitters.first
-  end
+  possible_submitters.first if possible_submitters.size == 1
 end
 
 def setup_submission_asset(submission_asset, raw_post, parsed_post)

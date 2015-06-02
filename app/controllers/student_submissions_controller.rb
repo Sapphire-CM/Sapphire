@@ -2,6 +2,8 @@ require 'zip'
 require 'base64'
 
 class StudentSubmissionsController < ApplicationController
+  include EventSourcing
+
   before_action :set_exercise_and_term
   before_action :set_submission, only: [:show, :update, :catalog, :extract]
   before_action :ensure_submission_param, only: [:create, :update]
@@ -37,18 +39,26 @@ class StudentSubmissionsController < ApplicationController
 
   def update
     @submission.assign_attributes(submission_params)
-    @submission.submitted_at = Time.now
 
-    if @submission.save
-      if policy(@term).student?
-        if @submission.submission_assets.archives.any?
-          redirect_to catalog_exercise_student_submission_path(@exercise)
-        else
-          redirect_to exercise_student_submission_path(@exercise), notice: 'Successfully updated submission'
-        end
-      end
+    unless @submission.changed? || @submission.submission_assets_changed?
+      redirect_to exercise_student_submission_path(@exercise), notice: 'No changes made'
     else
-      render :show
+      @submission.submitted_at = Time.now
+
+      if @submission.valid?
+        event_service.submission_updated!(@submission)
+        @submission.save
+
+        if policy(@term).student?
+          if @submission.submission_assets.archives.any?
+            redirect_to catalog_exercise_student_submission_path(@exercise)
+          else
+            redirect_to exercise_student_submission_path(@exercise), notice: 'Successfully updated submission'
+          end
+        end
+      else
+        render :show
+      end
     end
   end
 

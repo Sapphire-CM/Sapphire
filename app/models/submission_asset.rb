@@ -1,7 +1,7 @@
 require "charlock_holmes"
 
 class SubmissionAsset < ActiveRecord::Base
-  belongs_to :submission
+  belongs_to :submission, inverse_of: :submission_assets
   mount_uploader :file, SubmissionAssetUploader
 
   validates :submission, presence: true

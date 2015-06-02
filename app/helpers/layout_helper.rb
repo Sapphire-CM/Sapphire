@@ -20,7 +20,7 @@ module LayoutHelper
     if term_context?
       link_to course_term_title, term_path(@term)
     else
-      # Todo: change to not using a link here!
+      # TODO: change to not using a link here!
       link_to '<em>-- no term selected --</em>'.html_safe, '#'
     end
   end
@@ -74,7 +74,7 @@ module LayoutHelper
     "#{term.course.title}: #{term.title}" if term
   end
 
-  # Todo: scope this appropriatly for the current_user
+  # TODO: scope this appropriatly for the current_user
   def navigation_context_selector
     terms = Term
     terms = terms.where { id != my { current_term.id } } if term_context?

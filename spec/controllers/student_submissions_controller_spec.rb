@@ -262,10 +262,10 @@ RSpec.describe StudentSubmissionsController do
         exercise_id: exercise.id,
         submission_assets: {
           sa.id.to_s => {
-            "file_0" => file_extraction_params('simple_submission.txt'),
-            "file_1" => file_extraction_params('import_data.csv'),
-            "file_2" => file_extraction_params('some_folder/submission.zip'),
-            "file_3" => file_extraction_params('some_other_folder/some_dir/import_data_invalid_parsing.csv'),
+            'file_0' => file_extraction_params('simple_submission.txt'),
+            'file_1' => file_extraction_params('import_data.csv'),
+            'file_2' => file_extraction_params('some_folder/submission.zip'),
+            'file_3' => file_extraction_params('some_other_folder/some_dir/import_data_invalid_parsing.csv'),
           }
         }
       }
@@ -296,9 +296,9 @@ RSpec.describe StudentSubmissionsController do
         exercise_id: exercise.id,
         submission_assets: {
           sa.id.to_s => {
-            "file_0" => file_extraction_params('simple_submission.txt'),
-            "file_1" => file_extraction_params('.DS_Store',),
-            "file_2" => file_extraction_params('.git/config'),
+            'file_0' => file_extraction_params('simple_submission.txt'),
+            'file_1' => file_extraction_params('.DS_Store',),
+            'file_2' => file_extraction_params('.git/config'),
           }
         }
       }
@@ -322,7 +322,7 @@ RSpec.describe StudentSubmissionsController do
         exercise_id: exercise.id,
         submission_assets: {
           sa.id.to_s => {
-            "file_0" => file_extraction_params('simple_submission.txt'),
+            'file_0' => file_extraction_params('simple_submission.txt'),
           }
         }
       }

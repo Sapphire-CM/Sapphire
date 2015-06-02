@@ -54,13 +54,6 @@ RSpec.describe EventService do
     let(:term) { term_registration.term }
     let(:exercise) { FactoryGirl.create(:exercise, term: term) }
     let(:submission) { FactoryGirl.create(:submission, exercise: exercise, submitter: account) }
-    let(:serialized_submission_assets) {
-      {
-        added: [{file: 'simple_submission.txt', path: '/', content_type: 'plain/text'}],
-        updated: [{file: ['simple_submission.txt', 'submission_asset_iso_latin.txt'], path: '/test', content_type: 'plain/text'}],
-        destroyed: [{file: ['simple_submission.txt'], path: '/', content_type: 'plain/text'}]
-      }
-    }
 
     describe '#submission_created!' do
       it 'creates a Events::Submission::Created event' do
@@ -78,7 +71,7 @@ RSpec.describe EventService do
         expect(event.submission_id).to eq(submission.id)
         expect(event.exercise_id).to eq(exercise.id)
         expect(event.exercise_title).to eq(exercise.title)
-        expect(event.submission_assets).to eq({ added: [{ file: 'simple_submission.txt', path: '/', content_type: SubmissionAsset::Mime::PLAIN_TEXT }], updated: [], destroyed: [] })
+        expect(event.submission_assets).to eq(added: [{ file: 'simple_submission.txt', path: '/', content_type: SubmissionAsset::Mime::PLAIN_TEXT }], updated: [], destroyed: [])
       end
     end
 
@@ -96,23 +89,21 @@ RSpec.describe EventService do
 
         allow(added_asset).to receive(:new_record?).and_return(true)
         allow(updated_asset).to receive(:changed?).and_return(true)
-        allow(updated_asset).to receive(:changes).and_return({ 'file' => ['simple_submission.txt', 'submission_asset_iso_latin.txt'] })
+        allow(updated_asset).to receive(:changes).and_return('file' => ['simple_submission.txt', 'submission_asset_iso_latin.txt'])
         allow(removed_asset).to receive(:marked_for_destruction?).and_return(true)
-
 
         event = subject.submission_updated!(submission)
 
         expect(event.submission_id).to eq(submission.id)
         expect(event.exercise_id).to eq(exercise.id)
         expect(event.exercise_title).to eq(exercise.title)
-        expect(event.submission_assets).to match({
-          added: [
-            {
-              file: 'simple_submission.txt',
-              path: '/',
-              content_type: SubmissionAsset::Mime::PLAIN_TEXT
-            }
-          ],
+        expect(event.submission_assets).to match(added: [
+          {
+            file: 'simple_submission.txt',
+            path: '/',
+            content_type: SubmissionAsset::Mime::PLAIN_TEXT
+          }
+        ],
           updated: [
             {
               file: ['simple_submission.txt', 'submission_asset_iso_latin.txt'],
@@ -125,7 +116,7 @@ RSpec.describe EventService do
               path: '/',
               content_type: SubmissionAsset::Mime::PLAIN_TEXT
             }
-          ]})
+          ])
       end
     end
   end
@@ -174,11 +165,9 @@ RSpec.describe EventService do
         expect(event.exercise_id).to eq(exercise.id)
         expect(event.exercise_title).to eq(exercise.title)
         expect(event.value).to eq(rating.value)
-        expect(event.tracked_changes).to match({
-          'title' => ['my rating', 'your rating'],
+        expect(event.tracked_changes).to match('title' => ['my rating', 'your rating'],
           'value' => [-2, -42],
-          'description' => ['nice!', nil]
-        })
+          'description' => ['nice!', nil])
       end
     end
 
@@ -244,10 +233,8 @@ RSpec.describe EventService do
         expect(event.exercise_id).to eq(exercise.id)
         expect(event.exercise_title).to eq(exercise.title)
         expect(event.points).to eq(rating_group.points)
-        expect(event.tracked_changes).to match({
-          'title' => ['nice title', 'new title'],
-          'points' => [5, 42]
-          })
+        expect(event.tracked_changes).to match('title' => ['nice title', 'new title'],
+          'points' => [5, 42])
       end
     end
 
@@ -274,7 +261,7 @@ RSpec.describe EventService do
   context 'result publication events' do
     let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
     let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-    let(:result_publication) { ResultPublication.find_by(exercise: exercise, tutorial_group: tutorial_group)}
+    let(:result_publication) { ResultPublication.find_by(exercise: exercise, tutorial_group: tutorial_group) }
 
     describe '#result_publication_published!' do
       it 'creates a Events::ResultPublication::Published event' do

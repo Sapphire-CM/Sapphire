@@ -67,7 +67,6 @@ Rails.application.routes.draw do
 
     resources :submissions, controller: "staff_submissions"
     resources :result_publications, only: [:index, :update]
-    resource :results, controller: 'student_results', as: :student_results, only: :show
   end
 
   resources :submission_assets, only: [:show]

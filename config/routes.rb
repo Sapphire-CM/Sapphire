@@ -48,6 +48,7 @@ Rails.application.routes.draw do
 
     resources :grading_reviews, only: [:index, :show]
     resources :results, only: [:index, :show], controller: :student_results
+    resources :events, only: [:index]
   end
 
   resources :tutorial_groups

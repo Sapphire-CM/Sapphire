@@ -6,7 +6,7 @@ class EventsController < ApplicationController
   respond_to :json
 
   def index
-    @events = policy_scope(Event).for_term(current_term).includes(:account).time_ordered.page(params[:page]).per(5)
+    @events = policy_scope(Event).for_term(current_term).includes(:account).time_ordered.page(params[:page])
   end
 
   private

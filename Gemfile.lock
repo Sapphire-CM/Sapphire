@@ -198,6 +198,9 @@ GEM
       domain_name (~> 0.5)
     i18n (0.7.0)
     interception (0.5)
+    jbuilder (2.2.16)
+      activesupport (>= 3.0.0, < 5)
+      multi_json (~> 1.2)
     jist (1.5.1)
       json
     jquery-mousewheel-rails (0.0.9)
@@ -504,6 +507,7 @@ DEPENDENCIES
   guard-pow
   guard-rspec
   guard-sidekiq
+  jbuilder
   jist
   jquery-mousewheel-rails
   jquery-rails

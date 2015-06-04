@@ -30,6 +30,7 @@ gem 'zurb-foundation', '~> 4.3.0'
 gem 'foundation-icons-sass-rails', '~> 3.0'
 
 gem 'remotipart', '~> 1.2'        # fileuploads via ajax
+gem 'jbuilder'                    # rendering .jbuilder templates (json responses)
 
 gem 'whenever'                    # cron tasks
 gem 'nntp-client', github: 'matthee/Sapphire-NNTP'  # fetching newsgroup posts

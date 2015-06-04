@@ -6,7 +6,7 @@ class EventLoader
   constructor: (@element) ->
     @current_page = 1
     @loading = false
-
+    @active = true
 
     @loading_errors = 0
     @setup()
@@ -31,11 +31,13 @@ class EventLoader
     @load_more_panel.appendTo(@element)
     @load_more_panel.hide()
     $(window).on 'scroll', $.throttle(100, @on_scroll_function)
+    $(document).one 'page:load', =>
+      @active = false
+      @remove_scroll_handler()
 
   load: ->
-    unless @loading
+    if !@loading && @active
       @loading = true
-
       new_entries = $.getJSON("#{@loading_url}?page=#{@current_page}").done (data) =>
         @loading_errors = 0
         @loading = false
@@ -46,7 +48,7 @@ class EventLoader
           @check_scroll_position()
         else
           @load_more_panel.hide()
-          $(window).off 'scroll', @on_scroll_function
+          @remove_scroll_handler()
           if @current_page == 1
             @show_no_recent_activities_panel()
 
@@ -68,19 +70,18 @@ class EventLoader
     if window_bottom > list_bottom_position - 200
       @load()
 
+  remove_scroll_handler: ->
+    $(window).off 'scroll', @on_scroll_function
+
   show_no_recent_activities_panel: ->
     panel = $('<div>').addClass('panel')
     panel.html('<strong>No recent activities</strong>')
 
     panel.appendTo(@element)
 
-
-setup_event_loader =->
+$(document).ready ->
   $containers = $('.event-list-container')
 
   if ($containers.length > 0)
     for container in $containers
       new EventLoader($(container))
-
-$(document).ready setup_event_loader
-$(document).on 'page:load', setup_event_loader

@@ -46,6 +46,7 @@ class EventLoader
           $(window).off 'scroll', @on_scroll_function
           if @current_page == 1
             @show_no_recent_activities_panel()
+
       .error =>
         @loading = false
         @check_scroll_position()

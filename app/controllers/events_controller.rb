@@ -3,9 +3,9 @@ class EventsController < ApplicationController
 
   skip_after_action :verify_authorized, only: :index
 
-  respond_to :json
-
   def index
+    respond_to :json
+
     @events = policy_scope(Event).for_term(current_term).includes(:account).time_ordered.page(params[:page])
   end
 

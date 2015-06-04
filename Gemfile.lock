@@ -1,9 +1,9 @@
 GIT
   remote: git://github.com/Kriechi/simplecov-html.git
-  revision: ff424002c532b228cca2aa8f6390a8693241c5ca
+  revision: 09c90f039319679ca1247befd1141da950ed8258
   branch: fix-list-hiding
   specs:
-    simplecov-html (0.8.0)
+    simplecov-html (0.10.0)
 
 GIT
   remote: git://github.com/matthee/Sapphire-NNTP.git
@@ -399,10 +399,10 @@ GEM
     simple_form (3.1.0)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
-    simplecov (0.9.1)
+    simplecov (0.10.0)
       docile (~> 1.1.0)
-      multi_json (~> 1.0)
-      simplecov-html (~> 0.8.0)
+      json (~> 1.8)
+      simplecov-html (~> 0.10.0)
     sinatra (1.4.6)
       rack (~> 1.4)
       rack-protection (~> 1.4)

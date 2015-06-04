@@ -7,6 +7,8 @@ class EventLoader
     @current_page = 1
     @loading = false
 
+
+    @loading_errors = 0
     @setup()
     @check_scroll_position()
 
@@ -35,6 +37,7 @@ class EventLoader
       @loading = true
 
       new_entries = $.getJSON("#{@loading_url}?page=#{@current_page}").done (data) =>
+        @loading_errors = 0
         @loading = false
         if data.includes_entries
           @load_more_panel.show()
@@ -49,7 +52,12 @@ class EventLoader
 
       .error =>
         @loading = false
-        @check_scroll_position()
+        @loading_errors += 1
+        if @loading_errors < 5
+          self = @
+          setTimeout =>
+             self.check_scroll_position()
+          , 200 * @loading_errors
 
   check_scroll_position: ->
     list_top_position = @events_list.offset().top

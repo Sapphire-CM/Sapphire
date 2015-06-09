@@ -67,7 +67,7 @@ module SubmissionAssetsHelper
   end
 
   def inline_plain_text_asset(submission_asset)
-    render 'submission_assets/code_panel', code: auto_link(simple_format(submission_asset.utf8_contents), sanitize: true, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
+    render 'submission_assets/code_panel', code: auto_link(simple_format(h(submission_asset.utf8_contents)), sanitize: false, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
   end
 
   def inline_code(code, lang)

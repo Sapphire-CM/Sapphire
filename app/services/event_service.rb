@@ -17,6 +17,10 @@ class EventService
     Events::Submission::Updated.create(submission_options(submission, false))
   end
 
+  def submission_extracted!(submission, zip_submission_asset, extracted_submission_assets)
+    Events::Submission::Extracted.create(submission_extracted_options(submission, zip_submission_asset, extracted_submission_assets))
+  end
+
   def rating_created!(rating)
     Events::Rating::Created.create(rating_options(rating))
   end
@@ -90,11 +94,14 @@ class EventService
   end
 
   def submission_options(submission, new_record, attributes = {})
-    options submission, {
+    options submission, submission_base_options(submission, submission_assets: submission_assets_changes(submission, new_record)).merge(attributes)
+  end
+
+  def submission_base_options(submission, attributes = {})
+    {
       submission_id: submission.id,
       exercise_id: submission.exercise.id,
       exercise_title: submission.exercise.title,
-      submission_assets: submission_assets_changes(submission, new_record)
     }.merge(attributes)
   end
 
@@ -130,5 +137,19 @@ class EventService
     end
 
     submission_assets_changes
+  end
+
+  def submission_extracted_options(submission, zip_submission_asset, extracted_submission_assets)
+    options submission, submission_base_options(submission).merge({
+      zip_file: File.basename(zip_submission_asset.file.to_s),
+      zip_path: zip_submission_asset.path,
+      extracted_submission_assets: extracted_submission_assets.map { |submission_asset|
+        {
+          file: File.basename(submission_asset.file.to_s),
+          path: submission_asset.path,
+          content_type: submission_asset.content_type
+        }
+      }
+    })
   end
 end

@@ -135,6 +135,8 @@ class StudentSubmissionsController < ApplicationController
   def extract_files!
     files_to_extract.each do |id, files|
       sa = @submission.submission_assets.find(id)
+
+      new_submission_assets = []
       Zip::File.open(sa.file.to_s) do |zip_file|
         files.each do |file|
           entry = zip_file.find_entry file
@@ -145,9 +147,10 @@ class StudentSubmissionsController < ApplicationController
 
           path = File.dirname(file)
           path = '' if path == '.'
-          @submission.submission_assets.create! file: File.open(destination), path: path
+          new_submission_assets << @submission.submission_assets.create!(file: File.open(destination), path: path)
         end
       end
+      event_service.submission_extracted!(@submission, sa, new_submission_assets)
 
       sa.destroy
     end

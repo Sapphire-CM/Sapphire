@@ -119,6 +119,34 @@ RSpec.describe EventService do
           ])
       end
     end
+
+    describe '#submission_extracted!' do
+      let(:zip_submission_asset) { FactoryGirl.create(:submission_asset, submission: submission, path: 'zip/path', file: prepare_static_test_file('submission.zip')) }
+      let(:extracted_submission_assets) { FactoryGirl.create_list(:submission_asset, 3, submission: submission, path: 'path/to/asset', content_type: SubmissionAsset::Mime::PLAIN_TEXT) }
+
+      it 'creates a Events::Submission::Extracted event' do
+        expect do
+          expect(subject.submission_extracted!(submission, zip_submission_asset, extracted_submission_assets)).to be_a Events::Submission::Extracted
+        end.to change(Events::Submission::Extracted, :count).by(1)
+      end
+
+      it 'correctly sets up and returns the event' do
+        event = subject.submission_extracted!(submission, zip_submission_asset, extracted_submission_assets)
+
+        expect(event.submission_id).to eq(submission.id)
+        expect(event.exercise_id).to eq(exercise.id)
+        expect(event.exercise_title).to eq(exercise.title)
+        expect(event.zip_file).to eq('submission.zip')
+        expect(event.zip_path).to eq('zip/path')
+        expect(event.extracted_submission_assets).to match(extracted_submission_assets.map { |sa|
+          {
+            file: File.basename(sa.file.to_s),
+            path: 'path/to/asset',
+            content_type: SubmissionAsset::Mime::PLAIN_TEXT
+          }
+        })
+      end
+    end
   end
 
   context 'rating events' do

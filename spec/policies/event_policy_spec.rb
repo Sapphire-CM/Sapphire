@@ -32,18 +32,22 @@ RSpec.describe EventPolicy do
 
     let(:student_solitary_submission) do
       s = FactoryGirl.create(:submission, exercise: solitary_exercise)
+      s.submission_assets = FactoryGirl.create_list(:submission_asset, 3, submission: s)
+
       FactoryGirl.create(:exercise_registration, exercise: solitary_exercise, term_registration: student_term_registration, submission: s)
       s
     end
 
     let(:group_member_solitary_submission) do
       s = FactoryGirl.create(:submission, exercise: solitary_exercise)
+      s.submission_assets = FactoryGirl.create_list(:submission_asset, 3, submission: s)
       FactoryGirl.create(:exercise_registration, exercise: solitary_exercise, term_registration: group_member_term_registration, submission: s)
       s
     end
 
     let!(:solitary_submission_of_other_student) do
       s = FactoryGirl.create(:submission, exercise: solitary_exercise)
+      s.submission_assets = FactoryGirl.create_list(:submission_asset, 3, submission: s)
       FactoryGirl.create(:exercise_registration, exercise: solitary_exercise, term_registration: other_student_term_registration, submission: s)
       s
     end
@@ -51,6 +55,7 @@ RSpec.describe EventPolicy do
     let(:group_submission) do
       s = FactoryGirl.create(:submission, exercise: group_exercise)
       FactoryGirl.create(:exercise_registration,  exercise: group_exercise, term_registration: student_term_registration, submission: s)
+      s.submission_assets = FactoryGirl.create_list(:submission_asset, 3, submission: s)
       FactoryGirl.create(:exercise_registration,  exercise: group_exercise, term_registration: group_member_term_registration, submission: s)
       s
     end
@@ -82,6 +87,7 @@ RSpec.describe EventPolicy do
       e = []
       e << event_service.submission_created!(student_solitary_submission)
       e << event_service.submission_updated!(student_solitary_submission)
+      e << event_service.submission_extracted!(student_solitary_submission, student_solitary_submission.submission_assets.first, student_solitary_submission.submission_assets.last(2))
       e
     end
 
@@ -89,6 +95,8 @@ RSpec.describe EventPolicy do
       e = []
       e << event_service.submission_created!(group_member_solitary_submission)
       e << event_service.submission_updated!(group_member_solitary_submission)
+      e << event_service.submission_extracted!(group_member_solitary_submission, group_member_solitary_submission.submission_assets.first, group_member_solitary_submission.submission_assets.last(2))
+
       e
     end
 
@@ -98,6 +106,7 @@ RSpec.describe EventPolicy do
       e = []
       e << event_service.submission_created!(group_submission)
       e << event_service.submission_updated!(group_submission)
+      e << event_service.submission_extracted!(group_submission, group_submission.submission_assets.first, group_submission.submission_assets.last(2))
       e
     end
 
@@ -107,6 +116,7 @@ RSpec.describe EventPolicy do
       e = []
       e << es.submission_created!(solitary_submission_of_other_student)
       e << es.submission_updated!(solitary_submission_of_other_student)
+      e << event_service.submission_extracted!(solitary_submission_of_other_student, solitary_submission_of_other_student.submission_assets.first, solitary_submission_of_other_student.submission_assets.last(2))
       e
     end
 

@@ -49,7 +49,7 @@ RSpec.describe SingleEvaluationsController do
   describe 'PUT update' do
     describe 'with valid params' do
       context 'with a BinaryRating' do
-        [BinaryNumberRating, BinaryPercentRating, PlagiarismRating].each do |type|
+        [Ratings::BinaryNumberRating, Ratings::BinaryPercentRating, Ratings::PlagiarismRating].each do |type|
           [true, false].each do |checked|
             it 'updates the requested evaluation' do
               rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s
@@ -74,7 +74,7 @@ RSpec.describe SingleEvaluationsController do
       end
 
       context 'with a ValueRating' do
-        [ValueNumberRating, ValuePercentRating].each do |type|
+        [Ratings::ValueNumberRating, Ratings::ValuePercentRating].each do |type|
           it 'updates the requested evaluation' do
             rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s, max_value: 50
             evaluation = submission_evaluation.evaluations.where(rating_id: rating.id).first
@@ -103,7 +103,7 @@ RSpec.describe SingleEvaluationsController do
           sign_in(tutor_registration.account)
         end
 
-        [BinaryNumberRating, BinaryPercentRating, PlagiarismRating].each do |type|
+        [Ratings::BinaryNumberRating, Ratings::BinaryPercentRating, Ratings::PlagiarismRating].each do |type|
           [true, false].each do |checked|
             it 'updates the requested evaluation' do
               rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s
@@ -130,7 +130,7 @@ RSpec.describe SingleEvaluationsController do
 
     describe 'with invalid params' do
       context 'with a ValueRating' do
-        [ValueNumberRating, ValuePercentRating].each do |type|
+        [Ratings::ValueNumberRating, Ratings::ValuePercentRating].each do |type|
           it 'returns a JS containing an alert' do
             rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s, min_value: 0, max_value: 5, value: 3
             evaluation = submission_evaluation.evaluations.where(rating_id: rating.id).first

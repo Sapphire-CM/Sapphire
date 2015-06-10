@@ -16,7 +16,7 @@ class Evaluations::ValueEvaluation < Evaluation
   validate :value_range
 
   def points
-    if value.present? && rating.is_a?(ValueNumberRating)
+    if value.present? && rating.is_a?(Ratings::ValueNumberRating)
       value * rating.multiplication_factor
     else
       0
@@ -24,7 +24,7 @@ class Evaluations::ValueEvaluation < Evaluation
   end
 
   def percent
-    if value.present? && rating.is_a?(ValuePercentRating)
+    if value.present? && rating.is_a?(Ratings::ValuePercentRating)
       1 + value.to_f / 100.0
     else
       1
@@ -32,7 +32,7 @@ class Evaluations::ValueEvaluation < Evaluation
   end
 
   def value_range
-    return unless value.present? && rating.is_a?(ValueRating)
+    return unless value.present? && rating.is_a?(Ratings::ValueRating)
 
     if value < rating.min_value || value > rating.max_value
       errors.add :base, "value must be between #{rating.min_value} and #{rating.max_value}"

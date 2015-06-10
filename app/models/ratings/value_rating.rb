@@ -21,7 +21,7 @@ class Ratings::ValueRating < Rating
   validate :all_values_range
 
   def evaluation_class
-    ValueEvaluation
+    Evaluations::ValueEvaluation
   end
 
   def all_values_range

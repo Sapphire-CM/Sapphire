@@ -4,7 +4,7 @@ FactoryGirl.define do
     rating_group
     title { generate :rating_title }
     description { generate :lorem_ipsum }
-    type 'BinaryRating'
+    type 'Ratings::BinaryRating'
     value 10
     max_value 20
     min_value 5

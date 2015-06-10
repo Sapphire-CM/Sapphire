@@ -1,8 +1,8 @@
-$('#evaluation_result').text('<%= single_evaluation_pluralized_points @submission.submission_evaluation.evaluation_result%>')
+$('#evaluation_result').text('<%= single_evaluation_pluralized_points @submission.submission_evaluation.evaluation_result %>')
 
 $('#<%= single_evaluation_evaluation_group_id(@evaluation.evaluation_group) %>').text("<%= single_evaluation_evaluation_group_title(@evaluation.evaluation_group) %>")
 
-<% if @rating.is_a? BinaryRating %>
+<% if @rating.is_a? Ratings::BinaryRating %>
   var eval_button = $('#<%= single_evaluation_button_id(@evaluation) %>');
   <% if @evaluation.checked? %>
     eval_button.removeClass("secondary").addClass("alert");
@@ -10,4 +10,3 @@ $('#<%= single_evaluation_evaluation_group_id(@evaluation.evaluation_group) %>')
     eval_button.removeClass("alert").addClass("secondary");
   <% end %>
 <% end %>
-

@@ -37,7 +37,7 @@ class SubmissionEvaluation < ActiveRecord::Base
 
   def update_plagiarized!
     plagiarized = evaluations.joins { rating }
-      .where { rating.type == PlagiarismRating }
+      .where { rating.type == Ratings::PlagiarismRating }
       .pluck(:value)
       .compact
       .sum > 0

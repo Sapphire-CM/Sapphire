@@ -64,7 +64,7 @@ RSpec.describe ExportsController do
 
           expect(response).to have_http_status(:success)
           expect(assigns(:export)).to be_a_new(Export)
-          expect(assigns(:export).type).to eq("#{type}_export".camelize)
+          expect(assigns(:export).type).to eq("Exports::#{type.camelize}_export".camelize)
           expect(assigns(:export).term).to eq(term)
         end
       end
@@ -128,11 +128,11 @@ RSpec.describe ExportsController do
 
           expect do
             post :create, invalid_attributes
-          end.not_to change(SubmissionExport, :count)
+          end.not_to change(Exports::SubmissionExport, :count)
 
           expect(response).to have_http_status(:success)
           expect(response).to render_template(:new)
-          expect(assigns(:export)).to be_a_new(SubmissionExport)
+          expect(assigns(:export)).to be_a_new(Exports::SubmissionExport)
           expect(assigns(:export).term).to eq(term)
         end
       end
@@ -146,11 +146,11 @@ RSpec.describe ExportsController do
 
           expect do
             post :create, invalid_attributes
-          end.not_to change(ExcelSpreadsheetExport, :count)
+          end.not_to change(Exports::ExcelSpreadsheetExport, :count)
 
           expect(response).to have_http_status(:success)
           expect(response).to render_template(:new)
-          expect(assigns(:export)).to be_a_new(ExcelSpreadsheetExport)
+          expect(assigns(:export)).to be_a_new(Exports::ExcelSpreadsheetExport)
           expect(assigns(:export).term).to eq(term)
         end
       end

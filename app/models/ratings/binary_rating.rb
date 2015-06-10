@@ -19,11 +19,11 @@ class Ratings::BinaryRating < Rating
   validates :value, presence: true
 
   def initialize(*args)
-    fail 'Cannot directly instantiate a BinaryRating' if self.class == BinaryRating
+    fail 'Cannot directly instantiate a BinaryRating' if self.class == Ratings::BinaryRating
     super
   end
 
   def evaluation_class
-    BinaryEvaluation
+    Evaluations::BinaryEvaluation
   end
 end

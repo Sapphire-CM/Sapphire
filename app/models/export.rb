@@ -21,7 +21,7 @@ class Export < ActiveRecord::Base
   mount_uploader :file, ExportsUploader
 
   enum status: [:pending, :running, :finished, :failed]
-  polymorphic submission: 'SubmissionExport', excel_spreadsheet: 'ExcelSpreadsheetExport'
+  polymorphic submission: 'Exports::SubmissionExport', excel_spreadsheet: 'Exports::ExcelSpreadsheetExport'
 
   validates :term, presence: true
 

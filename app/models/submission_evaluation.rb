@@ -1,3 +1,17 @@
+# create_table :submission_evaluations, force: :cascade do |t|
+#   t.integer  :submission_id
+#   t.integer  :evaluator_id
+#   t.string   :evaluator_type
+#   t.datetime :evaluated_at
+#   t.datetime :created_at,                        null: false
+#   t.datetime :updated_at,                        null: false
+#   t.integer  :evaluation_result
+#   t.boolean  :plagiarized,       default: false, null: false
+# end
+#
+# add_index :submission_evaluations, [:evaluator_id], name: :index_submission_evaluations_on_evaluator_id, using: :btree
+# add_index :submission_evaluations, [:submission_id], name: :index_submission_evaluations_on_submission_id, unique: true, using: :btree
+
 class SubmissionEvaluation < ActiveRecord::Base
   belongs_to :submission
   belongs_to :evaluator, class_name: 'Account'
@@ -23,7 +37,7 @@ class SubmissionEvaluation < ActiveRecord::Base
 
   def update_plagiarized!
     plagiarized = evaluations.joins { rating }
-      .where { rating.type == PlagiarismRating }
+      .where { rating.type == Ratings::PlagiarismRating }
       .pluck(:value)
       .compact
       .sum > 0

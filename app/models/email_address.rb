@@ -1,3 +1,13 @@
+# create_table :email_addresses, force: :cascade do |t|
+#   t.string   :email
+#   t.integer  :account_id
+#   t.datetime :created_at, null: false
+#   t.datetime :updated_at, null: false
+# end
+#
+# add_index :email_addresses, [:account_id], name: :index_email_addresses_on_account_id, using: :btree
+# add_index :email_addresses, [:email], name: :index_email_addresses_on_email, unique: true, using: :btree
+
 class EmailAddress < ActiveRecord::Base
   belongs_to :account
 

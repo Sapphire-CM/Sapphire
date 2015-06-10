@@ -1,6 +1,15 @@
+# create_table :services, force: :cascade do |t|
+#   t.integer  :exercise_id
+#   t.boolean  :active,      default: false, null: false
+#   t.string   :type
+#   t.text     :properties
+#   t.datetime :created_at,                  null: false
+#   t.datetime :updated_at,                  null: false
+# end
+
 require 'tempfile'
 
-class NewsgroupFetcherService < Service
+class Services::NewsgroupFetcherService < Service
   prop_accessor :server_url, :newsgroups, :fetch_initial, :fetch_followups
 
   def title

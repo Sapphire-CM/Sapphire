@@ -1,3 +1,18 @@
+# create_table :grading_scales, force: :cascade do |t|
+#   t.integer  :term_id
+#   t.string   :grade,                      null: false
+#   t.boolean  :not_graded, default: false, null: false
+#   t.boolean  :positive,   default: true,  null: false
+#   t.integer  :min_points, default: 0,     null: false
+#   t.integer  :max_points, default: 0,     null: false
+#   t.datetime :created_at,                 null: false
+#   t.datetime :updated_at,                 null: false
+# end
+#
+# add_index :grading_scales, [:grade], name: :index_grading_scales_on_grade, using: :btree
+# add_index :grading_scales, [:term_id, :grade], name: :index_grading_scales_on_term_id_and_grade, unique: true, using: :btree
+# add_index :grading_scales, [:term_id], name: :index_grading_scales_on_term_id, using: :btree
+
 class GradingScale < ActiveRecord::Base
   belongs_to :term
 

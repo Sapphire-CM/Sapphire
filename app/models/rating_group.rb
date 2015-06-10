@@ -1,3 +1,20 @@
+# create_table :rating_groups, force: :cascade do |t|
+#   t.integer  :exercise_id
+#   t.string   :title
+#   t.integer  :points
+#   t.datetime :created_at,                          null: false
+#   t.datetime :updated_at,                          null: false
+#   t.text     :description
+#   t.boolean  :global,              default: false, null: false
+#   t.integer  :min_points
+#   t.integer  :max_points
+#   t.boolean  :enable_range_points, default: false, null: false
+#   t.integer  :row_order
+# end
+#
+# add_index :rating_groups, [:exercise_id], name: :index_rating_groups_on_exercise_id, using: :btree
+# add_index :rating_groups, [:title, :exercise_id], name: :index_rating_groups_on_title_and_exercise_id, unique: true, using: :btree
+
 class RatingGroup < ActiveRecord::Base
   include RankedModel
   ranks :row_order, with_same: :exercise_id

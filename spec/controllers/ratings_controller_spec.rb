@@ -9,7 +9,7 @@ RSpec.describe RatingsController do
       rating: {
         title: 'Some Title',
         description: 'Some longer description text.',
-        type: 'BinaryNumberRating',
+        type: 'Ratings::BinaryNumberRating',
         value: '42',
       }
     }
@@ -20,7 +20,7 @@ RSpec.describe RatingsController do
       rating: {
         title: 'Some Existing Title',
         description: 'Some longer description text.',
-        type: 'BinaryNumberRating',
+        type: 'Ratings::BinaryNumberRating',
       }
     }
   end

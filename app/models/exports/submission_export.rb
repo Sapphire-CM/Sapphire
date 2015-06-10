@@ -1,4 +1,16 @@
-class SubmissionExport < Export
+# create_table :exports, force: :cascade do |t|
+#   t.string   :type
+#   t.integer  :status
+#   t.integer  :term_id
+#   t.string   :file
+#   t.text     :properties
+#   t.datetime :created_at, null: false
+#   t.datetime :updated_at, null: false
+# end
+#
+# add_index :exports, [:term_id], name: :index_exports_on_term_id, using: :btree
+
+class Exports::SubmissionExport < Export
   prop_accessor :base_path, :solitary_path, :group_path, :extract_zips, :include_solitary_submissions, :include_group_submissions
 
   validates :base_path, presence: true

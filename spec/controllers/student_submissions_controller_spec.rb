@@ -270,7 +270,9 @@ RSpec.describe StudentSubmissionsController do
         }
       }
 
-      post :extract, params
+      expect do
+        post :extract, params
+      end.to change(Events::Submission::Extracted, :count).by(1)
       submission.reload
 
       current_submission_assets = submission.submission_assets.map { |sa| [File.basename(sa.file.to_s), sa.path] }
@@ -326,8 +328,9 @@ RSpec.describe StudentSubmissionsController do
           }
         }
       }
-
-      post :extract, params
+      expect do
+        post :extract, params
+      end.not_to change(Events::Submission::Extracted, :count)
 
       expect(response).to redirect_to(catalog_exercise_student_submission_path(exercise))
       expect(flash[:alert]).to eq('Maximum upload size reached')

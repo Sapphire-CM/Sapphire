@@ -26,7 +26,7 @@ class EventPolicy < PunditBasePolicy
     private
 
     def submission_event_types
-      [Events::Submission::Created, Events::Submission::Updated].map(&:to_s)
+      [Events::Submission::Created, Events::Submission::Updated, Events::Submission::Extracted].map(&:to_s)
     end
 
     def result_publication_event_types

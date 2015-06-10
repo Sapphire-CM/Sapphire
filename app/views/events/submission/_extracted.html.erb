@@ -1,0 +1,15 @@
+<%= event_box(extracted) do |event| %>
+  <%= event.account.fullname %> <strong>extracted <%= pluralize event.file_count, 'file' %> of <%= event.zip_file %></strong>
+
+  for <strong><%= link_to event.exercise_title, exercise_student_submission_path(event.exercise_id) %></strong>
+
+  <div class='description'>
+    <ul>
+    <% event.extracted_submission_assets.each do |change| %>
+      <li>Added <strong><%= change[:path].present? ? File.join(change[:path], change[:file]) : change[:file] %>'</strong></li>
+    <% end %>
+      <li>Removed <strong>'<%= event.zip_path.present? ? File.join(event.zip_path, event.zip_file) : event.zip_file %>'</strong></li>
+    </ul>
+  </div>
+
+<% end %>

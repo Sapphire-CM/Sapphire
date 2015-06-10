@@ -1,3 +1,24 @@
+# create_table :term_registrations, force: :cascade do |t|
+#   t.integer  :points
+#   t.boolean  :positive_grade,    default: false, null: false
+#   t.integer  :account_id
+#   t.integer  :term_id
+#   t.integer  :tutorial_group_id
+#   t.datetime :created_at,                        null: false
+#   t.datetime :updated_at,                        null: false
+#   t.boolean  :receives_grade,    default: false, null: false
+#   t.integer  :role,              default: 0
+#   t.integer  :student_group_id
+# end
+#
+# add_index :term_registrations, [:account_id, :term_id], name: :index_term_registrations_on_account_id_and_term_id, unique: true, using: :btree
+# add_index :term_registrations, [:account_id], name: :index_term_registrations_on_account_id, using: :btree
+# add_index :term_registrations, [:points], name: :index_term_registrations_on_points, using: :btree
+# add_index :term_registrations, [:positive_grade], name: :index_term_registrations_on_positive_grade, using: :btree
+# add_index :term_registrations, [:student_group_id], name: :index_term_registrations_on_student_group_id, using: :btree
+# add_index :term_registrations, [:term_id], name: :index_term_registrations_on_term_id, using: :btree
+# add_index :term_registrations, [:tutorial_group_id], name: :index_term_registrations_on_tutorial_group_id, using: :btree
+
 class TermRegistration < ActiveRecord::Base
   include Roles
 

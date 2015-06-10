@@ -1,4 +1,13 @@
-class WebsiteFetcherService < Service
+# create_table :services, force: :cascade do |t|
+#   t.integer  :exercise_id
+#   t.boolean  :active,      default: false, null: false
+#   t.string   :type
+#   t.text     :properties
+#   t.datetime :created_at,                  null: false
+#   t.datetime :updated_at,                  null: false
+# end
+
+class Services::WebsiteFetcherService < Service
   prop_accessor :subdirectory
 
   class Webspace

@@ -76,6 +76,7 @@ group :development do
   gem 'spring-commands-rspec'     # adding rspec command to spring
   gem 'spring-commands-sidekiq'   # adding sidekiq command to spring
 
+  gem 'active_record-annotate'    # adds the corresponding schema.rb snippet to each model file
   gem 'thin'                # small development webserver
   gem 'awesome_print'       # nicley formatted object inspection
   gem 'better_errors'       # pretty error pages
@@ -124,6 +125,6 @@ group :test do
 end
 
 group :development, :test do
-  gem 'mysql2'                    # MySQL database connector
+  # gem 'mysql2'                    # MySQL database connector
   gem 'sqlite3'                   # sqlite3 database connector
 end

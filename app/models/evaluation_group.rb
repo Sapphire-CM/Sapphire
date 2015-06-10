@@ -1,3 +1,15 @@
+# create_table :evaluation_groups, force: :cascade do |t|
+#   t.integer  :points
+#   t.float    :percent
+#   t.integer  :rating_group_id
+#   t.integer  :submission_evaluation_id
+#   t.datetime :created_at,               null: false
+#   t.datetime :updated_at,               null: false
+# end
+#
+# add_index :evaluation_groups, [:rating_group_id], name: :index_evaluation_groups_on_rating_group_id, using: :btree
+# add_index :evaluation_groups, [:submission_evaluation_id], name: :index_evaluation_groups_on_submission_evaluation_id, using: :btree
+
 class EvaluationGroup < ActiveRecord::Base
   belongs_to :rating_group
   belongs_to :submission_evaluation

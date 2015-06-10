@@ -1,3 +1,17 @@
+# create_table :terms, force: :cascade do |t|
+#   t.string   :title
+#   t.integer  :course_id
+#   t.datetime :created_at,              null: false
+#   t.datetime :updated_at,              null: false
+#   t.text     :description
+#   t.integer  :row_order
+#   t.integer  :points,      default: 0
+#   t.integer  :status,      default: 0
+# end
+#
+# add_index :terms, [:course_id], name: :index_terms_on_course_id, using: :btree
+# add_index :terms, [:title, :course_id], name: :index_terms_on_title_and_course_id, unique: true, using: :btree
+
 class Term < ActiveRecord::Base
   include RankedModel
   ranks :row_order, with_same: :course_id

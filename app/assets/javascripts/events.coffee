@@ -2,6 +2,78 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+class Event
+  constructor: (@element) ->
+    @max_size = 97
+    @animating = false
+    @description = @element.find('.description')
+
+    @check_initial_size()
+
+  check_initial_size: ->
+    if @description.length > 0
+      @initial_height = @description.outerHeight()
+
+      if @initial_height > @max_size
+        @setup_collapsable()
+
+        @collapse(false)
+  setup_collapsable: ->
+    @description.addClass('collapsable')
+    @backdrop = $('<div>').addClass('backdrop')
+    @button = $('<a>').addClass('tiny button')
+
+    @button.click =>
+      @toggle_collapse(true)
+
+    @button.appendTo(@backdrop)
+    @backdrop.appendTo(@description)
+
+  collapse: (animated = true) ->
+    return if @animating
+
+    if animated
+      self = @
+      @animating = true
+      @description.removeClass('expanded')
+      @description.animate {height: @max_size}, 'fast', ->
+        self.animating = false
+        $(window).trigger('scroll')
+    else
+      @description.removeClass('expanded')
+      @description.css('height', @max_size)
+      $(window).trigger('scroll')
+
+    @collapsed = true
+    @button.text('expand')
+
+  expand: (animated = true) ->
+    return if @animating
+
+    if animated
+      self = @
+      @animating = true
+
+      @description.animate {'height': @initial_height}, 'fast', ->
+        self.description.height('')
+        self.animating = false
+        self.description.addClass('expanded')
+        $(window).trigger('scroll')
+    else
+      @description.height('').addClass('expanded')
+      $(window).trigger('scroll')
+
+    @collapsed = false
+    @button.text('collapse')
+
+
+  toggle_collapse: (animated = true) ->
+    return if @animating
+
+    if @collapsed
+      @expand(animated)
+    else
+      @collapse(animated)
 class EventLoader
   constructor: (@element) ->
     @current_page = 1
@@ -11,6 +83,7 @@ class EventLoader
     @loading_errors = 0
     @setup()
     @check_scroll_position()
+    @events = []
 
   setup: ->
     @element.html('')
@@ -44,7 +117,12 @@ class EventLoader
         if data.includes_entries
           @load_more_panel.show()
           @current_page += 1
-          $(data.events_html).appendTo(@events_list)
+
+          $events = $(data.events_html)
+          $events.appendTo(@events_list)
+
+          @create_events($events)
+
           @check_scroll_position()
         else
           @load_more_panel.hide()
@@ -78,6 +156,11 @@ class EventLoader
     panel.html('<strong>No recent activities</strong>')
 
     panel.appendTo(@element)
+
+  create_events: ($events) ->
+    self = @
+    $events.each ->
+      self.events.push(new Event($(@)))
 
 $(document).ready ->
   $containers = $('.event-list-container')

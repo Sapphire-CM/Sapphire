@@ -68,8 +68,13 @@ class SubmissionAsset < ActiveRecord::Base
 
   def utf8_contents
     contents = file.read
-    detection = CharlockHolmes::EncodingDetector.detect(contents)
 
-    CharlockHolmes::Converter.convert contents, detection[:encoding], 'UTF-8'
+    if contents.blank?
+      ''
+    else
+      detection = CharlockHolmes::EncodingDetector.detect(contents)
+
+      CharlockHolmes::Converter.convert contents, detection[:encoding], 'UTF-8'
+    end
   end
 end

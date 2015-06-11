@@ -22,20 +22,20 @@ class SubmissionAsset < ActiveRecord::Base
 
   EXCLUDED_FILTER = [
     # no operating system meta data files
-    %r{Thumbs.db}i,
-    %r{desktop.ini}i,
-    %r{.DS_Store}i,
-    %r{.directory}i,
-    %r{\A__MACOSX/}i,
+    %r{Thumbs.db}i.freeze,
+    %r{desktop.ini}i.freeze,
+    %r{.DS_Store}i.freeze,
+    %r{.directory}i.freeze,
+    %r{\A__MACOSX/}i.freeze,
 
     # no version control files
-    %r{.svn/}i,
-    %r{.git/}i,
-    %r{.hg/}i,
+    %r{.svn/}i.freeze,
+    %r{.git/}i.freeze,
+    %r{.hg/}i.freeze,
 
     # no plain folders
-    %r{/$}i,
-  ]
+    %r{/$}i.freeze,
+  ].freeze
 
   class Mime
     NEWSGROUP_POST = 'text/newsgroup'

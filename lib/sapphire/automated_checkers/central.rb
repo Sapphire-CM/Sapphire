@@ -82,7 +82,7 @@ module Sapphire
           evaluation = submission.submission_evaluation.evaluation_for_rating(rating)
           evaluation.checked_automatically = true
 
-          if evaluation.is_a? BinaryEvaluation
+          if evaluation.is_a? Evaluations::BinaryEvaluation
             evaluation.value = if check.failed?
               1
             elsif check.success?

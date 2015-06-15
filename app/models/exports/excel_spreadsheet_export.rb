@@ -358,7 +358,7 @@ class Exports::ExcelSpreadsheetExport < Export
         stud_rg_eg[student_group][eg.rating_group] = eg.points
 
         eg.evaluations.each do |ev|
-          stud_rat_ev[student_group][ev.rating] = if ev.is_a? BinaryEvaluation
+          stud_rat_ev[student_group][ev.rating] = if ev.is_a? Evaluations::BinaryEvaluation
             if ev.value.to_i == 1
               'x'
             else
@@ -428,7 +428,7 @@ class Exports::ExcelSpreadsheetExport < Export
           stud_rg_eg[student][eg.rating_group] = eg.points
 
           eg.evaluations.each do |ev|
-            stud_rat_ev[student][ev.rating] = if ev.is_a? BinaryEvaluation
+            stud_rat_ev[student][ev.rating] = if ev.is_a? Evaluations::BinaryEvaluation
               if ev.value.to_i == 1
                 'x'
               else

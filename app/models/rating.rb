@@ -64,10 +64,10 @@ class Rating < ActiveRecord::Base
   end
 
   def build_evaluation
-    evaluation = if self.is_a? BinaryRating
-      BinaryEvaluation.new
+    evaluation = if self.is_a? Ratings::BinaryRating
+      Evaluations::BinaryEvaluation.new
     else
-      ValueEvaluation.new
+      Evaluations::ValueEvaluation.new
     end
 
     evaluation.rating = self

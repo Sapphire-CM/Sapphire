@@ -13,7 +13,7 @@
         <tr>
           <td><%= evaluation.rating.title %></td>
           <td>
-          <% if evaluation.is_a? BinaryEvaluation %>
+          <% if evaluation.is_a? Evaluations::BinaryEvaluation %>
             <%= rating_points_description evaluation.rating %>
           <% else %>
             <%= evaluation.points %>

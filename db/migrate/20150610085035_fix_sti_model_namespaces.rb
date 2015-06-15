@@ -3,7 +3,7 @@ class FixStiModelNamespaces < ActiveRecord::Migration
     return unless Rails.configuration.database_configuration[Rails.env]['adapter'] == 'postgresql'
     [Evaluation, Export, Rating, Service].each do |klass|
       klass.connection.execute(
-        "UPDATE #{klass.table_name} SET type=CONCAT('#{klass.to_s.pluralize}::'::varchar, type);")
+        "UPDATE #{klass.table_name} SET type=('#{klass.to_s.pluralize}::' || type);")
     end
   end
 

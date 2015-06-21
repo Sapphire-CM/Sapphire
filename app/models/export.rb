@@ -8,7 +8,7 @@
 #   t.datetime :updated_at, null: false
 # end
 #
-# add_index :exports, [:term_id], name: :index_exports_on_term_id, using: :btree
+# add_index :exports, [:term_id], name: :index_exports_on_term_id
 
 class Export < ActiveRecord::Base
   include SerializedProperties

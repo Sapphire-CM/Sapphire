@@ -13,7 +13,7 @@
 #   t.boolean  :send_welcome_notifications, default: true, null: false
 # end
 #
-# add_index :import_options, [:import_id], name: :index_import_options_on_import_id, unique: true, using: :btree
+# add_index :import_options, [:import_id], name: :index_import_options_on_import_id, unique: true
 
 class ImportOptions < ActiveRecord::Base
   belongs_to :import

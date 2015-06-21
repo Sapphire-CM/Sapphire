@@ -9,8 +9,8 @@
 #   t.boolean  :plagiarized,       default: false, null: false
 # end
 #
-# add_index :submission_evaluations, [:evaluator_id], name: :index_submission_evaluations_on_evaluator_id, using: :btree
-# add_index :submission_evaluations, [:submission_id], name: :index_submission_evaluations_on_submission_id, unique: true, using: :btree
+# add_index :submission_evaluations, [:evaluator_id], name: :index_submission_evaluations_on_evaluator_id
+# add_index :submission_evaluations, [:submission_id], name: :index_submission_evaluations_on_submission_id, unique: true
 
 class SubmissionEvaluation < ActiveRecord::Base
   belongs_to :submission

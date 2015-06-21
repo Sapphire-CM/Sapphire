@@ -10,7 +10,7 @@
 #   t.datetime :updated_at,           null: false
 # end
 #
-# add_index :import_mappings, [:import_id], name: :index_import_mappings_on_import_id, unique: true, using: :btree
+# add_index :import_mappings, [:import_id], name: :index_import_mappings_on_import_id, unique: true
 
 class ImportMapping < ActiveRecord::Base
   belongs_to :import

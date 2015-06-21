@@ -565,6 +565,3 @@ DEPENDENCIES
   whenever
   writeexcel
   zurb-foundation (~> 4.3.0)
-
-BUNDLED WITH
-   1.10.3

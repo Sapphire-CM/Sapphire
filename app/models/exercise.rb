@@ -20,8 +20,8 @@
 #   t.integer  :visible_points
 # end
 #
-# add_index :exercises, [:term_id], name: :index_exercises_on_term_id, using: :btree
-# add_index :exercises, [:title, :term_id], name: :index_exercises_on_title_and_term_id, unique: true, using: :btree
+# add_index :exercises, [:term_id], name: :index_exercises_on_term_id
+# add_index :exercises, [:title, :term_id], name: :index_exercises_on_title_and_term_id, unique: true
 
 class Exercise < ActiveRecord::Base
   include RankedModel

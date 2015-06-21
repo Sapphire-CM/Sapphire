@@ -6,7 +6,7 @@
 #   t.integer  :status
 # end
 #
-# add_index :imports, [:term_id], name: :index_imports_on_term_id, using: :btree
+# add_index :imports, [:term_id], name: :index_imports_on_term_id
 
 class Import < ActiveRecord::Base
   belongs_to :term

@@ -9,8 +9,8 @@
 #   t.boolean  :checked_automatically, default: false, null: false
 # end
 #
-# add_index :evaluations, [:evaluation_group_id], name: :index_evaluations_on_evaluation_group_id, using: :btree
-# add_index :evaluations, [:rating_id], name: :index_evaluations_on_rating_id, using: :btree
+# add_index :evaluations, [:evaluation_group_id], name: :index_evaluations_on_evaluation_group_id
+# add_index :evaluations, [:rating_id], name: :index_evaluations_on_rating_id
 
 class Evaluations::BinaryEvaluation < Evaluation
   def checked?

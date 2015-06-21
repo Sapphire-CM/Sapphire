@@ -10,7 +10,7 @@
 #   t.string   :path,              default: ""
 # end
 #
-# add_index :submission_assets, [:submission_id], name: :index_submission_assets_on_submission_id, using: :btree
+# add_index :submission_assets, [:submission_id], name: :index_submission_assets_on_submission_id
 
 require "charlock_holmes"
 

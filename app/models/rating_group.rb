@@ -12,8 +12,8 @@
 #   t.integer  :row_order
 # end
 #
-# add_index :rating_groups, [:exercise_id], name: :index_rating_groups_on_exercise_id, using: :btree
-# add_index :rating_groups, [:title, :exercise_id], name: :index_rating_groups_on_title_and_exercise_id, unique: true, using: :btree
+# add_index :rating_groups, [:exercise_id], name: :index_rating_groups_on_exercise_id
+# add_index :rating_groups, [:title, :exercise_id], name: :index_rating_groups_on_title_and_exercise_id, unique: true
 
 class RatingGroup < ActiveRecord::Base
   include RankedModel

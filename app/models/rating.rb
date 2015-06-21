@@ -13,7 +13,7 @@
 #   t.string   :automated_checker_identifier
 # end
 #
-# add_index :ratings, [:rating_group_id], name: :index_ratings_on_rating_group_id, using: :btree
+# add_index :ratings, [:rating_group_id], name: :index_ratings_on_rating_group_id
 
 class Rating < ActiveRecord::Base
   belongs_to :rating_group

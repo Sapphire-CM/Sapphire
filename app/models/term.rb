@@ -9,8 +9,8 @@
 #   t.integer  :status,      default: 0
 # end
 #
-# add_index :terms, [:course_id], name: :index_terms_on_course_id, using: :btree
-# add_index :terms, [:title, :course_id], name: :index_terms_on_title_and_course_id, unique: true, using: :btree
+# add_index :terms, [:course_id], name: :index_terms_on_course_id
+# add_index :terms, [:title, :course_id], name: :index_terms_on_title_and_course_id, unique: true
 
 class Term < ActiveRecord::Base
   include RankedModel

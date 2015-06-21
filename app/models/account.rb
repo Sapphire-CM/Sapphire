@@ -21,9 +21,9 @@
 #   t.boolean  :admin,                  default: false, null: false
 # end
 #
-# add_index :accounts, [:email], name: :index_accounts_on_email, unique: true, using: :btree
-# add_index :accounts, [:matriculation_number], name: :index_accounts_on_matriculation_number, unique: true, using: :btree
-# add_index :accounts, [:reset_password_token], name: :index_accounts_on_reset_password_token, unique: true, using: :btree
+# add_index :accounts, [:email], name: :index_accounts_on_email, unique: true
+# add_index :accounts, [:matriculation_number], name: :index_accounts_on_matriculation_number, unique: true
+# add_index :accounts, [:reset_password_token], name: :index_accounts_on_reset_password_token, unique: true
 
 class Account < ActiveRecord::Base
   DEFAULT_PASSWORD = 'sapphire%{matriculation_number}'

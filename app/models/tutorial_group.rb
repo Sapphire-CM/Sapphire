@@ -6,8 +6,8 @@
 #   t.text     :description
 # end
 #
-# add_index :tutorial_groups, [:term_id], name: :index_tutorial_groups_on_term_id, using: :btree
-# add_index :tutorial_groups, [:title, :term_id], name: :index_tutorial_groups_on_title_and_term_id, unique: true, using: :btree
+# add_index :tutorial_groups, [:term_id], name: :index_tutorial_groups_on_term_id
+# add_index :tutorial_groups, [:title, :term_id], name: :index_tutorial_groups_on_title_and_term_id, unique: true
 
 class TutorialGroup < ActiveRecord::Base
   belongs_to :term

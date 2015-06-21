@@ -9,8 +9,8 @@
 #   t.datetime :updated_at,   null: false
 # end
 #
-# add_index :events, [:account_id], name: :index_events_on_account_id, using: :btree
-# add_index :events, [:subject_type, :subject_id], name: :index_events_on_subject_type_and_subject_id, using: :btree
+# add_index :events, [:account_id], name: :index_events_on_account_id
+# add_index :events, [:subject_type, :subject_id], name: :index_events_on_subject_type_and_subject_id
 
 module Events
   module Submission

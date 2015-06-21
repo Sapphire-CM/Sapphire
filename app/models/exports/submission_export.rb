@@ -8,7 +8,7 @@
 #   t.datetime :updated_at, null: false
 # end
 #
-# add_index :exports, [:term_id], name: :index_exports_on_term_id, using: :btree
+# add_index :exports, [:term_id], name: :index_exports_on_term_id
 
 class Exports::SubmissionExport < Export
   prop_accessor :base_path, :solitary_path, :group_path, :extract_zips, :include_solitary_submissions, :include_group_submissions

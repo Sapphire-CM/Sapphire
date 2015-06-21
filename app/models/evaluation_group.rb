@@ -7,8 +7,8 @@
 #   t.datetime :updated_at,               null: false
 # end
 #
-# add_index :evaluation_groups, [:rating_group_id], name: :index_evaluation_groups_on_rating_group_id, using: :btree
-# add_index :evaluation_groups, [:submission_evaluation_id], name: :index_evaluation_groups_on_submission_evaluation_id, using: :btree
+# add_index :evaluation_groups, [:rating_group_id], name: :index_evaluation_groups_on_rating_group_id
+# add_index :evaluation_groups, [:submission_evaluation_id], name: :index_evaluation_groups_on_submission_evaluation_id
 
 class EvaluationGroup < ActiveRecord::Base
   belongs_to :rating_group

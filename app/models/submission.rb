@@ -7,9 +7,9 @@
 #   t.integer  :student_group_id
 # end
 #
-# add_index :submissions, [:exercise_id], name: :index_submissions_on_exercise_id, using: :btree
-# add_index :submissions, [:student_group_id], name: :index_submissions_on_student_group_id, using: :btree
-# add_index :submissions, [:submitter_id], name: :index_submissions_on_submitter_id, using: :btree
+# add_index :submissions, [:exercise_id], name: :index_submissions_on_exercise_id
+# add_index :submissions, [:student_group_id], name: :index_submissions_on_student_group_id
+# add_index :submissions, [:submitter_id], name: :index_submissions_on_submitter_id
 
 class Submission < ActiveRecord::Base
   belongs_to :exercise

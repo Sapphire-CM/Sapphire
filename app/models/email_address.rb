@@ -5,8 +5,8 @@
 #   t.datetime :updated_at, null: false
 # end
 #
-# add_index :email_addresses, [:account_id], name: :index_email_addresses_on_account_id, using: :btree
-# add_index :email_addresses, [:email], name: :index_email_addresses_on_email, unique: true, using: :btree
+# add_index :email_addresses, [:account_id], name: :index_email_addresses_on_account_id
+# add_index :email_addresses, [:email], name: :index_email_addresses_on_email, unique: true
 
 class EmailAddress < ActiveRecord::Base
   belongs_to :account

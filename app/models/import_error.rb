@@ -7,7 +7,7 @@
 #   t.datetime :updated_at,       null: false
 # end
 #
-# add_index :import_errors, [:import_result_id], name: :index_import_errors_on_import_result_id, using: :btree
+# add_index :import_errors, [:import_result_id], name: :index_import_errors_on_import_result_id
 
 class ImportError < ActiveRecord::Base
   belongs_to :import_result

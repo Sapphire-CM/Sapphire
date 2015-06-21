@@ -6,7 +6,7 @@
 #   t.boolean  :locked,      default: true, null: false
 # end
 #
-# add_index :courses, [:title], name: :index_courses_on_title, unique: true, using: :btree
+# add_index :courses, [:title], name: :index_courses_on_title, unique: true
 
 class Course < ActiveRecord::Base
   has_many :terms, dependent: :destroy

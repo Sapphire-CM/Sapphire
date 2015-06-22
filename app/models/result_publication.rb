@@ -14,6 +14,8 @@ class ResultPublication < ActiveRecord::Base
   belongs_to :exercise
   belongs_to :tutorial_group
 
+  has_one :term, through: :exercise
+
   scope :published, lambda { where(published: true) }
   scope :concealed, lambda { where(published: false) }
 

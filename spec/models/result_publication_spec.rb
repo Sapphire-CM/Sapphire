@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 describe ResultPublication do
+  describe 'relations' do
+    it { is_expected.to belong_to :exercise }
+    it { is_expected.to belong_to :tutorial_group }
+    it { is_expected.to have_one(:term).through(:exercise) }
+  end
+
   it 'is respond to concealed?' do
     result_publication = FactoryGirl.build(:result_publication)
 

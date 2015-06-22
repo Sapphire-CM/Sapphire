@@ -40,7 +40,7 @@ RSpec.describe RatingGroupPolicy do
     subject { RatingGroupPolicy.new(user, rating_group) }
 
     let(:exercise) { create(:exercise, term: term) }
-    let(:rating_group) { create(:rating_group, exercise: exercise)}
+    let(:rating_group) { create(:rating_group, exercise: exercise) }
 
     context 'as an admin' do
       let(:user) { create(:account, :admin) }

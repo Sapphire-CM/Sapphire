@@ -8,7 +8,10 @@
     <tr>
       <th>Tutorial Group</th>
       <th>Status</th>
-      <th class='small-2'></th>
+      <th class='right-aligned'>
+        <%= link_to 'Publish all', publish_all_exercise_result_publications_path(@exercise), method: :put, class: 'small button', data: { confirm: "Are you sure you want to PUBLISH all results for #{@exercise.title}?" } %>
+        <%= link_to 'Conceal all', conceal_all_exercise_result_publications_path(@exercise), method: :put, class: 'small button alert', data: { confirm: "Are you sure you want to CONCEAL all results for #{@exercise.title}?" } %>
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -23,9 +26,10 @@
           <% end %>
         </td>
         <td class='right-aligned'>
-          <%= simple_form_for([@exercise, result_publication]) do |f| %>
-            <%= f.input :published, input_html: {value: result_publication.published? ? 0 : 1}, as: :hidden %>
-            <%= f.submit "#{f.object.published? ? "Conceal" : "Publish"} #{result_publication.tutorial_group.title}", class: "small button#{ " alert" if result_publication.published?}" %>
+          <% if result_publication.published? %>
+            <%= link_to "Conceal #{result_publication.tutorial_group.title}", conceal_exercise_result_publication_path(@exercise, result_publication), method: :put, class: "small button alert" %>
+          <% else %>
+            <%= link_to "Publish #{result_publication.tutorial_group.title}", publish_exercise_result_publication_path(@exercise, result_publication), method: :put, class: "small button" %>
           <% end %>
         </td>
       </tr>

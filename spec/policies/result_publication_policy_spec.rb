@@ -57,7 +57,8 @@ describe ResultPublicationPolicy do
       let(:user) { create(:account, :admin) }
       let(:term) { create(:term) }
 
-      it { is_expected.to permit_authorization :update }
+      it { is_expected.to permit_authorization :publish }
+      it { is_expected.to permit_authorization :conceal }
       it { is_expected.to permit_authorization :publish_all }
       it { is_expected.to permit_authorization :conceal_all }
     end
@@ -66,7 +67,8 @@ describe ResultPublicationPolicy do
       let(:user) { FactoryGirl.create(:account, :lecturer) }
       let(:term) { user.term_registrations.lecturers.first.term }
 
-      it { is_expected.to permit_authorization :update }
+      it { is_expected.to permit_authorization :publish }
+      it { is_expected.to permit_authorization :conceal }
       it { is_expected.to permit_authorization :publish_all }
       it { is_expected.to permit_authorization :conceal_all }
     end
@@ -75,7 +77,8 @@ describe ResultPublicationPolicy do
       let(:user) { FactoryGirl.create(:account, :tutor) }
       let(:term) { user.term_registrations.tutors.first.term }
 
-      it { is_expected.not_to permit_authorization :update }
+      it { is_expected.not_to permit_authorization :publish }
+      it { is_expected.not_to permit_authorization :conceal }
       it { is_expected.not_to permit_authorization :publish_all }
       it { is_expected.not_to permit_authorization :conceal_all }
     end
@@ -84,7 +87,8 @@ describe ResultPublicationPolicy do
       let(:user) { FactoryGirl.create(:account, :student) }
       let(:term) { user.term_registrations.students.first.term }
 
-      it { is_expected.not_to permit_authorization :update }
+      it { is_expected.not_to permit_authorization :publish }
+      it { is_expected.not_to permit_authorization :conceal }
       it { is_expected.not_to permit_authorization :publish_all }
       it { is_expected.not_to permit_authorization :conceal_all }
     end

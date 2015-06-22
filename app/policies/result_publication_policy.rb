@@ -15,6 +15,14 @@ class ResultPublicationPolicy < PunditBasePolicy
     user.lecturer_of_term?(record.term)
   end
 
+  def publish?
+    update?
+  end
+
+  def conceal?
+    update?
+  end
+
   def publish_all?
     update?
   end

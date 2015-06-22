@@ -67,7 +67,17 @@ Rails.application.routes.draw do
     end
 
     resources :submissions, controller: "staff_submissions"
-    resources :result_publications, only: [:index, :update]
+    resources :result_publications, only: :index do
+      member do
+        put :publish
+        put :conceal
+      end
+
+      collection do
+        put :publish_all
+        put :conceal_all
+      end
+    end
   end
 
   resources :submission_assets, only: [:show]

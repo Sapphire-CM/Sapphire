@@ -5,8 +5,8 @@ RSpec.describe ResultPublicationsController do
   include_context 'active_admin_session_context'
 
   let(:term) { FactoryGirl.create :term }
-  let(:exercise) { FactoryGirl.create :exercise, term: term }
-  let(:tutorial_groups) { FactoryGirl.create_list :tutorial_group, 4, term: term }
+  let!(:exercise) { FactoryGirl.create :exercise, term: term }
+  let!(:tutorial_groups) { FactoryGirl.create_list :tutorial_group, 4, term: term }
 
   describe 'GET index' do
     it 'assigns all result_publications as @result_publications' do
@@ -18,28 +18,70 @@ RSpec.describe ResultPublicationsController do
     end
   end
 
-  describe 'PUT update' do
-    let(:url_params) { { exercise_id: exercise.id, id: exercise.result_publication_for(tutorial_groups.first) } }
+  context 'mocked result publication service' do
+    let(:mocked_result_publication_service) do
+      service = double
+      allow(service).to receive(:publish!)
+      allow(service).to receive(:conceal!)
+      allow(service).to receive(:publish_all!)
+      allow(service).to receive(:conceal_all!)
+      service
+    end
 
-    context 'publish' do
-      it 'updates the publication status of a tutorial group' do
-        expect do
-          put :update, url_params.merge(result_publication: { published: true })
-        end.to change(Events::ResultPublication::Published, :count).by(1)
+    let(:result_publications) { exercise.result_publications }
+    let(:result_publication) { result_publications.first }
 
-        expect(exercise.result_published_for?(tutorial_groups.first)).to be_truthy
+    before :each do
+      allow(ResultPublicationService).to receive(:new).with(@current_account, exercise).and_return(mocked_result_publication_service)
+    end
+
+    context 'member actions' do
+      let(:url_params) { { exercise_id: exercise.id, id: result_publication.id } }
+
+      context 'PUT publish' do
+        it 'updates the publication status of a tutorial group' do
+          expect(mocked_result_publication_service).to receive(:publish!).with(result_publication)
+
+          put :publish, url_params
+
+          expect(flash[:notice]).not_to be_blank
+          expect(response).to redirect_to exercise_result_publications_path(exercise)
+        end
+      end
+
+      context 'PUT conceal' do
+        it 'shows a different flash message if the publication status is not updated' do
+          expect(mocked_result_publication_service).to receive(:conceal!).with(result_publication)
+
+          put :conceal, url_params
+
+          expect(flash[:notice]).not_to be_blank
+          expect(response).to redirect_to exercise_result_publications_path(exercise)
+        end
       end
     end
 
-    context 'conceal' do
-      it 'shows a different flash message if the publication status is not updated' do
-        exercise.result_publication_for(tutorial_groups.first).update(published: true)
+    context 'collection actions' do
+      describe 'PUT publish_all' do
+        it 'publishes all result publications' do
+          expect(mocked_result_publication_service).to receive(:publish_all!)
 
-        expect do
-          put :update, url_params.merge(result_publication: { published: false })
-        end.to change(Events::ResultPublication::Concealed, :count).by(1)
+          put :publish_all, exercise_id: exercise.id
 
-        expect(flash[:notice]).not_to be_empty
+          expect(flash[:notice]).not_to be_blank
+          expect(response).to redirect_to exercise_result_publications_path(exercise)
+        end
+      end
+
+      describe 'PUT conceal_all' do
+        it 'conceals all result publications' do
+          expect(mocked_result_publication_service).to receive(:conceal_all!)
+
+          put :conceal_all, exercise_id: exercise.id
+
+          expect(flash[:notice]).not_to be_blank
+          expect(response).to redirect_to exercise_result_publications_path(exercise)
+        end
       end
     end
   end

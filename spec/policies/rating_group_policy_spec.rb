@@ -1,6 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe RatingGroupPolicy do
+  describe 'resolving through Pundit' do
+    let(:user) { create(:account, :admin) }
+    let(:rating_group) { create(:rating_group) }
+
+    it 'returns a RatingGroupPolicy' do
+      expect(Pundit.policy(user, rating_group)).to be_a(RatingGroupPolicy)
+    end
+  end
+
   describe '#index?' do
     subject { RatingGroupPolicy.new(user, policy_record) }
 

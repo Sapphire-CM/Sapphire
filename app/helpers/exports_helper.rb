@@ -1,7 +1,9 @@
 module ExportsHelper
   def export_options_for(export, form_builder)
-    template = if lookup_context.template_exists?(export.class.to_s.underscore + '_options', ['exports'], true)
-      export.class.to_s.underscore + '_options'
+    path = export.class.to_s.underscore.sub('exports/', '') + '_options'
+
+    template = if lookup_context.template_exists?(path, ['exports'], true)
+      path
     else
       'export_options'
     end

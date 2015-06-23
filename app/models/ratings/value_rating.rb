@@ -31,7 +31,7 @@ class Ratings::ValueRating < Rating
   end
 
   def initialize(*args)
-    fail 'Cannot directly instantiate a ValueRating' if self.class == ValueRating
+    fail 'Cannot directly instantiate a ValueRating' if self.class == Ratings::ValueRating
     super
   end
 end

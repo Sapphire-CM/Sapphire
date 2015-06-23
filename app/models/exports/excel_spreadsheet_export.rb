@@ -330,7 +330,7 @@ class Exports::ExcelSpreadsheetExport < Export
   def add_group_exercise(workbook, styles, tutorial_group, exercise)
     student_groups = tutorial_group.student_groups.order(:title)
 
-    worksheet = workbook.add_worksheet(exercise.title.gsub(/[^A-Za-z0-9\ ]/, ''))
+    worksheet = workbook.add_worksheet(exercise_sheet_name(exercise))
     worksheet.merge_range 0, 0, 1, 1, exercise.title, styles[:exercise_title_cell]
 
     worksheet.write_row 0, 2, student_groups.map(&:title), styles[:flipped_title]
@@ -399,7 +399,7 @@ class Exports::ExcelSpreadsheetExport < Export
   def add_solitary_exercise(workbook, styles, tutorial_group, term_registrations, exercise)
     students = term_registrations.map(&:account)
 
-    worksheet = workbook.add_worksheet(exercise.title.gsub(/[^A-Za-z0-9\ ]/, ''))
+    worksheet = workbook.add_worksheet(exercise_sheet_name(exercise))
     worksheet.merge_range 0, 0, 1, 1, exercise.title, styles[:exercise_title_cell]
 
     worksheet.write_row 0, 2, students.map { |s| "#{s.surname} #{s.forename}" }, styles[:flipped_title]
@@ -494,5 +494,9 @@ class Exports::ExcelSpreadsheetExport < Export
 
   def sbox_alias(student)
     student.email.gsub(/@.*$/, '')
+  end
+
+  def exercise_sheet_name(exercise)
+    exercise.title.gsub(/[^A-Za-z0-9\ ]/, '')[0..30]
   end
 end

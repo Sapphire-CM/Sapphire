@@ -21,11 +21,12 @@ class GradingScale < ActiveRecord::Base
   validates :max_points, uniqueness: { scope: :term_id }, if: :not_graded?
   validate :validate_point_range
 
-  scope :ordered, lambda { order(:grade) }
+  scope :ordered, lambda { order(:not_graded).order(:grade) }
   scope :positives, lambda { where(positive: true, not_graded: false).ordered }
   scope :negative, lambda { find_by(positive: false, not_graded: false) }
   scope :not_graded, lambda { find_by(not_graded: true) }
   scope :for_grade, lambda { |grade| find_by(grade: grade) }
+  scope :grades, lambda { where(not_graded: false) }
 
   private
 

@@ -7,7 +7,7 @@
       <th>Percent</th>
     </thead>
     <tbody>
-      <% @term.grading_scales.each do |grading_scale| %>
+      <% @term.grading_scales.grades.ordered.each do |grading_scale| %>
         <tr>
           <th class='minimum-width text-center'><%= grading_scale.grade %></th>
           <td class='text-right'>

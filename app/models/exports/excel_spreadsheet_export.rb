@@ -307,11 +307,10 @@ class Exports::ExcelSpreadsheetExport < Export
     worksheet.merge_range same_row, 5, same_row, 6, 'Students', styles[:grading_scale_title]
     worksheet.merge_range same_row, 7, same_row, 8, 'Percent', styles[:grading_scale_title_last]
 
-    term.grading_scales.each do |grading_scale|
-      student_count = GradingScaleService.new(term).count_for(grading_scale)
+    term.grading_scales.grades.ordered.each do |grading_scale|
       worksheet.merge_range next_row, 1, same_row, 2, grading_scale.grade, styles[:grading_scale_grade_title]
       worksheet.merge_range same_row, 3, same_row, 4, "#{grading_scale.min_points} - #{grading_scale.max_points}", styles[:grading_scale_inner]
-      worksheet.merge_range same_row, 5, same_row, 6, student_count, styles[:grading_scale_inner]
+      worksheet.merge_range same_row, 5, same_row, 6, grading_scale_service.count_for(grading_scale), styles[:grading_scale_inner]
       worksheet.merge_range same_row, 7, same_row, 8, number_to_percentage(grading_scale_service.percent_for(grading_scale), precision: 1), styles[:grading_scale_inner_last]
     end
 

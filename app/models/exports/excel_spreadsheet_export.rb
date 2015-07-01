@@ -286,7 +286,7 @@ class Exports::ExcelSpreadsheetExport < Export
       worksheet.write_row same_row, 1, students.map(&:surname), styles[:summary_flipped_title]
 
       worksheet.write next_row, 0, 'Student Group', styles[:title_row_underlined]
-      worksheet.write_row same_row, 1, term_registrations.map(&:student_group).map(&:title), styles[:summary_flipped_title_underlined]
+      worksheet.write_row same_row, 1, term_registrations.map(&:student_group).map { |student_group| student_group.try(:title) }, styles[:summary_flipped_title_underlined]
     else
       worksheet.write next_row, 0, 'Nachname', styles[:title_row_underlined]
       worksheet.write_row same_row, 1, students.map(&:surname), styles[:summary_flipped_title_underlined]

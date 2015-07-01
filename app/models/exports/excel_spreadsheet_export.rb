@@ -69,8 +69,9 @@ class Exports::ExcelSpreadsheetExport < Export
     styles = setup_workbook(workbook)
 
     term_registrations = tutorial_group.student_term_registrations
-      .includes(:account, :exercise_registrations)
-      .references(:account)
+      .includes(:account, :exercise_registrations, :student_group)
+      .references(:account, :student_group)
+      .order { student_group.title.asc }
       .order { account.surname.asc }
       .order { account.forename.asc }
 
@@ -280,8 +281,16 @@ class Exports::ExcelSpreadsheetExport < Export
     worksheet.write next_row, 0, 'Vorname', styles[:title_row]
     worksheet.write_row same_row, 1, students.map(&:forename), styles[:summary_flipped_title]
 
-    worksheet.write next_row, 0, 'Nachname', styles[:title_row_underlined]
-    worksheet.write_row same_row, 1, students.map(&:surname), styles[:summary_flipped_title_underlined]
+    if term.group_submissions?
+      worksheet.write next_row, 0, 'Nachname', styles[:title_row]
+      worksheet.write_row same_row, 1, students.map(&:surname), styles[:summary_flipped_title]
+
+      worksheet.write next_row, 0, 'Student Group', styles[:title_row_underlined]
+      worksheet.write_row same_row, 1, term_registrations.map(&:student_group).map(&:title), styles[:summary_flipped_title_underlined]
+    else
+      worksheet.write next_row, 0, 'Nachname', styles[:title_row_underlined]
+      worksheet.write_row same_row, 1, students.map(&:surname), styles[:summary_flipped_title_underlined]
+    end
 
     term.exercises.each_with_index do |exercise, index|
       results = []

@@ -17,7 +17,7 @@ RSpec.describe Submission do
     it { is_expected.to validate_presence_of(:submitter) }
     it { is_expected.to validate_presence_of(:submitted_at) }
 
-    it 'validates the size of all submission_assets combined is below the maximum allowed size by the exercise'
+    it 'size of all submission_assets combined must be below the maximum allowed size of the exercise'
   end
 
   describe 'scoping' do

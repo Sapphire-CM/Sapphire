@@ -9,6 +9,8 @@ module FeatureHelpers
     ensure_logged_out!
 
     sign_in_with(account.email, account.password)
+
+    @current_account = account
   end
 
   def sign_in_with(email, password)
@@ -18,8 +20,6 @@ module FeatureHelpers
     fill_in 'Password', with: password
 
     click_on 'Sign in'
-
-    @current_account = account
   end
 
   def sign_out
@@ -29,6 +29,12 @@ module FeatureHelpers
 
   def click_top_bar_link(*args)
     within '.top-bar' do
+      click_link *args
+    end
+  end
+
+  def click_side_nav_link(*args)
+    within '.side-nav' do
       click_link *args
     end
   end

@@ -119,7 +119,8 @@ RSpec.feature 'Managing Accounts' do
       sign_out
       sign_in_with(student.email, 'supersecret')
 
-      expect(page).to have_content('signed in')
+      expect(page.current_path).to eq(root_path)
+      expect(page).to have_content('Courses')
     end
   end
 end

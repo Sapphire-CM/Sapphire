@@ -23,6 +23,7 @@ class Submission < ActiveRecord::Base
 
   validates :submitter, presence: true
   validates :submitted_at, presence: true
+  validates :exercise, presence: true
   validates :student_group, uniqueness: { scope: :exercise_id }, if: :student_group
 
   validate :upload_size_below_exercise_maximum_upload_size
@@ -78,7 +79,7 @@ class Submission < ActiveRecord::Base
   def upload_size_below_exercise_maximum_upload_size
     size = submission_assets.map(&:filesize).sum || 0
 
-    if exercise.enable_max_upload_size && size > exercise.maximum_upload_size
+    if exercise.present? && exercise.enable_max_upload_size && size > exercise.maximum_upload_size
       errors.add(:base, 'Upload too large')
     end
   end

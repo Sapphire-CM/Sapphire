@@ -74,7 +74,7 @@ RSpec.describe AccountsController do
 
       it 'updates the password' do
         valid_attributes[:id] = account.id
-        valid_attributes[:account][:current_password] = 'secret'
+        valid_attributes[:account][:current_password] = account.password
         valid_attributes[:account][:password] = 'asdfghjkl'
         valid_attributes[:account][:password_confirmation] = valid_attributes[:account][:password]
 

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature 'Managing Accounts' do
+RSpec.feature 'Account Management' do
   let(:account) { FactoryGirl.create(:account, :admin) }
 
   before(:each) do

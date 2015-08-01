@@ -38,6 +38,16 @@ module FeatureHelpers
       click_link *args
     end
   end
+
+  def click_sub_nav_link(*args)
+    within '.sub-nav' do
+      click_link *args
+    end
+  end
+
+  def within_modal(&block)
+    within '.reveal-modal.open', &block
+  end
 end
 
 RSpec.configure do |config|

@@ -57,7 +57,6 @@ RSpec.feature 'Evaluating submissions' do
 
   scenario 'changing a number rating to a value outside range'
 
-
   scenario 'navigating to next submission' do
     visit single_evaluation_path(submission)
 

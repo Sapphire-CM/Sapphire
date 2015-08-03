@@ -20,6 +20,7 @@ class Submission < ActiveRecord::Base
   has_many :submission_assets, inverse_of: :submission, autosave: true
   has_many :exercise_registrations, dependent: :destroy
   has_many :term_registrations, through: :exercise_registrations
+  has_many :tutorial_groups, lambda { uniq }, through: :term_registrations
 
   validates :submitter, presence: true
   validates :submitted_at, presence: true
@@ -33,10 +34,10 @@ class Submission < ActiveRecord::Base
   scope :for_tutorial_group, lambda { |tutorial_group| joins { exercise_registrations.term_registration } .where { term_registrations.tutorial_group_id == my { tutorial_group.id } } }
   scope :for_student_group, lambda { |student_group| where(student_group: student_group) }
   scope :for_account, lambda { |account| joins(:term_registrations).where(term_registrations: { account_id: account.id }) }
-  scope :unmatched, lambda { joins { exercise_registrations.outer }.where { exercise_registrations.id.nil? } }
-  scope :with_evaluation, lambda { joins(:submission_evaluation).where.not(submission_evaluation: { evaluator: nil }) }
-  scope :ordered_by_student_group, lambda { references(:student_groups).order('student_groups.title ASC') }
-  scope :ordered_by_exercises, lambda { joins(:exercise).order { exercises.row_order } }
+  scope :unmatched, lambda { joins { exercise_registrations.outer }.where(exercise_registrations: { id:nil }) }
+  scope :with_evaluation, lambda { joins(:submission_evaluation).where(submission_evaluations: {id: SubmissionEvaluation.evaluated}) }
+  scope :ordered_by_student_group, lambda { references(:student_groups).joins(:student_group).order('student_groups.title ASC') }
+  scope :ordered_by_exercises, lambda { references(:exercises).joins(:exercise).order { exercises.row_order } }
 
   after_create :create_submission_evaluation
 
@@ -55,9 +56,7 @@ class Submission < ActiveRecord::Base
   end
 
   def result_published?
-    exercise_registrations.select do |exercise_registration|
-      exercise_registration.exercise.result_published_for?(exercise_registration.term_registration.tutorial_group)
-    end.present?
+    ResultPublication.where(exercise: exercise, tutorial_group_id: tutorial_groups).published.exists?
   end
 
   def visible_for_student?(account)

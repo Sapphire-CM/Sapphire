@@ -9,7 +9,7 @@ class ResultPublicationsController < ApplicationController
 
     @result_publications = @exercise.result_publications
       .joins(:tutorial_group)
-      .includes(tutorial_group: { tutor_term_registrations: :account })
+      .includes(tutorial_group: { tutor_term_registrations: :account }).merge(TutorialGroup.ordered_by_title)
   end
 
   def publish

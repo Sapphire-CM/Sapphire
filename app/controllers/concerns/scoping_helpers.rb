@@ -24,7 +24,7 @@ module ScopingHelpers
     if params[:tutorial_group_id].present?
       term.tutorial_groups.find(params[:tutorial_group_id])
     else
-      current_account.tutorial_groups.where(term_id: term.id).first.presence || term.tutorial_groups.first
+      current_account.tutorial_groups.ordered_by_title.where(term_id: term.id).first.presence || term.tutorial_groups.ordered_by_title.first
     end
   end
 end

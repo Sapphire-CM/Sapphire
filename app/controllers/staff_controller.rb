@@ -51,6 +51,6 @@ class StaffController < ApplicationController
   end
 
   def setup_form_context
-    @tutorial_groups = current_term.tutorial_groups
+    @tutorial_groups = current_term.tutorial_groups.ordered_by_title
   end
 end

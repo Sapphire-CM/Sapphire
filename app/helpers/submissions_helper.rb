@@ -20,7 +20,7 @@ module SubmissionsHelper
 
       content << content_tag(:li, link_to('All', submission_scope: 'all', q: params[:q]).html_safe)
 
-      @term.tutorial_groups.each  do |subject|
+      @term.tutorial_groups.ordered_by_title.each  do |subject|
         content << content_tag(:li) do
           title = tutorial_group_title(subject)
           id = subject.id

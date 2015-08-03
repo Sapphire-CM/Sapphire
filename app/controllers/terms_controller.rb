@@ -4,7 +4,7 @@ class TermsController < ApplicationController
                                   :points_overview, :send_welcome_notifications]
 
   def show
-    @tutorial_groups = @term.tutorial_groups
+    @tutorial_groups = @term.tutorial_groups.ordered_by_title
     @exercises = @term.exercises
   end
 
@@ -43,7 +43,7 @@ class TermsController < ApplicationController
   end
 
   def edit
-    @tutorial_groups = @term.tutorial_groups
+    @tutorial_groups = @term.tutorial_groups.ordered_by_title
     @exercises = @term.exercises
   end
 

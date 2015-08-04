@@ -25,8 +25,11 @@ FactoryGirl.define do
     end
 
     trait :evaluated do
+      transient do
+        evaluator { FactoryGirl.create(:account, :admin) }
+      end
       after(:create) do |instance, evaluator|
-        instance.submission_evaluation.update(evaluator: FactoryGirl.create(:account), evaluated_at: Time.now)
+        instance.submission_evaluation.update(evaluator: evaluator.evaluator, evaluated_at: Time.now)
       end
     end
 

@@ -1,1 +1,1 @@
-Capybara.default_wait_time = 10
+Capybara.default_wait_time = 20

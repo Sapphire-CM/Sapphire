@@ -2,6 +2,6 @@ FactoryGirl.define do
   factory :exercise_registration do
     exercise
     term_registration
-    submission
+    submission { FactoryGirl.create(:submission, exercise: exercise) }
   end
 end

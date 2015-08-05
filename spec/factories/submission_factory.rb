@@ -38,5 +38,14 @@ FactoryGirl.define do
         instance.submission_evaluation.destroy
       end
     end
+
+    trait :spreaded_submission_time do
+      transient do
+        start_time { Time.now }
+        time_increment { -5.minutes }
+      end
+
+      sequence(:submitted_at) { |n| start_time + time_increment * n}
+    end
   end
 end

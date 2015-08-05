@@ -75,12 +75,12 @@ RSpec.feature 'Ratings and Rating Groups' do
 
         within_modal do
           fill_in 'Points', with: '5'
-          click_link 'Change Pointrange (0..10)'
 
-          expect(page).to have_content('Min points')
+          hidden_inputs do
+            fill_in 'Min points', with: '-5'
+            fill_in 'Max points', with: '15'
+          end
 
-          fill_in 'Min points', with: '-5'
-          fill_in 'Max points', with: '15'
           click_button 'Save'
         end
 

@@ -48,6 +48,14 @@ module FeatureHelpers
   def within_modal(&block)
     within '.reveal-modal.open', &block
   end
+
+  def hidden_inputs(&block)
+    return unless block_given?
+    previous_value = Capybara.ignore_hidden_elements
+    Capybara.ignore_hidden_elements = false
+    yield
+    Capybara.ignore_hidden_elements = previous_value
+  end
 end
 
 RSpec.configure do |config|

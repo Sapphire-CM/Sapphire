@@ -55,7 +55,7 @@
           <hr />
           <%= link_to "Reopen Evaluation", single_evaluation_path(submission), class: "small button", target: "_blank" %>
           <% if submission.exercise.submission_viewer? %>
-            <%= link_to "Open Viewer", submission_viewer_path(submission), class: "small button", target: "sapphire_submission_viewer" %>
+            <%= link_to "Open Viewer", submission_viewer_path(submission), class: "small button" %>
           <% end %>
 
         </div>
@@ -65,8 +65,10 @@
           <%= grading_review_evaluations(submission) %>
           <hr />
           <%= link_to "Reopen Evaluation", single_evaluation_path(submission), class: "small button", target: "_blank" %>
+          <% if submission.exercise.submission_viewer? %>
+            <%= link_to "Open Viewer", submission_viewer_path(submission), class: "small button" %>
+          <% end %>
         </div>
-
       <% end %>
     </div>
   </section>

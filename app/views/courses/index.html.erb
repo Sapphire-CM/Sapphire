@@ -2,7 +2,7 @@
 
 <div class='large-6 large-centered columns grid-center'>
   <div class='row'>
-    <div id='course_index_entries' class='large-12'>
+    <div id='course_index_entries' class='small-12'>
       <p class='index_entry_none course <%= 'hide' if @courses.any? %>'>
         No courses present.
       </p>
@@ -14,7 +14,7 @@
   </div>
 
   <div class="row">
-    <div class="large-12 large-centered text-center">
+    <div class="small-12 large-centered text-center">
       <%= link_to "Add Course", new_course_path, remote: true, class: "small button", data: {"reveal-id" => "reveal_modal"} if policy(@courses).create? %>
     </div>
   </div>

@@ -13,8 +13,6 @@ class TutorialGroup < ActiveRecord::Base
   belongs_to :term
   has_one :course, through: :term
 
-  default_scope { includes(:tutor_term_registrations).order(:title) }
-
   has_many :result_publications, dependent: :destroy
   has_many :student_groups, dependent: :destroy, inverse_of: :tutorial_group
 
@@ -30,6 +28,8 @@ class TutorialGroup < ActiveRecord::Base
 
   validates :term, presence: true
   validates :title, presence: true, uniqueness: { scope: :term_id }
+
+  scope :ordered_by_title, lambda { order(:title) }
 
   def student_has_submission_for_exercise?(student, exercise)
     @values ||= begin

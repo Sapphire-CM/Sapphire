@@ -24,13 +24,13 @@ class ResultPublicationService
   end
 
   def publish_all!
-    exercise.result_publications.each do |result_publication|
+    exercise.result_publications.joins(:tutorial_group).merge(TutorialGroup.ordered_by_title).each do |result_publication|
       publish!(result_publication)
     end
   end
 
   def conceal_all!
-    exercise.result_publications.each do |result_publication|
+    exercise.result_publications.joins(:tutorial_group).merge(TutorialGroup.ordered_by_title).each do |result_publication|
       conceal!(result_publication)
     end
   end

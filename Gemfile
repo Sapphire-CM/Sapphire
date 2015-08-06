@@ -115,7 +115,8 @@ group :test do
   gem 'simplecov'                 # test-coverage reports
   gem 'simplecov-html', github: 'Kriechi/simplecov-html', branch: 'fix-list-hiding' # html formatting of simplecov results
 
-  gem 'capybara'
+  gem 'capybara'                  # feature test syntax enhancements
+  gem 'capybara-screenshot'       # automatically generate screenshots for failing feature tests
   gem 'poltergeist'               # PhantomJS, headless Webkit
 
   # gem 'selenium-webdriver'      # Selenium, Firefox webdriver

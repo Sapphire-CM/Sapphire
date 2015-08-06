@@ -14,7 +14,9 @@ FactoryGirl.define do
     term
 
     trait :with_viewer do
-      submission_viewer_identifier Sapphire::SubmissionViewers::Central.registered_viewers.first.identifier
+      submission_viewer_identifier do
+        Sapphire::SubmissionViewers::Central.registered_viewers.first.identifier
+      end
     end
 
     trait :with_upload_limit do

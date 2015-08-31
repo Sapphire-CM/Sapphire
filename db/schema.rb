@@ -335,7 +335,6 @@ ActiveRecord::Schema.define(version: 20150807123827) do
     t.integer  "submitter_id"
     t.integer  "student_group_id"
     t.boolean  "outdated",         default: false
-    t.boolean  "replacement",      default: false
   end
 
   add_index "submissions", ["exercise_id"], name: "index_submissions_on_exercise_id"

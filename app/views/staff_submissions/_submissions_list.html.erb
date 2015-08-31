@@ -11,7 +11,7 @@
     </thead>
     <tbody>
       <% submissions.each do |submission| %>
-      <tr>
+      <tr<%= ' class="outdated"'.html_safe if submission.outdated? %>>
         <td><%= submission_author submission %></td>
         <td class="minimum-width"><%= local_time submission.submitted_at, '%Y-%m-%d %H:%M' %></td>
         <td class="minimum-width">

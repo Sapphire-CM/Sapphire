@@ -71,7 +71,7 @@ class TermRegistration < ActiveRecord::Base
   end
 
   def update_points
-    self.points = exercise_registrations.sum(:points)
+    self.points = exercise_registrations.current.sum(:points)
     self.positive_grade = positive_grade_possible?
     self.receives_grade = exercise_registrations.any?
   end
@@ -91,7 +91,7 @@ class TermRegistration < ActiveRecord::Base
 
   def all_minimum_points_reached?
     !term.exercises.mandatory_exercises.where.not(id: exercise_registrations.select('exercise_id')).exists? &&
-      exercise_registrations.find { |exercise_registration| !exercise_registration.minimum_points_reached? } .blank?
+      exercise_registrations.current.find { |exercise_registration| !exercise_registration.minimum_points_reached? } .blank?
   end
 
   def positive_grade_possible?

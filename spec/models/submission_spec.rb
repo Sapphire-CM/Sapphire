@@ -33,6 +33,24 @@ RSpec.describe Submission do
       end
     end
 
+    describe '.current' do
+      let!(:outdated_submissions) { FactoryGirl.create_list(:submission, 3, :outdated) }
+      let!(:current_submissions) { FactoryGirl.create_list(:submission, 3) }
+
+      it 'returns non-outdated submissions' do
+        expect(Submission.current).to match_array(current_submissions)
+      end
+    end
+
+    describe '.outdated' do
+      let!(:outdated_submissions) { FactoryGirl.create_list(:submission, 3, :outdated) }
+      let!(:current_submissions) { FactoryGirl.create_list(:submission, 3) }
+
+      it 'returns outdated submissions' do
+        expect(Submission.outdated).to match_array(outdated_submissions)
+      end
+    end
+
     describe '.for_exercise' do
       let(:exercise) { FactoryGirl.create(:exercise) }
       let(:another_exercise) { FactoryGirl.create(:exercise) }

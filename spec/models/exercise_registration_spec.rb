@@ -10,6 +10,20 @@ describe ExerciseRegistration do
   it { is_expected.to validate_presence_of(:submission) }
   it { is_expected.to validate_numericality_of(:points).only_integer }
 
+  describe 'scoping' do
+    describe '.current' do
+      let!(:current_submissions) { FactoryGirl.create_list(:submission, 3) }
+      let!(:outdated_submissions) { FactoryGirl.create_list(:submission, 3, :outdated) }
+
+      let!(:current_exercise_registrations) { current_submissions.map { |s| FactoryGirl.create(:exercise_registration, exercise: s.exercise, submission: s) } }
+      let!(:outdated_exercise_registrations) { outdated_submissions.map { |s| FactoryGirl.create(:exercise_registration, exercise: s.exercise, submission: s) } }
+
+      it 'returns exercise registrations only for current submissions' do
+        expect(described_class.current).to match_array(current_exercise_registrations)
+      end
+    end
+  end
+
   context 'uniqueness validation' do
     context 'for solitary submission' do
       it 'is uniqu' do

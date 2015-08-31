@@ -1,6 +1,10 @@
 module PointsOverviewHelper
   def exercise_result(term_registration, exercise)
-    term_registration.exercise_registrations.find { |ex_reg| ex_reg.exercise_id == exercise.id }.try(:points).presence || 'na'
+    term_registration.exercise_registrations.current.find { |ex_reg| ex_reg.exercise_id == exercise.id }.try(:points).presence || 'na'
+  end
+
+  def submission_result(term_registration, submission)
+    term_registration.exercise_registrations.find_by(submission: submission).try(:points).presence || 'na'
   end
 
   def points_overview_for_tutorial_group(tutorial_group)

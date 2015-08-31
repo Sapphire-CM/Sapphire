@@ -3,6 +3,7 @@ FactoryGirl.define do
     submitted_at { Time.now }
     exercise
     association :submitter, factory: :account
+    outdated false
 
     trait :with_student_group_registration do
       transient do
@@ -46,6 +47,10 @@ FactoryGirl.define do
       end
 
       sequence(:submitted_at) { |n| start_time + time_increment * n}
+    end
+
+    trait :outdated do
+      outdated true
     end
   end
 end

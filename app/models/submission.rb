@@ -1,10 +1,11 @@
 # create_table :submissions, force: :cascade do |t|
 #   t.integer  :exercise_id
 #   t.datetime :submitted_at
-#   t.datetime :created_at,       null: false
-#   t.datetime :updated_at,       null: false
+#   t.datetime :created_at,                       null: false
+#   t.datetime :updated_at,                       null: false
 #   t.integer  :submitter_id
 #   t.integer  :student_group_id
+#   t.boolean  :outdated,         default: false, null: false
 # end
 #
 # add_index :submissions, [:exercise_id], name: :index_submissions_on_exercise_id
@@ -38,6 +39,8 @@ class Submission < ActiveRecord::Base
   scope :with_evaluation, lambda { joins(:submission_evaluation).where(submission_evaluations: {id: SubmissionEvaluation.evaluated}) }
   scope :ordered_by_student_group, lambda { references(:student_groups).joins(:student_group).order('student_groups.title ASC') }
   scope :ordered_by_exercises, lambda { references(:exercises).joins(:exercise).order { exercises.row_order } }
+  scope :current, lambda { where(outdated: false) }
+  scope :outdated, lambda { where(outdated: true) }
 
   after_create :create_submission_evaluation
 

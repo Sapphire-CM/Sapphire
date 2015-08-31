@@ -17,7 +17,7 @@ RSpec.describe Submission do
     it { is_expected.to validate_presence_of(:submitter) }
     it { is_expected.to validate_presence_of(:submitted_at) }
 
-    it 'size of all submission_assets combined must be below the maximum allowed size of the exercise'
+    it 'validates size of all submission_assets combined must be below the maximum allowed size of the exercise'
   end
 
   describe 'scoping' do
@@ -30,6 +30,24 @@ RSpec.describe Submission do
 
       it 'returns only submissions associated to the given term' do
         expect(described_class.for_term(term)).to match_array(submissions)
+      end
+    end
+
+    describe '.current' do
+      let!(:outdated_submissions) { FactoryGirl.create_list(:submission, 3, :outdated) }
+      let!(:current_submissions) { FactoryGirl.create_list(:submission, 3) }
+
+      it 'returns non-outdated submissions' do
+        expect(Submission.current).to match_array(current_submissions)
+      end
+    end
+
+    describe '.outdated' do
+      let!(:outdated_submissions) { FactoryGirl.create_list(:submission, 3, :outdated) }
+      let!(:current_submissions) { FactoryGirl.create_list(:submission, 3) }
+
+      it 'returns outdated submissions' do
+        expect(Submission.outdated).to match_array(outdated_submissions)
       end
     end
 

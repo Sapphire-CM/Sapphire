@@ -10,6 +10,8 @@
 #
 # add_index :exports, [:term_id], name: :index_exports_on_term_id
 
+require 'zip'
+
 class Exports::SubmissionExport < Export
   prop_accessor :base_path, :solitary_path, :group_path, :extract_zips, :include_solitary_submissions, :include_group_submissions
 
@@ -61,28 +63,39 @@ class Exports::SubmissionExport < Export
     path = File.join(zip_tmp_dir, submission_asset_path(submission_asset))
 
     if extract_zips? && submission_asset.content_type == SubmissionAsset::Mime::ZIP
-      extraction_dir = File.dirname(path)
-      extract_zip_to(submission_asset.file.to_s, extraction_dir)
+      extraction_dir = path_without_extension(path)
+
+      begin
+        extract_zip_to(submission_asset.file.to_s, unique_path(extraction_dir))
+      rescue => e
+        # zip could not be extracted, falling back to hardlinking original file instead
+
+        FileUtils.rm_r(extraction_dir) if File.exist?(extraction_dir)
+        hardlink_file(submission_asset.file.to_s, unique_path(path))
+      end
     else
-      hardlink_file(submission_asset.file.to_s, path)
+      hardlink_file(submission_asset.file.to_s, unique_path(path))
     end
   end
 
   def extract_zip_to(zip_path, extraction_dir)
+    zip_name = File.basename(zip_path, File.extname(zip_path))
     Zip::File.open(zip_path) do |archive|
       archive.entries.each do |entry|
         # ignoring directories - as mkdir_p is more reliable
         next if entry.name[-1] == '/'
 
-        extraction_path = File.join(extraction_dir, entry.name)
+        # do not include zip file name twice
+        entry_name = entry.name
+        if entry_name.start_with?(zip_name, "/#{zip_name}")
+          entry_name = entry_name.sub(/\/?#{Regexp.escape zip_name}/, '')
+        end
+
+        extraction_path = File.join(extraction_dir, entry_name)
         FileUtils.mkdir_p(File.dirname(extraction_path))
         entry.extract(extraction_path)
       end
     end
-  rescue
-    # zip could not be extracted, hardlinking original file instead
-    FileUtils.rm_r(extraction_dir)
-    hardlink_file(zip_path, File.join(extraction_dir, File.basename(zip_path)))
   end
 
   def hardlink_file(source_path, dst_path)
@@ -117,6 +130,26 @@ class Exports::SubmissionExport < Export
     filled_placeholders = placeholders.map { |placeholder| [placeholder.to_sym, value_for_placeholder(placeholder, submission_asset)] }
 
     path % Hash[filled_placeholders]
+  end
+
+  def unique_path(path)
+    return path unless File.exist? path
+
+    basepath = path_without_extension(path)
+
+    i = 2
+    loop do
+      unique_path = "#{basepath}-#{i}#{File.extname(path)}"
+      return unique_path unless File.exist?(unique_path)
+
+      i += 1
+    end
+  end
+
+  def path_without_extension(path)
+    ext = File.extname(path)
+
+    basepath = path.sub(/#{Regexp.escape ext}$/, '')
   end
 
   def extract_placeholders(path)

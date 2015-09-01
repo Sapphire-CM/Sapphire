@@ -31,11 +31,9 @@ class Exports::SubmissionExport < Export
   end
 
   def prepare_zip!(directory)
-    term.submissions.find_each do |submission|
-      submission.submission_assets.each do |submission_asset|
-        if should_add?(submission_asset) && File.exist?(submission_asset.file.to_s)
-          add_asset_to_zip(submission_asset, directory)
-        end
+    SubmissionAsset.for_term(term).includes(submission: :exercise).find_each do |submission_asset|
+      if should_add?(submission_asset) && File.exist?(submission_asset.file.to_s)
+        add_asset_to_zip(submission_asset, directory)
       end
     end
   end

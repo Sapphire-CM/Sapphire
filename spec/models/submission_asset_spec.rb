@@ -53,6 +53,14 @@ RSpec.describe SubmissionAsset do
         expect(SubmissionAsset.for_exercise(assets.first.submission.exercise)).to eq([assets.first])
       end
     end
+
+    describe '.for_term' do
+      it 'returns only submission assets for a given term' do
+        assets = FactoryGirl.create_list(:submission_asset, 3)
+
+        expect(SubmissionAsset.for_term(assets.first.submission.exercise.term)).to eq([assets.first])
+      end
+    end
   end
 
   describe 'save callbacks' do

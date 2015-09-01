@@ -87,8 +87,10 @@ class Exports::SubmissionExport < Export
 
         # do not include zip file name twice
         entry_name = entry.name
-        if entry_name.start_with?(zip_name, "/#{zip_name}")
-          entry_name = entry_name.sub(/\/?#{Regexp.escape zip_name}/, '')
+        if entry_name.start_with?(zip_name)
+          entry_name = entry_name[zip_name.length..-1]
+        elsif entry_name.start_with?("/#{zip_name}")
+          entry_name = entry_name[(zip_name.length + 1)..-1]
         end
 
         extraction_path = File.join(extraction_dir, entry_name)
@@ -136,10 +138,11 @@ class Exports::SubmissionExport < Export
     return path unless File.exist? path
 
     basepath = path_without_extension(path)
+    extname = File.extname(path)
 
     i = 2
     loop do
-      unique_path = "#{basepath}-#{i}#{File.extname(path)}"
+      unique_path = "#{basepath}-#{i}#{extname}"
       return unique_path unless File.exist?(unique_path)
 
       i += 1
@@ -149,7 +152,7 @@ class Exports::SubmissionExport < Export
   def path_without_extension(path)
     ext = File.extname(path)
 
-    basepath = path.sub(/#{Regexp.escape ext}$/, '')
+    path[0..(-ext.length - 1)]
   end
 
   def extract_placeholders(path)

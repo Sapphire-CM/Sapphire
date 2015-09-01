@@ -179,7 +179,7 @@ class Exports::SubmissionExport < Export
     if term_registrations.any?
       grading_scale_service = GradingScaleService.new(term)
       grades = term_registrations.map { |tr| grading_scale_service.grade_for(tr) }
-      average = grades.reduce(:+).to_f / grades.length
+      average = grades.map(&:to_f).reduce(:+) / grades.length
 
       average.round.to_s
     else

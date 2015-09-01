@@ -31,6 +31,7 @@ class SubmissionAsset < ActiveRecord::Base
   scope :archives, lambda { where { content_type.in(Mime::ZIP) } }
 
   scope :for_exercise, lambda { |exercise| joins(:submission).where(submissions: { exercise_id: exercise.id }) }
+  scope :for_term, lambda { |term| joins(submission: :exercise).where(submission: { exercise: { term: term } }) }
 
   delegate :submitter, to: :submission
 

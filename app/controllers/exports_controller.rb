@@ -27,7 +27,7 @@ class ExportsController < ApplicationController
       @export.term = current_term
 
       if @export.save
-        ExportJob.perform_later @export.id
+        ExportJob.perform_later @export
 
         redirect_to term_exports_path(current_term), notice: 'Export has been started, you will be notified when it is finished'
       else

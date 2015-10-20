@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '=4.2.6'
 
 gem 'pg'                          # PostgreSQL database connector
+gem 'mysql2'                          # PostgreSQL database connector
 
 gem 'jquery-rails'                # Use jquery as the JavaScript library
 gem 'jquery-ui-rails'

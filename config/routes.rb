@@ -68,7 +68,10 @@ Rails.application.routes.draw do
       post :extract, on: :member
     end
 
-    resources :submissions, controller: "staff_submissions"
+    resources :submissions, controller: "staff_submissions" do
+      get "tree(/*path)", action: :show, controller: "submission_tree", as: :tree
+    end
+
     resources :result_publications, only: :index do
       member do
         put :publish

@@ -71,6 +71,14 @@ class SubmissionAsset < ActiveRecord::Base
     file.file.try(:size) || 0
   end
 
+  def filename
+    File.basename file.to_s
+  end
+
+  def complete_path
+    File.join(path, filename)
+  end
+
   def set_submitted_at
     self.submitted_at = Time.now
   end

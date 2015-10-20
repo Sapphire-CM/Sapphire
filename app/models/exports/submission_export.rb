@@ -20,6 +20,7 @@ class Exports::SubmissionExport < Export
   validates :group_path, presence: true, if: :include_group_submissions?
 
   include ZipGeneration
+  include TutorialGroupsHelper
 
   def perform!
     fail ExportError unless persisted?
@@ -172,7 +173,7 @@ class Exports::SubmissionExport < Export
     when 'matriculation_number'
       matriculation_numbers_for(submission_asset.submission.term_registrations)
     when 'tutorial_group'
-      tutorial_group_for(submission_asset).title
+      tutorial_group_title(tutorial_group_for(submission_asset))
     end
 
     value.present? ? value.parameterize : nil

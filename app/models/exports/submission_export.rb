@@ -171,6 +171,8 @@ class Exports::SubmissionExport < Export
       term.title
     when 'matriculation_number'
       matriculation_numbers_for(submission_asset.submission.term_registrations)
+    when 'tutorial_group'
+      tutorial_group_title_for(tutorial_group_for(submission_asset))
     end
 
     value.present? ? value.parameterize : nil
@@ -190,5 +192,26 @@ class Exports::SubmissionExport < Export
 
   def matriculation_numbers_for(term_registrations)
     term_registrations.map { |tr| tr.account.matriculation_number }.join(' ')
+  end
+
+  def tutorial_group_for(submission_asset)
+    submission = submission_asset.submission
+
+    if submission.student_group.present?
+      submission.student_group.tutorial_group
+    else
+      submission.tutorial_groups.first
+    end
+  end
+
+  def tutorial_group_title_for(tutorial_group)
+    if tutorial_group.present?
+      parts = []
+      parts << tutorial_group.title
+      parts += tutorial_group.tutor_accounts.map(&:forename)
+      parts.join("-").downcase
+    else
+      "no-tutorial-group"
+    end
   end
 end

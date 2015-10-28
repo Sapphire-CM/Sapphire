@@ -20,7 +20,6 @@ class Exports::SubmissionExport < Export
   validates :group_path, presence: true, if: :include_group_submissions?
 
   include ZipGeneration
-  include TutorialGroupsHelper
 
   def perform!
     fail ExportError unless persisted?
@@ -173,7 +172,7 @@ class Exports::SubmissionExport < Export
     when 'matriculation_number'
       matriculation_numbers_for(submission_asset.submission.term_registrations)
     when 'tutorial_group'
-      tutorial_group_title(tutorial_group_for(submission_asset))
+      tutorial_group_title_for(tutorial_group_for(submission_asset))
     end
 
     value.present? ? value.parameterize : nil
@@ -196,10 +195,23 @@ class Exports::SubmissionExport < Export
   end
 
   def tutorial_group_for(submission_asset)
-    if submission_asset.student_group.present?
-      submission_asset.student_group.tutorial_group
+    submission = submission_asset.submission
+
+    if submission.student_group.present?
+      submission.student_group.tutorial_group
     else
-      submission_asset.tutorial_groups.first
+      submission.tutorial_groups.first
+    end
+  end
+
+  def tutorial_group_title_for(tutorial_group)
+    if tutorial_group.present?
+      parts = []
+      parts << tutorial_group.title
+      parts += tutorial_group.tutor_accounts.map(&:forename)
+      parts.join("-").downcase
+    else
+      "no-tutorial-group"
     end
   end
 end

@@ -164,7 +164,7 @@ class Exports::SubmissionExport < Export
     when 'exercise'
       submission_asset.submission.exercise.try(:title)
     when 'av_grade'
-      average_grade_for(submission_asset.submission.term_registrations).to_s
+      average_grade_for(submission_asset.submission).to_s
     when 'course'
       term.course.title
     when 'term'
@@ -178,13 +178,13 @@ class Exports::SubmissionExport < Export
     value.present? ? value.parameterize : nil
   end
 
-  def average_grade_for(term_registrations)
-    if term_registrations.any?
-      grading_scale_service = GradingScaleService.new(term)
-      grades = term_registrations.map { |tr| grading_scale_service.grade_for(tr) }
-      average = grades.map(&:to_f).reduce(:+) / grades.length
+  def average_grade_for(submission)
+    grading_scale_service = GradingScaleService.new(term)
 
-      average.round.to_s
+    if submission.student_group.present?
+      grading_scale_service.average_grade_for_student_group(submission.student_group).round
+    elsif submission.term_registrations.any?
+      grading_scale_service.average_grade_for_term_registrations(submission.term_registrations).round
     else
       'x'
     end

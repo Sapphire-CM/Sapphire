@@ -32,7 +32,11 @@ class GradingScaleService
   end
 
   def average_grade_for_student_group(student_group)
-    grades = student_group.term_registrations.map { |tr| grade_for(tr) }
+    average_grade_for_term_registrations(student_group.term_registrations)
+  end
+
+  def average_grade_for_term_registrations(term_registrations)
+    grades = term_registrations.map { |tr| grade_for(tr) }
 
     stats = grades.inject(Hash.new {|h,k| h[k] = 0}) do |hash, grade|
       hash[grade] += 1
@@ -41,6 +45,7 @@ class GradingScaleService
 
     student_count = 0
     grade_sum = 0
+
     stats.each do |grade, count|
       if grade.to_i > 0
         grade_sum += grade.to_i * count

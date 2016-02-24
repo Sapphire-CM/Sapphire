@@ -29,7 +29,6 @@ module Sapphire
                 encoder.text_token match, :space
                 header_state = :contents
               else
-                puts 'fuu 1'
                 state = :body
                 # raise_inspect "else case \" reached; %p not handled." % peek(1), encoder
               end
@@ -55,7 +54,6 @@ module Sapphire
             match = scan(/.*/m)
             encoder.text_token match, :comment
           else
-            puts 'fuu 3 - headers done?!'
             # raise_inspect "else case \" reached; %p not handled." % peek(1), encoder
             return
           end

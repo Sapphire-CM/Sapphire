@@ -51,6 +51,10 @@ class TermCopyService
 
   def copy_grading_scale!
     Rails.logger.info 'Copying Grading Scale'
-    @term.grading_scale = @source_term.grading_scale.dup
+    @source_term.grading_scales.each do |source_grading_scale|
+      grading_scale = source_grading_scale.dup
+      grading_scale.term = @term
+      grading_scale.save
+    end
   end
 end

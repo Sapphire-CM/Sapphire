@@ -1,11 +1,13 @@
 class SubmissionStructureService
-  def self.parse_submission(submission)
-    parse_structure(submission.submission_assets)
+  class FileDoesNotExist < ArgumentError; end
+
+  def self.parse_submission(submission, root_directory_name = "/")
+    parse_structure(submission.submission_assets, root_directory_name)
   end
 
   private
-  def self.parse_structure(submission_assets)
-    parser = DirectoryTreeParser.new
+  def self.parse_structure(submission_assets, root_directory_name)
+    parser = DirectoryTreeParser.new(root_directory_name)
 
     submission_assets.each do |submission_asset|
       parser << submission_asset
@@ -17,8 +19,8 @@ class SubmissionStructureService
   class DirectoryTreeParser
     attr_reader :base_dir
 
-    def initialize
-      @base_dir = Directory.new('/')
+    def initialize(root_directory_name)
+      @base_dir = Directory.new(root_directory_name)
     end
 
     def <<(submission_asset)
@@ -87,6 +89,10 @@ class SubmissionStructureService
       @path ||= root? ? name : ::File.join(parent.path, name)
     end
 
+    def path_without_root
+      ::File.join(*parents.reject(&:root?).map(&:name))
+    end
+
     def relative_path
       if path[0] == "/"
         path[1..-1]
@@ -106,6 +112,29 @@ class SubmissionStructureService
     def marshal_load(attributes)
       self.name = attributes[:name]
       self.parent = attributes[:parent]
+    end
+
+    def path_components
+      if path.present?
+        Pathname(path).each_filename.to_a
+      else
+        []
+      end
+    end
+
+    def parents
+      ancestors + [self]
+    end
+
+    def ancestors
+      return [] if root?
+
+      entry = self
+      parents = []
+      while entry = entry.parent
+        parents << entry
+      end
+      parents.reverse
     end
   end
 
@@ -143,7 +172,7 @@ class SubmissionStructureService
           node
         end
       else
-        raise ArgumentError.new("File does not exist: #{path}")
+        raise FileDoesNotExist.new("#{name}, #{path}, #{@nodes.keys}")
       end
     end
 
@@ -178,13 +207,14 @@ class SubmissionStructureService
   end
 
   class File < TreeNode
-    attr_reader :icon, :size, :name, :mtime
+    attr_reader :icon, :size, :name, :mtime, :submission_asset
 
     def initialize(submission_asset, parent = nil)
       @icon = icon_for_submission_asset(submission_asset)
       @size = submission_asset.filesize
       @name = submission_asset.filename
       @mtime = submission_asset.updated_at
+      @submission_asset = submission_asset
     end
 
     def file?

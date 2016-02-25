@@ -5,7 +5,7 @@ class StudentSubmissionsController < ApplicationController
   include EventSourcing
 
   before_action :set_exercise_and_term
-  before_action :set_submission, only: [:show, :update, :catalog, :extract]
+  before_action :set_submission, only: [:show, :update, :catalog, :extract, :tree]
   before_action :ensure_submission_param, only: [:create, :update]
 
   skip_after_action :verify_authorized, only: :create, if: lambda { params[:submission].blank? }
@@ -81,6 +81,11 @@ class StudentSubmissionsController < ApplicationController
     redirect_to exercise_student_submission_path(@exercise), notice: 'Successfully extracted submission'
   end
 
+  def tree
+    @tree = SubmissionStructureService.parse_submission(@submission, @submission.exercise.title.parameterize)
+    @tree = @tree.resolve(params[:path]) if params[:path].present?
+  end
+
   private
 
   def set_exercise_and_term
@@ -89,7 +94,7 @@ class StudentSubmissionsController < ApplicationController
   end
 
   def set_submission
-    @submission = Submission.select(Submission.quoted_table_name + '.*').for_account(current_account).for_exercise(@exercise).first_or_initialize
+    @submission = Submission.for_account(current_account).for_exercise(@exercise).first_or_initialize
 
     authorize @submission
   end

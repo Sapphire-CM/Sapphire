@@ -1,0 +1,29 @@
+<table class='large-12'>
+  <tbody>
+    <% unless tree.root? %>
+      <tr>
+        <td></td>
+        <td>
+          <%= link_to "..", tree_exercise_student_submission_path(exercise, path: tree.parent.path_without_root) %>
+        </td>
+        <td><%= tree.size %></td>
+      </tr>
+    <% end %>
+
+    <% tree.entries.sort_by(&:name).each do |entry| %>
+      <tr>
+        <td>
+          <%= foundation_icon entry.icon %>
+        </td>
+        <td>
+          <% if entry.file? %>
+            <%= link_to entry.name, submission_asset_path(entry.submission_asset), target: "_blank" %>
+          <% else %>
+            <%= link_to entry.name, tree_exercise_student_submission_path(exercise, path: entry.path_without_root) %>
+          <% end %>
+        </td>
+        <td><%= entry.size %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

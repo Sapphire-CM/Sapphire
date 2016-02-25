@@ -76,4 +76,16 @@ class SubmissionPolicy < PunditBasePolicy
       record.visible_for_student?(user)
     )
   end
+
+  def tree?
+    viewable?
+  end
+
+  private
+  def viewable?
+    user.admin? ||
+    user.staff_of_term?(record.exercise.term) ||
+    record.visible_for_student?(user) ||
+    record.new_record?
+  end
 end

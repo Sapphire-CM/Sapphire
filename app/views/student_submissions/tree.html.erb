@@ -1,0 +1,7 @@
+<% title @exercise.title, submission_subtitle(@submission) %>
+
+<%= render "exercises/sidebar" %>
+
+
+<%= render "tree_path", tree: @tree, exercise: @submission.exercise %>
+<%= render "submission_tree", tree: @tree, exercise: @submission.exercise %>

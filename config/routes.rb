@@ -66,6 +66,8 @@ Rails.application.routes.draw do
     resource :submission, only: [:show, :create, :update], as: :student_submission, controller: "student_submissions" do
       get :catalog, on: :member
       post :extract, on: :member
+
+      get "tree(/*path)", action: :tree, on: :member, as: :tree
     end
 
     resources :submissions, controller: "staff_submissions" do

@@ -21,8 +21,6 @@ class Exports::SubmissionExport < Export
 
   include ZipGeneration
 
-  after_initialize :set_default_values
-
   def perform!
     fail ExportError unless persisted?
 
@@ -52,18 +50,17 @@ class Exports::SubmissionExport < Export
     extract_zips == '1'
   end
 
-  private
-
-  def set_default_values
+  def set_default_values!
     self.base_path ||= "%{course}-%{term}"
     self.solitary_path ||= "solitary/%{matriculation_number}/%{exercise}"
     self.group_path ||= "groups/%{student_group}-%{av_grade}/%{exercise}"
-    self.extract_zips = true if self.extract_zips.nil?
-    self.include_solitary_submissions = true if self.include_solitary_submissions.nil?
-    self.include_group_submissions = true if self.include_group_submissions.nil?
+    self.extract_zips = "1" if self.extract_zips.nil?
+    self.include_solitary_submissions = "1" if self.include_solitary_submissions.nil?
+    self.include_group_submissions = "1" if self.include_group_submissions.nil?
+    true
   end
 
-
+  private
   def should_add?(submission_asset)
     exercise = submission_asset.submission.exercise
     exercise.group_submission? && include_group_submissions? || exercise.solitary_submission? && include_solitary_submissions?

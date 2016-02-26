@@ -38,7 +38,7 @@ RSpec.describe ExportsController do
 
   describe 'GET new' do
     context 'without a type' do
-      it 'assigns a new export as @export' do
+      it 'doesn\'t assign @export' do
         get :new, term_id: term.id
 
         expect(response).to have_http_status(:success)

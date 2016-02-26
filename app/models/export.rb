@@ -31,6 +31,10 @@ class Export < ActiveRecord::Base
     ExportPolicy
   end
 
+  def perform!
+    raise NotImplementedError
+  end
+
   def perform_export!
     self.status = :running
     self.save!

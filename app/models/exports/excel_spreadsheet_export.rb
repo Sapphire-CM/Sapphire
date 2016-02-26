@@ -36,6 +36,13 @@ class Exports::ExcelSpreadsheetExport < Export
   include RatingsHelper
   include ActiveSupport::NumberHelper
 
+  def set_default_values!
+    self.summary = "1" if self.summary.blank?
+    self.exercises = "1" if self.exercises.blank?
+    self.student_overview = "1" if self.student_overview.blank?
+    true
+  end
+
   private
 
   BLACK_COLOR = 8

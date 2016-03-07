@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized, unless: :devise_controller?
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   private
 
@@ -16,15 +17,24 @@ class ApplicationController < ActionController::Base
     current_account
   end
 
-  def user_not_authorized
-    destination = request.referer || new_account_session_path
-    alert = 'You are not authorized to perform this action.'
+  def user_not_authorized(e)
+    Rails.logger.info(e)
+    destination = if account_signed_in?
+      root_path
+    else
+      new_user_account_path
+    end
+    flash[:alert] = 'You are not authorized to perform this action.'
 
     if request.xhr?
       js_redirect_to destination, alert: alert
     else
       redirect_to destination, alert: alert
     end
+  end
+
+  def record_not_found
+    redirect_to root_path, alert: "Record not found"
   end
 
   def js_redirect_to(path, flashes = {})

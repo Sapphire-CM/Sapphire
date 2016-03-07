@@ -1,0 +1,2 @@
+module SubmissionBlobHelper
+end

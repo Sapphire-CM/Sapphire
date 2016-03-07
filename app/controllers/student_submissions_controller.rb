@@ -82,8 +82,7 @@ class StudentSubmissionsController < ApplicationController
   end
 
   def tree
-    @tree = SubmissionStructureService.parse_submission(@submission, @submission.exercise.title.parameterize)
-    @tree = @tree.resolve(params[:path]) if params[:path].present?
+    @tree = @submission.tree(params[:path])
   end
 
   private

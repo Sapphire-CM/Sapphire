@@ -18,9 +18,12 @@ class Submission < ActiveRecord::Base
   belongs_to :student_group
 
   has_one :submission_evaluation, dependent: :destroy
+  has_one :term, through: :exercise
+
   has_many :submission_assets, inverse_of: :submission, autosave: true
   has_many :exercise_registrations, dependent: :destroy
   has_many :term_registrations, through: :exercise_registrations
+  has_many :students, through: :term_registrations, source: :account
   has_many :tutorial_groups, lambda { uniq }, through: :term_registrations
 
   validates :submitter, presence: true
@@ -68,6 +71,14 @@ class Submission < ActiveRecord::Base
 
   def submission_assets_changed?
     submission_assets.any? { |sa| sa.changed? || sa.new_record? || sa.marked_for_destruction? }
+  end
+
+  def tree(path = nil)
+    tree = SubmissionStructureService.parse_submission(self, "submission")
+    tree = tree.resolve(path) if path.present?
+    tree
+  rescue SubmissionStructureService::FileDoesNotExist
+    raise ActiveRecord::RecordNotFound
   end
 
   private

@@ -1,15 +1,15 @@
-<% title @exercise.title, staff_submission_title(@submission) %>
+<% title @exercise.title, submission_subtitle(@submission) %>
+
 <%= render "exercises/sidebar" %>
 
-<p>
-  <%= link_to "Evaluate", single_evaluation_path(@submission, tutorial_group_id: params[:tutorial_group_id]), class: "small button" %>
-  <%= link_to foundation_icon(:pencil) + " Edit", edit_exercise_submission_path(@exercise, @submission, tutorial_group_id: params[:tutorial_group_id]), class: "small button" %>
-</p>
+<div class='row'>
+  <div class='large-10 columns'>
+    <%= render "submission_tree_path", tree: @tree, submission: @submission %>
+  </div>
+  <div class='large-2 columns'>
+    <%= link_to foundation_icon(:download), blob_submission_path(@submission, path: params[:path], format: :zip), class: "tiny button" %>
+    <%= link_to foundation_icon(:plus), '#', class: "tiny button" %>
+  </div>
+</div>
 
-<p>Submitted by <%= @submission.submitter.try(:fullname) || "unknown" %> at <%= l @submission.submitted_at, format: :unix %></p>
-
-
-<%#= render "student_submissions/submission_assets_list", submission_assets: @submission.submission_assets %>
-
-
-<%= render "tree", tree: @submission_assets_tree, submission: @submission %>
+<%= render "submission_tree", tree: @tree, submission: @submission %>

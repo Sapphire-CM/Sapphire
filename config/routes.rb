@@ -67,11 +67,10 @@ Rails.application.routes.draw do
       get :catalog, on: :member
       post :extract, on: :member
 
-      get "tree(/*path)", action: :tree, on: :member, as: :tree
     end
 
     resources :submissions, controller: "staff_submissions" do
-      get "tree(/*path)", action: :show, controller: "submission_tree", as: :tree
+      get "tree(/*path)", action: :show, controller: :submission_tree, as: :tree
     end
 
     resources :result_publications, only: :index do
@@ -90,6 +89,11 @@ Rails.application.routes.draw do
   resources :submission_assets, only: [:show]
   resources :submission_viewers, only: [:show]
   resources :single_evaluations, only: [:show, :update]
+
+  resources :submissions, except: :index do
+    get "blob(/*path)", controller: :submission_blob, action: :show, on: :member, as: :blob
+    get "tree(/*path)", controller: :submission_tree, action: :show, on: :member, as: :tree
+  end
 
   authenticate :account, lambda { |u| u.admin? } do
     mount Sidekiq::Web => '/sidekiq'

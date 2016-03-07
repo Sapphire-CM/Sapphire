@@ -1,12 +1,12 @@
-<table class='large-12'>
+<table class='small-12'>
   <tbody>
     <% unless tree.root? %>
       <tr>
         <td></td>
         <td>
-          <%= link_to "..", tree_exercise_student_submission_path(exercise, path: tree.parent.path_without_root) %>
+          <%= link_to "..", tree_submission_path(submission, path: tree.parent.path_without_root) %>
         </td>
-        <td><%= tree.size %></td>
+        <td><%= filesize(tree.size) %></td>
       </tr>
     <% end %>
 
@@ -19,10 +19,10 @@
           <% if entry.file? %>
             <%= link_to entry.name, submission_asset_path(entry.submission_asset), target: "_blank" %>
           <% else %>
-            <%= link_to entry.name, tree_exercise_student_submission_path(exercise, path: entry.path_without_root) %>
+            <%= link_to entry.name, tree_submission_path(submission, path: entry.path_without_root) %>
           <% end %>
         </td>
-        <td><%= entry.size %></td>
+        <td><%= filesize entry.size %></td>
       </tr>
     <% end %>
   </tbody>

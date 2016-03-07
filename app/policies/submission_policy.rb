@@ -6,7 +6,8 @@ class SubmissionPolicy < PunditBasePolicy
 
   def show?
     user.admin? ||
-    user.associated_with_term?(record.exercise.term)
+    user.staff_of_term?(record.term) ||
+    record.students.include?(user)
   end
 
   def submit?

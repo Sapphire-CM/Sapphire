@@ -180,6 +180,16 @@ class SubmissionStructureService
       @nodes.values
     end
 
+    def submission_assets
+      entries.map do |e|
+        assets = if e.is_a? File
+          e.submission_asset
+        else
+          e.submission_assets
+        end
+      end.flatten
+    end
+
     def sorted_entries
       entries.sort_by(&:name)
     end

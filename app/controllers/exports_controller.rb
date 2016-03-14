@@ -13,6 +13,7 @@ class ExportsController < ApplicationController
     if Export.valid_type?(@export_type)
       @export = Export.new_from_type(@export_type)
       @export.term = current_term
+      @export.set_default_values!
       authorize @export
     else
       authorize ExportPolicy.with current_term

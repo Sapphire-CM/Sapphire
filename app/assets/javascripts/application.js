@@ -19,6 +19,7 @@
 //= require jquery-ui/sortable
 //= require jquery_ujs
 //= require foundation
+//= require dropzone
 //= require turbolinks
 //= require jquery.remotipart
 //= require cocoon

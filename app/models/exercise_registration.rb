@@ -42,7 +42,9 @@ class ExerciseRegistration < ActiveRecord::Base
 
   private
   def update_points
-    self.points = submission.submission_evaluation.evaluation_result
+    if submission.submission_evaluation.present?
+      self.points = submission.submission_evaluation.evaluation_result
+    end
   end
 
   def update_term_registration_points

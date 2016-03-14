@@ -5,6 +5,12 @@ class SubmissionCreationService
     SubmissionCreationService.new(account, submission)
   end
 
+  def self.initialize_empty_submission(account, exercise)
+    submission = Submission.new(exercise: exercise)
+    service = SubmissionCreationService.new(account, submission)
+    service.model
+  end
+
   def initialize(account, submission)
     @account = account
     @submission = submission
@@ -45,6 +51,7 @@ class SubmissionCreationService
     @submission.submitter = @account
     @submission.submitted_at = Time.now
     @submission.student_group = term_registration.student_group unless @submission.exercise.solitary_submission?
+    build_exercise_registrations!
     @model_setup = true
   end
 
@@ -56,15 +63,19 @@ class SubmissionCreationService
     @term_registration ||= @account.term_registrations.students.find_by!(term_id: @submission.exercise.term_id)
   end
 
-  def create_exercise_registrations!
+  def build_exercise_registrations!
     if @submission.exercise.solitary_submission? || term_registration.student_group.blank?
-      ExerciseRegistration.create!(submission: @submission, exercise: @submission.exercise, term_registration: term_registration)
+      @submission.exercise_registrations.build(exercise: @submission.exercise, term_registration: term_registration)
     else
       student_group = term_registration.student_group
       student_group.term_registrations.each do |term_registration|
-        ExerciseRegistration.create!(submission: @submission, exercise: @submission.exercise, term_registration: term_registration)
+        @submission.exercise_registrations.build(exercise: @submission.exercise, term_registration: term_registration)
       end
     end
+  end
+
+  def create_exercise_registrations!
+    build_exercise_registrations!
   end
 
   def create_event!

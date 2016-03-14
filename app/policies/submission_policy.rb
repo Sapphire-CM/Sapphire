@@ -21,7 +21,8 @@ class SubmissionPolicy < PunditBasePolicy
 
   def edit?
     user.admin? ||
-    user.staff_of_term?(record.exercise.term)
+    user.staff_of_term?(record.exercise.term) ||
+    record.students.include?(user)
   end
 
   def create?

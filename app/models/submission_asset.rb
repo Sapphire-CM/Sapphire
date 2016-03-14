@@ -8,8 +8,10 @@
 #   t.string   :asset_identifier
 #   t.string   :import_identifier
 #   t.string   :path,              default: ""
+#   t.string   :filename
 # end
 #
+# add_index :submission_assets, [:filename, :path, :submission_id], name: :index_submission_assets_on_filename_and_path_and_submission_id, unique: true
 # add_index :submission_assets, [:submission_id], name: :index_submission_assets_on_submission_id
 
 require "charlock_holmes"
@@ -20,9 +22,12 @@ class SubmissionAsset < ActiveRecord::Base
 
   validates :submission, presence: true
   validates :file, presence: true
+  validate :filename_uniqueness_validation
 
   before_save :set_submitted_at, if: :file_changed?
   before_save :set_content_type, if: :file_changed?
+  before_validation :set_filename, if: :file_changed?
+  before_validation :normalize_path!, if: :path_changed?
 
   scope :stylesheets, lambda { where(content_type: Mime::STYLESHEET) }
   scope :htmls, lambda { where(content_type: Mime::HTML) }
@@ -67,12 +72,14 @@ class SubmissionAsset < ActiveRecord::Base
     IMAGES = [JPEG, PNG]
   end
 
-  def filesize
-    file.file.try(:size) || 0
+  def self.inside_path(unnormalized_path)
+    normalized_path = normalize_path(unnormalized_path)
+
+    where { path =~ my {"#{normalized_path}%"} }
   end
 
-  def filename
-    File.basename file.to_s
+  def filesize
+    file.file.try(:size) || 0
   end
 
   def complete_path
@@ -89,6 +96,10 @@ class SubmissionAsset < ActiveRecord::Base
     end
   end
 
+  def set_filename
+    self.filename = File.basename file.to_s
+  end
+
   def utf8_contents
     contents = file.read
 
@@ -103,5 +114,25 @@ class SubmissionAsset < ActiveRecord::Base
         ''
       end
     end
+  end
+
+  private
+
+  def self.normalize_path(path)
+    (path.presence || "").gsub(/\A\/+|\/+\z/, "").gsub(/\/+/, "/")
+  end
+
+  def filename_uniqueness_validation
+    scope = SubmissionAsset.where(filename: filename, path: path, submission_id: submission_id)
+    scope = scope.where.not(id: id) if persisted?
+
+    if scope.exists?
+      errors.add(:filename, "has already been taken")
+      errors.add(:file, "already exists")
+    end
+  end
+
+  def normalize_path!
+    self.path = self.class.normalize_path(path)
   end
 end

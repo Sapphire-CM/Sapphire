@@ -1,0 +1,7 @@
+<%= simple_form_for([submission_upload.submission, submission_upload], url: submission_upload_path(submission_upload.submission), html: {class: "submission-upload"}) do |f| %>
+  <%= f.input :add_to_path, as: :boolean, label: "Add to #{ if submission_upload.path.present? then "path '#{submission_upload.path}'" else "root path" end}" %>
+  <%= f.input :path %>
+  <%= f.input :file, as: :file %>
+
+  <%= f.submit %>
+<% end %>

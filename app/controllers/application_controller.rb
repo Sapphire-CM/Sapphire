@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   end
 
   def record_not_found
-    redirect_to root_path, alert: "Record not found"
+    render "record_not_found"
   end
 
   def js_redirect_to(path, flashes = {})

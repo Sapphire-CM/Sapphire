@@ -152,6 +152,8 @@ GEM
     docile (1.1.5)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
+    dropzonejs-rails (0.7.3)
+      rails (> 3.1)
     email_validator (1.5.0)
       activemodel
     erubis (2.7.0)
@@ -504,6 +506,7 @@ DEPENDENCIES
   css_parser
   database_cleaner
   devise (~> 3.2)
+  dropzonejs-rails
   email_validator
   exception_notification
   factory_girl_rails

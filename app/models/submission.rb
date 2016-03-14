@@ -21,7 +21,7 @@ class Submission < ActiveRecord::Base
   has_one :term, through: :exercise
 
   has_many :submission_assets, inverse_of: :submission, autosave: true
-  has_many :exercise_registrations, dependent: :destroy
+  has_many :exercise_registrations, autosave: true, dependent: :destroy
   has_many :term_registrations, through: :exercise_registrations
   has_many :students, through: :term_registrations, source: :account
   has_many :tutorial_groups, lambda { uniq }, through: :term_registrations
@@ -55,6 +55,10 @@ class Submission < ActiveRecord::Base
 
   def self.previous(submission, order = :id)
     Submission.where { submissions.send(my { order }) < submission.send(order) }.order(:id).order(order => :desc).first
+  end
+
+  def self.find_by_account_and_exercise(account, exercise)
+    for_account(account).find_by(exercise: exercise)
   end
 
   def evaluated?

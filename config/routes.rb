@@ -66,7 +66,6 @@ Rails.application.routes.draw do
     resource :submission, only: [:show, :create, :update], as: :student_submission, controller: "student_submissions" do
       get :catalog, on: :member
       post :extract, on: :member
-
     end
 
     resources :submissions, controller: "staff_submissions" do
@@ -86,13 +85,16 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :submission_assets, only: [:show]
+  resources :submission_assets, only: [:show, :destroy]
   resources :submission_viewers, only: [:show]
   resources :single_evaluations, only: [:show, :update]
 
-  resources :submissions, except: :index do
+  resources :submissions, only: :show do
     get "blob(/*path)", controller: :submission_blob, action: :show, on: :member, as: :blob
     get "tree(/*path)", controller: :submission_tree, action: :show, on: :member, as: :tree
+    delete "tree(/*path)", controller: :submission_tree, action: :destroy, on: :member
+
+    resource :upload, controller: :submission_uploads, only: [:new, :create]
   end
 
   authenticate :account, lambda { |u| u.admin? } do

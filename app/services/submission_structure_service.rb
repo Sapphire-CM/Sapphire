@@ -160,20 +160,25 @@ class SubmissionStructureService
       @nodes[name]
     end
 
-    def resolve(path)
-      name, path = Pathname(path).each_filename.to_a
+    def resolve(path, create_directories: true)
+      parts = Pathname(path).each_filename.to_a
 
-      node = @nodes[name]
+      node = self
+      parts.each do |name|
+        old_node = node
+        node = node[name]
 
-      if node
-        if path.present?
-          node.resolve(::File.join(*path))
-        else
-          node
+        unless node
+          if create_directories
+            node = Directory.new(name, old_node)
+            old_node << node
+          else
+            raise FileDoesNotExist.new("#{name}, #{path}, #{@nodes.keys}")
+          end
         end
-      else
-        raise FileDoesNotExist.new("#{name}, #{path}, #{@nodes.keys}")
       end
+
+      node
     end
 
     def entries

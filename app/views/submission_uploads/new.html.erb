@@ -1,0 +1,8 @@
+<% title @exercise.title, "Upload files" %>
+<%= render "exercises/sidebar" %>
+
+<p>
+  <%= link_to "back", tree_submission_path(@submission, path: @submission_upload.path), class: "tiny button" %>
+</p>
+
+<%= render "form", submission_upload: @submission_upload %>

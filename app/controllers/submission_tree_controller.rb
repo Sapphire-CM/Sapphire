@@ -6,6 +6,18 @@ class SubmissionTreeController < ApplicationController
 
   def show
     @tree = @submission.tree(params[:path])
+
+    @submission_upload = SubmissionUpload.new(submission: @submission)
+    @submission_upload.path = params[:path] if params[:path].present?
+
+    authorize @submission_upload, :new?
+  end
+
+  def destroy
+    @parent_directory = @submission.tree(params[:path]).parent
+    @submission.submission_assets.inside_path(params[:path]).destroy_all
+
+    redirect_to tree_submission_path(@submission, @parent_directory.path_without_root), notice: "Removed directory '#{params[:path]}'"
   end
 
   private

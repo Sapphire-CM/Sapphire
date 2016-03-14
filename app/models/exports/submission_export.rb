@@ -128,6 +128,7 @@ class Exports::SubmissionExport < Export
       paths << inferred_path(solitary_path, submission_asset)
     end
 
+    paths << submission_asset.path if submission_asset.path.present?
     paths << filename
 
     File.join(*paths)

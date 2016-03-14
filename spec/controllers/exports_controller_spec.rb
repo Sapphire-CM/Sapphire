@@ -59,6 +59,8 @@ RSpec.describe ExportsController do
 
     Export.types.each do |type|
       context "with valid type #{type}" do
+        let(:mocked_export) { Export.new_from_type(type) }
+
         it 'assigns a new export as @export' do
           get :new, term_id: term.id, type: type
 
@@ -66,6 +68,13 @@ RSpec.describe ExportsController do
           expect(assigns(:export)).to be_a_new(Export)
           expect(assigns(:export).type).to eq("Exports::#{type.camelize}_export".camelize)
           expect(assigns(:export).term).to eq(term)
+        end
+
+        it 'calls #set_default_values! on new exports' do
+          expect(Export).to receive(:new_from_type).with(type).and_return(mocked_export)
+          expect(mocked_export).to receive(:set_default_values!).and_call_original
+
+          get :new, term_id: term.id, type: type
         end
       end
     end

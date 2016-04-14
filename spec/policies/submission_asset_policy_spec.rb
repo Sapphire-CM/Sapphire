@@ -15,10 +15,7 @@ RSpec.describe SubmissionAssetPolicy do
   context 'as a lecturer' do
     let(:term) { submission_asset.submission.exercise.term }
     let(:account) { FactoryGirl.create(:account) }
-
-    before :each do
-      FactoryGirl.create(:term_registration, :lecturer, account: account, term: term)
-    end
+    let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, account: account, term: term) }
 
     describe 'member' do
       it { is_expected.to permit_authorization(:show) }
@@ -28,10 +25,7 @@ RSpec.describe SubmissionAssetPolicy do
   context 'as a tutor' do
     let(:term) { submission_asset.submission.exercise.term }
     let(:account) { FactoryGirl.create(:account) }
-
-    before :each do
-      FactoryGirl.create(:term_registration, :tutor, account: account, term: term)
-    end
+    let!(:term_registration) { FactoryGirl.create(:term_registration, :tutor, account: account, term: term) }
 
     describe 'member' do
       it { is_expected.to permit_authorization(:show) }

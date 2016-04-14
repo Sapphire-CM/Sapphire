@@ -4,7 +4,7 @@ class StudentGroupsController < ApplicationController
   before_action :set_student_group, only: [:show, :edit, :update, :destroy]
 
   def index
-    authorize StudentGroupPolicy.with current_term
+    authorize StudentGroupPolicy.with current_tutorial_group
 
     @student_groups = current_tutorial_group.student_groups.order(:title)
     @student_groups_count = @student_groups.count

@@ -1,6 +1,6 @@
 class StudentGroupPolicy < PunditBasePolicy
   def index?
-    authorized?(record)
+    user.admin? || user.staff_of_term?(record.term)
   end
 
   def show?

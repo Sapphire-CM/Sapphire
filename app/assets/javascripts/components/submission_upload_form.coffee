@@ -162,7 +162,8 @@ class SubmissionUploadFormController
     $modal = @element.parents(".reveal-modal")
     if $modal.length > 0
       $modal.on "closed", =>
-        window.location = window.location if @needs_reload
+        if @needs_reload
+          @element.trigger("submission-form:changed")
 
   _joinPath: (args...)->
     components = []

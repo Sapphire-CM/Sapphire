@@ -6,12 +6,15 @@
 
 <%= render "submission_tree_path", tree: @tree, submission: @submission %>
 
-<% if @submission.submission_assets.any? %>
-  <%= render "submission_directory", tree: @tree, submission: @submission %>
-<% else %>
-  <p>
-    This submission does not contain any files.
-  </p>
+
+<%= content_tag :div, class: "submission-tree", data: { update_url: tree_directory_submission_path(@submission, path: @tree.path_without_root, format: :json) } do %>
+  <% if @submission.submission_assets.any? %>
+    <%= render "submission_directory", tree: @tree, submission: @submission %>
+  <% else %>
+    <p>
+      This submission does not contain any files.
+    </p>
+  <% end %>
 <% end %>
 
 <%= render "upload_modal", submission_upload: @submission_upload %>

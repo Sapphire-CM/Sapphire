@@ -93,6 +93,7 @@ Rails.application.routes.draw do
     member do
       get "blob(/*path)", controller: :submission_blob, action: :show, as: :blob
       get "tree(/*path)", controller: :submission_tree, action: :show, as: :tree
+      get "directory(/*path)", controller: :submission_tree, action: :directory, as: :tree_directory
       delete "tree(/*path)", controller: :submission_tree, action: :destroy
     end
     resource :folder, controller: :submission_folders

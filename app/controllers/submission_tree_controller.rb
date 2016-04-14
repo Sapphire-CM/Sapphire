@@ -13,6 +13,10 @@ class SubmissionTreeController < ApplicationController
     authorize @submission_upload, :new?
   end
 
+  def directory
+    @tree = @submission.tree(params[:path])
+  end
+
   def destroy
     @parent_directory = @submission.tree(params[:path]).parent
     @submission.submission_assets.inside_path(params[:path]).destroy_all

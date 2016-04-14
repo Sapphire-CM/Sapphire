@@ -14,6 +14,10 @@ class SubmissionPolicy < PunditBasePolicy
     record.new_record? ? create? : update?
   end
 
+  def directory?
+    show?
+  end
+
   def new?
     user.admin? ||
     user.associated_with_term?(record.exercise.term)

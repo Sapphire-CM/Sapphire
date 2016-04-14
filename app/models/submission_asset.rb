@@ -72,6 +72,12 @@ class SubmissionAsset < ActiveRecord::Base
     IMAGES = [JPEG, PNG]
   end
 
+  def self.path_exists?(path)
+    dirname, basename = File.split(path)
+
+    inside_path(path).exists? || inside_path(dirname).where(filename: basename).exists?
+  end
+
   def self.inside_path(unnormalized_path)
     normalized_path = normalize_path(unnormalized_path)
 
@@ -119,7 +125,7 @@ class SubmissionAsset < ActiveRecord::Base
   private
 
   def self.normalize_path(path)
-    (path.presence || "").gsub(/\A\/+|\/+\z/, "").gsub(/\/+/, "/")
+    Pathname.new(path.presence || "").cleanpath.to_s.gsub(/\A\/+|\/+\z/, "").gsub(/\/+/, "/")
   end
 
   def filename_uniqueness_validation

@@ -1,7 +1,41 @@
 <%= simple_form_for([submission_upload.submission, submission_upload], url: submission_upload_path(submission_upload.submission), html: {class: "submission-upload"}) do |f| %>
-  <%= f.input :add_to_path, as: :boolean, label: "Add to #{ if submission_upload.path.present? then "path '#{submission_upload.path}'" else "root path" end}" %>
-  <%= f.input :path %>
+  <%= f.input :path, placeholder: "he-plan/images" %>
   <%= f.input :file, as: :file %>
 
-  <%= f.submit %>
+  <%= f.submit class: "primary button" %>
+
+  <div class='preview-template'>
+    <div class='row'>
+      <div class='small-5 columns'>
+        <div class='row'>
+          <div class='small-1 columns'>
+            <span class='status status-progress'><%= image_tag "ajax-loader.svg", width: 20 %></span>
+            <span class='status status-success'><%= foundation_icon :check %></span>
+            <span class='status status-error'><%= foundation_icon :x %></span>
+          </div>
+          <div class='small-11 columns'>
+            <span data-dz-name></span>
+          </div>
+        </div>
+      </div>
+      <div class='small-5 columns'>
+        <div class='row collapse'>
+          <div class='small-12 columns'>
+            <div class="progress round small-12">
+              <span class="meter" data-dz-uploadprogress></span>
+            </div>
+          </div>
+          <div class='small-12 columns error-container'>
+          </div>
+        </div>
+      </div>
+      <div class='small-2 columns'>
+        <div class='row'>
+          <div class='small-10 columns'><span data-dz-size></span></div>
+          <div class='small-2 columns'><a data-dz-remove class='tiny alert button'><%= foundation_icon(:x) %></a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <% end %>

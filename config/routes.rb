@@ -90,9 +90,12 @@ Rails.application.routes.draw do
   resources :single_evaluations, only: [:show, :update]
 
   resources :submissions, only: :show do
-    get "blob(/*path)", controller: :submission_blob, action: :show, on: :member, as: :blob
-    get "tree(/*path)", controller: :submission_tree, action: :show, on: :member, as: :tree
-    delete "tree(/*path)", controller: :submission_tree, action: :destroy, on: :member
+    member do
+      get "blob(/*path)", controller: :submission_blob, action: :show, as: :blob
+      get "tree(/*path)", controller: :submission_tree, action: :show, as: :tree
+      delete "tree(/*path)", controller: :submission_tree, action: :destroy
+    end
+    resource :folder, controller: :submission_folders
 
     resource :upload, controller: :submission_uploads, only: [:new, :create]
   end

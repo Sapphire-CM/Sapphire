@@ -2,26 +2,17 @@
 
 <%= render "exercises/sidebar" %>
 
+<%= render "toolbar", submission: @submission, tree: @tree %>
+
+<%= render "submission_tree_path", tree: @tree, submission: @submission %>
+
 <% if @submission.submission_assets.any? %>
-  <div class='row'>
-    <div class='large-10 columns'>
-      <%= render "submission_tree_path", tree: @tree, submission: @submission %>
-    </div>
-    <div class='large-2 columns text-right'>
-      <%= link_to foundation_icon(:download), blob_submission_path(@submission, path: params[:path], format: :zip), class: "small secondary button" %>
-      <%= link_to foundation_icon(:plus), new_submission_upload_path(@submission, path: params[:path]), class: "small button" %>
-    </div>
-  </div>
-
   <%= render "submission_directory", tree: @tree, submission: @submission %>
-
-  <%= render "submission_uploads/form", submission_upload: @submission_upload %>
 <% else %>
   <p>
     This submission does not contain any files.
   </p>
-  <p>
-    <%= link_to foundation_icon(:plus) + " Upload Files", new_submission_upload_path(@submission), class: "small button" %>
-  </p>
 <% end %>
 
+<%= render "upload_modal", submission_upload: @submission_upload %>
+<%= render "change_folder_modal", submission: @submission, tree: @tree %>

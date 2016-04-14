@@ -3,8 +3,8 @@ class SubmissionTreeController
     @_setup()
 
   _setup: ->
-    @_setupDragAndDrop()
-    @_setupSelection()
+    # @_setupDragAndDrop()
+ #    @_setupSelection()
 
   _setupDragAndDrop: ->
 
@@ -24,6 +24,7 @@ class SubmissionTreeController
     deselect = ($row) ->
       $row.removeClass("selected")
       $last_row = undefined
+
     toggle = ($row) ->
       $row.toggleClass("selected")
 

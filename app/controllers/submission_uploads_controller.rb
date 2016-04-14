@@ -22,7 +22,7 @@ class SubmissionUploadsController < ApplicationController
     else
       respond_to do |format|
         format.html { render :new }
-        format.json
+        format.json { render status: :unprocessable_entity }
       end
     end
   end

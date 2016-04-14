@@ -2,7 +2,6 @@ class SubmissionUpload
   include ActiveModel::Model
 
   attr_accessor :submission, :path, :file
-  attr_reader :add_to_path
 
   delegate :term, :students, to: :submission
   delegate :errors, :valid?, to: :submission_asset

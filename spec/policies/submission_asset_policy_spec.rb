@@ -9,6 +9,7 @@ RSpec.describe SubmissionAssetPolicy do
 
     describe 'member' do
       it { is_expected.to permit_authorization(:show) }
+      it { is_expected.to permit_authorization(:destroy) }
     end
   end
 
@@ -19,6 +20,7 @@ RSpec.describe SubmissionAssetPolicy do
 
     describe 'member' do
       it { is_expected.to permit_authorization(:show) }
+      it { is_expected.to permit_authorization(:destroy) }
     end
   end
 
@@ -29,6 +31,7 @@ RSpec.describe SubmissionAssetPolicy do
 
     describe 'member' do
       it { is_expected.to permit_authorization(:show) }
+      it { is_expected.to permit_authorization(:destroy) }
     end
   end
 
@@ -44,12 +47,14 @@ RSpec.describe SubmissionAssetPolicy do
 
       describe 'member' do
         it { is_expected.to permit_authorization(:show) }
+        it { is_expected.to permit_authorization(:destroy) }
       end
     end
 
     context "without exercise registration" do
       describe 'member' do
         it { is_expected.not_to permit_authorization(:show) }
+        it { is_expected.not_to permit_authorization(:destroy) }
       end
     end
   end
@@ -61,6 +66,7 @@ RSpec.describe SubmissionAssetPolicy do
 
     describe 'member' do
       it { is_expected.not_to permit_authorization(:show) }
+      it { is_expected.not_to permit_authorization(:destroy) }
     end
   end
 
@@ -72,6 +78,7 @@ RSpec.describe SubmissionAssetPolicy do
 
     describe 'member' do
       it { is_expected.not_to permit_authorization(:show) }
+      it { is_expected.not_to permit_authorization(:destroy) }
     end
   end
 
@@ -83,6 +90,7 @@ RSpec.describe SubmissionAssetPolicy do
 
     describe 'member' do
       it { is_expected.not_to permit_authorization(:show) }
+      it { is_expected.not_to permit_authorization(:destroy) }
     end
   end
 end

@@ -45,7 +45,13 @@ module Sapphire
         end
 
         body.css('a[href]').each do |link|
-          link['href'] = submission_html_path(File.basename link['href'] || '') unless link['href'] =~ EXTERNAL_LINK
+          asset = generic_asset(File.basename(link['href'] || ''))
+
+          if asset.present? && asset.content_type != SubmissionAsset::Mime::HTML
+            link['href'] = submission_asset_path(asset)
+          elsif asset.present? || link['href'] !~ EXTERNAL_LINK
+            link['href'] = submission_html_path(File.basename link['href'] || '')
+          end
         end
 
         body.children.to_s.html_safe
@@ -77,6 +83,10 @@ module Sapphire
 
       def image_asset(identifier)
         submission.submission_assets.images.where { lower(file) == my { identifier.downcase } }.first
+      end
+
+      def generic_asset(identifier)
+        submission.submission_assets.where { lower(file) == my { identifier.downcase } }.first
       end
 
       def displayable?

@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Impersonation do
   let(:warden) { double }
-  let(:session) { Hash.new }
+  let(:session) { Hash.new.with_indifferent_access }
   let(:current_account) { FactoryGirl.build(:account) }
 
   subject { described_class.new(warden: warden, session: session, current_account: current_account) }

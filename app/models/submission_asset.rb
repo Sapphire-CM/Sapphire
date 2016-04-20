@@ -9,6 +9,8 @@
 #   t.string   :import_identifier
 #   t.string   :path,              default: ""
 #   t.string   :filename
+#   t.integer  :processed_size
+#   t.integer  :filesystem_size
 # end
 #
 # add_index :submission_assets, [:filename, :path, :submission_id], name: :index_submission_assets_on_filename_and_path_and_submission_id, unique: true

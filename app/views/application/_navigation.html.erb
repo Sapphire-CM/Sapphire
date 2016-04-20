@@ -31,7 +31,7 @@
             <ul class='dropdown'>
               <li><%= link_to 'Edit Account', edit_account_path(current_account) %></li>
 
-              <% if session[:impersonator_id].present? %>
+              <% if session["impersonator_id"].present? %>
                 <li><%= link_to 'Cancel Impersonation', impersonation_path, method: :delete %></li>
               <% else %>
                 <li><%= link_to 'Logout', destroy_account_session_path, method: :delete %></li>

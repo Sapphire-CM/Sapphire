@@ -33,7 +33,7 @@ RSpec.describe TutorialGroupsController do
       get :index, term_id: term.id
 
       expect(response).to have_http_status(:success)
-      expect(assigns(:tutorial_groups)).to eq(term.tutorial_groups)
+      expect(assigns(:tutorial_groups)).to match_array(term.tutorial_groups)
     end
   end
 

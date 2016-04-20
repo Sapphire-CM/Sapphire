@@ -10,6 +10,8 @@ Rails.application.routes.draw do
     resources :email_addresses, except: [:show]
   end
 
+  resource :impersonation, only: [:create, :destroy]
+
   resources :courses, except: [:show]
 
   resources :terms, except: [:index] do

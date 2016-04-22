@@ -11,6 +11,7 @@
 #   t.string   :filename
 #   t.integer  :processed_size
 #   t.integer  :filesystem_size
+#   t.integer  :extraction_status
 # end
 #
 # add_index :submission_assets, [:filename, :path, :submission_id], name: :index_submission_assets_on_filename_and_path_and_submission_id, unique: true
@@ -22,12 +23,17 @@ class SubmissionAsset < ActiveRecord::Base
   belongs_to :submission, inverse_of: :submission_assets
   mount_uploader :file, SubmissionAssetUploader
 
+  enum extraction_status: [:extraction_pending, :extraction_in_progress, :extraction_done, :extraction_failed]
+
   validates :submission, presence: true
   validates :file, presence: true
   validate :filename_uniqueness_validation
+  validate :extracted_filesize_validation, if: :archive?
 
   before_save :set_submitted_at, if: :file_changed?
   before_save :set_content_type, if: :file_changed?
+
+  before_validation :set_filesizes, if: :file_changed?
   before_validation :set_filename, if: :file_changed?
   before_validation :normalize_path!, if: :path_changed?
 
@@ -35,7 +41,7 @@ class SubmissionAsset < ActiveRecord::Base
   scope :htmls, lambda { where(content_type: Mime::HTML) }
   scope :images, lambda { where { content_type.in(Mime::IMAGES) } }
   scope :pdfs, lambda { where { content_type.in(Mime::PDF) } }
-  scope :archives, lambda { where { content_type.in(Mime::ZIP) } }
+  scope :archives, lambda { where { content_type.in(Mime::ARCHIVES) } }
 
   scope :for_exercise, lambda { |exercise| joins(:submission).where(submissions: { exercise_id: exercise.id }) }
   scope :for_term, lambda { |term| joins(submission: :exercise).where(submission: { exercise: { term: term } }) }
@@ -72,6 +78,7 @@ class SubmissionAsset < ActiveRecord::Base
     PDF = 'application/pdf'
 
     IMAGES = [JPEG, PNG]
+    ARCHIVES = [ZIP]
   end
 
   def self.path_exists?(path)
@@ -104,6 +111,16 @@ class SubmissionAsset < ActiveRecord::Base
     end
   end
 
+  def set_filesizes
+    self.filesystem_size = file.file.try(:size) || 0
+
+    if self.archive?
+      self.processed_size = extracted_archive_size
+    else
+      self.processed_size = self.filesystem_size
+    end
+  end
+
   def set_filename
     self.filename = File.basename file.to_s
   end
@@ -124,7 +141,16 @@ class SubmissionAsset < ActiveRecord::Base
     end
   end
 
+  def archive?
+    Mime::ARCHIVES.include? self.content_type
+  end
+
   private
+
+  def extracted_archive_size
+    extractor = SubmissionExtractionService.new(self)
+    extractor.accumulated_filesize
+  end
 
   def self.normalize_path(path)
     Pathname.new(path.presence || "").cleanpath.to_s.gsub(/\A\/+|\/+\z/, "").gsub(/\/+/, "/")

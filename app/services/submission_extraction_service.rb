@@ -2,11 +2,15 @@ require "zip"
 
 class SubmissionExtractionService
   include EventSourcing
-  attr_accessor :submission_asset, :created_assets
+
+  class ExtractionError < StandardError; end
+
+  attr_accessor :submission_asset, :created_assets, :errors
 
   def initialize(submission_asset)
     self.submission_asset = submission_asset
     self.created_assets = []
+    self.errors = []
   end
 
   def submission
@@ -14,15 +18,29 @@ class SubmissionExtractionService
   end
 
   def perform!
+    submission_asset.extraction_status = :extraction_in_progress
     extract_zip!
     remove_archive_asset!
     create_event!
+    submission_asset.extraction_status = :extraction_done
+  rescue ExtractionError
+    submission_asset.extraction_status = :extraction_failed
+    submission_asset.extraction_errors = self.errors
+  end
+
+  def accumulated_filesize
+    accumulated_size = 0
+    Zip::File.open(submission_asset.file.to_s) do |zip_file|
+      accumulated_size = zip_file.map(&:size).sum
+    end
+    accumulated_size
   end
 
   private
 
   def extract_zip!
     self.created_assets = []
+    self.errors = []
     Zip::File.open(submission_asset.file.to_s) do |zip_file|
       zip_file.each do |entry|
         entry_name = utf8_filename(entry.name)
@@ -39,9 +57,16 @@ class SubmissionExtractionService
 
         asset_path = File.join(submission_asset.path, zip_path)
 
-        self.created_assets << submission.submission_assets.create!(file: File.open(destination), path: asset_path)
+        submission_asset = submission.submission_assets.create(file: File.open(destination), path: asset_path)
+
+        unless submission_asset
+          self.errors << submission_asset.errors
+        else
+          self.created_assets << submission_asset
+        end
       end
     end
+    raise ExtractionError unless self.errors.empty?
   end
 
   def utf8_filename(filename)

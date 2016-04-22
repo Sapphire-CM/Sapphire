@@ -5,6 +5,7 @@ RSpec.describe SubmissionAsset do
 
   it { is_expected.to validate_presence_of(:submission) }
   it { is_expected.to validate_presence_of(:file) }
+  it { is_expected.to define_enum_for(:extraction_status).with([:extraction_pending, :extraction_in_progress, :extraction_done, :extraction_failed])}
 
   describe "::Mime" do
     it 'provides constants' do
@@ -19,6 +20,7 @@ RSpec.describe SubmissionAsset do
       expect(SubmissionAsset::Mime::FAVICON).to eq('image/x-icon')
       expect(SubmissionAsset::Mime::PDF).to eq('application/pdf')
       expect(SubmissionAsset::Mime::IMAGES).to match(['image/jpeg', 'image/png'])
+      expect(SubmissionAsset::Mime::ARCHIVES).to match(['application/zip'])
     end
   end
 
@@ -88,6 +90,8 @@ RSpec.describe SubmissionAsset do
 
       expect(subject.content_type).to eq(SubmissionAsset::Mime::PLAIN_TEXT)
     end
+
+    it 'sets file sizes'
   end
 
   describe '#filesize' do
@@ -139,6 +143,20 @@ RSpec.describe SubmissionAsset do
       subject.file = prepare_static_test_file('submission_empty.txt')
 
       expect(subject.utf8_contents).to eq('')
+    end
+  end
+
+  describe '#archive?' do
+    it "returns true if content_type is 'application/zip'" do
+      subject.content_type = "application/zip"
+
+      expect(subject.archive?).to be_truthy
+    end
+
+    it "returns false if content_type is not 'application/zip'" do
+      subject.content_type = "text/plain"
+
+      expect(subject.archive?).to be_falsey
     end
   end
 end

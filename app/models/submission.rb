@@ -94,7 +94,7 @@ class Submission < ActiveRecord::Base
   end
 
   def upload_size_below_exercise_maximum_upload_size
-    size = submission_assets.map(&:filesize).sum || 0
+    size = submission_assets.map(&:filesystem_size).sum || 0
 
     if exercise.present? && exercise.enable_max_upload_size && size > exercise.maximum_upload_size
       errors.add(:base, 'Upload too large')

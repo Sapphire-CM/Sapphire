@@ -6,7 +6,7 @@
         <td>
           <%= link_to "..", tree_submission_path(submission, path: tree.parent.path_without_root), title: "Goto parent folder" %>
         </td>
-        <td class='size'><%= filesize(tree.size) %></td>
+        <td class='size'><%= filesize tree.size %></td>
       </tr>
     <% end %>
 
@@ -18,6 +18,9 @@
         <td>
           <% if entry.file? %>
             <%= link_to entry.name, submission_asset_path(entry.submission_asset), target: "_blank" %>
+            <% if entry.submission_asset.archive? %>
+              -- <%= submission_asset_extraction_status(entry.submission_asset) %>
+            <% end %>
           <% else %>
             <%= link_to entry.name, tree_submission_path(submission, path: entry.path_without_root) %>
           <% end %>

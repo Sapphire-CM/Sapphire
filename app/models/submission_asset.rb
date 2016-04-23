@@ -31,8 +31,7 @@ class SubmissionAsset < ActiveRecord::Base
   validate :extracted_filesize_validation, if: :archive?
 
   before_save :set_submitted_at, if: :file_changed?
-  before_save :set_content_type, if: :file_changed?
-
+  before_validation :set_content_type, if: :file_changed?
   before_validation :set_filesizes, if: :file_changed?
   before_validation :set_filename, if: :file_changed?
   before_validation :normalize_path!, if: :path_changed?
@@ -47,6 +46,7 @@ class SubmissionAsset < ActiveRecord::Base
   scope :for_term, lambda { |term| joins(submission: :exercise).where(submission: { exercise: { term: term } }) }
 
   delegate :submitter, to: :submission
+  delegate :exercise, to: :submission
 
   EXCLUDED_FILTER = [
     # no operating system meta data files
@@ -91,10 +91,6 @@ class SubmissionAsset < ActiveRecord::Base
     normalized_path = normalize_path(unnormalized_path)
 
     where { path =~ my {"#{normalized_path}%"} }
-  end
-
-  def filesize
-    file.file.try(:size) || 0
   end
 
   def complete_path
@@ -163,6 +159,15 @@ class SubmissionAsset < ActiveRecord::Base
     if scope.exists?
       errors.add(:filename, "has already been taken")
       errors.add(:file, "already exists")
+    end
+  end
+
+  def extracted_filesize_validation
+    submission_assets_scope = submission.submission_assets
+    submission_assets_scope = submission_assets_scope.where.not(id: self.id) if persisted?
+
+    if exercise.present? && exercise.enable_max_upload_size && (submission_assets_scope.sum(:processed_size) + self.processed_size) > exercise.maximum_upload_size
+      errors.add(:file, 'exceeds maximum upload size')
     end
   end
 

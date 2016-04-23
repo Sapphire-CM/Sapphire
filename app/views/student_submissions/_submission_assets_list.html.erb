@@ -28,7 +28,7 @@
             <%= submission_asset.submitter.present? ? submission_asset.submitter.fullname : "unknown" %>
           </td>
           <td class="text-right">
-            <%= submission_asset.filesize %>
+            <%= submission_asset.filesystem_size %>
           </td>
           <td>
             <%= link_to foundation_icon(:download),

@@ -40,6 +40,10 @@ module SubmissionAssetsHelper
     title
   end
 
+  def submission_asset_extraction_status(submission_asset)
+    "pending"
+  end
+
   private
 
   def inline_pdf_asset(submission_asset)

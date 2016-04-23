@@ -89,7 +89,11 @@ class SubmissionAsset < ActiveRecord::Base
     else
       detection = CharlockHolmes::EncodingDetector.detect(contents)
 
-      CharlockHolmes::Converter.convert contents, detection[:encoding], 'UTF-8'
+      if detection[:encoding].present?
+        CharlockHolmes::Converter.convert contents, detection[:encoding], 'UTF-8'
+      else
+        ''
+      end
     end
   end
 end

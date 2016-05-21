@@ -35,6 +35,8 @@ class SubmissionStructure::File < SubmissionStructure::TreeNode
       "page-doc"
     when SubmissionAsset::Mime::EMAIL, SubmissionAsset::Mime::NEWSGROUP_POST
       "email"
+    when *SubmissionAsset::Mime::ARCHIVES
+      "page-multiple"
     else
       "page"
     end

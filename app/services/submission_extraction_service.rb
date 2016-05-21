@@ -20,20 +20,21 @@ class SubmissionExtractionService
   def perform!
     processed_size = submission_asset.processed_size
 
-    begin
-      # needs to be reset, in order to allow correct file-size validation
-      submission_asset.processed_size = 0
-      submission_asset.save(validate: false)
+    ActiveRecord::Base.transaction do
+      begin
+        # needs to be reset, in order to allow correct file-size validation
+        submission_asset.processed_size = 0
+        submission_asset.save(validate: false)
 
-      extract_zip!
-      remove_archive_asset!
-      # create_event!
+        extract_zip!
+        remove_archive_asset!
+        # create_event!
 
-    rescue ExtractionError
-      submission_asset.extraction_status = :extraction_failed
-      submission_asset.processed_size = processed_size
-      submission_asset.save(validate: false)
-    ensure
+      rescue ExtractionError
+        submission_asset.extraction_status = :extraction_failed
+        submission_asset.processed_size = processed_size
+        submission_asset.save(validate: false)
+      end
     end
   end
 

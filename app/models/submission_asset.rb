@@ -29,6 +29,7 @@ class SubmissionAsset < ActiveRecord::Base
   validates :file, presence: true
   validate :filename_uniqueness_validation
   validate :filesize_validation
+  validate :archive_structure_validation, if: :archive?
 
   before_save :set_submitted_at, if: :file_changed?
   before_validation :set_content_type, if: :file_changed?
@@ -178,6 +179,15 @@ class SubmissionAsset < ActiveRecord::Base
       else
         errors.add(:file, 'exceeds maximum upload size')
       end
+    end
+  end
+
+  def archive_structure_validation
+    begin
+      Zip::File.open(self.file.to_s)
+      true
+    rescue Zip::Error
+      errors.add(:file, "is not an archive")
     end
   end
 

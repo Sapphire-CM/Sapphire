@@ -43,6 +43,8 @@ class SubmissionExtractionService
       accumulated_size = filter_zip_entries(zip_file).map(&:size).sum
     end
     accumulated_size
+  rescue Zip::Error
+    0
   end
 
   private

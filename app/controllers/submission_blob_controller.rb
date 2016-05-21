@@ -33,7 +33,7 @@ class SubmissionBlobController < ApplicationController
   def add_files_to_zip(tree, path, output)
     tree.entries.each do |entry|
       sub_path = File.join(path, entry.name)
-      if entry.is_a? SubmissionStructureService::Directory
+      if entry.is_a? SubmissionStructure::Directory
         add_files_to_zip(entry, sub_path, output)
       else
         output.put_next_entry sub_path

@@ -18,20 +18,29 @@ class SubmissionExtractionService
   end
 
   def perform!
-    submission_asset.extraction_status = :extraction_in_progress
-    extract_zip!
-    remove_archive_asset!
-    create_event!
-    submission_asset.extraction_status = :extraction_done
-  rescue ExtractionError
-    submission_asset.extraction_status = :extraction_failed
-    submission_asset.extraction_errors = self.errors
+    processed_size = submission_asset.processed_size
+
+    begin
+      # needs to be reset, in order to allow correct file-size validation
+      submission_asset.processed_size = 0
+      submission_asset.save(validate: false)
+
+      extract_zip!
+      remove_archive_asset!
+      # create_event!
+
+    rescue ExtractionError
+      submission_asset.extraction_status = :extraction_failed
+      submission_asset.processed_size = processed_size
+      submission_asset.save(validate: false)
+    ensure
+    end
   end
 
   def accumulated_filesize
     accumulated_size = 0
     Zip::File.open(submission_asset.file.to_s) do |zip_file|
-      accumulated_size = zip_file.map(&:size).sum
+      accumulated_size = filter_zip_entries(zip_file).map(&:size).sum
     end
     accumulated_size
   end
@@ -42,9 +51,8 @@ class SubmissionExtractionService
     self.created_assets = []
     self.errors = []
     Zip::File.open(submission_asset.file.to_s) do |zip_file|
-      zip_file.each do |entry|
+      filter_zip_entries(zip_file).each do |entry|
         entry_name = utf8_filename(entry.name)
-        next if SubmissionAsset::EXCLUDED_FILTER.any? { |e| entry_name =~ e }
 
         zip_path, filename = File.split(entry_name)
         zip_path = '' if zip_path == '.'
@@ -59,7 +67,7 @@ class SubmissionExtractionService
 
         submission_asset = submission.submission_assets.create(file: File.open(destination), path: asset_path)
 
-        unless submission_asset
+        unless submission_asset.valid?
           self.errors << submission_asset.errors
         else
           self.created_assets << submission_asset
@@ -67,6 +75,14 @@ class SubmissionExtractionService
       end
     end
     raise ExtractionError unless self.errors.empty?
+  end
+
+  def filter_zip_entries(zip_file)
+    zip_file.select do |entry|
+      entry_name = utf8_filename(entry.name)
+
+      SubmissionAsset::EXCLUDED_FILTER.all? {|e| entry_name !~ e }
+    end
   end
 
   def utf8_filename(filename)

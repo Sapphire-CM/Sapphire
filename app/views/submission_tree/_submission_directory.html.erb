@@ -19,7 +19,10 @@
           <% if entry.file? %>
             <%= link_to entry.name, submission_asset_path(entry.submission_asset), target: "_blank" %>
             <% if entry.submission_asset.archive? %>
-              -- <%= submission_asset_extraction_status(entry.submission_asset) %>
+              &mdash; Extraction: <%= submission_asset_extraction_status(entry.submission_asset) %>
+              <% if entry.submission_asset.extraction_failed? %>
+                <%= content_tag :span, foundation_icon(:info), data: {tooltip: true}, title: "This ZIP archive could not be fully extracted. This usually happens when the zip contains one or more files are that already present in your submission." %>
+              <% end %>
             <% end %>
           <% else %>
             <%= link_to entry.name, tree_submission_path(submission, path: entry.path_without_root) %>

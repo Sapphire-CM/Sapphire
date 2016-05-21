@@ -41,7 +41,13 @@ module SubmissionAssetsHelper
   end
 
   def submission_asset_extraction_status(submission_asset)
-    "pending"
+    case submission_asset.extraction_status.to_s
+    when "extraction_pending" then "Pending"
+    when "extraction_in_progress" then "In Progress"
+    when "extraction_done" then "Done"
+    when "extraction_failed" then "Failed"
+    else "Unknown (#{submission_asset.extraction_status.inspect})"
+    end
   end
 
   private

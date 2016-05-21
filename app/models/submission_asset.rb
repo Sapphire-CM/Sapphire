@@ -28,13 +28,15 @@ class SubmissionAsset < ActiveRecord::Base
   validates :submission, presence: true
   validates :file, presence: true
   validate :filename_uniqueness_validation
-  validate :extracted_filesize_validation, if: :archive?
+  validate :filesize_validation
 
   before_save :set_submitted_at, if: :file_changed?
   before_validation :set_content_type, if: :file_changed?
   before_validation :set_filesizes, if: :file_changed?
   before_validation :set_filename, if: :file_changed?
   before_validation :normalize_path!, if: :path_changed?
+  before_validation :set_default_extraction_status, if: :archive?
+
 
   scope :stylesheets, lambda { where(content_type: Mime::STYLESHEET) }
   scope :htmls, lambda { where(content_type: Mime::HTML) }
@@ -121,6 +123,10 @@ class SubmissionAsset < ActiveRecord::Base
     self.filename = File.basename file.to_s
   end
 
+  def set_default_extraction_status
+    self.extraction_status = :extraction_pending
+  end
+
   def utf8_contents
     contents = file.read
 
@@ -162,12 +168,16 @@ class SubmissionAsset < ActiveRecord::Base
     end
   end
 
-  def extracted_filesize_validation
+  def filesize_validation
     submission_assets_scope = submission.submission_assets
     submission_assets_scope = submission_assets_scope.where.not(id: self.id) if persisted?
 
     if exercise.present? && exercise.enable_max_upload_size && (submission_assets_scope.sum(:processed_size) + self.processed_size) > exercise.maximum_upload_size
-      errors.add(:file, 'exceeds maximum upload size')
+      if archive?
+        errors.add(:file, 'exceeds maximum upload size after extraction')
+      else
+        errors.add(:file, 'exceeds maximum upload size')
+      end
     end
   end
 

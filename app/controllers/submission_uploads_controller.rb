@@ -16,7 +16,7 @@ class SubmissionUploadsController < ApplicationController
 
     if @submission_upload.save
       respond_to do |format|
-        format.html {redirect_to new_submission_upload_path(@submission, path: @submission_upload.path.presence), notice: "Successfully added #{@submission_upload.submission_asset.filename}"}
+        format.html { redirect_to new_submission_upload_path(@submission, path: @submission_upload.path.presence), notice: "Successfully added #{@submission_upload.submission_asset.filename}" }
         format.json
       end
     else

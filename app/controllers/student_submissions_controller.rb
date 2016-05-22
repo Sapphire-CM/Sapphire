@@ -1,14 +1,8 @@
-require 'zip'
-require 'base64'
-
 class StudentSubmissionsController < ApplicationController
   include EventSourcing
 
   before_action :set_exercise_and_term
-  before_action :set_submission, only: [:show, :update, :catalog, :extract, :tree]
-  before_action :ensure_submission_param, only: [:create, :update]
-
-  skip_after_action :verify_authorized, only: :create, if: lambda { params[:submission].blank? }
+  before_action :set_submission, only: :show
 
   def show
     if @submission

@@ -6,10 +6,6 @@ class SubmissionsController < ApplicationController
     redirect_to tree_submission_path(@submission)
   end
 
-  def edit
-
-  end
-
   private
   def set_submission
     @submission = Submission.find(params[:id])

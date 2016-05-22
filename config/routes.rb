@@ -63,15 +63,9 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :submission, only: [:show, :create, :update], as: :student_submission, controller: "student_submissions" do
-      get :catalog, on: :member
-      post :extract, on: :member
-    end
+    resource :submission, only: :show, as: :student_submission, controller: "student_submissions"
 
-    resources :submissions, controller: "staff_submissions" do
-      get "tree(/*path)", action: :show, controller: :submission_tree, as: :tree
-    end
-
+    resources :submissions, controller: "staff_submissions"
     resources :result_publications, only: :index do
       member do
         put :publish
@@ -97,7 +91,6 @@ Rails.application.routes.draw do
       delete "tree(/*path)", controller: :submission_tree, action: :destroy
     end
     resource :folder, controller: :submission_folders
-
     resource :upload, controller: :submission_uploads, only: [:new, :create]
   end
 

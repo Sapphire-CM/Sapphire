@@ -5,14 +5,16 @@ class StudentSubmissionsController < ApplicationController
   before_action :set_submission
 
   def show
+    redirect_to new_exercise_student_submission_path(@exercise)
+  end
+
+  def new
     @student_group = StudentGroup.for_account(current_account).for_term(@term).first
   end
 
   def create
     authorize @submission
     @submission.save
-
-    raise
 
     redirect_to submission_path(@submission)
   end

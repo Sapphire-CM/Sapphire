@@ -7,12 +7,21 @@ class SubmissionPolicy < PunditBasePolicy
   def show?
     user.admin? ||
     user.staff_of_term?(record.term) ||
-    record.students.include?(user) ||
-    record.new_record?
+    (
+      user.student_of_term?(record.term) &&
+      (
+        record.students.include?(user) ||
+        record.new_record?
+      )
+    )
   end
 
   def directory?
     show?
+  end
+
+  def new?
+    create?
   end
 
   def create?

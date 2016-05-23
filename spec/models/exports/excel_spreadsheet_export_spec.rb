@@ -7,6 +7,14 @@ RSpec.describe Exports::ExcelSpreadsheetExport, sidekiq: :inline do
   let!(:tutorial_groups) { FactoryGirl.create_list :tutorial_group, 4, term: term }
   let(:export) { FactoryGirl.create :excel_spreadsheet_export, term: term }
 
+  describe 'initialization' do
+    it 'calls #set_default_values!' do
+      expect_any_instance_of(described_class).to receive(:set_default_values)
+
+      described_class.new
+    end
+  end
+
   describe '#perform_export!' do
     it 'generates a export file' do
       expect do
@@ -25,9 +33,9 @@ RSpec.describe Exports::ExcelSpreadsheetExport, sidekiq: :inline do
 
   describe '#set_default_values!' do
     it 'sets default values if none are present' do
-      expect(subject.summary).to eq(nil)
-      expect(subject.exercises).to eq(nil)
-      expect(subject.student_overview).to eq(nil)
+      subject.summary = nil
+      subject.exercises = nil
+      subject.student_overview = nil
 
       subject.set_default_values!
 

@@ -16,7 +16,9 @@ AllCops:
     - spec/rails_helper.rb
     - !ruby/regexp /old_and_unused\.rb$/
     - persistent/auto_responder_paper_data.rb
-  RunRailsCops: true
+
+Rails:
+  Enabled: true
 
 RSpec/DescribedClass:
   Enabled: false
@@ -48,7 +50,7 @@ Style/AlignHash:
 Style/AlignParameters:
   Enabled: false
 
-Style/TrailingComma:
+Style/TrailingCommaInArguments:
   Enabled: false
 
 Style/FirstParameterIndentation:

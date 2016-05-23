@@ -61,6 +61,10 @@ class Submission < ActiveRecord::Base
     for_account(account).find_by(exercise: exercise)
   end
 
+  def modifiable_by_students?
+    !outdated? && exercise.enable_student_uploads? && exercise.before_late_deadline? && exercise.term.course.unlocked?
+  end
+
   def evaluated?
     submission_evaluation.present?
   end
@@ -70,7 +74,7 @@ class Submission < ActiveRecord::Base
   end
 
   def visible_for_student?(account)
-    term_registrations.students.where(account_id: account.id).exists?
+    term_registrations.students.where(account: account).exists?
   end
 
   def submission_assets_changed?

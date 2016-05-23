@@ -12,6 +12,9 @@ class SubmissionUploadPolicy < PunditBasePolicy
   def create?
     user.admin? ||
     user.staff_of_term?(record.term) ||
-    record.students.include?(user)
+    (
+      record.students.include?(user) &&
+      record.submission.modifiable_by_students?
+    )
   end
 end

@@ -137,19 +137,23 @@ class SubmissionUploadFormController
 
         @on 'success', (file, json) ->
           console.log("done", file, json)
-          $(file.previewElement).find(".progress").addClass("success")
-          $(file.previewElement).find("*[data-dz-remove]").remove()
+          $preview_element = $(file.previewElement)
+          $preview_element.find(".progress").addClass("success")
+          $preview_element.find("*[data-dz-remove]").remove()
 
-          $(file.previewElement).find(".status").hide()
+          $preview_element.find(".status").hide()
           $(file.previewElement).find(".status-success").show()
 
         @on 'error', (file) ->
           console.log("error", file)
 
-          message = $.parseJSON(file.xhr.response).errors.file
+          message = if file.xhr.status == 401
+            "You are not authorized to perform this action"
+          else
+            resp = $.parseJSON(file.xhr.response)
+            "File #{resp.errors.file}"
 
-          $error_message = $("<p>").addClass("alert").text("File #{message}")
-
+          $error_message = $("<p>").addClass("alert").text(message)
           $preview_el = $(file.previewElement)
 
           $preview_el.find(".status").hide()

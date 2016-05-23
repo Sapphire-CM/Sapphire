@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
   def user_not_authorized(e)
-    Rails.logger.info(e)
+    Rails.logger.info(e.message)
     destination = if account_signed_in?
       root_path
     else
@@ -26,10 +26,10 @@ class ApplicationController < ActionController::Base
     end
     flash[:alert] = 'You are not authorized to perform this action.'
 
-    if request.xhr?
-      js_redirect_to destination, alert: alert
-    else
-      redirect_to destination, alert: alert
+    respond_to do |format|
+      format.json { render nothing: true, status: :unauthorized }
+      format.js { js_redirect_to destination, alert: alert }
+      format.html { redirect_to destination, alert: alert }
     end
   end
 
@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
 
   def js_redirect_to(path, flashes = {})
     flashes.each { |key, value| flash[key] = value }
-    render js: "window.location = '#{path}';"
+    render js: "window.location = '#{path}';", status: :unauthorized
   end
   helper_method :js_redirect_to
 end

@@ -227,7 +227,7 @@ RSpec.describe Submission do
     end
   end
 
-  describe 'visible_for_student?' do
+  describe '#visible_for_student?' do
     subject { FactoryGirl.create(:submission, exercise: exercise) }
     let(:account) { FactoryGirl.create(:account) }
     let(:another_account) { FactoryGirl.create(:account) }
@@ -244,6 +244,10 @@ RSpec.describe Submission do
     it 'returns false if a term_registration for given account is not associated with submission' do
       expect(subject.visible_for_student?(another_account)).to be_falsey
     end
+  end
+
+  describe '#modifiable_by_students?' do
+    pending
   end
 
   describe '#submission_assets_changed?' do

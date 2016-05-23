@@ -77,9 +77,11 @@ class Exercise < ActiveRecord::Base
   end
 
   def within_late_submission_period?
-    (deadline.present? && late_deadline.present?) ?
-      Time.now > deadline && Time.now <= late_deadline :
+    if deadline.present? && late_deadline.present?
+      Time.now > deadline && Time.now <= late_deadline
+    else
       false
+    end
   end
 
   def update_points

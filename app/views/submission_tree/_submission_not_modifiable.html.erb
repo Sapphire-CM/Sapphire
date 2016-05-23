@@ -1,0 +1,10 @@
+<div class='panel'>
+  Submission not modifiable:
+  <% if !submission_upload.exercise.enable_student_uploads? %>
+    Uploads are not allowed for this exercise.
+  <% elsif !submission_upload.exercise.before_late_deadline? %>
+    The deadline has passed.
+  <% else %>
+    Uploads are not allowed for this exercise.
+  <% end %>
+</div>

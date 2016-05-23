@@ -57,6 +57,14 @@ RSpec.describe SubmissionAssetPolicy do
         it { is_expected.not_to permit_authorization(:destroy) }
       end
     end
+
+    context "after deadline passed" do
+      pending
+    end
+
+    context "disabled student uploads" do
+      pending
+    end
   end
 
   context 'as a lecturer of another term' do

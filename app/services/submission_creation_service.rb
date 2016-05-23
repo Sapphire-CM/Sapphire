@@ -51,7 +51,9 @@ class SubmissionCreationService
     @submission.submitter = @account
     @submission.submitted_at = Time.now
     @submission.student_group = term_registration.student_group unless @submission.exercise.solitary_submission?
+
     build_exercise_registrations!
+
     @model_setup = true
   end
 

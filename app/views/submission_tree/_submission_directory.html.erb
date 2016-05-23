@@ -29,13 +29,15 @@
           <% end %>
         </td>
         <td class='size'><%= filesize entry.size %></td>
-        <td class='buttons'>
-          <% if entry.file? %>
-            <%= link_to foundation_icon(:x), submission_asset_path(entry.submission_asset), method: :delete, data: {confirm: "Are you sure, that you want to remove this file?"}, class: "tiny alert button" %>
-          <% else %>
-            <%= link_to foundation_icon(:x), tree_submission_path(submission, path: entry.path_without_root), method: :delete, data: {confirm: "Are you sure, that you want to remove the whole directory?"}, class: "tiny alert button" %>
-          <% end %>
-        </td>
+        <% if submission.modifiable_by_students? %>
+          <td class='buttons'>
+            <% if entry.file? %>
+              <%= link_to foundation_icon(:x), submission_asset_path(entry.submission_asset), method: :delete, data: {confirm: "Are you sure, that you want to remove this file?"}, class: "tiny alert button" %>
+            <% else %>
+              <%= link_to foundation_icon(:x), tree_submission_path(submission, path: entry.path_without_root), method: :delete, data: {confirm: "Are you sure, that you want to remove the whole directory?"}, class: "tiny alert button" %>
+            <% end %>
+          </td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

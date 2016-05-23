@@ -1,41 +1,43 @@
-<% title @exercise.title, submission_subtitle(@submission) %>
+<% title @exercise.title, "Submission" %>
 
 <%= render "exercises/sidebar" %>
 
-<div class='panel'>
-  <% if @exercise.deadline.present?  %>
-    <div class='row'>
-      <div class='large-6 columns'>
-        Deadline: <%= l @exercise.deadline, format: :unix %>
-      </div>
-      <div class='large-6 columns right-aligned'>
-        <% if @exercise.before_deadline? %>
-          <strong><%= distance_of_time_in_words @exercise.deadline, Time.now %></strong> left
-        <% else %>
-          <strong>Deadline has passed <%= distance_of_time_in_words @exercise.deadline, Time.now %> ago</strong>
+<% if policy(@submission).create? %>
+  <div class='panel'>
+    <p>
+      <% if @exercise.group_submission? %>
+        <%= @exercise.title %> is a <strong>group</strong> exercise.
+      <% else %>
+        <%= @exercise.title %> is a <strong>solitary</strong> exercise.
+      <% end %>
+
+      Currently there is no submission assigned to you for this exercise.
+
+      <% if @exercise.group_submission? && @student_group.present? %>
+        Once the submission is created the following students will be assigned to it:
+      <% else %>
+        Once the submission is created, only <strong>you</strong> will be assigned to it.
+      <% end %>
+    </p>
+
+    <% if @exercise.group_submission? && @student_group.present? %>
+      <ul class='disc inset'>
+        <% @student_group.students.order(:surname).each do |student| %>
+          <li>
+            <%= student.fullname %>
+            <% if student == current_account %>
+              (you)
+            <% end %>
+          </li>
         <% end %>
-      </div>
-    </div>
-  <% end %>
-</div>
+      </ul>
+    <% end %>
 
-<% if @submission.persisted? %>
-  <%= render "submission_assets_list", submission_assets: @submission.submission_assets.to_a.reject { |a| !a.persisted? } %>
-<% end %>
-
-<% if policy(@submission).submit? %>
-  <%= render "form" %>
-
-  <% if @exercise.within_late_submission_period? %>
-    <div class='panel'>
-      <p>
-        Uploads will be allowed up to 48 hours after the deadline.
-      </p>
-      <p>
-        If you replace your submission after the deadline, you will incur the points deduction for a late submission.
-      </p>
-    </div>
-  <% end %>
+    <p>
+      <%= link_to "Create a Submission for #{@exercise.title}", exercise_student_submission_path(@exercise), class: "small button", method: :post %>
+    </p>
+  </div>
 <% else %>
-    <h4>No uploads are allowed for this exercise</h4>
+  cannot create submissions
 <% end %>
+

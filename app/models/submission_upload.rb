@@ -3,7 +3,7 @@ class SubmissionUpload
 
   attr_accessor :submission, :path, :file
 
-  delegate :term, :students, to: :submission
+  delegate :term, :students, :exercise, to: :submission
   delegate :errors, :valid?, to: :submission_asset
 
   def initialize(options = {})

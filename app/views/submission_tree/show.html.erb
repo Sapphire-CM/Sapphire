@@ -2,7 +2,7 @@
 
 <%= render "exercises/sidebar" %>
 
-<%= render "toolbar", submission: @submission, tree: @tree %>
+<%= render "toolbar", submission: @submission, tree: @tree, submission_upload: @submission_upload %>
 
 <%= render "submission_tree_path", tree: @tree, submission: @submission %>
 
@@ -18,4 +18,4 @@
 <% end %>
 
 <%= render "upload_modal", submission_upload: @submission_upload %>
-<%= render "change_folder_modal", submission: @submission, tree: @tree %>
+<%= render "change_folder_modal", submission_upload: @submission_upload, tree: @tree %>

@@ -15,8 +15,10 @@ Rails.application.routes.draw do
   resources :courses, except: [:show]
 
   resources :terms, except: [:index] do
-    get :points_overview, on: :member
-    post :send_welcome_notifications, on: :member
+    member do
+      get :points_overview
+      post :send_welcome_notifications
+    end
 
     resources :grading_scales, only: [:index, :update]
 
@@ -63,7 +65,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :submission, only: :show, as: :student_submission, controller: "student_submissions"
+    resource :submission, only: [:show, :create], as: :student_submission, controller: "student_submissions"
 
     resources :submissions, controller: "staff_submissions"
     resources :result_publications, only: :index do

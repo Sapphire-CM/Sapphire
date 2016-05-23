@@ -38,7 +38,6 @@ class SubmissionAsset < ActiveRecord::Base
   before_validation :normalize_path!, if: :path_changed?
   before_validation :set_default_extraction_status, if: :archive?
 
-
   scope :stylesheets, lambda { where(content_type: Mime::STYLESHEET) }
   scope :htmls, lambda { where(content_type: Mime::HTML) }
   scope :images, lambda { where { content_type.in(Mime::IMAGES) } }
@@ -170,6 +169,7 @@ class SubmissionAsset < ActiveRecord::Base
   end
 
   def filesize_validation
+    return unless submission.present?
     submission_assets_scope = submission.submission_assets
     submission_assets_scope = submission_assets_scope.where.not(id: self.id) if persisted?
 
@@ -189,6 +189,7 @@ class SubmissionAsset < ActiveRecord::Base
     rescue Zip::Error
       errors.add(:file, "is not an archive")
     end
+    true
   end
 
   def normalize_path!

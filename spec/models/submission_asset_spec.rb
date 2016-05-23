@@ -31,7 +31,8 @@ RSpec.describe SubmissionAsset do
       %w(newsgroup_post email stylesheet html jpeg png zip favicon pdf).each do |type|
         let!(type.pluralize.to_sym) do
           sa = FactoryGirl.create(:submission_asset, submission: submission)
-          sa.update(content_type: "SubmissionAsset::Mime::#{type.upcase}".constantize)
+          sa.content_type = "SubmissionAsset::Mime::#{type.upcase}".constantize
+          sa.save(validate: false)
           [sa]
         end
       end
@@ -94,11 +95,12 @@ RSpec.describe SubmissionAsset do
     it 'sets file sizes'
   end
 
-  describe '#filesize' do
+  describe '#processed_filesize' do
     it 'returns the filesize of the file' do
       subject.file = prepare_static_test_file('simple_submission.txt')
+      subject.set_filesizes
 
-      expect(subject.filesize).to eq(447)
+      expect(subject.processed_size).to eq(447)
     end
   end
 

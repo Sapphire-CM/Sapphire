@@ -12,12 +12,12 @@ module Sapphire
         def to_ascii(string)
           string.gsub(/[äöüßéá]/) do |match|
             case match
-              when 'ä' then 'ae'
-              when 'ö' then 'oe'
-              when 'ü' then 'ue'
-              when 'ß' then 'ss'
-              when 'é' then 'e'
-              when 'á' then 'a'
+            when 'ä' then 'ae'
+            when 'ö' then 'oe'
+            when 'ü' then 'ue'
+            when 'ß' then 'ss'
+            when 'é' then 'e'
+            when 'á' then 'a'
             end
           end.force_encoding('US-ASCII')
         end

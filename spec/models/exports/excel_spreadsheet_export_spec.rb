@@ -31,21 +31,21 @@ RSpec.describe Exports::ExcelSpreadsheetExport, sidekiq: :inline do
 
       subject.set_default_values!
 
-      expect(subject.summary).to eq("1")
-      expect(subject.exercises).to eq("1")
-      expect(subject.student_overview).to eq("1")
+      expect(subject.summary).to eq('1')
+      expect(subject.exercises).to eq('1')
+      expect(subject.student_overview).to eq('1')
     end
 
     it 'does not overwrite existing values' do
-      subject.summary = "0"
-      subject.exercises = "0"
-      subject.student_overview = "0"
+      subject.summary = '0'
+      subject.exercises = '0'
+      subject.student_overview = '0'
 
       subject.set_default_values!
 
-      expect(subject.summary).to eq("0")
-      expect(subject.exercises).to eq("0")
-      expect(subject.student_overview).to eq("0")
+      expect(subject.summary).to eq('0')
+      expect(subject.exercises).to eq('0')
+      expect(subject.student_overview).to eq('0')
     end
   end
 end

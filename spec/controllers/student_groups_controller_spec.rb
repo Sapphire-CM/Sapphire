@@ -4,7 +4,7 @@ RSpec.describe StudentGroupsController, type: :controller do
   render_views
   include_context 'active_lecturer_session_context'
 
-  let!(:term) { @current_account.term_registrations.lecturer.first.term }
+  let!(:term) { current_account.term_registrations.lecturer.first.term }
   let!(:tutorial_group) { create(:tutorial_group, term: term) }
   let(:student_group) { create(:student_group, tutorial_group: tutorial_group) }
 

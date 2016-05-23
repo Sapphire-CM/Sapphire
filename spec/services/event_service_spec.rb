@@ -83,7 +83,7 @@ RSpec.describe EventService do
       end
 
       it 'correctly sets up and returns the event' do
-        assets = FactoryGirl.create_list(:submission_asset, 3, submission: submission, path: '/', content_type: SubmissionAsset::Mime::PLAIN_TEXT)
+        FactoryGirl.create_list(:submission_asset, 3, submission: submission, path: '/', content_type: SubmissionAsset::Mime::PLAIN_TEXT)
 
         added_asset, updated_asset, removed_asset = *submission.submission_assets(true)
 

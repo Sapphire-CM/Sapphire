@@ -5,7 +5,7 @@ RSpec.describe StudentGroupPolicy do
   let(:tutorial_group) { FactoryGirl.create(:tutorial_group) }
   let(:student_group) { FactoryGirl.create(:student_group, tutorial_group: tutorial_group) }
 
-  context "as an admin" do
+  context 'as an admin' do
     let(:account) { FactoryGirl.create(:account, :admin) }
 
     context 'collections' do
@@ -26,7 +26,7 @@ RSpec.describe StudentGroupPolicy do
     end
   end
 
-  context "as a lecturer" do
+  context 'as a lecturer' do
     let(:account) { FactoryGirl.create(:account) }
     before :each do
       FactoryGirl.create(:term_registration, :lecturer, term: term, account: account)
@@ -50,7 +50,7 @@ RSpec.describe StudentGroupPolicy do
     end
   end
 
-  context "as a tutor" do
+  context 'as a tutor' do
     let(:account) { FactoryGirl.create(:account) }
     let(:another_tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
 
@@ -76,7 +76,7 @@ RSpec.describe StudentGroupPolicy do
     end
   end
 
-  context "as a student" do
+  context 'as a student' do
     let(:account) { FactoryGirl.create(:account) }
     let(:another_tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
 

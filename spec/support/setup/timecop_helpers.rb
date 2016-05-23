@@ -2,7 +2,7 @@ require 'timecop'
 
 module TimecopHelpers
   def freeze_time
-    let!(:now) { Time.now }
+    let!(:now) { Time.zone.now }
 
     before(:each) do
       Timecop.freeze(now)

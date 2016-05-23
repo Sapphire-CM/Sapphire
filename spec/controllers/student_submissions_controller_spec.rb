@@ -8,7 +8,7 @@ RSpec.describe StudentSubmissionsController do
   describe 'GET show' do
     context 'as student registered to a term' do
       it 'shows the submission' do
-        term_registration = @current_account.term_registrations.first
+        term_registration = current_account.term_registrations.first
         term = term_registration.term
         exercise = FactoryGirl.create :exercise, term: term
 
@@ -33,7 +33,7 @@ RSpec.describe StudentSubmissionsController do
   end
 
   describe 'POST create' do
-    let(:exercise) { FactoryGirl.create :exercise, term: @current_account.term_registrations.first.term }
+    let(:exercise) { FactoryGirl.create :exercise, term: current_account.term_registrations.first.term }
 
     describe 'with valid params' do
       context 'creates a new submission' do
@@ -133,9 +133,9 @@ RSpec.describe StudentSubmissionsController do
   end
 
   describe 'PATCH update' do
-    let(:term_registration) { @current_account.term_registrations.first }
+    let(:term_registration) { current_account.term_registrations.first }
     let(:exercise) { FactoryGirl.create :exercise, term: term_registration.term }
-    let(:submission) { FactoryGirl.create :submission, exercise: exercise, submitter: @current_account }
+    let(:submission) { FactoryGirl.create :submission, exercise: exercise, submitter: current_account }
     let(:submission_asset) { FactoryGirl.create :submission_asset, submission: submission }
 
     describe 'with valid params' do
@@ -204,9 +204,9 @@ RSpec.describe StudentSubmissionsController do
   end
 
   describe 'GET catalog' do
-    let!(:term_registration) { @current_account.term_registrations.first }
+    let!(:term_registration) { current_account.term_registrations.first }
     let!(:exercise) { FactoryGirl.create :exercise, term: term_registration.term }
-    let!(:submission) { FactoryGirl.create :submission, exercise: exercise, submitter: @current_account }
+    let!(:submission) { FactoryGirl.create :submission, exercise: exercise, submitter: current_account }
     let!(:exercise_registration) { FactoryGirl.create :exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission }
 
     it 'redirects if no archives are found' do
@@ -243,9 +243,9 @@ RSpec.describe StudentSubmissionsController do
   end
 
   describe 'POST extract' do
-    let!(:term_registration) { @current_account.term_registrations.first }
+    let!(:term_registration) { current_account.term_registrations.first }
     let!(:exercise) { FactoryGirl.create :exercise, term: term_registration.term }
-    let!(:submission) { FactoryGirl.create :submission, exercise: exercise, submitter: @current_account }
+    let!(:submission) { FactoryGirl.create :submission, exercise: exercise, submitter: current_account }
     let!(:exercise_registration) { FactoryGirl.create :exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission }
 
     def file_extraction_params(file, extract = '1')

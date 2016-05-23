@@ -41,11 +41,11 @@ describe Term do
     it 'is able to determine whether an account is associated with this term' do
       term = FactoryGirl.create(:term)
 
-      expect(term.associated_with? account).to be_falsey
+      expect(term).to be_associated_with(account)
       tg = FactoryGirl.create(:tutorial_group, term: term)
       FactoryGirl.create(:term_registration, :tutor, account: account, term: term, tutorial_group: tg)
 
-      expect(term.associated_with? account).to be_truthy
+      expect(term).to be_associated_with(account)
     end
   end
 end

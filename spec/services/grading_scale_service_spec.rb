@@ -15,7 +15,7 @@ RSpec.describe GradingScaleService, type: :model, sidekiq: :inline do
 
     def show_grading_scale
       term.grading_scales.ordered.each do |gs|
-        puts "#{gs.grade}: #{'%3d' % gs.min_points} - #{'%3d' % gs.max_points}"
+        puts "#{gs.grade}: #{'%3d'.format gs.min_points} - #{'%3d'.format gs.max_points}"
       end
     end
 
@@ -31,27 +31,27 @@ RSpec.describe GradingScaleService, type: :model, sidekiq: :inline do
       end
 
       {
-         -1 => '5',
-          0 => '5',
-          1 => '5',
-         49 => '5',
-         50 => '5',
-         51 => '4',
-         52 => '4',
-         59 => '4',
-         60 => '4',
-         61 => '3',
-         62 => '3',
-         83 => '3',
-         84 => '3',
-         85 => '2',
-         86 => '2',
-         89 => '2',
-         90 => '2',
-         91 => '1',
-         92 => '1',
+        -1 => '5',
+        0 => '5',
+        1 => '5',
+        49 => '5',
+        50 => '5',
+        51 => '4',
+        52 => '4',
+        59 => '4',
+        60 => '4',
+        61 => '3',
+        62 => '3',
+        83 => '3',
+        84 => '3',
+        85 => '2',
+        86 => '2',
+        89 => '2',
+        90 => '2',
+        91 => '1',
+        92 => '1',
         100 => '1',
-        101 => '1',
+        101 => '1'
       }.each do |points, grade|
         it "gives the correct grade #{grade} for #{points} points" do
           term_registration.update! points: points

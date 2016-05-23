@@ -24,13 +24,13 @@ RSpec.describe Impersonation do
       allow(subject).to receive(:sign_in).and_return(true)
     end
 
-    it "calls sign_in with passed account" do
+    it 'calls sign_in with passed account' do
       expect(subject).to receive(:sign_in).with(:account, account).and_return(true)
 
       subject.impersonate account
     end
 
-    it "sets :impersonator_id on session" do
+    it 'sets :impersonator_id on session' do
       current_account.save
       expect(current_account.id).to be_present
 
@@ -39,12 +39,12 @@ RSpec.describe Impersonation do
       expect(session[:impersonator_id]).to eq(current_account.id)
     end
 
-    it "does not change :impersonator_id on session if it is already present" do
-      session[:impersonator_id] = "fancy id"
+    it 'does not change :impersonator_id on session if it is already present' do
+      session[:impersonator_id] = 'fancy id'
 
       subject.impersonate account
 
-      expect(session[:impersonator_id]).to eq("fancy id")
+      expect(session[:impersonator_id]).to eq('fancy id')
     end
   end
 
@@ -56,13 +56,13 @@ RSpec.describe Impersonation do
       allow(subject).to receive(:sign_in).and_return(true)
     end
 
-    it "signs in with the impersonator account" do
+    it 'signs in with the impersonator account' do
       expect(subject).to receive(:sign_in).with(:account, admin_account).and_return(true)
 
       subject.destroy
     end
 
-    it "clears :impersonator_id on session" do
+    it 'clears :impersonator_id on session' do
       subject.destroy
 
       expect(session[:impersonator_id]).to be_nil

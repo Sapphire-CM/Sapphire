@@ -1,8 +1,8 @@
 module FeatureHelpers
   def ensure_logged_out!
-    unless @current_account.nil?
-      sign_out
-    end
+    return if current_account.nil?
+
+    sign_out
   end
 
   def sign_in(account = FactoryGirl.create(:account))
@@ -29,19 +29,19 @@ module FeatureHelpers
 
   def click_top_bar_link(*args)
     within '.top-bar' do
-      click_link *args
+      click_link(*args)
     end
   end
 
   def click_side_nav_link(*args)
     within '.side-nav' do
-      click_link *args
+      click_link(*args)
     end
   end
 
   def click_sub_nav_link(*args)
     within '.sub-nav' do
-      click_link *args
+      click_link(*args)
     end
   end
 
@@ -49,11 +49,13 @@ module FeatureHelpers
     within '.reveal-modal.open', &block
   end
 
-  def hidden_inputs(&block)
+  def hidden_inputs
     return unless block_given?
     previous_value = Capybara.ignore_hidden_elements
     Capybara.ignore_hidden_elements = false
+
     yield
+
     Capybara.ignore_hidden_elements = previous_value
   end
 end

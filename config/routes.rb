@@ -67,7 +67,7 @@ Rails.application.routes.draw do
 
     resource :submission, only: [:show, :new, :create], as: :student_submission, controller: "student_submissions"
 
-    resources :submissions, controller: "staff_submissions"
+    resources :submissions, only: [:index], controller: "staff_submissions"
     resources :result_publications, only: :index do
       member do
         put :publish

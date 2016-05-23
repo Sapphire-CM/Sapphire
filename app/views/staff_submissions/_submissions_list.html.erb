@@ -29,7 +29,7 @@
           <% end %>
         </td>
         <td>
-          <%= link_to "Show", exercise_submission_path(submission.exercise, submission),
+          <%= link_to "Show", submission_path(submission),
             class: "small small-12 button" %>
           <%= link_to "Evaluate",
             single_evaluation_path(submission, submission_scope: params[:submission_scope],

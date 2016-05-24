@@ -38,6 +38,6 @@
     </p>
   </div>
 <% else %>
-  cannot create submissions
+  <%= render "submissions/submission_not_modifiable_by_student", submission: @submission %>
 <% end %>
 

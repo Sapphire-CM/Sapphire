@@ -8,7 +8,7 @@
       Folders are not physically created until they contain at least one file.
     </div>
   <% else %>
-    <%= render "submission_not_modifiable", submission_upload: submission_upload %>
+    <%= render "submissions/submission_not_modifiable_by_student", submission: submission_upload.submission %>
   <% end %>
   <%= link_to foundation_icon(:x), '#', class: "close-reveal-modal" %>
 </div>

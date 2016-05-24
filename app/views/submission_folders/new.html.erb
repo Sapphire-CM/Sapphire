@@ -1,0 +1,6 @@
+
+<% title @exercise.title, submission_author(@submission) %>
+
+<%= render "exercises/sidebar" %>
+
+<%= render "form", submission_folder: @submission_folder, submission: @submission, tree: @submission.tree %>

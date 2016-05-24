@@ -21,7 +21,12 @@ class SubmissionPolicy < PunditBasePolicy
   end
 
   def new?
-    create?
+    user.admin? ||
+    user.staff_of_term?(record.exercise.term) ||
+    (
+      record.exercise.term.associated_with?(user) &&
+      record.exercise.term.course.unlocked?
+    )
   end
 
   def create?

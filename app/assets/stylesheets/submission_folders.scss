@@ -1,3 +1,12 @@
 // Place all the styles related to the submission_folders controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+form#new_submission_folder {
+  .validation-progress,
+  .validation-passed,
+  .validation-failed {
+    display: none;
+  }
+}

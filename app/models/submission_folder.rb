@@ -4,10 +4,12 @@ class SubmissionFolder
   attr_accessor :path, :name, :submission
 
   def path
-    @path.gsub(/^submission\/?/, "")
+    (@path || "").gsub(/^submission\/?/, "")
   end
 
   def full_path
+    return "" if path.blank? && name.blank?
+
     p = File.join(path, name)
     Pathname.new(p).cleanpath.to_s.gsub(/^\/+/, "")
   end

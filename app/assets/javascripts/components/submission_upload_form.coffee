@@ -38,7 +38,7 @@ class SubmissionUploadFormController
     $ok_placeholder = $path_el.find(".ok-button-placeholder")
 
     $path_description = $("<p>").addClass("path-description").text("Files will be added to folder ")
-    $path_edit_button = $("<a>").text("edit")
+    $path_edit_button = $("<a>").attr("href", '#').text("edit")
     $path_text_el = $("<strong>").text(path_description())
     $path_ok_button = $("<a>").text("ok").addClass("postfix button")
 
@@ -136,7 +136,6 @@ class SubmissionUploadFormController
             $preview_container.hide()
 
         @on 'success', (file, json) ->
-          console.log("done", file, json)
           $preview_element = $(file.previewElement)
           $preview_element.find(".progress").addClass("success")
           $preview_element.find("*[data-dz-remove]").remove()
@@ -145,8 +144,6 @@ class SubmissionUploadFormController
           $(file.previewElement).find(".status-success").show()
 
         @on 'error', (file) ->
-          console.log("error", file)
-
           message = if file.xhr.status == 401
             "You are not authorized to perform this action"
           else

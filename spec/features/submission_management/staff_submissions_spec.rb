@@ -58,7 +58,7 @@ RSpec.feature 'Managing submissions as a staff member' do
         click_link 'Show'
       end
 
-      expect(page.current_path).to eq(exercise_submission_path(exercise, submissions.first))
+      expect(page.current_path).to eq(tree_submission_path(submissions.first))
     end
 
     scenario 'viewing submissions of different tutorial groups' do
@@ -70,7 +70,7 @@ RSpec.feature 'Managing submissions as a staff member' do
         click_link 'Show'
       end
 
-      expect(page.current_path).to eq(exercise_submission_path(exercise, other_submissions.first))
+      expect(page.current_path).to eq(tree_submission_path(other_submissions.first))
     end
 
     scenario 'viewing unmatched submissions' do
@@ -82,7 +82,7 @@ RSpec.feature 'Managing submissions as a staff member' do
         click_link 'Show'
       end
 
-      expect(page.current_path).to eq(exercise_submission_path(exercise, unmatched_submissions.first))
+      expect(page.current_path).to eq(tree_submission_path(unmatched_submissions.first))
     end
 
     scenario 'ordering submissions'

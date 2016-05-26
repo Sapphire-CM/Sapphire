@@ -1,6 +1,6 @@
 module FeatureHelpers
   def ensure_logged_out!
-    return if current_account.nil?
+    # return if current_account.nil?
 
     sign_out
   end

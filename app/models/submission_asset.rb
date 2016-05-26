@@ -9,8 +9,8 @@
 #   t.string   :import_identifier
 #   t.string   :path,              default: ""
 #   t.string   :filename
-#   t.integer  :processed_size
-#   t.integer  :filesystem_size
+#   t.integer  :processed_size,    default: 0
+#   t.integer  :filesystem_size,   default: 0
 #   t.integer  :extraction_status
 # end
 #

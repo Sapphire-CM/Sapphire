@@ -246,6 +246,10 @@ RSpec.describe Submission do
     end
   end
 
+  describe '#tree' do
+    pending
+  end
+
   describe '#modifiable_by_students?' do
     pending
   end

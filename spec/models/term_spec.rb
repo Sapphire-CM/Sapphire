@@ -38,14 +38,25 @@ describe Term do
       expect(Term.associated_with(account).sort_by(&:id)).to eq(terms.first(3))
     end
 
-    it 'is able to determine whether an account is associated with this term' do
+    it 'is able to determine whether a lecturer account is associated with this term' do
       term = FactoryGirl.create(:term)
 
-      expect(term).to be_associated_with(account)
-      tg = FactoryGirl.create(:tutorial_group, term: term)
-      FactoryGirl.create(:term_registration, :tutor, account: account, term: term, tutorial_group: tg)
+      expect(term).not_to be_associated_with(account)
+      FactoryGirl.create(:term_registration, :lecturer, account: account, term: term)
 
       expect(term).to be_associated_with(account)
+    end
+
+    %I(tutor student).each do |role|
+      it "is able to determine whether a #{role} account is associated with this term" do
+        term = FactoryGirl.create(:term)
+
+        expect(term).not_to be_associated_with(account)
+        tg = FactoryGirl.create(:tutorial_group, term: term)
+        FactoryGirl.create(:term_registration, role, account: account, term: term, tutorial_group: tg)
+
+        expect(term).to be_associated_with(account)
+      end
     end
   end
 end

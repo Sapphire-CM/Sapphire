@@ -95,6 +95,14 @@ RSpec.describe SubmissionAsset do
     it 'sets file sizes'
   end
 
+  describe '.path_exists?' do
+    pending
+  end
+
+  describe '.inside_path' do
+    pending
+  end
+
   describe '#processed_filesize' do
     it 'returns the filesize of the file' do
       subject.file = prepare_static_test_file('simple_submission.txt')

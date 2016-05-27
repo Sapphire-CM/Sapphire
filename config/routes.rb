@@ -92,7 +92,7 @@ Rails.application.routes.draw do
       get "directory(/*path)", controller: :submission_tree, action: :directory, as: :tree_directory
       delete "tree(/*path)", controller: :submission_tree, action: :destroy
     end
-    resource :folder, controller: :submission_folders
+    resource :folder, controller: :submission_folders, only: [:show, :new, :create]
     resource :upload, controller: :submission_uploads, only: [:new, :create]
   end
 

@@ -13,6 +13,10 @@ class SubmissionTreeController < ApplicationController
 
   def directory
     @tree = @submission.tree(params[:path])
+
+    respond_to do |format|
+      format.json
+    end
   end
 
   def destroy

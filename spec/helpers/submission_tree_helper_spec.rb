@@ -11,5 +11,7 @@ require 'rails_helper'
 #   end
 # end
 RSpec.describe SubmissionTreeHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '#submission_tree_path_links' do
+    pending
+  end
 end

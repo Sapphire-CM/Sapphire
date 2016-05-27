@@ -58,12 +58,24 @@ RSpec.describe StudentSubmissionsController do
     let(:exercise) { FactoryGirl.create :exercise, term: term }
 
     it 'creates a submission and assigns it to @submission' do
+      expect_any_instance_of(SubmissionCreationService).to receive(:save).and_call_original
       expect do
         post :create, exercise_id: exercise.id
       end.to change(Submission, :count).by(1)
 
       expect(assigns[:submission]).to be_present
       expect(response).to redirect_to(submission_path(assigns[:submission]))
+    end
+
+    it 'renders #new if the submission could not be created' do
+      allow_any_instance_of(SubmissionCreationService).to receive(:save).and_return(false)
+
+      expect do
+        post :create, exercise_id: exercise.id
+      end.not_to change(Submission, :count)
+
+      expect(assigns[:submission]).to be_present
+      expect(response).to render_template("new")
     end
 
     it 'redirects to the submission_tree page if it already exists' do

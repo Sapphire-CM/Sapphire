@@ -10,20 +10,23 @@ RSpec.describe SubmissionCreationService do
 
   subject { SubmissionCreationService.new(account, submission) }
 
-  describe '.new_with_params' do
+  describe '.initialize_submission_with_exercise' do
     it 'initializes a new submission and adds the exercise' do
-      valid_attributes = {
-        submission_assets_attributes: {
-          '0' => {
-            file: Rack::Test::UploadedFile.new(prepare_static_test_file('submission.zip'), 'application/zip')
-          }
-        }
-      }
+      submission = described_class.initialize_submission_with_exercise(account, exercise)
 
-      service = SubmissionCreationService.new_with_params(account, exercise, valid_attributes)
-      expect(service).to be_a(SubmissionCreationService)
+      expect(submission).to be_a(Submission)
+      expect(submission.exercise).to equal(exercise)
+      expect(submission.exercise_registrations.map(&:term_registration)).to include(term_registration)
+    end
+  end
+
+  describe '.new_with_exercise' do
+    it 'initializes a new submission and adds the exercise' do
+      service = described_class.new_with_exercise(account, exercise)
+      expect(service).to be_a(described_class)
       expect(service.model).to be_a(Submission)
       expect(service.model.exercise).to equal(exercise)
+      expect(service.model.exercise_registrations.map(&:term_registration)).to include(term_registration)
     end
   end
 

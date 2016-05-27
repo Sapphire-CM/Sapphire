@@ -14,9 +14,12 @@ class StudentSubmissionsController < ApplicationController
 
   def create
     authorize @submission
-    @submission.save
 
-    redirect_to submission_path(@submission)
+    if @submission_creation_service.save
+      redirect_to submission_path(@submission)
+    else
+      render :new, alert: "Could not create submission"
+    end
   end
 
   private
@@ -34,13 +37,10 @@ class StudentSubmissionsController < ApplicationController
 
       redirect_to submission_path(@submission)
     else
-      @submission = SubmissionCreationService.initialize_empty_submission(current_account, @exercise)
+      @submission_creation_service = SubmissionCreationService.new_with_exercise(current_account, @exercise)
 
+      @submission = @submission_creation_service.model
       authorize @submission
     end
-  end
-
-  def submission_params
-    params.require(:submission).permit(submission_assets_attributes: [:id, :file, :_destroy])
   end
 end

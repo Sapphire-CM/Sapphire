@@ -1,14 +1,12 @@
 class SubmissionCreationService
-  def self.new_with_params(account, exercise, params)
-    submission = Submission.new(params)
-    submission.exercise = exercise
-    SubmissionCreationService.new(account, submission)
+  def self.initialize_submission_with_exercise(account, exercise)
+    service = self.new_with_exercise(account, exercise)
+    service.model
   end
 
-  def self.initialize_empty_submission(account, exercise)
+  def self.new_with_exercise(account, exercise)
     submission = Submission.new(exercise: exercise)
-    service = SubmissionCreationService.new(account, submission)
-    service.model
+    SubmissionCreationService.new(account, submission)
   end
 
   def initialize(account, submission)
@@ -62,7 +60,7 @@ class SubmissionCreationService
   end
 
   def term_registration
-    @term_registration ||= @account.term_registrations.students.find_by!(term_id: @submission.exercise.term_id)
+    @term_registration ||= @account.term_registrations.students.find_by!(term: @submission.exercise.term)
   end
 
   def build_exercise_registrations!

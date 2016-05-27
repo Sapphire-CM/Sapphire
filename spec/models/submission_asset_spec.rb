@@ -93,6 +93,7 @@ RSpec.describe SubmissionAsset do
     end
 
     it 'sets file sizes'
+    it 'normalizes path'
   end
 
   describe '.path_exists?' do

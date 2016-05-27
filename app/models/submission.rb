@@ -47,8 +47,6 @@ class Submission < ActiveRecord::Base
 
   after_create :create_submission_evaluation
 
-  accepts_nested_attributes_for :submission_assets, allow_destroy: true, reject_if: :all_blank
-
   def self.next(submission, order = :id)
     Submission.where { submissions.send(my { order }) > submission.send(order) }.order(:id).order(order => :asc).first
   end

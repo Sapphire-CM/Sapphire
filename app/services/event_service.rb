@@ -21,6 +21,10 @@ class EventService
     Events::Submission::Extracted.create(submission_extracted_options(submission, zip_submission_asset, extracted_submission_assets))
   end
 
+  def submission_asset_uploaded!(submission_asset)
+    # not yet implemented
+  end
+
   def rating_created!(rating)
     Events::Rating::Created.create(rating_options(rating))
   end

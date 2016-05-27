@@ -5,12 +5,14 @@ class SubmissionUploadsController < ApplicationController
   def new
     @submission_upload = SubmissionUpload.new(submission: @submission)
     @submission_upload.path = params[:path] if params[:path].present?
+
     authorize @submission_upload
   end
 
   def create
     @submission_upload = SubmissionUpload.new(submission_upload_params)
     @submission_upload.submission = @submission
+    @submission_upload.submitter = current_account
 
     authorize @submission_upload
 

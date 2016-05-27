@@ -1,7 +1,7 @@
 class SubmissionUpload
   include ActiveModel::Model
 
-  attr_accessor :submission, :path, :file
+  attr_accessor :submission, :submitter, :path, :file
 
   delegate :term, :students, :exercise, to: :submission
   delegate :errors, :valid?, to: :submission_asset
@@ -13,8 +13,8 @@ class SubmissionUpload
 
   def save
     if save_asset
+      track_event!
       schedule_extraction! if archive_upload?
-      create_or_update_event!
 
       true
     else
@@ -50,7 +50,8 @@ class SubmissionUpload
     ZipExtractionJob.perform_later(submission_asset)
   end
 
-  def create_or_update_event!
-    # pending
+  def track_event!
+    event_service = EventService.new(submitter, term)
+    event_service.submission_asset_uploaded!(submission_asset)
   end
 end

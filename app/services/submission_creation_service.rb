@@ -32,7 +32,6 @@ class SubmissionCreationService
     ActiveRecord::Base.transaction do
       if result = @submission.save
         create_event!
-        create_exercise_registrations!
       end
     end
 
@@ -72,10 +71,6 @@ class SubmissionCreationService
         @submission.exercise_registrations.build(exercise: @submission.exercise, term_registration: term_registration)
       end
     end
-  end
-
-  def create_exercise_registrations!
-    build_exercise_registrations!
   end
 
   def create_event!

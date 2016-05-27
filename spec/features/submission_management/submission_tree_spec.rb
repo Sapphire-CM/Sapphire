@@ -144,6 +144,8 @@ RSpec.describe 'Managing a submission tree as a student' do
           click_link "Upload"
         end
 
+        sleep 1 # neccessary to make this spec more robust - otherwise the edit link does not behave as intended
+
         within '.reveal-modal.open' do
           click_link 'edit'
 

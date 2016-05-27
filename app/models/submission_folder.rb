@@ -11,7 +11,7 @@ class SubmissionFolder
     return "" if path.blank? && name.blank?
 
     p = File.join(path, name)
-    Pathname.new(p).cleanpath.to_s.gsub(/^\/+/, "")
+    Pathname.new(p).cleanpath.to_s.gsub(/^\/+/, "").gsub(/\..*$/, "")
   end
 
   def path_available?

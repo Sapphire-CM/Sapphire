@@ -119,6 +119,10 @@ class SubmissionAsset < ActiveRecord::Base
     where { path =~ my {"#{normalized_path}%"} }
   end
 
+  def self.normalize_path(path)
+    Pathname.new(path.to_s.presence || "").cleanpath.to_s.gsub(/\A\/+|\/+\z/, "").gsub(/\/+/, "/").gsub(/(\.\.\/)+/, "").gsub(/^\.$/, "")
+  end
+
   def complete_path
     File.join(path, filename)
   end
@@ -189,10 +193,6 @@ class SubmissionAsset < ActiveRecord::Base
     end
 
     components
-  end
-
-  def self.normalize_path(path)
-    Pathname.new(path.to_s.presence || "").cleanpath.to_s.gsub(/\A\/+|\/+\z/, "").gsub(/\/+/, "/").gsub(/(\.\.\/)+/, "").gsub(/^\.$/, "")
   end
 
   def extracted_archive_size

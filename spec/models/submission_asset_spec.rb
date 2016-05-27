@@ -269,6 +269,28 @@ RSpec.describe SubmissionAsset do
     end
   end
 
+  describe '.normalize_path' do
+    it 'removes leading and tailing slashes' do
+      expect(described_class.normalize_path("/test/path/")).to eq("test/path")
+    end
+
+    it 'cleans the path' do
+      expect(described_class.normalize_path("test/path/../folder")).to eq("test/folder")
+    end
+
+    it 'replaces multiple slashes with a single one' do
+      expect(described_class.normalize_path("//test//////path//")).to eq("test/path")
+    end
+
+    it 'handles weired paths that resolve to an empty one' do
+      expect(described_class.normalize_path("test/..")).to eq("")
+    end
+
+    it 'restricts the path to the root level' do
+      expect(described_class.normalize_path("asd/../../test")).to eq("test")
+    end
+  end
+
 
   describe '#processed_filesize' do
     it 'returns the filesize of the file' do
@@ -361,39 +383,13 @@ RSpec.describe SubmissionAsset do
   end
 
   describe '#set_normalized_path' do
-    it 'removes leading and tailing slashes' do
-      subject.path = "/test/path/"
+    it 'calls SubmissionAsset.normalize_path with given path' do
+      expect(described_class).to receive(:normalize_path).with("//test////path//").and_call_original
+
+      subject.path = "//test////path//"
       subject.set_normalized_path
 
       expect(subject.path).to eq("test/path")
-    end
-
-    it 'cleans the path' do
-      subject.path = "test/path/../folder"
-      subject.set_normalized_path
-
-      expect(subject.path).to eq("test/folder")
-    end
-
-    it 'replaces multiple slashes with a single one' do
-      subject.path = "//test//////path//"
-      subject.set_normalized_path
-
-      expect(subject.path).to eq("test/path")
-    end
-
-    it 'handles weired paths that resolve to an empty one' do
-      subject.path = "test/.."
-      subject.set_normalized_path
-
-      expect(subject.path).to eq("")
-    end
-
-    it 'restricts the path to the root level' do
-      subject.path = "asd/../../test"
-      subject.set_normalized_path
-
-      expect(subject.path).to eq("test")
     end
   end
 end

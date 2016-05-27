@@ -247,11 +247,83 @@ RSpec.describe Submission do
   end
 
   describe '#tree' do
-    pending
+    let!(:submission_assets) do
+      [
+        FactoryGirl.create(:submission_asset, path: "", file: prepare_static_test_file("simple_submission.txt")),
+        FactoryGirl.create(:submission_asset, path: "/folder", file: prepare_static_test_file("simple_submission.txt"))
+      ]
+    end
+
+    it 'returns a submission tree created by the SubmissionStructureService' do
+      expect(SubmissionStructureService).to receive(:parse_submission).with(subject, "submission").and_call_original
+      expect(subject.tree).to be_a(SubmissionStructure::TreeNode)
+    end
+
+    it 'is able to resolve the tree path' do
+      tree = subject.tree("folder")
+
+      expect(tree).to be_a(SubmissionStructure::TreeNode)
+      expect(tree.path_without_root).to eq("folder")
+    end
+
+    it 'does not raise an error when a non-existent folder is accessed' do
+      expect do
+        subject.tree("does/not/exist")
+      end.not_to raise_error
+    end
   end
 
   describe '#modifiable_by_students?' do
-    pending
+    let(:course) { FactoryGirl.build(:course)}
+    let(:term) { FactoryGirl.build(:term, course: course) }
+    let(:exercise) { FactoryGirl.build(:exercise, term: term) }
+
+    subject { FactoryGirl.build(:submission, exercise: exercise, outdated: false) }
+
+    before :each do
+      allow(exercise).to receive(:before_late_deadline?).and_return(true)
+    end
+
+    it 'returns true if submission is modifiable' do
+      expect(subject).to receive(:outdated?).and_return(false)
+      expect(exercise).to receive(:before_late_deadline?).and_return(true)
+      expect(exercise).to receive(:enable_student_uploads?).and_return(true)
+      expect(course).to receive(:locked?).and_return(false)
+
+      expect(subject.modifiable_by_students?).to be_truthy
+    end
+
+    it 'returns false if submission is outdated' do
+      expect(subject.modifiable_by_students?).to be_truthy
+
+      subject.outdated = true
+
+      expect(subject.modifiable_by_students?).to be_falsey
+    end
+
+    it 'returns false if deadline has passed' do
+      expect(subject.modifiable_by_students?).to be_truthy
+
+      allow(exercise).to receive(:before_late_deadline?).and_return(false)
+
+      expect(subject.modifiable_by_students?).to be_falsey
+    end
+
+    it 'returns false if student uploads are disabled' do
+      expect(subject.modifiable_by_students?).to be_truthy
+
+      exercise.enable_student_uploads = false
+
+      expect(subject.modifiable_by_students?).to be_falsey
+    end
+
+    it 'returns false if course is locked' do
+      expect(subject.modifiable_by_students?).to be_truthy
+
+      course.locked = true
+
+      expect(subject.modifiable_by_students?).to be_falsey
+    end
   end
 
   describe '#submission_assets_changed?' do

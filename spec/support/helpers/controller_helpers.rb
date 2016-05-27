@@ -15,7 +15,7 @@ module ControllerHelpers
     end
   end
 
-  def prepare_rack_uploaded_test_file(file, rename_to: nil)
+  def prepare_rack_uploaded_test_file(file, content_type: "text/plain", rename_to: nil)
     src_file = File.join(Rails.root, 'spec', 'support', 'data', file)
 
     file_path = if rename_to.present?
@@ -26,7 +26,7 @@ module ControllerHelpers
       src_file
     end
 
-    Rack::Test::UploadedFile.new(file_path, 'text/plain')
+    Rack::Test::UploadedFile.new(file_path, content_type)
   end
 end
 

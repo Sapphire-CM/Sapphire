@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
 
   def record_not_found
     respond_to do |format|
-      format.html { render "record_not_found", status: :not_found }
+      format.html { render "record_not_found", status: :not_found, layout: "errors" }
       format.json { render nothing: true, status: :not_found }
     end
   end

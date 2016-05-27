@@ -23,12 +23,22 @@ RSpec.describe SubmissionUploadsController, type: :controller do
   end
 
   describe 'POST #create' do
-    let(:valid_attributes) do
+    let(:valid_plain_file_attributes) do
       {
         submission_id: submission.id,
         submission_upload: {
           path: "test",
-          file: prepare_rack_uploaded_test_file("simple_submission.txt")
+          file: prepare_rack_uploaded_test_file("simple_submission.txt", content_type: "text/plain")
+        }
+      }
+    end
+
+    let(:valid_zip_attributes) do
+      {
+        submission_id: submission.id,
+        submission_upload: {
+          path: "test",
+          file: prepare_rack_uploaded_test_file("submission.zip", content_type: "application/zip")
         }
       }
     end
@@ -48,7 +58,17 @@ RSpec.describe SubmissionUploadsController, type: :controller do
         it 'creates a submission asset' do
           expect_any_instance_of(EventService).to receive(:submission_asset_uploaded!)
           expect do
-            post :create, valid_attributes.merge(format: :html)
+            post :create, valid_plain_file_attributes.merge(format: :html)
+          end.to change(submission.submission_assets, :count).by(1)
+
+          expect(response).to redirect_to(new_submission_upload_path(submission, path: "test"))
+        end
+
+        it 'creates a submission asset and enqueues the zip extraction' do
+          expect_any_instance_of(EventService).to receive(:submission_asset_uploaded!)
+          expect(ZipExtractionJob).to receive(:perform_later)
+          expect do
+            post :create, valid_zip_attributes.merge(format: :html)
           end.to change(submission.submission_assets, :count).by(1)
 
           expect(response).to redirect_to(new_submission_upload_path(submission, path: "test"))
@@ -76,7 +96,7 @@ RSpec.describe SubmissionUploadsController, type: :controller do
         it 'creates a submission asset' do
           expect_any_instance_of(EventService).to receive(:submission_asset_uploaded!)
           expect do
-            post :create, valid_attributes.merge(format: :json)
+            post :create, valid_plain_file_attributes.merge(format: :json)
           end.to change(submission.submission_assets, :count).by(1)
 
           expect(assigns[:submission]).to eq(submission)
@@ -85,6 +105,16 @@ RSpec.describe SubmissionUploadsController, type: :controller do
 
           expect(response).to have_http_status(:ok)
           expect(response).to render_template("create")
+        end
+
+        it 'creates a submission asset and enqueues the zip extraction' do
+          expect_any_instance_of(EventService).to receive(:submission_asset_uploaded!)
+          expect(ZipExtractionJob).to receive(:perform_later)
+          expect do
+            post :create, valid_zip_attributes.merge(format: :html)
+          end.to change(submission.submission_assets, :count).by(1)
+
+          expect(response).to redirect_to(new_submission_upload_path(submission, path: "test"))
         end
       end
 

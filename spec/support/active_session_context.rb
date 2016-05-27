@@ -35,5 +35,5 @@ RSpec.shared_context 'active student session with submission' do
   let(:exercise) { FactoryGirl.create(:exercise, term: term) }
   let(:term) { term_registration.term }
   let(:term_registration) { current_account.term_registrations.first }
-  let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, term_registration: term_registration, exercise: exercise, submission: submission)}
+  let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, term_registration: term_registration, exercise: exercise, submission: submission) }
 end

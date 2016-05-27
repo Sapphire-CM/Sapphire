@@ -1,6 +1,4 @@
 class SubmissionStructure::Directory < SubmissionStructure::TreeNode
-  attr_reader :entries
-
   def initialize(name, parent = nil)
     @name = name
     @nodes = {}
@@ -33,7 +31,7 @@ class SubmissionStructure::Directory < SubmissionStructure::TreeNode
           node = SubmissionStructure::Directory.new(name, old_node)
           old_node << node
         else
-          raise FileDoesNotExist.new("#{name}, #{path}, #{@nodes.keys}")
+          raise SubmissionStructureService::FileDoesNotExist.new("#{name}, #{path}, #{@nodes.keys}")
         end
       end
     end
@@ -47,7 +45,7 @@ class SubmissionStructure::Directory < SubmissionStructure::TreeNode
 
   def submission_assets
     entries.map do |e|
-      assets = if e.is_a? File
+      assets = if e.is_a? SubmissionStructure::File
         e.submission_asset
       else
         e.submission_assets
@@ -63,20 +61,11 @@ class SubmissionStructure::Directory < SubmissionStructure::TreeNode
     true
   end
 
-  def mtime
-    entries.max(&:mtime)
+  def mtime(*args)
+    entries.map(&:mtime).max || 0
   end
 
   def icon
     "folder"
-  end
-
-  def attributes
-    super.merge nodes: @nodes
-  end
-
-  def attributes=(attributes)
-    super
-    @nodes = attributes[:nodes]
   end
 end

@@ -27,3 +27,13 @@ RSpec.shared_context 'active_student_session_context' do
     sign_in current_account
   end
 end
+
+RSpec.shared_context 'active student session with submission' do
+  include_context "active_student_session_context"
+
+  let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
+  let(:exercise) { FactoryGirl.create(:exercise, term: term) }
+  let(:term) { term_registration.term }
+  let(:term_registration) { current_account.term_registrations.first }
+  let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, term_registration: term_registration, exercise: exercise, submission: submission)}
+end

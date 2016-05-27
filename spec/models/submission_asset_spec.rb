@@ -11,6 +11,10 @@ RSpec.describe SubmissionAsset do
     let(:submission) { FactoryGirl.create(:submission) }
     subject { FactoryGirl.build(:submission_asset, submission: submission) }
 
+    describe 'upload size' do
+      pending
+    end
+
     describe 'path uniqueness' do
       it 'validates the uniqueness of a simple path and file combination' do
         expect(subject).to be_valid

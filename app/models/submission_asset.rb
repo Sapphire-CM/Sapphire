@@ -35,7 +35,7 @@ class SubmissionAsset < ActiveRecord::Base
   before_validation :set_content_type, if: :file_changed?
   before_validation :set_filesizes, if: :file_changed?
   before_validation :set_filename, if: :file_changed?
-  before_validation :normalize_path!, if: :path_changed?
+  before_validation :set_normalized_path, if: :path_changed?
   before_validation :set_default_extraction_status, if: :archive?
 
   scope :stylesheets, lambda { where(content_type: Mime::STYLESHEET) }
@@ -83,10 +83,34 @@ class SubmissionAsset < ActiveRecord::Base
     ARCHIVES = [ZIP]
   end
 
-  def self.path_exists?(path)
-    dirname, basename = File.split(path)
+  def self.at_path_components(path)
+    path = normalize_path(path)
+    components = extract_path_components(path)
 
-    inside_path(path).exists? || inside_path(dirname).where(filename: basename).exists?
+    scope = all
+
+    or_clauses = []
+    or_values = []
+
+    components.each do |component|
+      dirname = File.dirname(component)
+      dirname = "" if dirname == "."
+
+      or_clauses << "(path = ? AND filename = ?)"
+      or_values += [dirname, File.basename(component)]
+    end
+
+    or_clauses << "(path LIKE ?)"
+    or_values << "#{path}/%"
+
+    or_clauses << "(path = ?)"
+    or_values << path
+
+    where(or_clauses.join(" OR "), *or_values)
+  end
+
+  def self.path_exists?(path)
+    at_path_components(path).exists?
   end
 
   def self.inside_path(unnormalized_path)
@@ -143,23 +167,43 @@ class SubmissionAsset < ActiveRecord::Base
     end
   end
 
+  def set_normalized_path
+    self.path = self.class.normalize_path(path)
+  end
+
   def archive?
     Mime::ARCHIVES.include? self.content_type
   end
 
   private
 
+  def self.extract_path_components(path)
+    components = []
+    current_path = path.dup
+
+    while current_path.present?
+      components << current_path
+      current_path = File.dirname(current_path)
+
+      current_path = nil if current_path == "."
+    end
+
+    components
+  end
+
+  def self.normalize_path(path)
+    Pathname.new(path.to_s.presence || "").cleanpath.to_s.gsub(/\A\/+|\/+\z/, "").gsub(/\/+/, "/").gsub(/(\.\.\/)+/, "").gsub(/^\.$/, "")
+  end
+
   def extracted_archive_size
     extractor = SubmissionExtractionService.new(self)
     extractor.accumulated_filesize
   end
 
-  def self.normalize_path(path)
-    Pathname.new(path.presence || "").cleanpath.to_s.gsub(/\A\/+|\/+\z/, "").gsub(/\/+/, "/")
-  end
-
   def filename_uniqueness_validation
-    scope = SubmissionAsset.where(filename: filename, path: path, submission_id: submission_id)
+    full_path = File.join(*([self.path, self.filename].map(&:presence).compact))
+
+    scope = SubmissionAsset.at_path_components(full_path)
     scope = scope.where.not(id: id) if persisted?
 
     if scope.exists?
@@ -190,9 +234,5 @@ class SubmissionAsset < ActiveRecord::Base
       errors.add(:file, "is not an archive")
     end
     true
-  end
-
-  def normalize_path!
-    self.path = self.class.normalize_path(path)
   end
 end

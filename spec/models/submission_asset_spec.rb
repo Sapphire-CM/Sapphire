@@ -7,6 +7,79 @@ RSpec.describe SubmissionAsset do
   it { is_expected.to validate_presence_of(:file) }
   it { is_expected.to define_enum_for(:extraction_status).with([:extraction_pending, :extraction_in_progress, :extraction_done, :extraction_failed])}
 
+  describe 'validations' do
+    let(:submission) { FactoryGirl.create(:submission) }
+    subject { FactoryGirl.build(:submission_asset, submission: submission) }
+
+    describe 'path uniqueness' do
+      it 'validates the uniqueness of a simple path and file combination' do
+        expect(subject).to be_valid
+
+        FactoryGirl.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt"))
+
+        subject.path = ""
+        subject.file = prepare_static_test_file("simple_submission.txt")
+
+        expect(subject).not_to be_valid
+      end
+
+      it 'validates the uniqueness of a non-normalized path and file combination' do
+        expect(subject).to be_valid
+
+        FactoryGirl.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt"))
+
+        subject.path = "test/.."
+        subject.file = prepare_static_test_file("simple_submission.txt")
+
+        expect(subject).not_to be_valid
+      end
+
+      it 'detects collision if path is resolves to an existing submission asset with a path at some point' do
+        expect(subject).to be_valid
+
+        sa = FactoryGirl.create(:submission_asset, submission: submission, path: "test/folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
+
+        subject.path = "test/folder/path"
+        subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
+
+        expect(subject).not_to be_valid
+      end
+
+      it 'detects collision if path is resolves to an existing submission asset without a path' do
+        expect(subject).to be_valid
+
+        sa = FactoryGirl.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
+
+        subject.path = "//path/"
+        subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
+
+        expect(subject).not_to be_valid
+      end
+
+      it 'detects collision if path resolves to a path of an existing submission asset' do
+        expect(subject).to be_valid
+
+        sa = FactoryGirl.create(:submission_asset, submission: submission, path: "test/folder", file: prepare_static_test_file("simple_submission.txt"))
+
+        subject.path = "test"
+        subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
+
+        expect(subject).not_to be_valid
+      end
+
+      it 'detects collision if path resolves to a sub_path of an existing submission asset' do
+        expect(subject).to be_valid
+
+        sa = FactoryGirl.create(:submission_asset, submission: submission, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
+
+        subject.path = "test"
+        subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
+
+        expect(subject).not_to be_valid
+      end
+    end
+  end
+
   describe "::Mime" do
     it 'provides constants' do
       expect(SubmissionAsset::Mime::NEWSGROUP_POST).to eq('text/newsgroup')
@@ -64,6 +137,58 @@ RSpec.describe SubmissionAsset do
         expect(SubmissionAsset.for_term(assets.first.submission.exercise.term)).to eq([assets.first])
       end
     end
+
+    describe '.at_path_components' do
+      it 'matches with a simple path and file combination' do
+        sa = FactoryGirl.create(:submission_asset, path: "", file: prepare_static_test_file("simple_submission.txt"))
+
+        expect(described_class.at_path_components("simple_submission.txt").first).to eq(sa)
+      end
+
+      it 'matches non-normalized path and file combination' do
+        sa = FactoryGirl.create(:submission_asset, path: "", file: prepare_static_test_file("simple_submission.txt"))
+
+        expect(described_class.at_path_components("test/../simple_submission.txt").first).to eq(sa)
+      end
+
+      it 'matches if path is resolves to an existing submission asset with a path at some point' do
+        sa = FactoryGirl.create(:submission_asset, path: "test/folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
+
+        expect(described_class.at_path_components("test/folder/path/folder").first).to eq(sa)
+      end
+
+      it 'matches if path is resolves to an existing submission asset without a path' do
+        sa = FactoryGirl.create(:submission_asset, path: "", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
+
+        expect(described_class.at_path_components("//path/folder").first).to eq(sa)
+      end
+
+      it 'matches if path resolves to a path of an existing submission asset' do
+        sa = FactoryGirl.create(:submission_asset, path: "test/folder", file: prepare_static_test_file("simple_submission.txt"))
+
+        expect(described_class.at_path_components("test/folder").first).to eq(sa)
+
+      end
+
+      it 'matches if path resolves to a sub_path of an existing submission asset' do
+        sa = FactoryGirl.create(:submission_asset, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
+
+        expect(described_class.at_path_components("test/folder").first).to eq(sa)
+      end
+
+      it 'does not match if path is the same but the file names differ' do
+        sa = FactoryGirl.create(:submission_asset, path: "test", file: prepare_static_test_file("simple_submission.txt", rename_to: "file"))
+
+        expect(described_class.at_path_components("test/file2").exists?).to be_falsey
+      end
+
+      it 'does not match if path contains only a part of a path' do
+        sa = FactoryGirl.create(:submission_asset, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
+
+        expect(described_class.at_path_components("test/fol").exists?).to be_falsey
+      end
+
+    end
   end
 
   describe 'save callbacks' do
@@ -92,17 +217,58 @@ RSpec.describe SubmissionAsset do
       expect(subject.content_type).to eq(SubmissionAsset::Mime::PLAIN_TEXT)
     end
 
-    it 'sets file sizes'
-    it 'normalizes path'
+    it 'sets the filename' do
+      expect(subject.filename).to be_blank
+      subject.file = prepare_static_test_file('simple_submission.txt')
+      subject.save
+
+      expect(subject.filename).to eq('simple_submission.txt')
+    end
+
+    it 'sets file sizes' do
+      subject.file = prepare_static_test_file('simple_submission.txt')
+
+      subject.save
+
+      expect(subject.processed_size)
+    end
+
+    it 'normalizes path' do
+      expect(subject).to receive(:set_normalized_path).and_return(true)
+
+      subject.path = "some/path"
+      subject.save
+    end
   end
 
   describe '.path_exists?' do
-    pending
+    it 'calls .at_path_components with given path' do
+      expect(described_class).to receive(:at_path_components).with("test/path").and_call_original
+
+      described_class.path_exists?("test/path")
+    end
   end
 
   describe '.inside_path' do
-    pending
+    let!(:assets_outside_path) do
+      [
+        FactoryGirl.create(:submission_asset, path: "test", file: prepare_static_test_file("simple_submission.txt", rename_to: "file")),
+        FactoryGirl.create(:submission_asset, path: "", file: prepare_static_test_file("simple_submission.txt", rename_to: "file"))
+      ]
+    end
+
+    let!(:assets_inside_path) do
+      [
+        FactoryGirl.create(:submission_asset, path: "test/folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "folder")),
+        FactoryGirl.create(:submission_asset, path: "test/folder/path", file: prepare_static_test_file("simple_submission.txt", rename_to: "folder"))
+      ]
+    end
+
+    it 'returns all submission assets inside given path' do
+      expect(described_class.inside_path("test/folder")).to match_array(assets_inside_path)
+    end
   end
+
 
   describe '#processed_filesize' do
     it 'returns the filesize of the file' do
@@ -168,6 +334,66 @@ RSpec.describe SubmissionAsset do
       subject.content_type = "text/plain"
 
       expect(subject.archive?).to be_falsey
+    end
+  end
+
+  describe '#set_filesizes' do
+    context 'non archive' do
+      it 'sets filesystem_size and processed_size' do
+        subject.file = prepare_static_test_file("simple_submission.txt")
+        subject.set_filesizes
+
+        expect(subject.filesystem_size).to eq(447)
+        expect(subject.processed_size).to eq(447)
+      end
+    end
+
+    context 'archives' do
+      it 'sets filesystem_size and processed_size' do
+        subject.file = prepare_static_test_file("submission.zip")
+        subject.content_type = SubmissionAsset::Mime::ZIP
+        subject.set_filesizes
+
+        expect(subject.filesystem_size).to eq(1059)
+        expect(subject.processed_size).to eq(458)
+      end
+    end
+  end
+
+  describe '#set_normalized_path' do
+    it 'removes leading and tailing slashes' do
+      subject.path = "/test/path/"
+      subject.set_normalized_path
+
+      expect(subject.path).to eq("test/path")
+    end
+
+    it 'cleans the path' do
+      subject.path = "test/path/../folder"
+      subject.set_normalized_path
+
+      expect(subject.path).to eq("test/folder")
+    end
+
+    it 'replaces multiple slashes with a single one' do
+      subject.path = "//test//////path//"
+      subject.set_normalized_path
+
+      expect(subject.path).to eq("test/path")
+    end
+
+    it 'handles weired paths that resolve to an empty one' do
+      subject.path = "test/.."
+      subject.set_normalized_path
+
+      expect(subject.path).to eq("")
+    end
+
+    it 'restricts the path to the root level' do
+      subject.path = "asd/../../test"
+      subject.set_normalized_path
+
+      expect(subject.path).to eq("test")
     end
   end
 end

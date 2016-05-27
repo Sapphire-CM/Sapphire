@@ -1,13 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe SubmissionTreeController, type: :controller do
-  include_context "active_student_session_context"
-
-  let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
-  let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-  let(:term) { term_registration.term }
-  let(:term_registration) { current_account.term_registrations.first }
-  let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, term_registration: term_registration, exercise: exercise, submission: submission)}
+  include_context "active student session with submission"
 
   describe 'GET #show' do
     it 'assigns @submission, @exercise, @term, @tree, and @submission_upload' do
@@ -60,6 +54,7 @@ RSpec.describe SubmissionTreeController, type: :controller do
       end.to change(submission.submission_assets, :count).by(-2)
 
       expect(submission.submission_assets(true).first.path).to be_blank
+      expect(response).to redirect_to(tree_submission_path(submission.id, path: ""))
     end
   end
 end

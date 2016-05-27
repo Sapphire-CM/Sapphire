@@ -14,6 +14,20 @@ module ControllerHelpers
         .and_return(account)
     end
   end
+
+  def prepare_rack_uploaded_test_file(file, rename_to: nil)
+    src_file = File.join(Rails.root, 'spec', 'support', 'data', file)
+
+    file_path = if rename_to.present?
+      dst_file = File.join(Rails.root, 'tmp', rename_to.presence || file)
+      FileUtils.cp src_file, dst_file
+      dst_file
+    else
+      src_file
+    end
+
+    Rack::Test::UploadedFile.new(file_path, 'text/plain')
+  end
 end
 
 RSpec.configure do |config|

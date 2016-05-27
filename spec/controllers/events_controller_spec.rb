@@ -7,10 +7,10 @@ RSpec.describe EventsController, type: :controller do
     let(:term) { FactoryGirl.create(:term) }
     let(:another_term) { FactoryGirl.create(:term) }
 
-    it 'raises ActionController::UnknownFormat format other than json is requested' do
-      expect do
-        get :index, term_id: term.id
-      end.to raise_error(ActionController::UnknownFormat)
+    it 'renders a 404 response if a format other than json is requested' do
+      get :index, term_id: term.id, format: :html
+
+      expect(response).to have_http_status(:not_found)
     end
 
     describe 'scoping' do

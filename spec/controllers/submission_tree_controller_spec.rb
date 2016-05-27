@@ -38,9 +38,10 @@ RSpec.describe SubmissionTreeController, type: :controller do
     end
 
     it 'does not respond to html' do
-      expect do
-        get(:directory, id: submission.id, format: :html)
-      end.to raise_error(ActionController::UnknownFormat)
+      get(:directory, id: submission.id, format: :html)
+
+      expect(response).to render_template("record_not_found")
+      expect(response).to have_http_status(:not_found)
     end
   end
 

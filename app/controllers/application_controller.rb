@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActionController::UnknownFormat, with: :record_not_found
 
   private
 
@@ -34,7 +35,10 @@ class ApplicationController < ActionController::Base
   end
 
   def record_not_found
-    render "record_not_found"
+    respond_to do |format|
+      format.html { render "record_not_found", status: :not_found }
+      format.json { render nothing: true, status: :not_found }
+    end
   end
 
   def js_redirect_to(path, flashes = {})

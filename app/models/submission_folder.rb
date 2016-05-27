@@ -8,10 +8,10 @@ class SubmissionFolder
   end
 
   def full_path
-    return "" if path.blank? && name.blank?
+    return path if name.blank?
 
     p = File.join(path, name)
-    Pathname.new(p).cleanpath.to_s.gsub(/^\/+/, "").gsub(/\..*$/, "")
+    SubmissionAsset.normalize_path(p)
   end
 
   def path_available?

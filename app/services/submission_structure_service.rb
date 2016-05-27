@@ -6,6 +6,7 @@ class SubmissionStructureService
   end
 
   private
+
   def self.parse_structure(submission_assets, root_directory_name)
     parser = DirectoryTreeParser.new(root_directory_name)
 

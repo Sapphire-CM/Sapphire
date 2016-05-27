@@ -1,5 +1,5 @@
 class SubmissionStructure::TreeNode
-  attr_reader :name, :size, :mtime, :icon, :path
+  attr_reader :name, :size, :mtime, :icon
   attr_accessor :parent
 
   def directory?
@@ -14,18 +14,6 @@ class SubmissionStructure::TreeNode
     parent.blank?
   end
 
-  def size
-    0
-  end
-
-  def mtime
-    nil
-  end
-
-  def icon
-    ""
-  end
-
   def path
     @path ||= root? ? name : ::File.join(parent.path, name)
   end
@@ -35,24 +23,7 @@ class SubmissionStructure::TreeNode
   end
 
   def relative_path
-    if path[0] == "/"
-      path[1..-1]
-    else
-      path
-    end
-  end
-
-  def attributes
-    {name: name, parent: parent}
-  end
-
-  def marshal_dump
-    attributes
-  end
-
-  def marshal_load(attributes)
-    self.name = attributes[:name]
-    self.parent = attributes[:parent]
+    (path.presence || "").gsub(/^\/+/, "")
   end
 
   def path_components

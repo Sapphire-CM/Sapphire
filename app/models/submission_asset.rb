@@ -186,7 +186,11 @@ class SubmissionAsset < ActiveRecord::Base
   private
 
   def self.extract_path_components(path)
-    Pathname.new(path).descend.to_a
+    components = []
+    Pathname.new(path).descend do |component|
+      components << component
+    end
+    components
   end
 
   def extracted_archive_size

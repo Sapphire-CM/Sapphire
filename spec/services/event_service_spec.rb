@@ -71,80 +71,85 @@ RSpec.describe EventService do
       end
     end
 
-    describe '#submission_updated!' do
-      pending "remove this method maybe?"
+    describe '#submission_updated! (deprecated - only )' do
+      it 'creates a Events::Submission::Updated event' do
+        expect do
+          expect(subject.submission_updated!(submission)).to be_a Events::Submission::Updated
+        end.to change(Events::Submission::Updated, :count).by(1)
+      end
 
-      # it 'creates a Events::Submission::Updated event' do
- #        expect do
- #          expect(subject.submission_updated!(submission)).to be_a Events::Submission::Updated
- #        end.to change(Events::Submission::Updated, :count).by(1)
- #      end
- #
- #      it 'correctly sets up and returns the event' do
- #        FactoryGirl.create_list(:submission_asset, 3, submission: submission, path: '/', content_type: SubmissionAsset::Mime::PLAIN_TEXT)
- #
- #        added_asset, updated_asset, removed_asset = *submission.submission_assets(true)
- #
- #        allow(added_asset).to receive(:new_record?).and_return(true)
- #        allow(updated_asset).to receive(:changed?).and_return(true)
- #        allow(updated_asset).to receive(:changes).and_return('file' => ['simple_submission.txt', 'submission_asset_iso_latin.txt'])
- #        allow(removed_asset).to receive(:marked_for_destruction?).and_return(true)
- #
- #        event = subject.submission_updated!(submission)
- #
- #        expect(event.submission_id).to eq(submission.id)
- #        expect(event.exercise_id).to eq(exercise.id)
- #        expect(event.exercise_title).to eq(exercise.title)
- #        expect(event.submission_assets).to match(added: [
- #          {
- #            file: 'simple_submission.txt',
- #            path: '/',
- #            content_type: SubmissionAsset::Mime::PLAIN_TEXT
- #          }
- #        ],
- #          updated: [
- #            {
- #              file: ['simple_submission.txt', 'submission_asset_iso_latin.txt'],
- #              path: '/',
- #              content_type: SubmissionAsset::Mime::PLAIN_TEXT
- #            }
- #          ], destroyed: [
- #            {
- #              file: 'simple_submission.txt',
- #              path: '/',
- #              content_type: SubmissionAsset::Mime::PLAIN_TEXT
- #            }
- #          ])
- #      end
+      it 'correctly sets up and returns the event' do
+        FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'one')
+        FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'two')
+        FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'three')
+
+        added_asset, updated_asset, removed_asset = *submission.submission_assets(true)
+
+        allow(added_asset).to receive(:new_record?).and_return(true)
+        allow(updated_asset).to receive(:changed?).and_return(true)
+        allow(updated_asset).to receive(:changes).and_return('file' => ['simple_submission.txt', 'submission_asset_iso_latin.txt'])
+        allow(removed_asset).to receive(:marked_for_destruction?).and_return(true)
+
+        event = subject.submission_updated!(submission)
+
+        expect(event.submission_id).to eq(submission.id)
+        expect(event.exercise_id).to eq(exercise.id)
+        expect(event.exercise_title).to eq(exercise.title)
+        expect(event.submission_assets).to match(added: [
+          {
+            file: 'simple_submission.txt',
+            path: 'one',
+            content_type: SubmissionAsset::Mime::PLAIN_TEXT
+          }
+        ],
+          updated: [
+            {
+              file: ['simple_submission.txt', 'submission_asset_iso_latin.txt'],
+              path: 'two',
+              content_type: SubmissionAsset::Mime::PLAIN_TEXT
+            }
+          ], destroyed: [
+            {
+              file: 'simple_submission.txt',
+              path: 'three',
+              content_type: SubmissionAsset::Mime::PLAIN_TEXT
+            }
+          ])
+      end
     end
 
     describe '#submission_extracted!' do
-      pending "remove me maybe?"
-      # let(:zip_submission_asset) { FactoryGirl.create(:submission_asset, submission: submission, path: 'zip/path', file: prepare_static_test_file('submission.zip')) }
-#       let(:extracted_submission_assets) { FactoryGirl.create_list(:submission_asset, 3, submission: submission, path: 'path/to/asset', content_type: SubmissionAsset::Mime::PLAIN_TEXT) }
-#
-#       it 'creates a Events::Submission::Extracted event' do
-#         expect do
-#           expect(subject.submission_extracted!(submission, zip_submission_asset, extracted_submission_assets)).to be_a Events::Submission::Extracted
-#         end.to change(Events::Submission::Extracted, :count).by(1)
-#       end
-#
-#       it 'correctly sets up and returns the event' do
-#         event = subject.submission_extracted!(submission, zip_submission_asset, extracted_submission_assets)
-#
-#         expect(event.submission_id).to eq(submission.id)
-#         expect(event.exercise_id).to eq(exercise.id)
-#         expect(event.exercise_title).to eq(exercise.title)
-#         expect(event.zip_file).to eq('submission.zip')
-#         expect(event.zip_path).to eq('zip/path')
-#         expect(event.extracted_submission_assets).to match(extracted_submission_assets.map { |sa|
-#           {
-#             file: File.basename(sa.file.to_s),
-#             path: 'path/to/asset',
-#             content_type: SubmissionAsset::Mime::PLAIN_TEXT
-#           }
-#         })
-#       end
+      let(:zip_submission_asset) { FactoryGirl.create(:submission_asset, submission: submission, path: 'zip/path', file: prepare_static_test_file('submission.zip')) }
+      let(:extracted_submission_assets) do
+        [
+          FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'one'),
+          FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'two'),
+          FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'three')
+        ]
+      end
+
+      it 'creates a Events::Submission::Extracted event' do
+        expect do
+          expect(subject.submission_extracted!(submission, zip_submission_asset, extracted_submission_assets)).to be_a Events::Submission::Extracted
+        end.to change(Events::Submission::Extracted, :count).by(1)
+      end
+
+      it 'correctly sets up and returns the event' do
+        event = subject.submission_extracted!(submission, zip_submission_asset, extracted_submission_assets)
+
+        expect(event.submission_id).to eq(submission.id)
+        expect(event.exercise_id).to eq(exercise.id)
+        expect(event.exercise_title).to eq(exercise.title)
+        expect(event.zip_file).to eq('submission.zip')
+        expect(event.zip_path).to eq('zip/path')
+        expect(event.extracted_submission_assets).to match(extracted_submission_assets.map { |sa|
+          {
+            file: File.basename(sa.file.to_s),
+            path: sa.path,
+            content_type: SubmissionAsset::Mime::PLAIN_TEXT
+          }
+        })
+      end
     end
   end
 
@@ -282,6 +287,29 @@ RSpec.describe EventService do
         expect(event.exercise_title).to eq(exercise.title)
         expect(event.points).to eq(rating_group.points)
       end
+    end
+  end
+
+  context 'submission asset upload events' do
+    let(:submission) { FactoryGirl.create(:submission) }
+    let(:exercise) { submission.exercise }
+    let(:term) { exercise.term }
+
+    describe '#submission_asset_uploaded!' do
+      it 'creates a new Events::Submission::Updated if the last one is older than 30 minutes'
+      it 'creates a new Events::Submission::Updated if another event has been created since then'
+      it 'updates the last new Events::Submission::Updated if the last one was created less than 30 minutes ago and there was no other event happening since'
+      it 'updates the last new Events::Submission::Updated if there were events from other students in the meantime'
+    end
+
+    describe '#submission_asset_extracted!' do
+      it 'calls #submission_asset_uploaded! with each given submission_asset'
+    end
+  end
+
+  context 'submission asset removals' do
+    describe '#submission_assets_removed!' do
+      it 'creates a Events::Submission::AssetsRemoved'
     end
   end
 

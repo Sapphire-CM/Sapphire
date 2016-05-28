@@ -1,8 +1,6 @@
 require "zip"
 
 class SubmissionExtractionService
-  include EventSourcing
-
   class ExtractionError < StandardError; end
 
   attr_accessor :submission_asset, :created_assets, :errors
@@ -18,6 +16,7 @@ class SubmissionExtractionService
   end
 
   def perform!
+    return unless submission_asset.archive?
     processed_size = submission_asset.processed_size
 
     ActiveRecord::Base.transaction do
@@ -28,14 +27,18 @@ class SubmissionExtractionService
 
         extract_zip!
         remove_archive_asset!
-        # create_event!
+        create_success_event!
 
       rescue ExtractionError
         submission_asset.extraction_status = :extraction_failed
         submission_asset.processed_size = processed_size
         submission_asset.save(validate: false)
+
+        create_failed_event!
       end
     end
+
+    schedule_zip_archives_for_extraction!
   end
 
   def accumulated_filesize
@@ -68,12 +71,12 @@ class SubmissionExtractionService
 
         asset_path = File.join(submission_asset.path, zip_path)
 
-        submission_asset = submission.submission_assets.create(file: File.open(destination), path: asset_path)
+        new_submission_asset = submission.submission_assets.create(file: File.open(destination), path: asset_path, submitted_at: submission_asset.submitted_at)
 
-        unless submission_asset.valid?
-          self.errors << submission_asset.errors
+        unless new_submission_asset.valid?
+          self.errors << new_submission_asset.errors
         else
-          self.created_assets << submission_asset
+          self.created_assets << new_submission_asset
         end
       end
     end
@@ -96,8 +99,22 @@ class SubmissionExtractionService
     submission_asset.destroy
   end
 
-  def create_event!
-    event_service.submission_extracted!(submission, submission_assets, new_submission_assets)
+  def event_service
+    EventService.new(current_account, current_term)
+  end
+
+  def create_success_event!
+    event_service.submission_asset_extracted!(submission_asset, created_assets)
+  end
+
+  def create_failed_event!
+    event_service.submission_asset_extraction_failed!(submission_asset)
+  end
+
+  def schedule_zip_archives_for_extraction!
+    created_assets.select(&:archive?).each do |submission_asset|
+      ZipExtractionJob.perform_later(submission_asset)
+    end
   end
 
   def current_term

@@ -25,6 +25,14 @@ class EventService
     # not yet implemented
   end
 
+  def submission_asset_extracted!(submission_asset, created_submission_assets)
+    # not yet implemented
+  end
+
+  def submission_asset_extraction_failed!(submission_asset)
+    # not yet implemented
+  end
+
   def rating_created!(rating)
     Events::Rating::Created.create(rating_options(rating))
   end

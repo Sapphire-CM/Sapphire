@@ -21,119 +21,128 @@ RSpec.describe SubmissionExtractionService do
     end
   end
 
-  describe '#perform' do
+  describe '#perform!' do
+    let(:submitter) { FactoryGirl.create(:account) }
+    let(:zip_asset) { FactoryGirl.build(:submission_asset, :zip, path: "") }
+    let(:submission) { zip_asset.submission }
+
+    subject { described_class.new(zip_asset) }
+
     context 'with valid ZIP archive' do
-      it 'extracts zip asset'
-      it 'creates a event'
-      it 'removes zip asset, if extraction succeeded'
+      it 'extracts zip asset' do
+        zip_asset.path = "folder"
+        expect do
+          subject.perform!
+        end.to change(SubmissionAsset, :count).by(2)
+
+        expect(submission.submission_assets(true).map(&:complete_path)).to match_array(%w(folder/simple_submission.txt folder/some_xa__x_xu__x_xo__x_x__x_nasty_file.txt))
+      end
+
+      it 'notifies the event service' do
+        expect_any_instance_of(EventService).to receive(:submission_asset_extracted!)
+        subject.perform!
+      end
+
+      it 'removes zip asset, if extraction succeeded' do
+        subject.perform!
+
+        expect(SubmissionAsset.exists?(id: zip_asset.id)).to be_falsey
+      end
+
+      it 'keeps the submission' do
+        subject.perform!
+
+        submission.submission_assets(true).each do |submission_asset|
+          expect(submission_asset.submission).to eq(submission)
+        end
+      end
+
+      it 'keeps the submitted_at timestamp' do
+        submission_date = 2.days.ago
+        zip_asset.update(submitted_at: submission_date)
+
+        subject.perform!
+
+        submission.submission_assets(true).each do |submission_asset|
+          expect(submission_asset.submitted_at).to eq(submission_date)
+        end
+      end
+
+      it 'keeps the zip path of the zip archive' do
+        zip_asset.path = "funny/path"
+
+        subject.perform!
+
+        submission.submission_assets(true).each do |submission_asset|
+          expect(submission_asset.path).to eq("funny/path")
+        end
+      end
+
+      it 'does not extract filtered files' do
+        zip_asset.file = prepare_static_test_file("submission_nested_archives.zip")
+
+        subject.perform!
+
+        expect(submission.submission_assets(true).map(&:complete_path)).to match_array(%w(import_data.csv import_data_not.csv simple_submission.txt some_folder/submission.zip some_other_folder/some_dir/import_data_invalid_parsing.csv))
+      end
+
+      it 'schedules nested zip files for extraction' do
+        zip_asset.file = prepare_static_test_file("submission_nested_archives.zip")
+        expect(ZipExtractionJob).to receive(:perform_later)
+
+        subject.perform!
+      end
     end
 
     context 'with invalid ZIP archive' do
-      it 'checks if the asset is a zip archive'
-      it 'sets errors for failed submission assets'
-      it 'does create an event indicating failed extraction'
-      it 'does not remove asset if errors occured'
+      it 'does not raise an error if the asset is not a zip archive' do
+        zip_asset.file = prepare_static_test_file("simple_submission.txt")
+        zip_asset.set_content_type
+
+        expect do
+          subject.perform!
+        end.not_to raise_error
+      end
+    end
+
+    context 'with name collisions' do
+      let!(:existing_submission_asset) { FactoryGirl.create(:submission_asset, submission: submission, file: prepare_static_test_file("simple_submission.txt"), path: "") }
+
+      it 'sets errors for failed submission assets and updates submission' do
+        subject.perform!
+
+        expect(subject.errors.length).to eq(1)
+        expect(zip_asset.extraction_status.to_s).to eq("extraction_failed")
+      end
+
+      it 'notifies the event service of failed extraction' do
+        expect_any_instance_of(EventService).to receive(:submission_asset_extraction_failed!)
+
+        subject.perform!
+      end
+
+      it 'does not remove asset if errors occured' do
+        subject.perform!
+
+        expect(SubmissionAsset.exists?(id: zip_asset.id)).to be_truthy
+      end
     end
   end
 
   describe '#accumulated_filesize' do
-    it 'returns the sum of filesizes after extracting all files'
+    let(:zip_asset) { FactoryGirl.create(:submission_asset, :zip) }
+    let(:plain_text_asset) { FactoryGirl.create(:submission_asset, :plain_text) }
+
+    subject { described_class.new(zip_asset) }
+
+    it 'returns the sum of filesizes after extracting all files' do
+      expect(subject.accumulated_filesize).to eq(458)
+    end
+
+    it 'returns 0 if the asset is not a zip file' do
+      subject = described_class.new(plain_text_asset)
+
+      expect(subject.accumulated_filesize).to eq(0)
+    end
   end
-
-  # ==========================================================
-  # = Moved here from student_submissions_controller#extract =
-  # ==========================================================
-  #  let!(:term_registration) { current_account.term_registrations.first }
-  #  let!(:exercise) { FactoryGirl.create :exercise, term: term_registration.term }
-  #  let!(:submission) { FactoryGirl.create :submission, exercise: exercise, submitter: current_account }
-  #  let!(:exercise_registration) { FactoryGirl.create :exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission }
-  #
-  #  def file_extraction_params(file, extract = '1')
-  #    {
-  #      id: Base64.encode64(file).strip,
-  #      extract: extract,
-  #    }
-  #  end
-  #
-  #  it 'extracts the checked files' do
-  #    sa = submission.submission_assets.create file: prepare_static_test_file('submission_nested_archives.zip')
-  #
-  #    params = {
-  #      exercise_id: exercise.id,
-  #      submission_assets: {
-  #        sa.id.to_s => {
-  #          'file_0' => file_extraction_params('simple_submission.txt'),
-  #          'file_1' => file_extraction_params('import_data.csv'),
-  #          'file_2' => file_extraction_params('some_folder/submission.zip'),
-  #          'file_3' => file_extraction_params('some_other_folder/some_dir/import_data_invalid_parsing.csv'),
-  #        }
-  #      }
-  #    }
-  #
-  #    expect do
-  #      post :extract, params
-  #    end.to change(Events::Submission::Extracted, :count).by(1)
-  #    submission.reload
-  #
-  #    current_submission_assets = submission.submission_assets.map { |sa| [File.basename(sa.file.to_s), sa.path] }
-  #
-  #    # original archive should be removed
-  #    expect(SubmissionAsset.exists?(sa.id)).to eq(false)
-  #    expect(current_submission_assets).not_to include(['submission_nested_archives.zip', ''])
-  #
-  #    # files extracted from archive
-  #    expect(current_submission_assets).to include(['simple_submission.txt', ''])
-  #    expect(current_submission_assets).to include(['import_data.csv', ''])
-  #    expect(current_submission_assets).to include(['submission.zip', 'some_folder'])
-  #    expect(current_submission_assets).to include(['import_data_invalid_parsing.csv', 'some_other_folder/some_dir'])
-  #
-  #    # files not extracted from archive
-  #    expect(current_submission_assets).not_to include(['import_data_not.csv', ''])
-  #  end
-  #
-  #  it 'checks the excluded patterns' do
-  #    sa = submission.submission_assets.create file: prepare_static_test_file('submission_nested_archives.zip')
-  #
-  #    params = {
-  #      exercise_id: exercise.id,
-  #      submission_assets: {
-  #        sa.id.to_s => {
-  #          'file_0' => file_extraction_params('simple_submission.txt'),
-  #          'file_1' => file_extraction_params('.DS_Store',),
-  #          'file_2' => file_extraction_params('.git/config'),
-  #        }
-  #      }
-  #    }
-  #
-  #    post :extract, params
-  #    submission.reload
-  #
-  #    current_submission_assets = submission.submission_assets.map { |sa| [File.basename(sa.file.to_s), sa.path] }
-  #
-  #    expect(current_submission_assets).to include(['simple_submission.txt', ''])
-  #    expect(current_submission_assets).not_to include(['.DS_Store', ''])
-  #    expect(current_submission_assets).not_to include(['config', '.git'])
-  #  end
-
-
-  # it 'checks the new submission size properly' do
-  #   exercise.update! enable_max_upload_size: true, maximum_upload_size: 800
-  #   sa = submission.submission_assets.create file: prepare_static_test_file('simple_submission.txt')
-  #   sa = submission.submission_assets.create file: prepare_static_test_file('submission_nested_archives.zip')
-  #
-  #   params = {
-  #     exercise_id: exercise.id,
-  #     submission_assets: {
-  #       sa.id.to_s => {
-  #         'file_0' => file_extraction_params('simple_submission.txt'),
-  #       }
-  #     }
-  #   }
-  #   expect do
-  #     post :extract, params
-  #   end.not_to change(Events::Submission::Extracted, :count)
-  #
-  #   expect(response).to redirect_to(catalog_exercise_student_submission_path(exercise))
-  #   expect(flash[:alert]).to eq('Maximum upload size reached')
-  # end
 end

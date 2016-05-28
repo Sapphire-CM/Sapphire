@@ -395,22 +395,26 @@ RSpec.describe SubmissionAsset do
   end
 
   describe '#archive?' do
-    it "returns true if content_type is 'application/zip'" do
-      subject.content_type = "application/zip"
+    SubmissionAsset::Mime::ARCHIVES.each do |content_type|
+      it "returns true if content_type is '#{content_type}'" do
+        subject.content_type = content_type
 
-      expect(subject.archive?).to be_truthy
+        expect(subject.archive?).to be_truthy
+      end
     end
 
-    it "returns false if content_type is not 'application/zip'" do
+    it "returns false if content_type is not included in SubmissionAsset::Mime::ARCHIVES" do
       subject.content_type = "text/plain"
+
+      expect(SubmissionAsset::Mime::ARCHIVES).not_to include(subject.content_type)
 
       expect(subject.archive?).to be_falsey
     end
   end
 
   describe '#set_filesizes' do
-    context 'non archive' do
-      it 'sets filesystem_size and processed_size' do
+    context 'non archive assets' do
+      it 'sets filesystem_size and processed_size to the same size' do
         subject.file = prepare_static_test_file("simple_submission.txt")
         subject.set_filesizes
 
@@ -419,8 +423,8 @@ RSpec.describe SubmissionAsset do
       end
     end
 
-    context 'archives' do
-      it 'sets filesystem_size and processed_size' do
+    context 'archive assets' do
+      it 'sets filesystem_size and processed_size to different sizes' do
         subject.file = prepare_static_test_file("submission.zip")
         subject.content_type = SubmissionAsset::Mime::ZIP
         subject.set_filesizes

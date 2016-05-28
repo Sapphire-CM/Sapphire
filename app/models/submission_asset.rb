@@ -126,7 +126,9 @@ class SubmissionAsset < ActiveRecord::Base
   end
 
   def complete_path
-    File.join(path, filename)
+    return "" unless filename.present?
+
+    File.join(*([path.presence, filename].compact))
   end
 
   def set_submitted_at

@@ -305,6 +305,41 @@ RSpec.describe SubmissionAsset do
     end
   end
 
+  describe '#complete_path' do
+    it 'returns the joined path' do
+      subject.path = "folder"
+      subject.filename = "filename.txt"
+
+      expect(subject.complete_path).to eq("folder/filename.txt")
+    end
+
+    it 'does not raise an error if the path is nil' do
+      subject.path = nil
+      subject.filename = "file.txt"
+
+      expect do
+        expect(subject.complete_path).to eq("file.txt")
+      end.not_to raise_error
+    end
+
+    it 'returns an empty string if the filename is nil' do
+      subject.path = "path"
+      subject.filename = nil
+
+      expect do
+        expect(subject.complete_path).to eq("")
+      end.not_to raise_error
+    end
+
+    it 'returns an empty string if the filename is empty' do
+      subject.path = "path"
+      subject.filename = ""
+
+      expect do
+        expect(subject.complete_path).to eq("")
+      end.not_to raise_error
+    end
+  end
 
   describe '#processed_filesize' do
     it 'returns the filesize of the file' do

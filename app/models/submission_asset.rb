@@ -85,6 +85,7 @@ class SubmissionAsset < ActiveRecord::Base
 
   def self.at_path_components(path)
     path = normalize_path(path)
+
     components = extract_path_components(path)
 
     scope = all
@@ -182,17 +183,7 @@ class SubmissionAsset < ActiveRecord::Base
   private
 
   def self.extract_path_components(path)
-    components = []
-    current_path = path.dup
-
-    while current_path.present?
-      components << current_path
-      current_path = File.dirname(current_path)
-
-      current_path = nil if current_path == "."
-    end
-
-    components
+    Pathname.new(path).descend.to_a
   end
 
   def extracted_archive_size

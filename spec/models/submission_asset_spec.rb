@@ -212,6 +212,16 @@ RSpec.describe SubmissionAsset do
       Timecop.return
     end
 
+    it 'does not override submitted_at if it is present' do
+      date = 3.days.ago
+
+      subject.submitted_at = date
+      subject.file = prepare_static_test_file('simple_submission_2.txt')
+      subject.save
+
+      expect(subject.submitted_at).to eq(date)
+    end
+
     it 'sets content_type' do
       subject.file = prepare_static_test_file('simple_submission.txt')
       subject.content_type = nil

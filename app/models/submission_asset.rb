@@ -31,7 +31,7 @@ class SubmissionAsset < ActiveRecord::Base
   validate :filesize_validation
   validate :archive_structure_validation, if: :archive?
 
-  before_save :set_submitted_at, if: :file_changed?
+  before_save :set_submitted_at, if: :file_changed?, unless: :submitted_at
   before_validation :set_content_type, if: :file_changed?
   before_validation :set_filesizes, if: :file_changed?
   before_validation :set_filename, if: :file_changed?

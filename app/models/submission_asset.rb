@@ -52,16 +52,17 @@ class SubmissionAsset < ActiveRecord::Base
 
   EXCLUDED_FILTER = [
     # no operating system meta data files
-    %r{Thumbs.db}i.freeze,
-    %r{desktop.ini}i.freeze,
-    %r{.DS_Store}i.freeze,
-    %r{.directory}i.freeze,
+    %r{Thumbs\.db}i.freeze,
+    %r{desktop\.ini}i.freeze,
+    %r{\.DS_Store}i.freeze,
+    %r{\.directory}i.freeze,
     %r{\A__MACOSX/}i.freeze,
+    %r{\._.*}i.freeze,
 
     # no version control files
-    %r{.svn/}i.freeze,
-    %r{.git/}i.freeze,
-    %r{.hg/}i.freeze,
+    %r{\.svn/}i.freeze,
+    %r{\.git/}i.freeze,
+    %r{\.hg/}i.freeze,
 
     # no plain folders
     %r{/$}i.freeze,

@@ -1,0 +1,187 @@
+before_script:
+  - ./bin/prepare_build
+  - ruby -v
+  - which ruby
+  - gem install bundler --no-ri --no-rdoc
+  - bundle install --jobs $(nproc) --deployment
+
+variables:
+  MYSQL_USER: "sapphire"
+  MYSQL_ROOT_PASSWORD: mysql_strong_password
+  MYSQL_PASSWORD: "mysql_strong_password"
+  MYSQL_DATABASE: "sapphire_test"
+
+  POSTGRES_USER: "sapphire"
+  POSTGRES_PASSWORD: ""
+  POSTGRES_DATABASE: "sapphire_test"
+
+  SIMPLECOV: "true"
+  RAILS_ENV: "test"
+
+db-migrate-reset:sqlite:ruby2.1:
+  stage: test
+  image: 'ruby:2.1'
+  variables:
+    DB: sqlite
+  script:
+    - bundle exec rake db:migrate:reset
+  cache:
+    key: ruby2.1
+    paths:
+    - vendor
+
+db-migrate-reset:mysql:ruby2.1:
+  stage: test
+  image: 'ruby:2.1'
+  variables:
+    DB: mysql
+  services:
+    - mysql:latest
+  script:
+    - bundle exec rake db:migrate:reset
+  cache:
+    key: ruby2.1
+    paths:
+    - vendor
+
+db-migrate-reset:ruby2.1:
+  stage: test
+  image: 'ruby:2.1'
+  variables:
+    DB: postgresql
+  services:
+    - postgres:latest
+  script:
+    - bundle exec rake db:migrate:reset
+  cache:
+    key: ruby2.1
+    paths:
+    - vendor
+
+db-migrate-reset:sqlite:ruby2.3:
+  stage: test
+  image: 'ruby:2.3'
+  variables:
+    DB: sqlite
+  script:
+    - bundle exec rake db:migrate:reset
+  cache:
+    key: ruby2.3
+    paths:
+    - vendor
+
+db-migrate-reset:mysql:ruby2.3:
+  stage: test
+  image: 'ruby:2.3'
+  variables:
+    DB: mysql
+  services:
+    - mysql:latest
+  script:
+    - bundle exec rake db:migrate:reset
+  cache:
+    key: ruby2.3
+    paths:
+    - vendor
+
+db-migrate-reset:postgres:ruby2.3:
+  stage: test
+  image: 'ruby:2.3'
+  variables:
+    DB: postgresql
+  services:
+    - postgres:latest
+  script:
+    - bundle exec rake db:migrate:reset
+  cache:
+    key: ruby2.3
+    paths:
+    - vendor
+
+rspec:sqlite:ruby2.1:
+  stage: test
+  image: 'ruby:2.1'
+  variables:
+    DB: sqlite
+  script:
+    - bundle exec rake db:create db:schema:load
+    - bundle exec rspec
+  cache:
+    key: ruby2.1
+    paths:
+    - vendor
+
+rspec:mysql:ruby2.1:
+  stage: test
+  image: 'ruby:2.1'
+  variables:
+    DB: mysql
+  services:
+    - mysql:latest
+  script:
+    - bundle exec rake db:create db:schema:load
+    - bundle exec rspec
+  cache:
+    key: ruby2.1
+    paths:
+    - vendor
+
+rspec:postges:ruby2.1:
+  stage: test
+  image: 'ruby:2.1'
+  variables:
+    DB: postgresql
+  services:
+    - postgres:latest
+  script:
+    - bundle exec rake db:create db:schema:load
+    - bundle exec rspec
+  cache:
+    key: ruby2.1
+    paths:
+    - vendor
+
+
+rspec:sqlite:ruby2.3:
+  stage: test
+  image: 'ruby:2.3'
+  variables:
+    DB: sqlite
+  script:
+    - bundle exec rake db:create db:schema:load
+    - bundle exec rspec
+  cache:
+    key: ruby2.3
+    paths:
+    - vendor
+
+rspec:mysql:ruby2.3:
+  stage: test
+  image: 'ruby:2.3'
+  variables:
+    DB: mysql
+  services:
+    - mysql:latest
+  script:
+    - bundle exec rake db:create db:schema:load
+    - bundle exec rspec
+  cache:
+    key: ruby2.3
+    paths:
+    - vendor
+
+rspec:postges:ruby2.3:
+  stage: test
+  image: 'ruby:2.3'
+  variables:
+    DB: postgresql
+  services:
+    - postgres:latest
+  script:
+    - bundle exec rake db:create db:schema:load
+    - bundle exec rspec
+  cache:
+    key: ruby2.3
+    paths:
+    - vendor
+

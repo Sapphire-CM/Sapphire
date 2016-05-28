@@ -44,7 +44,7 @@ db-migrate-reset:mysql:ruby2.1:
     paths:
     - vendor
 
-db-migrate-reset:ruby2.1:
+db-migrate-reset:postgres:ruby2.1:
   stage: test
   image: 'ruby:2.1'
   variables:

@@ -1,0 +1,25 @@
+
+<%= event_box(extraction_failed) do |event| %>
+  <%= event.account.fullname %> uploaded a zip file (<%= submission_asset_file_change(event.submission_asset[:path], event.submission_asset[:file]) %>) that <strong>could not be successfully extracted</strong>
+
+  for <strong><%= link_to event.exercise_title, submission_path(event.submission_id) %></strong>.
+
+  <div class='description'>
+    <ul>
+    <% event.errors.each do |error| %>
+      <li>
+        <%= submission_asset_file_change(error[:submission_asset][:path], error[:submission_asset][:file]) %>
+        <% if error[:messages].length > 1 %>
+        <ul>
+        <% error[:messages].each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+        <% else %>
+          - <em><%= error[:messages].first %></em>
+        <% end %>
+      </li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>

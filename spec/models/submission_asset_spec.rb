@@ -81,6 +81,17 @@ RSpec.describe SubmissionAsset do
 
         expect(subject).not_to be_valid
       end
+
+      it 'is not influenced by other submissions' do
+        expect(subject).to be_valid
+
+        sa = FactoryGirl.create(:submission_asset, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
+
+        subject.path = "test"
+        subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
+
+        expect(subject).to be_valid
+      end
     end
   end
 

@@ -153,6 +153,80 @@ RSpec.describe EventService do
     end
   end
 
+  context 'submission asset events' do
+    let(:exercise) { submission.exercise }
+    let(:term) { exercise.term }
+    let(:submission) { FactoryGirl.create(:submission) }
+    let(:submission_assets) { FactoryGirl.create_list(:submission_asset, 3, :plain_text, submission: submission) }
+    let(:zip_asset) { FactoryGirl.create(:submission_asset, :zip, submission: submission) }
+
+    describe '#submission_asset_destroyed!' do
+      let(:now) { Time.now }
+
+      it 'creates a new Events::Submission::Updated if the last one is older than 30 minutes' do
+        Timecop.freeze(now)
+        old_submission_asset = Events::Submission::Updated.create(account: account, subject: submission, term: term, updated_at: now - 31.minutes)
+
+        expect(subject.submission_asset_destroyed!(zip_asset)).not_to eq(old_submission_asset)
+        Timecop.return
+      end
+      it 'updates the last new Events::Submission::Updated if the last one was created less than 30 minutes ago' do
+        Timecop.freeze(now)
+        old_submission_asset = Events::Submission::Updated.create(account: account, subject: submission, term: term, updated_at: now - 29.minutes)
+
+        expect(subject.submission_asset_destroyed!(zip_asset)).to eq(old_submission_asset)
+        Timecop.return
+      end
+
+      it 'updates the last new Events::Submission::Updated if there were events from other students in the meantime' do
+        old_submission_asset = Events::Submission::Updated.create(account: account, subject: submission, term: term, updated_at: now)
+        other_submission_asset = Events::Submission::Updated.create(subject: submission, term: term, updated_at: now - 29.minutes)
+
+        expect(subject.submission_asset_destroyed!(zip_asset)).to eq(old_submission_asset)
+      end
+    end
+
+    describe '#submission_asset_uploaded!' do
+      let(:now) { Time.now }
+
+      it 'creates a new Events::Submission::Updated if the last one is older than 30 minutes' do
+        Timecop.freeze(now)
+        old_submission_asset = Events::Submission::Updated.create(account: account, subject: submission, term: term, updated_at: now - 31.minutes)
+
+        expect(subject.submission_asset_uploaded!(zip_asset)).not_to eq(old_submission_asset)
+        Timecop.return
+      end
+      it 'updates the last new Events::Submission::Updated if the last one was created less than 30 minutes ago' do
+        Timecop.freeze(now)
+        old_submission_asset = Events::Submission::Updated.create(account: account, subject: submission, term: term, updated_at: now - 29.minutes)
+
+        expect(subject.submission_asset_uploaded!(zip_asset)).to eq(old_submission_asset)
+        Timecop.return
+      end
+
+      it 'updates the last new Events::Submission::Updated if there were events from other students in the meantime' do
+        old_submission_asset = Events::Submission::Updated.create(account: account, subject: submission, term: term, updated_at: now)
+        other_submission_asset = Events::Submission::Updated.create(subject: submission, term: term, updated_at: now - 29.minutes)
+
+        expect(subject.submission_asset_uploaded!(zip_asset)).to eq(old_submission_asset)
+      end
+    end
+
+    describe '#submission_asset_extracted!' do
+      it 'calls #submission_asset_uploaded! with each given submission_asset' do
+        expect(subject).to receive(:submission_asset_uploaded!).exactly(submission_assets.length).times.and_call_original
+        expect(subject.submission_asset_extracted!(zip_asset, submission_assets)).to be_a(Events::Submission::Updated)
+      end
+    end
+
+    describe '#submission_assets_destroyed!' do
+      it 'calls #submission_asset_destroyed! with each given submission_asset' do
+        expect(subject).to receive(:submission_asset_destroyed!).exactly(submission_assets.length).times.and_call_original
+        expect(subject.submission_assets_destroyed!(submission_assets)).to be_a(Events::Submission::Updated)
+      end
+    end
+  end
+
   context 'rating events' do
     let(:exercise) { FactoryGirl.create(:exercise, term: term) }
     let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise) }
@@ -287,29 +361,6 @@ RSpec.describe EventService do
         expect(event.exercise_title).to eq(exercise.title)
         expect(event.points).to eq(rating_group.points)
       end
-    end
-  end
-
-  context 'submission asset upload events' do
-    let(:submission) { FactoryGirl.create(:submission) }
-    let(:exercise) { submission.exercise }
-    let(:term) { exercise.term }
-
-    describe '#submission_asset_uploaded!' do
-      it 'creates a new Events::Submission::Updated if the last one is older than 30 minutes'
-      it 'creates a new Events::Submission::Updated if another event has been created since then'
-      it 'updates the last new Events::Submission::Updated if the last one was created less than 30 minutes ago and there was no other event happening since'
-      it 'updates the last new Events::Submission::Updated if there were events from other students in the meantime'
-    end
-
-    describe '#submission_asset_extracted!' do
-      it 'calls #submission_asset_uploaded! with each given submission_asset'
-    end
-  end
-
-  context 'submission asset removals' do
-    describe '#submission_assets_removed!' do
-      it 'creates a Events::Submission::AssetsRemoved'
     end
   end
 

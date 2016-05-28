@@ -29,6 +29,10 @@ module SubmissionAssetsHelper
     end
   end
 
+  def submission_asset_file_change(path, file)
+    File.join(*([path, file].map(&:presence).compact))
+  end
+
   def submission_asset_file_label(exercise, submission_asset = nil)
     title = "#{exercise.title} file"
 

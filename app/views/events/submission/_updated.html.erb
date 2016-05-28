@@ -6,11 +6,17 @@
     <strong>updated <%= pluralize event.updates.length, 'file' %></strong> for
   <% elsif event.only_removals? %>
     <strong>removed <%= pluralize event.removals.length, 'file' %></strong> from
+  <% elsif event.submission_assets.values.flatten.empty? %>
+    <strong>modified</strong>
   <% else %>
     <strong>updated</strong>
   <% end %>
 
-  submission for <strong><%= link_to event.exercise_title, submission_path(event.submission_id) %></strong>
+  submission for <strong><%= link_to event.exercise_title, submission_path(event.submission_id) %></strong>.
 
-  <%= render "events/submission/submission_assets_changes", submission_assets: event.submission_assets, event: event %>
+  <% if event.submission_assets.values.flatten.empty? %>
+    These changes did not result in any files being changed.
+  <% else %>
+    <%= render "events/submission/submission_assets_changes", submission_assets: event.submission_assets, event: event %>
+  <% end %>
 <% end %>

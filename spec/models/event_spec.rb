@@ -26,9 +26,9 @@ RSpec.describe Event, type: :model do
       let(:term) { create(:term) }
 
       it 'returns events ordered by descending creation date' do
-        event_1 = FactoryGirl.create(:event, term: term, created_at: 5.days.ago)
-        event_2 = FactoryGirl.create(:event, term: term, created_at: 3.days.ago)
-        event_3 = FactoryGirl.create(:event, term: term, created_at: 7.days.ago)
+        event_1 = FactoryGirl.create(:event, term: term, created_at: 5.days.ago, updated_at: 5.days.ago)
+        event_2 = FactoryGirl.create(:event, term: term, created_at: 3.days.ago, updated_at: 3.days.ago)
+        event_3 = FactoryGirl.create(:event, term: term, created_at: 7.days.ago, updated_at: 7.days.ago)
 
         expect(Event.time_ordered).to eq([event_2, event_1, event_3])
       end

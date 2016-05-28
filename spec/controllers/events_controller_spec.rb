@@ -27,7 +27,7 @@ RSpec.describe EventsController, type: :controller do
 
     describe 'paging' do
       let!(:events) do
-        (1..6).map { |i| FactoryGirl.create_list(:event, 5, term: term, created_at: Time.now - i * 10.minutes) }.flatten
+        (1..6).map { |i| FactoryGirl.create_list(:event, 5, term: term, created_at: Time.now - i * 10.minutes, updated_at: Time.now - i * 10.minutes) }.flatten
       end
 
       it 'assigns @events with the first page of events when no page param is given' do

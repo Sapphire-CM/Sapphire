@@ -16,6 +16,14 @@ module Events
   module Submission
     class Updated < ::Event
       data_reader :submission_assets, :exercise_title, :exercise_id, :path, :submission_id
+      data_writer :submission_assets
+
+      scope :recent, lambda { where { updated_at > 30.minutes.ago} }
+
+      def self.recent_for_submission(submission)
+        where(subject: submission).recent.first
+      end
+
 
       def only_additions?
         submission_assets[:added].any? && submission_assets[:updated].empty? && submission_assets[:destroyed].empty?

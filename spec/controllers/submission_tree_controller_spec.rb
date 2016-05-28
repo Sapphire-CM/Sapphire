@@ -56,5 +56,11 @@ RSpec.describe SubmissionTreeController, type: :controller do
       expect(submission.submission_assets(true).first.path).to be_blank
       expect(response).to redirect_to(tree_submission_path(submission.id, path: ""))
     end
+
+    it 'informs the event service' do
+      expect_any_instance_of(EventService).to receive(:submission_assets_destroyed!).and_call_original
+
+      delete :destroy, id: submission.id, path: "test"
+    end
   end
 end

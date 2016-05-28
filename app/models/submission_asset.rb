@@ -201,7 +201,7 @@ class SubmissionAsset < ActiveRecord::Base
   def filename_uniqueness_validation
     full_path = File.join(*([self.path, self.filename].map(&:presence).compact))
 
-    scope = SubmissionAsset.at_path_components(full_path)
+    scope = SubmissionAsset.at_path_components(full_path).where(submission: submission)
     scope = scope.where.not(id: id) if persisted?
 
     if scope.exists?

@@ -22,7 +22,7 @@ class Event < ActiveRecord::Base
   validates :account, :term, presence: true
 
   scope :for_term, lambda { |term| where(term: term) }
-  scope :time_ordered, lambda { order(created_at: :desc) }
+  scope :time_ordered, lambda { order(updated_at: :desc) }
 
   serialize_hash :data
 
@@ -30,6 +30,16 @@ class Event < ActiveRecord::Base
     args.each do |arg|
       define_method(arg) do
         data[arg]
+      end
+    end
+  end
+
+  def self.data_writer(*args)
+    args.each do |arg|
+      define_method("#{arg}=") do |value|
+        data[arg] = value
+        serialize_data!
+        value
       end
     end
   end

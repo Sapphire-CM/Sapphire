@@ -1,5 +1,6 @@
 class SubmissionTreeController < ApplicationController
   include ScopingHelpers
+  include EventSourcing
 
   before_action :set_submission
   before_action :set_context
@@ -21,7 +22,11 @@ class SubmissionTreeController < ApplicationController
 
   def destroy
     @parent_directory = @submission.tree(params[:path]).parent
-    @submission.submission_assets.inside_path(params[:path]).destroy_all
+    submission_assets = @submission.submission_assets.inside_path(params[:path]).destroy_all
+
+    if submission_assets.any?
+      event_service.submission_assets_destroyed!(submission_assets)
+    end
 
     redirect_to tree_submission_path(@submission, @parent_directory.path_without_root), notice: "Removed directory '#{params[:path]}'"
   end

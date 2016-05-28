@@ -23,15 +23,109 @@ class EventService
 
   def submission_asset_uploaded!(submission_asset)
     # not yet implemented
+    submission = submission_asset.submission
+    event = Events::Submission::Updated.where(account: account).recent_for_submission(submission)
+
+    if event.blank?
+      event = Events::Submission::Updated.new(options(submission, submission_base_options(submission)))
+    end
+
+    submission_assets = event.submission_assets || {
+      added: [],
+      updated: [],
+      destroyed: []
+    }
+
+    description = submission_asset_description(submission_asset)
+
+    if find_submission_asset_description(submission_assets[:destroyed], description)
+      submission_assets[:updated] << description
+      submission_assets[:destroyed].delete(description)
+    elsif !find_submission_asset_description(submission_assets[:added], description)
+      submission_assets[:added] << description
+    end
+
+    submission_assets.values.each do |assets|
+      assets.sort_by! { |description|
+        name = description[:name]
+        path = description[:path]
+
+        File.join(*([path, name].compact))
+      }
+    end
+
+    event.submission_assets = submission_assets
+    event.updated_at = Time.now
+    event.save
+    event
   end
 
-  def submission_asset_extracted!(submission_asset, created_submission_assets)
+  def submission_asset_destroyed!(submission_asset)
     # not yet implemented
+    submission = submission_asset.submission
+    submission = submission_asset.submission
+    event = Events::Submission::Updated.where(account: account).recent_for_submission(submission)
+
+    if event.blank?
+      event = Events::Submission::Updated.new(options(submission, submission_base_options(submission)))
+    end
+
+    submission_assets = event.submission_assets || {
+      added: [],
+      updated: [],
+      destroyed: []
+    }
+
+    description = submission_asset_description(submission_asset)
+
+    if existing_description = find_submission_asset_description(submission_assets[:added], description)
+      submission_assets[:added].delete(existing_description)
+    elsif existing_description = find_submission_asset_description(submission_assets[:updated], description)
+      submission_assets[:updated].delete(description)
+      submission_assets[:destroyed] << description
+    elsif !find_submission_asset_description(submission_assets[:destroyed], description)
+      submission_assets[:destroyed] << description
+    end
+
+    event.submission_assets = submission_assets
+    event.updated_at = Time.now
+    event.save
+    event
   end
 
-  def submission_asset_extraction_failed!(submission_asset)
+  def submission_asset_extracted!(zip_asset, submission_assets)
     # not yet implemented
+    event = nil
+    submission_assets.each do |sa|
+      event = submission_asset_uploaded!(sa)
+    end
+    event
   end
+
+  def submission_assets_destroyed!(submission_assets)
+    event = nil
+    submission_assets.each do |sa|
+      event = submission_asset_destroyed!(sa)
+    end
+    event
+  end
+
+  def submission_asset_extraction_failed!(submission_asset, failed_assets)
+    submission = submission_asset.submission
+
+    opts = {
+      submission_asset: submission_asset_description(submission_asset),
+      errors: failed_assets.map do |sa|
+        {
+          submission_asset: submission_asset_description(sa),
+          messages: sa.errors.reject { |attribute, message| attribute == :filename }.map { |attribute, error| [sa.class.human_attribute_name(attribute), error].join(" ") }
+        }
+      end
+    }
+
+    Events::Submission::ExtractionFailed.create(options(submission, submission_base_options(submission, opts)))
+  end
+
 
   def rating_created!(rating)
     Events::Rating::Created.create(rating_options(rating))
@@ -66,6 +160,7 @@ class EventService
   end
 
   private
+
   def options(subject, data = {})
     default_options.merge(subject: subject, data: data)
   end
@@ -117,6 +212,20 @@ class EventService
     }.merge(attributes)
   end
 
+  def submission_asset_description(submission_asset)
+    {
+      file: File.basename(submission_asset.file.to_s),
+      path: submission_asset.path,
+      content_type: submission_asset.content_type
+    }
+  end
+
+  def find_submission_asset_description(changes, description)
+    changes.find do |change|
+      change[:file] == description[:file] && change[:path] == description[:path]
+    end
+  end
+
   def submission_assets_changes(submission, new_record)
     submission_assets_changes = {
       added: [],
@@ -125,18 +234,10 @@ class EventService
     }
 
     submission.submission_assets.each do |sa|
-      submission_asset_description = lambda do
-        {
-          file: File.basename(sa.file.to_s),
-          path: sa.path,
-          content_type: sa.content_type
-        }
-      end
-
       if sa.new_record? || new_record
-        submission_assets_changes[:added] << submission_asset_description.call
+        submission_assets_changes[:added] << submission_asset_description(sa)
       elsif sa.marked_for_destruction?
-        submission_assets_changes[:destroyed] << submission_asset_description.call
+        submission_assets_changes[:destroyed] << submission_asset_description(sa)
       elsif sa.changed?
         if sa.changes.key? 'file'
           submission_assets_changes[:updated] << {

@@ -74,7 +74,7 @@ class SubmissionExtractionService
         new_submission_asset = submission.submission_assets.create(file: File.open(destination), path: asset_path, submitted_at: submission_asset.submitted_at)
 
         unless new_submission_asset.valid?
-          self.errors << new_submission_asset.errors
+          self.errors << new_submission_asset
         else
           self.created_assets << new_submission_asset
         end
@@ -105,10 +105,12 @@ class SubmissionExtractionService
 
   def create_success_event!
     event_service.submission_asset_extracted!(submission_asset, created_assets)
+    event_service.submission_asset_destroyed!(submission_asset)
   end
 
   def create_failed_event!
-    event_service.submission_asset_extraction_failed!(submission_asset)
+    event_service.submission_asset_extracted!(submission_asset, created_assets) unless created_assets.empty?
+    event_service.submission_asset_extraction_failed!(submission_asset, errors)
   end
 
   def schedule_zip_archives_for_extraction!

@@ -8,11 +8,53 @@ RSpec.describe SubmissionAsset do
   it { is_expected.to define_enum_for(:extraction_status).with([:extraction_pending, :extraction_in_progress, :extraction_done, :extraction_failed])}
 
   describe 'validations' do
+    let(:exercise) { submission.exercise }
     let(:submission) { FactoryGirl.create(:submission) }
     subject { FactoryGirl.build(:submission_asset, submission: submission) }
 
     describe 'upload size' do
-      pending
+      it 'does not validate the upload size if the limit is disabled' do
+        exercise.update(maximum_upload_size: 10, enable_max_upload_size: false)
+        subject.file = prepare_static_test_file("simple_submission.txt")
+
+        expect(subject).to be_valid
+        expect(subject.processed_size).to be > 10
+      end
+
+      it 'validates that the size stays below the limit' do
+        exercise.update(maximum_upload_size: 600, enable_max_upload_size: true)
+
+        subject.file = prepare_static_test_file("simple_submission.txt")
+
+        expect(subject).to be_valid
+        expect(subject.processed_size).to be > 400
+
+        FactoryGirl.create(:submission_asset, submission: submission, file: prepare_static_test_file("simple_submission.txt"))
+
+        expect(subject).not_to be_valid
+      end
+
+      it 'validates that the accumulated size stays below the limit' do
+        exercise.update(maximum_upload_size: 10, enable_max_upload_size: true)
+        subject.file = prepare_static_test_file("simple_submission.txt")
+
+        expect(subject).not_to be_valid
+      end
+
+      it 'handles does not add its own size twice when it is persisted' do
+        expect(subject.save).to be_truthy
+        expect(subject.processed_size).to be > 400
+
+        exercise.update(maximum_upload_size: 500, enable_max_upload_size: true)
+        expect(subject).to be_valid
+      end
+
+      it 'fails silently if no submission is set' do
+        subject.submission = nil
+        expect do
+          subject.valid?
+        end.not_to raise_error
+      end
     end
 
     describe 'path uniqueness' do

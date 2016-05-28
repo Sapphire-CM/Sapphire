@@ -61,10 +61,12 @@ RSpec.describe SubmissionExtractionService do
         submission_date = 2.days.ago
         zip_asset.update(submitted_at: submission_date)
 
+        zip_asset.reload
+
         subject.perform!
 
         submission.submission_assets(true).each do |submission_asset|
-          expect(submission_asset.submitted_at).to eq(submission_date)
+          expect(submission_asset.submitted_at).to eq(zip_asset.submitted_at)
         end
       end
 

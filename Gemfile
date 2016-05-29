@@ -94,11 +94,11 @@ group :development do
   # gem 'bullet'              # logs and supposes optimizations for db queries
   # gem 'sextant'             # route /rails/routes for displaying all routes
 
-  gem 'capistrano', '~> 3.2.0' # deployment via SSH
+  gem 'capistrano', '~> 3.4.0' # deployment via SSH
   gem 'capistrano-rvm'         # capistrano plugin for RVM
   gem 'capistrano-rails'       # capistrano plugin for Rails
   gem 'capistrano-sidekiq'     # capistrano plugin for Sidekiq
-  gem 'capistrano-passenger'   # capistrano plugin for Passenger
+  gem 'capistrano-passenger', '0.0.5'# capistrano plugin for Passenger
 end
 
 group :test do

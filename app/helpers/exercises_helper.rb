@@ -26,6 +26,14 @@ module ExercisesHelper
     end
   end
 
+  def exercise_submission_type(exercise)
+    if exercise.group_submission?
+      "group submission"
+    else
+      "solitary submission"
+    end
+  end
+
   def rolebased_submission_path(exercise)
     if policy(exercise.term).student?
       exercise_student_submission_path(exercise)

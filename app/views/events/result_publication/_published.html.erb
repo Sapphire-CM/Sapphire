@@ -2,13 +2,13 @@
   <%= event_box(published, :staff) do |event| %>
     <%= event.account.fullname %> <strong>published results</strong>
     for <strong><%= link_to event.exercise_title, exercise_submissions_path(event.exercise_id) %></strong>
-    for tutorial group <%= event.tutorial_group_title %>
+    for tutorial group <%= event.tutorial_group_title %>.
   <% end %>
 <% else %>
   <%= event_box(published, :student) do |event| %>
     <%= event.account.fullname %> <strong>published
       <%= link_to 'results', term_result_path(event.term, event.exercise_id) %></strong>
     for <strong><%= link_to event.exercise_title, exercise_student_submission_path(event.exercise_id) %></strong>
-    for tutorial group <%= event.tutorial_group_title %>
+    for tutorial group <%= event.tutorial_group_title %>.
   <% end %>
 <% end %>

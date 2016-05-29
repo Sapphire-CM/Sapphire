@@ -1,0 +1,14 @@
+<div class='reveal-modal' id='change-folder-modal'>
+  <h1>Add Folder</h1>
+
+  <% if policy(submission_upload).create? %>
+    <%= render "submission_folders/form", submission_folder: SubmissionFolder.new(path: tree.path), submission: submission_upload.submission, tree: tree %>
+    <div class='panel radius'>
+      <%= foundation_icon(:info) %> <strong>Hint:</strong>
+      Folders are not physically created until they contain at least one file.
+    </div>
+  <% else %>
+    <%= render "submissions/submission_not_modifiable_by_student", submission: submission_upload.submission %>
+  <% end %>
+  <%= link_to foundation_icon(:x), '#', class: "close-reveal-modal" %>
+</div>

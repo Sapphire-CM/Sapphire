@@ -1,15 +1,19 @@
 <div class='description'>
   <ul>
   <% submission_assets[:added].each do |change| %>
-    <li>Added <strong>'<%= change[:file] %>'</strong></li>
+    <li>Added <strong>'<%= submission_asset_file_change(change[:path], change[:file]) %>'</strong></li>
   <% end %>
 
   <% submission_assets[:updated].each do |change| %>
-    <li>Replaced <strong>'<%= change[:file].first %>'</strong> with <strong>'<%= change[:file].last %>'</strong></li>
+    <% if change[:file].is_a?(Array) %>
+      <li>Replaced <strong>'<%= submission_asset_file_change(change[:path], change[:file].first) %>'</strong> with <strong>'<%= submission_asset_file_change(change[:path], change[:file].last) %>'</strong></li>
+    <% else %>
+      <li>Updated <strong>'<%= submission_asset_file_change(change[:path], change[:file]) %>'</strong></li>
+    <% end %>
   <% end %>
 
   <% submission_assets[:destroyed].each do |change| %>
-    <li>Removed <strong>'<%= change[:file] %>'</strong></li>
+    <li>Removed <strong>'<%= submission_asset_file_change(change[:path], change[:file]) %>'</strong></li>
   <% end %>
   </ul>
 </div>

@@ -6,21 +6,27 @@ class SubmissionPolicy < PunditBasePolicy
 
   def show?
     user.admin? ||
-    user.associated_with_term?(record.exercise.term)
+    user.staff_of_term?(record.term) ||
+    (
+      user.student_of_term?(record.term) &&
+      (
+        record.students.include?(user) ||
+        record.new_record?
+      )
+    )
   end
 
-  def submit?
-    record.new_record? ? create? : update?
+  def directory?
+    show?
   end
 
   def new?
     user.admin? ||
-    user.associated_with_term?(record.exercise.term)
-  end
-
-  def edit?
-    user.admin? ||
-    user.staff_of_term?(record.exercise.term)
+    user.staff_of_term?(record.exercise.term) ||
+    (
+      record.exercise.term.associated_with?(user) &&
+      record.exercise.term.course.unlocked?
+    )
   end
 
   def create?
@@ -34,46 +40,26 @@ class SubmissionPolicy < PunditBasePolicy
     )
   end
 
-  def update?
-    user.admin? ||
-    user.staff_of_term?(record.exercise.term) ||
-    (
-      record.exercise.enable_student_uploads? &&
-      record.exercise.term.course.unlocked? &&
-      record.exercise.before_late_deadline? &&
-      record.visible_for_student?(user)
-    )
-  end
-
   def destroy?
     user.admin? ||
     user.staff_of_term?(record.exercise.term) ||
     (
-      record.student_group.students.where(id: user.id).exists? &&
+      record.visible_for_student?(user) &&
       record.exercise.term.course.unlocked? &&
-      record.exercise.before_late_deadline?
+      record.modifiable_by_students?
     )
   end
 
-  def catalog?
-    user.admin? ||
-    user.staff_of_term?(record.exercise.term) ||
-    (
-      record.exercise.enable_student_uploads? &&
-      record.exercise.term.course.unlocked? &&
-      record.exercise.before_late_deadline? &&
-      record.visible_for_student?(user)
-    )
+
+  def tree?
+    viewable?
   end
 
-  def extract?
+  private
+  def viewable?
     user.admin? ||
     user.staff_of_term?(record.exercise.term) ||
-    (
-      record.exercise.enable_student_uploads? &&
-      record.exercise.term.course.unlocked? &&
-      record.exercise.before_late_deadline? &&
-      record.visible_for_student?(user)
-    )
+    record.visible_for_student?(user) ||
+    record.new_record?
   end
 end

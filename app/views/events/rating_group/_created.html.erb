@@ -1,5 +1,5 @@
 <%= event_box(created) do |event| %>
   <div class='title'>
-    <%= event.account.fullname %> <strong>created</strong> rating group <strong><%= link_to event.rating_group_title, exercise_rating_groups_path(event.exercise_id, anchor: "rating_group_id_#{event.rating_group_id}") %></strong> @ <%= event.exercise_title %>
+    <%= event.account.fullname %> <strong>created</strong> rating group <strong><%= link_to event.rating_group_title, exercise_rating_groups_path(event.exercise_id, anchor: "rating_group_id_#{event.rating_group_id}") %></strong> @ <%= event.exercise_title %>.
   </div>
 <% end %>

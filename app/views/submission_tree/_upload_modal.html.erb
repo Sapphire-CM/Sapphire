@@ -1,0 +1,11 @@
+<div class='reveal-modal' id='upload-modal'>
+  <h1>Upload New Files</h1>
+
+  <% if policy(submission_upload).create? %>
+    <%= render "submission_uploads/form", submission_upload: submission_upload %>
+  <% else %>
+    <%= render "submissions/submission_not_modifiable_by_student", submission: submission_upload.submission %>
+  <% end %>
+
+  <%= link_to foundation_icon(:x), '#', class: "close-reveal-modal" %>
+</div>

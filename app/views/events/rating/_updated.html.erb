@@ -8,7 +8,7 @@
     <% else %>
       rating <strong><%= link_to "#{event.rating_group_title}/#{event.rating_title}", exercise_rating_groups_path(event.exercise_id, anchor: "rating_group_id_#{event.rating_group_id}") %></strong>
     <% end %>
-    @ <%= event.exercise_title %>
+    @ <%= event.exercise_title %>.
   </div>
   <% if event.tracked_changes.length > 1 %>
     <%= render "events/tracked_changes", tracked_changes: event.tracked_changes %>

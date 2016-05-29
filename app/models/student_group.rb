@@ -19,6 +19,7 @@ class StudentGroup < ActiveRecord::Base
 
   scope :for_term, lambda { |term| joins { tutorial_group.term }.where { tutorial_group.term.id == my { term.id } } }
   scope :for_tutorial_group, lambda { |tutorial_group| where(tutorial_group_id: tutorial_group.id) }
+  scope :for_account, lambda { |account| joins(:term_registrations).where(term_registrations: {account: account}) }
 
   validates :title, presence: true
   validates :tutorial_group_id, presence: true

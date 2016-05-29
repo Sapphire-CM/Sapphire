@@ -17,6 +17,8 @@ class Exports::ExcelSpreadsheetExport < Export
 
   prop_accessor :summary, :exercises, :student_overview
 
+  after_initialize :set_default_values
+
   validate do
     unless summary? || exercises? || student_overview?
       errors.add(:base, 'nothing to export')
@@ -44,6 +46,12 @@ class Exports::ExcelSpreadsheetExport < Export
   end
 
   private
+
+  def set_default_values
+    self.summary = true if self.summary.nil?
+    self.exercises = true if self.exercises.nil?
+    self.student_overview = true if self.student_overview.nil?
+  end
 
   BLACK_COLOR = 8
   SILVER_COLOR = 22

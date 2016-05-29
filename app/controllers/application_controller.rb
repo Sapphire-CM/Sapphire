@@ -9,6 +9,8 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized, unless: :devise_controller?
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
+  rescue_from ActionController::UnknownFormat, with: :record_not_found
 
   private
 
@@ -16,20 +18,32 @@ class ApplicationController < ActionController::Base
     current_account
   end
 
-  def user_not_authorized
-    destination = request.referer || new_account_session_path
-    alert = 'You are not authorized to perform this action.'
-
-    if request.xhr?
-      js_redirect_to destination, alert: alert
+  def user_not_authorized(e)
+    Rails.logger.info(e.message)
+    destination = if account_signed_in?
+      root_path
     else
-      redirect_to destination, alert: alert
+      new_user_account_path
+    end
+    flash[:alert] = 'You are not authorized to perform this action.'
+
+    respond_to do |format|
+      format.json { render nothing: true, status: :unauthorized }
+      format.js { js_redirect_to destination, alert: alert }
+      format.html { redirect_to destination, alert: alert }
+    end
+  end
+
+  def record_not_found
+    respond_to do |format|
+      format.html { render "record_not_found", status: :not_found, layout: "errors" }
+      format.json { render nothing: true, status: :not_found }
     end
   end
 
   def js_redirect_to(path, flashes = {})
     flashes.each { |key, value| flash[key] = value }
-    render js: "window.location = '#{path}';"
+    render js: "window.location = '#{path}';", status: :unauthorized
   end
   helper_method :js_redirect_to
 end

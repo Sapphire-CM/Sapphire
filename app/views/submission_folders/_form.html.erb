@@ -1,0 +1,38 @@
+<%= simple_form_for submission_folder,
+  url: submission_folder_path(submission),
+  html: {
+    class: "change-folder-form",
+    data: { validation_path: submission_folder_path(submission, format: :json)}
+  } do |f| %>
+
+  <%= f.input :path, as: :hidden %>
+  <div class='row collapse'>
+    <div class='small-3 columns'>
+      <span class='prefix'><%= tree.path %>/</span>
+    </div>
+    <div class='small-9 columns'>
+      <%= f.input :name, placeholder: "New Folder", label: false %>
+    </div>
+  </div>
+
+  <div class='row collapse'>
+    <div class='small-3 columns'>
+      <p>
+        <%= submit_tag "Create", class: "button" %>
+      </p>
+    </div>
+    <div class='small-9 columns'>
+      <span class='validation-progress'>
+        <%= image_tag("ajax-loader.svg", width: 25) %>
+        Checking name ...
+      </span>
+      <span class='validation-passed'>
+        <%= foundation_icon :check %> Folder name available.
+      </span>
+      <span class='validation-failed'>
+        <%= foundation_icon :x %> Folder name already in use.
+      </span>
+    </div>
+  </div>
+
+<% end %>

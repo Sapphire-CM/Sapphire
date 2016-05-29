@@ -33,7 +33,7 @@
                 <td><%= submission.submitted_at %></td>
                 <td><%= pluralize submission.submission_evaluation.evaluation_result, "point" %></td>
                 <td>
-                  <%= link_to "show", exercise_submission_path(submission.exercise, submission), class: "small primary button" %>
+                  <%= link_to "show", submission_path(submission), class: "small primary button" %>
                   <%= link_to "evaluate", single_evaluation_path(submission), class: "small primary button" %>
                 </td>
               </tr>

@@ -14,7 +14,7 @@ gem 'squeel',      '~> 1.2'       # easy DSL
 gem 'carrierwave'                 # fileuploads
 gem 'kaminari'                    # pagination
 gem 'flash_render'                # render method with notice/alerts
-gem 'pundit'                      # authorization based on controller actions and policies
+gem 'pundit' , '~> 0.3'           # authorization based on controller actions and policies
 gem 'turbolinks'                  # Turbolinks makes following links in your web application faster
 gem 'jquery-turbolinks'           # Turbolinks jquery plugin for DOM ready events
 gem 'ranked-model'                # manages sort-position of ratings
@@ -44,6 +44,7 @@ gem 'nokogiri'                    # for parsing HTML-Files
 gem 'rubyzip'                     # handling submission ZIP archives
 
 gem 'cocoon'                      # for nested upload forms
+gem 'dropzonejs-rails'            # Drag and drop support for file uploads
 
 gem 'sidekiq'                     # async jobs in background, used for imports
 gem 'sinatra', '>= 1.3.0', require: false    # small rack framework, used for sidekiq ui
@@ -71,6 +72,7 @@ group :development do
   gem 'guard-bundler'
   gem 'guard-pow'
   gem 'guard-sidekiq'
+  gem 'listen', '~> 2.10'
 
   gem 'spring'                    # application preloader for development environments
   gem 'spring-commands-rspec'     # adding rspec command to spring
@@ -104,7 +106,7 @@ group :test do
 
   gem 'guard-rspec'
 
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', '~>2.8'
 
   gem 'terminal-notifier'
   gem 'terminal-notifier-guard'
@@ -126,6 +128,6 @@ group :test do
 end
 
 group :development, :test do
-  # gem 'mysql2'                    # MySQL database connector
+  gem 'mysql2'                    # MySQL database connector
   gem 'sqlite3'                   # sqlite3 database connector
 end

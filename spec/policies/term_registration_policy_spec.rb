@@ -5,7 +5,7 @@ RSpec.describe TermRegistrationPolicy do
   let(:term_registration) { FactoryGirl.create(:term_registration) }
   let(:term) { term_registration.term }
 
-  context "as a admin" do
+  context 'as a admin' do
     let(:account) { FactoryGirl.create(:account, :admin) }
 
     describe 'members' do
@@ -15,8 +15,7 @@ RSpec.describe TermRegistrationPolicy do
     end
   end
 
-
-  context "as a lecturer" do
+  context 'as a lecturer' do
     let(:account) { FactoryGirl.create(:account) }
     let!(:lecturer_term_registration) { FactoryGirl.create(:term_registration, :lecturer, account: account, term: term) }
 
@@ -27,8 +26,7 @@ RSpec.describe TermRegistrationPolicy do
     end
   end
 
-
-  context "as a tutor" do
+  context 'as a tutor' do
     let(:account) { FactoryGirl.create(:account) }
     let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
     let!(:tutor_term_registration) { FactoryGirl.create(:term_registration, :tutor, account: account, term: term, tutorial_group: tutorial_group) }
@@ -40,8 +38,7 @@ RSpec.describe TermRegistrationPolicy do
     end
   end
 
-
-  context "as a student" do
+  context 'as a student' do
     let(:account) { FactoryGirl.create(:account) }
     let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
     let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, account: account, term: term, tutorial_group: tutorial_group) }

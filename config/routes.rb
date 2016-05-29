@@ -15,8 +15,10 @@ Rails.application.routes.draw do
   resources :courses, except: [:show]
 
   resources :terms, except: [:index] do
-    get :points_overview, on: :member
-    post :send_welcome_notifications, on: :member
+    member do
+      get :points_overview
+      post :send_welcome_notifications
+    end
 
     resources :grading_scales, only: [:index, :update]
 
@@ -63,12 +65,9 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :submission, only: [:show, :create, :update], as: :student_submission, controller: "student_submissions" do
-      get :catalog, on: :member
-      post :extract, on: :member
-    end
+    resource :submission, only: [:show, :new, :create], as: :student_submission, controller: "student_submissions"
 
-    resources :submissions, controller: "staff_submissions"
+    resources :submissions, only: [:index], controller: "staff_submissions"
     resources :result_publications, only: :index do
       member do
         put :publish
@@ -82,9 +81,20 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :submission_assets, only: [:show]
+  resources :submission_assets, only: [:show, :destroy]
   resources :submission_viewers, only: [:show]
   resources :single_evaluations, only: [:show, :update]
+
+  resources :submissions, only: :show do
+    member do
+      get "blob(/*path)", controller: :submission_blob, action: :show, as: :blob
+      get "tree(/*path)", controller: :submission_tree, action: :show, as: :tree
+      get "directory(/*path)", controller: :submission_tree, action: :directory, as: :tree_directory
+      delete "tree(/*path)", controller: :submission_tree, action: :destroy
+    end
+    resource :folder, controller: :submission_folders, only: [:show, :new, :create]
+    resource :upload, controller: :submission_uploads, only: [:new, :create]
+  end
 
   authenticate :account, lambda { |u| u.admin? } do
     mount Sidekiq::Web => '/sidekiq'

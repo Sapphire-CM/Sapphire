@@ -7,10 +7,10 @@ RSpec.describe EventsController, type: :controller do
     let(:term) { FactoryGirl.create(:term) }
     let(:another_term) { FactoryGirl.create(:term) }
 
-    it 'raises ActionController::UnknownFormat format other than json is requested' do
-      expect do
-        get :index, term_id: term.id
-      end.to raise_error(ActionController::UnknownFormat)
+    it 'renders a 404 response if a format other than json is requested' do
+      get :index, term_id: term.id, format: :html
+
+      expect(response).to have_http_status(:not_found)
     end
 
     describe 'scoping' do
@@ -27,7 +27,7 @@ RSpec.describe EventsController, type: :controller do
 
     describe 'paging' do
       let!(:events) do
-        (1..6).map { |i| FactoryGirl.create_list(:event, 5, term: term, created_at: Time.now - i * 10.minutes) }.flatten
+        (1..6).map { |i| FactoryGirl.create_list(:event, 5, term: term, created_at: Time.now - i * 10.minutes, updated_at: Time.now - i * 10.minutes) }.flatten
       end
 
       it 'assigns @events with the first page of events when no page param is given' do

@@ -32,7 +32,7 @@ RSpec.describe ResultPublicationsController do
     let(:result_publication) { result_publications.first }
 
     before :each do
-      allow(ResultPublicationService).to receive(:new).with(@current_account, exercise).and_return(mocked_result_publication_service)
+      allow(ResultPublicationService).to receive(:new).with(current_account, exercise).and_return(mocked_result_publication_service)
     end
 
     context 'member actions' do

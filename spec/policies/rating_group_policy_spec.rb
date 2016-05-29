@@ -14,7 +14,7 @@ RSpec.describe RatingGroupPolicy do
     subject { RatingGroupPolicy.new(user, policy_record) }
 
     let(:policy_record_class) { Struct.new(:term) }
-    let(:policy_record) {  policy_record_class.new term }
+    let(:policy_record) { policy_record_class.new term }
 
     context 'as an admin' do
       let(:user) { create(:account, :admin) }

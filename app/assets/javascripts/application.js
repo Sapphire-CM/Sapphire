@@ -20,6 +20,7 @@
 //= require jquery_ujs
 //= require foundation
 //= require turbolinks
+//= require dropzone
 //= require jquery.remotipart
 //= require cocoon
 //= require local_time

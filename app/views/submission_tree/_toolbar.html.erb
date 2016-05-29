@@ -1,0 +1,5 @@
+<div class='submission-tree-toolbar'>
+  <%= link_to foundation_icon(:upload) + ' Upload', new_submission_upload_path(submission), class: "tiny button#{" disabled" unless policy(submission_upload).create?}", data: { reveal_id: "upload-modal" } %>
+  <%= link_to foundation_icon(:folder_add) + ' Folder', new_submission_folder_path(submission), class: "tiny button#{" disabled" unless policy(submission_upload).create?}", data: { reveal_id: "change-folder-modal" } %>
+  <%= link_to foundation_icon(:archive) + ' Download', blob_submission_path(submission, path: params[:path], format: :zip), class: "tiny button#{" disabled" if tree.entries.empty?}" %>
+</div>

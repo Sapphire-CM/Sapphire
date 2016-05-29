@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150807123827) do
+ActiveRecord::Schema.define(version: 20160422083327) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -309,8 +309,13 @@ ActiveRecord::Schema.define(version: 20150807123827) do
     t.string   "asset_identifier"
     t.string   "import_identifier"
     t.string   "path",              default: ""
+    t.string   "filename"
+    t.integer  "processed_size",    default: 0
+    t.integer  "filesystem_size",   default: 0
+    t.integer  "extraction_status"
   end
 
+  add_index "submission_assets", ["filename", "path", "submission_id"], name: "index_submission_assets_on_filename_and_path_and_submission_id", unique: true
   add_index "submission_assets", ["submission_id"], name: "index_submission_assets_on_submission_id"
 
   create_table "submission_evaluations", force: :cascade do |t|

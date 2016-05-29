@@ -30,14 +30,6 @@ class Exports::SubmissionExport < Export
     end
   end
 
-  def prepare_zip!(directory)
-    SubmissionAsset.for_term(term).includes(submission: :exercise).find_each do |submission_asset|
-      if should_add?(submission_asset) && File.exist?(submission_asset.file.to_s)
-        add_asset_to_zip(submission_asset, directory)
-      end
-    end
-  end
-
   def include_solitary_submissions?
     include_solitary_submissions == '1'
   end
@@ -61,6 +53,15 @@ class Exports::SubmissionExport < Export
   end
 
   private
+
+  def prepare_zip!(directory)
+    SubmissionAsset.for_term(term).includes(submission: :exercise).find_each do |submission_asset|
+      if should_add?(submission_asset) && File.exist?(submission_asset.file.to_s)
+        add_asset_to_zip(submission_asset, directory)
+      end
+    end
+  end
+
   def should_add?(submission_asset)
     exercise = submission_asset.submission.exercise
     exercise.group_submission? && include_group_submissions? || exercise.solitary_submission? && include_solitary_submissions?

@@ -63,19 +63,15 @@ RSpec.describe EventService do
       end
 
       it 'correctly sets up and returns the event' do
-        FactoryGirl.create(:submission_asset, submission: submission, path: '/', content_type: SubmissionAsset::Mime::PLAIN_TEXT)
-        submission.reload
-
         event = subject.submission_created!(submission)
 
         expect(event.submission_id).to eq(submission.id)
         expect(event.exercise_id).to eq(exercise.id)
         expect(event.exercise_title).to eq(exercise.title)
-        expect(event.submission_assets).to eq(added: [{ file: 'simple_submission.txt', path: '/', content_type: SubmissionAsset::Mime::PLAIN_TEXT }], updated: [], destroyed: [])
       end
     end
 
-    describe '#submission_updated!' do
+    describe '#submission_updated! (deprecated - only )' do
       it 'creates a Events::Submission::Updated event' do
         expect do
           expect(subject.submission_updated!(submission)).to be_a Events::Submission::Updated
@@ -83,7 +79,9 @@ RSpec.describe EventService do
       end
 
       it 'correctly sets up and returns the event' do
-        assets = FactoryGirl.create_list(:submission_asset, 3, submission: submission, path: '/', content_type: SubmissionAsset::Mime::PLAIN_TEXT)
+        FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'one')
+        FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'two')
+        FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'three')
 
         added_asset, updated_asset, removed_asset = *submission.submission_assets(true)
 
@@ -100,20 +98,20 @@ RSpec.describe EventService do
         expect(event.submission_assets).to match(added: [
           {
             file: 'simple_submission.txt',
-            path: '/',
+            path: 'one',
             content_type: SubmissionAsset::Mime::PLAIN_TEXT
           }
         ],
           updated: [
             {
               file: ['simple_submission.txt', 'submission_asset_iso_latin.txt'],
-              path: '/',
+              path: 'two',
               content_type: SubmissionAsset::Mime::PLAIN_TEXT
             }
           ], destroyed: [
             {
               file: 'simple_submission.txt',
-              path: '/',
+              path: 'three',
               content_type: SubmissionAsset::Mime::PLAIN_TEXT
             }
           ])
@@ -122,7 +120,13 @@ RSpec.describe EventService do
 
     describe '#submission_extracted!' do
       let(:zip_submission_asset) { FactoryGirl.create(:submission_asset, submission: submission, path: 'zip/path', file: prepare_static_test_file('submission.zip')) }
-      let(:extracted_submission_assets) { FactoryGirl.create_list(:submission_asset, 3, submission: submission, path: 'path/to/asset', content_type: SubmissionAsset::Mime::PLAIN_TEXT) }
+      let(:extracted_submission_assets) do
+        [
+          FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'one'),
+          FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'two'),
+          FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'three')
+        ]
+      end
 
       it 'creates a Events::Submission::Extracted event' do
         expect do
@@ -141,10 +145,84 @@ RSpec.describe EventService do
         expect(event.extracted_submission_assets).to match(extracted_submission_assets.map { |sa|
           {
             file: File.basename(sa.file.to_s),
-            path: 'path/to/asset',
+            path: sa.path,
             content_type: SubmissionAsset::Mime::PLAIN_TEXT
           }
         })
+      end
+    end
+  end
+
+  context 'submission asset events' do
+    let(:exercise) { submission.exercise }
+    let(:term) { exercise.term }
+    let(:submission) { FactoryGirl.create(:submission) }
+    let(:submission_assets) { FactoryGirl.create_list(:submission_asset, 3, :plain_text, submission: submission) }
+    let(:zip_asset) { FactoryGirl.create(:submission_asset, :zip, submission: submission) }
+
+    describe '#submission_asset_destroyed!' do
+      let(:now) { Time.now }
+
+      it 'creates a new Events::Submission::Updated if the last one is older than 30 minutes' do
+        Timecop.freeze(now)
+        old_submission_asset = Events::Submission::Updated.create(account: account, subject: submission, term: term, updated_at: now - 31.minutes)
+
+        expect(subject.submission_asset_destroyed!(zip_asset)).not_to eq(old_submission_asset)
+        Timecop.return
+      end
+      it 'updates the last new Events::Submission::Updated if the last one was created less than 30 minutes ago' do
+        Timecop.freeze(now)
+        old_submission_asset = Events::Submission::Updated.create(account: account, subject: submission, term: term, updated_at: now - 29.minutes)
+
+        expect(subject.submission_asset_destroyed!(zip_asset)).to eq(old_submission_asset)
+        Timecop.return
+      end
+
+      it 'updates the last new Events::Submission::Updated if there were events from other students in the meantime' do
+        old_submission_asset = Events::Submission::Updated.create(account: account, subject: submission, term: term, updated_at: now)
+        other_submission_asset = Events::Submission::Updated.create(subject: submission, term: term, updated_at: now - 29.minutes)
+
+        expect(subject.submission_asset_destroyed!(zip_asset)).to eq(old_submission_asset)
+      end
+    end
+
+    describe '#submission_asset_uploaded!' do
+      let(:now) { Time.now }
+
+      it 'creates a new Events::Submission::Updated if the last one is older than 30 minutes' do
+        Timecop.freeze(now)
+        old_submission_asset = Events::Submission::Updated.create(account: account, subject: submission, term: term, updated_at: now - 31.minutes)
+
+        expect(subject.submission_asset_uploaded!(zip_asset)).not_to eq(old_submission_asset)
+        Timecop.return
+      end
+      it 'updates the last new Events::Submission::Updated if the last one was created less than 30 minutes ago' do
+        Timecop.freeze(now)
+        old_submission_asset = Events::Submission::Updated.create(account: account, subject: submission, term: term, updated_at: now - 29.minutes)
+
+        expect(subject.submission_asset_uploaded!(zip_asset)).to eq(old_submission_asset)
+        Timecop.return
+      end
+
+      it 'updates the last new Events::Submission::Updated if there were events from other students in the meantime' do
+        old_submission_asset = Events::Submission::Updated.create(account: account, subject: submission, term: term, updated_at: now)
+        other_submission_asset = Events::Submission::Updated.create(subject: submission, term: term, updated_at: now - 29.minutes)
+
+        expect(subject.submission_asset_uploaded!(zip_asset)).to eq(old_submission_asset)
+      end
+    end
+
+    describe '#submission_asset_extracted!' do
+      it 'calls #submission_asset_uploaded! with each given submission_asset' do
+        expect(subject).to receive(:submission_asset_uploaded!).exactly(submission_assets.length).times.and_call_original
+        expect(subject.submission_asset_extracted!(zip_asset, submission_assets)).to be_a(Events::Submission::Updated)
+      end
+    end
+
+    describe '#submission_assets_destroyed!' do
+      it 'calls #submission_asset_destroyed! with each given submission_asset' do
+        expect(subject).to receive(:submission_asset_destroyed!).exactly(submission_assets.length).times.and_call_original
+        expect(subject.submission_assets_destroyed!(submission_assets)).to be_a(Events::Submission::Updated)
       end
     end
   end

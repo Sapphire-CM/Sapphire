@@ -1,7 +1,11 @@
 class SubmissionCreationService
-  def self.new_with_params(account, exercise, params)
-    submission = Submission.new(params)
-    submission.exercise = exercise
+  def self.initialize_submission_with_exercise(account, exercise)
+    service = self.new_with_exercise(account, exercise)
+    service.model
+  end
+
+  def self.new_with_exercise(account, exercise)
+    submission = Submission.new(exercise: exercise)
     SubmissionCreationService.new(account, submission)
   end
 
@@ -28,7 +32,6 @@ class SubmissionCreationService
     ActiveRecord::Base.transaction do
       if result = @submission.save
         create_event!
-        create_exercise_registrations!
       end
     end
 
@@ -45,6 +48,9 @@ class SubmissionCreationService
     @submission.submitter = @account
     @submission.submitted_at = Time.now
     @submission.student_group = term_registration.student_group unless @submission.exercise.solitary_submission?
+
+    build_exercise_registrations!
+
     @model_setup = true
   end
 
@@ -53,16 +59,16 @@ class SubmissionCreationService
   end
 
   def term_registration
-    @term_registration ||= @account.term_registrations.students.find_by!(term_id: @submission.exercise.term_id)
+    @term_registration ||= @account.term_registrations.students.find_by!(term: @submission.exercise.term)
   end
 
-  def create_exercise_registrations!
+  def build_exercise_registrations!
     if @submission.exercise.solitary_submission? || term_registration.student_group.blank?
-      ExerciseRegistration.create!(submission: @submission, exercise: @submission.exercise, term_registration: term_registration)
+      @submission.exercise_registrations.build(exercise: @submission.exercise, term_registration: term_registration)
     else
       student_group = term_registration.student_group
       student_group.term_registrations.each do |term_registration|
-        ExerciseRegistration.create!(submission: @submission, exercise: @submission.exercise, term_registration: term_registration)
+        @submission.exercise_registrations.build(exercise: @submission.exercise, term_registration: term_registration)
       end
     end
   end

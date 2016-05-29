@@ -1,0 +1,43 @@
+<% title @exercise.title, "Submission" %>
+
+<%= render "exercises/sidebar" %>
+
+<% if policy(@submission).create? %>
+  <div class='panel'>
+    <p>
+      <% if @exercise.group_submission? %>
+        <%= @exercise.title %> is a <strong>group</strong> exercise.
+      <% else %>
+        <%= @exercise.title %> is a <strong>solitary</strong> exercise.
+      <% end %>
+
+      Currently there is no submission assigned to you for this exercise.
+
+      <% if @exercise.group_submission? && @student_group.present? %>
+        Once the submission is created the following students will be assigned to it:
+      <% else %>
+        Once the submission is created, only <strong>you</strong> will be assigned to it.
+      <% end %>
+    </p>
+
+    <% if @exercise.group_submission? && @student_group.present? %>
+      <ul class='disc inset'>
+        <% @student_group.students.order(:surname).each do |student| %>
+          <li>
+            <%= student.fullname %>
+            <% if student == current_account %>
+              (you)
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <p>
+      <%= link_to "Create a Submission for #{@exercise.title}", exercise_student_submission_path(@exercise), class: "small button", method: :post %>
+    </p>
+  </div>
+<% else %>
+  <%= render "submissions/submission_not_modifiable_by_student", submission: @submission %>
+<% end %>
+

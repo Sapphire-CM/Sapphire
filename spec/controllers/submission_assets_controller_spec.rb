@@ -5,7 +5,7 @@ RSpec.describe SubmissionAssetsController do
   include_context 'active_admin_session_context'
 
   let(:submission) { FactoryGirl.create :submission }
-  let(:submission_asset) { FactoryGirl.create :submission_asset, submission: submission }
+  let!(:submission_asset) { FactoryGirl.create :submission_asset, submission: submission }
 
   describe 'GET show' do
     it 'assigns the requested submission_asset as @submission_asset' do
@@ -18,6 +18,21 @@ RSpec.describe SubmissionAssetsController do
 
       expect(response).to have_http_status(:success)
       expect(assigns(:submission_asset)).to eq(submission_asset)
+    end
+  end
+
+  describe 'DELETE destroy' do
+    it 'removes the submission asset' do
+      delete :destroy, id: submission_asset.id
+
+      expect(assigns(:submission_asset)).to eq(submission_asset)
+      expect(response).to redirect_to(tree_submission_path(submission, path: submission_asset.path))
+    end
+
+    it 'informs the event service' do
+      expect_any_instance_of(EventService).to receive(:submission_asset_destroyed!).and_call_original
+
+      delete :destroy, id: submission_asset.id
     end
   end
 end

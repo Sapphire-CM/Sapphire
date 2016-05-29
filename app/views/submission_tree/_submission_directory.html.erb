@@ -1,0 +1,44 @@
+<table class='small-12'>
+  <tbody>
+    <% unless tree.root? %>
+      <tr>
+        <td class='icon'></td>
+        <td>
+          <%= link_to "..", tree_submission_path(submission, path: tree.parent.path_without_root), title: "Goto parent folder" %>
+        </td>
+        <td class='size'><%= filesize tree.size %></td>
+      </tr>
+    <% end %>
+
+    <% tree.entries.sort_by(&:name).each do |entry| %>
+      <tr>
+        <td class='icon'>
+          <%= foundation_icon entry.icon %>
+        </td>
+        <td>
+          <% if entry.file? %>
+            <%= link_to entry.name, submission_asset_path(entry.submission_asset), target: "_blank" %>
+            <% if entry.submission_asset.archive? %>
+              &mdash; Extraction: <%= submission_asset_extraction_status(entry.submission_asset) %>
+              <% if entry.submission_asset.extraction_failed? %>
+                <%= content_tag :span, foundation_icon(:info), data: {tooltip: true}, title: "This ZIP archive could not be fully extracted. This usually happens when the zip contains one or more files are that already present in your submission." %>
+              <% end %>
+            <% end %>
+          <% else %>
+            <%= link_to entry.name, tree_submission_path(submission, path: entry.path_without_root) %>
+          <% end %>
+        </td>
+        <td class='size'><%= filesize entry.size %></td>
+        <% if submission.modifiable_by_students? %>
+          <td class='buttons'>
+            <% if entry.file? %>
+              <%= link_to foundation_icon(:x), submission_asset_path(entry.submission_asset), method: :delete, data: {confirm: "Are you sure, that you want to remove this file?"}, class: "tiny alert button" %>
+            <% else %>
+              <%= link_to foundation_icon(:x), tree_submission_path(submission, path: entry.path_without_root), method: :delete, data: {confirm: "Are you sure, that you want to remove the whole directory?"}, class: "tiny alert button" %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

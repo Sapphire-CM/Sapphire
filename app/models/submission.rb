@@ -18,9 +18,12 @@ class Submission < ActiveRecord::Base
   belongs_to :student_group
 
   has_one :submission_evaluation, dependent: :destroy
+  has_one :term, through: :exercise
+
   has_many :submission_assets, inverse_of: :submission, autosave: true
-  has_many :exercise_registrations, dependent: :destroy
+  has_many :exercise_registrations, autosave: true, dependent: :destroy
   has_many :term_registrations, through: :exercise_registrations
+  has_many :students, through: :term_registrations, source: :account
   has_many :tutorial_groups, lambda { uniq }, through: :term_registrations
 
   validates :submitter, presence: true
@@ -44,14 +47,20 @@ class Submission < ActiveRecord::Base
 
   after_create :create_submission_evaluation
 
-  accepts_nested_attributes_for :submission_assets, allow_destroy: true, reject_if: :all_blank
-
   def self.next(submission, order = :id)
     Submission.where { submissions.send(my { order }) > submission.send(order) }.order(:id).order(order => :asc).first
   end
 
   def self.previous(submission, order = :id)
     Submission.where { submissions.send(my { order }) < submission.send(order) }.order(:id).order(order => :desc).first
+  end
+
+  def self.find_by_account_and_exercise(account, exercise)
+    for_account(account).find_by(exercise: exercise)
+  end
+
+  def modifiable_by_students?
+    !outdated? && exercise.enable_student_uploads? && exercise.before_late_deadline? && exercise.term.course.unlocked?
   end
 
   def evaluated?
@@ -63,11 +72,19 @@ class Submission < ActiveRecord::Base
   end
 
   def visible_for_student?(account)
-    term_registrations.students.where(account_id: account.id).exists?
+    term_registrations.students.where(account: account).exists?
   end
 
   def submission_assets_changed?
     submission_assets.any? { |sa| sa.changed? || sa.new_record? || sa.marked_for_destruction? }
+  end
+
+  def tree(path = nil)
+    tree = SubmissionStructureService.parse_submission(self, "submission")
+    tree = tree.resolve(path) if path.present?
+    tree
+  rescue SubmissionStructureService::FileDoesNotExist
+    raise ActiveRecord::RecordNotFound
   end
 
   private
@@ -79,7 +96,7 @@ class Submission < ActiveRecord::Base
   end
 
   def upload_size_below_exercise_maximum_upload_size
-    size = submission_assets.map(&:filesize).sum || 0
+    size = submission_assets.map(&:filesystem_size).sum || 0
 
     if exercise.present? && exercise.enable_max_upload_size && size > exercise.maximum_upload_size
       errors.add(:base, 'Upload too large')

@@ -1,35 +1,22 @@
-<% if staff_account? %>
-  <%= event_box(updated, :staff) do |event| %>
-    <%= event.account.fullname %>
-    <% if event.only_additions? %>
-      <strong>added <%= pluralize event.additions.length, 'file' %></strong> to
-    <% elsif event.only_updates? %>
-      <strong>updated <%= pluralize event.updates.length, 'file' %></strong> for
-    <% elsif event.only_removals? %>
-      <strong>removed <%= pluralize event.removals.length, 'file' %></strong> from
-    <% else %>
-      <strong>updated</strong>
-    <% end %>
-
-    submission for <strong><%= link_to event.exercise_title, exercise_submission_path(event.exercise_id, event.submission_id) %></strong>
-
-    <%= render "events/submission/submission_assets_changes", submission_assets: event.submission_assets, event: event %>
+<%= event_box(updated) do |event| %>
+  <%= event.account.fullname %>
+  <% if event.only_additions? %>
+    <strong>added <%= pluralize event.additions.length, 'file' %></strong> to
+  <% elsif event.only_updates? %>
+    <strong>updated <%= pluralize event.updates.length, 'file' %></strong> for
+  <% elsif event.only_removals? %>
+    <strong>removed <%= pluralize event.removals.length, 'file' %></strong> from
+  <% elsif event.submission_assets.values.flatten.empty? %>
+    <strong>modified</strong>
+  <% else %>
+    <strong>updated</strong>
   <% end %>
-<% else %>
-  <%= event_box(updated, :student) do |event| %>
-    <%= event.account.fullname %>
-    <% if event.only_additions? %>
-      <strong>added <%= pluralize event.additions.length, 'file' %></strong> to
-    <% elsif event.only_updates? %>
-      <strong>updated <%= pluralize event.updates.length, 'file' %></strong> for
-    <% elsif event.only_removals? %>
-      <strong>removed <%= pluralize event.removals.length, 'file' %></strong> from
-    <% else %>
-      <strong>updated</strong>
-    <% end %>
 
-    submission for <strong><%= link_to event.exercise_title, exercise_student_submission_path(event.exercise_id) %></strong>
+  submission for <strong><%= link_to event.exercise_title, submission_path(event.submission_id) %></strong>.
 
+  <% if event.submission_assets.values.flatten.empty? %>
+    These changes did not result in any files being changed.
+  <% else %>
     <%= render "events/submission/submission_assets_changes", submission_assets: event.submission_assets, event: event %>
   <% end %>
 <% end %>

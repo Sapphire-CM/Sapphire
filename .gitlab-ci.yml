@@ -1,0 +1,120 @@
+before_script:
+  - ./bin/prepare_build
+  - ruby -v
+  - which ruby
+  - gem install bundler --no-ri --no-rdoc
+  - bundle install --jobs $(nproc) --deployment
+
+variables:
+  MYSQL_USER: "sapphire"
+  MYSQL_ROOT_PASSWORD: mysql_strong_password
+  MYSQL_PASSWORD: "mysql_strong_password"
+  MYSQL_DATABASE: "sapphire_test"
+
+  POSTGRES_USER: "sapphire"
+  POSTGRES_PASSWORD: ""
+  POSTGRES_DATABASE: "sapphire_test"
+
+  SIMPLECOV: "true"
+  RAILS_ENV: "test"
+
+.db-migrate-reset-job-defaults: &db-migrate-reset-job
+  stage: test
+  script:
+    - bundle exec rake db:migrate:reset
+
+.rspec-job-defaults: &rspec-job
+  stage: test
+  script:
+    - bundle exec rake db:create db:schema:load
+    - bundle exec rspec
+
+.ruby-2.1-defaults: &ruby-2-1
+  image: 'ruby:2.1'
+  cache:
+    key: ruby2.1
+    paths:
+      - vendor
+
+.ruby-2.3-defaults: &ruby-2-3
+  image: 'ruby:2.3'
+  cache:
+    key: ruby2.3
+    paths:
+      - vendor
+
+.db-sqlite-defaults: &db-sqlite
+  variables:
+    DB: sqlite
+
+.db-mysql-defaults: &db-mysql
+  variables:
+    DB: mysql
+  services:
+    - mysql:latest
+
+.db-postgres-defaults: &db-postgres
+  variables:
+    DB: postgresql
+  services:
+    - postgres:latest
+
+db-migrate-reset:sqlite:ruby2.1:
+  <<: *db-migrate-reset-job
+  <<: *db-sqlite
+  <<: *ruby-2-1
+
+db-migrate-reset:mysql:ruby2.1:
+  <<: *db-migrate-reset-job
+  <<: *db-mysql
+  <<: *ruby-2-1
+
+db-migrate-reset:postgres:ruby2.1:
+  <<: *db-migrate-reset-job
+  <<: *db-postgres
+  <<: *ruby-2-1
+
+db-migrate-reset:sqlite:ruby2.3:
+  <<: *db-migrate-reset-job
+  <<: *db-sqlite
+  <<: *ruby-2-3
+
+db-migrate-reset:mysql:ruby2.3:
+  <<: *db-migrate-reset-job
+  <<: *db-mysql
+  <<: *ruby-2-3
+
+db-migrate-reset:postgres:ruby2.3:
+  <<: *db-migrate-reset-job
+  <<: *db-postgres
+  <<: *ruby-2-3
+
+rspec:sqlite:ruby2.1:
+  <<: *rspec-job
+  <<: *db-sqlite
+  <<: *ruby-2-1
+
+rspec:mysql:ruby2.1:
+  <<: *rspec-job
+  <<: *db-mysql
+  <<: *ruby-2-1
+
+rspec:postges:ruby2.1:
+  <<: *rspec-job
+  <<: *db-postgres
+  <<: *ruby-2-1
+
+rspec:sqlite:ruby2.3:
+  <<: *rspec-job
+  <<: *db-sqlite
+  <<: *ruby-2-3
+
+rspec:mysql:ruby2.3:
+  <<: *rspec-job
+  <<: *db-mysql
+  <<: *ruby-2-3
+
+rspec:postges:ruby2.3:
+  <<: *rspec-job
+  <<: *db-postgres
+  <<: *ruby-2-3

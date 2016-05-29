@@ -4,8 +4,8 @@ RSpec.describe TutorialGroupPolicy do
   let(:term) { FactoryGirl.create(:term) }
   let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
 
-  context "admin permissions" do
-    shared_examples "admin member permissions" do
+  context 'admin permissions' do
+    shared_examples 'admin member permissions' do
       describe 'collections' do
         subject { described_class.new(account, term) }
 
@@ -24,22 +24,22 @@ RSpec.describe TutorialGroupPolicy do
       end
     end
 
-    context "as an admin" do
+    context 'as an admin' do
       let(:account) { FactoryGirl.create(:account, :admin) }
 
-      it_behaves_like "admin member permissions"
+      it_behaves_like 'admin member permissions'
     end
 
-    context "as a lecturer" do
+    context 'as a lecturer' do
       let(:account) { FactoryGirl.create(:account) }
       let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term, account: account) }
 
-      it_behaves_like "admin member permissions"
+      it_behaves_like 'admin member permissions'
     end
   end
 
 
-  context "as a tutor" do
+  context 'as a tutor' do
     let(:account) { FactoryGirl.create(:account) }
     let(:another_tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
     let!(:term_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, account: account, tutorial_group: another_tutorial_group) }
@@ -62,7 +62,7 @@ RSpec.describe TutorialGroupPolicy do
     end
   end
 
-  context "as a student" do
+  context 'as a student' do
     let(:account) { FactoryGirl.create(:account) }
     let(:another_tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
     let!(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term, account: account, tutorial_group: another_tutorial_group) }

@@ -5,7 +5,7 @@ RSpec.describe StudentsPolicy do
 
   let(:term) { FactoryGirl.create(:term) }
 
-  context "admins" do
+  context 'admins' do
     let(:account) { FactoryGirl.create(:account, :admin) }
 
     describe 'collections' do
@@ -17,7 +17,7 @@ RSpec.describe StudentsPolicy do
     end
   end
 
-  context "lecturers" do
+  context 'lecturers' do
     let(:account) { FactoryGirl.create(:account) }
     let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, account: account, term: term) }
 
@@ -30,7 +30,7 @@ RSpec.describe StudentsPolicy do
     end
   end
 
-  context "tutors" do
+  context 'tutors' do
     let(:account) { FactoryGirl.create(:account) }
     let!(:term_registration) { FactoryGirl.create(:term_registration, :tutor, account: account, term: term) }
 
@@ -43,7 +43,7 @@ RSpec.describe StudentsPolicy do
     end
   end
 
-  context "students" do
+  context 'students' do
     let(:account) { FactoryGirl.create(:account) }
     let!(:term_registration) { FactoryGirl.create(:term_registration, :student, account: account, term: term) }
 

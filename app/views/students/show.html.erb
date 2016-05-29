@@ -23,7 +23,7 @@
         <td><%= exercise_registration.exercise.title %></td>
         <td><%= exercise_registration.points %>/<%= exercise_registration.exercise.achievable_points %></td>
         <td class='text-right'>
-          <%= link_to "Show", exercise_submission_path(exercise_registration.exercise, exercise_registration.submission), class: "small button" %>
+          <%= link_to "Show", submission_path(exercise_registration.submission), class: "small button" %>
           <%= link_to "Evaluate", single_evaluation_path(exercise_registration.submission), class: "small button" %>
         </td>
       </tr>

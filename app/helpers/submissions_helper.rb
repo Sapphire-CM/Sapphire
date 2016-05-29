@@ -76,4 +76,8 @@ module SubmissionsHelper
       "Submission of #{submission.student_group.title}"
     end
   end
+
+  def filesize(number)
+    content_tag :span, number_to_human_size(number), title: "#{number} Bytes"
+  end
 end

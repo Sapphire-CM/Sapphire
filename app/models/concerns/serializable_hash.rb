@@ -20,7 +20,11 @@ module SerializableHash
 
         define_method("#{attribute}=".to_sym) do |value|
           instance_variable_set("@#{attribute}", value)
-          write_attribute(attribute, YAML.dump(value))
+          send("serialize_#{attribute}!")
+        end
+
+        define_method("serialize_#{attribute}!") do
+          write_attribute(attribute, YAML.dump(instance_variable_get("@#{attribute}")))
         end
       end
     end

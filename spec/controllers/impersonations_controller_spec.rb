@@ -42,7 +42,9 @@ RSpec.describe ImpersonationsController, type: :controller do
       it "does not raise an error" do
         expect do
           post :create, account_id: "does not exist"
-        end.to raise_error(ActiveRecord::RecordNotFound)
+        end.not_to raise_error
+
+        expect(response).to render_template("record_not_found")
       end
 
       it "prohibits unauthorized access" do

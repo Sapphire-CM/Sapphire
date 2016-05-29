@@ -9,6 +9,7 @@ RSpec.describe SubmissionAssetPolicy do
 
     describe 'member' do
       it { is_expected.to permit_authorization(:show) }
+      it { is_expected.to permit_authorization(:destroy) }
     end
   end
 
@@ -19,6 +20,7 @@ RSpec.describe SubmissionAssetPolicy do
 
     describe 'member' do
       it { is_expected.to permit_authorization(:show) }
+      it { is_expected.to permit_authorization(:destroy) }
     end
   end
 
@@ -29,6 +31,7 @@ RSpec.describe SubmissionAssetPolicy do
 
     describe 'member' do
       it { is_expected.to permit_authorization(:show) }
+      it { is_expected.to permit_authorization(:destroy) }
     end
   end
 
@@ -39,18 +42,28 @@ RSpec.describe SubmissionAssetPolicy do
     let(:account) { FactoryGirl.create(:account) }
     let!(:term_registration) { FactoryGirl.create(:term_registration, :student, account: account, term: term) }
 
-    context "with exercise registration" do
+    context 'with exercise registration' do
       let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission) }
 
       describe 'member' do
         it { is_expected.to permit_authorization(:show) }
+        it { is_expected.to permit_authorization(:destroy) }
       end
     end
 
-    context "without exercise registration" do
+    context 'without exercise registration' do
       describe 'member' do
         it { is_expected.not_to permit_authorization(:show) }
+        it { is_expected.not_to permit_authorization(:destroy) }
       end
+    end
+
+    context 'after deadline passed' do
+      pending
+    end
+
+    context 'disabled student uploads' do
+      pending
     end
   end
 
@@ -61,6 +74,7 @@ RSpec.describe SubmissionAssetPolicy do
 
     describe 'member' do
       it { is_expected.not_to permit_authorization(:show) }
+      it { is_expected.not_to permit_authorization(:destroy) }
     end
   end
 
@@ -72,6 +86,7 @@ RSpec.describe SubmissionAssetPolicy do
 
     describe 'member' do
       it { is_expected.not_to permit_authorization(:show) }
+      it { is_expected.not_to permit_authorization(:destroy) }
     end
   end
 
@@ -83,6 +98,7 @@ RSpec.describe SubmissionAssetPolicy do
 
     describe 'member' do
       it { is_expected.not_to permit_authorization(:show) }
+      it { is_expected.not_to permit_authorization(:destroy) }
     end
   end
 end

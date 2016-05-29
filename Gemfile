@@ -15,7 +15,7 @@ gem 'squeel',      '~> 1.2'       # easy DSL
 gem 'carrierwave'                 # fileuploads
 gem 'kaminari'                    # pagination
 gem 'flash_render'                # render method with notice/alerts
-gem 'pundit'                      # authorization based on controller actions and policies
+gem 'pundit' , '~> 0.3'           # authorization based on controller actions and policies
 gem 'turbolinks'                  # Turbolinks makes following links in your web application faster
 gem 'jquery-turbolinks'           # Turbolinks jquery plugin for DOM ready events
 gem 'ranked-model'                # manages sort-position of ratings
@@ -106,7 +106,7 @@ group :test do
 
   gem 'guard-rspec'
 
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', '~>2.8'
 
   gem 'terminal-notifier'
   gem 'terminal-notifier-guard'

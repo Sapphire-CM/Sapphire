@@ -55,7 +55,7 @@ variables:
 
 .db-postgres-defaults: &db-postgres
   variables:
-    DB: postgres
+    DB: postgresql
   services:
     - postgres:latest
 

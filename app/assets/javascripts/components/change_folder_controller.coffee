@@ -1,4 +1,3 @@
-
 class ChangeFolderController
   constructor: (@element) ->
     @_setupLoadingURL()

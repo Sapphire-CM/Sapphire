@@ -73,6 +73,7 @@ group :development do
   gem 'guard-bundler'
   gem 'guard-pow'
   gem 'guard-sidekiq'
+  gem 'listen', '~> 2.10'
 
   gem 'spring'                    # application preloader for development environments
   gem 'spring-commands-rspec'     # adding rspec command to spring

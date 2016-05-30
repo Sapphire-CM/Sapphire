@@ -16,7 +16,7 @@ module SubmissionAssetsHelper
         inline_css_asset(submission_asset)
       when SubmissionAsset::Mime::HTML
         inline_html_asset(submission_asset)
-      when SubmissionAsset::Mime::JPEG || SubmissionAsset::Mime::PNG
+      when SubmissionAsset::Mime::JPEG, SubmissionAsset::Mime::PNG
         inline_image_asset(submission_asset)
       when SubmissionAsset::Mime::PLAIN_TEXT
         inline_plain_text_asset(submission_asset)

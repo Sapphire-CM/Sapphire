@@ -5,13 +5,13 @@
   <%= f.input :title %>
   <%= f.input :description, input_html: { rows: 3 } %>
 
-  <%= f.input :deadline, as: :datetime_picker %>
-  <%= f.input :late_deadline, as: :datetime_picker %>
+  <%= f.input :deadline, as: :datetime_picker, label: "Submission" %>
+  <%= f.input :late_deadline, as: :datetime_picker, label: "Disable Submission (Late Deadline)" %>
 
   <%= f.input :visible_points, label: "Maximum Points shown in UI - (leave blank to use internal calculated points)" %>
 
   <%= f.input :enable_student_uploads, label: "Enable student uploads" %>
-  <%= f.input :group_submission %>
+  <%= f.input :group_submission, wrapper: :blocked_radio_buttons, as: :radio_buttons, collection: {"Group Submission" => true,  "Individual Submission" => false} %>
 
   <%= f.input :enable_min_required_points, label: 'Minimum points required for positive grade' %>
   <%= f.input :min_required_points, label: false,

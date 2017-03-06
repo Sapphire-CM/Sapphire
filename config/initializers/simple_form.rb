@@ -71,6 +71,13 @@ SimpleForm.setup do |config|
     b.use :error, wrap_with: { tag: :small }
   end
 
+  config.wrappers :blocked_radio_buttons, class: "input blocked-radio-buttons", error_class: :error, item_wrapper_tag: :li do |b|
+    b.use :html5
+    b.wrapper tag: :ul, class: "large-block-grid-3" do |component|
+      component.use :input
+    end
+  end
+
   config.default_wrapper = :foundation
   config.boolean_style = :nested
   config.browser_validations = false

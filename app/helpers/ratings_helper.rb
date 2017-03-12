@@ -1,22 +1,26 @@
 module RatingsHelper
   def ratings_form_collection
     [
-      ['Boolean Points',     Ratings::BinaryNumberRating.name],
-      ['Boolean Percentage', Ratings::BinaryPercentRating.name],
-      ['Min/Max Points',     Ratings::ValueNumberRating.name],
-      ['Min/Max Percentage', Ratings::ValuePercentRating.name],
+      ['Fixed Points Deduction',     Ratings::FixedPointsDeductionRating.name],
+      ['Fixed Percentage Deduction', Ratings::FixedPercentageDeductionRating.name],
+      ['Variable Points Deduction',     Ratings::VariablePointsDeductionRating.name],
+      ['Variable Percentage Deduction', Ratings::VariablePercentageDeductionRating.name],
+      ['Per Item Points Deduction', Ratings::PerItemPointsDeductionRating.name],
+      ['Fixed Bonus Points', Ratings::FixedBonusPointsRating.name],
+      ['Variable Bonus Points', Ratings::VariableBonusPointsRating.name],
       ['Plagiarism',         Ratings::PlagiarismRating.name]
     ]
   end
 
   def rating_points_description(rating)
-    if rating.is_a? Ratings::BinaryNumberRating
+    case rating
+    when Ratings::FixedPointsDeductionRating, Ratings::FixedBonusPointsRating
       "#{rating.value}"
-    elsif rating.is_a? Ratings::BinaryPercentRating
+    when Ratings::FixedPercentageDeductionRating
       "#{rating.value} %"
-    elsif rating.is_a? Ratings::ValueNumberRating
+    when Ratings::VariablePointsDeductionRating, Ratings::VariableBonusPointsRating, Ratings::PerItemPointsDeductionRating
       "#{rating.min_value} ... #{rating.max_value}"
-    elsif rating.is_a? Ratings::ValuePercentRating
+    when Ratings::VariablePercentageDeductionRating
       "#{rating.min_value} ... #{rating.max_value} %"
     end
   end

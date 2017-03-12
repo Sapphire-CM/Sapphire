@@ -18,7 +18,7 @@ class Evaluations::BinaryEvaluation < Evaluation
   end
 
   def points
-    if value == 1 && rating.is_a?(Ratings::BinaryNumberRating)
+    if value == 1 && rating.is_a?(Ratings::FixedPointsDeductionRating)
       rating.value
     else
       0
@@ -26,7 +26,7 @@ class Evaluations::BinaryEvaluation < Evaluation
   end
 
   def percent
-    if value == 1 && rating.is_a?(Ratings::BinaryPercentRating)
+    if value == 1 && rating.is_a?(Ratings::FixedPercentageDeductionRating)
       1 + rating.value.to_f / 100.0
     else
       1

@@ -25,8 +25,8 @@ class Evaluation < ActiveRecord::Base
   validates :rating, presence: true
   validate :validate_evaluation_type
 
-  after_create :update_result!, if: lambda { |eval| eval.value_changed? }
-  after_update :update_result!, if: lambda { |eval| eval.value_changed? }
+  after_create :update_result!, if: lambda { |evaluation| evaluation.value_changed? }
+  after_update :update_result!, if: lambda { |evaluation| evaluation.value_changed? }
   after_destroy :update_result!
 
   scope :ranked, lambda { includes(:rating).order { rating.row_order.asc }.references(:rating) }

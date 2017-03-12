@@ -239,7 +239,7 @@ BinaryNumberRating.create! [
   { title: 'missing', value: -10, rating_group: rating_groups[14] },
 ]
 
-ValueNumberRating.create! [
+VariablePointsDeductionRating.create! [
   { title: 'content', min_value: 0, max_value: 5, rating_group: rating_groups[14] },
 ]
 
@@ -453,7 +453,7 @@ BinaryNumberRating.create! [
 
 
 
-ValueNumberRating.create! [
+VariablePointsDeductionRating.create! [
   { title: 'correct answers', min_value: 0, max_value: 10, multiplication_factor: 4.0, rating_group: rating_groups[30] },
 ]
 
@@ -462,7 +462,7 @@ ValueNumberRating.create! [
 
 
 
-ValueNumberRating.create! [
+VariablePointsDeductionRating.create! [
   { title: 'misc. bonus', min_value: 0, max_value: 10, rating_group: rating_groups[3] },
   { title: 'misc. bonus', min_value: 0, max_value: 10, rating_group: rating_groups[8] },
   { title: 'misc. bonus', min_value: 0, max_value: 10, rating_group: rating_groups[10] },
@@ -472,7 +472,7 @@ ValueNumberRating.create! [
   { title: 'misc. bonus', min_value: 0, max_value: 10, rating_group: rating_groups[31] },
 ]
 
-ValueNumberRating.create! [
+VariablePointsDeductionRating.create! [
   { title: 'misc. subtractions', min_value: -10, max_value: 0, rating_group: rating_groups[3] },
   { title: 'misc. subtractions', min_value: -10, max_value: 0, rating_group: rating_groups[8] },
   { title: 'misc. subtractions', min_value: -10, max_value: 0, rating_group: rating_groups[10] },

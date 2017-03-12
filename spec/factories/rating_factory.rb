@@ -4,7 +4,7 @@ FactoryGirl.define do
     rating_group
     title { generate :rating_title }
     description { generate :lorem_ipsum }
-    type 'Ratings::BinaryRating'
+    type 'Ratings::FixedRating'
     value 10
     max_value 20
     min_value 5
@@ -19,11 +19,11 @@ FactoryGirl.define do
     end
 
     trait :value_points do
-      type 'Ratings::ValueNumberRating'
+      type 'Ratings::VariablePointsDeductionRating'
     end
 
     trait :value_percent do
-      type 'Ratings::ValuePercentRating'
+      type 'Ratings::VariablePercentageDeductionRating'
     end
 
     trait :plagiarism do

@@ -42,6 +42,9 @@ class RatingsController < ApplicationController
   def update
     @rating.assign_attributes(rating_params)
 
+    @rating = @rating.from_updated_type if @rating.type_changed?
+
+
     if @rating.valid?
       event_service.rating_updated!(@rating)
       @rating.save

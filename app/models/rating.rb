@@ -43,14 +43,22 @@ class Rating < ActiveRecord::Base
     self.multiplication_factor ||= 1.0 if attribute_present? :multiplication_factor
   end
 
-  def self.new_from_type(params)
-    classes = [
-      Ratings::BinaryNumberRating,
-      Ratings::BinaryPercentRating,
-      Ratings::ValueNumberRating,
-      Ratings::ValuePercentRating,
+  def self.instantiable_subclasses
+    [
+      Ratings::FixedPointsDeductionRating,
+      Ratings::FixedPercentageDeductionRating,
+      Ratings::VariablePointsDeductionRating,
+      Ratings::VariablePercentageDeductionRating,
+      Ratings::PerItemPointsDeductionRating,
+      Ratings::FixedBonusPointsRating,
+      Ratings::VariableBonusPointsRating,
       Ratings::PlagiarismRating
     ]
+  end
+
+  def self.new_from_type(params)
+    classes = instantiable_subclasses
+
     rating_class_index = classes.map(&:name).index(params[:type].classify)
     classes[rating_class_index].new(params.except(:type))
   end
@@ -64,7 +72,7 @@ class Rating < ActiveRecord::Base
   end
 
   def build_evaluation
-    evaluation = if self.is_a? Ratings::BinaryRating
+    evaluation = if self.is_a? Ratings::FixedRating
       Evaluations::BinaryEvaluation.new
     else
       Evaluations::ValueEvaluation.new
@@ -77,6 +85,17 @@ class Rating < ActiveRecord::Base
 
   def automatically_checked?
     automated_checker_identifier.present?
+  end
+
+
+  def from_updated_type
+    subclass = self.class.instantiable_subclasses.find { |klass| klass.name == self.type}
+
+    if subclass
+      becomes(subclass)
+    else
+      raise ArgumentError.new("Unknown Subclass: #{type}")
+    end
   end
 
   private
@@ -103,4 +122,5 @@ class Rating < ActiveRecord::Base
       new_evaluations_group.update_result!
     end
   end
+
 end

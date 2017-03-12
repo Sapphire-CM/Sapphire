@@ -2,6 +2,7 @@
     data-update-position-action="<%= update_position_exercise_rating_group_rating_path(@exercise, rating.rating_group, rating) %>"
     class="index_entry rating" >
   <td class='title-column'>
+    <%= content_tag :span, foundation_icon(:alert), title: "Not Valid" unless rating.valid? %>
     <% if rating.description.blank? %>
       <%= rating.title %>
     <% else %>

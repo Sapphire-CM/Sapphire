@@ -15,15 +15,10 @@
 #
 # add_index :ratings, [:rating_group_id], name: :index_ratings_on_rating_group_id
 
-class Ratings::BinaryRating < Rating
-  validates :value, presence: true
+class Ratings::FixedPercentageDeductionRating < Ratings::FixedRating
+  # if checked, value counts as follows:
+  #  70  => total_value * (1 +  (70/100))
+  # -30  => total_value * (1 + (-30/100))
 
-  def initialize(*args)
-    fail 'Cannot directly instantiate a BinaryRating' if self.class == Ratings::BinaryRating
-    super
-  end
-
-  def evaluation_class
-    Evaluations::BinaryEvaluation
-  end
+  validates :value, numericality: { less_than_or_equal_to: 0 }
 end

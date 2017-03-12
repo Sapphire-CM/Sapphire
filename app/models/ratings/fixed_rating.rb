@@ -15,8 +15,15 @@
 #
 # add_index :ratings, [:rating_group_id], name: :index_ratings_on_rating_group_id
 
-class Ratings::BinaryNumberRating < Ratings::BinaryRating
-  # if checked, value counts as follows:
-  #  7  => total_value + 7
-  # -3  => total_value + (-3)
+class Ratings::FixedRating < Rating
+  validates :value, presence: true
+
+  def initialize(*args)
+    fail 'Cannot directly instantiate a FixedRating' if self.class == Ratings::FixedRating
+    super
+  end
+
+  def evaluation_class
+    Evaluations::BinaryEvaluation
+  end
 end

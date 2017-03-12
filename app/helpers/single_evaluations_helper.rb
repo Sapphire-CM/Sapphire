@@ -2,7 +2,7 @@ module SingleEvaluationsHelper
   def single_evaluation_input(evaluation)
     rating = evaluation.rating
 
-    if rating.is_a? Ratings::BinaryRating
+    if rating.is_a? Ratings::FixedRating
       css_class = if evaluation.value == 1
         # "secondary"
         'alert'

@@ -4,7 +4,7 @@
       <%= tutorial_group_title(tutorial_group) %>
     </h2>
 
-    <table>
+    <table class='sortable'>
       <thead>
         <th>MatrNr</th>
         <% term.exercises.each do |exercise| %>
@@ -17,20 +17,20 @@
       <tbody>
         <% term_registrations.each do |registration| %>
           <tr>
-            <td class="text-center">
+            <td class="text-center" data-sort-as='integer'>
               <%= registration.account.matriculation_number %>
             </td>
 
             <% term.exercises.each do |exercise| %>
-              <td class="text-right">
+              <td class="text-right" data-sort-as='integer'>
                 <%= exercise_result registration, exercise %>
               </td>
             <% end %>
 
-            <td class="text-right">
+            <td class="text-right" data-sort-as='integer'>
               <%= registration.points || 0%>
             </td>
-            <td class="text-center">
+            <td class="text-center" data-sort-as='integer'>
               <%= grading_scale_service.grade_for(registration) %>
             </td>
           </tr>

@@ -49,7 +49,7 @@ RSpec.describe SingleEvaluationsController do
   describe 'PUT update' do
     describe 'with valid params' do
       context 'with a FixedRating' do
-        [Ratings::BinaryNumberRating, Ratings::BinaryPercentRating, Ratings::PlagiarismRating].each do |type|
+        [Ratings::FixedPointsDeductionRating, Ratings::FixedPercentageDeductionRating, Ratings::PlagiarismRating].each do |type|
           [true, false].each do |checked|
             it 'updates the requested evaluation' do
               rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s
@@ -103,7 +103,7 @@ RSpec.describe SingleEvaluationsController do
           sign_in(tutor_registration.account)
         end
 
-        [Ratings::BinaryNumberRating, Ratings::BinaryPercentRating, Ratings::PlagiarismRating].each do |type|
+        [Ratings::FixedPointsDeductionRating, Ratings::FixedPercentageDeductionRating, Ratings::PlagiarismRating].each do |type|
           [true, false].each do |checked|
             it 'updates the requested evaluation' do
               rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s

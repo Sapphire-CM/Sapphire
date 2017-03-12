@@ -9,8 +9,8 @@ RSpec.describe RatingsController do
       rating: {
         title: 'Some Title',
         description: 'Some longer description text.',
-        type: 'Ratings::BinaryNumberRating',
-        value: '42',
+        type: 'Ratings::FixedPointsDeductionRating',
+        value: '-42',
       }
     }
   end
@@ -20,7 +20,7 @@ RSpec.describe RatingsController do
       rating: {
         title: 'Some Existing Title',
         description: 'Some longer description text.',
-        type: 'Ratings::BinaryNumberRating',
+        type: 'Ratings::FixedPointsDeductionRating',
       }
     }
   end
@@ -48,6 +48,7 @@ RSpec.describe RatingsController do
         expect do
           xhr :post, :create, valid_attributes
         end.to change(Rating, :count).by(1)
+
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:_insert_index_entry)

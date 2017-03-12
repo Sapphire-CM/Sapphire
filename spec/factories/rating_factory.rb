@@ -11,11 +11,11 @@ FactoryGirl.define do
     multiplication_factor 1.0
 
     trait :boolean_points do
-      type 'Ratings::BinaryNumberRating'
+      type 'Ratings::FixedPointsDeductionRating'
     end
 
     trait :boolean_percent do
-      type 'Ratings::BinaryPercentRating'
+      type 'Ratings::FixedPercentageDeductionRating'
     end
 
     trait :value_points do

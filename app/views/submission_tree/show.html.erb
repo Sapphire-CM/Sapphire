@@ -2,18 +2,20 @@
 
 <%= render "exercises/sidebar" %>
 
+
 <%= render "toolbar", submission: @submission, tree: @tree, submission_upload: @submission_upload %>
 
-<%= render "submission_tree_path", tree: @tree, submission: @submission %>
+<%= cache [@submission, @tree.path] do %>
+  <%= render "submission_tree_path", tree: @tree, submission: @submission %>
 
-
-<%= content_tag :div, class: "submission-tree", data: { update_url: tree_directory_submission_path(@submission, path: @tree.path_without_root, format: :json) } do %>
-  <% if @submission.submission_assets.any? %>
-    <%= render "submission_directory", tree: @tree, submission: @submission %>
-  <% else %>
-    <p>
-      This submission does not contain any files.
-    </p>
+  <%= content_tag :div, class: "submission-tree", data: { update_url: tree_directory_submission_path(@submission, path: @tree.path_without_root, format: :json) } do %>
+    <% if @submission.submission_assets.any? %>
+      <%= render "submission_directory", tree: @tree, submission: @submission %>
+    <% else %>
+      <p>
+        This submission does not contain any files.
+      </p>
+    <% end %>
   <% end %>
 <% end %>
 

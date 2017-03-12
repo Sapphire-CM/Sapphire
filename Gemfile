@@ -46,7 +46,7 @@ gem 'rubyzip'                     # handling submission ZIP archives
 gem 'cocoon'                      # for nested upload forms
 gem 'dropzonejs-rails'            # Drag and drop support for file uploads
 
-gem 'sidekiq', '~>3.3.3'                     # async jobs in background, used for imports
+gem 'sidekiq', '~>4.0.0'                     # async jobs in background, used for imports
 gem 'sinatra', '>= 1.3.0', require: false    # small rack framework, used for sidekiq ui
 
 gem 'writeexcel'                  # exporting excel spreadsheets
@@ -69,12 +69,6 @@ group :development, :test do
 end
 
 group :development do
-  gem 'guard'
-  gem 'guard-bundler'
-  gem 'guard-pow'
-  gem 'guard-sidekiq'
-  gem 'listen', '~> 2.10'
-
   gem 'spring'                    # application preloader for development environments
   gem 'spring-commands-rspec'     # adding rspec command to spring
   gem 'spring-commands-sidekiq'   # adding sidekiq command to spring

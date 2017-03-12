@@ -46,7 +46,7 @@ gem 'rubyzip'                     # handling submission ZIP archives
 gem 'cocoon'                      # for nested upload forms
 gem 'dropzonejs-rails'            # Drag and drop support for file uploads
 
-gem 'sidekiq', '~>4.0.0'                     # async jobs in background, used for imports
+gem 'sidekiq', '~>3.3.3'          # async jobs in background, used for imports
 gem 'sinatra', '>= 1.3.0', require: false    # small rack framework, used for sidekiq ui
 
 gem 'writeexcel'                  # exporting excel spreadsheets
@@ -99,12 +99,7 @@ end
 group :test do
   gem 'rspec-rails'
 
-  gem 'guard-rspec'
-
   gem 'shoulda-matchers', '~>2.8'
-
-  gem 'terminal-notifier'
-  gem 'terminal-notifier-guard'
 
   gem 'factory_girl_rails'
   gem 'database_cleaner'

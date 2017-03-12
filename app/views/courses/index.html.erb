@@ -13,11 +13,14 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="small-12 large-centered text-center">
-      <%= link_to "Add Course", new_course_path, remote: true, class: "small button", data: {"reveal-id" => "reveal_modal"} if policy(@courses).create? %>
+  <% if policy(@courses).create?  %>
+    <div class="row">
+      <div class="small-12 large-centered text-center">
+        <%= link_to "Add Course", new_course_path, remote: true, class: "small button", data: {"reveal-id" => "reveal_modal"} %>
+      </div>
     </div>
-  </div>
+
+    <%= render 'application/reveal_modal' %>
+  <% end %>
 </div>
 
-<%= render 'application/reveal_modal' %>

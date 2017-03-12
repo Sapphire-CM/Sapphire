@@ -40,10 +40,9 @@ class SubmissionEvaluation < ActiveRecord::Base
 
   def update_plagiarized!
     plagiarized = evaluations.joins { rating }
+      .where.not(value: 0)
       .where { rating.type == Ratings::PlagiarismRating }
-      .pluck(:value)
-      .compact
-      .sum > 0
+      .exists?
     self.plagiarized = plagiarized
     self.save!
   end
@@ -60,7 +59,6 @@ class SubmissionEvaluation < ActiveRecord::Base
   end
 
   private
-
   def calc_results
     final_sum = 0
     percent = 1
@@ -71,14 +69,12 @@ class SubmissionEvaluation < ActiveRecord::Base
     end
 
     final_sum = final_sum.to_f * percent
-    final_sum = 0 if final_sum < 0
+    if final_sum < 0
+      final_sum = 0
+    end
 
-    final_sum = if submission.exercise.enable_max_total_points &&
-      final_sum > submission.exercise.max_total_points
-
-      submission.exercise.max_total_points
-    else
-      final_sum
+    if submission.exercise.enable_max_total_points && final_sum > submission.exercise.max_total_points
+      final_sum = submission.exercise.max_total_points
     end
 
     self.evaluation_result = final_sum

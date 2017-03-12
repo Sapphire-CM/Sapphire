@@ -18,7 +18,7 @@
     </div>
   </div>
 
-  <table class='small-12'>
+  <table class='small-12 sortable'>
     <thead>
       <tr>
         <th>Title</th>
@@ -35,14 +35,15 @@
       <% else %>
         <%= render "courses/index_entry_no_terms" %>
       <% end %>
-
-      <% if policy(course).create_term? %>
-      <tr class="last_one">
-        <td colspan='5' class='text-center minimum-width'>
-          <%= link_to foundation_icon(:plus), new_term_path(course_id: course.id), remote: true, title: 'Add Term', data: {"reveal-id" => "reveal_modal"}   %>
-        </td>
-      </tr>
-      <% end %>
     </tbody>
+    <% if policy(course).create_term? %>
+      <tfoot>
+        <tr class="last_one">
+          <td colspan='5' class='text-center minimum-width'>
+            <%= link_to foundation_icon(:plus), new_term_path(course_id: course.id), remote: true, title: 'Add Term', data: {"reveal-id" => "reveal_modal"}   %>
+          </td>
+        </tr>
+      </tfoot>
+    <% end %>
   </table>
 </div>

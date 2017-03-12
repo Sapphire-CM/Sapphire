@@ -2,7 +2,7 @@ $('#evaluation_result').text('<%= single_evaluation_pluralized_points @submissio
 
 $('#<%= single_evaluation_evaluation_group_id(@evaluation.evaluation_group) %>').text("<%= single_evaluation_evaluation_group_title(@evaluation.evaluation_group) %>")
 
-<% if @rating.is_a? Ratings::BinaryRating %>
+<% if @rating.is_a? Ratings::FixedRating %>
   var eval_button = $('#<%= single_evaluation_button_id(@evaluation) %>');
   <% if @evaluation.checked? %>
     eval_button.removeClass("secondary").addClass("alert");

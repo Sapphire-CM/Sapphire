@@ -12,6 +12,14 @@ module ExercisesHelper
     value.join ', '
   end
 
+  def exercise_submission_type(exercise)
+    if exercise.group_submission?
+      "Group"
+    else
+      "Individual"
+    end
+  end
+
   def submission_viewer_form_collection
     Sapphire::SubmissionViewers::Central.registered_viewers.map do |viewer|
       [viewer.title, viewer.identifier]
@@ -23,14 +31,6 @@ module ExercisesHelper
       link_to exercise.title, rolebased_submission_path(exercise)
     else
       exercise.title
-    end
-  end
-
-  def exercise_submission_type(exercise)
-    if exercise.group_submission?
-      "group submission"
-    else
-      "solitary submission"
     end
   end
 

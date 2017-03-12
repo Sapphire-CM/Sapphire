@@ -19,7 +19,7 @@ class RatingGroup < ActiveRecord::Base
   include RankedModel
   ranks :row_order, with_same: :exercise_id
 
-  belongs_to :exercise
+  belongs_to :exercise, touch: true
   has_many :ratings, dependent: :destroy
   has_many :evaluation_groups, dependent: :destroy
 

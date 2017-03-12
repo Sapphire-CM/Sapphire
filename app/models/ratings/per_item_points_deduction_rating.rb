@@ -15,23 +15,12 @@
 #
 # add_index :ratings, [:rating_group_id], name: :index_ratings_on_rating_group_id
 
-class Ratings::ValueRating < Rating
-  validates :min_value, presence: true
-  validates :max_value, presence: true
-  validate :all_values_range
+class Ratings::PerItemPointsDeductionRating < Ratings::VariableRating
+  # value counts as follows:
+  #  7  => total_value + 7
+  # -3  => total_value + (-3)
 
-  def evaluation_class
-    Evaluations::ValueEvaluation
-  end
+  validates :min_value, :max_value, numericality: { greater_than_or_equal_to: 0 }
+  validates :multiplication_factor, numericality: { less_than_or_equal_to: 0 }
 
-  def all_values_range
-    if max_value && min_value && max_value < min_value
-      errors.add :min_value, 'maximum value must be greater than minimum value'
-    end
-  end
-
-  def initialize(*args)
-    fail 'Cannot directly instantiate a ValueRating' if self.class == Ratings::ValueRating
-    super
-  end
 end

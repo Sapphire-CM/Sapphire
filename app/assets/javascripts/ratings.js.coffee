@@ -27,35 +27,56 @@ update_fields_visibility = (form) ->
   multiplication_factor_label = multiplication_factor_field.find 'label'
 
   switch type
-    when "BinaryNumberRating"
+    when "Ratings::FixedPointsDeductionRating"
       value_field.show()
       min_field.hide()
       max_field.hide()
       multiplication_factor_field.hide()
-      value_label.text "Points (positive or negative)"
-    when "BinaryPercentRating"
+      value_label.text "Points (negative)"
+    when "Ratings::FixedBonusPointsRating"
       value_field.show()
       min_field.hide()
       max_field.hide()
       multiplication_factor_field.hide()
-      value_label.text "Percentage (0..100)"
-    when "ValueNumberRating"
+      value_label.text "Points (positive)"
+    when "Ratings::FixedPercentageDeductionRating"
+      value_field.show()
+      min_field.hide()
+      max_field.hide()
+      multiplication_factor_field.hide()
+      value_label.text "Percentage (0...100)"
+    when "Ratings::VariablePointsDeductionRating"
       value_field.hide()
       min_field.show()
       max_field.show()
-      multiplication_factor_field.show()
+      multiplication_factor_field.hide()
       min_label.text "Minimum Value (points)"
       max_label.text "Maximum Value (points)"
-    when "ValuePercentRating"
+    when "Ratings::VariableBonusPointsRating"
+      value_field.hide()
+      min_field.show()
+      max_field.show()
+      multiplication_factor_field.hide()
+      min_label.text "Minimum Value (points)"
+      max_label.text "Maximum Value (points)"
+    when "Ratings::VariablePercentageDeductionRating"
       value_field.hide()
       min_field.show()
       max_field.show()
       multiplication_factor_field.hide()
       min_label.text "Minimum Percent"
       max_label.text "Maximum Percent"
-    when "PlagiarismRating"
+    when "Ratings::PlagiarismRating"
       value_field.hide()
       min_field.hide()
       max_field.hide()
       multiplication_factor_field.hide()
-
+    when "Ratings::PerItemPointsDeductionRating"
+      value_field.hide()
+      min_field.show()
+      max_field.show()
+      min_label.text "# items minimum"
+      max_label.text "# items maximum"
+      multiplication_factor_field.show()
+    else
+      console.warn("Unknown rating type", type)

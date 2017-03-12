@@ -57,7 +57,7 @@ RatingGroup.all.map{ |obj| obj.row_order_position = :last; obj.save }
 
 
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'no realname',                        value: -3, rating_group: rating_groups[0] },
   { title: 'wrong or missing TUG or previously disclosed email address', value: -3, rating_group: rating_groups[0] },
   { title: 'redundant Reply-To (same as From)',  value: -1, rating_group: rating_groups[0] },
@@ -66,7 +66,7 @@ BinaryNumberRating.create! [
   { title: 'signature > 4 lines',                value: -2, rating_group: rating_groups[0] }
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'not 100% plain text',                value: -5, rating_group: rating_groups[1] },
   { title: 'broken message ID',                  value: -2, rating_group: rating_groups[1] },
   { title: 'headers not 7bit ASCII',             value: -2, rating_group: rating_groups[1] },
@@ -76,7 +76,7 @@ BinaryNumberRating.create! [
   { title: 'bad char set in body (not UTF-8)',   value: -2, rating_group: rating_groups[1]}
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'not a new thread',                              value: -8, rating_group: rating_groups[2] },
   { title: 'subject line not 7-bit ASCII',                  value: -2, rating_group: rating_groups[2] },
   { title: 'subject does not reflect content',              value: -2, rating_group: rating_groups[2] },
@@ -97,7 +97,7 @@ BinaryNumberRating.create! [
 
 
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'no realname in "From:"',             value: -3, rating_group: rating_groups[4] },
   { title: 'no TUG or previously disclosed address at all', value: -3, rating_group: rating_groups[4] },
   { title: 'redundant Followup-To',              value: -1, rating_group: rating_groups[4] },
@@ -107,7 +107,7 @@ BinaryNumberRating.create! [
   { title: 'signature > 4 lines',                value: -2, rating_group: rating_groups[4] }
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'not 100% plain text',                value: -5, rating_group: rating_groups[5] },
   { title: 'broken message ID',                  value: -2, rating_group: rating_groups[5] },
   { title: 'not a news client (e.g. webnews)',   value: -7, rating_group: rating_groups[5] },
@@ -116,7 +116,7 @@ BinaryNumberRating.create! [
   { title: 'bad char set in body (not UTF-8)',   value: -2, rating_group: rating_groups[5]}
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'full quote (TOFU and TUFO)',                       value: -10, rating_group: rating_groups[6] },
   { title: 'not quoted at all',                                value: -10, rating_group: rating_groups[6] },
   { title: 'selective but still full quote',                   value:  -5, rating_group: rating_groups[6] },
@@ -127,7 +127,7 @@ BinaryNumberRating.create! [
   { title: 'attribution line too long',                        value:  -2, rating_group: rating_groups[6] }
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'not a followup but new thread',                         value: -6, rating_group: rating_groups[7] },
   { title: 'no external followups (to other threads)',              value: -4, rating_group: rating_groups[7] },
   { title: 'only one external followup (to only one other thread)', value: -2, rating_group: rating_groups[7] },
@@ -140,7 +140,7 @@ BinaryNumberRating.create! [
 
 
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'no realname in "From"',                                                value:  -3, rating_group: rating_groups[9] },
   { title: 'no TUG or previously disclosed address at all',                        value:  -3, rating_group: rating_groups[9] },
   { title: 'no or invalid TUG or previously disclosed address in "From/ReployTo"', value:  -2, rating_group: rating_groups[9] },
@@ -181,7 +181,7 @@ BinaryNumberRating.create! [
 
 
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'uploaded to wrong room',                                 value: -5, rating_group: rating_groups[11] },
   { title: 'not a PDF',                                              value: -3, rating_group: rating_groups[11] },
   { title: 'text is actually an image, hence no automatic analysis', value: -5, rating_group: rating_groups[11] },
@@ -191,7 +191,7 @@ BinaryNumberRating.create! [
   { title: 'not used provided template',                             value: -5, rating_group: rating_groups[11] },
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'missing',                         value: -3, rating_group: rating_groups[12] },
   { title: 'name: omitted or wrong',          value: -2, rating_group: rating_groups[12] },
   { title: 'name: incomplete',                value: -1, rating_group: rating_groups[12] },
@@ -204,7 +204,7 @@ BinaryNumberRating.create! [
   { title: 'study:source missing or wrong',   value: -1, rating_group: rating_groups[12] },
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'ACM missing',                                           value: -5, rating_group: rating_groups[13] },
   { title: 'ACM pub: omitted or wrong',                             value: -5, rating_group: rating_groups[13] },
   { title: 'ACM pub title: omitted or wrong',                       value: -2, rating_group: rating_groups[13] },
@@ -235,15 +235,15 @@ BinaryNumberRating.create! [
   { title: 'IEEE pub DOI: incomplete',                              value: -1, rating_group: rating_groups[13] },
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'missing', value: -10, rating_group: rating_groups[14] },
 ]
 
-ValueNumberRating.create! [
+VariablePointsDeductionRating.create! [
   { title: 'content', min_value: 0, max_value: 5, rating_group: rating_groups[14] },
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'quotation: omitted',                         value: -2, rating_group: rating_groups[14] },
   { title: 'quotation: wrong quotation',                 value: -1, rating_group: rating_groups[14] },
   { title: 'quotation: no quotation marks around quote', value: -2, rating_group: rating_groups[14] },
@@ -261,7 +261,7 @@ BinaryNumberRating.create! [
 
 
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'no INM subdirectory',                           value: -3, rating_group: rating_groups[16] },
   { title: 'index.xhtml exists but wrong name/dir',         value: -2, rating_group: rating_groups[16] },
   { title: 'posting.xhtml exists but wrong name/dir',       value: -2, rating_group: rating_groups[16] },
@@ -271,7 +271,7 @@ BinaryNumberRating.create! [
   { title: 'bad/uppercase characters in any file/dir name', value: -3, rating_group: rating_groups[16] },
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'no index page or page w/o content/wrong content',              value: -10, rating_group: rating_groups[17] },
   { title: 'not simple html (word, frontpage, etc)',                       value: -5, rating_group: rating_groups[17] },
   { title: '<100 words about favourite city',                              value: -3, rating_group: rating_groups[17] },
@@ -288,7 +288,7 @@ BinaryNumberRating.create! [
   { title: 'fails W3C validator',                                          value: -7, rating_group: rating_groups[17] },
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'no posting page or page w/o content',    value: -5, rating_group: rating_groups[18] },
   { title: 'links not clickable',                    value: -1, rating_group: rating_groups[18] },
   { title: 'not simple html (word, frontpage, etc)', value: -4, rating_group: rating_groups[18] },
@@ -296,7 +296,7 @@ BinaryNumberRating.create! [
   { title: 'fails W3C validator',                    value: -4, rating_group: rating_groups[18] },
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'no person page or page w/o content',                       value: -5, rating_group: rating_groups[19] },
   { title: 'not simple html (word, frontpage, etc)',                   value: -4, rating_group: rating_groups[19] },
   { title: 'what is the person most famous for missed ',               value: -1, rating_group: rating_groups[19] },
@@ -314,7 +314,7 @@ BinaryNumberRating.create! [
   { title: 'fails W3C validator',                                      value: -4, rating_group: rating_groups[19] },
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'h1 missing',                            value: -2, rating_group: rating_groups[20] },
   { title: 'h2 missing',                            value: -2, rating_group: rating_groups[20] },
   { title: 'p missing',                             value: -2, rating_group: rating_groups[20] },
@@ -330,7 +330,7 @@ BinaryNumberRating.create! [
   { title: 'no blockquote (in researcher)',         value: -2, rating_group: rating_groups[20] },
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'no img element on any page',                    value: -4, rating_group: rating_groups[21] },
   { title: 'at least one image with missing src attribute', value: -4, rating_group: rating_groups[21] },
   { title: 'at least one image from remote server',         value: -4, rating_group: rating_groups[21] },
@@ -342,7 +342,7 @@ BinaryNumberRating.create! [
   { title: 'at least one img alt missing or wrong',         value: -2, rating_group: rating_groups[21] },
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'no stylesheet at all',                                              value: -5, rating_group: rating_groups[22] },
   { title: 'stylesheet not linked correctly on all pages',                      value: -4, rating_group: rating_groups[22] },
   { title: 'no/incomplete image frame (border, padding, and background-color)', value: -1, rating_group: rating_groups[22] },
@@ -353,7 +353,7 @@ BinaryNumberRating.create! [
   { title: 'fails W3C validator',                                               value: -4, rating_group: rating_groups[22] },
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'lines too long (> 90)',                                                                                                              value: -3, rating_group: rating_groups[23] },
   { title: 'style attribute or style tag used',                                                                                                  value: -3, rating_group: rating_groups[23] },
   { title: 'wrong usage of logical elements (e.g. em just to make text italic, blockquote for text which is not a quotation, table for layout)', value: -5, rating_group: rating_groups[23] },
@@ -371,7 +371,7 @@ BinaryNumberRating.create! [
 
 
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'sent to wrong tutor',                              value: -5, rating_group: rating_groups[25] },
   { title: 'no realname in "From:"',                           value: -3, rating_group: rating_groups[25] },
   { title: 'no TUG or previously disclosed address at all',    value: -3, rating_group: rating_groups[25] },
@@ -396,7 +396,7 @@ BinaryNumberRating.create! [
   { title: 'multiple mails in short time',                     value: -2, rating_group: rating_groups[25] },
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'file not found',                                    value: -10, rating_group: rating_groups[26] },
   { title: 'graztimes.css exists but wrong name or dir',        value: -2, rating_group: rating_groups[26] },
   { title: 'one wrong layout',                                  value: -3, rating_group: rating_groups[26] },
@@ -411,7 +411,7 @@ BinaryNumberRating.create! [
   { title: 'fails css validator',                               value: -7, rating_group: rating_groups[26] },
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'file not found',                                               value: -10, rating_group: rating_groups[27] },
   { title: 'print.css exists but wrong name or dir',                       value: -2, rating_group: rating_groups[27] },
   { title: 'wrong layout (must be single column)',                         value: -7, rating_group: rating_groups[27] },
@@ -433,7 +433,7 @@ BinaryNumberRating.create! [
   { title: 'fails css validator',                                          value: -7, rating_group: rating_groups[27] },
 ]
 
-BinaryNumberRating.create! [
+FixedPointsDeductionRating.create! [
   { title: 'file not found',                                    value: -10, rating_group: rating_groups[28] },
   { title: 'kids.css exists but wrong name or dir',             value: -2, rating_group: rating_groups[28] },
   { title: 'one wrong layout',                                  value: -3, rating_group: rating_groups[28] },
@@ -453,7 +453,7 @@ BinaryNumberRating.create! [
 
 
 
-ValueNumberRating.create! [
+VariablePointsDeductionRating.create! [
   { title: 'correct answers', min_value: 0, max_value: 10, multiplication_factor: 4.0, rating_group: rating_groups[30] },
 ]
 
@@ -462,7 +462,7 @@ ValueNumberRating.create! [
 
 
 
-ValueNumberRating.create! [
+VariablePointsDeductionRating.create! [
   { title: 'misc. bonus', min_value: 0, max_value: 10, rating_group: rating_groups[3] },
   { title: 'misc. bonus', min_value: 0, max_value: 10, rating_group: rating_groups[8] },
   { title: 'misc. bonus', min_value: 0, max_value: 10, rating_group: rating_groups[10] },
@@ -472,7 +472,7 @@ ValueNumberRating.create! [
   { title: 'misc. bonus', min_value: 0, max_value: 10, rating_group: rating_groups[31] },
 ]
 
-ValueNumberRating.create! [
+VariablePointsDeductionRating.create! [
   { title: 'misc. subtractions', min_value: -10, max_value: 0, rating_group: rating_groups[3] },
   { title: 'misc. subtractions', min_value: -10, max_value: 0, rating_group: rating_groups[8] },
   { title: 'misc. subtractions', min_value: -10, max_value: 0, rating_group: rating_groups[10] },
@@ -482,7 +482,7 @@ ValueNumberRating.create! [
   { title: 'misc. subtractions', min_value: -10, max_value: 0, rating_group: rating_groups[31] },
 ]
 
-BinaryPercentRating.create! [
+FixedPercentageDeductionRating.create! [
   { title: '48h late deadline', value: -50, rating_group: rating_groups[3] },
   { title: '48h late deadline', value: -50, rating_group: rating_groups[8] },
   { title: '48h late deadline', value: -50, rating_group: rating_groups[10] },

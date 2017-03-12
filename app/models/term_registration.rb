@@ -91,7 +91,7 @@ class TermRegistration < ActiveRecord::Base
 
   def all_minimum_points_reached?
     !term.exercises.mandatory_exercises.where.not(id: exercise_registrations.select('exercise_id')).exists? &&
-      exercise_registrations.current.find { |exercise_registration| !exercise_registration.minimum_points_reached? } .blank?
+      exercise_registrations.current.all? { |exercise_registration| exercise_registration.minimum_points_reached? }
   end
 
   def positive_grade_possible?

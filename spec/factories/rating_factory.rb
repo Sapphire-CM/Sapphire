@@ -4,26 +4,26 @@ FactoryGirl.define do
     rating_group
     title { generate :rating_title }
     description { generate :lorem_ipsum }
-    type 'Ratings::BinaryRating'
+    type 'Ratings::FixedRating'
     value 10
     max_value 20
     min_value 5
     multiplication_factor 1.0
 
     trait :boolean_points do
-      type 'Ratings::BinaryNumberRating'
+      type 'Ratings::FixedPointsDeductionRating'
     end
 
     trait :boolean_percent do
-      type 'Ratings::BinaryPercentRating'
+      type 'Ratings::FixedPercentageDeductionRating'
     end
 
     trait :value_points do
-      type 'Ratings::ValueNumberRating'
+      type 'Ratings::VariablePointsDeductionRating'
     end
 
     trait :value_percent do
-      type 'Ratings::ValuePercentRating'
+      type 'Ratings::VariablePercentageDeductionRating'
     end
 
     trait :plagiarism do

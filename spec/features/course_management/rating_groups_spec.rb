@@ -126,7 +126,7 @@ RSpec.feature 'Ratings and Rating Groups' do
 
         within_modal do
           fill_in 'Title', with: 'My fancy Rating'
-          fill_in 'Value', with: '-4'
+          fill_in 'Points', with: '-4'
           click_button 'Save'
         end
 

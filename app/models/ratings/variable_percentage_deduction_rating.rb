@@ -15,8 +15,10 @@
 #
 # add_index :ratings, [:rating_group_id], name: :index_ratings_on_rating_group_id
 
-class Ratings::ValueNumberRating < Ratings::ValueRating
+class Ratings::VariablePercentageDeductionRating < Ratings::VariableRating
   # value counts as follows:
-  #  7  => total_value + 7
-  # -3  => total_value + (-3)
+  #  70  => total_value * (1 +  (70/100))
+  # -30  => total_value * (1 + (-30/100))
+
+  validates :min_value, :max_value, numericality: { less_than_or_equal_to: 0 }
 end

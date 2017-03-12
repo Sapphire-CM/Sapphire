@@ -15,7 +15,7 @@
 
 <% if params[:q].present? %>
   <% if @term_registrations.any? %>
-    <table class='small-12'>
+    <table class='small-12 sortable'>
       <thead>
         <tr>
           <th>Forename</th>
@@ -28,9 +28,9 @@
       <tbody>
         <% @term_registrations.each do |term_registration| %>
         <tr>
-          <td><%= highlight_search(term_registration.account.forename, params[:q]) %></td>
-          <td><%= highlight_search(term_registration.account.surname, params[:q]) %></td>
-          <td><%= highlight_search(term_registration.account.matriculation_number, params[:q]) %></td>
+          <td data-sort='<%= term_registration.account.forename %>'><%= highlight_search(term_registration.account.forename, params[:q]) %></td>
+          <td data-sort='<%= term_registration.account.surname %>'><%= highlight_search(term_registration.account.surname, params[:q]) %></td>
+          <td data-sort='<%= term_registration.account.matriculation_number %>'><%= highlight_search(term_registration.account.matriculation_number, params[:q]) %></td>
           <td><%= tutorial_group_title(term_registration.tutorial_group) %></td>
           <td><%= link_to "Show", term_grading_review_path(current_term, term_registration), class: "small button" %></td>
         </tr>

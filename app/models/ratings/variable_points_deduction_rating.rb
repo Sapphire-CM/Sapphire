@@ -15,12 +15,10 @@
 #
 # add_index :ratings, [:rating_group_id], name: :index_ratings_on_rating_group_id
 
-class Ratings::PlagiarismRating < Ratings::FixedPercentageDeductionRating
-  def title
-    read_attribute(:title).presence || 'plagiarism'
-  end
+class Ratings::VariablePointsDeductionRating < Ratings::VariableRating
+  # value counts as follows:
+  #  7  => total_value + 7
+  # -3  => total_value + (-3)
 
-  def value
-    -100
-  end
+  validates :min_value, :max_value, numericality: { less_than_or_equal_to: 0 }
 end

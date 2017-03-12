@@ -1,5 +1,0 @@
-
-<%= cache [submission, tree.path] do %>
-  Path: <%= submission_tree_path_links tree.path, submission %><br />
-  <%= render "submission_tree/directory_node", node: tree, submission: submission %>
-<% end %>

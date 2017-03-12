@@ -48,7 +48,6 @@ $(document).on 'click', '#point_range_toggle_button', (e) ->
 
       if is_using_default_values($points_input, $min_points_input, $max_points_input)
         if points >= 0
-          alert("here!")
           $max_points_input.val("#{points}")
         else
           $min_points_input.val("#{points}")

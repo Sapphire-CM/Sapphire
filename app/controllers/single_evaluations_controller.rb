@@ -26,7 +26,7 @@ class SingleEvaluationsController < ApplicationController
 
     @rating = @evaluation.rating
 
-    @evaluation.value = if @rating.is_a? Ratings::BinaryRating
+    @evaluation.value = if @rating.is_a? Ratings::FixedRating
       @evaluation.value == 1 ? 0 : 1
     else
       params[:evaluation][:value]

@@ -97,9 +97,9 @@ group :development do
 end
 
 group :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails'               # RSpec testing framework
 
-  gem 'shoulda-matchers'#, '~>2.8'
+  gem 'shoulda-matchers', '~> 3.1.1' # Nice RSpec matchers for many different common tasks
 
   gem 'factory_girl_rails'
   gem 'database_cleaner'

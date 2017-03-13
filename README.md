@@ -11,15 +11,40 @@ This project is intended to be used to evaluate students during a course-term ba
     - PostgreSQL or
     - sqlite3 (only basic support, no background jobs)
     - check `config/database.yml`
-* Redis
-* Sidekiq
-    - check `config/sidekiq.yml`
-* Node.js
+* Redis 3.2.3 or higher
+* Node.js v6.6.0
     - on the server for assets precompilation
     - make sure it is part of `$PATH`
     - v0.10.35 or above
 * working SMTP server for email delivery
     - check `config/mail.yml`
+
+## Initial Setup
+
+1. Initial Commands
+
+    $ gem install bundler
+    $ bundle install
+    $ rake db:create db:migrate
+
+2. Create User Account
+
+    $ rails console
+    Running via Spring preloader in process 45971
+    Loading development environment (Rails 4.2.6)
+
+    Frame number: 0/20
+    [1] pry(main)> Account.create!(email: "test@iicm.tugraz.at", password: "testing", forename: "test", surname: "McTest", admin: true)
+
+## Commands
+
+* Start Rails Server
+
+    $ rails server
+
+* Start Sidekiq
+
+    $ bundle exec sidekiq
 
 ## Useful Links
 

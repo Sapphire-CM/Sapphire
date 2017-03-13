@@ -73,9 +73,9 @@ class Rating < ActiveRecord::Base
 
   def build_evaluation
     evaluation = if self.is_a? Ratings::FixedRating
-      Evaluations::BinaryEvaluation.new
+      Evaluations::FixedEvaluation.new
     else
-      Evaluations::ValueEvaluation.new
+      Evaluations::VariableEvaluation.new
     end
 
     evaluation.rating = self

@@ -5,7 +5,7 @@ module GradingReviewsHelper
       evaluations_to_show = []
 
       evaluation_group.evaluations.each do |evaluation|
-        evaluations_to_show << evaluation if (evaluation.is_a?(Evaluations::BinaryEvaluation) && evaluation.value == 1) || (!evaluation.is_a?(Evaluations::BinaryEvaluation) && evaluation.value.present?)
+        evaluations_to_show << evaluation if (evaluation.is_a?(Evaluations::FixedEvaluation) && evaluation.value == 1) || (!evaluation.is_a?(Evaluations::FixedEvaluation) && evaluation.value.present?)
       end
 
       groups_to_show << { group: evaluation_group, evaluations: evaluations_to_show } if evaluations_to_show.any?

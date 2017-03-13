@@ -12,30 +12,24 @@
 # add_index :evaluations, [:evaluation_group_id], name: :index_evaluations_on_evaluation_group_id
 # add_index :evaluations, [:rating_id], name: :index_evaluations_on_rating_id
 
-class Evaluations::ValueEvaluation < Evaluation
-  validate :value_range
+class Evaluations::FixedEvaluation < Evaluation
+  def checked?
+    value == 1
+  end
 
   def points
-    if value.present? && rating.is_a?(Ratings::VariablePointsDeductionRating)
-      value * rating.multiplication_factor
+    if value == 1 && rating.is_a?(Ratings::FixedPointsDeductionRating)
+      rating.value
     else
       0
     end
   end
 
   def percent
-    if value.present? && rating.is_a?(Ratings::VariablePercentageDeductionRating)
-      1 + value.to_f / 100.0
+    if value == 1 && rating.is_a?(Ratings::FixedPercentageDeductionRating)
+      1 + rating.value.to_f / 100.0
     else
       1
-    end
-  end
-
-  def value_range
-    return unless value.present? && rating.is_a?(Ratings::VariableRating)
-
-    if value < rating.min_value || value > rating.max_value
-      errors.add :base, "value must be between #{rating.min_value} and #{rating.max_value}"
     end
   end
 end

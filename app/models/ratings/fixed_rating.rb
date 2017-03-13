@@ -24,6 +24,6 @@ class Ratings::FixedRating < Rating
   end
 
   def evaluation_class
-    Evaluations::BinaryEvaluation
+    Evaluations::FixedEvaluation
   end
 end

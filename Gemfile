@@ -99,7 +99,7 @@ end
 group :test do
   gem 'rspec-rails'
 
-  gem 'shoulda-matchers', '~>2.8'
+  gem 'shoulda-matchers'#, '~>2.8'
 
   gem 'factory_girl_rails'
   gem 'database_cleaner'

@@ -172,6 +172,8 @@ class Exports::SubmissionExport < Export
     value = case placeholder
     when 'student_group'
       submission_asset.submission.student_group.try(:title)
+    when 'keyword'
+      submission_asset.submission.student_group.try(:keyword)
     when 'exercise'
       submission_asset.submission.exercise.try(:title)
     when 'av_grade'

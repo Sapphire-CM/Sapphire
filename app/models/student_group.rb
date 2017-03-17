@@ -4,6 +4,9 @@
 #   t.datetime :created_at,        null: false
 #   t.datetime :updated_at,        null: false
 #   t.integer  :points
+#   t.string   :keyword
+#   t.string   :topic
+#   t.text     :description
 # end
 #
 # add_index :student_groups, [:tutorial_group_id], name: :index_student_groups_on_tutorial_group_id

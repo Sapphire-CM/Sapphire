@@ -2,10 +2,21 @@
   <div class='small-6 columns'>
     <%= simple_form_for([term, tutorial_group, student_group]) do |f| %>
       <%= f.input :title %>
+      <%= f.input :topic %>
+      <%= f.input :keyword %>
+      <%= f.input :description %>
 
+      <h3>Students</h3>
       <div class='student-group-list-container panel'>
+
         <%= render collection: f.object.term_registrations, partial: "term_registration" %>
+
+        <p class='hint'>
+          Drag and drop students from the second panel onto here in order to add them
+          to this group.
+        </p>
       </div>
+
 
       <hr />
       <p>

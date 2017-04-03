@@ -1,0 +1,7 @@
+<%= cache [:single_evaluations, submission_asset] do %>
+  <h4>
+    <%= single_evaluation_asset_name submission_asset %>
+    <small><%= number_to_human_size(submission_asset.file.size) %><%= ", #{submission_asset.asset_identifier}" if submission_asset.asset_identifier.present? %></small>
+  </h4>
+  <%= inline_submission_asset submission_asset %>
+<% end %>

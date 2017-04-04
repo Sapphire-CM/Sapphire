@@ -10,13 +10,7 @@
 
 <div class='row'>
   <div class='small-9 columns'>
-  <% @submission.submission_assets.order(:file).each do |submission_asset| %>
-    <h4>
-      <%= single_evaluation_asset_name submission_asset %>
-      <small><%= number_to_human_size(submission_asset.file.size) %><%= ", #{submission_asset.asset_identifier}" if submission_asset.asset_identifier.present? %></small>
-    </h4>
-    <%= inline_submission_asset submission_asset %>
-  <% end %>
+  <%= render collection: @submission.submission_assets.order(:file), partial: "single_evaluations/submission_asset" %>
 
   <p><%= link_to "Back to Submissions", exercise_submissions_path(@exercise) %></p>
   </div>

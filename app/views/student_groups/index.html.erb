@@ -3,10 +3,11 @@
 <%= render "tutorial_groups/sidebar", tutorial_group: current_tutorial_group %>
 
 <% if @student_groups_count > 0 %>
-  <table class='large-12'>
+  <table class='large-12 sortable'>
     <thead>
       <tr>
         <th>Title</th>
+        <th>Topic</th>
         <th>Tutorial Group</th>
         <th>Students</th>
         <th></th>
@@ -16,6 +17,7 @@
       <% @student_groups.each do |student_group| %>
         <tr>
           <td><%= student_group.title %></td>
+          <td><%= student_group.topic %></td>
           <td><%= tutorial_group_title student_group.tutorial_group %></td>
           <td><%= student_group.students.count %></td>
           <td class='text-right'>

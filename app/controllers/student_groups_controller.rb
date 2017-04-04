@@ -67,7 +67,7 @@ class StudentGroupsController < ApplicationController
   private
 
   def student_group_params
-    params.require(:student_group).permit(:title, term_registration_ids: [])
+    params.require(:student_group).permit(:title, :keyword, :topic, :description, term_registration_ids: [])
   end
 
   def set_student_group

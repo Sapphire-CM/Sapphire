@@ -4,7 +4,22 @@
 
 <div class="section-container auto" data-section>
   <section class="active">
-    <p class="title" data-section-title><a href="#panel1">Students</a></p>
+    <p class="title" data-section-title><a href="#panel1">Overview</a></p>
+    <div class="content" data-section-content>
+      <dl>
+        <dt>Topic</dt>
+        <dd><%= @student_group.topic.presence || content_tag(:em, "none") %></dd>
+
+        <dt>Keyword</dt>
+        <dd><%= @student_group.keyword.presence || content_tag(:em, "none") %></dd>
+
+        <dt>Description</dt>
+        <dd><%= @student_group.description.presence || content_tag(:em, "none") %></dd>
+      </dl>
+    </div>
+  </section>
+  <section>
+    <p class="title" data-section-title><a href="#panel2">Students</a></p>
     <div class="content" data-section-content>
       <% if @student_term_registrations.any? %>
         <%= render "term_registrations/student_term_registrations_table", term_registrations: @student_term_registrations %>
@@ -14,10 +29,10 @@
     </div>
   </section>
   <section>
-    <p class="title" data-section-title><a href="#panel2">Submissions</a></p>
+    <p class="title" data-section-title><a href="#panel3">Submissions</a></p>
     <div class="content" data-section-content>
       <% if @submissions.any? %>
-        <table class='large-12'>
+        <table class='large-12 sortable'>
           <thead>
             <tr>
               <th>Exercise</th>

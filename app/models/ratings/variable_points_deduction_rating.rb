@@ -21,4 +21,8 @@ class Ratings::VariablePointsDeductionRating < Ratings::VariableRating
   # -3  => total_value + (-3)
 
   validates :min_value, :max_value, numericality: { less_than_or_equal_to: 0 }
+
+  def evaluation_value_type
+    :points
+  end
 end

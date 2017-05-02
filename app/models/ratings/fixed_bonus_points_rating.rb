@@ -20,4 +20,8 @@ class Ratings::FixedBonusPointsRating < Ratings::FixedRating
   #  7  => total_value + 7
 
   validates :value, numericality: { greater_than_or_equal_to: 0 }
+
+  def evaluation_value_type
+    :points
+  end
 end

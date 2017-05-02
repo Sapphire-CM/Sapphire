@@ -21,4 +21,8 @@ class Ratings::VariablePercentageDeductionRating < Ratings::VariableRating
   # -30  => total_value * (1 + (-30/100))
 
   validates :min_value, :max_value, numericality: { less_than_or_equal_to: 0 }
+
+  def evaluation_value_type
+    :percentage
+  end
 end

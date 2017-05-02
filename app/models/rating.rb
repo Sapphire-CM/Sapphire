@@ -87,7 +87,6 @@ class Rating < ActiveRecord::Base
     automated_checker_identifier.present?
   end
 
-
   def from_updated_type
     subclass = self.class.instantiable_subclasses.find { |klass| klass.name == self.type}
 
@@ -96,6 +95,18 @@ class Rating < ActiveRecord::Base
     else
       raise ArgumentError.new("Unknown Subclass: #{type}")
     end
+  end
+
+  def evaluation_value_type
+    raise NotImplementedError
+  end
+
+  def points_value?
+    evaluation_value_type == :points
+  end
+
+  def percentage_value?
+    evaluation_value_type == :percentage
   end
 
   private

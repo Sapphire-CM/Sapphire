@@ -20,6 +20,10 @@ class Ratings::PlagiarismRating < Ratings::FixedPercentageDeductionRating
     read_attribute(:title).presence || 'plagiarism'
   end
 
+  def evaluation_value_type
+    :percentage
+  end
+
   def value
     -100
   end

@@ -16,7 +16,7 @@ class Evaluations::VariableEvaluation < Evaluation
   validate :value_range
 
   def points
-    if value.present? && rating.is_a?(Ratings::VariablePointsDeductionRating)
+    if value.present? && rating.points_value?
       value * rating.multiplication_factor
     else
       0
@@ -24,7 +24,7 @@ class Evaluations::VariableEvaluation < Evaluation
   end
 
   def percent
-    if value.present? && rating.is_a?(Ratings::VariablePercentageDeductionRating)
+    if value.present? && rating.percentage_value?
       1 + value.to_f / 100.0
     else
       1

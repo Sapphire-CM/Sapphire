@@ -1,12 +1,11 @@
 <% title submission_author(@submission), @exercise.title, small: true %>
 
-<% if @exercise.submission_viewer? %>
 <div class='row'>
   <div class='small-9 columns'>
-    <%= link_to "Open Viewer", submission_viewer_path(@submission), class: "small button", target: "sapphire_submission_viewer" %>
+    <%= link_to "Open Viewer", submission_viewer_path(@submission), class: "small button", target: "sapphire_submission_viewer" if @exercise.submission_viewer? %>
+    <%= link_to "Files", tree_submission_path(@submission), class: "small button" %>
   </div>
 </div>
-<% end %>
 
 <div class='row'>
   <div class='small-9 columns'>

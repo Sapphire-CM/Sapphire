@@ -2,7 +2,6 @@
 
 <%= render "exercises/sidebar" %>
 
-
 <%= render "toolbar", submission: @submission, tree: @tree, submission_upload: @submission_upload %>
 
 <%= cache [@submission, @tree.path] do %>

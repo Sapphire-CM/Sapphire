@@ -44,7 +44,9 @@ class Account < ActiveRecord::Base
   # devise already does this with the validatable-option: validates_uniqueness_of :email
   validates :forename, presence: true
   validates :surname, presence: true
-  validates :matriculation_number, uniqueness: true, format: { with: /\A[\d]{7}\z/ }, if: :matriculation_number?
+
+  validates :matriculation_number, uniqueness: true, numericality: true, length: { in: 7..8 }
+
   validate :validate_no_email_address_with_same_email_exists
 
   scope :search, lambda {|query|

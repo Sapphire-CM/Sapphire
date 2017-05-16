@@ -26,6 +26,26 @@ describe TutorialGroup do
         tutorial_group.destroy
       end.to change { ResultPublication.count }.by(-4)
     end
+
+    it 'destroys tutor_term_registrations on delete' do
+      tutorial_group = FactoryGirl.create(:tutorial_group, :with_tutor, term: term)
+
+      expect(tutorial_group.tutor_term_registrations.count).to eq(1)
+
+      expect do
+        tutorial_group.destroy
+      end.to change(TermRegistration, :count).by(-1)
+    end
+
+    it 'destroys tutor_term_registrations on delete' do
+      tutorial_group = FactoryGirl.create(:tutorial_group, :with_students, students_count: 3, term: term)
+
+      expect(tutorial_group.student_term_registrations.count).to eq(3)
+
+      expect do
+        tutorial_group.destroy
+      end.to change(TermRegistration, :count).by(-3)
+    end
   end
 
   describe 'scoping' do

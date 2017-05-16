@@ -1,17 +1,4 @@
-require 'rails_helper'
-
-RSpec.describe 'Managing a submission tree as a student' do
-  let(:account) { FactoryGirl.create(:account, :student) }
-  let(:term) { term_registration.term }
-  let(:term_registration) { account.term_registrations.students.first }
-  let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
-  let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-  let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, term_registration: term_registration, exercise: exercise, submission: submission)}
-
-  before :each do
-    sign_in account
-  end
-
+RSpec.shared_examples "basic submission tree operations" do
   describe 'traversing the tree' do
     let!(:submission_assets) do
       assets = []

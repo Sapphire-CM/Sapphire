@@ -85,4 +85,10 @@ RSpec.feature 'Evaluating submissions' do
     expect(page.current_path).to eq(exercise_submissions_path(exercise))
   end
 
+  scenario 'navigating to submission tree' do
+    visit single_evaluation_path(submission)
+
+    click_link 'Files'
+    expect(page.current_path).to eq(tree_submission_path(submission))
+  end
 end

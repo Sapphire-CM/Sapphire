@@ -55,7 +55,7 @@ RSpec.feature 'Managing submissions as a staff member' do
 
     scenario 'opening submission' do
       within 'table tbody tr:nth-child(1)' do
-        click_link 'Show'
+        click_link 'Files'
       end
 
       expect(page.current_path).to eq(tree_submission_path(submissions.first))
@@ -67,7 +67,7 @@ RSpec.feature 'Managing submissions as a staff member' do
       end
 
       within 'table tbody tr:nth-child(1)' do
-        click_link 'Show'
+        click_link 'Files'
       end
 
       expect(page.current_path).to eq(tree_submission_path(other_submissions.first))
@@ -79,7 +79,7 @@ RSpec.feature 'Managing submissions as a staff member' do
       end
 
       within 'table tbody tr:nth-child(1)' do
-        click_link 'Show'
+        click_link 'Files'
       end
 
       expect(page.current_path).to eq(tree_submission_path(unmatched_submissions.first))

@@ -27,8 +27,17 @@ class StudentGroup < ActiveRecord::Base
   validates :title, presence: true
   validates :tutorial_group_id, presence: true
 
+  after_save :update_term_registrations_tutorial_group
+
   def update_points!
     self.points = submission_evaluations.pluck(:evaluation_result).sum
     self.save!
+  end
+
+  private
+  def update_term_registrations_tutorial_group
+    term_registrations.where.not(tutorial_group: tutorial_group).each do |term_registration|
+      term_registration.update(tutorial_group: tutorial_group)
+    end
   end
 end

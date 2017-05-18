@@ -71,6 +71,10 @@ describe Account do
     end
   end
 
+  describe 'serialization' do
+    pending '#options'
+  end
+
   describe 'methods' do
     describe '#fullname' do
       subject { FactoryGirl.build(:account, forename: "Matthias", surname: "Link") }
@@ -89,7 +93,8 @@ describe Account do
     end
 
     describe '#default_password' do
-      subject { FactoryGirl.build(:account, matriculation_number: "1234567" )}
+      subject { FactoryGirl.build(:account, matriculation_number: "1234567") }
+
       it 'returns the default password based on matriculation number' do
         expect(subject.default_password).to eq("sapphire1234567")
         subject.matriculation_number = subject.matriculation_number.reverse
@@ -97,29 +102,95 @@ describe Account do
         expect(subject.default_password).to eq("sapphire7654321")
       end
     end
-  end
 
-  context 'student' do
-    let(:term) { FactoryGirl.create(:term) }
-    let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-    let(:user) do
-      account = FactoryGirl.create(:account)
-      FactoryGirl.create(:term_registration, :student, account: account, term: term, tutorial_group: tutorial_group)
-      account
+    describe '#student_of_term?' do
+      let(:term) { FactoryGirl.create(:term) }
+      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
+      let!(:term_registration) { FactoryGirl.create(:term_registration, :student, tutorial_group: tutorial_group, term: term, account: subject) }
+      let!(:another_term) { FactoryGirl.create(:term) }
+
+      subject { FactoryGirl.create(:account) }
+
+      it 'returns true if user is student of term' do
+        expect(subject).to be_student_of_term(term)
+      end
+
+      it 'returns false if user is not a student of term' do
+        expect(subject).not_to be_student_of_term(another_term)
+      end
     end
 
-    it 'is able to tell if the account is a student of a term' do
-      expect(user).to be_student_of_term(term)
-      expect(user).not_to be_student_of_term(FactoryGirl.create(:term))
-    end
-  end
+    describe '#tutor_of_term?' do
+      let(:term) { FactoryGirl.create(:term) }
+      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
+      let!(:term_registration) { FactoryGirl.create(:term_registration, :tutor, tutorial_group: tutorial_group, term: term, account: subject) }
+      let!(:another_term) { FactoryGirl.create(:term) }
 
-  context 'student' do
-    let(:term) { FactoryGirl.create(:term) }
-    let(:user) { FactoryGirl.create(:account, :admin) }
+      subject { FactoryGirl.create(:account) }
 
-    it 'is able to tell that the account is not a student of a term' do
-      expect(user).not_to be_student_of_term(term)
+      it 'returns true if user is tutor of term' do
+        expect(subject).to be_tutor_of_term(term)
+      end
+
+      it 'returns false if user is not a tutor of term' do
+        expect(subject).not_to be_tutor_of_term(another_term)
+      end
     end
+
+    describe '#lecturer_of_term?' do
+      let(:term) { FactoryGirl.create(:term) }
+      let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term, account: subject) }
+      let!(:another_term) { FactoryGirl.create(:term) }
+
+      subject { FactoryGirl.create(:account) }
+
+      it 'returns true if user is tutor of term' do
+        expect(subject).to be_lecturer_of_term(term)
+      end
+
+      it 'returns false if user is not a tutor of term' do
+        expect(subject).not_to be_lecturer_of_term(another_term)
+      end
+    end
+
+    describe '#staff_of_term?' do
+      let(:tutor_term) { FactoryGirl.create(:term) }
+      let(:tutor_tutorial_group) { FactoryGirl.create(:tutorial_group, term: tutor_term) }
+      let!(:tutor_term_registration) { FactoryGirl.create(:term_registration, :tutor, tutorial_group: tutor_tutorial_group, term: tutor_term, account: subject) }
+
+      let(:student_term) { FactoryGirl.create(:term) }
+      let(:student_tutorial_group) { FactoryGirl.create(:tutorial_group, term: student_term) }
+      let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, tutorial_group: student_tutorial_group, term: student_term, account: subject) }
+
+      let(:lecturer_term) { FactoryGirl.create(:term) }
+      let!(:lecturer_term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: lecturer_term, account: subject) }
+      let!(:another_term) { FactoryGirl.create(:term) }
+
+      subject { FactoryGirl.create(:account) }
+
+      it 'returns true if user is tutor of term' do
+        expect(subject).to be_staff_of_term(tutor_term)
+      end
+
+      it 'returns true if user is lecturer of term' do
+        expect(subject).to be_staff_of_term(lecturer_term)
+      end
+
+      it 'returns false if user is a student of term' do
+        expect(subject).not_to be_staff_of_term(student_term)
+      end
+
+      it 'returns false if user is not a staff member of term' do
+        expect(subject).not_to be_staff_of_term(another_term)
+      end
+    end
+
+    pending '#tutor_of_tutorial_group?'
+    pending '#lecturer_of_any_term_in_course?'
+    pending '#associated_with_term?'
+
+    pending '#submissions_for_term'
+    pending '#submission_for_exercise'
+    pending '#tutorial_group_for_term'
   end
 end

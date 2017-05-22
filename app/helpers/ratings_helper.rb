@@ -18,8 +18,10 @@ module RatingsHelper
       "#{rating.value}"
     when Ratings::FixedPercentageDeductionRating
       "#{rating.value} %"
-    when Ratings::VariablePointsDeductionRating, Ratings::VariableBonusPointsRating, Ratings::PerItemPointsDeductionRating
+    when Ratings::VariablePointsDeductionRating, Ratings::VariableBonusPointsRating
       "#{rating.min_value} ... #{rating.max_value}"
+    when Ratings::PerItemPointsDeductionRating
+      "#{rating.min_value} ... #{rating.max_value} (× #{number_to_human rating.multiplication_factor})"
     when Ratings::VariablePercentageDeductionRating
       "#{rating.min_value} ... #{rating.max_value} %"
     end

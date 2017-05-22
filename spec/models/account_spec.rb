@@ -16,6 +16,13 @@ describe Account do
     it { is_expected.to validate_numericality_of(:matriculation_number) }
     it { is_expected.to validate_uniqueness_of(:matriculation_number) }
 
+    it "allows blank matriculation numbers" do
+      subject.matriculation_number = ""
+
+      subject.valid?
+      expect(subject.errors[:matriculation_number]).not_to be_present
+    end
+
     pending "uniqueness of email adresses"
   end
 

@@ -45,7 +45,7 @@ class Account < ActiveRecord::Base
   validates :forename, presence: true
   validates :surname, presence: true
 
-  validates :matriculation_number, uniqueness: true, numericality: true, length: { in: 7..8 }
+  validates :matriculation_number, uniqueness: { allow_blank: true }, numericality: { allow_blank: true }, length: { in: 7..8, allow_blank: true }
 
   validate :validate_no_email_address_with_same_email_exists
 

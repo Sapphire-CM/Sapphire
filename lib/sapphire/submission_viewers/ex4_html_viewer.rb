@@ -44,6 +44,13 @@ module Sapphire
           end
         end
 
+        body.css('video source').each do |source|
+          unless source['src'] =~ EXTERNAL_LINK
+            asset = generic_asset(File.basename(source['src'] || ''))
+            source['src'] =  submission_asset_path(asset) if asset.present?
+          end
+        end
+
         body.css('a[href]').each do |link|
           asset = generic_asset(File.basename(link['href'] || ''))
 

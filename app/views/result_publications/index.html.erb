@@ -8,7 +8,7 @@
     <tr>
       <th>Tutorial Group</th>
       <th>Status</th>
-      <th class='right-aligned'>
+      <th class='right-aligned' data-sort-disabled='true'>
         <%= link_to 'Publish all', publish_all_exercise_result_publications_path(@exercise), method: :put, class: 'small button', data: { confirm: "Are you sure you want to PUBLISH all results for #{@exercise.title}?" } %>
         <%= link_to 'Conceal all', conceal_all_exercise_result_publications_path(@exercise), method: :put, class: 'small button alert', data: { confirm: "Are you sure you want to CONCEAL all results for #{@exercise.title}?" } %>
       </th>

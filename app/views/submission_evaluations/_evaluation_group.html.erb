@@ -1,0 +1,35 @@
+<%= cache evaluation_group do %>
+  <div class='row' id='<%= evaluation_group_element_id(evaluation_group) %>'>
+    <div class='small-12 columns evaluation-group'>
+      <div class='evaluation-group-anchor' id='<%= evaluation_group_anchor_id(evaluation_group) %>'></div>
+      <div class='row'>
+        <div class='small-9 columns'>
+          <h3>
+            <span id='<%= evaluation_group_label_id(evaluation_group) %>'><%= evaluation_group_label(evaluation_group) %></span>
+            <span id='<%= evaluation_group_title_id(evaluation_group) %>'>
+              <%= evaluation_group_title evaluation_group %>
+            </span>
+          </h3>
+        </div>
+        <div class='small-3 columns text-right'>
+          <% if evaluation_group.pending? %>
+            <%= link_to "Done", evaluation_group_path(evaluation_group, evaluation_group: {status: :done}), data: { method: :put, remote: true }, class: "tiny button" %>
+          <% else %>
+            <%= link_to "Reopen", evaluation_group_path(evaluation_group, evaluation_group: {status: :pending}), data: { method: :put, remote: true }, class: "tiny button" %>
+          <% end %>
+        </div>
+      </div>
+      <div class='evaluations panel<%= " hidden" if evaluation_group_should_collapse?(evaluation_group) %>'>
+      <%= cache [:evaluation_group_list, evaluation_group.id, evaluation_group.evaluations.maximum(:updated_at).to_i, evaluation_group.evaluations.count] do %>
+        <% evaluation_group.evaluations.ranked.each do |evaluation| %>
+          <div class='row'>
+            <div class='small-12 columns'>
+              <%= evaluation_input(evaluation) %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

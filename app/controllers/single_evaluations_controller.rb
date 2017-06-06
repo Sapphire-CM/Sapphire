@@ -18,27 +18,4 @@ class SingleEvaluationsController < ApplicationController
     @term = @exercise.term
     @evaluation_groups = @submission.submission_evaluation.evaluation_groups
   end
-
-  def update
-    @evaluation = Evaluation.find(params[:id])
-    @submission = @evaluation.submission
-    authorize SingleEvaluationPolicy.with @submission
-
-    @rating = @evaluation.rating
-
-    @evaluation.value = if @rating.is_a? Ratings::FixedRating
-      @evaluation.value == 1 ? 0 : 1
-    else
-      params[:evaluation][:value]
-    end
-
-    @submission_evaluation = @submission.submission_evaluation
-
-    if @evaluation.save
-      @submission_evaluation.reload
-      @submission_evaluation.update(evaluated_at: Time.now)
-    else
-      render :update_error
-    end
-  end
 end

@@ -3,8 +3,10 @@
 #   t.float    :percent
 #   t.integer  :rating_group_id
 #   t.integer  :submission_evaluation_id
-#   t.datetime :created_at,               null: false
-#   t.datetime :updated_at,               null: false
+#   t.datetime :created_at,                               null: false
+#   t.datetime :updated_at,                               null: false
+#   t.integer  :status,                   default: 0,     null: false
+#   t.boolean  :needs_review,             default: false
 # end
 #
 # add_index :evaluation_groups, [:rating_group_id], name: :index_evaluation_groups_on_rating_group_id
@@ -12,7 +14,7 @@
 
 class EvaluationGroup < ActiveRecord::Base
   belongs_to :rating_group
-  belongs_to :submission_evaluation
+  belongs_to :submission_evaluation, touch: true
 
   has_many :evaluations, dependent: :delete_all
 
@@ -27,6 +29,8 @@ class EvaluationGroup < ActiveRecord::Base
   delegate :title, to: :rating_group
 
   scope :ranked, lambda { includes(:rating_group).order { rating_group.row_order.asc }.references(:rating_group) }
+
+  enum status: { pending: 0, done: 1}
 
   def self.create_for_submission_evaluation(submission_evaluation)
     submission_evaluation.submission.exercise.rating_groups.each do |rating_group|
@@ -71,6 +75,10 @@ class EvaluationGroup < ActiveRecord::Base
     end
 
     true
+  end
+
+  def update_needs_review!
+    update(needs_review: evaluations.needing_review.exists?)
   end
 
   private

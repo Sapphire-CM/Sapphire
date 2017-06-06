@@ -1,0 +1,14 @@
+<% content_for :bottom_bar do %>
+  <div class='evaluation-bottom-bar-push'></div>
+  <div class='evaluation-bar evaluation-bottom-bar'>
+    <div class='row bar'>
+      <div class='small-12 columns text-center'>
+        <p>
+          <% submission.submission_evaluation.evaluation_groups.ranked.each do |evaluation_group| %>
+            <span id='<%= evaluation_group_bubble_id(evaluation_group) %>'><%= evaluation_group_bubble(evaluation_group) %></span>
+          <% end %>
+        </p>
+      </div>
+    </div>
+  </div>
+<% end %>

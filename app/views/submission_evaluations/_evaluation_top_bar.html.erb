@@ -6,7 +6,7 @@
         <h1>
           <%= submission_author(submission) %>
           <small>
-            <span id='evaluation_result'><%= single_evaluation_pluralized_points submission.submission_evaluation.evaluation_result %></span>
+            <span id='evaluation_result'><%= submission_evaluation_pluralized_points submission.submission_evaluation %></span>
           </small>
         </h1>
       </div>

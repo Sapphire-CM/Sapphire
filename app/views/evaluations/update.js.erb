@@ -1,4 +1,4 @@
-$('#evaluation_result').text('<%= single_evaluation_pluralized_points @submission_evaluation.evaluation_result %>')
+$('#evaluation_result').text('<%= submission_evaluation_pluralized_points @submission_evaluation %>')
 
 $('#<%= evaluation_group_title_id(@evaluation_group) %>').text("<%= evaluation_group_title(@evaluation_group) %>")
 $('#<%= evaluation_id(@evaluation) %>').replaceWith("<%=j evaluation_input(@evaluation) %>")

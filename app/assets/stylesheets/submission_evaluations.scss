@@ -4,9 +4,11 @@
 
 $top-bar-height: 80px;
 $top-bar-offset: 45px;
-$bottom-bar-height: 45px;
+$bottom-bar-height: 80px;
 $bottom-bar-offset: 0;
 $anchor-offset: 10px;
+
+$bar-line-color: #C5C5C5;
 
 .evaluation-bar {
   position: fixed;
@@ -24,7 +26,7 @@ $anchor-offset: 10px;
   top: $top-bar-offset;
 
   .bar {
-    border-bottom: thin solid gray;
+    border-bottom: thin solid $bar-line-color;
   }
 }
 
@@ -36,7 +38,7 @@ $anchor-offset: 10px;
   bottom: $bottom-bar-offset;
   .bar {
     padding-top: 10px;
-    border-top: thin solid gray;
+    border-top: thin solid $bar-line-color;
   }
 }
 

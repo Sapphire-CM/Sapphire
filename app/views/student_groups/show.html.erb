@@ -49,7 +49,7 @@
                 <td><%= pluralize submission.submission_evaluation.evaluation_result, "point" %></td>
                 <td>
                   <%= link_to "show", submission_path(submission), class: "small primary button" %>
-                  <%= link_to "evaluate", single_evaluation_path(submission), class: "small primary button" %>
+                  <%= link_to "evaluate", submission_evaluation_path(submission.submission_evaluation), class: "small primary button" %>
                 </td>
               </tr>
             <% end %>

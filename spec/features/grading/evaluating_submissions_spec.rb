@@ -4,7 +4,7 @@ RSpec.feature 'Evaluating submissions' do
   let(:account) { FactoryGirl.create(:account, :admin) }
   let(:course) { FactoryGirl.create(:course) }
   let(:term) { FactoryGirl.create(:term, course: course) }
-  let(:exercise) { FactoryGirl.create(:exercise, term: term) }
+  let(:exercise) { FactoryGirl.create(:exercise, :with_viewer, term: term) }
   let(:rating_group) { FactoryGirl.create(:rating_group, title: 'Test rating group', exercise: exercise, points: 10) }
   let!(:boolean_points_rating) { FactoryGirl.create(:rating, :boolean_points, title: 'Boolean Points Rating', rating_group: rating_group, value: -4) }
   let!(:boolean_percent_rating) { FactoryGirl.create(:rating, :boolean_percent, title: 'Boolean Percent Rating', rating_group: rating_group, value: -50) }
@@ -22,7 +22,7 @@ RSpec.feature 'Evaluating submissions' do
     sign_in account
   end
 
-  scenario 'navigating to submission evaluation page' do
+  scenario 'navigating to submission evaluation page from the root path' do
     visit root_path
 
     click_top_bar_link(term.title)
@@ -32,11 +32,19 @@ RSpec.feature 'Evaluating submissions' do
       click_link('Evaluate')
     end
 
-    expect(page.current_path).to eq(single_evaluation_path(submission))
+    expect(page.current_path).to eq(submission_evaluation_path(submission.submission_evaluation))
+  end
+
+  scenario 'navigating to submission evaluation page through the submission tree' do
+    visit tree_submission_path(submission)
+
+    click_link('Evaluate')
+
+    expect(page.current_path).to eq(submission_evaluation_path(submission.submission_evaluation))
   end
 
   scenario 'changing a boolean value', js: true do
-    visit single_evaluation_path(submission)
+    visit submission_evaluation_path(submission)
 
     click_link 'Boolean Points Rating'
     expect(page).to have_content('6 of 10 points')
@@ -46,7 +54,7 @@ RSpec.feature 'Evaluating submissions' do
   end
 
   scenario 'changing a number rating to a value within range', js: true do
-    visit single_evaluation_path(submission)
+    visit submission_evaluation_path(submission)
 
     fill_in 'Value Points Rating', with: '-6'
     expect(page).to have_content('4 of 10 points')
@@ -57,36 +65,8 @@ RSpec.feature 'Evaluating submissions' do
 
   scenario 'changing a number rating to a value outside range'
 
-  scenario 'navigating to next submission' do
-    visit single_evaluation_path(submission)
-
-    click_link 'Next'
-    expect(page.current_path).to eq(single_evaluation_path(next_submission))
-  end
-
-  scenario 'navigating to previous submission' do
-    visit single_evaluation_path(submission)
-
-    click_link 'Prev'
-    expect(page.current_path).to eq(single_evaluation_path(previous_submission))
-  end
-
-  scenario 'navigating to next submission, when none is present' do
-    visit single_evaluation_path(next_submission)
-
-    click_link 'Next'
-    expect(page.current_path).to eq(exercise_submissions_path(exercise))
-  end
-
-  scenario 'navigating to previous submission, when none is present' do
-    visit single_evaluation_path(previous_submission)
-
-    click_link 'Prev'
-    expect(page.current_path).to eq(exercise_submissions_path(exercise))
-  end
-
   scenario 'navigating to submission tree' do
-    visit single_evaluation_path(submission)
+    visit submission_evaluation_path(submission)
 
     click_link 'Files'
     expect(page.current_path).to eq(tree_submission_path(submission))

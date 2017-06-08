@@ -14,7 +14,8 @@ RSpec.feature 'Grading Review' do
   end
 
   scenario 'opening a viewer from the submission evaluation page' do
-    visit single_evaluation_path(submission)
+    visit submission_evaluation_path(submission.submission_evaluation)
+
     click_link 'Open Viewer'
 
     expect(page.current_path).to eq(submission_viewer_path(submission))

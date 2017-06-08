@@ -25,9 +25,7 @@ class RatingGroup < ActiveRecord::Base
 
   validates :exercise, presence: true
   validates :title, presence: true, uniqueness: { scope: :exercise_id }
-  validates :points, presence: true, unless: proc { |rating_group|
-    rating_group.global == true
-  }
+  validates :points, presence: true, unless: proc { |rating_group| rating_group.global == true }
 
   validate :min_max_points_range, :points_in_range
 

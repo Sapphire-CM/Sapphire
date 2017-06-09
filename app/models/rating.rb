@@ -37,6 +37,8 @@ class Rating < ActiveRecord::Base
   after_update :update_evaluations, if: lambda { |rating| rating.value_changed? || rating.max_value_changed? || rating.min_value_changed? || rating.multiplication_factor_changed? }
   after_update :move_evaluations, if: lambda { |rating| rating.rating_group_id_changed? }
 
+  after_save :set_needs_review_on_evaluations, if: lambda { |rating| rating.title_changed? || rating.value_changed? || rating.max_value_changed? || rating.min_value_changed? || rating.multiplication_factor_changed? }
+
   scope :automated_ratings, lambda { where { !automated_checker_identifier.nil? && automated_checker_identifier != '' } }
 
   after_initialize do
@@ -122,4 +124,9 @@ class Rating < ActiveRecord::Base
     end
   end
 
+  def set_needs_review_on_evaluations
+    evaluations.find_each do |evaluation|
+      evaluation.update(needs_review: true)
+    end
+  end
 end

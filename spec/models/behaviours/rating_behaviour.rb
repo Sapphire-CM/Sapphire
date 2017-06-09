@@ -83,4 +83,51 @@ RSpec.shared_examples 'a rating' do
       end
     end
   end
+
+  describe 'callbacks' do
+    let(:factory_name) { described_class.name.demodulize.underscore }
+    describe 'setting needs review' do
+      let(:exercise) { FactoryGirl.create(:exercise) }
+      let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise) }
+
+      context 'existing submissions' do
+        let(:submissions) { FactoryGirl.create_list(:submission, 3, exercise: exercise) }
+        let(:evaluations) { submissions.map(&:submission_evaluation).map(&:evaluations).flatten }
+
+        it 'sets needs_review of the evaluations associated with the rating if title is changed' do
+          subject = FactoryGirl.create(factory_name, rating_group: rating_group)
+
+          expect(submissions.length).to eq(3)
+          subject.update!(title: "Another Rating")
+
+          evaluations.each do |evaluation|
+            expect(evaluation.needs_review?).to be_truthy
+          end
+        end
+
+        it 'sets needs_review of the evaluations after creating a rating' do
+          expect(submissions.length).to eq(3)
+          subject = FactoryGirl.create(:fixed_points_deduction_rating, rating_group: rating_group)
+
+          evaluations.each do |evaluation|
+            expect(evaluation.needs_review?).to be_truthy
+          end
+        end
+      end
+
+      context 'new submissions' do
+        let(:submissions) { FactoryGirl.create_list(:submission, 3, exercise: exercise) }
+        let(:evaluations) { submissions.map(&:submission_evaluation).map(&:evaluations).flatten }
+
+        it 'doesn\'t set needs_review of the evaluations associated of submissions created after the rating' do
+          subject = FactoryGirl.create(factory_name, rating_group: rating_group)
+
+          expect(submissions.length).to eq(3)
+          evaluations.each do |evaluation|
+            expect(evaluation.needs_review).to be_falsey
+          end
+        end
+      end
+    end
+  end
 end

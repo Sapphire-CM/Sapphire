@@ -5,14 +5,15 @@ RSpec.feature 'Evaluating submissions' do
   let(:course) { FactoryGirl.create(:course) }
   let(:term) { FactoryGirl.create(:term, course: course) }
   let(:exercise) { FactoryGirl.create(:exercise, :with_viewer, term: term) }
+
   let(:fixed_rating_group) { FactoryGirl.create(:rating_group, title: 'Fixed rating group', exercise: exercise, points: 10) }
-  let!(:boolean_points_rating) { FactoryGirl.create(:rating, :boolean_points, title: 'Boolean Points Rating', rating_group: fixed_rating_group, value: -4) }
-  let!(:boolean_percent_rating) { FactoryGirl.create(:rating, :boolean_percent, title: 'Boolean Percent Rating', rating_group: fixed_rating_group, value: -50) }
-  let!(:plagiarism_rating) { FactoryGirl.create(:rating, :plagiarism, title: 'Plagiarism Rating', rating_group: fixed_rating_group) }
+  let!(:boolean_points_rating) { FactoryGirl.create(:fixed_points_deduction_rating, title: 'Boolean Points Rating', rating_group: fixed_rating_group, value: -4) }
+  let!(:boolean_percent_rating) { FactoryGirl.create(:fixed_percentage_deduction_rating, title: 'Boolean Percent Rating', rating_group: fixed_rating_group, value: -50) }
+  let!(:plagiarism_rating) { FactoryGirl.create(:plagiarism_rating, title: 'Plagiarism Rating', rating_group: fixed_rating_group) }
 
   let(:variable_rating_group) { FactoryGirl.create(:rating_group, title: 'Variable rating group', exercise: exercise, points: 10) }
-  let!(:value_points_rating) { FactoryGirl.create(:rating, :value_points, title: 'Value Points Rating', rating_group: variable_rating_group, min_value: -6, max_value: 0) }
-  let!(:value_percent_rating) { FactoryGirl.create(:rating, :value_percent, title: 'Value Percent Rating', rating_group: variable_rating_group, min_value: -50, max_value: 0) }
+  let!(:value_points_rating) { FactoryGirl.create(:variable_points_deduction_rating, title: 'Value Points Rating', rating_group: variable_rating_group, min_value: -6, max_value: 0) }
+  let!(:value_percent_rating) { FactoryGirl.create(:variable_percentage_deduction_rating, title: 'Value Percent Rating', rating_group: variable_rating_group, min_value: -50, max_value: 0) }
 
   let(:fixed_evaluation_group) { fixed_rating_group.evaluation_groups.find_by(submission_evaluation: submission.submission_evaluation) }
   let(:variable_evaluation_group) { variable_rating_group.evaluation_groups.find_by(submission_evaluation: submission.submission_evaluation) }
@@ -69,20 +70,20 @@ RSpec.feature 'Evaluating submissions' do
 
       expect(page).to have_content('Boolean Points Rating')
     end
-    
-    
-
   end
 
   describe 'changing values' do
     scenario 'a boolean value', js: true do
       visit submission_evaluation_path(submission)
 
-      click_link 'Boolean Points Rating'
-      expect(page).to have_content('6 of 20 points')
+      click_link boolean_points_rating.title
+      expect(page).to have_content('16 of 20 points')
 
-      click_link 'Boolean Percent Rating'
-      expect(page).to have_content('3 of 20 points')
+      click_link boolean_percent_rating.title
+      expect(page).to have_content('13 of 20 points')
+
+      click_link plagiarism_rating.title
+      expect(page).to have_content('0 of 20 points')
     end
 
     scenario 'a number rating to a value within range', js: true do

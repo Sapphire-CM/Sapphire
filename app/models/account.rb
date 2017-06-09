@@ -65,6 +65,7 @@ class Account < ActiveRecord::Base
   end
 
   scope :admins, lambda { where(admin: true) }
+  scope :default_order, lambda { order(:forename, :surname)}
 
   after_initialize do
     self.options ||= {}

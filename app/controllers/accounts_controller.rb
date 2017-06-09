@@ -4,7 +4,7 @@ class AccountsController < ApplicationController
   def index
     authorize Account
 
-    @accounts = Account.all.page(params[:page])
+    @accounts = Account.default_order.page(params[:page])
     @accounts = @accounts.search(params[:q]) if params[:q].present?
   end
 

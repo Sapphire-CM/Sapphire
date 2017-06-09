@@ -18,7 +18,7 @@ RSpec.describe EvaluationsController, type: :controller do
         [Ratings::FixedPointsDeductionRating, Ratings::FixedPercentageDeductionRating, Ratings::PlagiarismRating].each do |type|
           [true, false].each do |checked|
             it 'updates the requested evaluation' do
-              rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s
+              rating = FactoryGirl.create rating_factory(type), rating_group: rating_group, type: type.to_s
               evaluation = submission_evaluation.evaluations.where(rating_id: rating.id).first
               evaluation.update! value: (checked ? 0 : 1)
               submission_evaluation.update! updated_at: 42.days.ago
@@ -42,12 +42,12 @@ RSpec.describe EvaluationsController, type: :controller do
       context 'with a VariableRating' do
         [Ratings::VariablePointsDeductionRating, Ratings::VariablePercentageDeductionRating].each do |type|
           it 'updates the requested evaluation' do
-            rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s, max_value: 50
+            rating = FactoryGirl.create rating_factory(type), rating_group: rating_group, type: type.to_s, min_value: -5, max_value: 0
             evaluation = submission_evaluation.evaluations.where(rating_id: rating.id).first
             submission_evaluation.update! updated_at: 42.days.ago
 
             expect do
-              xhr :put, :update, id: evaluation.id, evaluation: { value: '42' }
+              xhr :put, :update, id: evaluation.id, evaluation: { value: '-3' }
               submission_evaluation.reload
               evaluation.reload
             end.to change(submission_evaluation, :updated_at)
@@ -56,7 +56,7 @@ RSpec.describe EvaluationsController, type: :controller do
             expect(assigns(:evaluation)).to eq(evaluation)
             expect(assigns(:submission)).to eq(submission)
             expect(assigns(:submission_evaluation)).to eq(submission_evaluation)
-            expect(evaluation.value).to eq(42)
+            expect(evaluation.value).to eq(-3)
           end
         end
       end
@@ -72,7 +72,7 @@ RSpec.describe EvaluationsController, type: :controller do
         [Ratings::FixedPointsDeductionRating, Ratings::FixedPercentageDeductionRating, Ratings::PlagiarismRating].each do |type|
           [true, false].each do |checked|
             it 'updates the requested evaluation' do
-              rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s
+              rating = FactoryGirl.create rating_factory(type), rating_group: rating_group
               evaluation = submission_evaluation.evaluations.where(rating_id: rating.id).first
               evaluation.update! value: (checked ? 0 : 1)
               submission_evaluation.update! updated_at: 42.days.ago
@@ -98,7 +98,7 @@ RSpec.describe EvaluationsController, type: :controller do
       context 'with a VariableRating' do
         [Ratings::VariablePointsDeductionRating, Ratings::VariablePercentageDeductionRating].each do |type|
           it 'returns a JS containing an alert' do
-            rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s, min_value: 0, max_value: 5, value: 3
+            rating = FactoryGirl.create rating_factory(type), rating_group: rating_group, type: type.to_s, min_value: -5, max_value: 0
             evaluation = submission_evaluation.evaluations.where(rating_id: rating.id).first
             submission_evaluation.update! updated_at: 42.days.ago
 

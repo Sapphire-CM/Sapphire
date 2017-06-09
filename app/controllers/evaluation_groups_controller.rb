@@ -5,6 +5,11 @@ class EvaluationGroupsController < ApplicationController
     set_submission
 
     update_evaluation_group
+
+    respond_to do |format|
+      format.js
+      format.html { redirect_to submission_evaluation_path(@submission_evaluation) }
+    end
   end
 
   private

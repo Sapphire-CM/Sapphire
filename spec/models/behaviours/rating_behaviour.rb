@@ -85,7 +85,7 @@ RSpec.shared_examples 'a rating' do
   end
 
   describe 'callbacks' do
-    let(:factory_name) { described_class.name.demodulize.underscore }
+    let(:factory_name) { rating_factory(described_class) }
     describe 'setting needs review' do
       let(:exercise) { FactoryGirl.create(:exercise) }
       let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise) }

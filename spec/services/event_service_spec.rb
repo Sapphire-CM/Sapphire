@@ -230,7 +230,7 @@ RSpec.describe EventService do
   context 'rating events' do
     let(:exercise) { FactoryGirl.create(:exercise, term: term) }
     let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise) }
-    let(:rating) { FactoryGirl.create(:rating, rating_group: rating_group, title: 'my rating', value: -2, description: 'nice!') }
+    let(:rating) { FactoryGirl.create(:fixed_points_deduction_rating, rating_group: rating_group, title: 'my rating', value: -2, description: 'nice!') }
 
     describe '#rating_created!' do
       it 'creates a Events::Rating::Created event' do

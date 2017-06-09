@@ -138,7 +138,7 @@ RSpec.feature 'Ratings and Rating Groups' do
 
     scenario 'updating rating'
     scenario 'removing a rating' do
-      rating = FactoryGirl.create(:rating, rating_group: rating_group, title: 'My great Rating')
+      rating = FactoryGirl.create(:fixed_points_deduction_rating, rating_group: rating_group, title: 'My great Rating')
 
       visit exercise_rating_groups_path(exercise)
 

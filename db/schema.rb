@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170608215607) do
+ActiveRecord::Schema.define(version: 20170610110625) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -333,6 +333,7 @@ ActiveRecord::Schema.define(version: 20170608215607) do
     t.datetime "updated_at",                        null: false
     t.integer  "evaluation_result"
     t.boolean  "plagiarized",       default: false, null: false
+    t.boolean  "needs_review",      default: false
   end
 
   add_index "submission_evaluations", ["evaluator_id"], name: "index_submission_evaluations_on_evaluator_id"

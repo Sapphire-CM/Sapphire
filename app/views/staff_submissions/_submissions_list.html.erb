@@ -24,6 +24,8 @@
         <td>
           <% if submission.submission_evaluation.evaluated_at.present? && submission.submission_evaluation.present? %>
             <%= pluralize submission.submission_evaluation.evaluation_result, "point" %>
+
+            <%= content_tag(:span, foundation_icon(:alert), title: "Needs review") if submission.submission_evaluation.needs_review? %>
           <% else %>
             <em>not evaluated</em>
           <% end %>

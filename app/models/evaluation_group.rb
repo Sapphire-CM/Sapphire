@@ -24,11 +24,14 @@ class EvaluationGroup < ActiveRecord::Base
   before_create :calc_result
   after_create :create_evaluations
   after_update :update_submission_evaluation_results, if: lambda { |eg| eg.points_changed? || eg.percent_changed? }
+  after_update :update_submission_evaluation_needs_review!, if: :needs_review_changed?
   after_destroy :update_submission_evaluation_results
 
   delegate :title, to: :rating_group
 
   scope :ranked, lambda { includes(:rating_group).order { rating_group.row_order.asc }.references(:rating_group) }
+
+  scope :needing_review, lambda { where(needs_review: true) }
 
   enum status: { pending: 0, done: 1}
 
@@ -85,6 +88,10 @@ class EvaluationGroup < ActiveRecord::Base
 
   def update_submission_evaluation_results
     submission_evaluation.calc_results!
+  end
+
+  def update_submission_evaluation_needs_review!
+    submission_evaluation.update_needs_review!
   end
 
   def create_evaluations

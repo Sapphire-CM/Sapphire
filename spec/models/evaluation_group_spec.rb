@@ -32,6 +32,16 @@ RSpec.describe EvaluationGroup do
 
   describe 'scoping' do
     pending '.ranked'
+
+    describe '.needing_review' do
+      let!(:evaluation_groups_to_review) { FactoryGirl.create_list(:evaluation_group, 3, needs_review: true) }
+      let!(:evaluation_groups_not_to_review) { FactoryGirl.create_list(:evaluation_group, 3, needs_review: false) }
+
+      it 'returns evaluation_groups where needs_review is true' do
+        expect(described_class.needing_review).to match_array(evaluation_groups_to_review)
+      end
+
+    end
   end
 
   describe 'method' do
@@ -40,6 +50,42 @@ RSpec.describe EvaluationGroup do
 
     pending '#update_result!'
     pending '#calc_result'
-    pending '#update_needs_review!'
+
+    describe '#update_needs_review!' do
+      let(:evaluations) { FactoryGirl.build_list(:fixed_evaluation, 3, evaluation_group: subject) }
+
+      subject { FactoryGirl.create(:evaluation_group) }
+
+      it 'sets needs_review to true if an evaluation needs_review' do
+        evaluations.second.needs_review = true
+        subject.evaluations = evaluations
+
+        expect do
+          subject.update_needs_review!
+        end.to change(subject, :needs_review?).to(true)
+      end
+
+      it 'sets needs_review to false of no evaluation needs_review' do
+        subject.needs_review = true
+        subject.evaluations = evaluations
+
+        expect do
+          subject.update_needs_review!
+        end.to change(subject, :needs_review?).to(false)
+      end
+    end
+  end
+
+  describe 'callbacks' do
+    describe 'changing needs_review' do
+      subject { FactoryGirl.create(:evaluation_group) }
+
+      it 'calls #update_needs_review! on submission_evaluation' do
+        expect(subject.submission_evaluation).to receive(:update_needs_review!)
+
+        subject.needs_review = true
+        subject.save
+      end
+    end
   end
 end

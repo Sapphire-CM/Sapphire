@@ -14,10 +14,6 @@
 # add_index :evaluations, [:rating_id], name: :index_evaluations_on_rating_id
 
 class Evaluations::FixedEvaluation < Evaluation
-  def checked?
-    value == 1
-  end
-
   def points
     if value == 1 && rating.points_value?
       rating.value

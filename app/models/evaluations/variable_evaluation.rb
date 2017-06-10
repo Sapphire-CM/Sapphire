@@ -36,7 +36,7 @@ class Evaluations::VariableEvaluation < Evaluation
     return unless value.present? && rating.is_a?(Ratings::VariableRating)
 
     if value < rating.min_value || value > rating.max_value
-      errors.add :base, "value must be between #{rating.min_value} and #{rating.max_value}"
+      errors.add :value, "must be between #{rating.min_value} and #{rating.max_value}"
     end
   end
 end

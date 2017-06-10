@@ -22,6 +22,8 @@ class Ratings::VariablePointsDeductionRating < Ratings::VariableRating
 
   validates :min_value, :max_value, numericality: { less_than_or_equal_to: 0 }
 
+  protected
+
   def evaluation_value_type
     :points
   end

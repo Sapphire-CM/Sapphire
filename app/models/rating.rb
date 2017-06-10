@@ -37,6 +37,8 @@ class Rating < ActiveRecord::Base
   after_update :update_evaluations, if: lambda { |rating| rating.value_changed? || rating.max_value_changed? || rating.min_value_changed? || rating.multiplication_factor_changed? }
   after_update :move_evaluations, if: lambda { |rating| rating.rating_group_id_changed? }
 
+  after_save :set_needs_review_on_evaluations, if: lambda { |rating| rating.title_changed? || rating.value_changed? || rating.max_value_changed? || rating.min_value_changed? || rating.multiplication_factor_changed? }
+
   scope :automated_ratings, lambda { where { !automated_checker_identifier.nil? && automated_checker_identifier != '' } }
 
   after_initialize do
@@ -59,8 +61,8 @@ class Rating < ActiveRecord::Base
   def self.new_from_type(params)
     classes = instantiable_subclasses
 
-    rating_class_index = classes.map(&:name).index(params[:type].classify)
-    classes[rating_class_index].new(params.except(:type))
+    klass = classes.find { |klass| klass.name == params[:type].classify }
+    klass.new(params.except(:type))
   end
 
   def evaluation_class
@@ -69,18 +71,6 @@ class Rating < ActiveRecord::Base
 
   def rating_type_validation
     errors.add(:type, 'must be a specific rating') if type == 'Rating'
-  end
-
-  def build_evaluation
-    evaluation = if self.is_a? Ratings::FixedRating
-      Evaluations::FixedEvaluation.new
-    else
-      Evaluations::VariableEvaluation.new
-    end
-
-    evaluation.rating = self
-
-    evaluation
   end
 
   def automatically_checked?
@@ -97,10 +87,6 @@ class Rating < ActiveRecord::Base
     end
   end
 
-  def evaluation_value_type
-    raise NotImplementedError
-  end
-
   def points_value?
     evaluation_value_type == :points
   end
@@ -109,8 +95,12 @@ class Rating < ActiveRecord::Base
     evaluation_value_type == :percentage
   end
 
-  private
+  protected
+  def evaluation_value_type
+    raise NotImplementedError
+  end
 
+  private
   def create_evaluations
     Evaluation.create_for_rating(self)
   end
@@ -134,4 +124,9 @@ class Rating < ActiveRecord::Base
     end
   end
 
+  def set_needs_review_on_evaluations
+    evaluations.find_each do |evaluation|
+      evaluation.update(needs_review: true)
+    end
+  end
 end

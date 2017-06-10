@@ -1,0 +1,59 @@
+// Place all the styles related to the submission_evaluations controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+$top-bar-height: 80px;
+$top-bar-offset: 45px;
+$bottom-bar-height: 80px;
+$bottom-bar-offset: 0;
+$anchor-offset: 10px;
+
+$bar-line-color: #C5C5C5;
+
+.evaluation-bar {
+  position: fixed;
+  left: 0;
+  z-index: 98;
+  width: 100%;
+  background: white;
+
+  .buttons {
+    padding-top: 20px;
+  }
+}
+
+.evaluation-top-bar {
+  top: $top-bar-offset;
+
+  .bar {
+    border-bottom: thin solid $bar-line-color;
+  }
+}
+
+.evaluation-top-bar-push {
+  height: $top-bar-height + $top-bar-offset;
+}
+
+.evaluation-bottom-bar {
+  bottom: $bottom-bar-offset;
+  .bar {
+    padding-top: 10px;
+    border-top: thin solid $bar-line-color;
+  }
+}
+
+.evaluation-bottom-bar-push {
+  height: $bottom-bar-height;
+}
+
+
+.evaluation-group {
+  .evaluation-group-anchor {
+    position: relative;
+    top: -$top-bar-height - $top-bar-offset - $anchor-offset;
+  }
+
+  .evaluations.hidden {
+    display: none;
+  }
+}

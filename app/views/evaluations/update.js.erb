@@ -1,0 +1,11 @@
+$('#evaluation_result').text('<%= submission_evaluation_pluralized_points @submission_evaluation %>')
+
+$('#<%= evaluation_group_title_id(@evaluation_group) %>').text("<%= evaluation_group_title(@evaluation_group) %>")
+$('#<%= evaluation_id(@evaluation) %>').replaceWith("<%=j evaluation_input(@evaluation) %>")
+
+$('#<%= evaluation_group_label_id(@evaluation_group) %>').html("<%=j evaluation_group_label(@evaluation_group) %>")
+$('#<%= evaluation_group_bubble_id(@evaluation_group) %>').html("<%=j evaluation_group_bubble(@evaluation_group) %>")
+
+<% if evaluation_group_should_collapse?(@evaluation_group) %>
+  $('#<%= evaluation_group_element_id(@evaluation_group) %> .evaluations').show().slideUp(400);
+<% end %>

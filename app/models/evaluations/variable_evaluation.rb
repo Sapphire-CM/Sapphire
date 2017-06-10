@@ -7,6 +7,7 @@
 #   t.integer  :value
 #   t.integer  :evaluation_group_id
 #   t.boolean  :checked_automatically, default: false, null: false
+#   t.boolean  :needs_review,          default: false
 # end
 #
 # add_index :evaluations, [:evaluation_group_id], name: :index_evaluations_on_evaluation_group_id
@@ -35,7 +36,7 @@ class Evaluations::VariableEvaluation < Evaluation
     return unless value.present? && rating.is_a?(Ratings::VariableRating)
 
     if value < rating.min_value || value > rating.max_value
-      errors.add :base, "value must be between #{rating.min_value} and #{rating.max_value}"
+      errors.add :value, "must be between #{rating.min_value} and #{rating.max_value}"
     end
   end
 end

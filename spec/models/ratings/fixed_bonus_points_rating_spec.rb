@@ -1,6 +1,8 @@
 require "rails_helper"
+require 'models/behaviours/rating_behaviour'
 
 RSpec.describe Ratings::FixedBonusPointsRating do
+  it_behaves_like 'a rating'
 
   describe 'validations' do
     it { is_expected.to validate_numericality_of(:value).is_greater_than_or_equal_to(0) }
@@ -18,5 +20,4 @@ RSpec.describe Ratings::FixedBonusPointsRating do
       expect(subject.percentage_value?).to be_falsey
     end
   end
-
 end

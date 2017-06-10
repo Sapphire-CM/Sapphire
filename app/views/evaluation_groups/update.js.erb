@@ -1,0 +1,13 @@
+
+var sel = "#<%=j evaluation_group_element_id(@evaluation_group) %>"
+var new_content = "<%=j render "submission_evaluations/evaluation_group", evaluation_group: @evaluation_group %>"
+
+$(sel).replaceWith(new_content);
+
+$('#<%= evaluation_group_bubble_id(@evaluation_group) %>').html("<%=j evaluation_group_bubble(@evaluation_group) %>")
+
+<% if @evaluation_group.done? %>
+  $(sel).find(".evaluations").show().slideUp(400);
+<% else %>
+  $(sel).find(".evaluations").hide().slideDown(400);
+<% end %>

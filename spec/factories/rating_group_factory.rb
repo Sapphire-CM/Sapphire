@@ -12,7 +12,7 @@ FactoryGirl.define do
 
     trait :with_ratings do
       after :create do |rating_group|
-        FactoryGirl.create_list :rating, 4, rating_group: rating_group
+        FactoryGirl.create_list :fixed_points_deduction_rating, 4, rating_group: rating_group
       end
     end
   end

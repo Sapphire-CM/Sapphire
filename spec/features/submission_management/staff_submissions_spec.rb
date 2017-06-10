@@ -45,14 +45,6 @@ RSpec.feature 'Managing submissions as a staff member' do
       visit exercise_submissions_path(exercise)
     end
 
-    scenario 'opening submission evaluations' do
-      within 'table tbody tr:nth-child(1)' do
-        click_link 'Evaluate'
-      end
-
-      expect(page.current_path).to eq(single_evaluation_path(submissions.first))
-    end
-
     scenario 'opening submission' do
       within 'table tbody tr:nth-child(1)' do
         click_link 'Files'

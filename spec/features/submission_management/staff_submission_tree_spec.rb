@@ -16,12 +16,4 @@ RSpec.describe 'Managing a submission tree as a staff member' do
   end
 
   it_behaves_like "basic submission tree operations"
-
-  scenario 'navigating to the evaluations page' do
-    visit tree_submission_path(submission)
-
-    click_link "Evaluate"
-
-    expect(page.current_path).to eq(single_evaluation_path(submission))
-  end
 end

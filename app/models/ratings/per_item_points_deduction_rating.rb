@@ -23,6 +23,8 @@ class Ratings::PerItemPointsDeductionRating < Ratings::VariableRating
   validates :min_value, :max_value, numericality: { greater_than_or_equal_to: 0 }
   validates :multiplication_factor, numericality: { less_than_or_equal_to: 0 }
 
+  protected
+
   def evaluation_value_type
     :points
   end

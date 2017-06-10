@@ -16,15 +16,14 @@
 # add_index :ratings, [:rating_group_id], name: :index_ratings_on_rating_group_id
 
 class Ratings::PlagiarismRating < Ratings::FixedPercentageDeductionRating
-  def title
-    read_attribute(:title).presence || 'plagiarism'
-  end
-
-  def evaluation_value_type
-    :percentage
-  end
 
   def value
     -100
+  end
+
+  protected
+
+  def evaluation_value_type
+    :percentage
   end
 end

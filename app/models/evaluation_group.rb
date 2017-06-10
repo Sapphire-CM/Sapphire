@@ -3,8 +3,10 @@
 #   t.float    :percent
 #   t.integer  :rating_group_id
 #   t.integer  :submission_evaluation_id
-#   t.datetime :created_at,               null: false
-#   t.datetime :updated_at,               null: false
+#   t.datetime :created_at,                               null: false
+#   t.datetime :updated_at,                               null: false
+#   t.integer  :status,                   default: 0,     null: false
+#   t.boolean  :needs_review,             default: false
 # end
 #
 # add_index :evaluation_groups, [:rating_group_id], name: :index_evaluation_groups_on_rating_group_id
@@ -12,7 +14,7 @@
 
 class EvaluationGroup < ActiveRecord::Base
   belongs_to :rating_group
-  belongs_to :submission_evaluation
+  belongs_to :submission_evaluation, touch: true
 
   has_many :evaluations, dependent: :delete_all
 
@@ -22,11 +24,16 @@ class EvaluationGroup < ActiveRecord::Base
   before_create :calc_result
   after_create :create_evaluations
   after_update :update_submission_evaluation_results, if: lambda { |eg| eg.points_changed? || eg.percent_changed? }
+  after_update :update_submission_evaluation_needs_review!, if: :needs_review_changed?
   after_destroy :update_submission_evaluation_results
 
   delegate :title, to: :rating_group
 
   scope :ranked, lambda { includes(:rating_group).order { rating_group.row_order.asc }.references(:rating_group) }
+
+  scope :needing_review, lambda { where(needs_review: true) }
+
+  enum status: { pending: 0, done: 1}
 
   def self.create_for_submission_evaluation(submission_evaluation)
     submission_evaluation.submission.exercise.rating_groups.each do |rating_group|
@@ -73,10 +80,18 @@ class EvaluationGroup < ActiveRecord::Base
     true
   end
 
+  def update_needs_review!
+    update(needs_review: evaluations.needing_review.exists?)
+  end
+
   private
 
   def update_submission_evaluation_results
     submission_evaluation.calc_results!
+  end
+
+  def update_submission_evaluation_needs_review!
+    submission_evaluation.update_needs_review!
   end
 
   def create_evaluations

@@ -21,6 +21,8 @@ class Ratings::FixedBonusPointsRating < Ratings::FixedRating
 
   validates :value, numericality: { greater_than_or_equal_to: 0 }
 
+  protected
+
   def evaluation_value_type
     :points
   end

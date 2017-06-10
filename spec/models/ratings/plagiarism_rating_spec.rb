@@ -1,6 +1,8 @@
 require "rails_helper"
+require 'models/behaviours/rating_behaviour'
 
 RSpec.describe Ratings::PlagiarismRating do
+  it_behaves_like 'a rating'
 
   describe '#points_value?' do
     it 'returns false' do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170317172719) do
+ActiveRecord::Schema.define(version: 20170610110625) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -65,8 +65,10 @@ ActiveRecord::Schema.define(version: 20170317172719) do
     t.float    "percent"
     t.integer  "rating_group_id"
     t.integer  "submission_evaluation_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.integer  "status",                   default: 0,     null: false
+    t.boolean  "needs_review",             default: false
   end
 
   add_index "evaluation_groups", ["rating_group_id"], name: "index_evaluation_groups_on_rating_group_id"
@@ -81,6 +83,7 @@ ActiveRecord::Schema.define(version: 20170317172719) do
     t.integer  "value"
     t.integer  "evaluation_group_id"
     t.boolean  "checked_automatically", default: false, null: false
+    t.boolean  "needs_review",          default: false
   end
 
   add_index "evaluations", ["evaluation_group_id"], name: "index_evaluations_on_evaluation_group_id"
@@ -330,6 +333,7 @@ ActiveRecord::Schema.define(version: 20170317172719) do
     t.datetime "updated_at",                        null: false
     t.integer  "evaluation_result"
     t.boolean  "plagiarized",       default: false, null: false
+    t.boolean  "needs_review",      default: false
   end
 
   add_index "submission_evaluations", ["evaluator_id"], name: "index_submission_evaluations_on_evaluator_id"

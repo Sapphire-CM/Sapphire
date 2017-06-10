@@ -1,0 +1,20 @@
+<% content_for :top_bar do %>
+  <div class='evaluation-top-bar-push'></div>
+  <div class='evaluation-bar evaluation-top-bar'>
+    <div class='row bar'>
+      <div class='small-7 medium-9 columns'>
+        <h1>
+          <%= submission_author(submission) %>
+          <small>
+            <span id='evaluation_result'><%= submission_evaluation_pluralized_points submission.submission_evaluation %></span>
+          </small>
+        </h1>
+      </div>
+      <div class='small-5 medium-3 columns text-right buttons'>
+        <%= link_to "Open Viewer", submission_viewer_path(submission), class: "small button", target: "sapphire_submission_viewer" if submission.exercise.submission_viewer? %>
+        <%= link_to "Files", tree_submission_path(submission), class: "small button" %>
+      </div>
+    </div>
+  </div>
+<% end %>
+

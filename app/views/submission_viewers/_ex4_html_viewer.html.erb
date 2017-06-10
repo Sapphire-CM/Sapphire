@@ -5,7 +5,7 @@
 
   <%= render "toolbar_style" %>
   <div id='toolbar'>
-    <%= link_to "Back", single_evaluation_path(@submission) %>
+    <%= link_to "Back", submission_evaluation_path(@submission.submission_evaluation) %>
     <%= submission_title(@submission) %>
     <select>
       <%= viewer.htmls.each do |html_asset| %>

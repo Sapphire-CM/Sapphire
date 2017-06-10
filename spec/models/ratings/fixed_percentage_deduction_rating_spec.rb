@@ -1,6 +1,8 @@
 require "rails_helper"
+require 'models/behaviours/rating_behaviour'
 
 RSpec.describe Ratings::FixedPercentageDeductionRating do
+  it_behaves_like 'a rating'
 
   describe 'validations' do
     it { is_expected.to validate_numericality_of(:value).is_less_than_or_equal_to(0) }

@@ -7,6 +7,7 @@
 #   t.datetime :updated_at,                        null: false
 #   t.integer  :evaluation_result
 #   t.boolean  :plagiarized,       default: false, null: false
+#   t.boolean  :needs_review,      default: false
 # end
 #
 # add_index :submission_evaluations, [:evaluator_id], name: :index_submission_evaluations_on_evaluator_id
@@ -56,6 +57,10 @@ class SubmissionEvaluation < ActiveRecord::Base
 
   def evaluation_for_rating(rating)
     evaluations.find_by_rating_id(rating.id)
+  end
+
+  def update_needs_review!
+    update(needs_review: evaluation_groups.needing_review.exists?)
   end
 
   private

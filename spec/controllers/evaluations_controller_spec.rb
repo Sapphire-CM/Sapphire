@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SingleEvaluationsController do
+RSpec.describe EvaluationsController, type: :controller do
   render_views
   include_context 'active_admin_session_context'
 
@@ -11,40 +11,6 @@ RSpec.describe SingleEvaluationsController do
   let(:submission) { FactoryGirl.create_list(:submission, 3, exercise: exercise)[1] }
   let(:submission_evaluation) { submission.submission_evaluation }
 
-  describe 'GET show' do
-    it 'assigns the requested submission as @submission' do
-      get :show, id: submission.id
-
-      expect(response).to have_http_status(:success)
-      expect(assigns(:term)).to eq(term)
-      expect(assigns(:exercise)).to eq(exercise)
-      expect(assigns(:submission)).to eq(submission)
-      expect(assigns(:previous_submission)).to be_a(Submission) if assigns(:previous_submission)
-      expect(assigns(:next_submission)).to be_a(Submission) if assigns(:next_submission)
-    end
-
-    context 'as a tutor' do
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-      let(:tutor_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, tutorial_group: tutorial_group) }
-
-      it 'returns a successful response' do
-        sign_in(tutor_registration.account)
-
-        get :show, id: submission.id
-
-        expect(response).to have_http_status(:success)
-      end
-
-      it 'returns a successful response when showing ascii encoded files' do
-        FactoryGirl.create(:submission_asset, submission: submission, file: prepare_static_test_file('submission_asset_iso_latin.txt', open: true))
-
-        sign_in(tutor_registration.account)
-        get :show, id: submission.id
-        expect(response).to have_http_status(:success)
-        expect(response.body).to have_content('Submission containing special chars')
-      end
-    end
-  end
 
   describe 'PUT update' do
     describe 'with valid params' do
@@ -52,13 +18,13 @@ RSpec.describe SingleEvaluationsController do
         [Ratings::FixedPointsDeductionRating, Ratings::FixedPercentageDeductionRating, Ratings::PlagiarismRating].each do |type|
           [true, false].each do |checked|
             it 'updates the requested evaluation' do
-              rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s
+              rating = FactoryGirl.create rating_factory(type), rating_group: rating_group, type: type.to_s
               evaluation = submission_evaluation.evaluations.where(rating_id: rating.id).first
               evaluation.update! value: (checked ? 0 : 1)
               submission_evaluation.update! updated_at: 42.days.ago
 
               expect do
-                xhr :put, :update, id: evaluation.id
+                xhr :put, :update, id: evaluation.id, evaluation: { value: (checked ? 1 : 0) }
                 submission_evaluation.reload
                 evaluation.reload
               end.to change(submission_evaluation, :updated_at)
@@ -76,12 +42,12 @@ RSpec.describe SingleEvaluationsController do
       context 'with a VariableRating' do
         [Ratings::VariablePointsDeductionRating, Ratings::VariablePercentageDeductionRating].each do |type|
           it 'updates the requested evaluation' do
-            rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s, max_value: 50
+            rating = FactoryGirl.create rating_factory(type), rating_group: rating_group, type: type.to_s, min_value: -5, max_value: 0
             evaluation = submission_evaluation.evaluations.where(rating_id: rating.id).first
             submission_evaluation.update! updated_at: 42.days.ago
 
             expect do
-              xhr :put, :update, id: evaluation.id, evaluation: { value: '42' }
+              xhr :put, :update, id: evaluation.id, evaluation: { value: '-3' }
               submission_evaluation.reload
               evaluation.reload
             end.to change(submission_evaluation, :updated_at)
@@ -90,7 +56,7 @@ RSpec.describe SingleEvaluationsController do
             expect(assigns(:evaluation)).to eq(evaluation)
             expect(assigns(:submission)).to eq(submission)
             expect(assigns(:submission_evaluation)).to eq(submission_evaluation)
-            expect(evaluation.value).to eq(42)
+            expect(evaluation.value).to eq(-3)
           end
         end
       end
@@ -106,13 +72,13 @@ RSpec.describe SingleEvaluationsController do
         [Ratings::FixedPointsDeductionRating, Ratings::FixedPercentageDeductionRating, Ratings::PlagiarismRating].each do |type|
           [true, false].each do |checked|
             it 'updates the requested evaluation' do
-              rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s
+              rating = FactoryGirl.create rating_factory(type), rating_group: rating_group
               evaluation = submission_evaluation.evaluations.where(rating_id: rating.id).first
               evaluation.update! value: (checked ? 0 : 1)
               submission_evaluation.update! updated_at: 42.days.ago
 
               expect do
-                xhr :put, :update, id: evaluation.id
+                xhr :put, :update, id: evaluation.id, evaluation: { value: (checked ? 1 : 0) }
                 submission_evaluation.reload
                 evaluation.reload
               end.to change(submission_evaluation, :updated_at)
@@ -132,7 +98,7 @@ RSpec.describe SingleEvaluationsController do
       context 'with a VariableRating' do
         [Ratings::VariablePointsDeductionRating, Ratings::VariablePercentageDeductionRating].each do |type|
           it 'returns a JS containing an alert' do
-            rating = FactoryGirl.create :rating, rating_group: rating_group, type: type.to_s, min_value: 0, max_value: 5, value: 3
+            rating = FactoryGirl.create rating_factory(type), rating_group: rating_group, type: type.to_s, min_value: -5, max_value: 0
             evaluation = submission_evaluation.evaluations.where(rating_id: rating.id).first
             submission_evaluation.update! updated_at: 42.days.ago
 

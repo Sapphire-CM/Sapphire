@@ -7,13 +7,14 @@
 #   t.integer  :value
 #   t.integer  :evaluation_group_id
 #   t.boolean  :checked_automatically, default: false, null: false
+#   t.boolean  :needs_review,          default: false
 # end
 #
 # add_index :evaluations, [:evaluation_group_id], name: :index_evaluations_on_evaluation_group_id
 # add_index :evaluations, [:rating_id], name: :index_evaluations_on_rating_id
 
 class Evaluation < ActiveRecord::Base
-  belongs_to :evaluation_group
+  belongs_to :evaluation_group, touch: true
   belongs_to :rating
 
   has_one :submission_evaluation, through: :evaluation_group
@@ -27,10 +28,13 @@ class Evaluation < ActiveRecord::Base
 
   after_create :update_result!, if: lambda { |evaluation| evaluation.value_changed? }
   after_update :update_result!, if: lambda { |evaluation| evaluation.value_changed? }
+  after_update :update_needs_review!, if: :needs_review_changed?
+
   after_destroy :update_result!
 
   scope :ranked, lambda { includes(:rating).order { rating.row_order.asc }.references(:rating) }
 
+  scope :needing_review, lambda { where(needs_review: true) }
   scope :for_submission, lambda { |submission| joins { evaluation_group.submission_evaluation }.where { evaluation_group.submission_evaluation.submission_id == my { submission.id } }.readonly(false) }
   scope :for_exercise, lambda { |exercise| joins { submission }.where { submission.exercise_id == my { exercise.id } } }
   scope :automatically_checked, lambda { where { checked_automatically == true } }
@@ -66,6 +70,10 @@ class Evaluation < ActiveRecord::Base
   end
 
   private
+
+  def update_needs_review!
+    evaluation_group.update_needs_review!
+  end
 
   def self.new_from_rating(rating)
     evaluation = rating.evaluation_class.new

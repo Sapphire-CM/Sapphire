@@ -25,6 +25,7 @@ RSpec.shared_examples 'an evaluation' do
     end
     describe '#update_needs_result!' do
       pending "is called after update"
+      pending "is called after destroy"
     end
   end
 end

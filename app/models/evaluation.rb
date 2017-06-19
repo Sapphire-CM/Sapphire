@@ -31,6 +31,7 @@ class Evaluation < ActiveRecord::Base
   after_update :update_needs_review!, if: :needs_review_changed?
 
   after_destroy :update_result!
+  after_destroy :update_needs_review!
 
   scope :ranked, lambda { includes(:rating).order { rating.row_order.asc }.references(:rating) }
 

@@ -47,14 +47,6 @@ class Submission < ActiveRecord::Base
 
   after_create :create_submission_evaluation
 
-  def self.next(submission, order = :id)
-    Submission.where { submissions.send(my { order }) > submission.send(order) }.order(:id).order(order => :asc).first
-  end
-
-  def self.previous(submission, order = :id)
-    Submission.where { submissions.send(my { order }) < submission.send(order) }.order(:id).order(order => :desc).first
-  end
-
   def self.find_by_account_and_exercise(account, exercise)
     for_account(account).find_by(exercise: exercise)
   end

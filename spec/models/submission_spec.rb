@@ -155,14 +155,6 @@ RSpec.describe Submission do
         expect(described_class.ordered_by_exercises).to match([first_submission, second_submission, third_submission])
       end
     end
-
-    describe '.next' do
-      pending
-    end
-
-    describe '.previous' do
-      pending
-    end
   end
 
   describe 'callbacks' do

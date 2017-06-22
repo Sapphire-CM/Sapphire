@@ -3,3 +3,5 @@
 <%= render 'terms/sidebar' %>
 
 <%= render 'grade_distribution', grading_scale: @grading_scale, term: @term %>
+
+<%= render 'grade_overview', grading_overview: GradingOverview.new(@term, @grading_scales, @term.tutorial_groups.ordered_by_title.includes(:tutor_term_registrations)) %>

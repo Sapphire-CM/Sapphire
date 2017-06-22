@@ -1,0 +1,37 @@
+<table class='small-12'>
+  <thead>
+    <th class='text-right'>Grade</th>
+    <% grading_overview.tutorial_groups.each do |tutorial_group| %>
+      <th class='text-right'><%= tutorial_group.title %></th>
+    <% end %>
+    <th class='text-right'>Total</th>
+    <th class='text-right'>Percent</th>
+  </thead>
+  <tbody>
+    <% grading_overview.grading_scales.each do |grading_scale| %>
+      <tr>
+        <th class='text-right'><%= grading_scale.grade %></th>
+        <% grading_overview.tutorial_groups.each do |tutorial_group| %>
+          <td class='text-right'><%= grading_overview.count_for_tutorial_group_and_grading_scale(tutorial_group, grading_scale) %></td>
+        <% end %>
+        <th class='text-right'><%= grading_overview.count_for_grading_scale(grading_scale) %></th>
+        <th class='text-right'><%= number_to_percentage grading_overview.percent_for_grading_scale(grading_scale), precision: 1 %></th>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th></th>
+      <% grading_overview.tutorial_groups.each do |tutorial_group| %>
+        <th><%= grading_overview.student_count_for_tutorial_group(tutorial_group) %></th>
+      <% end %>
+      <th class='text-right'><%= grading_overview.graded_count %></th>
+      <th></th>
+    </tr>
+    <tr>
+      <th colspan='<%= grading_overview.tutorial_groups.count + 1 %>' class='text-right'>Ungraded:</th>
+      <th class='text-right'><%= grading_overview.ungraded_count %></th>
+      <th></th>
+    </tr>
+  </tfoot>
+</table>

@@ -1,24 +1,12 @@
 <div id="grading_scale">
-  <table class='large-centered grid-center' id='grading_scale_table'>
+  <table class='small-12' id='grading_scale_table'>
     <thead>
       <th class='text-center'>Grade</th>
       <th class='text-center'>postive</th>
       <th colspan=3 class='text-center'>Points</th>
-      <th class='text-center'>Students</th>
-      <th class='text-center'>Percent</th>
     </thead>
     <tbody>
       <%= render collection: @grading_scales, partial:'index_entry', as: :grading_scale %>
-      <tr><td colspan='7'><hr></td></tr>
-      <tr>
-        <td class='minimum-width text-center'>0</td>
-        <td></td>
-        <td colspan='3'>&nbsp;</td>
-        <td class='minimum-width text-right'>
-          <%= @grading_scale_service.ungraded_count %>
-        </td>
-        <td></td>
-      </tr>
     </tbody>
   </table>
 </div>

@@ -36,5 +36,10 @@ FactoryGirl.define do
         FactoryGirl.create_list :rating_group, 4, :with_ratings, exercise: exercise
       end
     end
+
+    trait :with_minimum_points do
+      enable_min_required_points true
+      min_required_points 5
+    end
   end
 end

@@ -22,7 +22,13 @@ class Ratings::VariablePointsDeductionRating < Ratings::VariableRating
 
   validates :min_value, :max_value, numericality: { less_than_or_equal_to: 0 }
 
+  after_initialize :ensure_multiplication_factor
+
   protected
+
+  def ensure_multiplication_factor
+    self.multiplication_factor ||= 1
+  end
 
   def evaluation_value_type
     :points

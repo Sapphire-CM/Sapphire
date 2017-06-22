@@ -23,4 +23,10 @@ RSpec.describe Ratings::VariablePointsDeductionRating do
     end
   end
 
+  describe '#multiplication_factor' do
+    it 'returns 1' do
+      expect(subject.multiplication_factor).to eq(1)
+    end
+  end
+
 end

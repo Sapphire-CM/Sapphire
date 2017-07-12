@@ -29,6 +29,7 @@
             <%= link_to entry.name, tree_submission_path(submission, path: entry.path_without_root) %>
           <% end %>
         </td>
+        <td class='size'><%= l entry.mtime, format: :long %></td>
         <td class='size'><%= filesize entry.size %></td>
         <% if submission.modifiable_by_students? %>
           <td class='buttons'>

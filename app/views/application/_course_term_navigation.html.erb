@@ -1,27 +1,7 @@
-<li class='has-dropdown'>
+<li>
   <% if defined?(@term) %>
     <%= link_to_current_term %>
   <% else %>
     <%= link_to "Courses", courses_path %>
   <% end %>
-
-  <ul class='dropdown'>
-    <% if (courses = policy_scope(Course).joins(:terms).includes(:terms).load).any? %>
-      <% courses.each do |course| %>
-        <li class='<%= course.terms.any? ? "has-dropdown" : "" %>'>
-          <a href="#"><%= course.title %></a>
-
-          <% if course.terms.any? %>
-            <ul class='dropdown'>
-              <% course.terms.each do |term| %>
-                <li><%= link_to term.title, term_path(term) %></li>
-              <% end %>
-            </ul>
-          <% end %>
-        </li>
-      <% end %>
-    <% else %>
-      <li><%= link_to "(no courses)", '#' %></li>
-    <% end %>
-  </ul>
 </li>

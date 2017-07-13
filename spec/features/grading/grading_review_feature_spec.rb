@@ -11,7 +11,7 @@ RSpec.feature 'Grading Review' do
   scenario 'navigating to grading review page' do
     visit root_path
 
-    click_top_bar_link term.title
+    click_link term.title
     click_top_bar_link 'Grading Review'
 
     expect(page.current_path).to eq(term_grading_reviews_path(term))

@@ -74,23 +74,15 @@ class SortableTable
 
       $icon = $("<i>").hide()
 
+      $inserted_link.append(" ")
       $inserted_link.append($icon)
       links.push($inserted_link)
 
     @links = links
-  # ==============
-  # = Public API =
-  # ==============
-
-  detach: ->
-    @_remove_listeners()
 
   # ==================
   # = Event Handling =
   # ==================
-
-  _remove_listeners: ->
-    console.log("pending impl")
 
   _handle_sort_click: ($link) ->
     column_idx = $link.data("sort-index")
@@ -152,5 +144,5 @@ setup_sortable_tables = ->
     new SortableTable($table)
 
 
-$(document).on "page:change", ->
+$(document).on "page:load ready", ->
   setup_sortable_tables()

@@ -14,7 +14,7 @@ RSpec.feature 'Managing submissions as a staff member' do
   scenario 'navigating to the submissions page' do
     visit root_path
 
-    click_top_bar_link term.title
+    click_link term.title
     click_top_bar_link exercise.title
 
     expect(page.current_path).to eq(exercise_submissions_path(exercise))

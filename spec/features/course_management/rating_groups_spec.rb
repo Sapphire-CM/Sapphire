@@ -13,7 +13,7 @@ RSpec.feature 'Ratings and Rating Groups' do
   scenario 'navigating to the ratings page' do
     visit root_path
 
-    click_top_bar_link term.title
+    click_link term.title
     click_top_bar_link exercise.title
     click_side_nav_link 'Administrate'
     click_sub_nav_link 'Ratings'

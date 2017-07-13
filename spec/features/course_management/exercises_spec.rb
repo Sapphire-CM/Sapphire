@@ -13,7 +13,7 @@ RSpec.feature 'Exercise Management' do
   scenario 'navigating to exercise administration page' do
     visit root_path
 
-    click_top_bar_link exercise.term.title
+    click_link exercise.term.title
     click_top_bar_link exercise.title
 
     click_side_nav_link 'Administrate'

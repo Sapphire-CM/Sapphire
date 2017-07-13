@@ -16,7 +16,7 @@
           <% @submissions.each do |submission| %>
             <tr>
               <td><%= submission.exercise.title %></td>
-              <td><%= submission.submitted_at.present? ? l(submission.submitted_at, format: :long) : "unknown" %></td>
+              <td><%= submission.submitted_at.present? ? local_time(submission.submitted_at, '%Y-%m-%d %H:%M') : "unknown" %></td>
               <td>
                 <%= submission_result @student_registration, submission %> / <%= submission.exercise.achievable_points %>
               </td>

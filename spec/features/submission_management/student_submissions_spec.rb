@@ -17,7 +17,7 @@ RSpec.describe 'Managing submissions as a student' do
     end
 
     scenario 'through the term page' do
-      click_top_bar_link 'Fancy Term'
+      click_link 'Fancy Term'
       click_side_nav_link 'Exercises'
 
       within 'table' do
@@ -28,7 +28,7 @@ RSpec.describe 'Managing submissions as a student' do
     end
 
     scenario 'though the navigation bar' do
-      click_top_bar_link 'Fancy Term'
+      click_link 'Fancy Term'
       click_top_bar_link 'Fancy Exercise'
 
       expect(page.current_path).to eq(new_exercise_student_submission_path(exercise))

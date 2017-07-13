@@ -29,7 +29,7 @@ RSpec.feature 'Evaluating submissions' do
     scenario 'to submission evaluation page from the root path' do
       visit root_path
 
-      click_top_bar_link(term.title)
+      click_link(term.title)
       click_top_bar_link(exercise.title)
 
       click_link('Evaluate')

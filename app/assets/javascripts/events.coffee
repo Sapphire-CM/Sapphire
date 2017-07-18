@@ -74,6 +74,7 @@ class Event
       @expand(animated)
     else
       @collapse(animated)
+
 class EventLoader
   constructor: (@element) ->
     @current_page = 1

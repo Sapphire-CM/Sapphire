@@ -24,6 +24,13 @@ class Event < ActiveRecord::Base
   scope :for_term, lambda { |term| where(term: term) }
   scope :time_ordered, lambda { order(updated_at: :desc) }
 
+  def self.filter_by_scopes(scopes)
+    type_service = EventTypeService.new
+
+    where(type: type_service.types_for_scopes(scopes))
+  end
+
+
   serialize_hash :data
 
   def self.data_reader(*args)

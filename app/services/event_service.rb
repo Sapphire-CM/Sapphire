@@ -63,7 +63,6 @@ class EventService
   def submission_asset_destroyed!(submission_asset)
     # not yet implemented
     submission = submission_asset.submission
-    submission = submission_asset.submission
     event = Events::Submission::Updated.where(account: account).recent_for_submission(submission)
 
     if event.blank?
@@ -125,7 +124,6 @@ class EventService
 
     Events::Submission::ExtractionFailed.create(options(submission, submission_base_options(submission, opts)))
   end
-
 
   def rating_created!(rating)
     Events::Rating::Created.create(rating_options(rating))

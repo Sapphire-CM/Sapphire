@@ -3,6 +3,8 @@
 <% if @term.ready? %>
   <%= render "sidebar", term: @term %>
 
+  <%= render "event_scope_selector", term: @term %>
+
   <%= content_tag :div, 'Loading...', class: 'event-list-container', data: {events_url: term_events_path(@term, format: :json)} %>
 <% else %>
   <p>This term is currently being prepared with data from a previous term. Please stand by.</p>

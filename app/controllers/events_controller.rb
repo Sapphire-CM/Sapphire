@@ -4,7 +4,8 @@ class EventsController < ApplicationController
   skip_after_action :verify_authorized, only: :index
 
   def index
-    @events = policy_scope(Event).for_term(current_term).includes(:account).time_ordered.page(params[:page])
+    set_events
+
     respond_to :json
   end
 
@@ -15,4 +16,12 @@ class EventsController < ApplicationController
     @staff_account
   end
   helper_method :staff_account?
+
+  def set_events
+    @events = policy_scope(Event).for_term(current_term).includes(:account).time_ordered.page(params[:page])
+
+    if params[:scopes].present?
+      @events = @events.filter_by_scopes(params[:scopes])
+    end
+  end
 end

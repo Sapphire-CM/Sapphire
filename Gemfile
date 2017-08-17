@@ -55,6 +55,11 @@ gem 'multi_logger'                # custom log files
 gem 'exception_notification'      # send out emails if an unhandled exception occours
 gem 'redis-namespace'
 
+gem 'less'
+gem 'therubyracer'
+#gem 'sys-filesystem', '~> 1.1', '>= 1.1.7' #filesystem information
+#gem 'free_disk_space' 
+
 group :development, :test do
   gem 'pry'
   gem 'pry-rails'
@@ -115,6 +120,7 @@ group :test do
   # gem 'capybara-webkit'         # Webkit headless webdriver
 
   gem 'timecop'                   # improved time handling during tests
+  gem 'less'
 end
 
 group :development, :test do

@@ -26,7 +26,6 @@ class Event < ActiveRecord::Base
 
   def self.filter_by_scopes(scopes)
     type_service = EventTypeService.new
-
     where(type: type_service.types_for_scopes(scopes))
   end
 

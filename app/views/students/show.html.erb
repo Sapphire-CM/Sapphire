@@ -4,6 +4,9 @@
 
 <% if @student_group.present? %>
   <p>This student is part of <%= link_to @student_group.title, term_tutorial_group_student_group_path(current_term, @tutorial_group, @student_group) %></p>
+<% else %>
+  <p>This student is currently not a member of any student group. Choose a <%= link_to "tutorial group", term_tutorial_groups_path(current_term) %>. 
+  <%# search form for student group ? %> 
 <% end %>
 
 <h2>Submissions</h2>

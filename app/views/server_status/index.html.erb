@@ -1,0 +1,21 @@
+<%= title "Server Status", "Disk Usage" %> 
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Filesystem</th>
+      <th>Used</th>
+      <th>Available</th>
+      <th>Percentage</th>
+    </tr>    
+  </thead>
+  <tbody>
+    <tr>
+      <th><%= filesystem  %></th>
+      <th><%= get_df[0] %></th>
+      <th><%= get_df[1] %></th>
+      <th><%= get_df[2] %>%</th>
+    </tr>
+  </tbody>
+</table>

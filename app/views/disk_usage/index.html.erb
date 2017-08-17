@@ -1,0 +1,53 @@
+<%= title "Disk Usage", "of #{@term.title}" %>
+
+
+<div class="section-container auto" data-section>
+  <section class='active'>
+    <p class="title" data-section-title><a href="#panel1">Overview</a></p>	
+			<div class="content" data-section-content>
+			<table class='small-12'>
+			<thead>
+				<tr>
+					<th>Exercises</th>
+					<th>Mean</th>
+					<th>Max</th>
+					<th>Min</th> 
+					<th>Sum</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% term_exercises.each do |exercise| %>
+					<tr>
+						<th><%= exercise.title %></th>
+						<th><%= number_to_human_size exercise_mean_upload_size(exercise) %></th>
+						<th><%= number_to_human_size exercise_max_upload_size(exercise) %></th>
+						<th><%= number_to_human_size exercise_min_upload_size(exercise) %></th>
+						<th><%= number_to_human_size exercise_sum_upload_size(exercise) %></th>
+					</tr>		
+				<% end %>
+				  <tr>
+				  	<th colspan="4">Disk Usage for Term</th>
+				  	<th></th>
+				  	
+				  </tr>
+			</tbody>
+			</table>
+		</div>
+	</section>
+  <% term_exercises.each do |exercise| %>
+  	<%# cache exercise do%>
+  	<section>
+  		<%#<p class="title" data-section-title><%= link_to "#{exercise.title}", render_exercise_term_disk_usage_path(id: exercise.id) ,remote: true %> 
+  		<p class="title" data-section-title ><%= link_to "#{exercise.title}", "#panel#{exercise.id}"%> 
+  		</p>
+  		<div class="content" data-section-content id=<% "#{exercise.id}" %> >
+  				<%= render "exercise_detail", exercise: exercise %>
+  			</div>
+  	</section>
+  	<%# end %>
+	<% end %>
+
+
+
+</div>
+

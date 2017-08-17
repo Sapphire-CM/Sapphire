@@ -1,11 +1,15 @@
 <% event_type_service = EventTypeService.new %>
 
-<%= form_tag term_events_path(term) do %>
+<%= form_tag term_path(term), method: :patch do %> <%#, :scopes => "type_id[]" %>
+<hr>  
   <% event_type_service.types.keys.each do |type_id| %>
     <label>
-      <%= check_box_tag(:scopes, type_id) %>
+      <%= check_box_tag 'scopes[]', type_id, event_type_service.checked(params[:scopes], type_id) %>
 
       <%= type_id %>
     </label>
   <% end %>
+  <%= submit_tag "Reload Dashboard" %>
+  <hr>
 <% end %>
+  

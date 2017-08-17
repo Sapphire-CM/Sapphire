@@ -1,0 +1,10 @@
+<%= event_box(updated) do |event| %>
+  <div class='title'>
+    <%= event.account.fullname %> <strong>changed</strong> members of 
+    <%= link_to "#{event.data[:student_group_title]}", term_tutorial_group_student_group_path(:id => event.data[:student_group_id], :tutorial_group_id => event.data[:tutorial_group_id]) %>:
+    <% if event.data[:student_group_member].present? & #?
+    	( event.data[:added].present? |
+    	  event.data[:removed].present? ) %>
+    	  <%= render "events/updated_members", event: event %>
+    <% end %>
+<% end %>

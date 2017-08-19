@@ -16,17 +16,9 @@ class SubmissionPolicy < PunditBasePolicy
     )
   end
 
-  def directory?
-    show?
-  end
 
   def new?
-    user.admin? ||
-    user.staff_of_term?(record.exercise.term) ||
-    (
-      record.exercise.term.associated_with?(user) &&
-      record.exercise.term.course.unlocked?
-    )
+    create?
   end
 
   def create?
@@ -42,19 +34,19 @@ class SubmissionPolicy < PunditBasePolicy
 
   def update?
     user.admin? ||
-    user.staff_of_term?(record.exercise.term)
+    user.staff_of_term?(record.exercise.term) ||
+    modifiable?
   end
 
   def destroy?
     user.admin? ||
     user.staff_of_term?(record.exercise.term) ||
-    (
-      record.visible_for_student?(user) &&
-      record.exercise.term.course.unlocked? &&
-      record.modifiable_by_students?
-    )
+    modifiable?
   end
 
+  def directory?
+    show?
+  end
 
   def tree?
     viewable?
@@ -66,5 +58,11 @@ class SubmissionPolicy < PunditBasePolicy
     user.staff_of_term?(record.exercise.term) ||
     record.visible_for_student?(user) ||
     record.new_record?
+  end
+
+  def modifiable?
+    record.visible_for_student?(user) &&
+    record.modifiable_by_students? &&
+    record.exercise.term.course.unlocked?
   end
 end

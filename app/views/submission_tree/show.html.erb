@@ -4,7 +4,7 @@
 
 <%= render "toolbar", submission: @submission, tree: @tree, submission_upload: @submission_upload %>
 
-<%= cache [@submission, @tree.path] do %>
+<%= cache [@submission, @tree.path, policy(@submission).update?] do %>
   <%= render "submission_tree_path", tree: @tree, submission: @submission %>
 
   <%= content_tag :div, class: "submission-tree", data: { update_url: tree_directory_submission_path(@submission, path: @tree.path_without_root, format: :json) } do %>

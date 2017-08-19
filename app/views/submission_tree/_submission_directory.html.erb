@@ -1,4 +1,4 @@
-<%= cache [submission, tree.path] do %>
+<%= cache [submission, tree.path, policy(submission).update?] do %>
 <table class='small-12'>
   <tbody>
     <% unless tree.root? %>

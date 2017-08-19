@@ -59,11 +59,29 @@ RSpec.describe SubmissionAssetPolicy do
     end
 
     context 'after deadline passed' do
-      pending
+      before :each do
+        exercise.update(deadline: 2.days.ago, late_deadline: 1.day.ago)
+      end
+
+      describe 'member' do
+        let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission) }
+
+        it { is_expected.to permit_authorization(:show) }
+        it { is_expected.not_to permit_authorization(:destroy) }
+      end
     end
 
     context 'disabled student uploads' do
-      pending
+      before :each do
+        exercise.update(enable_student_uploads: false)
+      end
+
+      describe 'member' do
+        let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission) }
+
+        it { is_expected.to permit_authorization(:show) }
+        it { is_expected.not_to permit_authorization(:destroy) }
+      end
     end
   end
 

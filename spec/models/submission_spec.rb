@@ -10,6 +10,7 @@ RSpec.describe Submission do
     it { is_expected.to have_one :submission_evaluation }
     it { is_expected.to have_many(:exercise_registrations) }
     it { is_expected.to have_many(:term_registrations).through(:exercise_registrations) }
+    it { is_expected.to have_many(:associated_student_groups).through(:term_registrations) }
   end
 
   describe 'validations' do

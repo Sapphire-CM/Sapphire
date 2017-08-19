@@ -60,7 +60,7 @@ module SubmissionsHelper
     if submission.student_group.present?
       tutorial_group_title(submission.student_group.tutorial_group)
     else
-      'unkown'
+      'unknown'
     end
   end
 

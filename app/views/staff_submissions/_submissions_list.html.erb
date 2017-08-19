@@ -1,8 +1,11 @@
-<% if submissions.any? %>
+<% unless submissions.empty? %>
   <table class='sortable'>
     <thead>
       <tr>
-        <th>Student</th>
+        <% if exercise.solitary_submission? %>
+          <th>Student</th>
+        <% end %>
+        <th>Group</th>
         <th>Submitted at</th>
         <th>Evaluated at</th>
         <th>Result</th>
@@ -13,6 +16,13 @@
       <% submissions.each do |submission| %>
       <tr<%= ' class="outdated"'.html_safe if submission.outdated? %>>
         <td><%= submission_author submission %></td>
+
+        <% if exercise.solitary_submission? %>
+          <td>
+            <%= submission.associated_student_groups.map(&:title).join(", ") %>
+          </td>
+        <% end %>
+
         <td class="minimum-width"><%= local_time submission.submitted_at, '%Y-%m-%d %H:%M' %></td>
         <td class="minimum-width">
           <% if submission.submission_evaluation.evaluated_at.present? %>

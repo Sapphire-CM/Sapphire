@@ -25,6 +25,7 @@ class Submission < ActiveRecord::Base
   has_many :term_registrations, through: :exercise_registrations
   has_many :students, through: :term_registrations, source: :account
   has_many :tutorial_groups, lambda { uniq }, through: :term_registrations
+  has_many :associated_student_groups, through: :term_registrations, class_name: "StudentGroup", source: :student_group
 
   validates :submitter, presence: true
   validates :submitted_at, presence: true

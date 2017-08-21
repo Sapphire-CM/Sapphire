@@ -112,7 +112,15 @@ class EventLoader
   load: ->
     if !@loading && @active
       @loading = true
-      new_entries = $.getJSON("#{@loading_url}?page=#{@current_page}").done (data) =>
+
+      url = @loading_url
+      if url.includes("?")
+        url += "&"
+      else
+        url += "?"
+      url += "page=#{@current_page}"
+
+      new_entries = $.getJSON(url).done (data) =>
         @loading_errors = 0
         @loading = false
         if data.includes_entries

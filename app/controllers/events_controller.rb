@@ -9,8 +9,6 @@ class EventsController < ApplicationController
     respond_to :json
   end
 
-
-
   private
   def staff_account?
     @staff_account = current_account.staff_of_term?(@term) if @staff_account.nil?
@@ -21,17 +19,10 @@ class EventsController < ApplicationController
 
   def set_events
     @events = policy_scope(Event).for_term(current_term).includes(:account).time_ordered.page(params[:page])
-    if params[:scopes].present?
-      scopes = []
 
-      params[:scopes].each do |e| 
-        s = e.split("?").map(&:strip)
-        scopes.push(*s)
-      end
-      #puts scopes[-1] #?
-      @events = @events.filter_by_scopes(scopes).time_ordered.page(scopes[-1]) #@events.filter_by_scopes(params[:scopes])
+    if params[:scopes].present?
+      @events = @events.filter_by_scopes(params[:scopes])
     end
-    
   end
 
 end

@@ -33,7 +33,7 @@ class Account < ActiveRecord::Base
          :rememberable,
          :trackable,
          :validatable,
-         #:lockable  
+         :lockable
 
   has_many :term_registrations, dependent: :destroy
   has_many :tutorial_groups, through: :term_registrations

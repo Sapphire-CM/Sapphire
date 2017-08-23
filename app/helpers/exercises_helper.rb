@@ -42,6 +42,14 @@ module ExercisesHelper
     end
   end
 
+  def exercise_points_sum_tag(exercise)
+    content_tag :span, exercise_points_sum(exercise), class: "points-sum"
+  end
+
+  def exercise_points_sum(exercise)
+    "#{pluralize(@exercise.starting_points_sum, "starting point")}"
+  end
+
   def exercise_sidebar_administrate_active?
     params[:controller] == 'result_publications' ||
     params[:controller] == 'rating_groups' ||

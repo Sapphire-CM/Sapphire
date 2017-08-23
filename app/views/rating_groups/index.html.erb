@@ -1,4 +1,4 @@
-<% title @exercise.title, "Ratings" %>
+<% title @exercise.title, "Ratings (#{exercise_points_sum_tag(@exercise).html_safe})".html_safe %>
 <%= render "exercises/sidebar" %>
 <%= render "exercises/edit_header" %>
 
@@ -11,6 +11,7 @@
     <%= render collection: @rating_groups.rank(:row_order), partial: 'rating_groups/index_entry', as: :rating_group %>
   <% end %>
 </div>
+
 
 <div class="row">
   <div class="large-12 large-centered columns text-center">

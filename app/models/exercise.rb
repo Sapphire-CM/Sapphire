@@ -122,6 +122,10 @@ class Exercise < ActiveRecord::Base
     TermRegistrationsPointsUpdateJob.perform_later term.id
   end
 
+  def starting_points_sum
+    rating_groups.sum(:points)
+  end
+
   private
 
   def ensure_result_publications

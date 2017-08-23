@@ -1,7 +1,7 @@
 var html = "<%=j render 'index_entry', rating_group: @rating_group %>";
-var html_subtitle = "<%=j exercise_sub_title(@rating_group.exercise) %>";
+var html_exercise_points_sum = "<%=j exercise_points_sum(@rating_group.exercise) %>";
 
+$(".points-sum").html(html_exercise_points_sum);
 $("<%= "#rating_group_id_#{rating_group.id}" %>").replaceWith(html);
-$("#site_subtitle").html(html_subtitle);
-
 $('#reveal_modal').foundation('reveal', 'close');
+

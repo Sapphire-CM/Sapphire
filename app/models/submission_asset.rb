@@ -214,7 +214,6 @@ class SubmissionAsset < ActiveRecord::Base
     return unless submission.present?
     submission_assets_scope = submission.submission_assets
     submission_assets_scope = submission_assets_scope.where.not(id: self.id) if persisted?
-    puts "submission_assets_scope.sum(:processed_size) #{submission_assets_scope}  #{submission_assets_scope.sum(:processed_size) + self.processed_size}"
     if exercise.present? && exercise.enable_max_upload_size && (submission_assets_scope.sum(:processed_size) + self.processed_size) > exercise.maximum_upload_size
       if archive?
         errors.add(:file, 'exceeds maximum upload size after extraction')

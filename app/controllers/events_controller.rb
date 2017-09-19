@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   include TermContext
 
-  skip_after_action :verify_authorized, only: [:index, :create]
+  skip_after_action :verify_authorized, only: [:index]
 
   def index
     set_events

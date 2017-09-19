@@ -39,13 +39,18 @@ class StudentGroupsController < ApplicationController
   end
 
   def update
-    removed = []
-    added = []
     current_ids = @student_group.term_registration_ids
-    #current_registrations #? #pass registrations rather than registration_ids
     if @student_group.update(student_group_params)
       added = @student_group.term_registration_ids - current_ids
       removed = current_ids - @student_group.term_registration_ids 
+      
+=begin
+    current_ids = @student_group.students #need deep copy...
+      if @student_group.update(student_group_params)
+      added = @student_group.students - current_ids
+      removed = current_ids - @student_group.students 
+=end
+
       event_service.student_group_updated!(@student_group, removed, added)
       redirect_to term_tutorial_group_student_group_path(current_term, current_tutorial_group, @student_group), notice: 'Successfully updated student group'
     else

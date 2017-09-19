@@ -6,9 +6,7 @@
   <% if current_account.staff_of_term?(@term) or current_account.admin? %>
   	<%= render "event_scope_selector", term: @term %>
   <% end %>
-  
-  <%#= render "event_list" %>
-  
+
   <%= content_tag :div, 'Loading...', class: 'event-list-container', data: {events_url: term_events_path(@term, format: :json, :scopes => params[:scopes])} %>
 <% else %>
   <p>This term is currently being prepared with data from a previous term. Please stand by.</p>

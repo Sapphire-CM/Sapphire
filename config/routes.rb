@@ -56,10 +56,6 @@ Rails.application.routes.draw do
     resources :grading_reviews, only: [:index, :show]
     resources :results, only: [:index, :show], controller: :student_results
     resources :events, only: [:index]
-    resources :disk_usage, only: [:index, :show]
-    resources :disk_usage do
-      get "/render_exercise" => "disk_usage#render_exercise", :as => :render_exercise, on: :member
-    end
    end
 
   resources :tutorial_groups
@@ -113,8 +109,6 @@ Rails.application.routes.draw do
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/rails/emails"
   end
-
-  get 'server_status', to: 'server_status#index'
 
   root to: 'courses#index'
 end

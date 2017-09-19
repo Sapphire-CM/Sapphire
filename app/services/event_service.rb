@@ -208,7 +208,7 @@ class EventService
       student_group_title: student_group.title,
       tutorial_group_id: student_group.tutorial_group_id,
       student_group_points: student_group.points,
-      student_group_member: student_group.term_registration_ids,
+      student_group_member_ids: student_group.term_registration_ids,
       removed: removed,
       added: added
       }.merge(attributes)  

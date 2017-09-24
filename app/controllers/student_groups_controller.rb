@@ -45,15 +45,7 @@ class StudentGroupsController < ApplicationController
       removed_ids = current_ids - @student_group.term_registration_ids
       added_term_registrations = TermRegistration.find(added_ids)
       removed_term_registrations = TermRegistration.find(removed_ids)
-      puts "ADDED #{added_term_registrations.count}" if added_term_registrations.present?
-      puts "REMOVED #{removed_term_registrations.count}" if removed_term_registrations.present?
-=begin
-    current_ids = @student_group.students #need deep copy...
-      if @student_group.update(student_group_params)
-      added = @student_group.students - current_ids
-      removed = current_ids - @student_group.students 
-=end
-
+      
       event_service.student_group_updated!(@student_group, removed_term_registrations, added_term_registrations)
       redirect_to term_tutorial_group_student_group_path(current_term, current_tutorial_group, @student_group), notice: 'Successfully updated student group'
     else

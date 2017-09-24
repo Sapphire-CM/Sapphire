@@ -1,22 +1,40 @@
 <%= event_box(updated) do |event| %>
 	<%= event.account.fullname %>
-		<% if event.added.present? %>
-			<strong>added</strong> 
-				<% event.added.each do |student| %>
-					<%= Account.find(TermRegistration.find(student).account_id).fullname %>
+		<% if event.added_term_registrations.present? %>
+			<strong>added</strong>
+				<% if event.added_term_registrations.count == 1 %>
+					<%= event.added_term_registrations.first.account.fullname %>
+				<% elsif event.added_term_registrations.count > 1 %>
+				<div class='description'>
+				<ul class='circle'>
+				  <% event.added_term_registrations.each do |term_registration| %>
+				  <li>
+				  	<%= term_registration.account.fullname %>
+				  </li>
+					<% end %>
+				</ul>
+				</div>
 				<% end %>
 				to <%= event.student_group_title %>
 		<% end %>
-		<% if event.added.present? && event.removed.present? %>
+		<% if event.added_term_registrations.present? && event.removed_term_registrations.present? %>
 			and
 		<% end %>
-		<% if event.removed.present? %>
+		<% if event.removed_term_registrations.present? %>
 			<strong>removed</strong> 
-				<% event.removed.each do |student| %>
-					<%= Account.find(TermRegistration.find(student).account_id).fullname %>
+				<% if event.removed_term_registrations.count == 1 %>
+					<%= event.removed_term_registrations.first.account.fullname %>
+				<% elsif event.removed_term_registrations.count > 1 %>
+				<div class='description'>
+				<ul class='circle'>
+				  <% event.removed_term_registrations.each do |term_registration| %>
+				  <li>
+				  	<%= term_registration.account.fullname %>
+				  </li>
+				  <% end %>
+				</ul>
+				</div>
 				<% end %>
 				from <%= event.student_group_title %>
 		<% end %>
-		
 <% end %>
-

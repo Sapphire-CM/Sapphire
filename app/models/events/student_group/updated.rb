@@ -15,7 +15,7 @@
 module Events
   module StudentGroup
     class Updated < ::Event
-      data_reader :student_group_title, :added, :removed
+      data_reader :student_group_title, :added_term_registrations, :removed_term_registrations
 
     end
   end

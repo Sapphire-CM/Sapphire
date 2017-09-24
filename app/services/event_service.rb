@@ -157,8 +157,8 @@ class EventService
     Events::ResultPublication::Concealed.create(result_publication_options(result_publication))
   end
 
-  def student_group_updated!(student_group, removed, added)
-    Events::StudentGroup::Updated.create(student_group_options(student_group, removed, added))  
+  def student_group_updated!(student_group, removed_term_registrations, added_term_registrations)
+    Events::StudentGroup::Updated.create(student_group_options(student_group, removed_term_registrations, added_term_registrations))  
   end
 
   private
@@ -202,15 +202,15 @@ class EventService
     }.merge(attributes)
   end
 
-  def student_group_options(student_group, removed, added, attributes = {})
+  def student_group_options(student_group, removed_term_registrations, added_term_registrations, attributes = {})
     options student_group, {
       student_group_id: student_group.id,
       student_group_title: student_group.title,
       tutorial_group_id: student_group.tutorial_group_id,
       student_group_points: student_group.points,
       student_group_member_ids: student_group.term_registration_ids,
-      removed: removed,
-      added: added
+      removed_term_registrations: removed_term_registrations,
+      added_term_registrations: added_term_registrations
       }.merge(attributes)  
   end
 

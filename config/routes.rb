@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
   resources :courses, except: [:show]
 
+  resources :server_status, only: :index
+
   resources :terms, except: [:index] do
     member do
       get :points_overview

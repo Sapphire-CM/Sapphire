@@ -52,6 +52,8 @@ gem 'sinatra', '>= 1.3.0', require: false    # small rack framework, used for si
 gem 'writeexcel'                  # exporting excel spreadsheets
 gem 'multi_logger'                # custom log files
 
+gem 'sys-filesystem'              # filesystem information
+
 gem 'exception_notification'      # send out emails if an unhandled exception occours
 gem 'redis-namespace'
 

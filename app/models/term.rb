@@ -96,4 +96,12 @@ class Term < ActiveRecord::Base
 
     checks.all?
   end
+
+  def filesystem_size
+    filesystem_size = 0
+    self.submissions.each do |submission|
+      filesystem_size += submission.submission_assets.sum("filesystem_size")
+    end
+    filesystem_size
+  end
 end

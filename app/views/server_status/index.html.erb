@@ -1,0 +1,34 @@
+<% title "Server Status" %>
+
+
+<table class='large-12'>
+  <thead>
+    <th>Total Size</th>
+    <th>Space Used</th>
+    <th>Space Available</th>
+    <th>Percentage Used</th>
+  </thead>
+  <tbody>
+  	<tr>
+  		<td><%= (@status.bytes_total.to_f / 1000**3).round(2) %> GB</td>
+  		<td><%= (@status.bytes_used.to_f / 1000**3).round(2) %> GB</td>
+  		<td><%= ((@status.bytes_total - @status.bytes_used).to_f / 1000**3).round(2) %> GB</td>
+  		<td><%= @status.percent_used.round(2) %></td>
+  	</tr>
+  </tbody>	
+</table>	
+
+<table class='large-12'>
+  <thead>
+    <th>Term</th>
+    <th>MB Used</th>
+  </thead>
+  <tbody>
+    <% @terms.each do |term| %>
+      <tr>  
+        <th><%= term.title %></th>
+        <th><%= (term.filesystem_size.to_f / 1000**2).round(2) %></th>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

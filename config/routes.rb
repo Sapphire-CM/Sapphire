@@ -24,6 +24,7 @@ Rails.application.routes.draw do
 
     resources :exercises, except: [:show] do
       resources :services, only: [:index, :edit, :update]
+      resources :disk_usage, only: :index
     end
 
     resources :staff, except: [:show, :edit, :update] do
@@ -79,6 +80,7 @@ Rails.application.routes.draw do
         put :conceal_all
       end
     end
+    
   end
 
   resources :submission_assets, only: [:show, :destroy]

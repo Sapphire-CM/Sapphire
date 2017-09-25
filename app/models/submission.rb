@@ -80,6 +80,10 @@ class Submission < ActiveRecord::Base
     raise ActiveRecord::RecordNotFound
   end
 
+  def filesystem_size_sum
+    self.submission_assets.sum("filesystem_size")
+  end
+  
   private
 
   def create_submission_evaluation
@@ -95,4 +99,5 @@ class Submission < ActiveRecord::Base
       errors.add(:base, 'Upload too large')
     end
   end
+
 end

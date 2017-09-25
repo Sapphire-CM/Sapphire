@@ -126,6 +126,43 @@ class Exercise < ActiveRecord::Base
     rating_groups.sum(:points)
   end
 
+  def submission_sizes
+    submissions = self.submissions
+    submission_sizes = []
+    submissions.each do |submission|
+      submission_sizes.push(submission.filesystem_size_sum)
+    end
+    submission_sizes
+  end
+
+  def mean_upload_size
+    sum = self.submission_sizes.sum
+    sum /= submissions.count unless sum.zero?
+    sum   
+  end
+
+  def max_upload_size
+    self.submission_sizes.max
+  end
+  
+  def min_upload_size
+    self.submission_sizes.min
+  end
+  
+  def sum_upload_size
+    self.submission_sizes.sum
+  end
+  
+  def student_group_submission_size(student_group)
+    submission_ids = self.submissions.where(student_group_id: student_group.id)
+    size = SubmissionAsset.where(submission_id: submission_ids).sum("filesystem_size")
+    unless size.zero?
+      size
+    else
+      "Empty"
+    end
+  end
+
   private
 
   def ensure_result_publications

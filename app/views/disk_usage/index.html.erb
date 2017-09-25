@@ -1,0 +1,56 @@
+<% title @exercise.title, "Disk Usage" %>
+
+<%= render "exercises/sidebar" %>
+<%= render "exercises/edit_header" %>
+
+<div class="section-container auto" data-section>
+  <section class='active'>
+    <p class="title" data-section-title><a href="#panel1">Overview</a></p>	
+			<div class="content" data-section-content>
+			<table class='small-12'>
+			<thead>
+				<tr>
+					<th>Mean</th>
+					<th>Max</th>
+					<th>Min</th> 
+					<th>Sum</th>
+				</tr>
+			</thead>
+			<tbody>
+					<tr>
+						<th><%= number_to_human_size @exercise.mean_upload_size %></th>
+						<th><%= number_to_human_size @exercise.max_upload_size %></th>
+						<th><%= number_to_human_size @exercise.min_upload_size %></th>
+						<th><%= number_to_human_size @exercise.sum_upload_size %></th>
+					</tr>		
+				  <tr>
+				  	<th colspan="3">Disk Usage for Term</th>
+				  	<th></th>
+				  	
+				  </tr>
+			</tbody>
+			</table>
+		</div>
+	</section>
+	<section>
+		<p class="title" data-section-title><a href="#panel2">Overview</a></p>	
+			<div class="content" data-section-content>
+				<table class='small-12'>
+				<thead>
+					<tr>
+						<th>Student Group</th>
+						<th>Upload Size</th>
+					</tr>
+				</thead>
+				<tbody>
+				  <% @exercise.term.student_groups.each do |student_group|	%>
+				  	<tr>
+				  		<th><%= student_group.title %></th>
+				  		<th><%= number_to_human_size @exercise.student_group_submission_size(student_group)%></th>	
+				  	</tr>	
+				  <% end %>
+				</tbody>
+				</table>	
+			</div>
+	</section>	
+</div>

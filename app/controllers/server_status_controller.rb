@@ -1,3 +1,6 @@
+require 'rubygems'
+require 'sys/filesystem'
+
 class ServerStatusController < ApplicationController
 	include Sys
 
@@ -7,7 +10,4 @@ class ServerStatusController < ApplicationController
 		@status = Filesystem.stat("/")
 		@terms = Term.all
 	end
-
-
-
 end

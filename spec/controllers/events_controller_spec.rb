@@ -25,6 +25,55 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
+    describe 'filtering' do
+      event_type_service = EventTypeService.new
+      types = ["Admin", "Submissions", "Student Groups", "Results"]
+      
+      types_chosen = types.sample([*1..types.count].sample)
+      event_types_chosen = []
+      types_chosen.each do |type|
+        event_types_chosen += event_type_service.types[type]
+      end
+
+      types_not_chosen = types - types_chosen
+      event_types_not_chosen = []
+      types_not_chosen.each do |type|
+        event_types_not_chosen += event_type_service.types[type]
+      end
+
+      let!(:events) { 10.times.map { FactoryGirl.create(:event, type: event_types_chosen.sample, term_id: 1) }}
+      let!(:other_event) { FactoryGirl.create(:event, type: event_types_not_chosen.sample, term_id: term.id )}
+
+      it 'only shows events of term and scope' do
+        params = { "scopes" => types_chosen, term_id: 1 }
+        get :index, params, format: :json
+
+        expect(assigns(:events)).not_to include(other_event)
+       end
+    end
+=begin
+     describe 'filtering' do
+      event_type_service = EventTypeService.new
+      types = ["Admin", "Submissions", "Student Groups", "Results"]
+      event_types = []
+
+      types.each do |type|
+        event_types += event_type_service.types[type]
+      end
+
+      
+
+      let!(:events) { 10.times.map { FactoryGirl.create(:event, type: event_types.sample, term_id: 1) }}
+      let!(:submission_event) { FactoryGirl.create(:event, type: "Events::Submission::Updated", term_id: term.id )}
+
+      it 'only shows events of term and scope' do
+        params = { "scopes" => ["Admin"], term_id: 1 }
+        get :index, params, format: :json
+    
+        expect(assigns(:events)).not_to include(submission_event)
+       end
+    end
+=end
     describe 'paging' do
       let!(:events) do
         (1..6).map { |i| FactoryGirl.create_list(:event, 5, term: term, created_at: Time.now - i * 10.minutes, updated_at: Time.now - i * 10.minutes) }.flatten

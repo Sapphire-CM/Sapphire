@@ -41,13 +41,13 @@ RSpec.describe EventsController, type: :controller do
         event_types_not_chosen += event_type_service.types[type]
       end
 
-      let!(:events) { 10.times.map { FactoryGirl.create(:event, type: event_types_chosen.sample, term_id: 1) }}
+      let!(:events) { 10.times.map { FactoryGirl.create(:event, type: event_types_chosen.sample, term_id: term.id) }}
       let!(:other_event) { FactoryGirl.create(:event, type: event_types_not_chosen.sample, term_id: term.id )}
 
       it 'only shows events of term and scope' do
-        params = { "scopes" => types_chosen, term_id: 1 }
+        params = { "scopes" => types_chosen, term_id: term.id }
         get :index, params, format: :json
-
+        
         expect(assigns(:events)).not_to include(other_event)
        end
     end

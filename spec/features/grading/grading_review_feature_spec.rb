@@ -14,7 +14,7 @@ RSpec.feature 'Grading Review' do
     click_link term.title
     click_top_bar_link 'Grading Review'
 
-    expect(page.current_path).to eq(term_grading_reviews_path(term))
+    expect(page).to have_current_path(term_grading_reviews_path(term))
   end
 
   context 'with students' do
@@ -35,7 +35,7 @@ RSpec.feature 'Grading Review' do
       expect(page).to have_content('Max Mustermann')
       first('.small.button', text: 'Show').click
 
-      expect(page.current_path).to eq(term_grading_review_path(term, term_registration))
+      expect(page).to have_current_path(term_grading_review_path(term, term_registration))
     end
 
     scenario 'viewing a student\'s results', js: true do

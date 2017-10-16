@@ -34,7 +34,7 @@ RSpec.feature 'Evaluating submissions' do
 
       click_link('Evaluate')
 
-      expect(page.current_path).to eq(submission_evaluation_path(submission.submission_evaluation))
+      expect(page).to have_current_path(submission_evaluation_path(submission.submission_evaluation))
     end
 
     scenario 'to submission evaluation page through the submission tree' do
@@ -42,7 +42,7 @@ RSpec.feature 'Evaluating submissions' do
 
       click_link('Evaluate')
 
-      expect(page.current_path).to eq(submission_evaluation_path(submission.submission_evaluation))
+      expect(page).to have_current_path(submission_evaluation_path(submission.submission_evaluation))
     end
 
 
@@ -50,7 +50,7 @@ RSpec.feature 'Evaluating submissions' do
       visit submission_evaluation_path(submission)
 
       click_link 'Files'
-      expect(page.current_path).to eq(tree_submission_path(submission))
+      expect(page).to have_current_path(tree_submission_path(submission))
     end
   end
 

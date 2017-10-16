@@ -24,14 +24,14 @@ RSpec.describe 'Managing submissions as a student' do
         click_link 'Fancy Exercise'
       end
 
-      expect(page.current_path).to eq(new_exercise_student_submission_path(exercise))
+      expect(page).to have_current_path(new_exercise_student_submission_path(exercise))
     end
 
     scenario 'though the navigation bar' do
       click_link 'Fancy Term'
       click_top_bar_link 'Fancy Exercise'
 
-      expect(page.current_path).to eq(new_exercise_student_submission_path(exercise))
+      expect(page).to have_current_path(new_exercise_student_submission_path(exercise))
     end
   end
 
@@ -45,7 +45,7 @@ RSpec.describe 'Managing submissions as a student' do
 
       click_link "Create a Submission for Fancy Exercise"
 
-      expect(page.current_path).to eq(tree_submission_path(Submission.last))
+      expect(page).to have_current_path(tree_submission_path(Submission.last))
     end
 
     scenario 'for group exercises' do
@@ -60,7 +60,7 @@ RSpec.describe 'Managing submissions as a student' do
 
       click_link "Create a Submission for Fancy Exercise"
 
-      expect(page.current_path).to eq(tree_submission_path(Submission.last))
+      expect(page).to have_current_path(tree_submission_path(Submission.last))
     end
   end
 end

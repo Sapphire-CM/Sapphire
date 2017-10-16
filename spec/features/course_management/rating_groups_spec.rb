@@ -18,7 +18,7 @@ RSpec.feature 'Ratings and Rating Groups' do
     click_side_nav_link 'Administrate'
     click_sub_nav_link 'Ratings'
 
-    expect(page.current_path).to eq(exercise_rating_groups_path(exercise))
+    expect(page).to have_current_path(exercise_rating_groups_path(exercise))
   end
 
   describe 'Rating Groups', js: true do

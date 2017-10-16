@@ -81,7 +81,7 @@ RSpec.feature 'Account Management' do
 
       click_link 'Edit'
 
-      expect(page.current_path).to eq(edit_account_path(account))
+      expect(page).to have_current_path(edit_account_path(account))
     end
 
     scenario 'editing account data' do
@@ -119,7 +119,7 @@ RSpec.feature 'Account Management' do
       sign_out
       sign_in_with(student.email, 'supersecret')
 
-      expect(page.current_path).to eq(root_path)
+      expect(page).to have_current_path(root_path)
       expect(page).to have_content('Courses')
     end
   end

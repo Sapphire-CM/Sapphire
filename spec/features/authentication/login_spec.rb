@@ -14,7 +14,7 @@ RSpec.describe 'Login Feature' do
 
     visit new_account_session_path
 
-    expect(page.current_path).to eq(root_path)
+    expect(page).to have_current_path(root_path)
     expect(page).to have_content('You are already signed in.')
   end
 
@@ -28,7 +28,7 @@ RSpec.describe 'Login Feature' do
     ].each do |path|
       ensure_logged_out!
       visit path
-      expect(page.current_path).to eq(new_account_session_path)
+      expect(page).to have_current_path(new_account_session_path)
     end
   end
 
@@ -41,7 +41,7 @@ RSpec.describe 'Login Feature' do
     click_on 'Sign in'
 
     expect(page).to have_link(account.email)
-    expect(page.current_path).not_to eq(new_account_session_path)
+    expect(page).not_to have_current_path(new_account_session_path)
   end
 
   context 'login fails' do
@@ -50,7 +50,7 @@ RSpec.describe 'Login Feature' do
       click_on 'Sign in'
 
       expect(page).to have_content('Invalid email or password.')
-      expect(page.current_path).to eq(new_account_session_path)
+      expect(page).to have_current_path(new_account_session_path)
     end
 
     it 'with missing email' do
@@ -59,7 +59,7 @@ RSpec.describe 'Login Feature' do
       click_on 'Sign in'
 
       expect(page).to have_content('Invalid email or password.')
-      expect(page.current_path).to eq(new_account_session_path)
+      expect(page).to have_current_path(new_account_session_path)
     end
 
     it 'with wrong email' do
@@ -69,7 +69,7 @@ RSpec.describe 'Login Feature' do
       click_on 'Sign in'
 
       expect(page).to have_content('Invalid email or password.')
-      expect(page.current_path).to eq(new_account_session_path)
+      expect(page).to have_current_path(new_account_session_path)
     end
 
     it 'with missing password' do
@@ -80,7 +80,7 @@ RSpec.describe 'Login Feature' do
       click_on 'Sign in'
 
       expect(page).to have_content('Invalid email or password.')
-      expect(page.current_path).to eq(new_account_session_path)
+      expect(page).to have_current_path(new_account_session_path)
     end
 
     it 'with wrong password' do
@@ -92,7 +92,7 @@ RSpec.describe 'Login Feature' do
       click_on 'Sign in'
 
       expect(page).to have_content('Invalid email or password.')
-      expect(page.current_path).to eq(new_account_session_path)
+      expect(page).to have_current_path(new_account_session_path)
     end
   end
 end

@@ -17,7 +17,7 @@ RSpec.feature 'Exercise Management' do
     click_top_bar_link exercise.title
 
     click_side_nav_link 'Administrate'
-    expect(page.current_path).to eq(edit_exercise_path(exercise))
+    expect(page).to have_current_path(edit_exercise_path(exercise))
   end
 
   scenario 'creating an exercise' do
@@ -26,7 +26,7 @@ RSpec.feature 'Exercise Management' do
     click_side_nav_link('Exercises')
     click_link 'Add Exercise'
 
-    expect(page.current_path).to eq(new_term_exercise_path(term))
+    expect(page).to have_current_path(new_term_exercise_path(term))
 
     fill_in 'Title', with: 'My shiny new Exercise'
 

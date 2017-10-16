@@ -18,7 +18,7 @@ RSpec.feature 'Grading Review' do
 
     click_link 'Open Viewer'
 
-    expect(page.current_path).to eq(submission_viewer_path(submission))
+    expect(page).to have_current_path(submission_viewer_path(submission))
   end
 
   scenario 'opening a viewer from the grading review', js: true do
@@ -30,6 +30,6 @@ RSpec.feature 'Grading Review' do
       click_link 'Open Viewer'
     end
 
-    expect(page.current_path).to eq(submission_viewer_path(submission))
+    expect(page).to have_current_path(submission_viewer_path(submission))
   end
 end

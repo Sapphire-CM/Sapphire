@@ -22,17 +22,17 @@ RSpec.shared_examples "basic submission tree operations" do
 
       click_link "tl-text-1.txt"
 
-      expect(page.current_path).to eq(submission_asset_path(top_level_asset))
+      expect(page).to have_current_path(submission_asset_path(top_level_asset))
     end
 
     scenario 'can open subfolders' do
       visit tree_submission_path(submission)
 
-      expect(page.current_path).to eq(tree_submission_path(submission))
+      expect(page).to have_current_path(tree_submission_path(submission))
 
       click_link "sub-folder"
 
-      expect(page.current_path).to eq(tree_submission_path(submission, path: "sub-folder"))
+      expect(page).to have_current_path(tree_submission_path(submission, path: "sub-folder"))
       expect(page).to have_link("text-2.txt")
     end
 
@@ -43,13 +43,13 @@ RSpec.shared_examples "basic submission tree operations" do
         click_link "sub-folder"
       end
 
-      expect(page.current_path).to eq(tree_submission_path(submission, path: "sub-folder"))
+      expect(page).to have_current_path(tree_submission_path(submission, path: "sub-folder"))
 
       within '.tree-path' do
         click_link "submission"
       end
 
-      expect(page.current_path).to eq(tree_submission_path(submission, path: ""))
+      expect(page).to have_current_path(tree_submission_path(submission, path: ""))
     end
 
     scenario 'can navigate up the tree by using the ".." link' do
@@ -59,13 +59,13 @@ RSpec.shared_examples "basic submission tree operations" do
         click_link ".."
       end
 
-      expect(page.current_path).to eq(tree_submission_path(submission, path: "sub-folder"))
+      expect(page).to have_current_path(tree_submission_path(submission, path: "sub-folder"))
 
       within '.submission-tree' do
         click_link ".."
       end
 
-      expect(page.current_path).to eq(tree_submission_path(submission, path: ""))
+      expect(page).to have_current_path(tree_submission_path(submission, path: ""))
     end
   end
 
@@ -199,7 +199,7 @@ RSpec.shared_examples "basic submission tree operations" do
         fill_in 'submission_folder_name', with: "test/path"
         click_button "Create"
 
-        expect(page.current_path).to eq(tree_submission_path(submission, path: "test/path"))
+        expect(page).to have_current_path(tree_submission_path(submission, path: "test/path"))
       end
     end
 
@@ -217,7 +217,7 @@ RSpec.shared_examples "basic submission tree operations" do
 
         click_button "Create"
 
-        expect(page.current_path).to eq(tree_submission_path(submission, path: "test/path"))
+        expect(page).to have_current_path(tree_submission_path(submission, path: "test/path"))
       end
     end
   end

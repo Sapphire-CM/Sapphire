@@ -3,7 +3,7 @@
   <thead>
     <tr>
       <th data-sort-disabled="true"></th>
-      <th data-sort-default="true"><%= SubmissionStructure::File.human_attribute_name(:path) %></th>
+      <th data-sort-default="true"><%= SubmissionStructure::File.human_attribute_name(:name) %></th>
       <th class='modification-date'><%= SubmissionStructure::File.human_attribute_name(:mtime) %></th>
       <th class='size'><%= SubmissionStructure::File.human_attribute_name(:size) %></th>
       <% if submission.modifiable_by_students? %>

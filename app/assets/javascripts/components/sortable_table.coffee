@@ -44,7 +44,7 @@ class SortableTable
           if isNaN(sort_by)
             sort_by = -1
 
-        values.push($cell.html())
+        values.push($cell.children())
         sort.push(sort_by)
 
       row_data = {
@@ -135,7 +135,7 @@ class SortableTable
       row = @rows[row_idx]
 
       for value, cell_idx in row_data.values
-        row.cells[cell_idx].html(value)
+        row.cells[cell_idx].append(value)
 
   _update_sort_links: (active_idx, desc) ->
     for $link, idx in @links

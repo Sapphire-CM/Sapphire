@@ -51,6 +51,7 @@ class Rating < ActiveRecord::Base
       Ratings::FixedPercentageDeductionRating,
       Ratings::VariablePointsDeductionRating,
       Ratings::VariablePercentageDeductionRating,
+      Ratings::PerItemPointsRating,
       Ratings::PerItemPointsDeductionRating,
       Ratings::FixedBonusPointsRating,
       Ratings::VariableBonusPointsRating,

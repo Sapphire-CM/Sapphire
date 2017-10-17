@@ -6,6 +6,7 @@ module RatingsHelper
       ['Variable Points Deduction',     Ratings::VariablePointsDeductionRating.name],
       ['Variable Percentage Deduction', Ratings::VariablePercentageDeductionRating.name],
       ['Per Item Points Deduction', Ratings::PerItemPointsDeductionRating.name],
+      ['Per Item Points', Ratings::PerItemPointsRating.name],
       ['Fixed Bonus Points', Ratings::FixedBonusPointsRating.name],
       ['Variable Bonus Points', Ratings::VariableBonusPointsRating.name],
       ['Plagiarism',         Ratings::PlagiarismRating.name]
@@ -20,7 +21,7 @@ module RatingsHelper
       "#{rating.value} %"
     when Ratings::VariablePointsDeductionRating, Ratings::VariableBonusPointsRating
       "#{rating.min_value} ... #{rating.max_value}"
-    when Ratings::PerItemPointsDeductionRating
+    when Ratings::PerItemPointsDeductionRating, Ratings::PerItemPointsRating
       "#{rating.min_value} ... #{rating.max_value} (× #{number_to_human rating.multiplication_factor})"
     when Ratings::VariablePercentageDeductionRating
       "#{rating.min_value} ... #{rating.max_value} %"

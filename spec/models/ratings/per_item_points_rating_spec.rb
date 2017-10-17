@@ -1,13 +1,13 @@
 require "rails_helper"
 require 'models/behaviours/rating_behaviour'
 
-RSpec.describe Ratings::PerItemPointsDeductionRating do
+RSpec.describe Ratings::PerItemPointsRating do
   it_behaves_like 'a rating'
 
   describe 'validations' do
     it { is_expected.to validate_numericality_of(:min_value).is_greater_than_or_equal_to(0) }
     it { is_expected.to validate_numericality_of(:max_value).is_greater_than_or_equal_to(0) }
-    it { is_expected.to validate_numericality_of(:multiplication_factor).is_less_than_or_equal_to(0) }
+    it { is_expected.to validate_numericality_of(:multiplication_factor).is_greater_than_or_equal_to(0) }
   end
 
   describe '#points_value?' do

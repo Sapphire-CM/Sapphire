@@ -78,6 +78,6 @@ module SubmissionsHelper
   end
 
   def filesize(number)
-    content_tag :span, raw("#{h(number)}&nbsp;Bytes"), title: number_to_human_size(number)
+    content_tag :span, raw("#{h(number)}&nbsp;bytes"), title: number_to_human_size(number)
   end
 end

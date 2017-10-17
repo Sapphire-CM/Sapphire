@@ -3,6 +3,7 @@ class SortableTable
     @_extract_rows()
     @_extract_data()
     @_setup_sortable_links()
+    @_apply_default_sort()
 
   # =========
   # = Setup =
@@ -74,7 +75,7 @@ class SortableTable
 
       $icon = $("<i>").hide()
 
-      $inserted_link.append(" ")
+      $inserted_link.append("&nbsp;")
       $inserted_link.append($icon)
       links.push($inserted_link)
 
@@ -91,6 +92,9 @@ class SortableTable
   # ===========
   # = Sorting =
   # ===========
+
+  _apply_default_sort: ->
+    @element.find("[data-sort-default] a").click()
 
   _sort_by_column: (idx) ->
     desc = @current_sort_column == idx && !@current_desc

@@ -1,11 +1,11 @@
 <% unless submissions.empty? %>
-  <table class='sortable'>
+  <table class='sortable large-12'>
     <thead>
       <tr>
         <% if exercise.solitary_submission? %>
           <th>Student</th>
         <% end %>
-        <th>Group</th>
+        <th data-sort-default>Group</th>
         <th>Submitted at</th>
         <th>Evaluated at</th>
         <th>Result</th>
@@ -23,15 +23,18 @@
           </td>
         <% end %>
 
-        <td class="minimum-width"><%= local_time submission.submitted_at, '%Y-%m-%d %H:%M' %></td>
-        <td class="minimum-width">
+        <%= content_tag :td, class: "minimum-width", data: {sort: submission.submitted_at.to_i, sort_as: "integer"}  do %>
+          <%= local_time submission.submitted_at, '%Y-%m-%d %H:%M' %></td>
+        <% end %>
+
+        <%= content_tag :td, class: "minimum-width", data: {sort: submission.submission_evaluation.evaluated_at.to_i, sort_as: "integer"}  do %>
           <% if submission.submission_evaluation.evaluated_at.present? %>
             <%= local_time submission.submission_evaluation.evaluated_at, '%Y-%m-%d %H:%M' %>
           <% else %>
             <em>not evaluated</em>
           <% end %>
-        </td>
-        <td>
+        <% end %>
+        <%= content_tag :td, data: {sort: submission.submission_evaluation.evaluation_result, sort_as: "integer"}  do %>
           <% if submission.submission_evaluation.evaluated_at.present? && submission.submission_evaluation.present? %>
             <%= pluralize submission.submission_evaluation.evaluation_result, "point" %>
 
@@ -39,7 +42,8 @@
           <% else %>
             <em>not evaluated</em>
           <% end %>
-        </td>
+        <% end %>
+
         <td>
           <%= link_to "Files", submission_path(submission), class: "small small-12 button" %>
           <%= link_to "Evaluate", submission_evaluation_path(submission.submission_evaluation), class: "small small-12 button no-bottom-margin" %>

@@ -32,7 +32,7 @@ class SortableTable
     for row in @rows
       values = []
       sort = []
-
+      keep_on_top = row
       for $cell in row.cells
         sort_by = if $cell.data("sort")
           $cell.data("sort")
@@ -47,12 +47,13 @@ class SortableTable
         values.push($cell.html())
         sort.push(sort_by)
 
-      row = {
+      row_data = {
         values: values
         sort: sort
+        keep_on_top: !!row.element.data("sort-top")
       }
 
-      data.push(row)
+      data.push(row_data)
 
     @data = data
 
@@ -108,19 +109,26 @@ class SortableTable
 
   _sort_data_by_column: (idx, desc) ->
     @data.sort (a,b) ->
-      a_val = a.sort[idx]
-      b_val = b.sort[idx]
-
-      cmp = if a_val < b_val
+      if a.keep_on_top && b.keep_on_top
+        0
+      else if a.keep_on_top
         -1
-      else if a_val > b_val
+      else if b.keep_on_top
         1
       else
-        0
+        a_val = a.sort[idx]
+        b_val = b.sort[idx]
 
-      if desc
-        cmp *= -1
-      cmp
+        cmp = if a_val < b_val
+          -1
+        else if a_val > b_val
+          1
+        else
+          0
+
+        if desc
+          cmp *= -1
+        cmp
 
   _update_table_with_data: (data) ->
     for row_data, row_idx in data

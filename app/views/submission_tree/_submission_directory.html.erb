@@ -1,14 +1,28 @@
 <%= cache [submission, tree.path, policy(submission).update?] do %>
-<table class='small-12'>
+<table class='small-12 sortable'>
+  <thead>
+    <tr>
+      <th data-sort-disabled="true"></th>
+      <th data-sort-default="true"><%= SubmissionStructure::File.human_attribute_name(:path) %></th>
+      <th class='modification-date'><%= SubmissionStructure::File.human_attribute_name(:mtime) %></th>
+      <th class='size'><%= SubmissionStructure::File.human_attribute_name(:size) %></th>
+      <% if submission.modifiable_by_students? %>
+        <th data-sort-disabled="true"></th>
+      <% end %>
+    </tr>
+  </thead>
   <tbody>
     <% unless tree.root? %>
-      <tr>
+      <tr data-sort-top="true">
         <td class='icon'></td>
         <td>
           <%= link_to "..", tree_submission_path(submission, path: tree.parent.path_without_root), title: "Goto parent folder" %>
         </td>
         <td class='modification-date'><%= local_time tree.parent.mtime, '%Y-%m-%d %H:%M' %></td>
         <td class='size'><%= filesize tree.size %></td>
+        <% if submission.modifiable_by_students? %>
+          <td></td>
+        <% end %>
       </tr>
     <% end %>
 

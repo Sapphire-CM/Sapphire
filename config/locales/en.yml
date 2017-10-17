@@ -27,3 +27,10 @@ en:
   time:
     formats:
       unix: "%a %d %b %Y at %R"
+
+  activemodel:
+    attributes:
+      submission_structure/tree_node:
+        mtime: "Modified At"
+        size: "Size"
+        path: "Path"

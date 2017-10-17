@@ -10,6 +10,7 @@ RSpec.describe Rating do
         Ratings::VariablePointsDeductionRating,
         Ratings::VariablePercentageDeductionRating,
         Ratings::PerItemPointsDeductionRating,
+        Ratings::PerItemPointsRating,
         Ratings::FixedBonusPointsRating,
         Ratings::VariableBonusPointsRating,
         Ratings::PlagiarismRating

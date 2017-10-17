@@ -70,6 +70,18 @@ FactoryGirl.define do
     multiplication_factor -4
   end
 
+
+  factory :per_item_points_rating, class: Ratings::PerItemPointsRating do
+    title { generate :rating_title }
+    rating_group
+    description { generate :lorem_ipsum }
+
+    max_value 8
+    min_value 0
+
+    multiplication_factor 2
+  end
+
   factory :plagiarism_rating, class: Ratings::PlagiarismRating do
     title { generate :rating_title }
     rating_group

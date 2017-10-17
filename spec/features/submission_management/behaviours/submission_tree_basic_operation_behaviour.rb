@@ -10,7 +10,6 @@ RSpec.shared_examples "basic submission tree operations" do
 
     let(:top_level_asset) { FactoryGirl.create(:submission_asset, submission: submission, path:"", file: prepare_static_test_file("simple_submission.txt", rename_to: "tl-text-1.txt")) }
 
-
     scenario 'sees top-level files' do
       visit tree_submission_path(submission)
 
@@ -247,7 +246,7 @@ RSpec.shared_examples "basic submission tree operations" do
     scenario 'folders', js: true do
       visit tree_submission_path(submission)
 
-      within '.submission-tree table tr:nth-child(1)' do
+      within '.submission-tree table tbody tr:nth-child(1)' do
         expect(page).to have_content("folder")
         find("a[data-method=delete]").click
       end

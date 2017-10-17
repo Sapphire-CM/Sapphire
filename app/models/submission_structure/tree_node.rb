@@ -1,4 +1,6 @@
 class SubmissionStructure::TreeNode
+  extend ActiveModel::Translation
+
   attr_reader :name, :size, :mtime, :icon
   attr_accessor :parent
 

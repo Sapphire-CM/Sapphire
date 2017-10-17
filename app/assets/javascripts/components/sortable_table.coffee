@@ -138,9 +138,9 @@ class SortableTable
         row.cells[cell_idx].append(value)
 
   _update_sort_links: (active_idx, desc) ->
-    for $link, idx in @links
+    for $link in @links
+      idx = $link.data("sort-index")
       if idx == active_idx
-
         icon_class = if desc
           "fi-arrow-down"
         else

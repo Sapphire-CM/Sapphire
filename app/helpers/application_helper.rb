@@ -13,6 +13,10 @@ module ApplicationHelper
     @term_context
   end
 
+  def iso_local_time(time)
+    local_time(time, '%Y-%m-%d %H:%M')
+  end
+
   def current_controller
     (params[:controller] + '_controller').camelize.constantize
   end

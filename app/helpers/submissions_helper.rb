@@ -6,7 +6,7 @@ module SubmissionsHelper
   def submissions_tutorial_group_dropdown(current_tutorial_group)
     button_title = case params[:submission_scope]
     when 'all'
-      'All Tutorial groups'
+      'All Tutorial Groups'
     when 'unmatched'
       'Unmatched Submissions'
     else
@@ -49,7 +49,8 @@ module SubmissionsHelper
 
       else
         student = submission.exercise_registrations.map(&:term_registration).first.account
-        "#{student.fullname} (#{student.matriculation_number})"
+
+        account_fullname_with_matriculation_number(student)
       end
     else
       'unknown author'

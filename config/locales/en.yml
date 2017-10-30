@@ -26,7 +26,7 @@ en:
       update: "Save"
   time:
     formats:
-      unix: "%a %d %b %Y at %R"
+      unix: "%Y-%m-%d %H:%M"
 
   activemodel:
     attributes:

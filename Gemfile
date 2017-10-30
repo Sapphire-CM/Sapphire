@@ -53,7 +53,9 @@ gem 'writeexcel'                  # exporting excel spreadsheets
 gem 'multi_logger'                # custom log files
 
 gem 'exception_notification'      # send out emails if an unhandled exception occours
-gem 'redis-namespace'
+gem 'redis-namespace'             # namespaces for sidekiq queues
+
+gem 'autoprefixer-rails'          # automatically add vendor prefixes to CSS
 
 group :development, :test do
   gem 'pry'

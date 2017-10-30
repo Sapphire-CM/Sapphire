@@ -73,5 +73,6 @@ $ ->
     $search_form = $editor.find(".search-form")
     $search_input = $search_form.find("input[type=search]")
 
-    $search_input.on "search", (e)=>
-      $search_form.submit()
+    $search_input.on "search change", (e)=>
+      unless $search_input.val().match(/^\s*$/)
+        $search_form.submit()

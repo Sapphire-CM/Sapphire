@@ -3,7 +3,7 @@
 <%= render "terms/sidebar", term: current_term %>
 
 <div class="section-container auto" data-section>
-  <section class="active">
+  <section class="active overview">
     <p class="title" data-section-title><a href="#panel1">Overview</a></p>
     <div class="content" data-section-content>
       <dl>
@@ -21,7 +21,7 @@
       </dl>
     </div>
   </section>
-  <section>
+  <section class='students'>
     <p class="title" data-section-title><a href="#panel2">Students</a></p>
     <div class="content" data-section-content>
       <% if @student_term_registrations.any? %>
@@ -31,7 +31,7 @@
       <% end %>
     </div>
   </section>
-  <section>
+  <section class='submissions'>
     <p class="title" data-section-title><a href="#panel3">Submissions</a></p>
     <div class="content" data-section-content>
       <% if @submissions.any? %>
@@ -66,7 +66,7 @@
           </tfoot>
         </table>
       <% else %>
-        <p>This group has not submitted any submission</p>
+        <p>This group has not submitted any submission.</p>
       <% end %>
     </div>
   </section>

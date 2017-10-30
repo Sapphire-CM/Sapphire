@@ -29,6 +29,7 @@ FactoryGirl.define do
       transient do
         evaluator { FactoryGirl.create(:account, :admin) }
       end
+
       after(:create) do |instance, evaluator|
         instance.submission_evaluation.update(evaluator: evaluator.evaluator, evaluated_at: Time.now)
       end

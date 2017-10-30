@@ -23,8 +23,8 @@
       <tr>
         <td><%= export.type.underscore.humanize %></td>
         <td><%= export.status %></td>
-        <td><%= iso_local_time(export.created_at) %></td>
-        <td><%= iso_local_time(export.updated_at) %></td>
+        <td><%= iso_time(export.created_at) %></td>
+        <td><%= iso_time(export.updated_at) %></td>
         <td class='text-right'>
           <% if export.finished? %>
             <%= link_to download_link_title(export),

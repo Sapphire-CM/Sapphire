@@ -13,8 +13,8 @@ module ApplicationHelper
     @term_context
   end
 
-  def iso_local_time(time)
-    local_time(time, '%Y-%m-%d %H:%M')
+  def iso_time(time)
+    l(time, format: :unix)
   end
 
   def current_controller

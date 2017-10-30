@@ -224,8 +224,6 @@ GEM
       actionmailer (>= 3.2)
       letter_opener (~> 1.0)
       railties (>= 3.2)
-    local_time (1.0.3)
-      coffee-rails
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.6)
@@ -498,7 +496,6 @@ DEPENDENCIES
   jquery-ui-rails
   kaminari
   letter_opener_web
-  local_time
   mail
   mechanize
   multi_logger

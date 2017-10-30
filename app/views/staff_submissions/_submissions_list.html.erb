@@ -24,12 +24,12 @@
         <% end %>
 
         <%= content_tag :td, class: "minimum-width", data: {sort: submission.submitted_at.to_i, sort_as: "integer"}  do %>
-          <%= local_time submission.submitted_at, '%Y-%m-%d %H:%M' %></td>
+          <%= iso_time submission.submitted_at %></td>
         <% end %>
 
         <%= content_tag :td, class: "minimum-width", data: {sort: submission.submission_evaluation.evaluated_at.to_i, sort_as: "integer"}  do %>
           <% if submission.submission_evaluation.evaluated_at.present? %>
-            <%= local_time submission.submission_evaluation.evaluated_at, '%Y-%m-%d %H:%M' %>
+            <%= iso_time submission.submission_evaluation.evaluated_at %>
           <% else %>
             <em>not evaluated</em>
           <% end %>

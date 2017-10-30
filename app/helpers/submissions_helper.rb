@@ -38,22 +38,34 @@ module SubmissionsHelper
   end
 
   def submission_author(submission)
-    exercise = submission.exercise
-    if submission.exercise_registrations.any?
-      if exercise.group_submission?
-        if submission.student_group_id?
-          submission.student_group.title
-        else
-          content_tag(:em, 'unknown student group')
-        end
-
-      else
-        student = submission.exercise_registrations.map(&:term_registration).first.account
-
-        account_fullname_with_matriculation_number(student)
-      end
+    if submission.exercise.group_submission?
+      submission_group_author(submission)
     else
-      'unknown author'
+      submission_solitary_author(submission)
+    end
+  end
+
+  def submission_solitary_author(submission)
+    submission.students.map do |student|
+      account_fullname_with_matriculation_number(student)
+    end.join(", ").presence || content_tag(:em, 'unknown author')
+  end
+
+  def submission_group_author(submission)
+    if submission.student_group_id?
+      submission.student_group.title
+    else
+      submission.associated_student_groups.map(&:title).join(", ").presence || content_tag(:em, 'unknown student group')
+    end
+  end
+
+  def submission_group_author_links(submission)
+    if submission.student_group_id?
+      link_to submission.student_group.title, term_student_group_path(submission.term, submission.student_group)
+    else
+      submission.associated_student_groups.map do |student_group|
+        link_to student_group.title, term_student_group_path(student_group.term, student_group)
+      end.join(", ").html_safe.presence || content_tag(:em, 'unknown student group')
     end
   end
 

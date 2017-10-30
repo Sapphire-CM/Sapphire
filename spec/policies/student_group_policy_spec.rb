@@ -9,17 +9,17 @@ RSpec.describe StudentGroupPolicy do
     let(:account) { FactoryGirl.create(:account, :admin) }
 
     context 'collections' do
-      subject { described_class.new(account, tutorial_group) }
+      subject { described_class.new(account, term) }
 
       it { is_expected.to permit_authorization(:index) }
+      it { is_expected.to permit_authorization(:new) }
+      it { is_expected.to permit_authorization(:create) }
     end
 
     context 'members' do
       subject { described_class.new(account, student_group) }
 
       it { is_expected.to permit_authorization(:show) }
-      it { is_expected.to permit_authorization(:new) }
-      it { is_expected.to permit_authorization(:create) }
       it { is_expected.to permit_authorization(:edit) }
       it { is_expected.to permit_authorization(:update) }
       it { is_expected.to permit_authorization(:destroy) }
@@ -33,17 +33,18 @@ RSpec.describe StudentGroupPolicy do
     end
 
     context 'collections' do
-      subject { described_class.new(account, tutorial_group) }
+      subject { described_class.new(account, term) }
 
       it { is_expected.to permit_authorization(:index) }
+      it { is_expected.to permit_authorization(:new) }
+      it { is_expected.to permit_authorization(:create) }
     end
 
     context 'members' do
       subject { described_class.new(account, student_group) }
 
       it { is_expected.to permit_authorization(:show) }
-      it { is_expected.to permit_authorization(:new) }
-      it { is_expected.to permit_authorization(:create) }
+
       it { is_expected.to permit_authorization(:edit) }
       it { is_expected.to permit_authorization(:update) }
       it { is_expected.to permit_authorization(:destroy) }
@@ -59,17 +60,17 @@ RSpec.describe StudentGroupPolicy do
     end
 
     context 'collections' do
-      subject { described_class.new(account, tutorial_group) }
+      subject { described_class.new(account, term) }
 
       it { is_expected.to permit_authorization(:index) }
+      it { is_expected.not_to permit_authorization(:new) }
+      it { is_expected.not_to permit_authorization(:create) }
     end
 
     context 'members' do
       subject { described_class.new(account, student_group) }
 
       it { is_expected.to permit_authorization(:show) }
-      it { is_expected.not_to permit_authorization(:new) }
-      it { is_expected.not_to permit_authorization(:create) }
       it { is_expected.not_to permit_authorization(:edit) }
       it { is_expected.not_to permit_authorization(:update) }
       it { is_expected.not_to permit_authorization(:destroy) }
@@ -88,14 +89,14 @@ RSpec.describe StudentGroupPolicy do
       subject { described_class.new(account, tutorial_group) }
 
       it { is_expected.not_to permit_authorization(:index) }
+      it { is_expected.not_to permit_authorization(:new) }
+      it { is_expected.not_to permit_authorization(:create) }
     end
 
     context 'members' do
       subject { described_class.new(account, student_group) }
 
       it { is_expected.not_to permit_authorization(:show) }
-      it { is_expected.not_to permit_authorization(:new) }
-      it { is_expected.not_to permit_authorization(:create) }
       it { is_expected.not_to permit_authorization(:edit) }
       it { is_expected.not_to permit_authorization(:update) }
       it { is_expected.not_to permit_authorization(:destroy) }

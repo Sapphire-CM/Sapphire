@@ -1,6 +1,6 @@
 class StudentGroupPolicy < PunditBasePolicy
   def index?
-    user.admin? || user.staff_of_term?(record.term)
+    user.admin? || user.staff_of_term?(record)
   end
 
   def show?
@@ -12,7 +12,7 @@ class StudentGroupPolicy < PunditBasePolicy
   end
 
   def create?
-    authorized?
+    authorized?(record)
   end
 
   def edit?
@@ -34,6 +34,10 @@ class StudentGroupPolicy < PunditBasePolicy
   private
 
   def authorized?(r = nil)
-    user.admin? || user.lecturer_of_term?(r || record.term)
+    user.admin? || if !r.nil?
+      user.lecturer_of_term?(r)
+    elsif record.term.present?
+      user.lecturer_of_term?(record.term)
+    end
   end
 end

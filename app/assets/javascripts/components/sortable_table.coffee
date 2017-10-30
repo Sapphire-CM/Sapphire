@@ -75,7 +75,7 @@ class SortableTable
         e.stopPropagation()
         e.preventDefault()
 
-      $icon = $("<span>").css("visibility", "hidden")
+      $icon = $("<span>").css("visibility", "hidden").text("▾")
 
       $inserted_link.append("&nbsp;")
       $inserted_link.append($icon)

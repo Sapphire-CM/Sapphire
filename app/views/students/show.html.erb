@@ -3,7 +3,7 @@
 <%= render "terms/sidebar", term: current_term %>
 
 <% if @student_group.present? %>
-  <p>This student is part of <%= link_to @student_group.title, term_tutorial_group_student_group_path(current_term, @tutorial_group, @student_group) %></p>
+  <p>This student is part of <%= link_to @student_group.title, term_student_group_path(current_term, @student_group) %></p>
 <% end %>
 
 <h2>Submissions</h2>

@@ -21,7 +21,7 @@ FactoryGirl.define do
 
     trait :with_student_group do
       transient do
-        student_group { create(:student_group) }
+        student_group { create(:student_group, tutorial_group: tutorial_group) }
       end
 
       after(:create) do |term_registration, evaluator|

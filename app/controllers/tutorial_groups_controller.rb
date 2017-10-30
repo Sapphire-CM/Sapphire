@@ -3,7 +3,7 @@ class TutorialGroupsController < ApplicationController
   before_action :set_context, only: [:show, :edit, :update, :destroy, :points_overview]
 
   def index
-    @tutorial_groups = @term.tutorial_groups.ordered_by_title.merge policy_scope(TutorialGroup.all)
+    @tutorial_groups = policy_scope(@term.tutorial_groups).ordered_by_title.includes(:tutor_accounts)
     authorize TutorialGroupPolicy.with current_term
   end
 

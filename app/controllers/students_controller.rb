@@ -4,7 +4,7 @@ class StudentsController < ApplicationController
   def index
     authorize StudentsPolicy.with current_term
 
-    @term_registrations = students_scope.includes(:account, :exercise_registrations, :tutorial_group, :term)
+    @term_registrations = students_scope.includes(:account, :exercise_registrations, :term, tutorial_group: :tutor_accounts)
     @grading_scale_service = GradingScaleService.new(current_term)
   end
 

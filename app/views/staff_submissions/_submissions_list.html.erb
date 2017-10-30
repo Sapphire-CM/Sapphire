@@ -15,13 +15,15 @@
     <tbody>
       <% submissions.each do |submission| %>
       <tr<%= ' class="outdated"'.html_safe if submission.outdated? %>>
-        <td><%= submission_author submission %></td>
-
         <% if exercise.solitary_submission? %>
-          <td>
-            <%= submission.associated_student_groups.map(&:title).join(", ") %>
-          </td>
+        <td>
+          <%= submission_solitary_author submission %>
+        </td>
         <% end %>
+
+        <td>
+          <%= submission_group_author_links(submission) %>
+        </td>
 
         <%= content_tag :td, class: "minimum-width", data: {sort: submission.submitted_at.to_i, sort_as: "integer"}  do %>
           <%= iso_time submission.submitted_at %></td>

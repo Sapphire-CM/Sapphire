@@ -1,5 +1,5 @@
-<% title(tutorial_group_title(current_tutorial_group), "New Student Group") %>
+<% title("New Student Group", course_term_title) %>
 
-<%= render "tutorial_groups/sidebar", tutorial_group: current_tutorial_group %>
+<%= render "terms/sidebar", term: current_term %>
 
-<%= render "form", term: current_term, tutorial_group: current_tutorial_group, student_group: @student_group, tutorial_groups: @tutorial_groups %>
+<%= render "form", term: current_term, student_group: @student_group %>

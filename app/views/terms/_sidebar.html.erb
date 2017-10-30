@@ -7,6 +7,7 @@
   <% if current_account.admin? || policy(current_term).staff? %>
     <%= sidenav_item(:list_thumbnails, 'Points Overview', points_overview_term_path(current_term)) %>
     <%= sidenav_item(:torsos, 'Tutorial Groups', term_tutorial_groups_path(current_term)) %>
+    <%= sidenav_item(:torsos, 'Student Groups', term_student_groups_path(current_term)) %>
     <%= sidenav_item(:torso, 'Students', term_students_path(current_term), params[:controller] == 'students') %>
   <% else %>
     <%= sidenav_item(:megaphone, 'Results', term_results_path(current_term)) %>

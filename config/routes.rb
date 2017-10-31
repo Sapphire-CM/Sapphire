@@ -44,12 +44,10 @@ Rails.application.routes.draw do
 
     resources :tutorial_groups do
       get :points_overview, on: :member
-
-      resources :student_groups do
-        post :search_students, on: :collection
-      end
     end
-
+    resources :student_groups do
+      post :search_students, on: :collection
+    end
     resources :grading_reviews, only: [:index, :show]
     resources :results, only: [:index, :show], controller: :student_results
     resources :events, only: [:index]

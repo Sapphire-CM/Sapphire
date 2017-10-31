@@ -55,6 +55,8 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     arel (6.0.3)
     ast (2.2.0)
+    autoprefixer-rails (7.1.6)
+      execjs
     awesome_print (1.6.1)
     bcrypt (3.1.11)
     better_errors (2.1.1)
@@ -222,8 +224,6 @@ GEM
       actionmailer (>= 3.2)
       letter_opener (~> 1.0)
       railties (>= 3.2)
-    local_time (1.0.3)
-      coffee-rails
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.6)
@@ -460,6 +460,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_record-annotate
+  autoprefixer-rails
   awesome_print
   better_errors
   binding_of_caller
@@ -495,7 +496,6 @@ DEPENDENCIES
   jquery-ui-rails
   kaminari
   letter_opener_web
-  local_time
   mail
   mechanize
   multi_logger

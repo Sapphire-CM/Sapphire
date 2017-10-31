@@ -1,5 +1,5 @@
 <% unless submissions.empty? %>
-  <table class='sortable large-12'>
+  <table class='sortable large-12 submission-list'>
     <thead>
       <tr>
         <% if exercise.solitary_submission? %>
@@ -15,21 +15,23 @@
     <tbody>
       <% submissions.each do |submission| %>
       <tr<%= ' class="outdated"'.html_safe if submission.outdated? %>>
-        <td><%= submission_author submission %></td>
-
         <% if exercise.solitary_submission? %>
-          <td>
-            <%= submission.associated_student_groups.map(&:title).join(", ") %>
-          </td>
+        <td>
+          <%= submission_solitary_author submission %>
+        </td>
         <% end %>
 
+        <td>
+          <%= submission_group_author_links(submission) %>
+        </td>
+
         <%= content_tag :td, class: "minimum-width", data: {sort: submission.submitted_at.to_i, sort_as: "integer"}  do %>
-          <%= local_time submission.submitted_at, '%Y-%m-%d %H:%M' %></td>
+          <%= iso_time submission.submitted_at %></td>
         <% end %>
 
         <%= content_tag :td, class: "minimum-width", data: {sort: submission.submission_evaluation.evaluated_at.to_i, sort_as: "integer"}  do %>
           <% if submission.submission_evaluation.evaluated_at.present? %>
-            <%= local_time submission.submission_evaluation.evaluated_at, '%Y-%m-%d %H:%M' %>
+            <%= iso_time submission.submission_evaluation.evaluated_at %>
           <% else %>
             <em>not evaluated</em>
           <% end %>

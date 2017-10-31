@@ -78,5 +78,12 @@ update_fields_visibility = (form) ->
       min_label.text "# items minimum"
       max_label.text "# items maximum"
       multiplication_factor_field.show()
+    when "Ratings::PerItemPointsRating"
+      value_field.hide()
+      min_field.show()
+      max_field.show()
+      min_label.text "# items minimum"
+      max_label.text "# items maximum"
+      multiplication_factor_field.show()
     else
       console.warn("Unknown rating type", type)

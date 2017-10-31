@@ -1,8 +1,8 @@
-<% title tutorial_group_title(current_tutorial_group), "Edit Student Group" %>
+<% title "Edit Student Group", course_term_title %>
 
-<%= render "tutorial_groups/sidebar", tutorial_group: current_tutorial_group %>
+<%= render "terms/sidebar", term: current_term %>
 
-<%= render "form", term: current_term, tutorial_group: current_tutorial_group, student_group: @student_group %>
+<%= render "form", term: current_term, student_group: @student_group %>
 
 <hr />
 <div class='panel alert callout'>
@@ -14,5 +14,5 @@
     they won't be removed completely from the course.
   </p>
 
-  <%= link_to "Delete Student Group", term_tutorial_group_student_group_path(current_term, current_tutorial_group, @student_group), method: :delete, data: {confirm: "Are you sure?"}, class: "small alert button" %>
+  <%= link_to "Delete Student Group", term_student_group_path(current_term, @student_group), method: :delete, data: {confirm: "Are you sure?"}, class: "small alert button" %>
 </div>

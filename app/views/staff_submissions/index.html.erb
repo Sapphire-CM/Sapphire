@@ -2,7 +2,7 @@
 
 <%= render "exercises/sidebar" %>
 
-<div>
+<div class='tutorial-group-dropdown'>
   <% if policy(@exercise).tutorial_group_dropdown? %>
     <%= submissions_tutorial_group_dropdown(@tutorial_group) %>
   <% end %>

@@ -1,12 +1,15 @@
-<%= title(tutorial_group_title(current_tutorial_group), @student_group.title) %>
+<%= title(@student_group.title, course_term_title) %>
 
-<%= render "tutorial_groups/sidebar", tutorial_group: current_tutorial_group %>
+<%= render "terms/sidebar", term: current_term %>
 
 <div class="section-container auto" data-section>
-  <section class="active">
+  <section class="active overview">
     <p class="title" data-section-title><a href="#panel1">Overview</a></p>
     <div class="content" data-section-content>
       <dl>
+        <dt>Tutorial Group</dt>
+        <dd><%= tutorial_group_title(@student_group.tutorial_group) %></dd>
+
         <dt>Topic</dt>
         <dd><%= @student_group.topic.presence || content_tag(:em, "none") %></dd>
 
@@ -18,7 +21,7 @@
       </dl>
     </div>
   </section>
-  <section>
+  <section class='students'>
     <p class="title" data-section-title><a href="#panel2">Students</a></p>
     <div class="content" data-section-content>
       <% if @student_term_registrations.any? %>
@@ -28,7 +31,7 @@
       <% end %>
     </div>
   </section>
-  <section>
+  <section class='submissions'>
     <p class="title" data-section-title><a href="#panel3">Submissions</a></p>
     <div class="content" data-section-content>
       <% if @submissions.any? %>
@@ -63,10 +66,10 @@
           </tfoot>
         </table>
       <% else %>
-        <p>This group has not submitted any submission</p>
+        <p>This group has not submitted any submission.</p>
       <% end %>
     </div>
   </section>
 </div>
 
-<p><%= link_to "Edit", edit_term_tutorial_group_student_group_path(current_term, current_tutorial_group, @student_group), class: "small primary button" %></p>
+<p><%= link_to "Edit", edit_term_student_group_path(current_term, @student_group), class: "small primary button" %></p>

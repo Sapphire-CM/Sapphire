@@ -5,12 +5,12 @@ FactoryGirl.define do
     association :submitter, factory: :account
     outdated false
 
-    trait :with_student_group_registration do
+    trait :with_student_group do
       transient do
         student_group_title 'G1-01'
       end
 
-      after(:create) do |instance, evaluator|
+      before(:create) do |instance, evaluator|
         instance.student_group = create(:student_group, title: evaluator.student_group_title)
       end
     end
@@ -29,6 +29,7 @@ FactoryGirl.define do
       transient do
         evaluator { FactoryGirl.create(:account, :admin) }
       end
+
       after(:create) do |instance, evaluator|
         instance.submission_evaluation.update(evaluator: evaluator.evaluator, evaluated_at: Time.now)
       end

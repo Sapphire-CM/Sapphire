@@ -13,6 +13,7 @@ RSpec.describe StudentGroupsController, type: :controller do
   let(:valid_attributes) do
     {
       title: 'G4-05',
+      tutorial_group_id: tutorial_group.id,
       term_registration_ids: student_term_registrations.map(&:id)
     }
   end
@@ -24,17 +25,21 @@ RSpec.describe StudentGroupsController, type: :controller do
     }
   end
 
-  let(:path_options) { { term_id: term.id, tutorial_group_id: tutorial_group.id } }
+  let(:path_options) { { term_id: term.id } }
   let(:path_options_with_student_group) { path_options.merge(id: student_group.id) }
 
   describe 'GET #index' do
-    let!(:student_groups) { create_list(:student_group, 4, tutorial_group: tutorial_group) }
-    let!(:student_groups_in_another_tutorial_group) { create_list(:student_group, 4, tutorial_group: create(:tutorial_group, term: term)) }
+    let(:other_tutorial_group) { create(:tutorial_group, term: term) }
+
+    let(:student_groups) { create_list(:student_group, 4, tutorial_group: tutorial_group) }
+    let(:other_student_groups) { create_list(:student_group, 4, tutorial_group: tutorial_group) }
+
+    let!(:all_student_groups) { student_groups + other_student_groups}
 
     it 'assigns @student_groups to the student groups in the current term' do
       get :index, path_options
 
-      expect(assigns[:student_groups]).to match_array(student_groups)
+      expect(assigns[:student_groups]).to match_array(all_student_groups)
     end
   end
 
@@ -71,7 +76,6 @@ RSpec.describe StudentGroupsController, type: :controller do
 
       expect(response).to have_http_status(:success)
       expect(assigns(:student_group)).to be_a_new(StudentGroup)
-      expect(assigns(:student_group).tutorial_group).to eq(tutorial_group)
     end
   end
 
@@ -139,7 +143,7 @@ RSpec.describe StudentGroupsController, type: :controller do
         delete :destroy, path_options_with_student_group
       end.to change(StudentGroup, :count).by -1
 
-      expect(response).to redirect_to(term_tutorial_group_student_groups_path(term, tutorial_group))
+      expect(response).to redirect_to(term_student_groups_path(term))
     end
   end
 

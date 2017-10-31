@@ -20,7 +20,7 @@
         <tr>
           <td data-sort='<%= exercise.title %>'><%= conditional_submissions_link exercise %></td>
           <td><%= exercise_submission_type exercise %></td>
-          <td><%= exercise.deadline.present? ? iso_local_time(exercise.deadline) : content_tag(:em, "not defined") %></td>
+          <td><%= exercise.deadline.present? ? iso_time(exercise.deadline) : content_tag(:em, "not defined") %></td>
 
           <% if policy(exercise).edit? %>
             <td class="text-center min-width"><%= link_to foundation_icon(:pencil), edit_exercise_path(exercise) %></td>

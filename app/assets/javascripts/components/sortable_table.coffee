@@ -44,7 +44,7 @@ class SortableTable
           if isNaN(sort_by)
             sort_by = -1
 
-        values.push($cell.children())
+        values.push($cell.html())
         sort.push(sort_by)
 
       row_data = {
@@ -69,12 +69,13 @@ class SortableTable
 
       $inserted_link = $th.find("a")
       $inserted_link.data("sort-index", i)
+      $th.attr("data-behaviour", "sortable")
       $inserted_link.on "click", (e) =>
         that._handle_sort_click($inserted_link)
         e.stopPropagation()
         e.preventDefault()
 
-      $icon = $("<i>").hide()
+      $icon = $("<span>").css("visibility", "hidden").text("▾")
 
       $inserted_link.append("&nbsp;")
       $inserted_link.append($icon)
@@ -135,20 +136,20 @@ class SortableTable
       row = @rows[row_idx]
 
       for value, cell_idx in row_data.values
-        row.cells[cell_idx].append(value)
+        row.cells[cell_idx].html(value)
 
   _update_sort_links: (active_idx, desc) ->
     for $link in @links
       idx = $link.data("sort-index")
       if idx == active_idx
-        icon_class = if desc
-          "fi-arrow-down"
+        icon = if desc
+          "▾"
         else
-          "fi-arrow-up"
+          "▴"
 
-        $link.find("i").show().attr("class", icon_class)
+        $link.find("span").css("visibility", "visible").text(icon)
       else
-        $link.find("i").hide()
+        $link.find("span").css("visibility", "hidden")
 
 setup_sortable_tables = ->
   $("table.sortable").each ->

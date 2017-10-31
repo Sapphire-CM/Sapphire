@@ -18,7 +18,7 @@
         <td>
           <%= link_to "..", tree_submission_path(submission, path: tree.parent.path_without_root), title: "Goto parent folder" %>
         </td>
-        <td class='modification-date'><%= local_time tree.parent.mtime, '%Y-%m-%d %H:%M' %></td>
+        <td class='modification-date'><%= iso_time tree.parent.mtime %></td>
         <td class='size'><%= filesize tree.size %></td>
         <% if submission.modifiable_by_students? %>
           <td></td>
@@ -44,7 +44,7 @@
             <%= link_to entry.name, tree_submission_path(submission, path: entry.path_without_root) %>
           <% end %>
         </td>
-        <td class='modification-date'><%= iso_local_time(entry.mtime) %></td>
+        <td class='modification-date'><%= iso_time(entry.mtime) %></td>
         <td class='size'><%= filesize entry.size %></td>
         <% if submission.modifiable_by_students? %>
           <td class='buttons'>

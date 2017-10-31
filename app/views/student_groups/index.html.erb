@@ -1,9 +1,9 @@
-<% title tutorial_group_title(current_tutorial_group), pluralize(@student_groups_count, "Student Groups") %>
+<% title "Student Groups", current_term.title %>
 
-<%= render "tutorial_groups/sidebar", tutorial_group: current_tutorial_group %>
+<%= render "terms/sidebar", term: current_term %>
 
-<% if @student_groups_count > 0 %>
-  <table class='large-12 sortable'>
+<% if @student_groups.count > 0 %>
+  <table class='large-12 sortable student-groups'>
     <thead>
       <tr>
         <th>Title</th>
@@ -19,10 +19,10 @@
           <td><%= student_group.title %></td>
           <td><%= student_group.topic %></td>
           <td><%= tutorial_group_title student_group.tutorial_group %></td>
-          <td><%= student_group.students.count %></td>
+          <td><%= student_group.students.length %></td>
           <td class='text-right'>
-            <%= link_to "Show", term_tutorial_group_student_group_path(current_term, current_tutorial_group, student_group), class: "tiny primary button" %>
-            <%= link_to "Edit", edit_term_tutorial_group_student_group_path(current_term, current_tutorial_group, student_group), class: "tiny primary button" %>
+            <%= link_to "Show", term_student_group_path(current_term, student_group), class: "tiny primary button" %>
+            <%= link_to "Edit", edit_term_student_group_path(current_term, student_group), class: "tiny primary button" %>
           </td>
         </tr>
       <% end %>
@@ -32,4 +32,4 @@
   <p>No student groups present</p>
 <% end %>
 
-<%= link_to "New Student Group", new_term_tutorial_group_student_group_path(current_term, current_tutorial_group), class: "small primary button" %>
+<%= link_to "New Student Group", new_term_student_group_path(current_term), class: "small primary button" %>

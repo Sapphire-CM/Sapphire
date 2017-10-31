@@ -13,15 +13,15 @@
   <%= f.input :enable_student_uploads, label: "Enable student uploads" %>
   <%= f.input :group_submission, wrapper: :blocked_radio_buttons, as: :radio_buttons, collection: {"Group Submission" => true,  "Individual Submission" => false} %>
 
-  <%= f.input :enable_min_required_points, label: 'Minimum points required for positive grade' %>
+  <%= f.input :enable_min_required_points, label: 'Minimum points required for positive grade ▾' %>
   <%= f.input :min_required_points, label: false,
     wrapper_html: {class: ('hide' unless @exercise.enable_min_required_points)} %>
 
-  <%= f.input :enable_max_total_points, label: 'Maximum points in total' %>
+  <%= f.input :enable_max_total_points, label: 'Maximum points in total ▾' %>
   <%= f.input :max_total_points, label: false,
     wrapper_html: {class: ('hide' unless @exercise.enable_max_total_points)} %>
 
-  <%= f.input :enable_max_upload_size, label: 'Maximum upload size' %>
+  <%= f.input :enable_max_upload_size, label: 'Maximum upload size ▾' %>
   <%= f.input :maximum_upload_size, label: false,
     wrapper_html: {class: ('hide' unless @exercise.enable_max_upload_size)} %>
 

@@ -11,8 +11,8 @@ class StudentGroupsController < ApplicationController
   end
 
   def show
-    @student_term_registrations = @student_group.term_registrations
-    @submissions = @student_group.submissions.joins(:exercise).includes(:exercise).order { exercise.row_order }
+    @student_term_registrations = @student_group.term_registrations.includes(:account)
+    @submissions = @student_group.submissions.joins(:exercise).includes(:exercise, :submission_evaluation).order { exercise.row_order }
   end
 
   def new

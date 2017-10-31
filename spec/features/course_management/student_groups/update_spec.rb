@@ -28,6 +28,14 @@ RSpec.feature 'Updating Student Groups' do
     expect(page).to have_current_path(edit_term_student_group_path(term, student_group))
   end
 
+  scenario 'Highlighting link in side nav' do
+    visit edit_term_student_group_path(term, student_group)
+
+    within ".side-nav li.active" do
+      expect(page).to have_link("Student Groups")
+    end
+  end
+
   scenario 'Updating a student group' do
     other_tutorial_group = FactoryGirl.create(:tutorial_group, term: term)
 

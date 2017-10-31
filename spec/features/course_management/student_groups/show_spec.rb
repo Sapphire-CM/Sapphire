@@ -24,6 +24,14 @@ RSpec.feature 'Updating Student Groups' do
     expect(page).to have_current_path(term_student_group_path(term, student_group))
   end
 
+  scenario 'Highlighting link in side nav' do
+    visit term_student_group_path(term, student_group)
+
+    within ".side-nav li.active" do
+      expect(page).to have_link("Student Groups")
+    end
+  end
+
   scenario 'Viewing student group info', js: true do
     visit term_student_group_path(term, student_group)
 

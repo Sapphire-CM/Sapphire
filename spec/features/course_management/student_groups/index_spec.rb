@@ -20,6 +20,14 @@ RSpec.feature 'Student Group List' do
     expect(page).to have_current_path(term_student_groups_path(term))
   end
 
+  scenario 'Highlighting link in side nav' do
+    visit term_student_groups_path(term)
+
+    within ".side-nav li.active" do
+      expect(page).to have_link("Student Groups")
+    end
+  end
+
   context 'without student groups' do
     scenario "Visiting student groups list shows empty notice" do
       visit term_student_groups_path(term)

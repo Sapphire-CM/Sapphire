@@ -1,21 +1,21 @@
 # create_table :submission_assets, force: :cascade do |t|
 #   t.integer  :submission_id
-#   t.string   :file
-#   t.string   :content_type
+#   t.string   :file,              limit: 255
+#   t.string   :content_type,      limit: 255
 #   t.datetime :submitted_at
-#   t.datetime :created_at,                     null: false
-#   t.datetime :updated_at,                     null: false
-#   t.string   :asset_identifier
-#   t.string   :import_identifier
-#   t.string   :path,              default: ""
+#   t.datetime :created_at,                                 null: false
+#   t.datetime :updated_at,                                 null: false
+#   t.string   :asset_identifier,  limit: 255
+#   t.string   :import_identifier, limit: 255
+#   t.string   :path,                          default: ""
 #   t.string   :filename
-#   t.integer  :processed_size,    default: 0
-#   t.integer  :filesystem_size,   default: 0
+#   t.integer  :processed_size,                default: 0
+#   t.integer  :filesystem_size,               default: 0
 #   t.integer  :extraction_status
 # end
 #
-# add_index :submission_assets, [:filename, :path, :submission_id], name: :index_submission_assets_on_filename_and_path_and_submission_id, unique: true
-# add_index :submission_assets, [:submission_id], name: :index_submission_assets_on_submission_id
+# add_index :submission_assets, [:filename, :path, :submission_id], name: :index_submission_assets_on_filename_and_path_and_submission_id, unique: true, using: :btree
+# add_index :submission_assets, [:submission_id], name: :index_submission_assets_on_submission_id, using: :btree
 
 require "charlock_holmes"
 

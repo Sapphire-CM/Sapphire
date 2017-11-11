@@ -1,4 +1,4 @@
-class TermPolicy < PunditBasePolicy
+class TermPolicy < ApplicationPolicy
   def show?
     user.admin? ||
     record.associated_with?(user)

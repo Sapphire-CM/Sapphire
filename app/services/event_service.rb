@@ -13,10 +13,6 @@ class EventService
     Events::Submission::Created.create(submission_options(submission, true))
   end
 
-  def submission_updated!(submission)
-    Events::Submission::Updated.create(submission_options(submission, false))
-  end
-
   def submission_extracted!(submission, zip_submission_asset, extracted_submission_assets)
     Events::Submission::Extracted.create(submission_extracted_options(submission, zip_submission_asset, extracted_submission_assets))
   end

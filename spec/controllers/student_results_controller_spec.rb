@@ -33,6 +33,7 @@ RSpec.describe StudentResultsController do
 
         get :show, term_id: term.id, id: exercise.id
 
+        expect(response).to have_http_status(:success)
         expect(assigns[:submission]).to eq(submission)
         expect(assigns[:submission_evaluation]).to eq(submission.submission_evaluation)
         expect(assigns[:term]).to eq(term)

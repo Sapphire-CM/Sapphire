@@ -1,4 +1,4 @@
-class TermRegistrationPolicy < PunditBasePolicy
+class TermRegistrationPolicy < ApplicationPolicy
   def new?
     user.admin? || user.lecturer_of_term?(record.term)
   end

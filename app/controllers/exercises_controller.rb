@@ -1,30 +1,41 @@
 class ExercisesController < ApplicationController
   include ExerciseContext
+
   before_action :set_context, only: [:edit, :update, :destroy]
 
   def index
     @term = Term.find(params[:term_id])
-    authorize ExercisePolicy.with @term
+
+    authorize ExercisePolicy.term_policy_record(@term)
 
     @exercises = @term.exercises
   end
 
+  def show
+    @exercise = Exercise.find(params[:id])
+    @term = @exercise.term
+    authorize @exercise
+  end
+
   def new
     @term = Term.find(params[:term_id])
-    @exercise = @term.exercises.build
+    @exercise = Exercise.new
+    @exercise.term = @term
+
     authorize @exercise
   end
 
   def create
     @exercise = Exercise.new(exercise_params)
+
     authorize @exercise
 
     @exercise.row_order_position = :last
-    @term = @exercise.term
 
     if @exercise.save
-      redirect_to term_exercises_path(@term), notice: 'Exercise was successfully created.'
+      redirect_to exercise_path(@exercise), notice: 'Exercise was successfully created.'
     else
+      @term = @exercise.term
       render :new
     end
   end
@@ -59,6 +70,7 @@ class ExercisesController < ApplicationController
       :term_id,
       :title,
       :description,
+      :instructions_url,
       :deadline,
       :late_deadline,
       :group_submission,

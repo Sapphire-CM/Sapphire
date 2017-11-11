@@ -1,24 +1,24 @@
 <% sidebar_nav do %>
-  <%= sidenav_item(:home, 'Dashboard', term_path(current_term)) %>
-  <%= sidenav_item(:clipboard_notes, 'Exercises', term_exercises_path(current_term), params[:controller] == 'exercises') %>
+  <%= sidenav_item(:home, 'Dashboard', term_path(term)) %>
+  <%= sidenav_item(:clipboard_notes, 'Exercises', term_exercises_path(term), params[:controller] == 'exercises') %>
 
   <li class='divider'></li>
 
-  <% if current_account.admin? || policy(current_term).staff? %>
-    <%= sidenav_item(:list_thumbnails, 'Points Overview', points_overview_term_path(current_term)) %>
-    <%= sidenav_item(:torsos, 'Tutorial Groups', term_tutorial_groups_path(current_term)) %>
-    <%= sidenav_item(:torsos, 'Student Groups', term_student_groups_path(current_term), params[:controller] == 'student_groups') %>
-    <%= sidenav_item(:torso, 'Students', term_students_path(current_term), params[:controller] == 'students') %>
+  <% if current_account.admin? || policy(term).staff? %>
+    <%= sidenav_item(:list_thumbnails, 'Points Overview', points_overview_term_path(term)) %>
+    <%= sidenav_item(:torsos, 'Tutorial Groups', term_tutorial_groups_path(term)) %>
+    <%= sidenav_item(:torsos, 'Student Groups', term_student_groups_path(term), params[:controller] == 'student_groups') %>
+    <%= sidenav_item(:torso, 'Students', term_students_path(term), params[:controller] == 'students') %>
   <% else %>
-    <%= sidenav_item(:megaphone, 'Results', term_results_path(current_term)) %>
+    <%= sidenav_item(:megaphone, 'Results', term_results_path(term)) %>
   <% end %>
 
-  <% if policy(current_term).update? %>
+  <% if policy(term).update? %>
     <li class='divider'></li>
-    <%= sidenav_item(:torsos, 'Staff', term_staff_index_path(current_term), params[:controller] == 'staff') %>
-    <%= sidenav_item(:list_thumbnails, 'Grading Scale', term_grading_scales_path(current_term), params[:controller] == 'grading_scales') %>
-    <%= sidenav_item(:upload, 'Imports', new_term_import_path(current_term), params[:controller] == 'imports') %>
-    <%= sidenav_item(:download, 'Exports', term_exports_path(current_term), params[:controller] == 'exports') %>
-    <%= sidenav_item(:pencil, 'Administrate', edit_term_path(current_term), params[:controller] == 'terms' && params[:action] == 'edit') %>
+    <%= sidenav_item(:torsos, 'Staff', term_staff_index_path(term), params[:controller] == 'staff') %>
+    <%= sidenav_item(:list_thumbnails, 'Grading Scale', term_grading_scales_path(term), params[:controller] == 'grading_scales') %>
+    <%= sidenav_item(:upload, 'Imports', new_term_import_path(term), params[:controller] == 'imports') %>
+    <%= sidenav_item(:download, 'Exports', term_exports_path(term), params[:controller] == 'exports') %>
+    <%= sidenav_item(:pencil, 'Administrate', edit_term_path(term), params[:controller] == 'terms' && params[:action] == 'edit') %>
   <% end %>
 <% end %>

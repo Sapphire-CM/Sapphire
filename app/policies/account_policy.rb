@@ -1,4 +1,4 @@
-class AccountPolicy < PunditBasePolicy
+class AccountPolicy < ApplicationPolicy
   def index?
     user.admin?
   end

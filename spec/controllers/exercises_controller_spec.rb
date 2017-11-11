@@ -56,7 +56,7 @@ RSpec.describe ExercisesController do
           post :create, valid_attributes
         end.to change(Exercise, :count).by(1)
 
-        expect(response).to redirect_to(term_exercises_path(term))
+        expect(response).to redirect_to(exercise_path(Exercise.last))
         expect(assigns(:exercise)).to be_a(Exercise)
         expect(assigns(:exercise)).to be_persisted
       end

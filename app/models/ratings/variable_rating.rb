@@ -1,19 +1,19 @@
 # create_table :ratings, force: :cascade do |t|
 #   t.integer  :rating_group_id
-#   t.string   :title
+#   t.string   :title,                        limit: 255
 #   t.integer  :value
-#   t.datetime :created_at,                   null: false
-#   t.datetime :updated_at,                   null: false
+#   t.datetime :created_at,                               null: false
+#   t.datetime :updated_at,                               null: false
 #   t.text     :description
-#   t.string   :type
+#   t.string   :type,                         limit: 255
 #   t.integer  :max_value
 #   t.integer  :min_value
 #   t.integer  :row_order
 #   t.float    :multiplication_factor
-#   t.string   :automated_checker_identifier
+#   t.string   :automated_checker_identifier, limit: 255
 # end
 #
-# add_index :ratings, [:rating_group_id], name: :index_ratings_on_rating_group_id
+# add_index :ratings, [:rating_group_id], name: :index_ratings_on_rating_group_id, using: :btree
 
 class Ratings::VariableRating < Rating
   validates :min_value, presence: true

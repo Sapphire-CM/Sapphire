@@ -1,4 +1,4 @@
-class RatingPolicy < PunditBasePolicy
+class RatingPolicy < ApplicationPolicy
   def new?
     user.admin? ||
     user.lecturer_of_term?(record.rating_group.exercise.term)

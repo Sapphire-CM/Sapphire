@@ -4,7 +4,7 @@ RSpec.describe SubmissionViewerPolicy do
   let(:submission) { FactoryGirl.create(:submission) }
   let(:term) { submission.exercise.term }
 
-  subject { SubmissionViewerPolicy.new(account, submission) }
+  subject { SubmissionViewerPolicy.new(account, SubmissionViewerPolicy.policy_record_with(submission: submission)) }
 
   context 'as an admin' do
     let(:account) { FactoryGirl.create(:account, :admin) }

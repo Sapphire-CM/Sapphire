@@ -24,12 +24,15 @@ RSpec.describe 'Managing submissions as a student' do
         click_link 'Fancy Exercise'
       end
 
+      click_sub_nav_link 'Submission'
+
       expect(page).to have_current_path(new_exercise_student_submission_path(exercise))
     end
 
     scenario 'though the navigation bar' do
       click_link 'Fancy Term'
       click_top_bar_link 'Fancy Exercise'
+      click_sub_nav_link 'Submission'
 
       expect(page).to have_current_path(new_exercise_student_submission_path(exercise))
     end

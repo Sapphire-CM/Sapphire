@@ -11,7 +11,7 @@
       <ul class='dropdown'>
         <% if (exercises = @term.exercises(true)).any? %>
           <% exercises.each do |exercise| %>
-            <li><%= exercise_topbar_link exercise %></li>
+            <li><%= link_to exercise.title, exercise_path(exercise) %></li>
           <% end %>
         <% else %>
           <li><%= link_to "(no exercises)", '#' %></li>
@@ -31,8 +31,8 @@
           <li><%= link_to "(no tutorial groups)", '#' %></li>
         <% end %>
       </ul>
-      <li><%= link_to "Grading Review", term_grading_reviews_path(@term) %></li>
     </li>
+    <li><%= link_to "Grading Review", term_grading_reviews_path(@term) %></li>
     <% end %>
   <% end %>
 </ul>

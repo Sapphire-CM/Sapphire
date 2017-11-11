@@ -1,6 +1,6 @@
 <% title course_term_title, "New Staff Member" %>
 
-<%= render 'terms/sidebar' %>
+<%= render 'terms/sidebar', term: @term %>
 
 <%= form_tag search_term_staff_index_path(current_term), remote: true, html: {id: "term_registration_account_search_form"} do  %>
 <div class='row collapse'>

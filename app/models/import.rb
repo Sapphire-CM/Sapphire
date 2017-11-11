@@ -1,12 +1,12 @@
 # create_table :imports, force: :cascade do |t|
 #   t.integer  :term_id
-#   t.datetime :created_at, null: false
-#   t.datetime :updated_at, null: false
-#   t.string   :file
+#   t.datetime :created_at,             null: false
+#   t.datetime :updated_at,             null: false
+#   t.string   :file,       limit: 255
 #   t.integer  :status
 # end
 #
-# add_index :imports, [:term_id], name: :index_imports_on_term_id
+# add_index :imports, [:term_id], name: :index_imports_on_term_id, using: :btree
 
 class Import < ActiveRecord::Base
   belongs_to :term

@@ -16,6 +16,7 @@ RSpec.feature 'Managing submissions as a staff member' do
 
     click_link term.title
     click_top_bar_link group_exercise.title
+    click_sub_nav_link "Submissions"
 
     expect(page).to have_current_path(exercise_submissions_path(group_exercise))
   end

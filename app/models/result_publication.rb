@@ -6,9 +6,9 @@
 #   t.datetime :updated_at,                        null: false
 # end
 #
-# add_index :result_publications, [:exercise_id, :tutorial_group_id], name: :index_result_publications_on_exercise_id_and_tutorial_group_id, unique: true
-# add_index :result_publications, [:exercise_id], name: :index_result_publications_on_exercise_id
-# add_index :result_publications, [:tutorial_group_id], name: :index_result_publications_on_tutorial_group_id
+# add_index :result_publications, [:exercise_id, :tutorial_group_id], name: :index_result_publications_on_exercise_id_and_tutorial_group_id, unique: true, using: :btree
+# add_index :result_publications, [:exercise_id], name: :index_result_publications_on_exercise_id, using: :btree
+# add_index :result_publications, [:tutorial_group_id], name: :index_result_publications_on_tutorial_group_id, using: :btree
 
 class ResultPublication < ActiveRecord::Base
   belongs_to :exercise

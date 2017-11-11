@@ -1,6 +1,6 @@
-class SubmissionViewerPolicy < PunditBasePolicy
+class SubmissionViewerPolicy < ApplicationPolicy
   def show?
     user.admin? ||
-    user.staff_of_term?(record.exercise.term)
+    user.staff_of_term?(record.submission.exercise.term)
   end
 end

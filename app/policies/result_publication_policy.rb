@@ -1,10 +1,4 @@
-class ResultPublicationPolicy < PunditBasePolicy
-  class Scope < Struct.new(:user, :scope)
-    def resolve
-      scope
-    end
-  end
-
+class ResultPublicationPolicy < TermBasedPolicy
   def index?
     user.admin? ||
     user.lecturer_of_term?(record.term)

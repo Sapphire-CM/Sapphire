@@ -1,6 +1,6 @@
-<% title @exercise.title, "Ratings".html_safe %>
+<% title "Ratings", @exercise.title %>
 <%= render "exercises/sidebar" %>
-<%= render "exercises/edit_header" %>
+<%= render "exercises/subnav", exercise: @exercise %>
 
 <div class='panel'>
   <h3 class='text-right'>Total: <%= exercise_points_sum_tag(@exercise).html_safe %></h3>

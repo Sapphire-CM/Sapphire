@@ -2,7 +2,7 @@ class StudentResultsController < ApplicationController
   include TermContext
 
   def index
-    authorize StudentResultsPolicy.with current_term
+    authorize StudentResultsPolicy.term_policy_record(current_term)
 
     @term_registration = current_term.term_registrations.for_account(current_account).first
     @exercise_registrations = @term_registration.exercise_registrations.ordered_by_exercise
@@ -15,7 +15,7 @@ class StudentResultsController < ApplicationController
     @exercise_registration = @term_registration.exercise_registrations.find_by_exercise_id(@exercise.id)
 
     if @exercise_registration.present? && @submission = @exercise_registration.submission
-      authorize StudentResultsPolicy.with @submission
+      authorize StudentResultsPolicy.policy_record_with submission: @submission
 
       @submission_evaluation = @submission.submission_evaluation
     else

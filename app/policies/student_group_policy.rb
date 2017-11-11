@@ -1,22 +1,14 @@
-class StudentGroupPolicy < PunditBasePolicy
+class StudentGroupPolicy < TermBasedPolicy
   def index?
-    user.admin? || user.staff_of_term?(record)
+    user.admin? || user.staff_of_term?(record.term)
   end
 
   def show?
     user.admin? || user.staff_of_term?(record.term)
   end
 
-  def new?
-    create?
-  end
-
   def create?
-    authorized?(record)
-  end
-
-  def edit?
-    update?
+    authorized?(record.term)
   end
 
   def update?
@@ -28,7 +20,7 @@ class StudentGroupPolicy < PunditBasePolicy
   end
 
   def search_students?
-    authorized?(record)
+    authorized?(record.term)
   end
 
   private

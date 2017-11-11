@@ -43,6 +43,14 @@ class SubmissionStructure::Directory < SubmissionStructure::TreeNode
     @nodes.values
   end
 
+  def files
+    entries.select(&:file?)
+  end
+
+  def directories
+    entries.select(&:directory?)
+  end
+
   def submission_assets
     entries.map do |e|
       assets = if e.is_a? SubmissionStructure::File

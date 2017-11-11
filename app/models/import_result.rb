@@ -13,7 +13,7 @@
 #   t.datetime :updated_at,                                  null: false
 # end
 #
-# add_index :import_results, [:import_id], name: :index_import_results_on_import_id, unique: true
+# add_index :import_results, [:import_id], name: :index_import_results_on_import_id, unique: true, using: :btree
 
 class ImportResult < ActiveRecord::Base
   belongs_to :import

@@ -13,8 +13,7 @@ RSpec.describe RatingGroupPolicy do
   describe '#index?' do
     subject { RatingGroupPolicy.new(user, policy_record) }
 
-    let(:policy_record_class) { Struct.new(:term) }
-    let(:policy_record) { policy_record_class.new term }
+    let(:policy_record) { described_class.term_policy_record(term) }
 
     context 'as an admin' do
       let(:user) { create(:account, :admin) }

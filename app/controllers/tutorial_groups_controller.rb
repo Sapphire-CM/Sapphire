@@ -4,7 +4,7 @@ class TutorialGroupsController < ApplicationController
 
   def index
     @tutorial_groups = policy_scope(@term.tutorial_groups).ordered_by_title.includes(:tutor_accounts)
-    authorize TutorialGroupPolicy.with current_term
+    authorize TutorialGroupPolicy.term_policy_record(current_term)
   end
 
   def show

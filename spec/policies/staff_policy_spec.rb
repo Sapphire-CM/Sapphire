@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe StaffPolicy do
   let(:term) { FactoryGirl.create(:term) }
-  subject { StaffPolicy.new(account, term) }
+
+  subject { described_class.new(account, described_class.term_policy_record(term)) }
 
   context 'as an admin' do
     let(:account) { FactoryGirl.create(:account, :admin) }
@@ -14,14 +15,14 @@ RSpec.describe StaffPolicy do
   context 'as a lecturer' do
     let(:account) { FactoryGirl.create(:account) }
 
-    describe 'lectured term' do
+    describe 'in lectured term' do
       let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, account: account, term: term) }
 
       it { is_expected.to permit_authorization(:index) }
       it { is_expected.to permit_authorization(:search) }
     end
 
-    describe 'another term' do
+    describe 'in another term' do
       let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, account: account) }
 
       it { is_expected.not_to permit_authorization(:index) }

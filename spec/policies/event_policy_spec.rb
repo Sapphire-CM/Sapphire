@@ -86,7 +86,6 @@ RSpec.describe EventPolicy do
     let!(:student_submission_events) do
       e = []
       e << event_service.submission_created!(student_solitary_submission)
-      e << event_service.submission_updated!(student_solitary_submission)
       e << event_service.submission_extracted!(student_solitary_submission, student_solitary_submission.submission_assets.first, student_solitary_submission.submission_assets.last(2))
       e << event_service.submission_assets_destroyed!(student_solitary_submission.submission_assets.last(2))
       e << event_service.submission_asset_extracted!(student_solitary_submission.submission_assets.first, student_solitary_submission.submission_assets.last(2))
@@ -99,7 +98,6 @@ RSpec.describe EventPolicy do
     let!(:group_member_solitary_submission_events) do
       e = []
       e << event_service.submission_created!(group_member_solitary_submission)
-      e << event_service.submission_updated!(group_member_solitary_submission)
       e << event_service.submission_extracted!(group_member_solitary_submission, group_member_solitary_submission.submission_assets.first, group_member_solitary_submission.submission_assets.last(2))
       e << event_service.submission_assets_destroyed!(group_member_solitary_submission.submission_assets.last(2))
       e << event_service.submission_asset_extracted!(group_member_solitary_submission.submission_assets.first, student_solitary_submission.submission_assets.last(2))
@@ -115,7 +113,6 @@ RSpec.describe EventPolicy do
 
       e = []
       e << event_service.submission_created!(group_submission)
-      e << event_service.submission_updated!(group_submission)
       e << event_service.submission_extracted!(group_submission, group_submission.submission_assets.first, group_submission.submission_assets.last(2))
       e << event_service.submission_assets_destroyed!(group_submission.submission_assets.last(2))
       e << event_service.submission_asset_extracted!(group_submission.submission_assets.first, group_submission.submission_assets.last(2))
@@ -130,7 +127,6 @@ RSpec.describe EventPolicy do
 
       e = []
       e << es.submission_created!(solitary_submission_of_other_student)
-      e << es.submission_updated!(solitary_submission_of_other_student)
       e << event_service.submission_extracted!(solitary_submission_of_other_student, solitary_submission_of_other_student.submission_assets.first, solitary_submission_of_other_student.submission_assets.last(2))
       e << event_service.submission_assets_destroyed!(solitary_submission_of_other_student.submission_assets.last(2))
       e << event_service.submission_asset_extracted!(solitary_submission_of_other_student.submission_assets.first, solitary_submission_of_other_student.submission_assets.last(2))

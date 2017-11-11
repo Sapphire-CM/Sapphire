@@ -1,4 +1,4 @@
-class ImportPolicy < PunditBasePolicy
+class ImportPolicy < ApplicationPolicy
   def show?
     authorized?
   end

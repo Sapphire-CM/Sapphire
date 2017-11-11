@@ -1,17 +1,12 @@
 class RatingGroupsController < ApplicationController
-  RatingGroupPolicyRecord = Struct.new :term do
-    def policy_class
-      RatingGroupPolicy
-    end
-  end
-
   include EventSourcing
 
   before_action :set_context
   before_action :set_rating_group, only: [:edit, :update, :destroy, :update_position]
 
   def index
-    authorize RatingGroupPolicyRecord.new(@term)
+    authorize RatingGroupPolicy.term_policy_record(@term)
+
     @rating_groups = @exercise.rating_groups
   end
 

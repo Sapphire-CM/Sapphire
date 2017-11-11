@@ -1,4 +1,4 @@
-class SubmissionFolderPolicy < PunditBasePolicy
+class SubmissionFolderPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope

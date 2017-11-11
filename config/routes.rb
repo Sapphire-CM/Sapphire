@@ -55,7 +55,7 @@ Rails.application.routes.draw do
 
   resources :tutorial_groups
 
-  resources :exercises, except: [:show, :index] do
+  resources :exercises, except: [:index] do
     resources :rating_groups, except: :show do
       post :update_position, on: :member
       resources :ratings, except: [:index, :show] do

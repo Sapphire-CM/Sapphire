@@ -16,7 +16,7 @@ RSpec.feature 'Exercise Management' do
     click_link exercise.term.title
     click_top_bar_link exercise.title
 
-    click_side_nav_link 'Administrate'
+    click_sub_nav_link 'Administrate'
     expect(page).to have_current_path(edit_exercise_path(exercise))
   end
 

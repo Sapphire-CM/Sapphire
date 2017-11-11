@@ -1,4 +1,4 @@
-class SingleEvaluationPolicy < PunditBasePolicy
+class SingleEvaluationPolicy < ApplicationPolicy
   def show?
     user.admin? ||
     user.staff_of_term?(record.exercise.term)

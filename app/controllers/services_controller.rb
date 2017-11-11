@@ -4,7 +4,7 @@ class ServicesController < ApplicationController
   before_action :fetch_service, only: [:edit, :update]
 
   def index
-    authorize ServicePolicy.with(current_term)
+    authorize ServicePolicy.term_policy_record(@term)
 
     @services = current_exercise.services
   end
@@ -24,6 +24,7 @@ class ServicesController < ApplicationController
 
   def fetch_service
     @service = current_exercise.services.find(params[:id])
+
     authorize @service
   end
 

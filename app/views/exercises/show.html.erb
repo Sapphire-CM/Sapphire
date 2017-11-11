@@ -1,0 +1,48 @@
+<% title @exercise.title, course_term_title %>
+<%= render "terms/sidebar", term: @term %>
+<%= render "subnav", exercise: @exercise %>
+
+<% if @exercise.description %>
+  <%= simple_format @exercise.description %>
+<% end %>
+
+<div class='panel'>
+<dl>
+  <% if @exercise.instructions_url.present? %>
+  <dt>Exercise Instructions</dt>
+  <dd><%= link_to @exercise.instructions_url, @exercise.instructions_url, target: "_blank" %></dd>
+  <% end %>
+
+  <dt>Achievable Points</dt>
+  <dd><%= points @exercise.starting_points_sum %></dd>
+
+  <dt>Uploads</dt>
+  <dd>Uploads are <%= @exercise.enable_student_uploads? ? "enabled" : "disabled" %></dd>
+
+  <dt>Exercise Type</dt>
+  <dd><%= exercise_submission_type @exercise %> Submission</dd>
+
+  <dt>Uploads</dt>
+  <dd>Uploads are <%= @exercise.enable_student_uploads? ? "enabled" : "disabled" %></dd>
+
+  <% if @exercise.enable_max_upload_size? %>
+  <dt>Maximum Upload Size</dt>
+  <dd><%= filesize @exercise.maximum_upload_size %></dd>
+  <% end %>
+
+  <% if @exercise.deadline? %>
+  <dt>Deadline</dt>
+  <dd><%= iso_time(@exercise.deadline) %></dd>
+  <% end %>
+
+  <% if @exercise.late_deadline? %>
+  <dt>Late Deadline</dt>
+  <dd><%= iso_time(@exercise.late_deadline) %></dd>
+  <% end %>
+
+  <% if @exercise.enable_min_required_points? %>
+  <dt>Minimum Points Required</dt>
+  <dd><%= points @exercise.min_required_points %></dd>
+  <% end %>
+</dl>
+</div>

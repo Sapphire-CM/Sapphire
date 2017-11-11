@@ -1,7 +1,7 @@
 class SubmissionViewersController < ApplicationController
   def show
     @submission = Submission.find(params[:id])
-    authorize SubmissionViewerPolicy.with @submission
+    authorize SubmissionViewerPolicy.policy_record_with submission: @submission
 
     @viewer = Sapphire::SubmissionViewers::Central.viewer_for_submission(@submission, params)
 

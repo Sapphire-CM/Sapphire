@@ -5,7 +5,7 @@ describe ExercisePolicy do
   let(:exercise) { FactoryGirl.create(:exercise, term: term) }
 
   context 'for index' do
-    subject { ExercisePolicy.new(user, term) }
+    subject { ExercisePolicy.new(user, ExercisePolicy.term_policy_record(term)) }
 
     context 'as an admin' do
       let(:user) { FactoryGirl.create(:account, :admin) }

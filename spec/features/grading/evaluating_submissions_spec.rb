@@ -31,6 +31,7 @@ RSpec.feature 'Evaluating submissions' do
 
       click_link(term.title)
       click_top_bar_link(exercise.title)
+      click_sub_nav_link("Submissions")
 
       click_link('Evaluate')
 

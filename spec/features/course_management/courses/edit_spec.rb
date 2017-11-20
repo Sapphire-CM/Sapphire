@@ -10,6 +10,7 @@ RSpec.describe "Course Editing" do
 
   shared_examples "Course Editing" do
     let(:new_course_title) { "My fancy course" }
+
     scenario "Updating title" do
       visit root_path
 
@@ -23,6 +24,20 @@ RSpec.describe "Course Editing" do
 
       expect(page).to have_current_path(root_path)
       expect(page).to have_content(new_course_title)
+    end
+
+    scenario "Not providing a title" do
+      visit root_path
+
+      within "#course_id_#{course.id}" do
+        click_link href: edit_course_path(course)
+      end
+
+      fill_in "Title", with: ""
+
+      click_button "Save"
+
+      expect(page).to have_content("can't be blank")
     end
   end
 

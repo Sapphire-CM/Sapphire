@@ -22,6 +22,18 @@ RSpec.describe "Course Creation" do
       expect(page).to have_current_path(root_path)
       expect(page).to have_content(new_course_title)
     end
+
+    scenario "Not providing a title" do
+      visit root_path
+
+      click_link "Add Course"
+
+      fill_in "Title", with: ""
+
+      click_button "Save"
+
+      expect(page).to have_content("can't be blank")
+    end
   end
 
   describe 'using JS', js: true do

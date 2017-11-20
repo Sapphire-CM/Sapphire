@@ -24,14 +24,14 @@
         <th>Title</th>
         <th>Exercises</th>
         <th>Tutorial Groups</th>
-        <% if policy(course.terms.first || Term.new(course: course)).update? || policy(course.terms.first || Term.new(course: course)).destroy? %>
+        <% if policy(course).student_count? %>
           <th>Students</th>
         <% end %>
       </tr>
     </thead>
     <tbody class='term_index_entries'>
-      <% if course.terms.present? %>
-        <%= render collection: course.terms, partial:'terms/index_entry', as: :term, locals: {course: course} %>
+      <% if terms.present? %>
+        <%= render collection: terms, partial:'terms/index_entry', as: :term, locals: {course: course} %>
       <% else %>
         <%= render "courses/index_entry_no_terms" %>
       <% end %>

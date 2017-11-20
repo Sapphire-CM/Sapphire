@@ -52,7 +52,7 @@ RSpec.describe CoursesController do
         end.to change(Course, :count).by(1)
 
         expect(response).to have_http_status(:success)
-        expect(response).to render_template(:_insert_index_entry)
+        expect(response).to render_template(:create)
         expect(assigns(:course)).to be_a(Course)
         expect(assigns(:course)).to be_persisted
       end
@@ -66,7 +66,6 @@ RSpec.describe CoursesController do
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:new)
-        expect(response).not_to render_template(:_insert_index_entry)
         expect(assigns(:course)).to be_a_new(Course)
       end
     end
@@ -77,6 +76,8 @@ RSpec.describe CoursesController do
       xhr :get, :edit, id: course.id
 
       expect(response).to have_http_status(:success)
+      expect(response).to render_template(:edit)
+
       expect(assigns(:course)).to eq(course)
     end
   end
@@ -90,6 +91,7 @@ RSpec.describe CoursesController do
 
         course.reload
         expect(response).to have_http_status(:success)
+        expect(response).to render_template(:update)
         expect(assigns(:course)).to eq(course)
         expect(course.title).to eq valid_attributes[:course][:title]
         expect(course.description).to eq valid_attributes[:course][:description]
@@ -119,7 +121,7 @@ RSpec.describe CoursesController do
       end.to change(Course, :count).by(-1)
 
       expect(response).to have_http_status(:success)
-      expect(response).to render_template(:_remove_index_entry)
+      expect(response).to render_template(:destroy)
     end
   end
 end

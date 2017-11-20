@@ -3,7 +3,8 @@ class CoursesController < ApplicationController
 
   def index
     authorize Course
-    @courses = policy_scope(Course).load
+    @terms_by_course = policy_scope(Term.all).includes(:course).group_by(&:course)
+    @courses = policy_scope(Course.all)
   end
 
   def new
@@ -16,7 +17,10 @@ class CoursesController < ApplicationController
     authorize @course
 
     if @course.save
-      render partial: 'courses/insert_index_entry', locals: { course: @course }
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: "Course was successfully created" }
+        format.js
+      end
     else
       render :new
     end
@@ -27,7 +31,10 @@ class CoursesController < ApplicationController
 
   def update
     if @course.update(course_params)
-      render partial: 'courses/replace_index_entry', locals: { course: @course }
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: "Course was successfully updated" }
+        format.js
+      end
     else
       render :edit
     end
@@ -35,7 +42,11 @@ class CoursesController < ApplicationController
 
   def destroy
     @course.destroy
-    render partial: 'courses/remove_index_entry', locals: { course: @course }
+
+    respond_to do |format|
+      format.html { redirect_to root_path, notice: "Course was successfully deleted" }
+      format.js
+    end
   end
 
   private

@@ -1,4 +1,14 @@
 class TermPolicy < ApplicationPolicy
+  class Scope < Scope
+    def resolve
+      if user.admin?
+        scope.all
+      else
+        scope.associated_with(user)
+      end
+    end
+  end
+
   def show?
     user.admin? ||
     record.associated_with?(user)

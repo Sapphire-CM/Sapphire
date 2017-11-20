@@ -102,12 +102,16 @@ class Account < ActiveRecord::Base
     term_registrations.staff.where(term: term).exists?
   end
 
+  def staff_of_course?(course)
+    term_registrations.staff.joins(:term).where(term: { course: course} ).exists?
+  end
+
   def lecturer_of_term?(term)
     term_registrations.lecturers.where(term_id: term.id).exists?
   end
 
   def lecturer_of_any_term_in_course?(course)
-    term_registrations.lecturers.where(term_id: course.terms.pluck(:id)).any?
+    term_registrations.lecturers.joins(:term).where(term: { course: course }).exists?
   end
 
   def tutor_of_term?(term)

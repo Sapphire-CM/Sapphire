@@ -1,7 +1,0 @@
-var html = "<%=j render 'index_entry', course: @term.course, term: @term %>";
-
-$course = $("<%= "#course_id_#{term.course.id}" %>")
-$course.find(".term_index_entries").children(".last_one").before(html)
-$course.find(".index_entry_none").remove();
-
-$('#reveal_modal').foundation('reveal', 'close');

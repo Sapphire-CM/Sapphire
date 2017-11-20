@@ -7,7 +7,7 @@ module ApplicationHelper
         current_controller != CoursesController &&
         current_controller != TermsController
       ) ||
-      (params[:controller] == 'terms' && params[:action] != 'index') || (params[:term_id])
+      (params[:controller] == 'terms' && !%w(index new create).include?(params[:action])) || (params[:term_id])
     end
 
     @term_context
@@ -18,7 +18,7 @@ module ApplicationHelper
   end
 
   def current_controller
-    (params[:controller] + '_controller').camelize.constantize
+    @current_controller ||= (params[:controller] + '_controller').camelize.constantize
   end
 
   def coderay(code, lang = :ruby)

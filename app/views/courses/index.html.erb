@@ -8,12 +8,14 @@
       </p>
 
       <% if @courses.any? %>
-        <%= render collection: @courses, partial: 'courses/index_entry', as: :course %>
+        <% @courses.each do |course| %>
+          <%= render 'index_entry', course: course, terms: @terms_by_course[course] %>
+        <% end %>
       <% end %>
     </div>
   </div>
 
-  <% if policy(@courses).create?  %>
+  <% if policy(Course).create?  %>
     <div class="row">
       <div class="small-12 large-centered text-center">
         <%= link_to "Add Course", new_course_path, remote: true, class: "small button", data: {"reveal-id" => "reveal_modal"} %>

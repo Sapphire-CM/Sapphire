@@ -1,11 +1,11 @@
-class GradingReviewPolicy < PunditBasePolicy
+class GradingReviewPolicy < TermBasedPolicy
   def index?
     user.admin? ||
-    user.staff_of_term?(record)
+    user.staff_of_term?(record.term)
   end
 
   def show?
     user.admin? ||
-    user.staff_of_term?(record)
+    user.staff_of_term?(record.term)
   end
 end

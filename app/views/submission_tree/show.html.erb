@@ -1,6 +1,7 @@
 <% title @exercise.title, submission_author(@submission) %>
 
-<%= render "exercises/sidebar" %>
+<%= render "terms/sidebar", term: @term %>
+<%= render "exercises/subnav", exercise: @exercise %>
 
 <%= render "toolbar", submission: @submission, tree: @tree, submission_upload: @submission_upload %>
 

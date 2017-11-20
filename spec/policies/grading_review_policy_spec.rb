@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe GradingReviewPolicy do
-  subject { GradingReviewPolicy.new(account, term) }
+  subject { GradingReviewPolicy.new(account, GradingReviewPolicy.term_policy_record(term)) }
 
   let(:term) { FactoryGirl.create(:term) }
 

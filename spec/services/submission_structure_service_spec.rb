@@ -23,11 +23,11 @@ RSpec.describe SubmissionStructureService do
         expect(entry).to be_a(SubmissionStructure::TreeNode)
       end
 
-      top_level_file = tree.entries.first
+      top_level_file = tree.files.first
       expect(top_level_file).to be_a(SubmissionStructure::File)
       expect(top_level_file.name).to eq("simple_submission.txt")
 
-      directory = tree.entries.last
+      directory = tree.directories.first
       expect(directory).to be_a(SubmissionStructure::Directory)
       expect(directory.name).to eq("test")
       expect(directory.entries.length).to eq(2)

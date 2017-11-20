@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe StudentsPolicy do
-  subject { described_class.new(account, term) }
+  subject { described_class.new(account, described_class.term_policy_record(term)) }
 
   let(:term) { FactoryGirl.create(:term) }
 

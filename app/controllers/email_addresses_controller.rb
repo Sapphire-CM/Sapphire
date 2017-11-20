@@ -3,7 +3,7 @@ class EmailAddressesController < ApplicationController
   before_action :fetch_email_address, only: [:edit, :update, :destroy]
 
   def index
-    authorize EmailAddressPolicy.with account
+    authorize EmailAddressPolicy.policy_record_with(account: account)
     @email_addresses = account.email_addresses
   end
 

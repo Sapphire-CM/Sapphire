@@ -1,8 +1,7 @@
 <% title @exercise.title, "Services" %>
 
-<%= render "exercises/sidebar" %>
-<%= render "exercises/edit_header" %>
-
+<%= render "terms/sidebar", term: @term %>
+<%= render "exercises/subnav", exercise: @exercise %>
 
 <table class='small-12 sortable'>
   <thead>
@@ -20,4 +19,3 @@
     <% end %>
   </tbody>
 </table>
-

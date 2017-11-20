@@ -9,13 +9,14 @@ RSpec.describe ServicePolicy do
     let(:account) { FactoryGirl.create(:account, :admin) }
 
     describe 'collections' do
-      subject { ServicePolicy.new(account, term) }
+      let(:policy_record) { described_class.term_policy_record(term) }
+      subject { described_class.new(account, policy_record) }
 
       it { is_expected.to permit_authorization(:index) }
     end
 
     describe 'members' do
-      subject { ServicePolicy.new(account, service) }
+      subject { described_class.new(account, service) }
 
       it { is_expected.to permit_authorization(:edit) }
       it { is_expected.to permit_authorization(:update) }
@@ -25,17 +26,19 @@ RSpec.describe ServicePolicy do
   context 'as a lecturer' do
     let(:account) { FactoryGirl.create(:account) }
 
-    context 'of a lecturered term' do
+    context 'of a lectured term' do
       let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term, account: account) }
 
       describe 'collections' do
-        subject { ServicePolicy.new(account, term) }
+        let(:policy_record) { described_class.term_policy_record(term) }
+
+        subject { described_class.new(account, policy_record) }
 
         it { is_expected.to permit_authorization(:index) }
       end
 
       describe 'members' do
-        subject { ServicePolicy.new(account, service) }
+        subject { described_class.new(account, service) }
 
         it { is_expected.to permit_authorization(:edit) }
         it { is_expected.to permit_authorization(:update) }
@@ -46,13 +49,15 @@ RSpec.describe ServicePolicy do
       let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, account: account) }
 
       describe 'collections' do
-        subject { ServicePolicy.new(account, term) }
+        let(:policy_record) { described_class.term_policy_record(term) }
+
+        subject { described_class.new(account, policy_record) }
 
         it { is_expected.not_to permit_authorization(:index) }
       end
 
       describe 'members' do
-        subject { ServicePolicy.new(account, service) }
+        subject { described_class.new(account, service) }
 
         it { is_expected.not_to permit_authorization(:edit) }
         it { is_expected.not_to permit_authorization(:update) }
@@ -68,13 +73,15 @@ RSpec.describe ServicePolicy do
         let!(:term_registration) { FactoryGirl.create(:term_registration, role, account: account, term: term) }
 
         describe 'collections' do
-          subject { ServicePolicy.new(account, term) }
+          let(:policy_record) { described_class.term_policy_record(term) }
+
+          subject { described_class.new(account, policy_record) }
 
           it { is_expected.not_to permit_authorization(:index) }
         end
 
         describe 'members' do
-          subject { ServicePolicy.new(account, service) }
+          subject { described_class.new(account, service) }
 
           it { is_expected.not_to permit_authorization(:edit) }
           it { is_expected.not_to permit_authorization(:update) }
@@ -85,13 +92,15 @@ RSpec.describe ServicePolicy do
         let!(:term_registration) { FactoryGirl.create(:term_registration, role, account: account) }
 
         describe 'collections' do
-          subject { ServicePolicy.new(account, term) }
+          let(:policy_record) { described_class.term_policy_record(term) }
+
+          subject { described_class.new(account, policy_record) }
 
           it { is_expected.not_to permit_authorization(:index) }
         end
 
         describe 'members' do
-          subject { ServicePolicy.new(account, service) }
+          subject { described_class.new(account, service) }
 
           it { is_expected.not_to permit_authorization(:edit) }
           it { is_expected.not_to permit_authorization(:update) }

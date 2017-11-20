@@ -1,4 +1,4 @@
-class RatingGroupPolicy < PunditBasePolicy
+class RatingGroupPolicy < TermBasedPolicy
   def index?
     user.admin? ||
     user.lecturer_of_term?(record.term)

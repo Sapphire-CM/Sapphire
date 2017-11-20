@@ -1,4 +1,4 @@
-class SubmissionEvaluationPolicy < PunditBasePolicy
+class SubmissionEvaluationPolicy < ApplicationPolicy
   def show?
     update?
   end

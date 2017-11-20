@@ -7,14 +7,22 @@ RSpec.describe ExportPolicy do
   context 'as an admin' do
     let(:account) { FactoryGirl.create(:account, :admin) }
 
-    subject { ExportPolicy.new(account, term) }
 
-    it { is_expected.to permit_authorization(:index) }
-    it { is_expected.to permit_authorization(:show) }
-    it { is_expected.to permit_authorization(:new) }
-    it { is_expected.to permit_authorization(:create) }
-    it { is_expected.to permit_authorization(:download) }
-    it { is_expected.to permit_authorization(:destroy) }
+    describe 'collections and creation' do
+      subject { described_class.new(account, described_class.term_policy_record(term)) }
+
+      it { is_expected.to permit_authorization(:index) }
+      it { is_expected.to permit_authorization(:new) }
+      it { is_expected.to permit_authorization(:create) }
+    end
+
+    describe 'members' do
+      subject { described_class.new(account, term) }
+
+      it { is_expected.to permit_authorization(:show) }
+      it { is_expected.to permit_authorization(:download) }
+      it { is_expected.to permit_authorization(:destroy) }
+    end
   end
 
   context 'as a lecturer' do
@@ -25,7 +33,7 @@ RSpec.describe ExportPolicy do
       let(:current_term) { term }
 
       describe 'collections and creation' do
-        subject { ExportPolicy.new(account, term) }
+        subject { described_class.new(account, described_class.term_policy_record(term)) }
 
         it { is_expected.to permit_authorization(:index) }
         it { is_expected.to permit_authorization(:new) }
@@ -33,7 +41,7 @@ RSpec.describe ExportPolicy do
       end
 
       describe 'members' do
-        subject { ExportPolicy.new(account, export) }
+        subject { described_class.new(account, export) }
 
         it { is_expected.to permit_authorization(:show) }
         it { is_expected.to permit_authorization(:download) }
@@ -45,7 +53,7 @@ RSpec.describe ExportPolicy do
       let(:current_term) { FactoryGirl.create(:term, course: term.course) }
 
       describe 'collections and creation' do
-        subject { ExportPolicy.new(account, term) }
+        subject { described_class.new(account, described_class.term_policy_record(term)) }
 
         it { is_expected.not_to permit_authorization(:index) }
         it { is_expected.not_to permit_authorization(:new) }
@@ -53,7 +61,7 @@ RSpec.describe ExportPolicy do
       end
 
       describe 'members' do
-        subject { ExportPolicy.new(account, export) }
+        subject { described_class.new(account, export) }
 
         it { is_expected.not_to permit_authorization(:show) }
         it { is_expected.not_to permit_authorization(:download) }
@@ -71,7 +79,7 @@ RSpec.describe ExportPolicy do
         let(:current_term) { term }
 
         describe 'collections and creation' do
-          subject { ExportPolicy.new(account, term) }
+          subject { described_class.new(account, described_class.term_policy_record(current_term)) }
 
           it { is_expected.not_to permit_authorization(:index) }
           it { is_expected.not_to permit_authorization(:new) }
@@ -79,7 +87,7 @@ RSpec.describe ExportPolicy do
         end
 
         describe 'members' do
-          subject { ExportPolicy.new(account, export) }
+          subject { described_class.new(account, export) }
 
           it { is_expected.not_to permit_authorization(:show) }
           it { is_expected.not_to permit_authorization(:download) }
@@ -91,7 +99,7 @@ RSpec.describe ExportPolicy do
         let(:current_term) { FactoryGirl.create(:term, course: term.course) }
 
         describe 'collections and creation' do
-          subject { ExportPolicy.new(account, term) }
+          subject { described_class.new(account, described_class.term_policy_record(current_term)) }
 
           it { is_expected.not_to permit_authorization(:index) }
           it { is_expected.not_to permit_authorization(:new) }
@@ -99,7 +107,7 @@ RSpec.describe ExportPolicy do
         end
 
         describe 'members' do
-          subject { ExportPolicy.new(account, export) }
+          subject { described_class.new(account, export) }
 
           it { is_expected.not_to permit_authorization(:show) }
           it { is_expected.not_to permit_authorization(:download) }

@@ -9,7 +9,7 @@ RSpec.describe StudentGroupPolicy do
     let(:account) { FactoryGirl.create(:account, :admin) }
 
     context 'collections' do
-      subject { described_class.new(account, term) }
+      subject { described_class.new(account, described_class.term_policy_record(term)) }
 
       it { is_expected.to permit_authorization(:index) }
       it { is_expected.to permit_authorization(:new) }
@@ -33,7 +33,7 @@ RSpec.describe StudentGroupPolicy do
     end
 
     context 'collections' do
-      subject { described_class.new(account, term) }
+      subject { described_class.new(account, described_class.term_policy_record(term)) }
 
       it { is_expected.to permit_authorization(:index) }
       it { is_expected.to permit_authorization(:new) }
@@ -60,7 +60,7 @@ RSpec.describe StudentGroupPolicy do
     end
 
     context 'collections' do
-      subject { described_class.new(account, term) }
+      subject { described_class.new(account, described_class.term_policy_record(term)) }
 
       it { is_expected.to permit_authorization(:index) }
       it { is_expected.not_to permit_authorization(:new) }
@@ -86,7 +86,7 @@ RSpec.describe StudentGroupPolicy do
     end
 
     context 'collections' do
-      subject { described_class.new(account, tutorial_group) }
+      subject { described_class.new(account, described_class.term_policy_record(term)) }
 
       it { is_expected.not_to permit_authorization(:index) }
       it { is_expected.not_to permit_authorization(:new) }

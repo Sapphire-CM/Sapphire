@@ -9,7 +9,6 @@ RSpec.feature 'Student Group List' do
     sign_in account
   end
 
-
   scenario 'Navigating to the student groups page' do
     visit term_path(term)
 

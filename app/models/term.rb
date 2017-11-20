@@ -1,16 +1,16 @@
 # create_table :terms, force: :cascade do |t|
-#   t.string   :title
+#   t.string   :title,       limit: 255
 #   t.integer  :course_id
-#   t.datetime :created_at,              null: false
-#   t.datetime :updated_at,              null: false
+#   t.datetime :created_at,                          null: false
+#   t.datetime :updated_at,                          null: false
 #   t.text     :description
 #   t.integer  :row_order
-#   t.integer  :points,      default: 0
-#   t.integer  :status,      default: 0
+#   t.integer  :points,                  default: 0
+#   t.integer  :status,                  default: 0
 # end
 #
-# add_index :terms, [:course_id], name: :index_terms_on_course_id
-# add_index :terms, [:title, :course_id], name: :index_terms_on_title_and_course_id, unique: true
+# add_index :terms, [:course_id], name: :index_terms_on_course_id, using: :btree
+# add_index :terms, [:title, :course_id], name: :index_terms_on_title_and_course_id, unique: true, using: :btree
 
 class Term < ActiveRecord::Base
   include RankedModel
@@ -21,7 +21,7 @@ class Term < ActiveRecord::Base
   belongs_to :course
 
   has_many :grading_scales, dependent: :destroy
-  has_many :exercises, dependent: :destroy
+  has_many :exercises, dependent: :destroy, inverse_of: :term
   has_many :tutorial_groups, dependent: :destroy
   has_many :submissions, through: :exercises
   has_many :student_groups, through: :tutorial_groups

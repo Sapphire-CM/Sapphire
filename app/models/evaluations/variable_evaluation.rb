@@ -1,17 +1,17 @@
 # create_table :evaluations, force: :cascade do |t|
-#   t.boolean  :checked,               default: false, null: false
+#   t.boolean  :checked,                           default: false, null: false
 #   t.integer  :rating_id
-#   t.datetime :created_at,                            null: false
-#   t.datetime :updated_at,                            null: false
-#   t.string   :type
+#   t.datetime :created_at,                                        null: false
+#   t.datetime :updated_at,                                        null: false
+#   t.string   :type,                  limit: 255
 #   t.integer  :value
 #   t.integer  :evaluation_group_id
-#   t.boolean  :checked_automatically, default: false, null: false
-#   t.boolean  :needs_review,          default: false
+#   t.boolean  :checked_automatically,             default: false, null: false
+#   t.boolean  :needs_review,                      default: false
 # end
 #
-# add_index :evaluations, [:evaluation_group_id], name: :index_evaluations_on_evaluation_group_id
-# add_index :evaluations, [:rating_id], name: :index_evaluations_on_rating_id
+# add_index :evaluations, [:evaluation_group_id], name: :index_evaluations_on_evaluation_group_id, using: :btree
+# add_index :evaluations, [:rating_id], name: :index_evaluations_on_rating_id, using: :btree
 
 class Evaluations::VariableEvaluation < Evaluation
   validate :value_range

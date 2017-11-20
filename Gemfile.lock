@@ -149,6 +149,7 @@ GEM
       compass (~> 1.0.0)
       sass-rails (< 5.1)
       sprockets (< 2.13)
+    concurrent-ruby (1.0.5)
     connection_pool (2.2.1)
     consistency_fail (0.3.4)
     css_parser (1.4.1)
@@ -194,7 +195,8 @@ GEM
     hitimes (1.2.4)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
-    i18n (0.8.1)
+    i18n (0.9.1)
+      concurrent-ruby (~> 1.0)
     interception (0.5)
     jbuilder (2.4.1)
       activesupport (>= 3.0.0, < 5.1)
@@ -242,7 +244,7 @@ GEM
     mimemagic (0.3.1)
     mini_mime (0.1.4)
     mini_portile2 (2.1.0)
-    minitest (5.10.1)
+    minitest (5.10.3)
     multi_json (1.12.2)
     multi_logger (0.1.0)
       railties
@@ -288,7 +290,7 @@ GEM
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
     public_suffix (3.0.0)
-    pundit (0.3.0)
+    pundit (1.1.0)
       activesupport (>= 3.0.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
@@ -432,7 +434,7 @@ GEM
       rails (>= 3.0.0)
     turbolinks (2.5.3)
       coffee-rails
-    tzinfo (1.2.2)
+    tzinfo (1.2.4)
       thread_safe (~> 0.1)
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)
@@ -511,7 +513,7 @@ DEPENDENCIES
   pry-rails
   pry-rescue
   pry-stack_explorer
-  pundit (~> 0.3)
+  pundit
   quiet_assets
   rails (= 4.2.6)
   rails-erd

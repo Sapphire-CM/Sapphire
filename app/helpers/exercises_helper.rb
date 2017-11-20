@@ -1,7 +1,4 @@
 module ExercisesHelper
-  def exercise_topbar_link(exercise)
-    link_to exercise.title, rolebased_submission_path(exercise)
-  end
 
   def exercise_sub_title(exercise)
     value = []

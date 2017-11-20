@@ -1,4 +1,6 @@
 require 'rails_helper'
+require 'features/course_management/behaviours/exercise_side_navigation_behaviour'
+require 'features/course_management/behaviours/exercise_sub_navigation_behaviour'
 
 RSpec.feature 'Publishing Exercise Results Feature', type: :feature do
   let(:account) { create(:account, :admin) }
@@ -7,9 +9,19 @@ RSpec.feature 'Publishing Exercise Results Feature', type: :feature do
   let!(:tutorial_group_1) { create(:tutorial_group, term: term, title: 'T1') }
   let!(:tutorial_group_2) { create(:tutorial_group, term: term, title: 'T2') }
 
-  scenario 'publishing and concealing individual results' do
+  before :each do
     sign_in account
-    visit exercise_result_publications_path(exercise.id)
+  end
+
+  describe 'behaviours' do
+    let(:base_path) { exercise_result_publications_path(exercise) }
+
+    it_behaves_like "Exercise Sub Navigation", [:admin, :lecturer]
+    it_behaves_like "Exercise Side Navigation"
+  end
+
+  scenario 'publishing and concealing individual results' do
+    visit exercise_result_publications_path(exercise)
 
     click_on 'Publish T1'
     expect(page).to have_content('Successfully published results for Test Exercise for T1')
@@ -25,8 +37,7 @@ RSpec.feature 'Publishing Exercise Results Feature', type: :feature do
   end
 
   scenario 'publishing all results of an exercise' do
-    sign_in account
-    visit exercise_result_publications_path(exercise.id)
+    visit exercise_result_publications_path(exercise)
 
     click_on 'Publish all'
     expect(page).to have_content('Successfully published all results for \'Test Exercise\'')
@@ -38,7 +49,6 @@ RSpec.feature 'Publishing Exercise Results Feature', type: :feature do
   scenario 'concealing all results of an exercise' do
     exercise.result_publications.map(&:publish!)
 
-    sign_in account
     visit exercise_result_publications_path(exercise.id)
 
     click_on 'Conceal all'

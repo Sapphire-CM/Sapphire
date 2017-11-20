@@ -1,8 +1,9 @@
-<% title @exercise.title, "Edit" %>
+<% title @exercise.title, "Administrate" %>
 
-<%= render "sidebar" %>
-<%= render "edit_header" %>
-<%= render "form" %>
+<%= render "terms/sidebar", term: @term %>
+<%= render "subnav", exercise: @exercise %>
+
+<%= render "form", exercise: @exercise %>
 
 <hr />
 

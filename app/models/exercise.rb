@@ -1,27 +1,28 @@
 # create_table :exercises, force: :cascade do |t|
 #   t.integer  :term_id
-#   t.string   :title
-#   t.datetime :created_at,                                   null: false
-#   t.datetime :updated_at,                                   null: false
+#   t.string   :title,                        limit: 255
+#   t.datetime :created_at,                                               null: false
+#   t.datetime :updated_at,                                               null: false
 #   t.text     :description
 #   t.datetime :deadline
 #   t.datetime :late_deadline
-#   t.boolean  :enable_max_total_points,      default: false, null: false
+#   t.boolean  :enable_max_total_points,                  default: false, null: false
 #   t.integer  :max_total_points
 #   t.integer  :row_order
-#   t.boolean  :group_submission,             default: false, null: false
+#   t.boolean  :group_submission,                         default: false, null: false
 #   t.integer  :points
-#   t.boolean  :enable_min_required_points,   default: false, null: false
+#   t.boolean  :enable_min_required_points,               default: false, null: false
 #   t.integer  :min_required_points
-#   t.string   :submission_viewer_identifier
+#   t.string   :submission_viewer_identifier, limit: 255
 #   t.integer  :maximum_upload_size
-#   t.boolean  :enable_student_uploads,       default: true,  null: false
-#   t.boolean  :enable_max_upload_size,       default: false, null: false
+#   t.boolean  :enable_student_uploads,                   default: true,  null: false
+#   t.boolean  :enable_max_upload_size,                   default: false, null: false
 #   t.integer  :visible_points
+#   t.string   :instructions_url
 # end
 #
-# add_index :exercises, [:term_id], name: :index_exercises_on_term_id
-# add_index :exercises, [:title, :term_id], name: :index_exercises_on_title_and_term_id, unique: true
+# add_index :exercises, [:term_id], name: :index_exercises_on_term_id, using: :btree
+# add_index :exercises, [:title, :term_id], name: :index_exercises_on_title_and_term_id, unique: true, using: :btree
 
 class Exercise < ActiveRecord::Base
   include RankedModel

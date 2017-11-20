@@ -5,7 +5,8 @@ class StaffController < ApplicationController
 
   def index
     @term_registrations = current_term.term_registrations.staff.ordered_by_name
-    authorize StaffPolicy.with current_term
+
+    authorize StaffPolicy.term_policy_record(@term)
   end
 
   def new
@@ -36,7 +37,7 @@ class StaffController < ApplicationController
   end
 
   def search
-    authorize StaffPolicy.with current_term
+    authorize StaffPolicy.term_policy_record(current_term)
 
     @accounts = Account.search(params[:q]).limit(100)
     @search_terms = params[:q]

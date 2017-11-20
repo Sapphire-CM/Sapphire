@@ -1,15 +1,15 @@
 # create_table :student_groups, force: :cascade do |t|
-#   t.string   :title
+#   t.string   :title,             limit: 255
 #   t.integer  :tutorial_group_id
-#   t.datetime :created_at,        null: false
-#   t.datetime :updated_at,        null: false
+#   t.datetime :created_at,                    null: false
+#   t.datetime :updated_at,                    null: false
 #   t.integer  :points
 #   t.string   :keyword
 #   t.string   :topic
 #   t.text     :description
 # end
 #
-# add_index :student_groups, [:tutorial_group_id], name: :index_student_groups_on_tutorial_group_id
+# add_index :student_groups, [:tutorial_group_id], name: :index_student_groups_on_tutorial_group_id, using: :btree
 
 class StudentGroup < ActiveRecord::Base
   belongs_to :tutorial_group, inverse_of: :student_groups

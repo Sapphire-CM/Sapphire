@@ -1,7 +1,7 @@
-class SubmissionPolicy < PunditBasePolicy
+class SubmissionPolicy < TermBasedPolicy
   def index?
     user.admin? ||
-    user.staff_of_term?(record.exercise.term)
+    user.staff_of_term?(record.term)
   end
 
   def show?

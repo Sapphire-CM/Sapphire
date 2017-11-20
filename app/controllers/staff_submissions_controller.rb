@@ -3,14 +3,8 @@ class StaffSubmissionsController < ApplicationController
 
   before_action :set_context
 
-  SubmissionPolicyRecord = Struct.new :exercise, :tutorial_group do
-    def policy_class
-      SubmissionPolicy
-    end
-  end
-
   def index
-    authorize SubmissionPolicyRecord.new @exercise, @tutorial_group
+    authorize SubmissionPolicy.term_policy_record(@term)
 
     @submissions = scoped_submissions(@tutorial_group, @exercise.submissions)
     @submissions = @submissions.uniq.includes({ exercise_registrations: { term_registration: :account } }, :submission_evaluation, :exercise).load

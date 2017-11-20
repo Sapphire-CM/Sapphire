@@ -1,13 +1,22 @@
 require 'rails_helper'
+require 'features/course_management/behaviours/exercise_side_navigation_behaviour'
+require 'features/course_management/behaviours/exercise_sub_navigation_behaviour'
 
 RSpec.feature 'Ratings and Rating Groups' do
   let(:account) { FactoryGirl.create(:account, :admin) }
-  let(:course) { FactoryGirl.create(:course) }
-  let(:term) { FactoryGirl.create(:term, course: course) }
-  let!(:exercise) { FactoryGirl.create(:exercise, term: term) }
+  let(:course) { term.course }
+  let(:term) { exercise.term }
+  let!(:exercise) { FactoryGirl.create(:exercise) }
 
   before :each do
     sign_in account
+  end
+
+  describe 'behaviours' do
+    let(:base_path) { exercise_rating_groups_path(exercise) }
+
+    it_behaves_like "Exercise Sub Navigation", [:admin, :lecturer]
+    it_behaves_like "Exercise Side Navigation"
   end
 
   scenario 'navigating to the ratings page' do
@@ -15,10 +24,17 @@ RSpec.feature 'Ratings and Rating Groups' do
 
     click_link term.title
     click_top_bar_link exercise.title
-    click_side_nav_link 'Administrate'
     click_sub_nav_link 'Ratings'
 
     expect(page).to have_current_path(exercise_rating_groups_path(exercise))
+  end
+
+  scenario 'highlighting ratings in sub navigation', js: true do
+    visit exercise_rating_groups_path(exercise)
+
+    within ".sub-nav dd.active" do
+      expect(page).to have_link("Ratings", href: exercise_rating_groups_path(exercise))
+    end
   end
 
   describe 'Rating Groups', js: true do

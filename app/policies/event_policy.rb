@@ -1,4 +1,4 @@
-class EventPolicy < PunditBasePolicy
+class EventPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user.admin?

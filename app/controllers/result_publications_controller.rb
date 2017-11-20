@@ -5,7 +5,7 @@ class ResultPublicationsController < ApplicationController
   before_action :set_result_publication, only: [:publish, :conceal]
 
   def index
-    authorize ResultPublicationPolicy.with(@term)
+    authorize ResultPublicationPolicy.term_policy_record(@term)
 
     @result_publications = @exercise.result_publications
       .joins(:tutorial_group)
@@ -26,7 +26,7 @@ class ResultPublicationsController < ApplicationController
   end
 
   def publish_all
-    authorize ResultPublicationPolicy.with(@term)
+    authorize ResultPublicationPolicy.term_policy_record(@term)
 
     result_publication_service.publish_all!
 
@@ -34,13 +34,12 @@ class ResultPublicationsController < ApplicationController
   end
 
   def conceal_all
-    authorize ResultPublicationPolicy.with(@term)
+    authorize ResultPublicationPolicy.term_policy_record(@term)
 
     result_publication_service.conceal_all!
 
     redirect_to exercise_result_publications_path(@exercise), notice: "Successfully concealed all results for '#{@exercise.title}'"
   end
-
 
   private
   def result_publication_params

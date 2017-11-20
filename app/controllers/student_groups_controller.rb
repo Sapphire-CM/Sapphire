@@ -4,7 +4,7 @@ class StudentGroupsController < ApplicationController
   before_action :set_student_group, only: [:show, :edit, :update, :destroy]
 
   def index
-    authorize StudentGroupPolicy.with current_term
+    authorize StudentGroupPolicy.term_policy_record(current_term)
 
     @student_groups = current_term.student_groups.order(:title)
     @student_groups = @student_groups.includes(:students, tutorial_group: :tutor_accounts)
@@ -18,13 +18,13 @@ class StudentGroupsController < ApplicationController
   def new
     @student_group = StudentGroup.new
 
-    authorize StudentGroupPolicy.with current_term
+    authorize StudentGroupPolicy.term_policy_record(current_term)
   end
 
   def create
     @student_group = StudentGroup.new(student_group_params)
 
-    authorize StudentGroupPolicy.with current_term
+    authorize StudentGroupPolicy.term_policy_record(current_term)
 
     if @student_group.save
       redirect_to term_student_group_path(current_term, @student_group), notice: 'Successfully created student group'
@@ -50,7 +50,7 @@ class StudentGroupsController < ApplicationController
   end
 
   def search_students
-    authorize StudentGroupPolicy.with current_term
+    authorize StudentGroupPolicy.term_policy_record(current_term)
 
     if params[:q].blank?
       render nothing: true, status: :bad_request

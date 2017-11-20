@@ -1,6 +1,6 @@
 <% title course_term_title, "Grading Scale" %>
 
-<%= render 'terms/sidebar' %>
+<%= render 'terms/sidebar', term: @term %>
 
 <%= render 'grade_distribution', grading_scale: @grading_scale, term: @term %>
 

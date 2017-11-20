@@ -71,53 +71,6 @@ RSpec.describe EventService do
       end
     end
 
-    describe '#submission_updated! (deprecated - only )' do
-      it 'creates a Events::Submission::Updated event' do
-        expect do
-          expect(subject.submission_updated!(submission)).to be_a Events::Submission::Updated
-        end.to change(Events::Submission::Updated, :count).by(1)
-      end
-
-      it 'correctly sets up and returns the event' do
-        FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'one')
-        FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'two')
-        FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'three')
-
-        added_asset, updated_asset, removed_asset = *submission.submission_assets(true)
-
-        allow(added_asset).to receive(:new_record?).and_return(true)
-        allow(updated_asset).to receive(:changed?).and_return(true)
-        allow(updated_asset).to receive(:changes).and_return('file' => ['simple_submission.txt', 'submission_asset_iso_latin.txt'])
-        allow(removed_asset).to receive(:marked_for_destruction?).and_return(true)
-
-        event = subject.submission_updated!(submission)
-
-        expect(event.submission_id).to eq(submission.id)
-        expect(event.exercise_id).to eq(exercise.id)
-        expect(event.exercise_title).to eq(exercise.title)
-        expect(event.submission_assets).to match(added: [
-          {
-            file: 'simple_submission.txt',
-            path: 'one',
-            content_type: SubmissionAsset::Mime::PLAIN_TEXT
-          }
-        ],
-          updated: [
-            {
-              file: ['simple_submission.txt', 'submission_asset_iso_latin.txt'],
-              path: 'two',
-              content_type: SubmissionAsset::Mime::PLAIN_TEXT
-            }
-          ], destroyed: [
-            {
-              file: 'simple_submission.txt',
-              path: 'three',
-              content_type: SubmissionAsset::Mime::PLAIN_TEXT
-            }
-          ])
-      end
-    end
-
     describe '#submission_extracted!' do
       let(:zip_submission_asset) { FactoryGirl.create(:submission_asset, submission: submission, path: 'zip/path', file: prepare_static_test_file('submission.zip')) }
       let(:extracted_submission_assets) do

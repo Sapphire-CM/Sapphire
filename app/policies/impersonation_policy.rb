@@ -1,4 +1,4 @@
-class ImpersonationPolicy < PunditBasePolicy
+class ImpersonationPolicy < ApplicationPolicy
   def create?
     user.admin?
   end

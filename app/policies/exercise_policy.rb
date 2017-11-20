@@ -1,7 +1,7 @@
-class ExercisePolicy < PunditBasePolicy
+class ExercisePolicy < TermBasedPolicy
   def index?
     user.admin? ||
-    record.associated_with?(user)
+    record.term.associated_with?(user)
   end
 
   def show?

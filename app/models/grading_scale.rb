@@ -9,9 +9,9 @@
 #   t.datetime :updated_at,                 null: false
 # end
 #
-# add_index :grading_scales, [:grade], name: :index_grading_scales_on_grade
-# add_index :grading_scales, [:term_id, :grade], name: :index_grading_scales_on_term_id_and_grade, unique: true
-# add_index :grading_scales, [:term_id], name: :index_grading_scales_on_term_id
+# add_index :grading_scales, [:grade], name: :index_grading_scales_on_grade, using: :btree
+# add_index :grading_scales, [:term_id, :grade], name: :index_grading_scales_on_term_id_and_grade, unique: true, using: :btree
+# add_index :grading_scales, [:term_id], name: :index_grading_scales_on_term_id, using: :btree
 
 class GradingScale < ActiveRecord::Base
   belongs_to :term

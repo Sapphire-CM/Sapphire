@@ -1,4 +1,4 @@
-class EmailAddressPolicy < PunditBasePolicy
+class EmailAddressPolicy < ApplicationPolicy
   def index?
     user.admin? ||
     user == record

@@ -1,7 +1,6 @@
 <% title @exercise.title, @service.title %>
 
-<%= render "exercises/sidebar" %>
-<%= render "exercises/edit_header" %>
-
+<%= render "terms/sidebar", term: @term %>
+<%= render "exercises/subnav", exercise: @exercise %>
 
 <%= render "form", term: current_term, exercise: current_exercise, service: @service %>

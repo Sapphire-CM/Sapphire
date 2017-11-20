@@ -1,9 +1,11 @@
-<%= simple_form_for @exercise do |f| %>
+<%= simple_form_for exercise do |f| %>
 
   <%= f.input :term_id, as: :hidden %>
 
   <%= f.input :title %>
   <%= f.input :description, input_html: { rows: 3 } %>
+
+  <%= f.input :instructions_url %>
 
   <%= f.input :deadline, as: :datetime_picker, label: "Submission" %>
   <%= f.input :late_deadline, as: :datetime_picker, label: "Disable Submission (Late Deadline)" %>

@@ -42,7 +42,11 @@ class CoursesController < ApplicationController
 
   def destroy
     @course.destroy
-    render partial: 'courses/remove_index_entry', locals: { course: @course }
+
+    respond_to do |format|
+      format.html { redirect_to root_path, notice: "Course was successfully deleted" }
+      format.js
+    end
   end
 
   private

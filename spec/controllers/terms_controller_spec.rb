@@ -33,6 +33,7 @@ RSpec.describe TermsController do
       expect(response).to have_http_status(:success)
       expect(assigns(:term)).to eq(term)
       expect(response).to render_template(:_sidebar)
+      expect(response).to render_template(:show)
     end
 
     describe 'copying values from previous term' do
@@ -44,6 +45,7 @@ RSpec.describe TermsController do
         get :show, id: term.id
 
         expect(response).to have_http_status(:success)
+        expect(response).to render_template(:show)
         expect(response).not_to render_template(:sidebar)
       end
 
@@ -51,6 +53,7 @@ RSpec.describe TermsController do
         get :show, id: term.id
 
         expect(response).to have_http_status(:success)
+        expect(response).to render_template(:show)
         expect(response.body).not_to have_content('Exercises')
       end
 
@@ -58,6 +61,7 @@ RSpec.describe TermsController do
         get :show, id: term.id
 
         expect(response).to have_http_status(:success)
+        expect(response).to render_template(:show)
         expect(response.body).to have_content('stand by')
       end
     end
@@ -68,6 +72,8 @@ RSpec.describe TermsController do
       xhr :get, :new, course_id: course.id
 
       expect(response).to have_http_status(:success)
+      expect(response).to render_template(:new)
+
       expect(assigns(:term)).to be_a_new(Term)
     end
   end
@@ -82,7 +88,7 @@ RSpec.describe TermsController do
         end.to change(Term, :count).by(1)
 
         expect(response).to have_http_status(:success)
-        expect(response).to render_template(:_insert_index_entry)
+        expect(response).to render_template(:create)
         expect(assigns(:term)).to be_a(Term)
         expect(assigns(:term)).to be_persisted
         expect(assigns(:term)).to be_ready
@@ -105,7 +111,7 @@ RSpec.describe TermsController do
         end.to change(Term, :count).by(1)
 
         expect(response).to have_http_status(:success)
-        expect(response).to render_template(:_insert_index_entry)
+        expect(response).to render_template(:create)
         expect(assigns(:term)).to be_a(Term)
         expect(assigns(:term)).to be_persisted
         expect(assigns(:term)).not_to be_ready
@@ -121,7 +127,6 @@ RSpec.describe TermsController do
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:new)
-        expect(response).not_to render_template(:_insert_index_entry)
         expect(assigns(:term)).to be_a_new(TermNew)
       end
     end
@@ -132,6 +137,7 @@ RSpec.describe TermsController do
       get :edit, id: term.id
 
       expect(response).to have_http_status(:success)
+      expect(response).to render_template(:edit)
       expect(assigns(:term)).to eq(term)
     end
   end
@@ -182,6 +188,7 @@ RSpec.describe TermsController do
       get :points_overview, id: term.id
 
       expect(assigns(:grading_scale_service)).to be_a(GradingScaleService)
+      expect(response).to render_template(:points_overview)
     end
   end
 end

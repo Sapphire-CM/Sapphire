@@ -1,6 +1,6 @@
-<% title pluralize(@submission_count, "Submission"), @exercise.title %>
+<% title @exercise.title, pluralize(@submission_count, "Submission") %>
 
-<%= render "exercises/sidebar" %>
+<%= render "terms/sidebar", term: @term %>
 <%= render "exercises/subnav", exercise: @exercise %>
 
 <div class='tutorial-group-dropdown'>

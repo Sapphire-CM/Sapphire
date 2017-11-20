@@ -4,7 +4,6 @@ RSpec.shared_examples "Exercise Sub Navigation" do |roles|
   roles = [:student, :tutor, :lecturer, :admin] if roles.blank? || roles.empty?
 
   let(:account) { term_registration.account }
-  let(:term) { exercise.term }
 
   before(:each) do
     sign_in account
@@ -22,7 +21,7 @@ RSpec.shared_examples "Exercise Sub Navigation" do |roles|
           expect(page).to have_link("Ratings", href: exercise_rating_groups_path(exercise))
           expect(page).to have_link("Submissions", href: exercise_submissions_path(exercise))
           expect(page).to have_link("Publish Results", href: exercise_result_publications_path(exercise))
-          expect(page).to have_link("Services", href: term_exercise_services_path(term, exercise))
+          expect(page).to have_link("Services", href: term_exercise_services_path(exercise.term, exercise))
           expect(page).to have_link("Administrate", href: edit_exercise_path(exercise))
         end
       end
@@ -42,7 +41,7 @@ RSpec.shared_examples "Exercise Sub Navigation" do |roles|
 
           expect(page).not_to have_link("Ratings", href: exercise_rating_groups_path(exercise))
           expect(page).not_to have_link("Publish Results", href: exercise_result_publications_path(exercise))
-          expect(page).not_to have_link("Services", href: term_exercise_services_path(term, exercise))
+          expect(page).not_to have_link("Services", href: term_exercise_services_path(exercise.term, exercise))
           expect(page).not_to have_link("Administrate", href: edit_exercise_path(exercise))
         end
       end
@@ -62,7 +61,7 @@ RSpec.shared_examples "Exercise Sub Navigation" do |roles|
           expect(page).not_to have_link("Ratings", href: exercise_rating_groups_path(exercise))
           expect(page).not_to have_link("Submissions", href: exercise_submissions_path(exercise))
           expect(page).not_to have_link("Publish Results", href: exercise_result_publications_path(exercise))
-          expect(page).not_to have_link("Services", href: term_exercise_services_path(term, exercise))
+          expect(page).not_to have_link("Services", href: term_exercise_services_path(exercise.term, exercise))
           expect(page).not_to have_link("Administrate", href: edit_exercise_path(exercise))
         end
       end

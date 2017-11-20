@@ -1,6 +1,6 @@
 <% title @exercise.title, "Administrate" %>
 
-<%= render "sidebar" %>
+<%= render "terms/sidebar", term: @term %>
 <%= render "subnav", exercise: @exercise %>
 
 <%= render "form", exercise: @exercise %>

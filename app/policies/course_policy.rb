@@ -2,9 +2,9 @@ class CoursePolicy < ApplicationPolicy
   class Scope < Struct.new(:user, :scope)
     def resolve
       if user.admin?
-        Course.all.includes(:terms)
+        Course.all
       else
-        Course.associated_with(user).includes(:terms).unlocked
+        Course.associated_with(user).unlocked
       end
     end
   end

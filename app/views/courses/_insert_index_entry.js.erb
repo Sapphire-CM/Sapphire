@@ -1,4 +1,4 @@
-var html = "<%=j render 'index_entry', course: @course %>";
+var html = "<%=j render 'index_entry', course: @course, terms: policy_scope(@course.terms) %>";
 
 $('#course_index_entries .index_entry_none.course').slideUp(function(){
   $html = $(html).hide();

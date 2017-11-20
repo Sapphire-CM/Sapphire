@@ -1,4 +1,4 @@
-var html = "<%=j render 'index_entry', course: @course %>";
+var html = "<%=j render 'index_entry', course: @course, terms: policy_scope(@course.terms) %>";
 
 $("<%= "#course_id_#{course.id}" %>").replaceWith(html);
 

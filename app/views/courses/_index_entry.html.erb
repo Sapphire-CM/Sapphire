@@ -30,8 +30,8 @@
       </tr>
     </thead>
     <tbody class='term_index_entries'>
-      <% if course.terms.present? %>
-        <%= render collection: course.terms, partial:'terms/index_entry', as: :term, locals: {course: course} %>
+      <% if terms.present? %>
+        <%= render collection: terms, partial:'terms/index_entry', as: :term, locals: {course: course} %>
       <% else %>
         <%= render "courses/index_entry_no_terms" %>
       <% end %>

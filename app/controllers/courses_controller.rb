@@ -3,7 +3,8 @@ class CoursesController < ApplicationController
 
   def index
     authorize Course
-    @courses = policy_scope(Course).load
+    @terms_by_course = policy_scope(Term.all).group_by(&:course)
+    @courses = policy_scope(Course.all)
   end
 
   def new

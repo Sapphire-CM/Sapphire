@@ -23,7 +23,8 @@ RSpec.describe 'Courses Feature' do
     end
 
     it 'does not display links to terms to unassociated terms' do
-      other_term = create(:term)
+      other_term = create(:term, course: term.course)
+
       expect(page).not_to have_link other_term.title
     end
 

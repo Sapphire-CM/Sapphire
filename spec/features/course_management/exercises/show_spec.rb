@@ -41,5 +41,7 @@ RSpec.describe "Exercise Page" do
   scenario "Viewing details of the exercise" do
     visit exercise_path(exercise)
 
+    expect(page).to have_content("Individual Submission")
+    expect(page).to have_content("Uploads are enabled")
   end
 end

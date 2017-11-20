@@ -11,7 +11,7 @@ RSpec.feature "Exercises List" do
     sign_in account
   end
 
-  context 'behaviours' do
+  describe 'behaviours' do
     let(:base_path) { term_exercises_path(term) }
 
     it_behaves_like "Exercise Side Navigation"

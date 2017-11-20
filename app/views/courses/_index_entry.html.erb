@@ -24,7 +24,7 @@
         <th>Title</th>
         <th>Exercises</th>
         <th>Tutorial Groups</th>
-        <% if policy(course.terms.first || Term.new(course: course)).update? || policy(course.terms.first || Term.new(course: course)).destroy? %>
+        <% if policy(course).student_count? %>
           <th>Students</th>
         <% end %>
       </tr>

@@ -1,4 +1,4 @@
-<%= simple_form_for @course, remote: true do |f| %>
+<%= simple_form_for @course, remote: request.format.js? do |f| %>
   <%= f.input :title %>
   <%= f.input :description, input_html: { rows: 3 } %>
 

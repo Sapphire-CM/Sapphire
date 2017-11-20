@@ -29,6 +29,10 @@ class CoursePolicy < ApplicationPolicy
     )
   end
 
+  def student_count?
+    user.admin? || user.staff_of_course?(record)
+  end
+
   def edit?
     user.admin?
   end

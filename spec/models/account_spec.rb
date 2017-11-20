@@ -171,6 +171,7 @@ describe Account do
 
       let(:lecturer_term) { FactoryGirl.create(:term) }
       let!(:lecturer_term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: lecturer_term, account: subject) }
+
       let!(:another_term) { FactoryGirl.create(:term) }
 
       subject { FactoryGirl.create(:account) }
@@ -189,6 +190,41 @@ describe Account do
 
       it 'returns false if user is not a staff member of term' do
         expect(subject).not_to be_staff_of_term(another_term)
+      end
+    end
+
+    describe '#staff_of_course?' do
+      subject { FactoryGirl.create(described_class.to_s.underscore.to_sym) }
+
+      let(:student_course) { student_term.course }
+      let(:student_term) { FactoryGirl.create(:term) }
+      let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, term: student_term, account: subject) }
+
+      let(:tutor_course) { tutor_term.course }
+      let(:tutor_term) { FactoryGirl.create(:term) }
+      let!(:tutor_term_registration) { FactoryGirl.create(:term_registration, :tutor, term: tutor_term, account: subject) }
+
+      let(:lecturer_course) { lecturer_term.course }
+      let(:lecturer_term) { FactoryGirl.create(:term) }
+      let!(:lecturer_term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: lecturer_term, account: subject) }
+
+      let(:another_course) { another_term.course }
+      let(:another_term) { FactoryGirl.create(:term) }
+
+      it 'returns true if account is lecturer of term' do
+        expect(subject.staff_of_course?(lecturer_course)).to be_truthy
+      end
+
+      it 'returns true if account is tutor of term' do
+        expect(subject.staff_of_course?(tutor_course)).to be_truthy
+      end
+
+      it 'returns false if account is student of term' do
+        expect(subject.staff_of_course?(student_course)).to be_falsey
+      end
+
+      it 'returns false if account not associated with term' do
+        expect(subject.staff_of_course?(another_course)).to be_falsey
       end
     end
 

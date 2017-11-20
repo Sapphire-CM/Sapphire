@@ -9,8 +9,11 @@ class TermsController < ApplicationController
   end
 
   def new
+    @course = Course.find(params[:course_id])
+
     @term = TermNew.new
-    @term.course = Course.find(params[:course_id])
+    @term.course = @course
+
     authorize @term
   end
 
@@ -60,7 +63,7 @@ class TermsController < ApplicationController
 
   def destroy
     @term.destroy
-    redirect_to root_path
+    redirect_to root_path, notice: "Term has been successfully deleted"
   end
 
   def points_overview

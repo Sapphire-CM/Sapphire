@@ -54,7 +54,7 @@ RSpec.describe "Term Creation" do
 
       fill_in "Title", with: "My new term"
       check "Copy elements from previous term"
-      select other_term.title
+      select other_term.title, from: "Source term"
       check "Lecturer"
       check "Exercises, Rating groups and Ratings"
       check "Grading scale"

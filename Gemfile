@@ -105,8 +105,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'database_cleaner'
 
-  gem 'simplecov'                 # test-coverage reports
-  gem 'simplecov-html', github: 'Kriechi/simplecov-html', branch: 'fix-list-hiding' # html formatting of simplecov results
+  gem 'simplecov', require: false # test-coverage reports
 
   gem 'capybara'                  # feature test syntax enhancements
   gem 'capybara-screenshot'       # automatically generate screenshots for failing feature tests

@@ -1,6 +1,5 @@
 class StudentResultsPolicy < TermBasedPolicy
   def index?
-    user.admin? ||
     user.student_of_term?(record.term)
   end
 

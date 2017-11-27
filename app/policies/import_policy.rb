@@ -1,18 +1,10 @@
-class ImportPolicy < ApplicationPolicy
+class ImportPolicy < TermBasedPolicy
   def show?
     authorized?
   end
 
-  def new?
-    create?
-  end
-
   def create?
     authorized?
-  end
-
-  def edit?
-    update?
   end
 
   def update?
@@ -24,21 +16,19 @@ class ImportPolicy < ApplicationPolicy
   end
 
   def file?
-    authorized?
+    show?
   end
 
   def full_mapping_table?
-    authorized?
+    show?
   end
 
   def results?
-    authorized?
+    show?
   end
 
   private
-
   def authorized?
-    user.admin? ||
-    user.lecturer_of_term?(record.term)
+    lecturer_permissions?
   end
 end

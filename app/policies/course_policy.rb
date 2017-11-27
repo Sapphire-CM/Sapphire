@@ -1,7 +1,7 @@
 class CoursePolicy < ApplicationPolicy
-  class Scope < Struct.new(:user, :scope)
+  class Scope < Scope
     def resolve
-      if user.admin?
+      if admin?
         Course.all
       else
         Course.associated_with(user).unlocked
@@ -10,19 +10,15 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def index?
-    user.present?
-  end
-
-  def new?
-    user.admin?
+    true
   end
 
   def create?
-    user.admin?
+    admin?
   end
 
   def create_term?
-    user.admin? || (
+    admin? || (
       record &&
       record.terms.any? &&
       user.lecturer_of_any_term_in_course?(record)
@@ -30,18 +26,14 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def student_count?
-    user.admin? || user.staff_of_course?(record)
-  end
-
-  def edit?
-    user.admin?
+    admin? || user.staff_of_course?(record)
   end
 
   def update?
-    user.admin?
+    admin?
   end
 
   def destroy?
-    user.admin?
+    admin?
   end
 end

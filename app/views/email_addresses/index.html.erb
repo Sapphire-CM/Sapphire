@@ -3,7 +3,7 @@
 <%= render "accounts/sidebar", account: account %>
 
 <% if @email_addresses.any? %>
-  <table class='small-12'>
+  <table class='small-12 email-addresses'>
     <thead>
       <tr>
         <th>Email</th>
@@ -22,9 +22,11 @@
     </tbody>
   </table>
 <% else %>
-  <p>No additional email addresses specified</p>
+  <p>No additional email addresses specified.</p>
 <% end %>
 
+<% if policy(EmailAddressPolicy.policy_record_with(account: account)).new? %>
 <p>
   <%= link_to "Add", new_account_email_address_path(account), class: "small button" %>
 </p>
+<% end %>

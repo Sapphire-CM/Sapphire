@@ -4,7 +4,8 @@ class AccountPolicy < ApplicationPolicy
   end
 
   def show?
-    user.admin?
+    user.admin? ||
+    user == record
   end
 
   def edit?

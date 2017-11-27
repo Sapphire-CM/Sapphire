@@ -37,7 +37,7 @@ RSpec.describe AccountPolicy do
       describe 'own account' do
         subject { AccountPolicy.new(current_account, current_account) }
 
-        it { is_expected.not_to permit_authorization(:show) }
+        it { is_expected.to permit_authorization(:show) }
         it { is_expected.to permit_authorization(:edit) }
         it { is_expected.to permit_authorization(:update) }
         it { is_expected.not_to permit_authorization(:destroy) }

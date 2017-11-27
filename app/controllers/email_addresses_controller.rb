@@ -21,7 +21,7 @@ class EmailAddressesController < ApplicationController
     @email_address.account = account
 
     if @email_address.save
-      redirect_to account_email_addresses_path(account), notice: "Added #{@email_address.email} to this account"
+      redirect_to account_email_addresses_path(account), notice: "Successfully added #{@email_address.email} to this account"
     else
       render :new
     end
@@ -40,7 +40,8 @@ class EmailAddressesController < ApplicationController
 
   def destroy
     @email_address.destroy
-    redirect_to account_email_addresses_path(account), notice: "Removed #{@email_address.email} from this account"
+
+    redirect_to account_email_addresses_path(account), notice: "Successfully removed #{@email_address.email} from this account"
   end
 
   private

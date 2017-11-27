@@ -1,18 +1,18 @@
 class EmailAddressPolicy < ApplicationPolicy
   def index?
-    user.admin? ||
+    admin? ||
     user == record.account
   end
 
   def create?
-    user.admin?
+    admin?
   end
 
   def update?
-    user.admin?
+    admin?
   end
 
   def destroy?
-    user.admin?
+    admin?
   end
 end

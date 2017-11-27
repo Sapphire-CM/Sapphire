@@ -1,7 +1,7 @@
 class EventPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.admin?
+      if admin?
         scope.all
       else
         scope.joins(term: :term_registrations).where do

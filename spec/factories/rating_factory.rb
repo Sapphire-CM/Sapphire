@@ -1,7 +1,6 @@
 FactoryGirl.define do
   sequence(:rating_title) { |n| "Rating #{n}" }
 
-
   factory :fixed_points_deduction_rating, class: Ratings::FixedPointsDeductionRating do
     title { generate :rating_title }
     rating_group

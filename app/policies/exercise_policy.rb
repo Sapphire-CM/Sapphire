@@ -33,9 +33,4 @@ class ExercisePolicy < TermBasedPolicy
     user.admin? ||
     user.lecturer_of_term?(record.term)
   end
-
-  def tutorial_group_dropdown?
-    user.admin? ||
-    user.staff_of_term?(record.term)
-  end
 end

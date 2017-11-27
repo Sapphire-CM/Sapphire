@@ -24,12 +24,7 @@ class TermBasedPolicy < ApplicationPolicy
     user.lecturer_of_term?(term)
   end
 
-  def tutor?(term = record.term)
-    user.tutor_of_term?(term)
-  end
-
   def student?(term = record.term)
     user.student_of_term?(term)
   end
-
 end

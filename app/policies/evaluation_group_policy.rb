@@ -1,6 +1,5 @@
-class EvaluationGroupPolicy < ApplicationPolicy
+class EvaluationGroupPolicy < TermBasedPolicy
   def update?
-    user.admin? ||
-    user.staff_of_term?(record.submission_evaluation.submission.term)
+    staff_permissions?(record.submission_evaluation.submission.term)
   end
 end

@@ -1,36 +1,26 @@
 class RatingGroupPolicy < TermBasedPolicy
   def index?
-    user.admin? ||
-    user.lecturer_of_term?(record.term)
-  end
-
-  def new?
-    user.admin? ||
-    user.lecturer_of_term?(record.exercise.term)
+    lecturer_permissions?(record.term)
   end
 
   def create?
-    user.admin? ||
-    user.lecturer_of_term?(record.exercise.term)
-  end
-
-  def edit?
-    user.admin? ||
-    user.lecturer_of_term?(record.exercise.term)
+    modify?
   end
 
   def update?
-    user.admin? ||
-    user.lecturer_of_term?(record.exercise.term)
+    modify?
   end
 
   def destroy?
-    user.admin? ||
-    user.lecturer_of_term?(record.exercise.term)
+    modify?
   end
 
   def update_position?
-    user.admin? ||
-    user.lecturer_of_term?(record.exercise.term)
+    update?
+  end
+
+  private
+  def modify?
+    lecturer_permissions?(record.exercise.term)
   end
 end

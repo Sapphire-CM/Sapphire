@@ -1,24 +1,18 @@
 class RatingsController < ApplicationController
-  RatingPolicyRecord = Struct.new :rating do
-    def policy_class
-      RatingPolicy
-    end
-  end
-
   include EventSourcing
 
   before_action :set_context
   before_action :set_rating, only: [:edit, :update, :update_position, :destroy]
 
   def new
-    @rating = @rating_group.ratings.new
-    authorize RatingPolicyRecord.new @rating
+    @rating = @rating_group.ratings.build
+    authorize @rating
   end
 
   def create
     unless params[:rating] && params[:rating][:type] && Object.const_defined?(params[:rating][:type].classify)
-      @rating = @rating_group.ratings.new
-      authorize RatingPolicyRecord.new @rating
+      @rating = @rating_group.ratings.build
+      authorize @rating
       render :new, alert: 'Invalid type!'
       return
     end
@@ -26,7 +20,7 @@ class RatingsController < ApplicationController
     @rating = Rating.new_from_type(rating_params)
     @rating.rating_group = @rating_group
     @rating.row_order_position = :last
-    authorize RatingPolicyRecord.new @rating
+    authorize @rating
 
     if @rating.save
       event_service.rating_created!(@rating)
@@ -43,7 +37,6 @@ class RatingsController < ApplicationController
     @rating.assign_attributes(rating_params)
 
     @rating = @rating.from_updated_type if @rating.type_changed?
-
 
     if @rating.valid?
       event_service.rating_updated!(@rating)
@@ -78,7 +71,7 @@ class RatingsController < ApplicationController
 
   def set_rating
     @rating = Rating.find(params[:id])
-    authorize RatingPolicyRecord.new @rating
+    authorize @rating
   end
 
   def rating_params

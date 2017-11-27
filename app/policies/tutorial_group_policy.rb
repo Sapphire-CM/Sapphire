@@ -1,39 +1,25 @@
 class TutorialGroupPolicy < TermBasedPolicy
   def index?
-    user.admin? ||
-    user.staff_of_term?(record)
+    staff_permissions?
   end
 
   def show?
-    user.admin? ||
-    user.staff_of_term?(record.term)
-  end
-
-  def new?
-    create?
+    staff_permissions?
   end
 
   def create?
-    user.admin? ||
-    user.lecturer_of_term?(record.term)
-  end
-
-  def edit?
-    update?
+    lecturer_permissions?
   end
 
   def update?
-    user.admin? ||
-    user.lecturer_of_term?(record.term)
+    lecturer_permissions?
   end
 
   def destroy?
-    user.admin? ||
-    user.lecturer_of_term?(record.term)
+    lecturer_permissions?
   end
 
   def points_overview?
-    user.admin? ||
-    user.staff_of_term?(record.term)
+    show?
   end
 end

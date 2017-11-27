@@ -1,27 +1,16 @@
-class SubmissionFolderPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope
-    end
-  end
-
+class SubmissionFolderPolicy < TermBasedPolicy
   def show?
-    user.admin? ||
-    user.staff_of_term?(record.submission.term) ||
-    (
-      record.submission.students.include?(user) &&
-      record.submission.modifiable_by_students?
-    )
+    authorized?
   end
 
-  def new?
-    create?
-  end
 
   def create?
-    user.admin? ||
-    user.staff_of_term?(record.submission.term) ||
-    (
+    authorized?
+  end
+
+  private
+  def authorized?
+    staff_permissions?(record.submission.term) || (
       record.submission.students.include?(user) &&
       record.submission.modifiable_by_students?
     )

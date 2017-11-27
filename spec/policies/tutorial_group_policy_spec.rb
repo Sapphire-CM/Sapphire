@@ -7,9 +7,10 @@ RSpec.describe TutorialGroupPolicy do
   context 'admin permissions' do
     shared_examples 'admin member permissions' do
       describe 'collections' do
-        subject { described_class.new(account, term) }
+        subject { described_class.new(account, described_class.term_policy_record(term)) }
 
         it { is_expected.to permit_authorization(:index) }
+        it { is_expected.to permit_authorization(:points_overview) }
       end
 
       describe 'members' do
@@ -45,9 +46,10 @@ RSpec.describe TutorialGroupPolicy do
     let!(:term_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, account: account, tutorial_group: another_tutorial_group) }
 
     describe 'collections' do
-      subject { described_class.new(account, term) }
+      subject { described_class.new(account, described_class.term_policy_record(term)) }
 
       it { is_expected.to permit_authorization(:index) }
+      it { is_expected.to permit_authorization(:points_overview) }
     end
 
     describe 'members' do
@@ -68,9 +70,10 @@ RSpec.describe TutorialGroupPolicy do
     let!(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term, account: account, tutorial_group: another_tutorial_group) }
 
     describe 'collections' do
-      subject { described_class.new(account, term) }
+      subject { described_class.new(account, described_class.term_policy_record(term)) }
 
       it { is_expected.not_to permit_authorization(:index) }
+      it { is_expected.not_to permit_authorization(:points_overview) }
     end
 
     describe 'members' do

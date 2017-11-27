@@ -29,6 +29,16 @@ RSpec.feature "Exercises Editing" do
     expect(page).to have_current_path(edit_exercise_path(exercise))
   end
 
+  scenario 'navigating to the edit page via exercises#index' do
+    visit term_exercises_path(term)
+
+    within 'table.exercises' do
+      click_link href: edit_exercise_path(exercise)
+    end
+
+    expect(page).to have_current_path(edit_exercise_path(exercise))
+  end
+
   scenario 'Changing exercise attributes' do
     visit edit_exercise_path(exercise)
 

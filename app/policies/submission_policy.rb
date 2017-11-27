@@ -1,46 +1,35 @@
 class SubmissionPolicy < TermBasedPolicy
   def index?
-    user.admin? ||
-    user.staff_of_term?(record.term)
+    staff_permissions?
   end
 
   def show?
-    user.admin? ||
-    user.staff_of_term?(record.term) ||
+    staff_permissions? ||
     (
-      user.student_of_term?(record.term) &&
-      (
+      student? && (
         record.students.include?(user) ||
         record.new_record?
       )
     )
   end
 
-
-  def new?
-    create?
-  end
-
   def create?
-    user.admin? ||
-    user.staff_of_term?(record.exercise.term) ||
+    staff_permissions? ||
     (
+      student? &&
       record.exercise.enable_student_uploads? &&
-      record.exercise.term.associated_with?(user) &&
       record.exercise.term.course.unlocked? &&
       record.exercise.before_late_deadline?
     )
   end
 
   def update?
-    user.admin? ||
-    user.staff_of_term?(record.exercise.term) ||
+    staff_permissions? ||
     modifiable?
   end
 
   def destroy?
-    user.admin? ||
-    user.staff_of_term?(record.exercise.term) ||
+    staff_permissions? ||
     modifiable?
   end
 
@@ -49,17 +38,12 @@ class SubmissionPolicy < TermBasedPolicy
   end
 
   def tree?
-    viewable?
-  end
-
-  private
-  def viewable?
-    user.admin? ||
-    user.staff_of_term?(record.exercise.term) ||
+    staff_permissions? ||
     record.visible_for_student?(user) ||
     record.new_record?
   end
 
+  private
   def modifiable?
     record.visible_for_student?(user) &&
     record.modifiable_by_students? &&

@@ -4,4 +4,27 @@ class TermBasedPolicy < ApplicationPolicy
 
     policy_record_with(term: term)
   end
+
+  protected
+
+  def staff_permissions?(term = record.term)
+    admin? || staff?(term)
+  end
+
+  def lecturer_permissions?(term = record.term)
+    admin? || lecturer?(term)
+  end
+
+
+  def staff?(term = record.term)
+    user.staff_of_term?(term)
+  end
+
+  def lecturer?(term = record.term)
+    user.lecturer_of_term?(term)
+  end
+
+  def student?(term = record.term)
+    user.student_of_term?(term)
+  end
 end

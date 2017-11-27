@@ -1,33 +1,32 @@
 class AccountPolicy < ApplicationPolicy
   def index?
-    user.admin?
+    admin?
   end
 
   def show?
-    user.admin?
-  end
-
-  def edit?
-    user.admin? ||
-    user == record
+    admin? ||
+    self?
   end
 
   def update?
-    user.admin? ||
-    user == record
+    admin? ||
+    self?
   end
 
   def destroy?
-    user.admin?
+    admin?
   end
 
   def change_password?
-    user.admin? ||
-    user == record
+    update?
   end
 
   def update_password?
-    user.admin? ||
-    user == record
+    update?
+  end
+
+  private
+  def self?
+    record == user
   end
 end

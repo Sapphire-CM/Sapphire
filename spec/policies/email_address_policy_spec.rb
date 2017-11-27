@@ -8,13 +8,13 @@ RSpec.describe EmailAddressPolicy do
     let(:current_account) { FactoryGirl.create(:account, :admin) }
 
     describe 'collections' do
-      subject { EmailAddressPolicy.new(current_account, account) }
+      subject { described_class.new(current_account, described_class.policy_record_with(account: account)) }
 
       it { is_expected.to permit_authorization(:index) }
     end
 
     describe 'members' do
-      subject { EmailAddressPolicy.new(current_account, email_address) }
+      subject { described_class.new(current_account, email_address) }
 
       it { is_expected.to permit_authorization(:new) }
       it { is_expected.to permit_authorization(:create) }
@@ -28,7 +28,7 @@ RSpec.describe EmailAddressPolicy do
     let(:current_account) { FactoryGirl.create(:account) }
 
     describe 'collections' do
-      subject { EmailAddressPolicy.new(current_account, account) }
+      subject { described_class.new(current_account, described_class.policy_record_with(account: account)) }
 
       describe 'own email addresses' do
         let(:account) { current_account }
@@ -42,16 +42,16 @@ RSpec.describe EmailAddressPolicy do
     end
 
     describe 'members' do
-      subject { EmailAddressPolicy.new(current_account, email_address) }
+      subject { described_class.new(current_account, email_address) }
 
       context 'own email address' do
         let(:account) { current_account }
 
-        it { is_expected.to permit_authorization(:new) }
-        it { is_expected.to permit_authorization(:create) }
-        it { is_expected.to permit_authorization(:edit) }
-        it { is_expected.to permit_authorization(:update) }
-        it { is_expected.to permit_authorization(:destroy) }
+        it { is_expected.not_to permit_authorization(:new) }
+        it { is_expected.not_to permit_authorization(:create) }
+        it { is_expected.not_to permit_authorization(:edit) }
+        it { is_expected.not_to permit_authorization(:update) }
+        it { is_expected.not_to permit_authorization(:destroy) }
       end
 
       context 'someone else\'s email address' do

@@ -1,17 +1,6 @@
-class SubmissionUploadPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope
-    end
-  end
-
-  def new?
-    create?
-  end
-
+class SubmissionUploadPolicy < TermBasedPolicy
   def create?
-    user.admin? ||
-    user.staff_of_term?(record.term) ||
+    staff_permissions? ||
     (
       record.students.include?(user) &&
       record.submission.modifiable_by_students?

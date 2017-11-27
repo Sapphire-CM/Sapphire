@@ -4,9 +4,7 @@
 <%= render "exercises/subnav", exercise: @exercise %>
 
 <div class='tutorial-group-dropdown'>
-  <% if policy(@exercise).tutorial_group_dropdown? %>
-    <%= submissions_tutorial_group_dropdown(@tutorial_group) %>
-  <% end %>
+  <%= submissions_tutorial_group_dropdown(@tutorial_group) %>
 </div>
 
 <%= render "submissions_list", submissions: @submissions, exercise: @exercise %>

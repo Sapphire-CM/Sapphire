@@ -1,45 +1,173 @@
 require 'rails_helper'
 
 RSpec.describe CoursePolicy do
-  let(:course) { FactoryGirl.create(:course) }
-
   context 'as an admin' do
     let(:account) { FactoryGirl.create(:account, :admin) }
+    let(:course) { FactoryGirl.create(:course) }
 
-    describe 'collections' do
-      subject { described_class.new(account, nil) }
+    describe 'scoping' do
+      let!(:courses) { FactoryGirl.create_list(:course, 2) + [course] }
+      subject { described_class::Scope.new(account, Course.all) }
 
-      it { is_expected.to permit_authorization(:index) }
+      it 'returns all courses' do
+        expect(subject.resolve).to match_array(courses)
+      end
     end
 
-    describe 'members' do
-      subject { described_class.new(account, course) }
+    describe 'permissions' do
+      describe 'collections' do
+        subject { described_class.new(account, nil) }
 
-      it { is_expected.to permit_authorization(:new) }
-      it { is_expected.to permit_authorization(:create) }
-      it { is_expected.to permit_authorization(:edit) }
-      it { is_expected.to permit_authorization(:update) }
-      it { is_expected.to permit_authorization(:destroy) }
+        it { is_expected.to permit_authorization(:index) }
+      end
+
+      describe 'members' do
+        subject { described_class.new(account, course) }
+
+        it { is_expected.to permit_authorization(:new) }
+        it { is_expected.to permit_authorization(:create) }
+        it { is_expected.to permit_authorization(:edit) }
+        it { is_expected.to permit_authorization(:update) }
+        it { is_expected.to permit_authorization(:destroy) }
+        it { is_expected.to permit_authorization(:student_count) }
+        it { is_expected.to permit_authorization(:create_term) }
+      end
     end
   end
 
-  context 'as not an admin' do
-    let(:account) { FactoryGirl.create(:account, admin: false) }
+  context 'as lecturer' do
+    let(:account) { FactoryGirl.create(:account, :lecturer) }
+    let(:term_registration) { account.term_registrations.lecturer.first }
+    let(:term) { term_registration.term }
+    let(:course) { term.course }
 
-    describe 'collections' do
-      subject { described_class.new(account, nil) }
+    describe 'scoping' do
+      let!(:other_course) { FactoryGirl.create(:course) }
 
-      it { is_expected.to permit_authorization(:index) }
+      subject { described_class::Scope.new(account, Course.all) }
+
+      it 'returns lectured courses' do
+        expect(subject.resolve).to match_array([course])
+      end
     end
 
-    describe 'members' do
-      subject { described_class.new(account, course) }
+    describe 'permissions' do
+      context 'of other course' do
+        let(:course) { FactoryGirl.create(:course) }
 
-      it { is_expected.not_to permit_authorization(:new) }
-      it { is_expected.not_to permit_authorization(:create) }
-      it { is_expected.not_to permit_authorization(:edit) }
-      it { is_expected.not_to permit_authorization(:update) }
-      it { is_expected.not_to permit_authorization(:destroy) }
+        describe 'collections' do
+          subject { described_class.new(account, nil) }
+
+          it { is_expected.to permit_authorization(:index) }
+          it { is_expected.not_to permit_authorization(:new) }
+          it { is_expected.not_to permit_authorization(:create) }
+
+        end
+
+        describe 'members' do
+          subject { described_class.new(account, course) }
+
+          it { is_expected.not_to permit_authorization(:edit) }
+          it { is_expected.not_to permit_authorization(:update) }
+          it { is_expected.not_to permit_authorization(:destroy) }
+          it { is_expected.not_to permit_authorization(:create_term) }
+          it { is_expected.not_to permit_authorization(:student_count) }
+        end
+      end
+
+      context 'of course' do
+        describe 'collections' do
+          subject { described_class.new(account, nil) }
+
+          it { is_expected.to permit_authorization(:index) }
+          it { is_expected.not_to permit_authorization(:new) }
+          it { is_expected.not_to permit_authorization(:create) }
+        end
+
+        describe 'members' do
+          subject { described_class.new(account, course) }
+
+          it { is_expected.not_to permit_authorization(:edit) }
+          it { is_expected.not_to permit_authorization(:update) }
+          it { is_expected.not_to permit_authorization(:destroy) }
+          it { is_expected.to permit_authorization(:create_term) }
+          it { is_expected.to permit_authorization(:student_count) }
+        end
+      end
+    end
+  end
+
+  context 'as tutor' do
+    let(:account) { FactoryGirl.create(:account, :tutor) }
+    let(:term_registration) { account.term_registrations.tutor.first }
+    let(:term) { term_registration.term }
+    let(:course) { term.course }
+
+    describe 'scoping' do
+      let!(:other_course) { FactoryGirl.create(:course) }
+
+      subject { described_class::Scope.new(account, Course.all) }
+
+      it 'returns tutored courses' do
+        expect(subject.resolve).to match_array([course])
+      end
+    end
+
+    describe 'permissions' do
+      describe 'collections' do
+        subject { described_class.new(account, nil) }
+
+        it { is_expected.to permit_authorization(:index) }
+        it { is_expected.not_to permit_authorization(:new) }
+        it { is_expected.not_to permit_authorization(:create) }
+      end
+
+      describe 'members' do
+        subject { described_class.new(account, course) }
+
+        it { is_expected.not_to permit_authorization(:edit) }
+        it { is_expected.not_to permit_authorization(:update) }
+        it { is_expected.not_to permit_authorization(:destroy) }
+        it { is_expected.not_to permit_authorization(:create_term) }
+        it { is_expected.to permit_authorization(:student_count) }
+      end
+    end
+  end
+
+  context 'as student' do
+    let(:account) { FactoryGirl.create(:account, :student) }
+    let(:term_registration) { account.term_registrations.student.first }
+    let(:term) { term_registration.term }
+    let(:course) { term.course }
+
+    describe 'scoping' do
+      let!(:other_course) { FactoryGirl.create(:course) }
+
+      subject { described_class::Scope.new(account, Course.all) }
+
+      it 'returns student courses' do
+        expect(subject.resolve).to match_array([course])
+      end
+    end
+
+    describe 'permissions' do
+      describe 'collections' do
+        subject { described_class.new(account, nil) }
+
+        it { is_expected.to permit_authorization(:index) }
+        it { is_expected.not_to permit_authorization(:new) }
+        it { is_expected.not_to permit_authorization(:create) }
+      end
+
+      describe 'members' do
+        subject { described_class.new(account, course) }
+
+        it { is_expected.not_to permit_authorization(:edit) }
+        it { is_expected.not_to permit_authorization(:update) }
+        it { is_expected.not_to permit_authorization(:destroy) }
+        it { is_expected.not_to permit_authorization(:create_term) }
+        it { is_expected.not_to permit_authorization(:student_count) }
+      end
     end
   end
 end

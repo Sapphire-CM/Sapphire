@@ -1,13 +1,9 @@
-class TermRegistrationPolicy < ApplicationPolicy
-  def new?
-    user.admin? || user.lecturer_of_term?(record.term)
-  end
-
+class TermRegistrationPolicy < TermBasedPolicy
   def create?
-    user.admin? || user.lecturer_of_term?(record.term)
+    lecturer_permissions?
   end
 
   def destroy?
-    user.admin? || user.lecturer_of_term?(record.term)
+    lecturer_permissions?
   end
 end

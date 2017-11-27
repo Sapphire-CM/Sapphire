@@ -1,31 +1,22 @@
-class RatingPolicy < ApplicationPolicy
-  def new?
-    user.admin? ||
-    user.lecturer_of_term?(record.rating_group.exercise.term)
-  end
-
+class RatingPolicy < TermBasedPolicy
   def create?
-    user.admin? ||
-    user.lecturer_of_term?(record.rating_group.exercise.term)
-  end
-
-  def edit?
-    user.admin? ||
-    user.lecturer_of_term?(record.rating_group.exercise.term)
+    modify?
   end
 
   def update?
-    user.admin? ||
-    user.lecturer_of_term?(record.rating_group.exercise.term)
+    modify?
   end
 
   def destroy?
-    user.admin? ||
-    user.lecturer_of_term?(record.rating_group.exercise.term)
+    modify?
   end
 
   def update_position?
-    user.admin? ||
-    user.lecturer_of_term?(record.rating_group.exercise.term)
+    update?
+  end
+
+  private
+  def modify?
+    lecturer_permissions?(record.rating_group.exercise.term)
   end
 end

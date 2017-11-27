@@ -96,6 +96,10 @@ class Rating < ActiveRecord::Base
     evaluation_value_type == :percentage
   end
 
+  def policy_class
+    RatingPolicy
+  end
+
   protected
   def evaluation_value_type
     raise NotImplementedError

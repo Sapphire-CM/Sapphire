@@ -29,6 +29,12 @@ RSpec.shared_examples 'a rating' do
       end
     end
 
+    describe '#policy_class' do
+      it 'returns RatingPolicy' do
+        expect(subject.policy_class).to eq(RatingPolicy)
+      end
+    end
+
     describe '#automatically_checked?' do
       it 'returns true if automated_checker_identifier is set' do
         subject.automated_checker_identifier = "An automated checker"

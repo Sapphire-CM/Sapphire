@@ -1,6 +1,5 @@
-class SubmissionViewerPolicy < ApplicationPolicy
+class SubmissionViewerPolicy < TermBasedPolicy
   def show?
-    user.admin? ||
-    user.staff_of_term?(record.submission.exercise.term)
+    staff_permissions?(record.submission.exercise.term)
   end
 end

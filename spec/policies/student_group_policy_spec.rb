@@ -14,6 +14,7 @@ RSpec.describe StudentGroupPolicy do
       it { is_expected.to permit_authorization(:index) }
       it { is_expected.to permit_authorization(:new) }
       it { is_expected.to permit_authorization(:create) }
+      it { is_expected.to permit_authorization(:search_students) }
     end
 
     context 'members' do
@@ -38,6 +39,7 @@ RSpec.describe StudentGroupPolicy do
       it { is_expected.to permit_authorization(:index) }
       it { is_expected.to permit_authorization(:new) }
       it { is_expected.to permit_authorization(:create) }
+      it { is_expected.to permit_authorization(:search_students) }
     end
 
     context 'members' do
@@ -65,6 +67,7 @@ RSpec.describe StudentGroupPolicy do
       it { is_expected.to permit_authorization(:index) }
       it { is_expected.not_to permit_authorization(:new) }
       it { is_expected.not_to permit_authorization(:create) }
+      it { is_expected.not_to permit_authorization(:search_students) }
     end
 
     context 'members' do
@@ -91,6 +94,7 @@ RSpec.describe StudentGroupPolicy do
       it { is_expected.not_to permit_authorization(:index) }
       it { is_expected.not_to permit_authorization(:new) }
       it { is_expected.not_to permit_authorization(:create) }
+      it { is_expected.not_to permit_authorization(:search_students) }
     end
 
     context 'members' do

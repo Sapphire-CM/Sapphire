@@ -4,9 +4,7 @@ class StudentResultsPolicy < TermBasedPolicy
   end
 
   def show?
-    user.admin? || (
-      record.submission.result_published? &&
-      record.submission.exercise_registrations.for_student(user).exists?
-    )
+    record.submission.result_published? &&
+    record.submission.exercise_registrations.for_student(user).exists?
   end
 end

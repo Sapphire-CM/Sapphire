@@ -3,13 +3,13 @@
 		<% if event.added_term_registrations.present? %>
 			<strong>added</strong>
 				<% if event.added_term_registrations.count == 1 %>
-					<%= event.added_term_registrations.first.account.fullname %>
+					<%= event.added_term_registrations.first %>
 				<% elsif event.added_term_registrations.count > 1 %>
 				<div class='description'>
 				<ul class='circle'>
-				  <% event.added_term_registrations.each do |term_registration| %>
+				  <% event.added_term_registrations.each do |added_term_registration| %>
 				  <li>
-				  	<%= term_registration.account.fullname %>
+				  	<%= added_term_registration %>
 				  </li>
 					<% end %>
 				</ul>
@@ -23,13 +23,13 @@
 		<% if event.removed_term_registrations.present? %>
 			<strong>removed</strong> 
 				<% if event.removed_term_registrations.count == 1 %>
-					<%= event.removed_term_registrations.first.account.fullname %>
+					<%= event.removed_term_registrations.first %>
 				<% elsif event.removed_term_registrations.count > 1 %>
 				<div class='description'>
 				<ul class='circle'>
-				  <% event.removed_term_registrations.each do |term_registration| %>
+				  <% event.removed_term_registrations.each do |removed_term_registration| %>
 				  <li>
-				  	<%= term_registration.account.fullname %>
+				  	<%= removed_term_registration %>
 				  </li>
 				  <% end %>
 				</ul>

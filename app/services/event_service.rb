@@ -209,8 +209,8 @@ class EventService
       tutorial_group_id: student_group.tutorial_group_id,
       student_group_points: student_group.points,
       student_group_member_ids: student_group.term_registration_ids,
-      removed_term_registrations: removed_term_registrations,
-      added_term_registrations: added_term_registrations
+      removed_term_registrations: Account.find(TermRegistration.find(removed_term_registrations).map(&:account_id)).map(&:fullname),
+      added_term_registrations: Account.find(TermRegistration.find(added_term_registrations).map(&:account_id)).map(&:fullname)
       }.merge(attributes)  
   end
 

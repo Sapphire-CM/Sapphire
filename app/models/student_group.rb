@@ -1,17 +1,19 @@
 # create_table :student_groups, force: :cascade do |t|
 #   t.string   :title
 #   t.integer  :tutorial_group_id
-#   t.datetime :created_at,        null: false
-#   t.datetime :updated_at,        null: false
+#   t.datetime :created_at,                 null: false
+#   t.datetime :updated_at,                 null: false
 #   t.integer  :points
 #   t.string   :keyword
 #   t.string   :topic
 #   t.text     :description
+#   t.string   :current_term_registrations
 # end
 #
 # add_index :student_groups, [:tutorial_group_id], name: :index_student_groups_on_tutorial_group_id
 
-class StudentGroup < ActiveRecord::Base
+class StudentGroup < ActiveRecord::Base  
+
   belongs_to :tutorial_group, inverse_of: :student_groups
 
   has_one :term, through: :tutorial_group
@@ -28,10 +30,23 @@ class StudentGroup < ActiveRecord::Base
   validates :tutorial_group_id, presence: true
 
   after_save :update_term_registrations_tutorial_group
+  
 
   def update_points!
     self.points = submission_evaluations.pluck(:evaluation_result).sum
     self.save!
+  end
+
+  def get_current_term_registrations
+    @current_term_registration_ids = self.term_registration_ids.to_s
+  end
+
+  def create_update_event(current_term_registration_ids)
+    current_ids = current_term_registration_ids.tr('[]', '').split(',').map(&:to_i)
+    added_ids = self.term_registration_ids - current_ids 
+    removed_ids = current_ids - self.term_registration_ids
+
+    [added_ids, removed_ids]
   end
 
   private

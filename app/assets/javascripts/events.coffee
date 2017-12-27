@@ -177,3 +177,12 @@ $(document).ready ->
   if ($containers.length > 0)
     for container in $containers
       new EventLoader($(container))
+
+  $('label input').click ->
+    $('#scope_form').submit();
+
+  $(window).ready ->
+    scopes = $("input:checkbox")
+    for scope in scopes
+      if(scope.hasAttribute("checked"))
+        $(scope).parent().css({"fontWeight":"bold"; "color":"black";})

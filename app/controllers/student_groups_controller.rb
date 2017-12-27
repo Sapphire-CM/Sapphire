@@ -36,15 +36,13 @@ class StudentGroupsController < ApplicationController
   end
 
   def edit
+    session[:current_term_registration_ids] = @student_group.get_current_term_registrations
   end
 
   def update
-    current_ids = @student_group.term_registration_ids
     if @student_group.update(student_group_params)
-      added_ids = @student_group.term_registration_ids - current_ids
-      removed_ids = current_ids - @student_group.term_registration_ids
-      added_term_registrations = TermRegistration.find(added_ids)
-      removed_term_registrations = TermRegistration.find(removed_ids)
+      current_term_registration_ids = session[:current_term_registration_ids]
+      added_term_registrations, removed_term_registrations = @student_group.create_update_event(current_term_registration_ids)
       
       event_service.student_group_updated!(@student_group, removed_term_registrations, added_term_registrations)
       redirect_to term_tutorial_group_student_group_path(current_term, current_tutorial_group, @student_group), notice: 'Successfully updated student group'

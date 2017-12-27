@@ -25,9 +25,9 @@ class EventTypeService
 
   def create_types
     {
-      "Submissions" => [Events::Submission::Created, Events::Submission::Updated, Events::Submission::Extracted, Events::Submission::ExtractionFailed],
       "Admin" => [Events::Rating::Created, Events::Rating::Destroyed, Events::Rating::Updated, Events::RatingGroup::Created, Events::RatingGroup::Destroyed, Events::RatingGroup::Updated],
       "Student Groups" => [Events::StudentGroup::Updated],
+      "Submissions" => [Events::Submission::Created, Events::Submission::Updated, Events::Submission::Extracted, Events::Submission::ExtractionFailed],
       "Results" => [Events::ResultPublication::Concealed, Events::ResultPublication::Published]
     }
   end

@@ -18,10 +18,10 @@
 			</thead>
 			<tbody>
 					<tr>
-						<th><%= number_to_human_size @exercise.mean_upload_size %></th>
-						<th><%= number_to_human_size @exercise.max_upload_size %></th>
-						<th><%= number_to_human_size @exercise.min_upload_size %></th>
-						<th><%= number_to_human_size @exercise.sum_upload_size %></th>
+						<td><%= filesize @exercise.mean_upload_size %></td>
+						<td><%= filesize @exercise.max_upload_size %></td>
+						<td><%= filesize @exercise.min_upload_size %></td>
+						<td><%= filesize @exercise.sum_upload_size %></td>
 					</tr>		
 			</tbody>
 			</table>
@@ -40,8 +40,8 @@
 				<tbody>
 				  <% @exercise.term.student_groups.each do |student_group|	%>
 				  	<tr>
-				  		<th><%= student_group.title %></th>
-				  		<th><%= number_to_human_size @exercise.student_group_submission_size(student_group)%></th>	
+				  		<td><%= student_group.title %></td>
+				  		<td><%= filesize @exercise.student_group_submission_size(student_group)%></td>	
 				  	</tr>	
 				  <% end %>
 				</tbody>

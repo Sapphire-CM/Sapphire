@@ -66,8 +66,15 @@
 
   <footer class='row'>
     <div class='large-12 footer-inner'>
-      Sapphire © 2012-<%= Date.today.strftime("%Y") %> - proudly presented by IICM of TUGraz |
-      <%= mail_to "sapphire@iicm.edu", "Feedback", subject: "[Sapphire] Feedback", body: "[URL: #{request.url}]\n" %>
+      <div class='left'>
+        Sapphire © 2012-<%= Date.today.strftime("%Y") %> - proudly presented by IICM of TUGraz |
+        <%= mail_to "sapphire@iicm.edu", "Feedback", subject: "[Sapphire] Feedback", body: "[URL: #{request.url}]\n" %> 
+      </div>
+      <% if current_account.present? && current_account.admin? %>   
+        <div class='right'>  
+          <%= link_to "Server Status", server_status_index_path %>  
+        </div>
+      <% end %>
     </div>
   </footer>
 </body>

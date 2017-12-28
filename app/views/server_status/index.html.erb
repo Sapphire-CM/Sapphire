@@ -26,8 +26,8 @@
   <tbody>
     <% @terms.each do |term| %>
       <tr>  
-        <th><%= term.title %></th>
-        <th><%= (term.filesystem_size.to_f / 1000**2).round(2) %></th>
+        <td><%= term.title %></td>
+        <td><%= (term.filesystem_size.to_f / 1000**2).round(2) %></td>
       </tr>
     <% end %>
   </tbody>

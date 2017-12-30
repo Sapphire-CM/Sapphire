@@ -22,19 +22,23 @@ This project is intended to be used to evaluate students during a course-term ba
 ## Initial Setup
 
 1. Initial Commands
-
-    $ gem install bundler
-    $ bundle install
-    $ rake db:create db:migrate
-
+   
+```
+$ gem install bundler
+$ bundle install
+$ rake db:create db:migrate
+```
+   
 2. Create User Account
 
-    $ rails console
-    Running via Spring preloader in process 45971
-    Loading development environment (Rails 4.2.6)
+```
+$ rails console
+Running via Spring preloader in process 45971
+Loading development environment (Rails 4.2.6)
 
-    Frame number: 0/20
-    [1] pry(main)> Account.create!(email: "test@iicm.tugraz.at", password: "testing", forename: "test", surname: "McTest", admin: true)
+Frame number: 0/20
+[1] pry(main)> Account.create!(email: "test@iicm.tugraz.at", password: "testing", forename: "test", surname: "McTest", admin: true)
+```
 
 ## Commands
 

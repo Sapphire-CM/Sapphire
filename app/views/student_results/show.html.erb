@@ -1,6 +1,7 @@
 <% title @exercise.title, "Results" %>
 
-<%= render "exercises/sidebar" %>
+<%= render "terms/sidebar", term: @term %>
+<%= render "exercises/subnav", exercise: @exercise %>
 
 <%= cache [@exercise, @submission.submission_evaluation] do %>
   <h4>You have reached <%= @submission.submission_evaluation.evaluation_result %> out of <%= pluralize @exercise.achievable_points, "point" %></h4>

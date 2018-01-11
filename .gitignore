@@ -3,6 +3,9 @@
 # Ignore bundler config
 /.bundle
 
+# Ignore debugger history
+/.byebug_history
+
 # Ignore database.yml because this file depends on the current setup
 /config/database.yml
 

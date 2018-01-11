@@ -1,6 +1,6 @@
 <% sidebar_nav do %>
   <%= sidenav_item(:home, 'Dashboard', term_path(term)) %>
-  <%= sidenav_item(:clipboard_notes, 'Exercises', term_exercises_path(term), %w(exercises rating_groups staff_submissions result_publications services).include?(params[:controller]))%>
+  <%= sidenav_item(:clipboard_notes, 'Exercises', term_exercises_path(term), %w(exercises rating_groups staff_submissions result_publications services).include?(params[:controller]) || params[:controller] == 'student_results' && params[:action] == 'show')%>
 
   <li class='divider'></li>
 
@@ -10,7 +10,7 @@
     <%= sidenav_item(:torsos, 'Student Groups', term_student_groups_path(term), params[:controller] == 'student_groups') %>
     <%= sidenav_item(:torso, 'Students', term_students_path(term), params[:controller] == 'students') %>
   <% else %>
-    <%= sidenav_item(:megaphone, 'Results', term_results_path(term)) %>
+    <%= sidenav_item(:megaphone, 'Results', term_results_path(term), params[:controller] == 'student_results' && params[:action] == 'index') %>
   <% end %>
 
   <% if policy(term).update? %>

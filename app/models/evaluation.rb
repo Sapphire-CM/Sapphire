@@ -14,7 +14,7 @@
 # add_index :evaluations, [:rating_id], name: :index_evaluations_on_rating_id, using: :btree
 
 class Evaluation < ActiveRecord::Base
-  belongs_to :evaluation_group, touch: true
+  belongs_to :evaluation_group, touch: true, inverse_of: :evaluations
   belongs_to :rating
 
   has_one :submission_evaluation, through: :evaluation_group
@@ -26,7 +26,7 @@ class Evaluation < ActiveRecord::Base
   validates :rating, presence: true
   validate :validate_evaluation_type
 
-  after_create :update_result!, if: lambda { |evaluation| evaluation.value_changed? }
+  after_create :update_result!
   after_update :update_result!, if: lambda { |evaluation| evaluation.value_changed? }
   after_update :update_needs_review!, if: :needs_review_changed?
 
@@ -42,7 +42,7 @@ class Evaluation < ActiveRecord::Base
 
   def self.create_for_evaluation_group(evaluation_group)
     evaluation_group.rating_group.ratings.each do |rating|
-      evaluation = new_from_rating(rating)
+      evaluation = build_for_rating(rating)
       evaluation.evaluation_group = evaluation_group
       evaluation.save!
     end
@@ -50,7 +50,7 @@ class Evaluation < ActiveRecord::Base
 
   def self.create_for_rating(rating)
     rating.rating_group.evaluation_groups.each do |eval_group|
-      evaluation = new_from_rating(rating)
+      evaluation = build_for_rating(rating)
       evaluation.evaluation_group = eval_group
       evaluation.save!
     end
@@ -76,7 +76,7 @@ class Evaluation < ActiveRecord::Base
     evaluation_group.update_needs_review!
   end
 
-  def self.new_from_rating(rating)
+  def self.build_for_rating(rating)
     evaluation = rating.evaluation_class.new
     evaluation.rating = rating
     evaluation

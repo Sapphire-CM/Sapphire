@@ -19,7 +19,7 @@ class SubmissionEvaluation < ActiveRecord::Base
 
   has_one :student_group, through: :submission
 
-  has_many :evaluation_groups, dependent: :destroy
+  has_many :evaluation_groups, dependent: :destroy, inverse_of: :submission_evaluation
   has_many :evaluations, through: :evaluation_groups
 
   has_many :ratings, through: :evaluations
@@ -68,7 +68,7 @@ class SubmissionEvaluation < ActiveRecord::Base
     final_sum = 0
     percent = 1
 
-    evaluation_groups.each do |eval_group|
+    evaluation_groups(true).each do |eval_group|
       final_sum += eval_group.points || 0
       percent *= eval_group.percent || 1
     end

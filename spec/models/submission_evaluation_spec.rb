@@ -46,14 +46,15 @@ RSpec.describe SubmissionEvaluation do
     pending '#evaluation_for_rating'
 
     describe '#update_needs_review!' do
-      let(:evaluation_groups) { FactoryGirl.build_list(:evaluation_group, 3, submission_evaluation: subject) }
+      let(:evaluation_groups) { FactoryGirl.create_list(:evaluation_group, 3, submission_evaluation: subject, needs_review: false) }
       let(:submission) { FactoryGirl.create(:submission) }
 
       subject { submission.submission_evaluation }
 
       it 'sets needs_review to true if an evaluation_groups needs_review' do
-        evaluation_groups.second.needs_review = true
+        evaluation_groups.second.update(needs_review: true)
         subject.evaluation_groups = evaluation_groups
+        subject.needs_review = false
 
         expect do
           subject.update_needs_review!

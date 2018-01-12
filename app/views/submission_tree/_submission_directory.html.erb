@@ -44,8 +44,8 @@
             <%= link_to entry.name, tree_submission_path(submission, path: entry.path_without_root) %>
           <% end %>
         </td>
-        <td class='modification-date'><%= iso_time(entry.mtime) %></td>
-        <td class='size'><%= filesize entry.size %></td>
+        <td class='modification-date' data-sort="<%= entry.mtime %>" data-sort-as="integer"><%= iso_time(entry.mtime) %></td>
+        <td class='size' data-sort="<%= entry.size %>" data-sort-as="integer"><%= filesize entry.size %></td>
         <% if submission.modifiable_by_students? %>
           <td class='buttons'>
             <% if entry.file? %>

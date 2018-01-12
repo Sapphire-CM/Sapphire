@@ -14,14 +14,13 @@
 
 class EvaluationGroup < ActiveRecord::Base
   belongs_to :rating_group
-  belongs_to :submission_evaluation, touch: true
+  belongs_to :submission_evaluation, touch: true, inverse_of: :evaluation_groups
 
   has_many :evaluations, dependent: :delete_all
 
   validates :rating_group, presence: true
   validates :submission_evaluation, presence: true
 
-  before_create :calc_result
   after_create :create_evaluations
   after_update :update_submission_evaluation_results, if: lambda { |eg| eg.points_changed? || eg.percent_changed? }
   after_update :update_submission_evaluation_needs_review!, if: :needs_review_changed?
@@ -33,7 +32,7 @@ class EvaluationGroup < ActiveRecord::Base
 
   scope :needing_review, lambda { where(needs_review: true) }
 
-  enum status: { pending: 0, done: 1}
+  enum status: { pending: 0, done: 1 }
 
   def self.create_for_submission_evaluation(submission_evaluation)
     submission_evaluation.submission.exercise.rating_groups.each do |rating_group|
@@ -96,5 +95,6 @@ class EvaluationGroup < ActiveRecord::Base
 
   def create_evaluations
     Evaluation.create_for_evaluation_group(self)
+    update_result!
   end
 end

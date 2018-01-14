@@ -10,18 +10,8 @@ RSpec.describe SubmissionCreationService do
 
   subject { SubmissionCreationService.new(account, submission) }
 
-  describe '.initialize_submission_with_exercise' do
-    it 'initializes a new submission and adds the exercise' do
-      submission = described_class.initialize_submission_with_exercise(account, exercise)
-
-      expect(submission).to be_a(Submission)
-      expect(submission.exercise).to equal(exercise)
-      expect(submission.exercise_registrations.map(&:term_registration)).to include(term_registration)
-    end
-  end
-
   describe '.new_with_exercise' do
-    it 'initializes a new submission and adds the exercise' do
+    it 'initializes a new a service object with a new submission and adds the exercise' do
       service = described_class.new_with_exercise(account, exercise)
       expect(service).to be_a(described_class)
       expect(service.model).to be_a(Submission)

@@ -1,9 +1,4 @@
 class SubmissionCreationService
-  def self.initialize_submission_with_exercise(account, exercise)
-    service = self.new_with_exercise(account, exercise)
-    service.model
-  end
-
   def self.new_with_exercise(account, exercise)
     submission = Submission.new(exercise: exercise)
     SubmissionCreationService.new(account, submission)

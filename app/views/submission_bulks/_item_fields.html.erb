@@ -1,0 +1,21 @@
+<tr class='item' data-has-subject='<%= f.object.subject? %>'>
+  <td>
+    <div class='subject-container'>
+      <% if f.object.subject? %>
+        <%= submission_bulk_subject(f.object.subject) %>
+      <% else %>
+        <%= f.object.subject_id %>
+      <% end %>
+    </div>
+
+    <%= search_field_tag :subject_lookup, "", placeholder: (f.object.exercise.solitary_submission? ? "MNr. or Name" : "Student Group Name"), autocomplete: "off" %>
+    <%= f.input :subject_id, as: :hidden, input_html: { data: { behaviour: "subject-id" } } %>
+  </td>
+  <%= f.simple_fields_for :evaluations do |f| %>
+    <td>
+      <%= f.input :rating_id, as: :hidden %>
+
+      <%= submission_bulk_evaluation_input(f) %>
+    </td>
+  <% end %>
+</tr>

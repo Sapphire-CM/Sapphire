@@ -1,19 +1,19 @@
 # create_table :import_options, force: :cascade do |t|
 #   t.integer  :import_id
 #   t.integer  :matching_groups
-#   t.string   :tutorial_groups_regexp,     limit: 255
-#   t.string   :student_groups_regexp,      limit: 255
-#   t.boolean  :headers_on_first_line,                  default: true, null: false
-#   t.string   :column_separator,           limit: 255
-#   t.string   :quote_char,                 limit: 255
-#   t.string   :decimal_separator,          limit: 255
-#   t.string   :thousands_separator,        limit: 255
-#   t.datetime :created_at,                                            null: false
-#   t.datetime :updated_at,                                            null: false
-#   t.boolean  :send_welcome_notifications,             default: true, null: false
+#   t.string   :tutorial_groups_regexp
+#   t.string   :student_groups_regexp
+#   t.boolean  :headers_on_first_line,      default: true, null: false
+#   t.string   :column_separator
+#   t.string   :quote_char
+#   t.string   :decimal_separator
+#   t.string   :thousands_separator
+#   t.datetime :created_at,                                null: false
+#   t.datetime :updated_at,                                null: false
+#   t.boolean  :send_welcome_notifications, default: true, null: false
 # end
 #
-# add_index :import_options, [:import_id], name: :index_import_options_on_import_id, unique: true, using: :btree
+# add_index :import_options, [:import_id], name: :index_import_options_on_import_id, unique: true
 
 class ImportOptions < ActiveRecord::Base
   belongs_to :import

@@ -8,9 +8,9 @@
 #   t.boolean  :outdated,         default: false, null: false
 # end
 #
-# add_index :submissions, [:exercise_id], name: :index_submissions_on_exercise_id, using: :btree
-# add_index :submissions, [:student_group_id], name: :index_submissions_on_student_group_id, using: :btree
-# add_index :submissions, [:submitter_id], name: :index_submissions_on_submitter_id, using: :btree
+# add_index :submissions, [:exercise_id], name: :index_submissions_on_exercise_id
+# add_index :submissions, [:student_group_id], name: :index_submissions_on_student_group_id
+# add_index :submissions, [:submitter_id], name: :index_submissions_on_submitter_id
 
 class Submission < ActiveRecord::Base
   belongs_to :exercise
@@ -38,6 +38,7 @@ class Submission < ActiveRecord::Base
   scope :for_exercise, lambda { |exercise| where(exercise_id: exercise) }
   scope :for_tutorial_group, lambda { |tutorial_group| joins { exercise_registrations.term_registration } .where { term_registrations.tutorial_group_id == my { tutorial_group.id } } }
   scope :for_student_group, lambda { |student_group| where(student_group: student_group) }
+  scope :for_term_registration, lambda { |term_registration| joins(:term_registrations).where(term_registrations: {id: term_registration}) }
   scope :for_account, lambda { |account| joins(:term_registrations).where(term_registrations: { account_id: account.id }) }
   scope :unmatched, lambda { joins { exercise_registrations.outer }.where(exercise_registrations: { id:nil }) }
   scope :with_evaluation, lambda { joins(:submission_evaluation).where(submission_evaluations: {id: SubmissionEvaluation.evaluated}) }

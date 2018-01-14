@@ -1,14 +1,14 @@
 # create_table :exports, force: :cascade do |t|
-#   t.string   :type,       limit: 255
+#   t.string   :type
 #   t.integer  :status
 #   t.integer  :term_id
-#   t.string   :file,       limit: 255
+#   t.string   :file
 #   t.text     :properties
-#   t.datetime :created_at,             null: false
-#   t.datetime :updated_at,             null: false
+#   t.datetime :created_at, null: false
+#   t.datetime :updated_at, null: false
 # end
 #
-# add_index :exports, [:term_id], name: :index_exports_on_term_id, using: :btree
+# add_index :exports, [:term_id], name: :index_exports_on_term_id
 
 require 'zip'
 

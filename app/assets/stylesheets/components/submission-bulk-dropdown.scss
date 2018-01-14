@@ -1,0 +1,36 @@
+.submission-bulk-dropdown {
+  position: absolute;
+  background-color: white;
+  border: thin solid #ddd;
+  padding: 2px;
+
+  ul.results {
+    list-style: none;
+    margin: 0;
+
+    li {
+      padding: 5px;
+      cursor: pointer;
+      font-size: 90%;
+
+      &.subject {
+        &:nth-child(even) {
+          background-color: #f0f0f0;
+        }
+
+        &:hover {
+          background-color: #7CD6F9;
+        }
+
+        &.highlight {
+          background-color: #AFE4F9;
+        }
+      }
+
+      &.more {
+        color: #24ACE1;
+        font-style: italic;
+      }
+    }
+  }
+}

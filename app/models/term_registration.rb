@@ -11,11 +11,13 @@
 #   t.integer  :student_group_id
 # end
 #
-# add_index :term_registrations, [:account_id, :term_id], name: :index_term_registrations_on_account_id_and_term_id, unique: true, using: :btree
-# add_index :term_registrations, [:account_id], name: :index_term_registrations_on_account_id, using: :btree
-# add_index :term_registrations, [:student_group_id], name: :index_term_registrations_on_student_group_id, using: :btree
-# add_index :term_registrations, [:term_id], name: :index_term_registrations_on_term_id, using: :btree
-# add_index :term_registrations, [:tutorial_group_id], name: :index_term_registrations_on_tutorial_group_id, using: :btree
+# add_index :term_registrations, [:account_id, :term_id], name: :index_term_registrations_on_account_id_and_term_id, unique: true
+# add_index :term_registrations, [:account_id], name: :index_term_registrations_on_account_id
+# add_index :term_registrations, [:points], name: :index_term_registrations_on_points
+# add_index :term_registrations, [:positive_grade], name: :index_term_registrations_on_positive_grade
+# add_index :term_registrations, [:student_group_id], name: :index_term_registrations_on_student_group_id
+# add_index :term_registrations, [:term_id], name: :index_term_registrations_on_term_id
+# add_index :term_registrations, [:tutorial_group_id], name: :index_term_registrations_on_tutorial_group_id
 
 class TermRegistration < ActiveRecord::Base
   include Roles

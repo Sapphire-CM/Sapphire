@@ -23,9 +23,11 @@ module Sapphire
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 
+    config.autoload_paths += %W(#{config.root}/app/finders)
     config.autoload_paths += %W(#{config.root}/app/services)
     config.autoload_paths += %W(#{config.root}/app/viewmodels)
     config.autoload_paths += %W(#{config.root}/app/workers)
+
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/lib/sapphire)
     config.autoload_paths += %W(#{config.root}/lib/scanners)

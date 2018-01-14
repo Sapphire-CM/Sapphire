@@ -26,7 +26,7 @@ RSpec.describe GradingScaleService, type: :model, sidekiq: :inline do
 
     context 'with a submission' do
       before do
-        SubmissionCreationService.new_with_exercise(account, exercise).save
+        SubmissionCreationService.new_student_submission(account, exercise).save
         term_registration.reload
       end
 

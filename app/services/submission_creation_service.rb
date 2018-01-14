@@ -1,31 +1,34 @@
 class SubmissionCreationService
-  def self.new_with_exercise(account, exercise)
-    submission = Submission.new(exercise: exercise)
-    SubmissionCreationService.new(account, submission)
+  include ActiveModel::Model
+  include ActiveModel::Validations
+
+  attr_accessor :exercise, :creator, :on_behalf_of
+
+  validates :exercise, :creator, presence: true
+  validate :validate_submission
+  validate :creator_is_account
+
+  delegate :group_submission?, to: :exercise
+
+  class ReceiverInvalidError < StandardError; end
+
+  def self.new_student_submission(account, exercise)
+    SubmissionCreationService.new({creator: account, exercise: exercise})
   end
 
-  def initialize(account, submission)
-    @account = account
-    @submission = submission
-    @model_setup = false
+  def self.new_staff_submission(staff_account, receiver, exercise)
+    SubmissionCreationService.new({creator: staff_account, exercise: exercise, on_behalf_of: receiver})
   end
 
-  def model
-    ensure_model_setup!
-    @submission
-  end
-
-  def valid?
-    ensure_model_setup!
-    @submission.valid?
+  def submission
+    @submission ||= build_submission
   end
 
   def save
-    ensure_model_setup!
-
     result = false
+
     ActiveRecord::Base.transaction do
-      if result = @submission.save
+      if result = submission.save
         create_event!
       end
     end
@@ -34,42 +37,71 @@ class SubmissionCreationService
   end
 
   private
+  def build_submission
+    Submission.new(exercise: exercise, submitter: creator, submitted_at: Time.zone.now).tap do |submission|
+      submission.student_group = receiver_student_group if group_submission?
 
-  def ensure_model_setup!
-    setup_model! unless model_setup?
+      build_exercise_registrations(submission)
+    end
   end
 
-  def setup_model!
-    @submission.submitter = @account
-    @submission.submitted_at = Time.now
-    @submission.student_group = term_registration.student_group unless @submission.exercise.solitary_submission?
-
-    build_exercise_registrations!
-
-    @model_setup = true
+  def term
+    exercise.term
   end
 
-  def model_setup?
-    @model_setup
+  def receiver
+    on_behalf_of || creator
   end
 
-  def term_registration
-    @term_registration ||= @account.term_registrations.students.find_by!(term: @submission.exercise.term)
-  end
-
-  def build_exercise_registrations!
-    if @submission.exercise.solitary_submission? || term_registration.student_group.blank?
-      @submission.exercise_registrations.build(exercise: @submission.exercise, term_registration: term_registration)
+  def receiver_term_registrations
+    if group_submission?
+      case receiver
+      when Account then term_registration_for_receiver.student_group.term_registrations
+      when TermRegistration then receiver.student_group.term_registrations
+      when StudentGroup then receiver.term_registrations
+      else
+        raise ReceiverInvalidError
+      end
     else
-      student_group = term_registration.student_group
-      student_group.term_registrations.each do |term_registration|
-        @submission.exercise_registrations.build(exercise: @submission.exercise, term_registration: term_registration)
+      case receiver
+      when Account then [term_registration_for_receiver]
+      when TermRegistration then [receiver]
+      else
+        raise ReceiverInvalidError
       end
     end
   end
 
+  def receiver_student_group
+    case receiver
+    when StudentGroup then receiver
+    when TermRegistration then receiver.student_group
+    when Account then term_registration_for_receiver.student_group
+    end
+  end
+
+  def term_registration_for_receiver
+    receiver.term_registrations.find_by!(term: exercise.term)
+  end
+
+  def build_exercise_registrations(submission)
+    exercise_registrations_attributes = receiver_term_registrations.map do |term_registration|
+      {term_registration: term_registration, exercise: exercise}
+    end
+
+    submission.exercise_registrations.build(exercise_registrations_attributes)
+  end
+
   def create_event!
-    event_service = EventService.new(@account, @submission.exercise.term)
-    event_service.submission_created!(@submission)
+    event_service = EventService.new(creator, term)
+    event_service.submission_created!(submission)
+  end
+
+  def validate_submission
+    errors.add(:submission, :invalid) unless submission.valid?
+  end
+
+  def creator_is_account
+    errors.add(:creator, "is not an Account") unless creator.is_a?(Account)
   end
 end

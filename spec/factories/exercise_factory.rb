@@ -27,6 +27,10 @@ FactoryGirl.define do
       group_submission true
     end
 
+    trait :solitary_exercise do
+      group_submission false
+    end
+
     trait :no_upload_allowed do
       enable_student_uploads false
     end

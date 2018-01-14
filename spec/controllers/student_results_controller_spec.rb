@@ -7,7 +7,6 @@ RSpec.describe StudentResultsController do
   let(:term) { FactoryGirl.create :term }
   let(:exercise) { FactoryGirl.create :exercise, term: term }
   let(:tutorial_group) { FactoryGirl.create :tutorial_group, term: term }
-  let(:submission) { FactoryGirl.create :submission, exercise: exercise }
   let(:term_registration) { current_account.term_registrations.first }
 
   before :each do
@@ -28,8 +27,14 @@ RSpec.describe StudentResultsController do
 
   describe 'GET show' do
     context 'when a submission exists' do
+      let(:submission_creation_service) { SubmissionCreationService.new_student_submission(current_account, exercise) }
+      let(:submission) { submission_creation_service.submission }
+
+      before :each do
+        submission_creation_service.save
+      end
+
       it 'assigns the requested submission as @submission' do
-        SubmissionCreationService.new(current_account, submission).save
 
         get :show, term_id: term.id, id: exercise.id
 

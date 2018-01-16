@@ -1,25 +1,25 @@
 # create_table :exercises, force: :cascade do |t|
 #   t.integer  :term_id
 #   t.string   :title
-#   t.datetime :created_at,                                      null: false
-#   t.datetime :updated_at,                                      null: false
+#   t.datetime :created_at,                                        null: false
+#   t.datetime :updated_at,                                        null: false
 #   t.text     :description
 #   t.datetime :deadline
 #   t.datetime :late_deadline
-#   t.boolean  :enable_max_total_points,         default: false, null: false
+#   t.boolean  :enable_max_total_points,           default: false, null: false
 #   t.integer  :max_total_points
 #   t.integer  :row_order
-#   t.boolean  :group_submission,                default: false, null: false
+#   t.boolean  :group_submission,                  default: false, null: false
 #   t.integer  :points
-#   t.boolean  :enable_min_required_points,      default: false, null: false
+#   t.boolean  :enable_min_required_points,        default: false, null: false
 #   t.integer  :min_required_points
 #   t.string   :submission_viewer_identifier
 #   t.integer  :maximum_upload_size
-#   t.boolean  :enable_student_uploads,          default: true,  null: false
-#   t.boolean  :enable_max_upload_size,          default: false, null: false
+#   t.boolean  :enable_student_uploads,            default: true,  null: false
+#   t.boolean  :enable_max_upload_size,            default: false, null: false
 #   t.integer  :visible_points
 #   t.string   :instructions_url
-#   t.boolean  :enable_bulk_submission_creation, default: false
+#   t.boolean  :enable_bulk_submission_management, default: false
 # end
 #
 # add_index :exercises, [:term_id], name: :index_exercises_on_term_id

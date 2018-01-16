@@ -80,7 +80,7 @@ class ExercisesController < ApplicationController
       :enable_max_total_points,
       :enable_student_uploads,
       :enable_max_upload_size,
-      :enable_bulk_submission_creation,
+      :enable_bulk_submission_management,
       :max_total_points,
       :min_required_points,
       :submission_viewer_identifier,

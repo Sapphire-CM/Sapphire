@@ -211,8 +211,6 @@ RSpec.describe SubmissionBulk::Item do
       end
 
       shared_examples "saving behaviour" do
-        freeze_time
-
         it 'creates a submission if it is not present' do
           expect(SubmissionCreationService).to receive(:new_staff_submission).with(account, submission_subject, exercise).and_call_original
 
@@ -250,7 +248,7 @@ RSpec.describe SubmissionBulk::Item do
           subject.save
 
           submission_evaluation.reload
-          expect(submission_evaluation.evaluated_at).to eq(now)
+          expect(submission_evaluation.evaluated_at).not_to be_blank
           expect(submission_evaluation.evaluator).to eq(account)
         end
       end

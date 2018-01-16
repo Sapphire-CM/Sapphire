@@ -1,6 +1,6 @@
 <% sidebar_nav do %>
   <%= sidenav_item(:home, 'Dashboard', term_path(term)) %>
-  <%= sidenav_item(:clipboard_notes, 'Exercises', term_exercises_path(term), %w(exercises rating_groups staff_submissions result_publications services).include?(params[:controller]) || params[:controller] == 'student_results' && params[:action] == 'show')%>
+  <%= sidenav_item(:clipboard_notes, 'Exercises', term_exercises_path(term), %w(exercises rating_groups staff_submissions submission_bulks result_publications services).include?(params[:controller]) || params[:controller] == 'student_results' && params[:action] == 'show')%>
 
   <li class='divider'></li>
 

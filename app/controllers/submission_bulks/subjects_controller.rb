@@ -7,8 +7,9 @@ class SubmissionBulks::SubjectsController < ApplicationController
   def index
     authorize SubmissionPolicy.term_policy_record(@term)
 
-    finder = SubmissionBulks::SubjectsFinder.new(exercise: @exercise)
+    finder = SubmissionBulk::SubjectsFinder.new(exercise: @exercise)
     @subjects = finder.search(params[:q]) if params[:q].present?
+    sleep 0.5
   end
 
   private

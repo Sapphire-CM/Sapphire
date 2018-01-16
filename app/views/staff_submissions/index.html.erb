@@ -3,8 +3,15 @@
 <%= render "terms/sidebar", term: @term %>
 <%= render "exercises/subnav", exercise: @exercise %>
 
-<div class='tutorial-group-dropdown'>
-  <%= submissions_tutorial_group_dropdown(@tutorial_group) %>
+<div class='row'>
+  <div class='small-6 columns'>
+    <div class='tutorial-group-dropdown'>
+      <%= submissions_tutorial_group_dropdown(@tutorial_group) %>
+    </div>
+  </div>
+  <div class='small-6 columns text-right'>
+      <%= link_to("Bulk Operation", exercise_submission_bulk_path(@exercise), class: "small primary button") if @exercise.enable_bulk_submission_creation? %>
+  </div>
 </div>
 
 <%= render "submissions_list", submissions: @submissions, exercise: @exercise %>

@@ -1,4 +1,4 @@
-class SubmissionBulks::SubjectsFinder
+class SubmissionBulk::SubjectsFinder
   include ActiveModel::Model
 
   attr_accessor :exercise

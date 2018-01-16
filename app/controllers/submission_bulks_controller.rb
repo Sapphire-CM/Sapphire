@@ -5,25 +5,24 @@ class SubmissionBulksController < ApplicationController
   def show
     authorize SubmissionPolicy.term_policy_record(@term)
 
-    @bulk = SubmissionBulk::Bulk.new(exercise: @exercise)
+    @bulk = SubmissionBulk::Bulk.new(exercise: @exercise, account: current_account)
     @bulk.ensure_blank!
   end
 
   def update
     authorize SubmissionPolicy.term_policy_record(@term)
 
-    @bulk = SubmissionBulk::Bulk.new({exercise: @exercise}.merge(submission_bulk_params))
-    @bulk.ensure_blank!
+    @bulk = SubmissionBulk::Bulk.new({exercise: @exercise, account: current_account}.merge(submission_bulk_params))
 
     if @bulk.valid?
-      puts "*** Bulk is valid *** "
       @bulk.save
 
-      #redirect_to exercise_staff_submissions_path(@exercise)
+      redirect_to exercise_submissions_path(@exercise), notice: "Successfully completed bulk operation"
     else
-      #render :show
+      @bulk.ensure_blank!
+
+      render :show
     end
-    render :show
   end
 
   private

@@ -19,7 +19,26 @@ RSpec.shared_examples 'a rating' do
   end
 
   describe 'scoping' do
-    describe '.automated'
+    let(:factory_name) { rating_factory(described_class) }
+
+    describe '.automated_ratings' do
+      let!(:automated_ratings) { FactoryGirl.create_list(factory_name, 2, automated_checker_identifier: "automated") }
+      let!(:non_automated_nil_ratings) { FactoryGirl.create_list(factory_name, 2, automated_checker_identifier: nil) }
+      let!(:non_automated_blank_ratings) { FactoryGirl.create_list(factory_name, 2, automated_checker_identifier: "") }
+
+      it 'returns ratings where automated_checker_identifier is present' do
+        expect(described_class.automated_ratings).to match_array(automated_ratings)
+      end
+    end
+
+    describe '.bulk' do
+      let!(:bulk_ratings) { FactoryGirl.create_list(factory_name, 2, bulk: true) }
+      let!(:non_bulk_ratings) { FactoryGirl.create_list(factory_name, 2, bulk: false) }
+
+      it 'returns ratings where bulk is true' do
+        expect(described_class.bulk).to match_array(bulk_ratings)
+      end
+    end
   end
 
   describe 'methods' do

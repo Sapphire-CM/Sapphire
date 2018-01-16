@@ -3,19 +3,12 @@ class SubmissionBulk::Item
   include ActiveModel::Validations
 
   attr_accessor :bulk, :subject_id, :subject, :submission
-  attr_reader :evaluations
 
-  delegate :exercise, :ratings, to: :bulk
+  delegate :exercise, :ratings, :account, to: :bulk
 
   validates :subject_id, presence: true
+  validate :validate_subject_uniqueness
   validate :validate_evaluations
-
-  def self.new_with_submission(bulk, submission)
-    new(bulk: bulk).tap do |item|
-      item.build_new_evaluations!
-      item.submission = submission
-    end
-  end
 
   def subject_id?
     subject_id.present?
@@ -25,18 +18,16 @@ class SubmissionBulk::Item
     subject.present?
   end
 
+  def submission?
+    submission.present?
+  end
+
   def evaluations
     @evaluations ||= build_new_evaluations
   end
 
-  def build_new_evaluations!
-    @evaluations = build_new_evaluations
-  end
-
-  def build_new_evaluations
-    ratings.map do |rating|
-      ::SubmissionBulk::Evaluation.new({item: self, rating: rating})
-    end
+  def evaluation_for_rating(rating)
+    evaluations_of_submission.find_by(rating: rating)
   end
 
   def evaluations_attributes=(evaluations_attributes)
@@ -47,40 +38,49 @@ class SubmissionBulk::Item
 
   def save
     ensure_submission!
+
+    evaluations.each(&:save)
+
+    submission.submission_evaluation.update(evaluated_at: Time.zone.now, evaluator: account)
   end
 
   def values?
-    subject_id? || evaluations.any? { |evaluations| evaluations.value.present? }
+    subject_id? || evaluations.any? { |evaluations| evaluations.value? }
   end
 
   private
+  def evaluations_of_submission
+    @evaluations_of_submission ||= submission.submission_evaluation.evaluations.includes(rating: :rating_group)
+  end
+
+  def build_new_evaluations
+    ratings.map do |rating|
+      ::SubmissionBulk::Evaluation.new({item: self, rating: rating})
+    end
+  end
+
   def ensure_submission!
-    create_submission if submission.blank?
+    unless submission?
+      Rails.logger.info("Creating Submission ...")
+      @submission = create_submission
+      Rails.logger.info("Submission created!")
+    end
   end
 
   def create_submission
-    raise NotImplemented
+    service = SubmissionCreationService.new_staff_submission(account, subject, exercise)
+    raise ::SubmissionBulk::BulkNotValid unless service.save
+    service.submission
   end
 
   def validate_evaluations
     errors.add(:evaluations, :invalid) unless evaluations.map(&:valid?).all?
   end
 
-  def update_item_values!
-    existing_evaluations = submission.submission_evaluation.evaluations.where(rating_id: bulk.ratings).index_by(&:rating_id)
-
-    evaluations.each do |evaluation|
-      if existing_evaluation = existing_evaluations[evaluation.rating_id.to_i]
-        evaluation.value = existing_evaluation.value
-      end
-    end
-  end
-
-  def extract_subject!
-    @subject = if exercise.solitary_submission?
-      submission.term_registrations.first
-    else
-      submission.student_group
+  def validate_subject_uniqueness
+    if bulk.items.any? { |item| item != self && item.subject == subject}
+      errors.add(:subject, :taken)
+      errors.add(:subject_id, :taken)
     end
   end
 end

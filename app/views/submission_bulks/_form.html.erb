@@ -11,6 +11,7 @@
       <% bulk.ratings.each do |rating| %>
         <th><%= rating.title %></th>
       <% end %>
+      <th></th>
     </thead>
     <tbody>
     <%= f.simple_fields_for :items do |item| %>
@@ -19,8 +20,8 @@
     </tbody>
   </table>
   <div class='row'>
-    <div class='large-12 large-centered columns text-center'>
-      <%= f.submit class: "button" %>
+    <div class='large-12 columns text-center'>
+      <p><%= f.button :submit, "Submit" %></p>
     </div>
   </div>
   <%= tag :div, data: { behaviour: "new-item-template", template: "#{render("new_item_fields", f: f, bulk: bulk).strip}" } %>

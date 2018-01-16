@@ -31,6 +31,40 @@
         color: #24ACE1;
         font-style: italic;
       }
+
+      &.error {
+        color: #E40003;
+        font-style: italic;
+      }
+    }
+  }
+
+  .loading-indicator-container {
+    position: absolute;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    top: 2px;
+    left: 2px;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(#fff, 0.7);
+
+    .loading-indicator {
+      background-image: image_url("ajax-loader.svg");
+
+      width: 1.5em;
+      height: 1.5em;
+      margin: 0 auto;
+    }
+  }
+
+  &.loading {
+    min-height: 2em;
+
+    .loading-indicator-container {
+      display: flex;
     }
   }
 }

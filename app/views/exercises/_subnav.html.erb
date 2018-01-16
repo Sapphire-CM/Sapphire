@@ -3,7 +3,6 @@
 
   <%= subnav_item(:results, "Ratings", exercise_rating_groups_path(exercise), params[:controller] == "rating_groups") if policy(RatingGroupPolicy.term_policy_record(exercise.term)).index? %>
   <%= subnav_item(:list, "Submissions", exercise_submissions_path(exercise), params[:controller] == "staff_submissions") if policy(SubmissionPolicy.term_policy_record(exercise.term)).index? %>
-  <%= subnav_item(:list, "Bulk Submissions", exercise_submission_bulk_path(exercise), params[:controller] == "submission_bulks") if policy(SubmissionPolicy.term_policy_record(exercise.term)).index? && exercise.enable_bulk_submission_creation? %>
   <%= subnav_item(:megaphone, "Publish Results", exercise_result_publications_path(exercise), params[:controller] == "result_publications") if policy(ResultPublicationPolicy.term_policy_record(exercise.term)).index? %>
   <%= subnav_item(:widget, "Services", term_exercise_services_path(exercise.term, exercise), params[:controller] == "services")  if policy(ServicePolicy.term_policy_record(exercise.term)).index? %>
 

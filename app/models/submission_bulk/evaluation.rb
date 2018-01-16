@@ -2,17 +2,30 @@ class SubmissionBulk::Evaluation
   include ActiveModel::Model
   include ActiveModel::Validations
 
-  attr_accessor :rating, :value, :evaluation, :item
+  attr_accessor :rating, :value, :item
 
   delegate :id, to: :rating, prefix: true
   delegate :exercise, :bulk, to: :item
 
-  validates :rating, presence: true
+  validates :rating, :item, presence: true
   validate :validate_value
 
   def rating_id=(id)
-    @rating = bulk.ratings.find { |rating| rating.id == id.to_i }
+    @rating = bulk.rating_with_id(id)
   end
+
+  def value?
+    case rating
+    when Ratings::FixedRating then fixed_value?
+    when Ratings::VariableRating then variable_value?
+    end
+  end
+
+  def save
+    item.evaluation_for_rating(rating).update(value: value)
+  end
+
+  private
 
   def validate_value
     if rating.present?
@@ -28,4 +41,11 @@ class SubmissionBulk::Evaluation
     end
   end
 
+  def fixed_value?
+    value.present?
+  end
+
+  def variable_value?
+    value.present? && value != "0" && value != 0
+  end
 end

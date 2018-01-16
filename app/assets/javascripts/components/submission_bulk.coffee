@@ -2,7 +2,6 @@ class LookupController
   constructor: (@element, @form_controller)->
     @_extract_lookup_url()
     @_setup_dropdown()
-
     @_setup_listeners()
 
   # =========
@@ -35,7 +34,7 @@ class LookupController
           e.stopPropagation()
           e.preventDefault()
 
-    @element.on "keyup", input_query, (e)->
+    @element.on "keyup", input_query, $.debounce 250,(e)->
       $input = $(e.target)
       value = $input.val()
 
@@ -75,10 +74,18 @@ class LookupController
 
     @results = $("<ul>");
     @results.addClass("results").hide()
+
+    @loading_indicator = $("<div>")
+    @loading_indicator.addClass("loading-indicator-container")
+
+    $loading_indicator = $("<div>")
+    $loading_indicator.addClass("loading-indicator")
+    $loading_indicator.appendTo(@loading_indicator)
+
+    @loading_indicator.appendTo(@dropdown)
     @results.appendTo(@dropdown);
 
     @dropdown.appendTo($("body"));
-
 
   _extract_lookup_url: ->
     @lookup_url = @element.data("lookup-url")
@@ -98,10 +105,19 @@ class LookupController
         @_reset_dropdown_data()
         @_start_loading()
 
-        $.get "#{@lookup_url}?q=#{value}", (data) =>
-          @_set_dropdown_data(data)
-          @_stop_loading()
-          @_show_subjects()
+        $.ajax
+          type: "GET"
+          url: @lookup_url
+          data:
+            q: value
+          success: (data) =>
+            @_set_dropdown_data(data)
+            @_stop_loading()
+            @_show_subjects()
+          error: (error) =>
+            @_reset_dropdown_data()
+            @_stop_loading()
+            @_show_error()
 
       else
         @_show_subjects() if @dropdown_data
@@ -138,13 +154,13 @@ class LookupController
     @target_loopup_input = undefined
 
   _start_loading: ->
-    console.log("showing loading indicator in dropdown")
+    @dropdown.addClass("loading")
 
   _stop_loading: ->
-    console.log("stop loading")
+    @dropdown.removeClass("loading")
 
   _show_subjects: ->
-    @results.children().remove()
+    @_clear_results()
 
     if @dropdown_data.subjects.length > 0
       for row in @dropdown_data.subjects
@@ -156,18 +172,31 @@ class LookupController
     else
       $li = $("<li>")
       $li.addClass("empty")
-      $li.text("No Results found")
+      $li.text("No results found.")
       $li.appendTo(@results)
 
     if @dropdown_data.more
       $li = $("<li>")
       $li.addClass("more")
-      $li.text("More Results available")
+      $li.text("More results available")
       $li.appendTo(@results)
+    @results.show()
+
+  _show_error: ->
+    @_clear_results()
+
+    $li = $("<li>")
+    $li.addClass("error")
+    $li.text("An error occurred during loading.")
+    $li.appendTo(@results)
+
     @results.show()
 
   _hide_results: ->
     @results.hide()
+
+  _clear_results: ->
+    @results.children().remove()
 
   # =================
   # = Dropdown Data =
@@ -255,27 +284,41 @@ class ItemController
 
   _setup_edit_icon: ->
     $edit_icon_container = $("<div>")
-    $edit_icon_container.addClass("pull-right")
+    $edit_icon_container.addClass("edit-icon-container")
+
+    $edit_icon_link = $("<a>")
 
     $edit_icon = $("<i>")
     $edit_icon.addClass("fi-pencil")
-    $edit_icon.appendTo($edit_icon_container)
+    $edit_icon.appendTo($edit_icon_link)
+
+    $edit_icon_link.appendTo($edit_icon_container)
 
     @element.find(".subject-container").closest("td").prepend($edit_icon_container)
-    @edit_icon = $edit_icon
+    @edit_icon = $edit_icon_link
 
   _setup_listeners: ->
     @edit_icon.on "click", (e) =>
-      @_enable_editing()
+      @_enable_lookup()
       @_focus_subject_lookup_input()
+
+      e.stopPropagation()
+      e.preventDefault()
+
+    @element.on "click", "*[data-behaviour=remove-item]", (e) =>
+      @_remove()
+      e.stopPropagation()
+      e.preventDefault()
+    @element.on "click", "*[data-behaviour=cancel-lookup]", (e) =>
+      @_cancel_lookup()
       e.stopPropagation()
       e.preventDefault()
 
   _setup_initial_state: ->
-    if @_find_subject_id_input()?.val() != ""
-      @_disable_editing()
+    if @has_subject()
+      @_disable_lookup()
     else
-      @_enable_editing()
+      @_enable_lookup()
 
   # ====================
   # = Public Interface =
@@ -286,24 +329,31 @@ class ItemController
     @_update_subject_id(subject.id)
     @_focus_first_input()
 
-    @_disable_editing()
+    @_disable_lookup()
 
   has_subject: ->
     @_find_subject_id_input().val() != ""
 
-  # =================
-  # = Edit Handling =
-  # =================
+  remove_element: ->
+    @element.remove()
+    @element = undefined
 
-  _enable_editing: ->
+  # ===================
+  # = Lookup Handling =
+  # ===================
+
+  _enable_lookup: ->
     @_hide_edit_icon()
     @_hide_subject_description()
-    @_show_subject_lookup_input()
+    @_show_subject_lookup_container()
+    @_hide_removal_link()
+    @_update_cancel_button_visibility()
 
-  _disable_editing: ->
+  _disable_lookup: ->
     @_show_edit_icon()
     @_show_subject_description()
-    @_hide_subject_lookup_input()
+    @_hide_subject_lookup_container()
+    @_show_removal_link()
 
   # =========================
   # = Subject Cell Handling =
@@ -337,14 +387,57 @@ class ItemController
   _find_subject_loopup_input: ->
     @element.find("input[name=subject_lookup]")
 
-  _show_subject_lookup_input: ->
-    @_find_subject_loopup_input().show()
+  _find_subject_loopup_container: ->
+    @element.find(".lookup-input-container")
 
-  _hide_subject_lookup_input: ->
-    @_find_subject_loopup_input().hide()
+  _show_subject_lookup_container: ->
+    @_find_subject_loopup_container().show()
+
+  _hide_subject_lookup_container: ->
+    @_find_subject_loopup_container().hide()
 
   _focus_subject_lookup_input: ->
     @_find_subject_loopup_input().focus()
+
+  # ================
+  # = Item Removal =
+  # ================
+
+  _remove: ->
+    @form_controller.remove(this.id)
+
+  _show_removal_link: ->
+    @element.find("*[data-behaviour=remove-item]").show()
+
+  _hide_removal_link: ->
+    @element.find("*[data-behaviour=remove-item]").hide()
+
+  # =================
+  # = Cancel Button =
+  # =================
+
+  _update_cancel_button_visibility: ->
+    if @has_subject()
+      @_show_cancel_button()
+    else
+      @_hide_cancel_button()
+
+  _show_cancel_button: ->
+    $search_field_container = @_find_subject_loopup_container().find(".search-field")
+    $cancel_button_container = @_find_subject_loopup_container().find(".cancel-button")
+
+    $search_field_container.removeClass("small-12").addClass("small-9")
+    $cancel_button_container.show()
+
+  _hide_cancel_button: ->
+    $search_field_container = @_find_subject_loopup_container().find(".search-field")
+    $cancel_button_container = @_find_subject_loopup_container().find(".cancel-button")
+
+    $search_field_container.addClass("small-12").removeClass("small-9")
+    $cancel_button_container.hide()
+
+  _cancel_lookup: ->
+    @_disable_lookup()
 
   # ===========
   # = Helpers =
@@ -365,6 +458,7 @@ class SubmissionBulkFormController
     @_setup_item_controllers()
     @_setup_lookup_controller()
     @_setup_new_item_template()
+    @_setup_listeners()
 
   _setup_item_controllers: ->
     that = this
@@ -383,6 +477,12 @@ class SubmissionBulkFormController
   _setup_new_item_template: ->
     @new_item_template = @element.find("*[data-behaviour=new-item-template]").data("template")
 
+  _setup_listeners: ->
+    @element.on "submit.form_controller", (e) =>
+      @element.off("submit.form_controller")
+      @_disable_form()
+
+
   # ===================
   # = Public Interface =
   # ===================
@@ -391,6 +491,14 @@ class SubmissionBulkFormController
     item_controller = @_find_item_controller(row_id)
     item_controller.set_subject(subject)
     @_ensure_blank_line()
+
+  remove: (row_id) ->
+    item_controller = @_find_item_controller(row_id)
+    idx = @item_controllers.indexOf(item_controller)
+
+    if idx != -1
+      item_controller.remove_element()
+      @item_controllers.splice(idx, 1)
 
   # ===========
   # = Helpers =
@@ -402,7 +510,6 @@ class SubmissionBulkFormController
     id = SubmissionBulkFormController._get_item_id()
     template = @new_item_template.replace(/\[new_item\]/g, "[#{id}]")
 
-    console.log(template)
     $item = $(template)
     $item.appendTo(@element.find("tbody"))
 
@@ -414,10 +521,14 @@ class SubmissionBulkFormController
     new ItemController($element, this, id)
 
   _find_item_controller: (id)->
-    console.log(@)
     for item_controller in @item_controllers
       return item_controller if item_controller.id == parseInt(id)
     undefined
+
+  _disable_form: ->
+    @element.find("input").addClass("disabled")
+    @element.find("input.button").attr("disabled", "disabled")
+
 
 $(document).on "page:load ready", ->
   $forms = $("form.submission-bulk")

@@ -47,7 +47,7 @@ class Submission < ActiveRecord::Base
   scope :current, lambda { where(outdated: false) }
   scope :outdated, lambda { where(outdated: true) }
 
-  after_create :create_submission_evaluation
+  after_create :create_submission_evaluation!
 
   def self.find_by_account_and_exercise(account, exercise)
     for_account(account).find_by(exercise: exercise)
@@ -82,13 +82,6 @@ class Submission < ActiveRecord::Base
   end
 
   private
-
-  def create_submission_evaluation
-    se = SubmissionEvaluation.new
-    se.submission = self
-    se.save!
-  end
-
   def upload_size_below_exercise_maximum_upload_size
     size = submission_assets.map(&:filesystem_size).sum || 0
 

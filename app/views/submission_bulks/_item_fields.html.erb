@@ -1,5 +1,5 @@
 <tr class='item' data-has-subject='<%= f.object.subject? %>'>
-  <td>
+  <td class='small-5'>
     <div class='subject-container'>
       <% if f.object.subject? %>
         <%= submission_bulk_subject(f.object.subject) %>
@@ -8,7 +8,10 @@
       <% end %>
     </div>
 
-    <%= search_field_tag :subject_lookup, "", placeholder: (f.object.exercise.solitary_submission? ? "MNr. or Name" : "Student Group Name"), autocomplete: "off" %>
+    <div class='row collapse lookup-input-container'>
+      <div class='small-9 columns search-field'><%= search_field_tag :subject_lookup, "", placeholder: (f.object.exercise.solitary_submission? ? "MNr. or Name" : "Student Group Name"), autocomplete: "off" %></div>
+      <div class='small-3 columns cancel-button'><%= link_to "cancel", '#', class: "button postfix", data: { behaviour: "cancel-lookup" } %></div>
+    </div>
     <%= f.input :subject_id, as: :hidden, input_html: { data: { behaviour: "subject-id" } } %>
   </td>
   <%= f.simple_fields_for :evaluations do |f| %>
@@ -18,4 +21,5 @@
       <%= submission_bulk_evaluation_input(f) %>
     </td>
   <% end %>
+  <td class='remove-link'><%= link_to "×", '#', class: "tiny alert button", data: { behaviour: "remove-item" } %></td>
 </tr>

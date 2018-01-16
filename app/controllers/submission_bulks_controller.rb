@@ -2,17 +2,18 @@ class SubmissionBulksController < ApplicationController
   include ScopingHelpers
   before_action :set_context
 
-  def show
-    authorize SubmissionPolicy.term_policy_record(@term)
-
+  def new
     @bulk = SubmissionBulk::Bulk.new(exercise: @exercise, account: current_account)
+
+    authorize @bulk
+
     @bulk.ensure_blank!
   end
 
-  def update
-    authorize SubmissionPolicy.term_policy_record(@term)
-
+  def create
     @bulk = SubmissionBulk::Bulk.new({exercise: @exercise, account: current_account}.merge(submission_bulk_params))
+
+    authorize @bulk
 
     if @bulk.valid?
       @bulk.save
@@ -21,7 +22,7 @@ class SubmissionBulksController < ApplicationController
     else
       @bulk.ensure_blank!
 
-      render :show
+      render :new
     end
   end
 

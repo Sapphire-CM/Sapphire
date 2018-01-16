@@ -5,11 +5,10 @@ class SubmissionBulks::SubjectsController < ApplicationController
   respond_to :json
 
   def index
-    authorize SubmissionPolicy.term_policy_record(@term)
+    authorize SubmissionBulk::SubjectPolicy.policy_record_with(exercise: exercise)
 
     finder = SubmissionBulk::SubjectsFinder.new(exercise: @exercise)
     @subjects = finder.search(params[:q]) if params[:q].present?
-    sleep 0.5
   end
 
   private

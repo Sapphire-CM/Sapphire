@@ -64,7 +64,7 @@ Rails.application.routes.draw do
     end
 
     resource :submission, only: [:show, :new, :create], as: :student_submission, controller: "student_submissions"
-    resource :submission_bulk, only: [:show, :update] do
+    resource :submission_bulk, only: [:new, :create] do
       resources :subjects, controller: "submission_bulks/subjects", only: :index
     end
 

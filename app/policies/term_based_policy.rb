@@ -15,7 +15,6 @@ class TermBasedPolicy < ApplicationPolicy
     admin? || lecturer?(term)
   end
 
-
   def staff?(term = record.term)
     user.staff_of_term?(term)
   end

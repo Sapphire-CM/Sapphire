@@ -1,6 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe EvaluationGroup do
+  describe 'db columns' do
+    it { is_expected.to have_db_column(:points).of_type(:integer) }
+    it { is_expected.to have_db_column(:percent).of_type(:float) }
+    it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
+    it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
+    it { is_expected.to have_db_column(:status).of_type(:integer) }
+    it { is_expected.to have_db_column(:needs_review).of_type(:boolean) }
+  end
+
   describe 'associations' do
     it { is_expected.to belong_to(:rating_group) }
     it { is_expected.to belong_to(:submission_evaluation).touch(true) }

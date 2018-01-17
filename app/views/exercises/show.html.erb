@@ -23,9 +23,6 @@
   <dt>Exercise Type</dt>
   <dd><%= exercise_submission_type @exercise %> Submission</dd>
 
-  <dt>Uploads</dt>
-  <dd>Uploads are <%= @exercise.enable_student_uploads? ? "enabled" : "disabled" %></dd>
-
   <% if @exercise.enable_max_upload_size? %>
   <dt>Maximum Upload Size</dt>
   <dd><%= filesize @exercise.maximum_upload_size %></dd>

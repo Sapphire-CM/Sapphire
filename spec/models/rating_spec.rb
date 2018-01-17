@@ -11,6 +11,9 @@ RSpec.describe Rating do
     it { is_expected.to have_db_column(:multiplication_factor).of_type(:float) }
     it { is_expected.to have_db_column(:automated_checker_identifier).of_type(:string) }
     it { is_expected.to have_db_column(:bulk).of_type(:boolean) }
+
+    it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
+    it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
   end
 
   describe 'methods' do

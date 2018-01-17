@@ -1,0 +1,28 @@
+<%= simple_form_for bulk, url: exercise_submission_bulk_path(bulk.exercise), method: :post, html: { data: { lookup_url: exercise_submission_bulk_subjects_path(format: :json)}, class: "submission-bulk" } do |f| %>
+  <table class='small-12'>
+    <thead>
+      <th>
+        <% if bulk.group_submission? %>
+          Group
+        <% else %>
+          Student
+        <% end %>
+      </th>
+      <% bulk.ratings.each do |rating| %>
+        <th><%= rating.title %></th>
+      <% end %>
+      <th></th>
+    </thead>
+    <tbody>
+    <%= f.simple_fields_for :items do |item| %>
+      <%= render "item_fields", f: item %>
+    <% end %>
+    </tbody>
+  </table>
+  <div class='row'>
+    <div class='large-12 columns text-center'>
+      <p><%= f.button :submit, "Submit" %></p>
+    </div>
+  </div>
+  <%= tag :div, data: { behaviour: "new-item-template", template: "#{render("new_item_fields", f: f, bulk: bulk).strip}" } %>
+<% end %>

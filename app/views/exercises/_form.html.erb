@@ -27,7 +27,7 @@
   <%= f.input :maximum_upload_size, label: false,
     wrapper_html: {class: ('hide' unless @exercise.enable_max_upload_size)} %>
 
-
+  <%= f.input :enable_bulk_submission_management, label: "Enable Bulk Operations" %>
   <%= f.input :submission_viewer_identifier, collection: submission_viewer_form_collection, as: :select %>
 
   <div class='row'>

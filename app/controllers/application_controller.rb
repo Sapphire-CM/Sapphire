@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
     else
       new_user_account_path
     end
-    flash[:alert] = 'You are not authorized to perform this action.'
+    alert = 'You are not authorized to perform this action.'
 
     respond_to do |format|
       format.json { render nothing: true, status: :unauthorized }

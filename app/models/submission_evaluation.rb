@@ -1,17 +1,17 @@
 # create_table :submission_evaluations, force: :cascade do |t|
 #   t.integer  :submission_id
 #   t.integer  :evaluator_id
-#   t.string   :evaluator_type,    limit: 255
+#   t.string   :evaluator_type
 #   t.datetime :evaluated_at
-#   t.datetime :created_at,                                    null: false
-#   t.datetime :updated_at,                                    null: false
+#   t.datetime :created_at,                        null: false
+#   t.datetime :updated_at,                        null: false
 #   t.integer  :evaluation_result
-#   t.boolean  :plagiarized,                   default: false, null: false
-#   t.boolean  :needs_review,                  default: false
+#   t.boolean  :plagiarized,       default: false, null: false
+#   t.boolean  :needs_review,      default: false
 # end
 #
-# add_index :submission_evaluations, [:evaluator_id], name: :index_submission_evaluations_on_evaluator_id, using: :btree
-# add_index :submission_evaluations, [:submission_id], name: :index_submission_evaluations_on_submission_id, unique: true, using: :btree
+# add_index :submission_evaluations, [:evaluator_id], name: :index_submission_evaluations_on_evaluator_id
+# add_index :submission_evaluations, [:submission_id], name: :index_submission_evaluations_on_submission_id, unique: true
 
 class SubmissionEvaluation < ActiveRecord::Base
   belongs_to :submission

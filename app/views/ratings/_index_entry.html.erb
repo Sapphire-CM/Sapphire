@@ -13,6 +13,7 @@
     <% if rating.automatically_checked? %>
       <span data-tooltip class='has-tip' title='Automatically checked via <%= automated_check_title rating.automated_checker_identifier %>'>A</span>
     <% end %>
+    <%= content_tag :span, "bulk", class: "radius secondary label" if rating.bulk? %>
   </td>
 
   <td class='value-column right-aligned'>

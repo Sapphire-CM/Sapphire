@@ -1,0 +1,13 @@
+// Place all the styles related to the submission_bulks controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+form.submission-bulk {
+  .edit-icon-container {
+    float: right;
+  }
+
+  td.remove-link {
+    width: 2em;
+  }
+}

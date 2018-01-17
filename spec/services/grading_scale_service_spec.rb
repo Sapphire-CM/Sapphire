@@ -4,11 +4,11 @@ RSpec.describe GradingScaleService, type: :model, sidekiq: :inline do
   let!(:account) { FactoryGirl.create :account }
   let!(:term) { FactoryGirl.create :term }
   let!(:exercise) { FactoryGirl.create :exercise, :with_ratings, term: term }
-  let!(:term_registration) { FactoryGirl.create :term_registration, term: term, account: account, points: 40 }
+  let!(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term, account: account, points: 40) }
 
   context 'gives the correct grade for term_registration' do
     def expect_grade_to_be(grade)
-      grading_scale_service = GradingScaleService.new(term)
+      grading_scale_service = described_class.new(term)
       result = grading_scale_service.grade_for(term_registration)
       expect(result).to eq(grade)
     end
@@ -25,8 +25,8 @@ RSpec.describe GradingScaleService, type: :model, sidekiq: :inline do
     end
 
     context 'with a submission' do
-      before do
-        SubmissionCreationService.new_with_exercise(account, exercise).save
+      before :each do
+        SubmissionCreationService.new_student_submission(account, exercise).save
         term_registration.reload
       end
 
@@ -54,6 +54,7 @@ RSpec.describe GradingScaleService, type: :model, sidekiq: :inline do
         101 => '1'
       }.each do |points, grade|
         it "gives the correct grade #{grade} for #{points} points" do
+          term_registration.update_points!
           term_registration.update! points: points
           expect_grade_to_be grade
         end

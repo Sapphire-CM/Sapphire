@@ -1,19 +1,20 @@
 # create_table :ratings, force: :cascade do |t|
 #   t.integer  :rating_group_id
-#   t.string   :title,                        limit: 255
+#   t.string   :title
 #   t.integer  :value
-#   t.datetime :created_at,                               null: false
-#   t.datetime :updated_at,                               null: false
+#   t.datetime :created_at,                                   null: false
+#   t.datetime :updated_at,                                   null: false
 #   t.text     :description
-#   t.string   :type,                         limit: 255
+#   t.string   :type
 #   t.integer  :max_value
 #   t.integer  :min_value
 #   t.integer  :row_order
 #   t.float    :multiplication_factor
-#   t.string   :automated_checker_identifier, limit: 255
+#   t.string   :automated_checker_identifier
+#   t.boolean  :bulk,                         default: false
 # end
 #
-# add_index :ratings, [:rating_group_id], name: :index_ratings_on_rating_group_id, using: :btree
+# add_index :ratings, [:rating_group_id], name: :index_ratings_on_rating_group_id
 
 class Rating < ActiveRecord::Base
   belongs_to :rating_group, touch: true
@@ -37,9 +38,10 @@ class Rating < ActiveRecord::Base
   after_update :update_evaluations, if: lambda { |rating| rating.value_changed? || rating.max_value_changed? || rating.min_value_changed? || rating.multiplication_factor_changed? }
   after_update :move_evaluations, if: lambda { |rating| rating.rating_group_id_changed? }
 
-  after_save :set_needs_review_on_evaluations, if: lambda { |rating| rating.title_changed? || rating.value_changed? || rating.max_value_changed? || rating.min_value_changed? || rating.multiplication_factor_changed? }
+  after_save :evaluations_need_review!, if: lambda { |rating| rating.title_changed? || rating.value_changed? || rating.max_value_changed? || rating.min_value_changed? || rating.multiplication_factor_changed? }
 
   scope :automated_ratings, lambda { where { !automated_checker_identifier.nil? && automated_checker_identifier != '' } }
+  scope :bulk, lambda { where(bulk: true) }
 
   after_initialize do
     self.multiplication_factor ||= 1.0 if attribute_present? :multiplication_factor
@@ -129,7 +131,7 @@ class Rating < ActiveRecord::Base
     end
   end
 
-  def set_needs_review_on_evaluations
+  def evaluations_need_review!
     evaluations.find_each do |evaluation|
       evaluation.update(needs_review: true)
     end

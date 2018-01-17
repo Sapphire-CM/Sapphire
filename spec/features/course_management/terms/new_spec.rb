@@ -47,6 +47,7 @@ RSpec.describe "Term Creation" do
 
     scenario 'Copying elements from previous term' do
       other_term = FactoryGirl.create(:term, course: course)
+
       visit root_path
       within "#course_id_#{course.id}" do
         click_link href: new_term_path(course_id: course.id)

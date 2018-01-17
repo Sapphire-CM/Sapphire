@@ -1,12 +1,12 @@
 # create_table :courses, force: :cascade do |t|
-#   t.string   :title,       limit: 255
+#   t.string   :title
 #   t.text     :description
-#   t.datetime :created_at,                             null: false
-#   t.datetime :updated_at,                             null: false
-#   t.boolean  :locked,                  default: true, null: false
+#   t.datetime :created_at,                 null: false
+#   t.datetime :updated_at,                 null: false
+#   t.boolean  :locked,      default: true, null: false
 # end
 #
-# add_index :courses, [:title], name: :index_courses_on_title, unique: true, using: :btree
+# add_index :courses, [:title], name: :index_courses_on_title, unique: true
 
 class Course < ActiveRecord::Base
   has_many :terms, dependent: :destroy

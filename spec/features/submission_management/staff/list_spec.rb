@@ -154,5 +154,25 @@ RSpec.feature 'Managing submissions as a staff member' do
         end
       end
     end
+
+    context 'exercise allowing bulk submission management' do
+      let(:exercise) { FactoryGirl.create(:exercise, term: term, enable_bulk_submission_management: true) }
+
+      scenario 'shows link to bulk operations' do
+        visit exercise_submissions_path(exercise)
+
+        expect(page).to have_link("Bulk Operation", href: new_exercise_submission_bulk_path(exercise))
+      end
+    end
+
+    context 'exercise disallowing bulk submission management' do
+      let(:exercise) { FactoryGirl.create(:exercise, term: term, enable_bulk_submission_management: false) }
+
+      scenario 'shows link to bulk operations' do
+        visit exercise_submissions_path(exercise)
+
+        expect(page).not_to have_link("Bulk Operation", href: new_exercise_submission_bulk_path(exercise))
+      end
+    end
   end
 end

@@ -37,9 +37,9 @@ class StudentSubmissionsController < ApplicationController
 
       redirect_to submission_path(@submission)
     else
-      @submission_creation_service = SubmissionCreationService.new_with_exercise(current_account, @exercise)
+      @submission_creation_service = SubmissionCreationService.new_student_submission(current_account, @exercise)
 
-      @submission = @submission_creation_service.model
+      @submission = @submission_creation_service.submission
       authorize @submission
     end
   end

@@ -84,6 +84,7 @@ class RatingsController < ApplicationController
       :min_value,
       :max_value,
       :multiplication_factor,
-      :automated_checker_identifier)
+      :automated_checker_identifier,
+      :bulk)
   end
 end

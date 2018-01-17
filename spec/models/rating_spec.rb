@@ -1,6 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe Rating do
+  describe 'db columns' do
+    it { is_expected.to have_db_column(:title).of_type(:string) }
+    it { is_expected.to have_db_column(:description).of_type(:text) }
+    it { is_expected.to have_db_column(:type).of_type(:string) }
+    it { is_expected.to have_db_column(:min_value).of_type(:integer) }
+    it { is_expected.to have_db_column(:max_value).of_type(:integer) }
+    it { is_expected.to have_db_column(:row_order).of_type(:integer) }
+    it { is_expected.to have_db_column(:multiplication_factor).of_type(:float) }
+    it { is_expected.to have_db_column(:automated_checker_identifier).of_type(:string) }
+    it { is_expected.to have_db_column(:bulk).of_type(:boolean) }
+  end
 
   describe 'methods' do
     let(:rating_subclasses) do

@@ -1,0 +1,3 @@
+<%= f.simple_fields_for :items, bulk.blank_item, child_index: "new_item" do |item| %>
+  <%= render "item_fields", f: item %>
+<% end %>

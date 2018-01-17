@@ -163,14 +163,13 @@ RSpec.describe Submission do
       subject { FactoryGirl.build(:submission) }
 
       it 'calls #create_submission_evaluation after creating a record' do
-        expect(subject).to receive(:create_submission_evaluation)
+        expect(subject).to receive(:create_submission_evaluation!)
         subject.save
       end
     end
   end
 
   describe 'methods' do
-
     describe '#evaluated?' do
       subject { FactoryGirl.create(:submission) }
 

@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 describe Course do
+  describe 'db columns' do
+    it { is_expected.to have_db_column(:title).of_type(:string) }
+    it { is_expected.to have_db_column(:description).of_type(:text) }
+    it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
+    it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
+    it { is_expected.to have_db_column(:locked).of_type(:boolean) }
+  end
+
   it 'scopes to current term' do
     account = FactoryGirl.create(:account)
 

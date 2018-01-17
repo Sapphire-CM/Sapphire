@@ -1,6 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe SubmissionEvaluation do
+  describe 'db columns' do
+    it { is_expected.to have_db_column(:evaluated_at).of_type(:datetime) }
+    it { is_expected.to have_db_column(:evaluation_result).of_type(:integer) }
+    it { is_expected.to have_db_column(:plagiarized).of_type(:boolean).with_options(null: false, default: false) }
+    it { is_expected.to have_db_column(:needs_review).of_type(:boolean).with_options(default: false) }
+
+    it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
+    it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
+  end
+
   describe 'associations' do
     it { is_expected.to belong_to(:submission) }
     it { is_expected.to belong_to(:evaluator) }

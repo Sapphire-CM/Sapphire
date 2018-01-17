@@ -1,16 +1,36 @@
 require 'rails_helper'
 
 describe TermRegistration do
-  it { is_expected.to validate_presence_of :account }
-  it { is_expected.to validate_presence_of :term }
-  it { is_expected.to have_many :exercise_registrations }
 
-  # this currently failes because of https://github.com/thoughtbot/shoulda-matchers/issues/535
-  # it { is_expected.to validate_uniqueness_of(:account).scoped_to(:term_id)}
+  describe 'associations' do
+    it { is_expected.to belong_to(:account) }
+    it { is_expected.to belong_to(:term) }
+    it { is_expected.to belong_to(:tutorial_group) }
+    it { is_expected.to belong_to(:student_group) }
 
-  it 'responds to #negative_grade' do
-    term_registration = build(:term_registration, positive_grade: true)
-    expect(term_registration.negative_grade?).to be_falsey
+    it { is_expected.to have_many(:exercise_registrations).dependent(:destroy) }
+    it { is_expected.to have_many(:submissions).through(:exercise_registrations) }
+    it { is_expected.to have_many(:exercises).through(:exercise_registrations) }
+  end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of :account }
+    it { is_expected.to validate_presence_of :term }
+
+    # this currently failes because of https://github.com/thoughtbot/shoulda-matchers/issues/535
+    # it { is_expected.to validate_uniqueness_of(:account).scoped_to(:term_id)}
+  end
+
+  describe 'methods' do
+    describe '#negative_grade' do
+      it 'returns the inverse of positive_grade' do
+        subject.positive_grade = true
+        expect(subject.negative_grade?).to be_falsey
+
+        subject.positive_grade = false
+        expect(subject.negative_grade?).to be_truthy
+      end
+    end
   end
 
   context 'validations' do

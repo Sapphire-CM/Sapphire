@@ -19,8 +19,7 @@ class Import < ActiveRecord::Base
 
   enum status: [:pending, :running, :finished, :failed]
 
-  validates :term, presence: true
-  validates :file, presence: true
+  validates :term, :file, presence: true
 
   after_create :create_associations
 

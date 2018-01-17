@@ -16,9 +16,9 @@ class TutorialGroup < ActiveRecord::Base
   has_many :result_publications, dependent: :destroy
   has_many :student_groups, dependent: :destroy, inverse_of: :tutorial_group
 
-  has_many :term_registrations
-  has_many :student_term_registrations, lambda { students }, source: :term_registrations, dependent: :destroy, class_name: 'TermRegistration'
-  has_many :tutor_term_registrations, lambda { tutors }, source: :term_registrations, dependent: :destroy, class_name: 'TermRegistration'
+  has_many :term_registrations, dependent: :destroy
+  has_many :student_term_registrations, lambda { students }, source: :term_registrations, class_name: 'TermRegistration'
+  has_many :tutor_term_registrations, lambda { tutors }, source: :term_registrations, class_name: 'TermRegistration'
 
   has_many :registered_accounts, through: :term_registrations, class_name: 'Account', source: :account
   has_many :student_accounts, through: :student_term_registrations, class_name: 'Account', source: :account

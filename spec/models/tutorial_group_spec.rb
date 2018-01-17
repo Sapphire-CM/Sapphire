@@ -4,17 +4,26 @@ describe TutorialGroup do
   let(:course) { FactoryGirl.create(:course) }
   let(:term) { FactoryGirl.create(:term, course: course) }
 
+  describe 'db columns' do
+    it { is_expected.to have_db_column(:title).of_type(:string) }
+    it { is_expected.to have_db_column(:description).of_type(:text) }
+
+    it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
+    it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
+  end
+
   describe 'associations' do
-    it { is_expected.to have_many(:term_registrations) }
+    it { is_expected.to have_many(:term_registrations).dependent(:destroy) }
     it { is_expected.to have_many(:student_term_registrations).class_name("TermRegistration") }
     it { is_expected.to have_many(:tutor_term_registrations).class_name("TermRegistration") }
 
-    it { is_expected.to have_many(:registered_accounts).through(:term_registrations).class_name("TermRegistration") }
-    it { is_expected.to have_many(:student_accounts).through(:student_term_registrations).class_name("TermRegistration") }
-    it { is_expected.to have_many(:tutor_accounts).through(:tutor_term_registrations).class_name("TermRegistration") }
+    it { is_expected.to have_many(:registered_accounts).source(:account).through(:term_registrations).class_name("Account") }
+    it { is_expected.to have_many(:student_accounts).source(:account).through(:student_term_registrations).class_name("Account") }
+    it { is_expected.to have_many(:tutor_accounts).source(:account).through(:tutor_term_registrations).class_name("Account") }
   end
 
   describe 'validations' do
+    subject { FactoryGirl.create(:tutorial_group) }
     it { is_expected.to validate_presence_of(:term) }
     it { is_expected.to validate_presence_of(:title) }
     it { is_expected.to validate_uniqueness_of(:title).scoped_to(:term_id) }

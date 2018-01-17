@@ -1,10 +1,25 @@
 require 'rails_helper'
 
 describe TutorialGroup do
-  it { is_expected.to have_many :term_registrations }
+  let(:course) { FactoryGirl.create(:course) }
+  let(:term) { FactoryGirl.create(:term, course: course) }
 
-  let(:course) { create(:course) }
-  let(:term) { create(:term, course: course) }
+  describe 'associations' do
+    it { is_expected.to have_many(:term_registrations) }
+    it { is_expected.to have_many(:student_term_registrations).class_name("TermRegistration") }
+    it { is_expected.to have_many(:tutor_term_registrations).class_name("TermRegistration") }
+
+    it { is_expected.to have_many(:registered_accounts).through(:term_registrations).class_name("TermRegistration") }
+    it { is_expected.to have_many(:student_accounts).through(:student_term_registrations).class_name("TermRegistration") }
+    it { is_expected.to have_many(:tutor_accounts).through(:tutor_term_registrations).class_name("TermRegistration") }
+  end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:term) }
+    it { is_expected.to validate_presence_of(:title) }
+    it { is_expected.to validate_uniqueness_of(:title).scoped_to(:term_id) }
+  end
+
 
   describe 'callbacks' do
     it 'ensures result publications on create' do
@@ -48,12 +63,18 @@ describe TutorialGroup do
     end
   end
 
-  describe 'scoping' do
+  describe 'scopes' do
     describe '.ordered_by_title' do
       it 'returns submissions ordered by title' do
         expect(described_class).to receive(:order).with(:title)
         described_class.ordered_by_title
       end
     end
+  end
+
+  describe 'methods' do
+    pending '#student_has_submission_for_exercise?'
+    pending '#results_published_for?'
+    pending '#all_results_published?'
   end
 end

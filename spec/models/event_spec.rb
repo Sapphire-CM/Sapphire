@@ -9,6 +9,24 @@ RSpec.describe Event, type: :model do
 
   it_behaves_like 'hash serialization', %I(data)
 
+  describe 'db columns' do
+    it { is_expected.to have_db_column(:type).of_type(:string) }
+    it { is_expected.to have_db_column(:data).of_type(:text) }
+    it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
+    it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
+  end
+
+  describe 'associations' do
+    it { is_expected.to belong_to(:subject) }
+    it { is_expected.to belong_to(:account) }
+    it { is_expected.to belong_to(:term) }
+  end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:account) }
+    it { is_expected.to validate_presence_of(:term) }
+  end
+
   context 'scoping' do
     describe '#for_term' do
       let(:term) { FactoryGirl.create(:term) }

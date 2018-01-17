@@ -12,6 +12,8 @@ FactoryGirl.define do
       active false
     end
 
-    factory :website_fetcher_service
+    factory :website_fetcher_service, class: Services::WebsiteFetcherService do
+      type "Services::WebsiteFetcherService"
+    end
   end
 end

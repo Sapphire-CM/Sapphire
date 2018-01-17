@@ -48,8 +48,6 @@ RSpec.describe "Term Creation" do
     scenario 'Copying elements from previous term' do
       other_term = FactoryGirl.create(:term, course: course)
 
-      # Force revisit root_path - phantomjs does not reload the page properly otherwise
-      visit term_path(other_term)
       visit root_path
       within "#course_id_#{course.id}" do
         click_link href: new_term_path(course_id: course.id)

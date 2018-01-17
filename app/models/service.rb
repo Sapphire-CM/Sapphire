@@ -20,7 +20,7 @@ class Service < ActiveRecord::Base
   scope :active, lambda { where(active: true) }
 
   def self.service_classes
-    [NewsgroupFetcherService, WebsiteFetcherService]
+    [Services::NewsgroupFetcherService, Services::WebsiteFetcherService]
   end
 
   def self.policy_class
@@ -28,9 +28,10 @@ class Service < ActiveRecord::Base
   end
 
   def title
-    ''
+    raise NotImplementedError
   end
 
   def perform!
+    raise NotImplementedError
   end
 end

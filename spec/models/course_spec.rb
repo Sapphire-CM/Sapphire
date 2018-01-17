@@ -9,6 +9,11 @@ describe Course do
     it { is_expected.to have_db_column(:locked).of_type(:boolean) }
   end
 
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:title) }
+    it { is_expected.to validate_uniqueness_of(:title) }
+  end
+
   it 'scopes to current term' do
     account = FactoryGirl.create(:account)
 

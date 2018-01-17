@@ -14,5 +14,19 @@ FactoryGirl.define do
         comment:              12,
       )
     end
+
+    trait :with_errors do
+      transient do
+        error_count 3
+      end
+
+      after(:create) do |model, evaluator|
+        model.import_result.update(success: false)
+
+        evaluator.error_count.times do
+          model.import_result.import_errors.create!(row: 42, entry: "'Unprocessable entry", message: "Could not parse line 42")
+        end
+      end
+    end
   end
 end

@@ -63,6 +63,7 @@ RSpec.describe ImportResult do
 
   describe 'methods' do
     describe '#reset!' do
+      let(:import) { FactoryGirl.create(:import, :with_errors) }
       subject { import.import_result }
 
       it 'sets default attributes' do
@@ -75,9 +76,8 @@ RSpec.describe ImportResult do
       end
 
       it 'destroys all import errors' do
-        import_errors = FactoryGirl.create_list(:import_error, 3, import_result: subject)
 
-        expect(subject.import_errors(true).count).to eq(3)
+        expect(subject.import_errors(true).count).not_to eq(0)
         subject.reset!
         expect(subject.import_errors(true).count).to eq(0)
       end

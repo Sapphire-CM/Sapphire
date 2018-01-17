@@ -1,20 +1,67 @@
 require 'rails_helper'
 
 describe Term do
-  it { is_expected.to have_many(:term_registrations) }
+  describe 'db columns' do
+    it { is_expected.to have_db_column(:title).of_type(:string) }
+    it { is_expected.to have_db_column(:description).of_type(:text) }
+    it { is_expected.to have_db_column(:row_order).of_type(:integer) }
+    it { is_expected.to have_db_column(:points).of_type(:integer).with_options(default: 0) }
+    it { is_expected.to have_db_column(:status).of_type(:integer).with_options(default: 0) }
 
-  context 'grading_scales' do
-    it 'creates all grading_scales with after_create' do
-      course = FactoryGirl.create :course
-      term = course.terms.create! title: 'new term'
+    it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
+    it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
+  end
 
-      expect(term.grading_scales.length).to eq(6)
-      expect(term.grading_scales.where(not_graded: true).length).to eq(1)
-      expect(term.grading_scales.where(positive: false, not_graded: false).length).to eq(1)
-      expect(term.grading_scales.where(positive: true, not_graded: false).length).to eq(4)
-      expect(term.grading_scales.positives.length).to eq(4)
-      expect(term.grading_scales.pluck(:grade)).to match_array(%w(1 2 3 4 5 0))
-      expect(term.valid_grading_scales?).to eq(true)
+  describe 'associations' do
+    it { is_expected.to belong_to(:course) }
+    it { is_expected.to have_many(:term_registrations).dependent(:destroy) }
+    it { is_expected.to have_many(:exercises).inverse_of(:term).dependent(:destroy) }
+    it { is_expected.to have_many(:tutorial_groups).dependent(:destroy) }
+    it { is_expected.to have_many(:term_registrations).dependent(:destroy) }
+    it { is_expected.to have_many(:events).dependent(:destroy) }
+    it { is_expected.to have_many(:imports).dependent(:destroy) }
+    it { is_expected.to have_many(:exports).dependent(:destroy) }
+
+    it { is_expected.to have_many(:submissions).through(:exercises) }
+    it { is_expected.to have_many(:student_groups).through(:tutorial_groups) }
+    it { is_expected.to have_many(:exercise_registrations).through(:term_registrations) }
+  end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:course) }
+    it { is_expected.to validate_uniqueness_of(:title).scoped_to(:course_id) }
+  end
+
+  describe 'attributes' do
+    it { is_expected.to define_enum_for(:status).with([:ready, :preparing]) }
+  end
+
+  describe 'methods' do
+    pending '#associated_with?'
+    pending '#update_points!'
+    pending '#achievable_points'
+    pending '#lecturers'
+    pending '#tutors'
+    pending '#students'
+    pending '#group_submissions?'
+    pending '#participated?'
+    pending '#valid_grading_scales?'
+  end
+
+  describe 'callbacks' do
+    describe 'grading_scales' do
+      let(:course) { FactoryGirl.create(:course) }
+      subject { FactoryGirl.create(:term, course: course, title: 'new term') }
+
+      it 'creates all grading_scales with after_create' do
+        expect(subject.grading_scales.length).to eq(6)
+        expect(subject.grading_scales.where(not_graded: true).length).to eq(1)
+        expect(subject.grading_scales.where(positive: false, not_graded: false).length).to eq(1)
+        expect(subject.grading_scales.where(positive: true, not_graded: false).length).to eq(4)
+        expect(subject.grading_scales.positives.length).to eq(4)
+        expect(subject.grading_scales.pluck(:grade)).to match_array(%w(1 2 3 4 5 0))
+        expect(subject.valid_grading_scales?).to eq(true)
+      end
     end
   end
 

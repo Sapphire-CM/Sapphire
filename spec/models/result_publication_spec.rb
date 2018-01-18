@@ -1,7 +1,14 @@
 require 'rails_helper'
 
 describe ResultPublication do
-  describe 'relations' do
+  describe 'db columns' do
+    it { is_expected.to have_db_column(:published).of_type(:boolean).with_options}
+
+    it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
+    it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
+  end
+
+  describe 'associations' do
     it { is_expected.to belong_to :exercise }
     it { is_expected.to belong_to :tutorial_group }
     it { is_expected.to have_one(:term).through(:exercise) }

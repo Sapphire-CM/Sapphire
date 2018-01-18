@@ -16,7 +16,7 @@
 class GradingScale < ActiveRecord::Base
   belongs_to :term
 
-  validates :grade, uniqueness: { scope: :term_id }
+  validates :grade, presence: true, uniqueness: { scope: :term_id, case_insensitive: true }
   validates :min_points, uniqueness: { scope: :term_id }, if: :not_graded?
   validates :max_points, uniqueness: { scope: :term_id }, if: :not_graded?
   validate :validate_point_range

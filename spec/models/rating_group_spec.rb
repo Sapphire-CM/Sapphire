@@ -1,6 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe RatingGroup do
+  describe 'db columns' do
+    it { is_expected.to have_db_column(:title).of_type(:string) }
+    it { is_expected.to have_db_column(:points).of_type(:integer) }
+    it { is_expected.to have_db_column(:description).of_type(:text) }
+    it { is_expected.to have_db_column(:global).of_type(:boolean).with_options(null: false, default: false) }
+    it { is_expected.to have_db_column(:min_points).of_type(:integer) }
+    it { is_expected.to have_db_column(:max_points).of_type(:integer) }
+    it { is_expected.to have_db_column(:enable_range_points).of_type(:boolean) }
+    it { is_expected.to have_db_column(:row_order).of_type(:integer) }
+
+    it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
+    it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
+  end
+
   describe 'associations' do
     it { is_expected.to belong_to(:exercise).touch(true) }
     it { is_expected.to have_many(:ratings).dependent(:destroy) }

@@ -23,6 +23,8 @@ class ImportOptions < ActiveRecord::Base
   validates :import, presence: true
   validates :import_id, uniqueness: true
 
+  validates :quote_char, :decimal_separator, :thousands_separator, :column_separator, length: { is: 1 }
+
   after_initialize do
     self.matching_groups            ||= :first_match
     self.tutorial_groups_regexp     ||= '\A(?<tutorial>T[\d]+)\z'

@@ -1,140 +1,166 @@
 require 'rails_helper'
 
 RSpec.describe SubmissionAsset do
-  it { is_expected.to belong_to(:submission) }
+  describe 'db columns' do
+    it { is_expected.to have_db_column(:file).of_type(:string) }
+    it { is_expected.to have_db_column(:content_type).of_type(:string) }
+    it { is_expected.to have_db_column(:submitted_at).of_type(:datetime) }
+    it { is_expected.to have_db_column(:asset_identifier).of_type(:string) }
+    it { is_expected.to have_db_column(:import_identifier).of_type(:string) }
+    it { is_expected.to have_db_column(:path).of_type(:string).with_options(default: "") }
+    it { is_expected.to have_db_column(:filename).of_type(:string) }
+    it { is_expected.to have_db_column(:processed_size).of_type(:integer).with_options(default: 0) }
+    it { is_expected.to have_db_column(:filesystem_size).of_type(:integer).with_options(default: 0) }
+    it { is_expected.to have_db_column(:extraction_status).of_type(:integer) }
 
-  it { is_expected.to validate_presence_of(:submission) }
-  it { is_expected.to validate_presence_of(:file) }
-  it { is_expected.to define_enum_for(:extraction_status).with([:extraction_pending, :extraction_in_progress, :extraction_done, :extraction_failed])}
+    it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
+    it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
+  end
+
+  describe 'associations' do
+    it { is_expected.to belong_to(:submission) }
+  end
 
   describe 'validations' do
     let(:exercise) { submission.exercise }
     let(:submission) { FactoryGirl.create(:submission) }
-    subject { FactoryGirl.build(:submission_asset, submission: submission) }
 
-    describe 'upload size' do
-      it 'does not validate the upload size if the limit is disabled' do
-        exercise.update(maximum_upload_size: 10, enable_max_upload_size: false)
-        subject.file = prepare_static_test_file("simple_submission.txt")
-
-        expect(subject).to be_valid
-        expect(subject.processed_size).to be > 10
-      end
-
-      it 'validates that the size stays below the limit' do
-        exercise.update(maximum_upload_size: 600, enable_max_upload_size: true)
-
-        subject.file = prepare_static_test_file("simple_submission.txt")
-
-        expect(subject).to be_valid
-        expect(subject.processed_size).to be > 400
-
-        FactoryGirl.create(:submission_asset, submission: submission, file: prepare_static_test_file("simple_submission.txt"))
-
-        expect(subject).not_to be_valid
-      end
-
-      it 'validates that the accumulated size stays below the limit' do
-        exercise.update(maximum_upload_size: 10, enable_max_upload_size: true)
-        subject.file = prepare_static_test_file("simple_submission.txt")
-
-        expect(subject).not_to be_valid
-      end
-
-      it 'handles does not add its own size twice when it is persisted' do
-        expect(subject.save).to be_truthy
-        expect(subject.processed_size).to be > 400
-
-        exercise.update(maximum_upload_size: 500, enable_max_upload_size: true)
-        expect(subject).to be_valid
-      end
-
-      it 'fails silently if no submission is set' do
-        subject.submission = nil
-        expect do
-          subject.valid?
-        end.not_to raise_error
-      end
+    describe 'basic' do
+      it { is_expected.to validate_presence_of(:submission) }
+      it { is_expected.to validate_presence_of(:file) }
     end
 
-    describe 'path uniqueness' do
-      it 'validates the uniqueness of a simple path and file combination' do
-        expect(subject).to be_valid
+    describe 'custom' do
+      subject { FactoryGirl.build(:submission_asset, submission: submission) }
 
-        FactoryGirl.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt"))
+      describe 'upload size' do
+        it 'does not validate the upload size if the limit is disabled' do
+          exercise.update(maximum_upload_size: 10, enable_max_upload_size: false)
+          subject.file = prepare_static_test_file("simple_submission.txt")
 
-        subject.path = ""
-        subject.file = prepare_static_test_file("simple_submission.txt")
+          expect(subject).to be_valid
+          expect(subject.processed_size).to be > 10
+        end
 
-        expect(subject).not_to be_valid
+        it 'validates that the size stays below the limit' do
+          exercise.update(maximum_upload_size: 600, enable_max_upload_size: true)
+
+          subject.file = prepare_static_test_file("simple_submission.txt")
+
+          expect(subject).to be_valid
+          expect(subject.processed_size).to be > 400
+
+          FactoryGirl.create(:submission_asset, submission: submission, file: prepare_static_test_file("simple_submission.txt"))
+
+          expect(subject).not_to be_valid
+        end
+
+        it 'validates that the accumulated size stays below the limit' do
+          exercise.update(maximum_upload_size: 10, enable_max_upload_size: true)
+          subject.file = prepare_static_test_file("simple_submission.txt")
+
+          expect(subject).not_to be_valid
+        end
+
+        it 'handles does not add its own size twice when it is persisted' do
+          expect(subject.save).to be_truthy
+          expect(subject.processed_size).to be > 400
+
+          exercise.update(maximum_upload_size: 500, enable_max_upload_size: true)
+          expect(subject).to be_valid
+        end
+
+        it 'fails silently if no submission is set' do
+          subject.submission = nil
+          expect do
+            subject.valid?
+          end.not_to raise_error
+        end
       end
 
-      it 'validates the uniqueness of a non-normalized path and file combination' do
-        expect(subject).to be_valid
+      describe 'path uniqueness' do
+        it 'validates the uniqueness of a simple path and file combination' do
+          expect(subject).to be_valid
 
-        FactoryGirl.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt"))
+          FactoryGirl.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt"))
 
-        subject.path = "test/.."
-        subject.file = prepare_static_test_file("simple_submission.txt")
+          subject.path = ""
+          subject.file = prepare_static_test_file("simple_submission.txt")
 
-        expect(subject).not_to be_valid
-      end
+          expect(subject).not_to be_valid
+        end
 
-      it 'detects collision if path is resolves to an existing submission asset with a path at some point' do
-        expect(subject).to be_valid
+        it 'validates the uniqueness of a non-normalized path and file combination' do
+          expect(subject).to be_valid
 
-        sa = FactoryGirl.create(:submission_asset, submission: submission, path: "test/folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
+          FactoryGirl.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt"))
 
-        subject.path = "test/folder/path"
-        subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
+          subject.path = "test/.."
+          subject.file = prepare_static_test_file("simple_submission.txt")
 
-        expect(subject).not_to be_valid
-      end
+          expect(subject).not_to be_valid
+        end
 
-      it 'detects collision if path is resolves to an existing submission asset without a path' do
-        expect(subject).to be_valid
+        it 'detects collision if path is resolves to an existing submission asset with a path at some point' do
+          expect(subject).to be_valid
 
-        sa = FactoryGirl.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
+          sa = FactoryGirl.create(:submission_asset, submission: submission, path: "test/folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
 
-        subject.path = "//path/"
-        subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
+          subject.path = "test/folder/path"
+          subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
 
-        expect(subject).not_to be_valid
-      end
+          expect(subject).not_to be_valid
+        end
 
-      it 'detects collision if path resolves to a path of an existing submission asset' do
-        expect(subject).to be_valid
+        it 'detects collision if path is resolves to an existing submission asset without a path' do
+          expect(subject).to be_valid
 
-        sa = FactoryGirl.create(:submission_asset, submission: submission, path: "test/folder", file: prepare_static_test_file("simple_submission.txt"))
+          sa = FactoryGirl.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
 
-        subject.path = "test"
-        subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
+          subject.path = "//path/"
+          subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
 
-        expect(subject).not_to be_valid
-      end
+          expect(subject).not_to be_valid
+        end
 
-      it 'detects collision if path resolves to a sub_path of an existing submission asset' do
-        expect(subject).to be_valid
+        it 'detects collision if path resolves to a path of an existing submission asset' do
+          expect(subject).to be_valid
 
-        sa = FactoryGirl.create(:submission_asset, submission: submission, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
+          sa = FactoryGirl.create(:submission_asset, submission: submission, path: "test/folder", file: prepare_static_test_file("simple_submission.txt"))
 
-        subject.path = "test"
-        subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
+          subject.path = "test"
+          subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
 
-        expect(subject).not_to be_valid
-      end
+          expect(subject).not_to be_valid
+        end
 
-      it 'is not influenced by other submissions' do
-        expect(subject).to be_valid
+        it 'detects collision if path resolves to a sub_path of an existing submission asset' do
+          expect(subject).to be_valid
 
-        sa = FactoryGirl.create(:submission_asset, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
+          sa = FactoryGirl.create(:submission_asset, submission: submission, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
 
-        subject.path = "test"
-        subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
+          subject.path = "test"
+          subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
 
-        expect(subject).to be_valid
+          expect(subject).not_to be_valid
+        end
+
+        it 'is not influenced by other submissions' do
+          expect(subject).to be_valid
+
+          sa = FactoryGirl.create(:submission_asset, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
+
+          subject.path = "test"
+          subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
+
+          expect(subject).to be_valid
+        end
       end
     end
+  end
+
+  describe 'attributes' do
+    it { is_expected.to define_enum_for(:extraction_status).with([:extraction_pending, :extraction_in_progress, :extraction_done, :extraction_failed])}
   end
 
   describe "::Mime" do

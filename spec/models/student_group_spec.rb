@@ -1,6 +1,16 @@
 require "rails_helper"
 
 RSpec.describe StudentGroup do
+  describe 'db columns' do
+    it { is_expected.to have_db_column(:title).of_type(:string) }
+    it { is_expected.to have_db_column(:points).of_type(:integer) }
+    it { is_expected.to have_db_column(:keyword).of_type(:string) }
+    it { is_expected.to have_db_column(:topic).of_type(:string) }
+    it { is_expected.to have_db_column(:description).of_type(:text) }
+    it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
+    it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
+  end
+
   describe 'associations' do
     it { is_expected.to belong_to(:tutorial_group) }
     it { is_expected.to have_one(:term).through(:tutorial_group) }

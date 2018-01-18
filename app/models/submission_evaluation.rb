@@ -28,8 +28,8 @@ class SubmissionEvaluation < ActiveRecord::Base
   validates :submission, presence: true
   validates :submission_id, uniqueness: true
 
-  scope :evaluated, lambda { where.not(evaluator: nil)}
-  scope :not_evaluated, lambda { where(evaluator: nil)}
+  scope :evaluated, lambda { where.not(evaluator: nil) }
+  scope :not_evaluated, lambda { where(evaluator: nil) }
 
   after_create :create_evaluation_groups
   after_save :update_exercise_results, if: :evaluation_result_changed?

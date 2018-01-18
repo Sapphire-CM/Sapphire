@@ -23,21 +23,37 @@ class ImportResult < ActiveRecord::Base
   validates :import, presence: true
   validates :import_id, uniqueness: true
 
+  validates :processed_rows, :total_rows, numericality: { greater_than_or_equal_to: 0 }
+
   after_create :reset!
+  after_initialize :set_default_options!, if: :new_record?
 
   def reset!
-    self.update! success: false,
+    set_default_options!
+    save!
+    import_errors.destroy_all
+  end
+
+  def progress
+    if total_rows == 0
+      0
+    else
+      processed_rows.to_f / total_rows.to_f * 100.0
+    end
+  end
+
+  private
+  def set_default_options!
+    default_options = {
+      success: false,
       total_rows: 0,
       processed_rows: 0,
       imported_students: 0,
       imported_tutorial_groups: 0,
       imported_term_registrations: 0,
       imported_student_groups: 0
+    }
 
-    import_errors.destroy_all
-  end
-
-  def progress
-    processed_rows.to_f / total_rows.to_f * 100.0
+    self.assign_attributes(default_options)
   end
 end

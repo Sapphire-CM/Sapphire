@@ -41,13 +41,13 @@ class Exercise < ActiveRecord::Base
   scope :solitary_exercises, lambda { where(group_submission: false) }
   scope :mandatory_exercises, lambda { where(enable_min_required_points: true) }
 
+  has_many :services, dependent: :destroy
   has_many :result_publications, dependent: :destroy
-  has_many :student_groups, through: :student_group_registrations
   has_many :submissions
+
   has_many :submission_evaluations, through: :submissions
   has_many :rating_groups, dependent: :destroy
   has_many :ratings, through: :rating_groups
-  has_many :services
 
   validates :term, presence: true
   validates :title, presence: true, uniqueness: { scope: :term_id }

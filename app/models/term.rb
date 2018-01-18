@@ -23,15 +23,14 @@ class Term < ActiveRecord::Base
   has_many :grading_scales, dependent: :destroy
   has_many :exercises, dependent: :destroy, inverse_of: :term
   has_many :tutorial_groups, dependent: :destroy
-  has_many :submissions, through: :exercises
-  has_many :student_groups, through: :tutorial_groups
   has_many :term_registrations, dependent: :destroy
-  has_many :exercise_registrations, through: :term_registrations
-
   has_many :imports, dependent: :destroy
   has_many :exports, dependent: :destroy
-
   has_many :events, dependent: :destroy
+
+  has_many :submissions, through: :exercises
+  has_many :student_groups, through: :tutorial_groups
+  has_many :exercise_registrations, through: :term_registrations
 
   validates :course, presence: true
   validates :title, presence: true, uniqueness: { scope: :course_id }

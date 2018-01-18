@@ -6,11 +6,11 @@ RSpec.describe ServicesController do
 
   let(:term) { FactoryGirl.create :term }
   let(:exercise) { FactoryGirl.create :exercise, term: term }
-  let(:service) { FactoryGirl.create :service, exercise: exercise }
+  let(:service) { FactoryGirl.create :website_fetcher_service, exercise: exercise }
 
   describe 'GET index' do
     it 'assigns all services as @services' do
-      FactoryGirl.create_list :service, 4, exercise: exercise
+      FactoryGirl.create_list :website_fetcher_service, 4, exercise: exercise
 
       get :index, term_id: term.id, exercise_id: exercise.id
 

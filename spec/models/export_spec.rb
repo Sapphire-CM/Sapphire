@@ -1,12 +1,33 @@
 require 'rails_helper'
 
 RSpec.describe Export do
-  it { is_expected.to be_a(Polymorphable) }
-  it { is_expected.to be_a(SerializedProperties) }
-  it { is_expected.to belong_to(:term) }
-  it { is_expected.to validate_presence_of(:term) }
-
   subject { FactoryGirl.create(:export) }
+
+  describe 'db columns' do
+    it { is_expected.to have_db_column(:type).of_type(:string) }
+    it { is_expected.to have_db_column(:status).of_type(:integer) }
+    it { is_expected.to have_db_column(:file).of_type(:string) }
+    it { is_expected.to have_db_column(:properties).of_type(:text) }
+    it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
+    it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
+  end
+
+  describe 'behaviours' do
+    it { is_expected.to be_a(Polymorphable) }
+    it { is_expected.to be_a(SerializedProperties) }
+  end
+
+  describe 'associations' do
+    it { is_expected.to belong_to(:term) }
+  end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:term) }
+  end
+
+  describe 'attributes' do
+    it { is_expected.to define_enum_for(:status).with([:pending, :running, :finished, :failed]) }
+  end
 
   describe 'initialization' do
     it 'sets the default status to :pending' do

@@ -1,14 +1,25 @@
 require 'rails_helper'
 
 describe ExerciseRegistration do
-  it { is_expected.to belong_to(:exercise) }
-  it { is_expected.to belong_to(:submission) }
-  it { is_expected.not_to belong_to(:student_group) }
-  it { is_expected.to belong_to(:term_registration) }
-  it { is_expected.to validate_presence_of(:exercise) }
-  it { is_expected.to validate_presence_of(:term_registration) }
-  it { is_expected.to validate_presence_of(:submission) }
-  it { is_expected.to validate_numericality_of(:points).only_integer }
+  describe 'db columns' do
+    it { is_expected.to have_db_column(:points).of_type(:integer) }
+    it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
+    it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
+  end
+
+  describe 'associations' do
+    it { is_expected.to belong_to(:exercise) }
+    it { is_expected.to belong_to(:submission) }
+    it { is_expected.not_to belong_to(:student_group) }
+    it { is_expected.to belong_to(:term_registration) }
+  end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:exercise) }
+    it { is_expected.to validate_presence_of(:term_registration) }
+    it { is_expected.to validate_presence_of(:submission) }
+    it { is_expected.to validate_numericality_of(:points).only_integer }
+  end
 
   describe 'scoping' do
     describe '.current' do

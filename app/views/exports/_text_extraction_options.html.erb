@@ -1,1 +1,2 @@
 <%= f.select :exercise, options_for_select(current_term.exercises.collect {|exercise| [exercise.title, exercise.id]}), {include_blank: "Select Exercise"} %>
+<%= f.input :selector %>

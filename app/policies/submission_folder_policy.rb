@@ -3,7 +3,6 @@ class SubmissionFolderPolicy < TermBasedPolicy
     authorized?
   end
 
-
   def create?
     authorized?
   end

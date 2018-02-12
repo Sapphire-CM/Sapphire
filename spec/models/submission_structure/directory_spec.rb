@@ -144,7 +144,7 @@ RSpec.describe SubmissionStructure::Directory do
 
     describe '#mtime' do
       it 'returns 0' do
-        expect(subject.mtime).to eq(0)
+        expect(subject.mtime).to eq(nil)
       end
     end
   end

@@ -70,7 +70,7 @@ class SubmissionStructure::Directory < SubmissionStructure::TreeNode
   end
 
   def mtime(*args)
-    entries.map(&:mtime).max || 0
+    entries.map(&:mtime).compact.max
   end
 
   def icon

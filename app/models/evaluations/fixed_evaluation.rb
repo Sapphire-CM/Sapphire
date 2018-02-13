@@ -29,4 +29,8 @@ class Evaluations::FixedEvaluation < Evaluation
       1
     end
   end
+
+  def show_to_students?
+    value?
+  end
 end

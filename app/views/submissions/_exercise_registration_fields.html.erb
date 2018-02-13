@@ -1,0 +1,22 @@
+<tr class='association-item' data-has-subject='<%= f.object.term_registration.present? %>' data-persisted='<%= f.object.persisted? %>'>
+  <td class='small-5'>
+    <%= f.input :id, as: :hidden %>
+    <%= f.input :_destroy, as: :hidden, input_html: { data: { behaviour: "item-is-removed"} } %>
+
+    <div class='subject-container'>
+      <% if f.object.term_registration.present? %>
+        <%= submission_term_registration(f.object.term_registration) %>
+      <% end %>
+    </div>
+    <%= f.input :term_registration_id, as: :hidden, input_html: { data: { behaviour: "association-id" } } %>
+
+    <div class='row collapse lookup-input-container'>
+      <div class='small-9 columns search-field'><%= search_field_tag :subject_lookup, "", placeholder: "MNr. or Name", autocomplete: "off" %></div>
+      <div class='small-3 columns cancel-button'><%= link_to "cancel", '#', class: "button postfix", data: { behaviour: "cancel-lookup" } %></div>
+    </div>
+  </td>
+  <td><%= f.input :individual_subtractions, required: false, label: false %></td>
+  <td class='remove-link'>
+    <%= link_to "×", '#', class: "tiny alert button", data: { behaviour: "remove-item" } %>
+  </td>
+</tr>

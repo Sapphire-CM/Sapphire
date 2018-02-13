@@ -20,7 +20,7 @@ class LookupController
         switch keycode
           when 13
             if that._is_highlight_active()
-              that._select_subject(that._highlighted_subject())
+              that._select_association(that._highlighted_subject())
               that._hide_dropdown()
             else
               stop_event = false
@@ -69,7 +69,7 @@ class LookupController
 
   _setup_dropdown: ->
     @dropdown = $("<div>");
-    @dropdown.addClass("submission-bulk-dropdown")
+    @dropdown.addClass("association-lookup-dropdown")
       .hide()
 
     @results = $("<ul>");
@@ -132,11 +132,11 @@ class LookupController
         break
 
     if selected_subject
-      @_select_subject(subject)
+      @_select_association(subject)
 
-  _select_subject: (subject) ->
+  _select_association: (subject) ->
     row_id = @_get_item_row_id()
-    @form_controller.select_subject(row_id, subject)
+    @form_controller.select_association(row_id, subject)
 
   # ================
   # = Dropdown UI  =
@@ -286,7 +286,7 @@ class ItemController
     $edit_icon_container = $("<div>")
     $edit_icon_container.addClass("edit-icon-container")
 
-    $edit_icon_link = $("<a>")
+    $edit_icon_link = $("<a>").attr("data-behaviour", "edit-subject")
 
     $edit_icon = $("<i>")
     $edit_icon.addClass("fi-pencil")
@@ -298,7 +298,7 @@ class ItemController
     @edit_icon = $edit_icon_link
 
   _setup_listeners: ->
-    @edit_icon.on "click", (e) =>
+    @element.on "click", "*[data-behaviour=edit-subject]", (e) =>
       @_enable_lookup()
       @_focus_subject_lookup_input()
 
@@ -315,10 +315,14 @@ class ItemController
       e.preventDefault()
 
   _setup_initial_state: ->
+    unless @form_controller.is_autoadd_active()
+      @_show_removal_link()
+
     if @has_subject()
       @_disable_lookup()
     else
       @_enable_lookup()
+
 
   # ====================
   # = Public Interface =
@@ -335,8 +339,10 @@ class ItemController
     @_find_subject_id_input().val() != ""
 
   remove_element: ->
-    @element.remove()
-    @element = undefined
+    if @_use_soft_removal()
+      @_soft_remove_element()
+    else
+      @_hard_remove_element()
 
   # ===================
   # = Lookup Handling =
@@ -346,21 +352,21 @@ class ItemController
     @_hide_edit_icon()
     @_hide_subject_description()
     @_show_subject_lookup_container()
-    @_hide_removal_link()
+    @_hide_removal_link() if @form_controller.is_autoadd_active()
     @_update_cancel_button_visibility()
 
   _disable_lookup: ->
     @_show_edit_icon()
     @_show_subject_description()
     @_hide_subject_lookup_container()
-    @_show_removal_link()
+    @_show_removal_link() if @form_controller.is_autoadd_active()
 
   # =========================
   # = Subject Cell Handling =
   # =========================
 
   _find_subject_id_input: ->
-    @element.find("input[data-behaviour=subject-id]")
+    @element.find("input[data-behaviour=association-id]")
 
   _update_subject_description: (description)->
     @element.find(".subject-container").html(description)
@@ -384,20 +390,20 @@ class ItemController
   # = Subject Lookup Input Handling =
   # =================================
 
-  _find_subject_loopup_input: ->
+  _find_subject_lookup_input: ->
     @element.find("input[name=subject_lookup]")
 
-  _find_subject_loopup_container: ->
+  _find_subject_lookup_container: ->
     @element.find(".lookup-input-container")
 
   _show_subject_lookup_container: ->
-    @_find_subject_loopup_container().show()
+    @_find_subject_lookup_container().show()
 
   _hide_subject_lookup_container: ->
-    @_find_subject_loopup_container().hide()
+    @_find_subject_lookup_container().hide()
 
   _focus_subject_lookup_input: ->
-    @_find_subject_loopup_input().focus()
+    @_find_subject_lookup_input().focus()
 
   # ================
   # = Item Removal =
@@ -412,6 +418,26 @@ class ItemController
   _hide_removal_link: ->
     @element.find("*[data-behaviour=remove-item]").hide()
 
+  _hard_remove_element: ->
+    @element.remove()
+    @element = undefined
+
+  _soft_remove_element: ->
+    @element.find("input[data-behaviour=item-is-removed]").val("1")
+    @element.hide()
+
+    # Fix alternating table backgrounds
+    $thead = @element.closest("table").find("thead")
+    @element.appendTo($thead)
+
+    @element = undefined
+
+  _use_soft_removal: ->
+    @_is_persisted()
+
+  _is_persisted: ->
+    @element.data("persisted")
+
   # =================
   # = Cancel Button =
   # =================
@@ -423,15 +449,15 @@ class ItemController
       @_hide_cancel_button()
 
   _show_cancel_button: ->
-    $search_field_container = @_find_subject_loopup_container().find(".search-field")
-    $cancel_button_container = @_find_subject_loopup_container().find(".cancel-button")
+    $search_field_container = @_find_subject_lookup_container().find(".search-field")
+    $cancel_button_container = @_find_subject_lookup_container().find(".cancel-button")
 
     $search_field_container.removeClass("small-12").addClass("small-9")
     $cancel_button_container.show()
 
   _hide_cancel_button: ->
-    $search_field_container = @_find_subject_loopup_container().find(".search-field")
-    $cancel_button_container = @_find_subject_loopup_container().find(".cancel-button")
+    $search_field_container = @_find_subject_lookup_container().find(".search-field")
+    $cancel_button_container = @_find_subject_lookup_container().find(".cancel-button")
 
     $search_field_container.addClass("small-12").removeClass("small-9")
     $cancel_button_container.hide()
@@ -446,7 +472,7 @@ class ItemController
   _focus_first_input: ->
     @element.find(".string input").first().focus()
 
-class SubmissionBulkFormController
+class AssociationLookupFormController
   @id = 0
   @_get_item_id: ->
     @id += 1
@@ -455,14 +481,18 @@ class SubmissionBulkFormController
     @_setup()
 
   _setup: ->
+    @_setup_options()
     @_setup_item_controllers()
     @_setup_lookup_controller()
     @_setup_new_item_template()
     @_setup_listeners()
 
+  _setup_options: ->
+    @ensure_blank_line = @element.data("ensure-blank-line")
+
   _setup_item_controllers: ->
     that = this
-    $trs = @element.find("tr.item")
+    $trs = @element.find(".association-item")
 
     item_controllers = []
     $trs.each ->
@@ -482,15 +512,17 @@ class SubmissionBulkFormController
       @element.off("submit.form_controller")
       @_disable_form()
 
+    @element.on "click", "a[data-behaviour=add-item]", =>
+      @_add_new_item()
 
   # ===================
   # = Public Interface =
   # ===================
 
-  select_subject: (row_id, subject) ->
+  select_association: (row_id, subject) ->
     item_controller = @_find_item_controller(row_id)
     item_controller.set_subject(subject)
-    @_ensure_blank_line()
+    @_ensure_blank_line() if @ensure_blank_line
 
   remove: (row_id) ->
     item_controller = @_find_item_controller(row_id)
@@ -500,6 +532,8 @@ class SubmissionBulkFormController
       item_controller.remove_element()
       @item_controllers.splice(idx, 1)
 
+  is_autoadd_active: ->
+    @ensure_blank_line
   # ===========
   # = Helpers =
   # ===========
@@ -507,7 +541,7 @@ class SubmissionBulkFormController
    @_add_new_item() if @item_controllers[@item_controllers.length - 1].has_subject()
 
   _add_new_item: ->
-    id = SubmissionBulkFormController._get_item_id()
+    id = AssociationLookupFormController._get_item_id()
     template = @new_item_template.replace(/\[new_item\]/g, "[#{id}]")
 
     $item = $(template)
@@ -516,8 +550,7 @@ class SubmissionBulkFormController
     controller = @_build_item_controller($item, id)
     @item_controllers.push(controller)
 
-
-  _build_item_controller: ($element, id = SubmissionBulkFormController._get_item_id()) ->
+  _build_item_controller: ($element, id = AssociationLookupFormController._get_item_id()) ->
     new ItemController($element, this, id)
 
   _find_item_controller: (id)->
@@ -531,10 +564,10 @@ class SubmissionBulkFormController
 
 
 $(document).on "page:load ready", ->
-  $forms = $("form.submission-bulk")
+  $forms = $("form[data-behaviour=association-lookup]")
 
   if $forms.length > 0
     $forms.each ->
       $form = $(this)
 
-      new SubmissionBulkFormController($form)
+      new AssociationLookupFormController($form)

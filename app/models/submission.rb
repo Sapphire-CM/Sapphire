@@ -17,11 +17,11 @@ class Submission < ActiveRecord::Base
   belongs_to :submitter, class_name: 'Account', foreign_key: 'submitter_id'
   belongs_to :student_group
 
-  has_one :submission_evaluation, dependent: :destroy
+  has_one :submission_evaluation, dependent: :destroy, inverse_of: :submission
   has_one :term, through: :exercise
 
   has_many :submission_assets, inverse_of: :submission, autosave: true
-  has_many :exercise_registrations, autosave: true, dependent: :destroy
+  has_many :exercise_registrations, inverse_of: :submission, dependent: :destroy
   has_many :term_registrations, through: :exercise_registrations
   has_many :students, through: :term_registrations, source: :account
   has_many :tutorial_groups, lambda { uniq }, through: :term_registrations
@@ -34,6 +34,8 @@ class Submission < ActiveRecord::Base
 
   validate :upload_size_below_exercise_maximum_upload_size
 
+  delegate :submission_viewer?, to: :exercise, allow_nil: true
+
   scope :for_term, lambda { |term| joins(:exercise).where(exercise: { term_id: term.id }) }
   scope :for_exercise, lambda { |exercise| where(exercise_id: exercise) }
   scope :for_tutorial_group, lambda { |tutorial_group| joins { exercise_registrations.term_registration } .where { term_registrations.tutorial_group_id == my { tutorial_group.id } } }
@@ -41,11 +43,13 @@ class Submission < ActiveRecord::Base
   scope :for_term_registration, lambda { |term_registration| joins(:term_registrations).where(term_registrations: {id: term_registration}) }
   scope :for_account, lambda { |account| joins(:term_registrations).where(term_registrations: { account_id: account.id }) }
   scope :unmatched, lambda { joins { exercise_registrations.outer }.where(exercise_registrations: { id:nil }) }
-  scope :with_evaluation, lambda { joins(:submission_evaluation).where(submission_evaluations: {id: SubmissionEvaluation.evaluated}) }
+  scope :with_evaluation, lambda { joins(:submission_evaluation).merge(SubmissionEvaluation.evaluated) }
   scope :ordered_by_student_group, lambda { references(:student_groups).joins(:student_group).order('student_groups.title ASC') }
   scope :ordered_by_exercises, lambda { references(:exercises).joins(:exercise).order { exercises.row_order } }
   scope :current, lambda { where(outdated: false) }
   scope :outdated, lambda { where(outdated: true) }
+
+  accepts_nested_attributes_for :exercise_registrations, allow_destroy: true, reject_if: :all_blank
 
   after_create :create_submission_evaluation!
 
@@ -79,6 +83,12 @@ class Submission < ActiveRecord::Base
     tree
   rescue SubmissionStructureService::FileDoesNotExist
     raise ActiveRecord::RecordNotFound
+  end
+
+  def set_exercise_of_exercise_registrations!
+    exercise_registrations.each do |exercise_registration|
+      exercise_registration.exercise = self.exercise
+    end
   end
 
   private

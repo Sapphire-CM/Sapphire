@@ -37,7 +37,6 @@ RSpec.describe 'Managing a submission tree as a staff member' do
 
   it_behaves_like "basic submission tree operations"
 
-
   context 'exercise with viewer' do
     let(:exercise) { FactoryGirl.create(:exercise, :with_viewer, term: term) }
 
@@ -57,5 +56,4 @@ RSpec.describe 'Managing a submission tree as a staff member' do
       expect(page).to have_no_link("Open Viewer")
     end
   end
-
 end

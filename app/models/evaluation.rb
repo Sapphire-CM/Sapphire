@@ -70,6 +70,10 @@ class Evaluation < ActiveRecord::Base
     submission_evaluation.update_plagiarized! if rating.is_a?(Ratings::PlagiarismRating)
   end
 
+  def show_to_students?
+    raise NotImplementedError
+  end
+
   private
 
   def update_needs_review!

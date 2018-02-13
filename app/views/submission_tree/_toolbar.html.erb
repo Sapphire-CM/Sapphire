@@ -6,6 +6,8 @@
       <%= link_to foundation_icon(:archive) + ' Download', blob_submission_path(submission, path: params[:path], format: :zip), class: "tiny button#{" disabled" if tree.entries.empty?}" %>
     </div>
     <div class='large-4 columns text-right'>
+      <%= link_to 'Edit', edit_submission_path(submission), class: "tiny button" if policy(submission).edit? %>
+      <%= link_to 'Open Viewer', submission_viewer_path(submission), class: "tiny button" if policy(SubmissionViewerPolicy.policy_record_with(submission: submission)).show? && submission.submission_viewer? %>
       <%= link_to 'Evaluate', submission_evaluation_path(submission.submission_evaluation), class: "tiny button" if policy(submission.submission_evaluation).show? %>
     </div>
   </div>

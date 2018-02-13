@@ -25,7 +25,7 @@ class SubmissionPolicy < TermBasedPolicy
 
   def update?
     staff_permissions? ||
-    modifiable?
+    false #modifiable?
   end
 
   def destroy?

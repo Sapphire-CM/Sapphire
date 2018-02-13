@@ -2,11 +2,7 @@ module GradingReviewsHelper
   def grading_review_evaluations(submission)
     groups_to_show = []
     submission.submission_evaluation.evaluation_groups.includes([:rating_group, evaluations: :rating]).each do |evaluation_group|
-      evaluations_to_show = []
-
-      evaluation_group.evaluations.each do |evaluation|
-        evaluations_to_show << evaluation if (evaluation.is_a?(Evaluations::FixedEvaluation) && evaluation.value == 1) || (!evaluation.is_a?(Evaluations::FixedEvaluation) && evaluation.value.present?)
-      end
+      evaluations_to_show = evaluation_group.evaluations.select { |evaluation| evaluation.show_to_students? }
 
       groups_to_show << { group: evaluation_group, evaluations: evaluations_to_show } if evaluations_to_show.any?
     end

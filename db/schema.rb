@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180116102141) do
+ActiveRecord::Schema.define(version: 20180213155416) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -108,8 +108,9 @@ ActiveRecord::Schema.define(version: 20180116102141) do
     t.integer  "term_registration_id"
     t.integer  "submission_id"
     t.integer  "points"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "individual_subtractions"
   end
 
   add_index "exercise_registrations", ["exercise_id"], name: "index_exercise_registrations_on_exercise_id"

@@ -77,6 +77,16 @@ module SubmissionsHelper
     end
   end
 
+  def submission_term_registration(term_registration)
+    account = term_registration.account
+    subline = [].tap do |parts|
+      parts << account.matriculation_number
+      parts << term_registration.tutorial_group.title if term_registration.tutorial_group.present?
+    end.join(" - ")
+
+    content_tag(:strong, account.fullname) + tag(:br) + content_tag(:span, subline)
+  end
+
   def setup_submission(submission)
     submission.submission_assets.build unless submission.submission_assets.any?
     submission

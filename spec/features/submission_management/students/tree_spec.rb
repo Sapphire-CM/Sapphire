@@ -15,9 +15,28 @@ RSpec.describe 'Managing a submission tree as a student' do
 
   it_behaves_like "basic submission tree operations"
 
-  scenario "hidden evaluations link" do
+  scenario "hides evaluations link" do
     visit tree_submission_path(submission)
 
     expect(page).to have_no_link("Evaluate")
+  end
+
+
+  scenario "hides evaluations link" do
+    visit tree_submission_path(submission)
+
+    within '.submission-tree-toolbar' do
+      expect(page).to have_no_link("Edit")
+    end
+  end
+
+  context 'exercise with viewer' do
+    let(:exercise) { FactoryGirl.create(:exercise, :with_viewer, term: term) }
+
+    scenario 'hides open viewer link' do
+      visit tree_submission_path(submission)
+
+      expect(page).to have_no_link("Open Viewer")
+    end
   end
 end

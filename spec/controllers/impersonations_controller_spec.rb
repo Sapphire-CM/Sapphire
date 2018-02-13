@@ -60,6 +60,10 @@ RSpec.describe ImpersonationsController, type: :controller do
   describe 'DELETE #destroy' do
     let(:admin_account) { FactoryGirl.create(:account) }
 
+    before :each do
+      request.env["HTTP_REFERER"] = root_path
+    end
+
     it 'removes impersonation' do
       session[:impersonator_id] = admin_account.id
       expect(impersonation).to receive(:sign_in).with(:account, admin_account)

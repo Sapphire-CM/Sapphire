@@ -68,7 +68,8 @@ Rails.application.routes.draw do
       resources :subjects, controller: "submission_bulks/subjects", only: :index
     end
 
-    resources :submissions, only: [:index], controller: "staff_submissions"
+    resources :submissions, only: :index, controller: "staff_submissions"
+
     resources :result_publications, only: :index do
       member do
         put :publish
@@ -89,13 +90,14 @@ Rails.application.routes.draw do
   resources :evaluation_groups, only: :update
   resources :submission_evaluations, controller: :submission_evaluations, only: :show
 
-  resources :submissions, only: :show do
+  resources :submissions, only: [:show, :edit, :update] do
     member do
       get "blob(/*path)", controller: :submission_blob, action: :show, as: :blob
       get "tree(/*path)", controller: :submission_tree, action: :show, as: :tree
       get "directory(/*path)", controller: :submission_tree, action: :directory, as: :tree_directory
       delete "tree(/*path)", controller: :submission_tree, action: :destroy
     end
+    resources :students, controller: "submissions/students"
     resource :folder, controller: :submission_folders, only: [:show, :new, :create]
     resource :upload, controller: :submission_uploads, only: [:new, :create]
   end

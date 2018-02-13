@@ -80,5 +80,31 @@ RSpec.describe Evaluations::VariableEvaluation do
         expect(subject.percent).to eq(1)
       end
     end
+
+    describe '#show_to_students?' do
+      it 'returns true if value is positive' do
+        subject.value = 42
+
+        expect(subject.show_to_students?).to be_truthy
+      end
+
+      it 'returns true if value is 0' do
+        subject.value = 0
+
+        expect(subject.show_to_students?).to be_truthy
+      end
+
+      it 'returns true if value is negative' do
+        subject.value = -21
+
+        expect(subject.show_to_students?).to be_truthy
+      end
+
+      it 'returns false if value is nil' do
+        subject.value = nil
+
+        expect(subject.show_to_students?).to be_falsey
+      end
+    end
   end
 end

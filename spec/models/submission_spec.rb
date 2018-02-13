@@ -15,8 +15,8 @@ RSpec.describe Submission do
     it { is_expected.to belong_to :exercise }
     it { is_expected.to belong_to :submitter }
     it { is_expected.to belong_to :student_group }
-    it { is_expected.to have_one :submission_evaluation }
-    it { is_expected.to have_many(:exercise_registrations) }
+    it { is_expected.to have_one(:submission_evaluation).inverse_of(:submission).dependent(:destroy) }
+    it { is_expected.to have_many(:exercise_registrations).inverse_of(:submission).dependent(:destroy) }
     it { is_expected.to have_many(:term_registrations).through(:exercise_registrations) }
     it { is_expected.to have_many(:associated_student_groups).through(:term_registrations) }
   end
@@ -27,6 +27,10 @@ RSpec.describe Submission do
     it { is_expected.to validate_presence_of(:submitted_at) }
 
     it 'validates size of all submission_assets combined must be below the maximum allowed size of the exercise'
+  end
+
+  describe 'delegation' do
+    it { is_expected.to delegate_method(:submission_viewer?).to(:exercise) }
   end
 
   describe 'scoping' do
@@ -175,6 +179,10 @@ RSpec.describe Submission do
         subject.save
       end
     end
+  end
+
+  describe 'attributes' do
+    it { is_expected.to accept_nested_attributes_for(:exercise_registrations).allow_destroy(true) }
   end
 
   describe 'methods' do
@@ -369,6 +377,24 @@ RSpec.describe Submission do
         allow(submission_asset).to receive(:changed?).and_return(false)
 
         expect(subject.submission_assets_changed?).to be_truthy
+      end
+    end
+
+    describe '#set_exercise_of_exercise_registrations!' do
+      let(:exercise) { FactoryGirl.build(:exercise) }
+      let(:other_exercise) { FactoryGirl.build(:exercise) }
+      let(:exercise_registrations) { FactoryGirl.build_list(:exercise_registration, 3, submission: subject, exercise: other_exercise) }
+
+      subject { FactoryGirl.build(:submission, exercise: exercise) }
+
+      it 'assigns the submissions exercise to the exercise registrations\' exercise' do
+        subject.exercise_registrations = exercise_registrations
+
+        subject.set_exercise_of_exercise_registrations!
+
+        exercise_registrations.each do |exercise_registration|
+          expect(exercise_registration.exercise).to eq(exercise)
+        end
       end
     end
   end

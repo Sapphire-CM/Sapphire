@@ -99,7 +99,6 @@ class TermRegistration < ActiveRecord::Base
   end
 
   private
-
   def validate_term_consistency
     errors.add(:term, 'is not consistent') if tutorial_group.present? && term != tutorial_group.term
   end

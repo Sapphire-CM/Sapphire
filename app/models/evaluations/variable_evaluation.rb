@@ -39,4 +39,9 @@ class Evaluations::VariableEvaluation < Evaluation
       errors.add :value, "must be between #{rating.min_value} and #{rating.max_value}"
     end
   end
+
+
+  def show_to_students?
+    value.present?
+  end
 end

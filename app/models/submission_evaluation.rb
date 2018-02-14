@@ -19,7 +19,7 @@ class SubmissionEvaluation < ActiveRecord::Base
 
   has_one :student_group, through: :submission
 
-  has_many :evaluation_groups, dependent: :destroy, inverse_of: :submission_evaluation
+  has_many :evaluation_groups, dependent: :destroy
   has_many :evaluations, through: :evaluation_groups
 
   has_many :ratings, through: :evaluations
@@ -50,7 +50,6 @@ class SubmissionEvaluation < ActiveRecord::Base
 
   def update_exercise_results
     submission.exercise_registrations.each(&:update_points!)
-
     submission.student_group.update_points! if submission.student_group.present?
     true
   end

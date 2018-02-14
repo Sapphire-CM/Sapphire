@@ -15,8 +15,8 @@ RSpec.describe Submission do
     it { is_expected.to belong_to :exercise }
     it { is_expected.to belong_to :submitter }
     it { is_expected.to belong_to :student_group }
-    it { is_expected.to have_one(:submission_evaluation).inverse_of(:submission).dependent(:destroy) }
-    it { is_expected.to have_many(:exercise_registrations).inverse_of(:submission).dependent(:destroy) }
+    it { is_expected.to have_one(:submission_evaluation).dependent(:destroy) }
+    it { is_expected.to have_many(:exercise_registrations).dependent(:destroy).inverse_of(:submission) }
     it { is_expected.to have_many(:term_registrations).through(:exercise_registrations) }
     it { is_expected.to have_many(:associated_student_groups).through(:term_registrations) }
   end

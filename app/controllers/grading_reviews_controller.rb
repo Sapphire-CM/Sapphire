@@ -2,19 +2,19 @@ class GradingReviewsController < ApplicationController
   include TermContext
 
   def index
-    authorize GradingReviewPolicy.term_policy_record current_term
+    authorize GradingReview::TermReviewPolicy.term_policy_record current_term
 
     @term_registrations = current_term.term_registrations.students.search(params[:q]).load if params[:q].present?
   end
 
   def show
-    authorize GradingReviewPolicy.term_policy_record current_term
+    set_term_review
+  end
 
-    @student_registration = current_term.term_registrations.students.find(params[:id])
-    @student = @student_registration.account
+  private
+  def set_term_review
+    @term_review = GradingReview::TermReview.find_with_term_and_term_registration_id(current_term, params[:id])
 
-    @exercises = current_term.exercises
-    @submissions = @student_registration.submissions.ordered_by_exercises.includes(:exercise).includes(submission_evaluation: { evaluation_groups: [:rating_group, evaluations: :rating] })
-    @grading_scale_service = GradingScaleService.new(current_term)
+    authorize @term_review
   end
 end

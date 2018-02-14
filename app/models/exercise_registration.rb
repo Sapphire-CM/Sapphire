@@ -17,8 +17,6 @@ class ExerciseRegistration < ActiveRecord::Base
   belongs_to :term_registration
   belongs_to :submission, inverse_of: :exercise_registrations
 
-  has_one :submission_evaluation, through: :submission
-
   validates :exercise, presence: true
   validates :term_registration, presence: true
   validates :submission, presence: true
@@ -39,6 +37,7 @@ class ExerciseRegistration < ActiveRecord::Base
   scope :current, lambda { joins(:submission).merge(Submission.current) }
 
   delegate :evaluation_result, to: :submission_evaluation, allow_nil: true
+  delegate :submission_evaluation, to: :submission, allow_nil: true
 
   def minimum_points_reached?
     !exercise.enable_min_required_points || exercise.min_required_points <= points

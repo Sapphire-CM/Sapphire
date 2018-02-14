@@ -21,7 +21,7 @@ class Term < ActiveRecord::Base
   belongs_to :course
 
   has_many :grading_scales, dependent: :destroy
-  has_many :exercises, dependent: :destroy, inverse_of: :term
+  has_many :exercises, dependent: :destroy
   has_many :tutorial_groups, dependent: :destroy
   has_many :term_registrations, dependent: :destroy
   has_many :imports, dependent: :destroy

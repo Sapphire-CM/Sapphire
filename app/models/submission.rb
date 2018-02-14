@@ -17,11 +17,11 @@ class Submission < ActiveRecord::Base
   belongs_to :submitter, class_name: 'Account', foreign_key: 'submitter_id'
   belongs_to :student_group
 
-  has_one :submission_evaluation, dependent: :destroy, inverse_of: :submission
+  has_one :submission_evaluation, dependent: :destroy
   has_one :term, through: :exercise
 
-  has_many :submission_assets, inverse_of: :submission, autosave: true
-  has_many :exercise_registrations, inverse_of: :submission, dependent: :destroy
+  has_many :submission_assets, autosave: true
+  has_many :exercise_registrations, dependent: :destroy, inverse_of: :submission
   has_many :term_registrations, through: :exercise_registrations
   has_many :students, through: :term_registrations, source: :account
   has_many :tutorial_groups, lambda { uniq }, through: :term_registrations

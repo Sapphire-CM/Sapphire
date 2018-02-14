@@ -1,6 +1,6 @@
-<% if groups.any? %>
-  <% groups.each do |group| %>
-    <h4><%= evaluation_group_title group[:group] %></h4>
+<% if submission_review.deductions? %>
+  <% submission_review.reviewable_evaluation_groups.each do |group| %>
+    <h4><%= evaluation_group_title group.evaluation_group %></h4>
     <table class='small-12'>
       <thead>
         <tr>
@@ -9,7 +9,7 @@
         </tr>
       </thead>
       <tbody>
-        <% group[:evaluations].each do |evaluation| %>
+        <% group.evaluations.each do |evaluation| %>
         <tr>
           <td><%= evaluation.rating.title %></td>
           <td>
@@ -23,6 +23,11 @@
         <% end %>
       </tbody>
     </table>
+  <% end %>
+
+  <% if submission_review.individual_subtractions? %>
+    <h4>Individual Subtractions</h4>
+    <%= points submission_review.individual_subtractions %>
   <% end %>
 <% else %>
   <div class='panel callout radius'>

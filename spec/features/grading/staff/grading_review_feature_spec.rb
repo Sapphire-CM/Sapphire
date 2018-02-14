@@ -22,9 +22,9 @@ RSpec.feature 'Grading Review' do
     let!(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term, account: student_account) }
     let!(:another_term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
     let!(:exercise) { FactoryGirl.create(:exercise, title: 'My Exercise', term: term) }
-    let!(:rating_group) { FactoryGirl.create(:rating_group, :with_ratings, exercise: exercise, points: 10)}
+    let!(:rating_group) { FactoryGirl.create(:rating_group, :with_ratings, exercise: exercise, points: 10) }
     let!(:submission) { FactoryGirl.create(:submission, :evaluated, exercise: exercise) }
-    let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission)}
+    let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission) }
 
     scenario 'searching for a student' do
       visit term_grading_reviews_path(term)

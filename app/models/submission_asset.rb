@@ -20,7 +20,7 @@
 require "charlock_holmes"
 
 class SubmissionAsset < ActiveRecord::Base
-  belongs_to :submission, inverse_of: :submission_assets, touch: true
+  belongs_to :submission, touch: true
   mount_uploader :file, SubmissionAssetUploader
 
   enum extraction_status: [:extraction_pending, :extraction_in_progress, :extraction_done, :extraction_failed]

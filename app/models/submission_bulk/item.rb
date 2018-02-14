@@ -61,9 +61,7 @@ class SubmissionBulk::Item
 
   def ensure_submission!
     unless submission?
-      Rails.logger.info("Creating Submission ...")
       @submission = create_submission
-      Rails.logger.info("Submission created!")
     end
   end
 

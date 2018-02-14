@@ -31,11 +31,6 @@ class RatingGroup < ActiveRecord::Base
 
   after_create :create_evaluation_groups
   after_save :update_exercise_points, if: lambda { |rg| rg.points_changed? || rg.max_points_changed? }
-
-  def update_exercise_points
-    exercise.update_points!
-  end
-
   after_update :update_evaluation_group_results, if: lambda { |rating_group| rating_group.points_changed? || rating_group.min_points_changed? || rating_group.max_points_changed? || rating_group.global_changed? }
 
   after_initialize do
@@ -57,12 +52,16 @@ class RatingGroup < ActiveRecord::Base
     end
   end
 
+  def update_exercise_points
+    exercise.update_points!
+  end
+
   def min_max_points_range
     errors.add :min_points, 'minimum points must be less than maximum points'  if self.max_points && self.min_points && self.max_points < self.min_points
   end
 
   def points_in_range
-    errors.add :points, 'must be between minimum points and maximum points' if self.min_points && self.max_points && ! (self.min_points..self.max_points).include?(points)
+    errors.add :points, 'must be between minimum points and maximum points' if self.min_points && self.max_points && !(self.min_points..self.max_points).include?(points)
   end
 
   private

@@ -21,6 +21,10 @@ RSpec.describe Evaluation do
     it { is_expected.to validate_presence_of(:evaluation_group) }
   end
 
+  describe 'delegation' do
+    it { is_expected.to delegate_method(:row_order).to(:rating) }
+  end
+
   describe 'scoping' do
     pending '.ranked'
     pending '.for_submission'

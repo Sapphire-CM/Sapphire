@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe 'Viewing results' do
   let(:course) { FactoryGirl.create(:course) }
   let(:term) { FactoryGirl.create(:term, course: course, title: 'Fancy Term') }
-  let(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
+  let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
+  let(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
   let!(:account) { term_registration.account }
   let!(:exercise) { FactoryGirl.create(:exercise, title: 'Fancy Exercise', term: term) }
   let(:submission) { FactoryGirl.create(:submission, exercise: exercise, submitter: account) }
@@ -11,14 +12,11 @@ RSpec.describe 'Viewing results' do
 
   before :each do
     exercise.result_publications.update_all(published: true)
+
     sign_in account
   end
 
   describe 'navigating to the results page' do
-    before :each do
-      visit root_path
-    end
-
     scenario 'through the navigation bar' do
       visit exercise_path(exercise)
 
@@ -48,7 +46,7 @@ RSpec.describe 'Viewing results' do
     end
   end
 
-  describe 'viewing results' do
+  describe 'reviewing results' do
     let!(:rating_groups) { FactoryGirl.create_list(:rating_group, 2, :with_ratings, exercise: exercise, points: 7, enable_range_points: false) }
 
     let(:rating_group) { rating_groups.first }
@@ -65,8 +63,13 @@ RSpec.describe 'Viewing results' do
     end
 
     scenario 'viewing failed evaluations' do
+      Rails.logger.info("UPDATING EVALUATIONS")
       rating.evaluations.each { |evaluation| evaluation.update(value: 1) }
+      Rails.logger.info("UPDATING RATING")
+
+      rating.reload
       rating.update(value: -5)
+      Rails.logger.info("DONE")
 
       visit term_result_path(term, exercise)
 
@@ -80,6 +83,20 @@ RSpec.describe 'Viewing results' do
         expect(page).to have_content("-5")
       end
     end
+
+    scenario 'viewinig individual subtractions' do
+      exercise_registration.reload
+      exercise_registration.update(individual_subtractions: -2)
+
+      visit term_result_path(term, exercise)
+
+
+      expect(page).not_to have_content("Well Done!")
+      expect(page).to have_content("12 out of 14")
+      expect(page).to have_content("Individual Subtractions")
+      expect(page).to have_content("-2")
+
+    end
   end
 
   describe 'errors' do
@@ -91,12 +108,13 @@ RSpec.describe 'Viewing results' do
       expect(page).to have_current_path(root_path)
     end
 
-    scenario 'navigating to results without submission redirects to new submission page' do
+    scenario 'navigating to results without submission redirects renders 404' do
+      submission.reload
       submission.destroy
 
       visit term_result_path(term, exercise)
 
-      expect(page).to have_current_path(new_exercise_student_submission_path(exercise))
+      expect(page).to have_content("404")
     end
   end
 end

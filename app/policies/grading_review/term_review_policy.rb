@@ -1,4 +1,4 @@
-class GradingReviewPolicy < TermBasedPolicy
+class GradingReview::TermReviewPolicy < TermBasedPolicy
   def index?
     staff_permissions?
   end

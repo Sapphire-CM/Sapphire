@@ -32,7 +32,14 @@ class Exercise < ActiveRecord::Base
 
   ranks :row_order, with_same: :term_id
 
-  delegate :course, to: :term
+  has_many :exercise_registrations, dependent: :destroy
+  has_many :services, dependent: :destroy
+  has_many :result_publications, dependent: :destroy
+  has_many :rating_groups, dependent: :destroy
+
+  has_many :submissions
+  has_many :submission_evaluations, through: :submissions
+  has_many :ratings, through: :rating_groups
 
   default_scope { rank(:row_order) }
   scope :for_evaluations_table, lambda { includes(submissions: [{ submission_evaluation: { evaluation_groups: [:rating_group, { evaluations: :rating }] } }, { student_group_registration: { student_group: :students } }]) }
@@ -41,13 +48,10 @@ class Exercise < ActiveRecord::Base
   scope :solitary_exercises, lambda { where(group_submission: false) }
   scope :mandatory_exercises, lambda { where(enable_min_required_points: true) }
 
-  has_many :services, dependent: :destroy
-  has_many :result_publications, dependent: :destroy
-  has_many :submissions
-
-  has_many :submission_evaluations, through: :submissions
-  has_many :rating_groups, dependent: :destroy
-  has_many :ratings, through: :rating_groups
+  before_save :update_points, if: lambda { |exercise| exercise.enable_max_total_points_changed? || exercise.max_total_points_changed? }
+  after_create :ensure_result_publications
+  after_save :update_term_points, if: :points_changed?
+  after_save :recalculate_term_registrations_results, if: lambda { |exercise| exercise.enable_min_required_points_changed? || exercise.min_required_points_changed? || exercise.points_changed? }
 
   validates :term, presence: true
   validates :title, presence: true, uniqueness: { scope: :term_id }
@@ -57,10 +61,8 @@ class Exercise < ActiveRecord::Base
   validates :deadline, presence: true, if: lambda { |_e| late_deadline.present? }
   validate :deadlines_order
 
-  before_save :update_points, if: lambda { |exercise| exercise.enable_max_total_points_changed? || exercise.max_total_points_changed? }
-  after_create :ensure_result_publications
-  after_save :update_term_points, if: :points_changed?
-  after_save :recalculate_term_registrations_results, if: lambda { |exercise| exercise.enable_min_required_points_changed? || exercise.min_required_points_changed? || exercise.points_changed? }
+  delegate :course, to: :term
+
 
   def before_deadline?
     deadline.present? ? Time.now <= deadline : true

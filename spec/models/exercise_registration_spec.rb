@@ -13,8 +13,6 @@ describe ExerciseRegistration do
     it { is_expected.to belong_to(:submission) }
     it { is_expected.not_to belong_to(:student_group) }
     it { is_expected.to belong_to(:term_registration) }
-
-    it { is_expected.to have_one(:submission_evaluation).through(:submission) }
   end
 
   describe 'validations' do
@@ -42,6 +40,7 @@ describe ExerciseRegistration do
   end
 
   describe 'delegation' do
+    it { is_expected.to delegate_method(:submission_evaluation).to(:submission) }
     it { is_expected.to delegate_method(:evaluation_result).to(:submission_evaluation) }
   end
 
@@ -121,14 +120,18 @@ describe ExerciseRegistration do
     end
 
     describe 'changing individual subtractions' do
-      subject { FactoryGirl.create(:exercise_registration, points: 21) }
+      let(:term) { FactoryGirl.create(:term) }
+      let(:term_registration) { FactoryGirl.create(:term_registration, term: term) }
+      let(:exercise) { FactoryGirl.create(:exercise, term: term) }
+      let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
 
-      let(:submission_evaluation) { subject.submission_evaluation }
+      subject { FactoryGirl.create(:exercise_registration, submission: submission, exercise: exercise, term_registration: term_registration) }
+
+      before :each do
+        submission.submission_evaluation.update(evaluation_result: 42)
+      end
 
       it 'updates the points on save' do
-        submission_evaluation.update(evaluation_result: 42)
-        subject.reload
-
         expect(subject.points).to eq(42)
 
         subject.update(individual_subtractions: -20)

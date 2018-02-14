@@ -1,0 +1,2 @@
+<%= link_to "Reopen Evaluation", submission_evaluation_path(submission_review.submission_evaluation), class: "small button", target: "_blank" %>
+<%= link_to "Open Viewer", submission_viewer_path(submission_review.submission), class: "small button" if submission_review.submission_viewer? %>

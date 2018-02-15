@@ -4,6 +4,6 @@ class ExportJob < ActiveJob::Base
   def perform(export)
     export.perform_export!
 
-    NotificationJob.export_finished_notifications(export)
+    Notification::ExportFinishedJob.perform_later(export)
   end
 end

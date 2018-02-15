@@ -7,8 +7,8 @@ RSpec.describe WelcomeNotificationsController, type: :controller do
     let(:term) { FactoryGirl.create(:term) }
     let(:valid_params) { { term_id: term.id } }
 
-    it 'schedules a notification job' do
-      expect(NotificationJob).to receive(:welcome_notifications_for_term).with(term)
+    it 'schedules a send pending welcomes job' do
+      expect(Notification::SendPendingWelcomesJob).to receive(:perform_later).with(term)
 
       post :create, valid_params
     end

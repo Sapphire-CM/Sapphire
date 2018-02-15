@@ -33,6 +33,53 @@ RSpec.describe TermRegistration do
   end
 
   describe 'methods' do
+    describe '.search' do
+      let(:account_1) { FactoryGirl.create(:account, forename: "John", surname: "Doe", matriculation_number: "12345678") }
+      let(:account_2) { FactoryGirl.create(:account, forename: "Jane", surname: "Doe", matriculation_number: "87654321") }
+
+      let!(:student_term_registration_1) { FactoryGirl.create(:term_registration, :student, account: account_1) }
+      let!(:tutor_term_registration_1) { FactoryGirl.create(:term_registration, :tutor, account: account_1) }
+      let!(:tutor_term_registration_2) { FactoryGirl.create(:term_registration, :tutor, account: account_1) }
+      let!(:lecturer_term_registration_1) { FactoryGirl.create(:term_registration, :lecturer, account: account_1) }
+
+      let!(:student_term_registration_2) { FactoryGirl.create(:term_registration, :student, account: account_2) }
+      let!(:tutor_term_registration_3) { FactoryGirl.create(:term_registration, :tutor, account: account_2) }
+
+      let(:term_registrations_of_account_1) {
+        [
+          student_term_registration_1,
+          tutor_term_registration_1,
+          tutor_term_registration_2,
+          lecturer_term_registration_1
+        ]
+      }
+      let(:term_registrations_of_account_2) {
+        [
+          student_term_registration_2,
+          tutor_term_registration_3
+        ]
+      }
+
+      it 'delegates to Account' do
+        query = "John Doe"
+        expect(Account).to receive(:search).with(query).and_call_original
+
+        described_class.search(query)
+      end
+
+      it 'returns term_registrations when searched for forename' do
+        expect(described_class.search("Jane")).to match_array(term_registrations_of_account_2)
+      end
+
+      it 'returns term_registrations when searched for surname' do
+        expect(described_class.search("Doe")).to match_array(term_registrations_of_account_1 + term_registrations_of_account_2)
+      end
+
+      it 'returns term_registrations when searched for matriculation number' do
+        expect(described_class.search("12345678")).to match_array(term_registrations_of_account_1)
+      end
+    end
+
     describe '#negative_grade' do
       it 'returns the inverse of positive_grade' do
         subject.positive_grade = true
@@ -43,7 +90,33 @@ RSpec.describe TermRegistration do
       end
     end
 
-    describe 'welcomed?' do
+    describe '#staff?' do
+      it 'returns true if role is lecturer' do
+        subject.role = :lecturer
+
+        expect(subject).to be_staff
+      end
+
+      it 'returns true if role is tutor' do
+        subject.role = :tutor
+
+        expect(subject).to be_staff
+      end
+
+      it 'returns false if role is student' do
+        subject.role = :student
+
+        expect(subject).not_to be_staff
+      end
+
+      it 'returns false if role is blank' do
+        subject.role = nil
+
+        expect(subject).not_to be_staff
+      end
+    end
+
+    describe '#welcomed?' do
       it 'returns true if welcomed_at is present' do
         subject.welcomed_at = 2.days.ago
 

@@ -14,7 +14,7 @@
     </p>
 
     <%= link_to "Send #{pluralize(@term_registrations_awaiting_welcome.count, "welcome notification")}",
-      send_welcome_notifications_term_path(@term),
+      term_welcome_notifications_path(@term),
       method: :post,
       data: {confirm: "Are you sure?"},
       class: "small secondary button" %>
@@ -34,5 +34,4 @@
     method: :delete,
     data: {confirm: "Are you sure?"},
     class: "small alert button" %>
-
 </div>

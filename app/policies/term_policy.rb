@@ -47,11 +47,6 @@ class TermPolicy < ApplicationPolicy
     user.staff_of_term?(record)
   end
 
-  def send_welcome_notifications?
-    user.admin? ||
-    user.lecturer_of_term?(record)
-  end
-
   def student?
     user.student_of_term?(record)
   end

@@ -14,6 +14,6 @@ module TermContext
 
   def fetch_term
     id = params[:term_id]
-    @term = Term.find_by_id(id) if id
+    @term = Term.find(id) if id
   end
 end

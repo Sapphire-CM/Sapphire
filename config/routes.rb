@@ -17,7 +17,6 @@ Rails.application.routes.draw do
   resources :terms, except: [:index] do
     member do
       get :points_overview
-      post :send_welcome_notifications
     end
 
     resources :grading_scales, only: [:index, :update]
@@ -51,6 +50,8 @@ Rails.application.routes.draw do
     resources :grading_reviews, only: [:index, :show]
     resources :results, only: [:index, :show], controller: :student_results
     resources :events, only: [:index]
+
+    resource :welcome_notifications, only: :create
   end
 
   resources :tutorial_groups

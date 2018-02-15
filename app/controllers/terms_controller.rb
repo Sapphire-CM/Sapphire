@@ -74,10 +74,6 @@ class TermsController < ApplicationController
     @grading_scale_service = GradingScaleService.new(@term)
   end
 
-  def send_welcome_notifications
-    NotificationJob.welcome_notifications_for_term(@term)
-    redirect_to term_path(@term), notice: 'Welcome Notifications successfully queued for sending'
-  end
 
   private
 

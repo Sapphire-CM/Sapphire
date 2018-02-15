@@ -30,7 +30,6 @@ RSpec.describe TermPolicy do
         it { is_expected.to permit_authorization :update }
         it { is_expected.to permit_authorization :destroy }
         it { is_expected.to permit_authorization :points_overview }
-        it { is_expected.to permit_authorization :send_welcome_notifications }
         it { is_expected.not_to permit_authorization :student }
         it { is_expected.not_to permit_authorization :tutor }
         it { is_expected.not_to permit_authorization :staff }
@@ -80,7 +79,6 @@ RSpec.describe TermPolicy do
         it { is_expected.not_to permit_authorization :update }
         it { is_expected.not_to permit_authorization :destroy }
         it { is_expected.not_to permit_authorization :points_overview }
-        it { is_expected.not_to permit_authorization :send_welcome_notifications }
         it { is_expected.to permit_authorization :student }
         it { is_expected.not_to permit_authorization :tutor }
         it { is_expected.not_to permit_authorization :staff }
@@ -94,7 +92,6 @@ RSpec.describe TermPolicy do
         it { is_expected.not_to permit_authorization :update }
         it { is_expected.not_to permit_authorization :destroy }
         it { is_expected.not_to permit_authorization :points_overview }
-        it { is_expected.not_to permit_authorization :send_welcome_notifications }
         it { is_expected.not_to permit_authorization :student }
         it { is_expected.not_to permit_authorization :tutor }
         it { is_expected.not_to permit_authorization :staff }
@@ -145,7 +142,6 @@ RSpec.describe TermPolicy do
         it { is_expected.not_to permit_authorization :update }
         it { is_expected.not_to permit_authorization :destroy }
         it { is_expected.to permit_authorization :points_overview }
-        it { is_expected.not_to permit_authorization :send_welcome_notifications }
         it { is_expected.not_to permit_authorization :student }
         it { is_expected.to permit_authorization :tutor }
         it { is_expected.to permit_authorization :staff }
@@ -159,7 +155,6 @@ RSpec.describe TermPolicy do
         it { is_expected.not_to permit_authorization :update }
         it { is_expected.not_to permit_authorization :destroy }
         it { is_expected.not_to permit_authorization :points_overview }
-        it { is_expected.not_to permit_authorization :send_welcome_notifications }
         it { is_expected.not_to permit_authorization :student }
         it { is_expected.not_to permit_authorization :tutor }
         it { is_expected.not_to permit_authorization :staff }
@@ -198,7 +193,6 @@ RSpec.describe TermPolicy do
         it { is_expected.to permit_authorization :update }
         it { is_expected.to permit_authorization :destroy }
         it { is_expected.to permit_authorization :points_overview }
-        it { is_expected.to permit_authorization :send_welcome_notifications }
         it { is_expected.not_to permit_authorization :student }
         it { is_expected.not_to permit_authorization :tutor }
         it { is_expected.to permit_authorization :staff }
@@ -214,7 +208,6 @@ RSpec.describe TermPolicy do
         it { is_expected.not_to permit_authorization :update }
         it { is_expected.not_to permit_authorization :destroy }
         it { is_expected.not_to permit_authorization :points_overview }
-        it { is_expected.not_to permit_authorization :send_welcome_notifications }
         it { is_expected.not_to permit_authorization :student }
         it { is_expected.not_to permit_authorization :tutor }
         it { is_expected.not_to permit_authorization :staff }
@@ -228,7 +221,6 @@ RSpec.describe TermPolicy do
         it { is_expected.not_to permit_authorization :update }
         it { is_expected.not_to permit_authorization :destroy }
         it { is_expected.not_to permit_authorization :points_overview }
-        it { is_expected.not_to permit_authorization :send_welcome_notifications }
         it { is_expected.not_to permit_authorization :student }
         it { is_expected.not_to permit_authorization :tutor }
         it { is_expected.not_to permit_authorization :staff }

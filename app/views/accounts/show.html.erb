@@ -1,6 +1,6 @@
 <% title "#{@account.fullname}", "#{@account.matriculation_number}" %>
 
-<%= link_to "Impersonate", impersonation_path(account_id: @account), method: :post, class: 'small button' if current_account.admin? %>
+<%= link_to "Impersonate", impersonation_path(account_id: @account), method: :post, class: 'small button' if policy(Impersonation.new(impersonatable: @account)).create? %>
 
 <%= render "sidebar", account: @account %>
 

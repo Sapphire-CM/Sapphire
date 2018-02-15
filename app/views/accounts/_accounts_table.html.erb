@@ -1,0 +1,35 @@
+<% if accounts.any? %>
+  <table class='large-12 accounts'>
+    <thead>
+      <th>Forename</th>
+      <th>Surname</th>
+      <th>Matriculation Number</th>
+      <th>Email</th>
+      <th></th>
+    </thead>
+    <tbody>
+      <% accounts.each do |account|  %>
+        <tr>
+          <td><%= account.forename %></td>
+          <td><%= account.surname %></td>
+          <td><%= account.matriculation_number %></td>
+          <td><%= account.email %></td>
+
+          <td class='right-aligned'>
+            <%= link_to "Impersonate", impersonation_path(account_id: account), method: :post, class: 'small button' if policy(Impersonation.new(impersonatable: account)).create? %>
+            <%= link_to "View", account_path(account), class: 'small button' %>
+            <%= link_to "Delete", account_path(account), method: :delete, data: { confirm: "Are you sure?" }, class: "small alert button" if policy(account).destroy? %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= paginate accounts %>
+<% else %>
+  <% if params[:q].present? %>
+    <p>No accounts found for "<%= params[:q] %>".</p>
+  <% else %>
+    <p>No accounts present.</p>
+  <% end %>
+<% end %>

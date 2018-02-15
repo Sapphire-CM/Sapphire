@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   devise_for :accounts, skip: :registration
 
-  resources :accounts, except: [:new, :create] do
+  resources :accounts do
     resources :email_addresses, except: [:show]
   end
 

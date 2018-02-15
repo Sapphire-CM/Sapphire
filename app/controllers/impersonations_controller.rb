@@ -3,7 +3,7 @@ class ImpersonationsController < ApplicationController
   before_action :set_impersonation
 
   def create
-    if @impersonation.impersonate @account
+    if @impersonation.impersonate!
       redirect_to root_path, notice: "You are now using Sapphire as '#{@account.email}'."
     else
       redirect_to root_path, alert: "Failed to impersonate '#{@account}'."
@@ -21,7 +21,7 @@ class ImpersonationsController < ApplicationController
 
   private
   def set_impersonation
-    @impersonation = Impersonation.new(warden: warden, session: session, current_account: current_account)
+    @impersonation = Impersonation.new(warden: warden, session: session, current_account: current_account, impersonatable: @account)
 
     authorize @impersonation
   end

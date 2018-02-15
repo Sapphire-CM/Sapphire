@@ -69,6 +69,12 @@ RSpec.feature 'Account Details' do
 
       expect(page).to have_link("Impersonate", href: impersonation_path(account_id: student_account.id))
     end
+
+    scenario 'Hides impersonation if visiting own account' do
+      visit account_path(admin_account)
+
+      expect(page).not_to have_link("Impersonate")
+    end
   end
 
   context 'as student' do

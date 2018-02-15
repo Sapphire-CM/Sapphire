@@ -12,14 +12,30 @@ class AccountsController < ApplicationController
     @term_registrations = @account.term_registrations
   end
 
+  def new
+    @account = Account.new
+    authorize @account
+  end
+
+  def create
+    @account = Account.new(new_account_params)
+    authorize @account
+
+    if @account.save
+      redirect_to account_path(@account), notice: "Account was successfully created."
+    else
+      render :new
+    end
+  end
+
   def edit
   end
 
   def update
-    updated = if account_params[:password].present?
-      @account.update_with_password(account_params)
+    updated = if edit_account_params[:password].present?
+      @account.update_with_password(edit_account_params)
     else
-      @account.update(account_params)
+      @account.update(edit_account_params)
     end
 
     if updated
@@ -42,7 +58,11 @@ class AccountsController < ApplicationController
     authorize @account
   end
 
-  def account_params
+  def new_account_params
+    params.require(:account).permit(:email, :forename, :surname, :password)
+  end
+
+  def edit_account_params
     permitted_params = [
       :options
     ]

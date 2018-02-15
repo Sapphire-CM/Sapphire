@@ -47,7 +47,26 @@ describe Account do
       expect(subject.errors[:matriculation_number]).not_to be_present
     end
 
-    pending "uniqueness of email adresses"
+    describe 'email uniqueness' do
+      subject { FactoryGirl.create(:account) }
+      let(:email_address) { "taken@student.tugraz.at" }
+
+      it 'adds an error if the email address is used as secondary email' do
+        FactoryGirl.create(:email_address, email: email_address)
+
+        subject.email = email_address
+        subject.validate
+
+        expect(subject.errors).to include(:email)
+      end
+
+      it 'does not add an error if the email address unused' do
+        subject.email = email_address
+        subject.validate
+
+        expect(subject.errors).not_to include(:email)
+      end
+    end
   end
 
   describe 'scopes' do
@@ -249,6 +268,32 @@ describe Account do
 
       it 'returns false if account not associated with term' do
         expect(subject.staff_of_course?(another_course)).to be_falsey
+      end
+    end
+
+    describe '#lecturer_of_any_term?' do
+      subject { FactoryGirl.create(:account) }
+
+      it 'returns true if there exists a lecturer term registration' do
+        term_registration = FactoryGirl.create(:term_registration, :lecturer, account: subject)
+
+        expect(subject).to be_lecturer_of_any_term
+      end
+
+      it 'returns false if there exists a tutor registration' do
+        term_registration = FactoryGirl.create(:term_registration, :tutor, account: subject)
+
+        expect(subject).not_to be_lecturer_of_any_term
+      end
+
+      it 'returns false if there exists a tutor registration' do
+        term_registration = FactoryGirl.create(:term_registration, :student, account: subject)
+
+        expect(subject).not_to be_lecturer_of_any_term
+      end
+
+      it 'returns false if there exists no lecturer registration' do
+        expect(subject).not_to be_lecturer_of_any_term
       end
     end
 

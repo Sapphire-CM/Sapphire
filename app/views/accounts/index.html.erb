@@ -1,3 +1,11 @@
 <% title "Listing all accounts" %>
 
-<%= render 'accounts_list', { buttons_partial_view: 'account_index_buttons', search_path: accounts_path } %>
+<div class='row'>
+  <div class='small-2 columns text-right'>
+    <%= link_to "New", new_account_path, class: "small-12 small primary button" %>
+  </div>
+  <div class='small-10 columns'>
+    <%= render 'search_form', search_path: accounts_path %>
+  </div>
+</div>
+<%= render 'accounts_table', accounts: @accounts %>

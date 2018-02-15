@@ -2,13 +2,23 @@ require "rails_helper"
 
 RSpec.describe ImpersonationPolicy do
   subject { described_class.new(account, impersonation) }
-  let(:impersonation) { Impersonation.new }
+  let(:impersonation) { Impersonation.new(impersonatable: account_to_impersonate) }
+  let(:account_to_impersonate) { FactoryGirl.create(:account) }
 
   context 'as an admin' do
     let(:account) { FactoryGirl.create(:account, :admin) }
 
-    it { is_expected.to permit_authorization(:create) }
-    it { is_expected.to permit_authorization(:destroy) }
+    context 'other account' do
+      it { is_expected.to permit_authorization(:create) }
+      it { is_expected.to permit_authorization(:destroy) }
+    end
+
+    context 'self' do
+      let(:account_to_impersonate) { account }
+
+      it { is_expected.not_to permit_authorization(:create) }
+      it { is_expected.to permit_authorization(:destroy) }
+    end
   end
 
   context 'as a lecturer' do

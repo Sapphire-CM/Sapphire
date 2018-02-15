@@ -9,6 +9,7 @@
 #   t.boolean  :receives_grade,    default: false, null: false
 #   t.integer  :role,              default: 0
 #   t.integer  :student_group_id
+#   t.datetime :welcomed_at
 # end
 #
 # add_index :term_registrations, [:account_id, :term_id], name: :index_term_registrations_on_account_id_and_term_id, unique: true
@@ -54,6 +55,9 @@ class TermRegistration < ActiveRecord::Base
   scope :ordered_by_matriculation_number, lambda { joins(:account).order { account.matriculation_number.asc } }
   scope :ordered_by_name, lambda { joins(:account).order { account.forename.asc }.order { account.surname.asc } }
 
+  scope :welcomed, lambda { where.not(welcomed_at: nil) }
+  scope :waiting_for_welcome, lambda { where(welcomed_at: nil) }
+
   sifter :positive_grades do
     positive_grade == true
   end
@@ -96,6 +100,10 @@ class TermRegistration < ActiveRecord::Base
 
   def positive_grade_possible?
     all_minimum_points_reached? && exercise_registrations.any?
+  end
+
+  def welcomed?
+    welcomed_at.present?
   end
 
   private

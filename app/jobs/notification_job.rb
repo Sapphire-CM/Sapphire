@@ -10,11 +10,11 @@ class NotificationJob < ActiveJob::Base
   end
 
   def self.welcome_notifications_for_term(term)
-    perform_later 'welcome_for_term', term.id
+    perform_later 'welcome_for_term', term
   end
 
   def self.welcome_notification(term_registration)
-    perform_later 'welcome', term_registration.id
+    perform_later 'welcome', term_registration
   end
 
   def perform(type, *args)
@@ -44,21 +44,19 @@ class NotificationJob < ActiveJob::Base
   def export_finished_notifications(export_id)
     export = Export.find(export_id)
 
-    recipients = (Account.admins + Account.lecturers_for_term(export.term)).uniq
+    recipients = Account.admins | Account.lecturers_for_term(export.term)
     recipients.each do |recipient|
       NotificationMailer.export_finished_notification(recipient, export).deliver_later
     end
   end
 
-  def welcome_notifications_for_term(term_id)
-    term = Term.find(term_id)
-    term.term_registrations.pluck(:id).each do |term_registration_id|
-      welcome_notification(term_registration_id)
+  def welcome_notifications_for_term(term)
+    term.term_registrations.student.waiting_for_welcome.find_each do |term_registration|
+      welcome_notification(term_registration)
     end
   end
 
-  def welcome_notification(term_registration_id)
-    term_registration = TermRegistration.find(term_registration_id)
+  def welcome_notification(term_registration)
     account = term_registration.account
     term = term_registration.term
 
@@ -68,5 +66,7 @@ class NotificationJob < ActiveJob::Base
     else
       NotificationMailer.welcome_notification(account, term).deliver_later
     end
+
+    term_registration.update(welcomed_at: Time.now)
   end
 end

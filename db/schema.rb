@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180213155416) do
+ActiveRecord::Schema.define(version: 20180214222334) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -368,6 +368,7 @@ ActiveRecord::Schema.define(version: 20180213155416) do
     t.boolean  "receives_grade",    default: false, null: false
     t.integer  "role",              default: 0
     t.integer  "student_group_id"
+    t.datetime "welcomed_at"
   end
 
   add_index "term_registrations", ["account_id", "term_id"], name: "index_term_registrations_on_account_id_and_term_id", unique: true

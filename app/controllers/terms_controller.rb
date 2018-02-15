@@ -48,6 +48,8 @@ class TermsController < ApplicationController
   def edit
     @tutorial_groups = @term.tutorial_groups.ordered_by_title
     @exercises = @term.exercises
+
+    @term_registrations_awaiting_welcome = @term.term_registrations.student.waiting_for_welcome
   end
 
   def update
@@ -57,6 +59,8 @@ class TermsController < ApplicationController
         format.js
       end
     else
+      @term_registrations_awaiting_welcome = @term.term_registrations.student.waiting_for_welcome
+
       render :edit
     end
   end

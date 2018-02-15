@@ -63,13 +63,10 @@ RSpec.describe 'Viewing results' do
     end
 
     scenario 'viewing failed evaluations' do
-      Rails.logger.info("UPDATING EVALUATIONS")
       rating.evaluations.each { |evaluation| evaluation.update(value: 1) }
-      Rails.logger.info("UPDATING RATING")
 
       rating.reload
       rating.update(value: -5)
-      Rails.logger.info("DONE")
 
       visit term_result_path(term, exercise)
 
@@ -89,7 +86,6 @@ RSpec.describe 'Viewing results' do
       exercise_registration.update(individual_subtractions: -2)
 
       visit term_result_path(term, exercise)
-
 
       expect(page).not_to have_content("Well Done!")
       expect(page).to have_content("12 out of 14")

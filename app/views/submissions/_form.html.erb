@@ -1,4 +1,4 @@
-<%= simple_form_for(submission, html: { data: { behaviour: "association-lookup", lookup_url: submission_students_path(submission, format: :json)} }) do |f| %>
+<%= simple_form_for(submission, html: { data: { behaviour: "association-list-lookup", lookup_url: submission_students_path(submission, format: :json)} }) do |f| %>
   <%= f.association :student_group, collection: submission.term.student_groups.order(:title) %>
 
   <table class='small-12'>

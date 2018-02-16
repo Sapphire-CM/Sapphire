@@ -19,6 +19,7 @@ RSpec.describe GradingReview::SubmissionReview do
     it { is_expected.to delegate_method(:title).to(:exercise).with_prefix(true) }
     it { is_expected.to delegate_method(:achievable_points).to(:exercise) }
     it { is_expected.to delegate_method(:submission_viewer?).to(:exercise) }
+    it { is_expected.to delegate_method(:row_order).to(:exercise) }
 
     it { is_expected.to delegate_method(:submission_evaluation).to(:submission) }
     it { is_expected.to delegate_method(:submitted_at).to(:submission) }

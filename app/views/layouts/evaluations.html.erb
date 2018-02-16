@@ -37,7 +37,7 @@
       <%= yield :top_bar %>
     <% end %>
 
-    <div class='row<%= " " + yield(:large_content) if content_for(:large_content) %>'>
+    <div class='row<%= " " + yield(:large_content) if content_for(:large_content) %>' role="main">
       <div class='large-12 columns'>
         <%= yield %>
       </div>

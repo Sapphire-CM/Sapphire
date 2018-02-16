@@ -27,8 +27,8 @@ RSpec.feature 'Adding Accounts' do
       fill_in "Surname", with: "Doe"
       fill_in "Matriculation number", with: "12345678"
 
-      fill_in "Password", with: "SecretPassword"
-      fill_in "Password confirmation", with: "SecretPassword"
+      fill_in "* Password", with: "SecretPassword"
+      fill_in "* Password confirmation", with: "SecretPassword"
 
       expect do
         click_button "Save"
@@ -45,8 +45,8 @@ RSpec.feature 'Adding Accounts' do
       fill_in "Forename", with: "John"
       fill_in "Matriculation number", with: "12345678"
 
-      fill_in "Password", with: "SecretPassword"
-      fill_in "Password confirmation", with: "SecretPassword"
+      fill_in "* Password", with: "SecretPassword"
+      fill_in "* Password confirmation", with: "SecretPassword"
 
       expect do
         click_button "Save"

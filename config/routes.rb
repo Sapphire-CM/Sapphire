@@ -19,6 +19,10 @@ Rails.application.routes.draw do
       get :points_overview
     end
 
+    resources :accounts, only: :index, controller: "terms/accounts"
+
+    resources :students
+
     resources :grading_scales, only: [:index, :update]
 
     resources :exercises, except: [:show] do
@@ -28,8 +32,6 @@ Rails.application.routes.draw do
     resources :staff, except: [:show, :edit, :update] do
       post :search, on: :collection
     end
-
-    resources :students, only: [:index, :show]
 
     resources :imports, except: [:index, :edit] do
       get :file, on: :member
@@ -44,9 +46,11 @@ Rails.application.routes.draw do
     resources :tutorial_groups do
       get :points_overview, on: :member
     end
+
     resources :student_groups do
       post :search_students, on: :collection
     end
+
     resources :grading_reviews, only: [:index, :show]
     resources :results, only: [:index, :show], controller: :student_results
     resources :events, only: [:index]

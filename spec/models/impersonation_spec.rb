@@ -67,5 +67,14 @@ RSpec.describe Impersonation do
 
       expect(session[:impersonator_id]).to be_nil
     end
+
+    it 'returns true if impersonation is present' do
+      expect(subject.destroy).to be_truthy
+    end
+
+    it 'returns false if no impersonation is present' do
+      session[:impersonator_id] = nil
+      expect(subject.destroy).to be_falsey
+    end
   end
 end

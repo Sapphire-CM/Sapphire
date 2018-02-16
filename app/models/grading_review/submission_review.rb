@@ -10,7 +10,7 @@ class GradingReview::SubmissionReview
   delegate :tutorial_group, to: :term_registration
 
   delegate :title, to: :exercise, prefix: true
-  delegate :achievable_points, :submission_viewer?, to: :exercise
+  delegate :achievable_points, :submission_viewer?, :row_order, to: :exercise
 
   def self.find_by_account_and_exercise(account, exercise)
     new(exercise_registration: ExerciseRegistration.for_exercise(exercise).for_student(account).first!)

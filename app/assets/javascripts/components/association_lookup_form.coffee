@@ -1,75 +1,27 @@
-class LookupController
-  constructor: (@element, @form_controller)->
-    @_extract_lookup_url()
-    @_setup_dropdown()
+shared_dropdown_element = undefined
+
+class DropdownElement
+  @instance: ->
+    shared_dropdown_element ||= new DropdownElement()
+
+  @clear_instance: ->
+    shared_dropdown_element = undefined
+
+  constructor: ->
+    @_setup_initial_state()
+    @_create_element()
     @_setup_listeners()
 
   # =========
   # = Setup =
   # =========
 
-  _setup_listeners: ->
-    input_query = "input[name=subject_lookup]"
-    that = this
-    @element.on "keydown", input_query, (e) ->
-      $input = $(e.target)
+  _setup_initial_state: ->
+    @is_hovering = false
 
-      if that._is_control_key_pressed(e)
-        keycode = that._get_key_code(e)
-        stop_event = true
-        switch keycode
-          when 13
-            if that._is_highlight_active()
-              that._select_association(that._highlighted_subject())
-              that._hide_dropdown()
-            else
-              stop_event = false
-          when 40
-            that._highlight_next()
-          when 38
-            that._highlight_previous()
-          else
-            stop_event = false
-        if stop_event
-          e.stopPropagation()
-          e.preventDefault()
-
-    @element.on "keyup", input_query, $.debounce 250,(e)->
-      $input = $(e.target)
-      value = $input.val()
-
-      unless that._is_control_key_pressed(e)
-        that._perform_lookup($input)
-
-    @element.on "blur", input_query, ->
-      that._hide_dropdown() unless that.is_hovering_dropdown
-      that.is_lookup_input_focused = false
-      that._reset_highlight()
-
-    @element.on "focus", input_query, (e) ->
-      $input = $(e.target)
-      if $input.val() != ""
-        that._perform_lookup($input)
-      that.is_lookup_input_focused = true
-
-    @dropdown.on "click", "li", (e) ->
-      $li = $(this)
-
-      id = $li.data("subject-id")
-      that._select_id(id)
-      that._hide_dropdown()
-
-    @dropdown.on "mouseenter", (e) ->
-      that.is_hovering_dropdown = true
-
-    @dropdown.on "mouseleave", (e) ->
-      that.is_hovering_dropdown = false
-      if that.is_lookup_input_focused == false
-        that._hide_dropdown()
-
-  _setup_dropdown: ->
-    @dropdown = $("<div>");
-    @dropdown.addClass("association-lookup-dropdown")
+  _create_element: ->
+    @element = $("<div>");
+    @element.addClass("association-lookup-dropdown")
       .hide()
 
     @results = $("<ul>");
@@ -82,92 +34,70 @@ class LookupController
     $loading_indicator.addClass("loading-indicator")
     $loading_indicator.appendTo(@loading_indicator)
 
-    @loading_indicator.appendTo(@dropdown)
-    @results.appendTo(@dropdown);
+    @loading_indicator.appendTo(@element)
+    @results.appendTo(@element);
 
-    @dropdown.appendTo($("body"));
+    @element.appendTo($("body"));
 
-  _extract_lookup_url: ->
-    @lookup_url = @element.data("lookup-url")
+  _setup_listeners: ->
+    that = this
+    @element.on "mouseenter", (e) ->
+      that.is_hovering = true
 
-  # ===================
-  # = Lookup Handling =
-  # ===================
+    @element.on "mouseleave", (e) ->
+      that.is_hovering = false
+      if that.hide_after_mouseleave
+        that.hide()
 
-  _perform_lookup: ($input)->
-    value = $input.val()
+    @element.on "click", "li.subject", (e)->
+      $this = $(@)
+      idx = $this.data("subject-idx")
+      subject = that.data.subjects[idx]
+      that._select(subject)
 
-    if value != ""
-      @_show_dropdown($input)
+  # ====================
+  # = Public Interface =
+  # ====================
 
-      if @last_lookup != value
-        @last_lookup = value
-        @_reset_dropdown_data()
-        @_start_loading()
-
-        $.ajax
-          type: "GET"
-          url: @lookup_url
-          data:
-            q: value
-          success: (data) =>
-            @_set_dropdown_data(data)
-            @_stop_loading()
-            @_show_subjects()
-          error: (error) =>
-            @_reset_dropdown_data()
-            @_stop_loading()
-            @_show_error()
-
-      else
-        @_show_subjects() if @dropdown_data
+  hide_unless_hovering: ->
+    if @is_hovering
+      @hide_after_mouseleave = true
     else
-      @_hide_dropdown()
+      @hide()
 
-  _select_id: (id) ->
-    selected_subject = undefined
-    for subject in @dropdown_data.subjects
-      if subject.id == id
-        selected_subject = subject
-        break
+  attach_to: (@anchor, @delegate) ->
+    @hide_after_mouseleave = false
+    pos = @anchor.offset()
 
-    if selected_subject
-      @_select_association(subject)
+    @element.fadeIn("fast") if @element.css('display') == 'none'
+    @element.css({top: pos.top + @anchor.outerHeight(), left: pos.left, width: @anchor.closest("td").width()})
 
-  _select_association: (subject) ->
-    row_id = @_get_item_row_id()
-    @form_controller.select_association(row_id, subject)
+  hide: ->
+    @element.fadeOut("fast")
+    @anchor = undefined
+    @hide_after_mouseleave = true
 
-  # ================
-  # = Dropdown UI  =
-  # ================
+  start_loading: ->
+    @element.addClass("loading")
 
-  _show_dropdown: ($anchor)->
-    pos = $anchor.offset()
+  stop_loading: ->
+    @element.removeClass("loading")
 
-    @dropdown.fadeIn("fast") if @dropdown.css('display') == 'none'
-    @dropdown.css({top: pos.top + $anchor.outerHeight(), left: pos.left, width: $anchor.closest("td").width()})
-    @target_loopup_input = $anchor
+  # Data Handling
 
-  _hide_dropdown: ->
-    @dropdown.fadeOut("fast")
-    @target_loopup_input = undefined
+  reset_data: ->
+    @data = { subjects: [], more: false }
 
-  _start_loading: ->
-    @dropdown.addClass("loading")
-
-  _stop_loading: ->
-    @dropdown.removeClass("loading")
-
-  _show_subjects: ->
+  show_data: (@data) ->
     @_clear_results()
 
-    if @dropdown_data.subjects.length > 0
-      for row in @dropdown_data.subjects
+    if @data.subjects.length > 0
+      for row, idx in @data.subjects
         $li = $("<li>")
         $li.addClass("subject")
         $li.html(row.html)
-        $li.attr("data-subject-id", row.id)
+        $li.attr("data-subject-idx", idx)
+
         $li.appendTo(@results)
     else
       $li = $("<li>")
@@ -175,14 +105,15 @@ class LookupController
       $li.text("No results found.")
       $li.appendTo(@results)
 
-    if @dropdown_data.more
+    if @data.more
       $li = $("<li>")
       $li.addClass("more")
       $li.text("More results available")
       $li.appendTo(@results)
     @results.show()
+    @reset_highlight()
 
-  _show_error: ->
+  show_error: ->
     @_clear_results()
 
     $li = $("<li>")
@@ -192,66 +123,143 @@ class LookupController
 
     @results.show()
 
-  _hide_results: ->
+  hide_results: ->
     @results.hide()
 
-  _clear_results: ->
-    @results.children().remove()
+  # Highlight Handling
+  select_highlighted: ->
+    @_select(@highlighted_subject())
 
-  # =================
-  # = Dropdown Data =
-  # =================
-
-  _reset_dropdown_data: ->
-    @dropdown_data = {subjects: [], more: false}
-    @_reset_highlight()
-
-  _set_dropdown_data: (data) ->
-    @dropdown_data = data
-    @_reset_highlight()
-
-  # ====================
-  # = Dropdown Actions =
-  # ====================
-
-  _confirm_and_blur: ->
-    if @dropdown_data.subjects.length == 1
-      @_select_id(@dropdown_data.subjects[0].id)
-
-  # ======================
-  # = Highlight Handling =
-  # ======================
-
-  _highlight_next: ->
-    if @dropdown_data.subjects.length > 0
-      if !@_is_highlight_active() || @highlight_idx + 1 >= @dropdown_data.subjects.length
+  highlight_next: ->
+    if @data.subjects.length > 0
+      if !@is_highlight_active() || @highlight_idx + 1 >= @data.subjects.length
         @highlight_idx = 0
       else
         @highlight_idx += 1
       @_update_highlight()
 
-  _highlight_previous: ->
-    if @dropdown_data.subjects.length > 0
-      if !@_is_highlight_active() || @highlight_idx == 0
-        @highlight_idx = @dropdown_data.subjects.length - 1
+  highlight_previous: ->
+    if @data.subjects.length > 0
+      if !@is_highlight_active() || @highlight_idx == 0
+        @highlight_idx = @data.subjects.length - 1
       else
         @highlight_idx -= 1
       @_update_highlight()
 
-  _is_highlight_active: ->
+  is_highlight_active: ->
     @highlight_idx != undefined
 
-  _reset_highlight: ->
+  reset_highlight: ->
     @highlight_idx = undefined
+    @_update_highlight()
 
-  _highlighted_subject: ->
-    @dropdown_data.subjects[@highlight_idx]
+  highlighted_subject: ->
+    @data.subjects[@highlight_idx]
+
+  # ===================
+  # = Private Helpers =
+  # ===================
 
   _update_highlight: ->
-    @dropdown.find("li.highlight").removeClass("highlight")
-    if @_is_highlight_active()
-      subject = @_highlighted_subject()
-      @dropdown.find("li[data-subject-id=#{subject.id}]").addClass("highlight")
+    @element.find("li.highlight").removeClass("highlight")
+    if @is_highlight_active()
+      @element.find("li[data-subject-idx=#{@highlight_idx}]").addClass("highlight")
+
+
+  _clear_results: ->
+    @results.children().remove()
+
+  _select: (subject)->
+    @delegate?.select_subject(@, subject)
+
+class LookupController
+  constructor: (@element, @delegate)->
+    @_setup_listeners()
+
+  # =========
+  # = Setup =
+  # =========
+
+  _setup_listeners: ->
+    that = this
+    @element.on "keydown", (e) ->
+      $input = $(e.target)
+
+      if that._is_control_key_pressed(e)
+        keycode = that._get_key_code(e)
+        stop_event = true
+        switch keycode
+          when 13 # enter
+            if DropdownElement.instance().is_highlight_active()
+              DropdownElement.instance().select_highlighted()
+              DropdownElement.instance().hide()
+            else
+              stop_event = false
+          when 27 # esc
+            DropdownElement.instance().hide()
+            that.delegate?.cancel_lookup(that)
+          when 40 # down
+            DropdownElement.instance().highlight_next()
+          when 38 # up
+            DropdownElement.instance().highlight_previous()
+          else
+            stop_event = false
+        if stop_event
+          e.stopPropagation()
+          e.preventDefault()
+
+    @element.on "keyup", $.debounce 250,(e)->
+      $input = $(e.target)
+      value = $input.val()
+
+      unless that._is_control_key_pressed(e)
+        that._perform_lookup($input)
+
+    @element.on "blur", ->
+      DropdownElement.instance().hide_unless_hovering()
+      DropdownElement.instance().reset_highlight()
+
+    @element.on "focus", (e) ->
+      that._perform_lookup()
+
+  # ====================
+  # = Public Interface =
+  # ====================
+
+  select_subject: (dropdown, subject) ->
+    @_select_subject(subject)
+    DropdownElement.instance().hide()
+
+
+  # ===================
+  # = Lookup Handling =
+  # ===================
+
+  _perform_lookup: ()->
+    value = @element.val()
+
+    if value != ""
+      DropdownElement.instance().attach_to(@element, @)
+      DropdownElement.instance().reset_data()
+      DropdownElement.instance().start_loading()
+
+      $.ajax
+        type: "GET"
+        url: @delegate?.lookup_url()
+        data:
+          q: value
+        success: (data) =>
+          DropdownElement.instance().stop_loading()
+          DropdownElement.instance().show_data(data)
+        error: (error) =>
+          DropdownElement.instance().reset_data()
+          DropdownElement.instance().stop_loading()
+          DropdownElement.instance().show_error()
+    else
+      DropdownElement.instance().hide()
+
+  _select_subject: (subject) ->
+    @delegate.select_subject(@, subject)
 
   # ===========
   # = Helpers =
@@ -267,9 +275,9 @@ class LookupController
     e.which || e.keyCode
 
   _get_item_row_id: ->
-    @target_loopup_input?.closest("tr").attr("data-row-id")
+    @target_lookup_input?.closest("tr").attr("data-row-id")
 
-class ItemController
+class ListItemController
   constructor: (@element, @form_controller, @id) ->
     @_setup()
 
@@ -277,6 +285,7 @@ class ItemController
     @_setup_element()
     @_setup_edit_icon()
     @_setup_listeners()
+    @_setup_lookup_controller()
     @_setup_initial_state()
 
   _setup_element: ->
@@ -296,6 +305,10 @@ class ItemController
 
     @element.find(".subject-container").closest("td").prepend($edit_icon_container)
     @edit_icon = $edit_icon_link
+
+  _setup_lookup_controller: ->
+    $input = @_find_subject_lookup_input()
+    @lookup_controller = new LookupController($input, @)
 
   _setup_listeners: ->
     @element.on "click", "*[data-behaviour=edit-subject]", (e) =>
@@ -328,13 +341,6 @@ class ItemController
   # = Public Interface =
   # ====================
 
-  set_subject: (subject) ->
-    @_update_subject_description(subject.html)
-    @_update_subject_id(subject.id)
-    @_focus_first_input()
-
-    @_disable_lookup()
-
   has_subject: ->
     @_find_subject_id_input().val() != ""
 
@@ -343,6 +349,24 @@ class ItemController
       @_soft_remove_element()
     else
       @_hard_remove_element()
+
+  focus_lookup: ->
+    @_find_subject_lookup_input().focus()
+
+  # Lookup Delegate
+  select_subject: (lookup_controller, subject) ->
+    @_update_subject_description(subject.html)
+    @_update_subject_id(subject.id)
+    @_focus_first_input()
+
+    @_disable_lookup()
+    @form_controller.select_subject(@, subject)
+
+  cancel_lookup: (lookup_controller) ->
+    @_cancel_lookup() if @has_subject()
+
+  lookup_url: ->
+    @form_controller.lookup_url()
 
   # ===================
   # = Lookup Handling =
@@ -364,6 +388,9 @@ class ItemController
   # =========================
   # = Subject Cell Handling =
   # =========================
+
+  _find_subject_lookup_input: ->
+    @element.find("input[name=subject_lookup]")
 
   _find_subject_id_input: ->
     @element.find("input[data-behaviour=association-id]")
@@ -426,7 +453,7 @@ class ItemController
     @element.find("input[data-behaviour=item-is-removed]").val("1")
     @element.hide()
 
-    # Fix alternating table backgrounds
+    # Fix alternating table backgrounds - move this <tr> out of the way
     $thead = @element.closest("table").find("thead")
     @element.appendTo($thead)
 
@@ -472,7 +499,7 @@ class ItemController
   _focus_first_input: ->
     @element.find(".string input").first().focus()
 
-class AssociationLookupFormController
+class AssociationListLookupFormController
   @id = 0
   @_get_item_id: ->
     @id += 1
@@ -483,7 +510,6 @@ class AssociationLookupFormController
   _setup: ->
     @_setup_options()
     @_setup_item_controllers()
-    @_setup_lookup_controller()
     @_setup_new_item_template()
     @_setup_listeners()
 
@@ -501,9 +527,6 @@ class AssociationLookupFormController
 
     @item_controllers = item_controllers
 
-  _setup_lookup_controller: ->
-    @lookup_controller = new LookupController(@element, this)
-
   _setup_new_item_template: ->
     @new_item_template = @element.find("*[data-behaviour=new-item-template]").data("template")
 
@@ -513,15 +536,17 @@ class AssociationLookupFormController
       @_disable_form()
 
     @element.on "click", "a[data-behaviour=add-item]", =>
-      @_add_new_item()
+      controller = @_add_new_item()
+      controller.focus_lookup()
 
   # ===================
   # = Public Interface =
   # ===================
 
-  select_association: (row_id, subject) ->
-    item_controller = @_find_item_controller(row_id)
-    item_controller.set_subject(subject)
+  lookup_url: ->
+    @_lookup_url ||= @element.data("lookup-url")
+
+  select_subject: (list_item_controller, subject) ->
     @_ensure_blank_line() if @ensure_blank_line
 
   remove: (row_id) ->
@@ -534,14 +559,16 @@ class AssociationLookupFormController
 
   is_autoadd_active: ->
     @ensure_blank_line
+
   # ===========
   # = Helpers =
   # ===========
+
   _ensure_blank_line: ->
-   @_add_new_item() if @item_controllers[@item_controllers.length - 1].has_subject()
+     @_add_new_item() if @item_controllers[@item_controllers.length - 1].has_subject()
 
   _add_new_item: ->
-    id = AssociationLookupFormController._get_item_id()
+    id = AssociationListLookupFormController._get_item_id()
     template = @new_item_template.replace(/\[new_item\]/g, "[#{id}]")
 
     $item = $(template)
@@ -549,9 +576,10 @@ class AssociationLookupFormController
 
     controller = @_build_item_controller($item, id)
     @item_controllers.push(controller)
+    controller
 
-  _build_item_controller: ($element, id = AssociationLookupFormController._get_item_id()) ->
-    new ItemController($element, this, id)
+  _build_item_controller: ($element, id = AssociationListLookupFormController._get_item_id()) ->
+    new ListItemController($element, this, id)
 
   _find_item_controller: (id)->
     for item_controller in @item_controllers
@@ -563,11 +591,61 @@ class AssociationLookupFormController
     @element.find("input.button").attr("disabled", "disabled")
 
 
-$(document).on "page:load ready", ->
-  $forms = $("form[data-behaviour=association-lookup]")
+class AssociationLookupInputController
+  constructor: (@element) ->
+    @_setup()
 
-  if $forms.length > 0
-    $forms.each ->
+  _setup: ->
+    @_setup_lookup_controller()
+    @_setup_listeners()
+
+  _setup_lookup_controller: ->
+    @lookup_controller = new LookupController(@element, this)
+
+  _setup_listeners: ->
+    @element.find("[data-behaviour=start-lookup]").click (e)=>
+      e.preventDefault()
+      e.stopPropagation()
+
+  # ==============================
+  # = Lookup Controller Delegate =
+  # ==============================
+
+  lookup_url: ->
+    @_lookup_url ||= @element.data("lookup-url")
+
+  select_subject: (lookup_controller, subject) ->
+    @_select_subject(subject)
+
+  # ===================
+  # = Private Helpers =
+  # ===================
+
+  _select_subject: (subject)->
+    @_update_input(subject.id)
+    @_update_subject_container(subject.html)
+
+  _update_input: (value)->
+    $input = $(@element.data("input"))
+    $input.val(value)
+
+  _update_subject_container: (html) ->
+    $container = $(@element.data("subject-container"))
+    $container.html(html)
+
+$(document).on "page:load ready", ->
+  DropdownElement.clear_instance()
+
+  $list_forms = $("form[data-behaviour=association-list-lookup]")
+  if $list_forms.length > 0
+    $list_forms.each ->
       $form = $(this)
 
-      new AssociationLookupFormController($form)
+      new AssociationListLookupFormController($form)
+
+  $lookup_inputs = $("input[data-behaviour=association-lookup]")
+  if $lookup_inputs.length > 0
+    $lookup_inputs.each ->
+      $input = $(this)
+
+      new AssociationLookupInputController($input)

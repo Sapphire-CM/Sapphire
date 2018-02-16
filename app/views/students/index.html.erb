@@ -5,7 +5,7 @@
 <table class='small-12 sortable'>
   <thead>
     <tr>
-      <th>Student</th>
+      <th data-sort-default="true">Student</th>
       <th>Matriculation Number</th>
       <th>Tutorial Group</th>
       <th>Points</th>
@@ -17,14 +17,21 @@
     <% @term_registrations.each do |term_registration| %>
       <tr>
         <td><%= term_registration.account.fullname %></td>
-        <td><%= term_registration.account.matriculation_number %></td>
+        <td data-sort-as='integer'><%= term_registration.account.matriculation_number %></td>
         <td><%= tutorial_group_title term_registration.tutorial_group %></td>
-        <td><%= term_registration.points %></td>
-        <td><%= @grading_scale_service.grade_for(term_registration) %></td>
+        <td data-sort-as='integer'><%= term_registration.points %></td>
+        <td data-sort-as='integer'><%= @grading_scale_service.grade_for(term_registration) %></td>
         <td>
-          <%= link_to "Show", term_student_path(current_term, term_registration) %>
+          <%= link_to "Show", term_student_path(current_term, term_registration), class: "small button" %>
         </td>
       </tr>
     <% end %>
   </tbody>
+  <tfoot>
+    <tr>
+      <th colspan='6' class='text-center'>
+        <%= link_to "#{foundation_icon(:plus)} Add".html_safe, new_term_student_path(current_term) %>
+      </th>
+    </tr>
+  </tfoot>
 </table>

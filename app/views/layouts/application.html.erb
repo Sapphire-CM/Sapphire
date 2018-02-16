@@ -34,7 +34,7 @@
     <%= render "flashes" if flash.any? %>
 
     <% if @show_title %>
-    <div class='row'>
+    <div class='row' role='header'>
       <div class='large-<%= @small_title ? 9 : 12 %> columns'>
         <h1>
           <span id='site_title'><%= yield(:title) %></span>
@@ -52,11 +52,11 @@
         <div class='large-3 columns push-9'>
           <%= yield :sidebar %>
         </div>
-        <div class='large-9 columns pull-3'>
+        <div class='large-9 columns pull-3' role='main'>
           <%= yield %>
         </div>
       <% else %>
-        <div class='large-12 columns'>
+        <div class='large-12 columns' role='main'>
           <%= yield %>
         </div>
       <% end %>

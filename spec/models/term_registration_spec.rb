@@ -32,6 +32,10 @@ RSpec.describe TermRegistration do
     # it { is_expected.to validate_uniqueness_of(:account).scoped_to(:term_id)}
   end
 
+  describe 'delegations' do
+    it { is_expected.to delegate_method(:title).to(:tutorial_group).with_prefix(true) }
+  end
+
   describe 'methods' do
     describe '.search' do
       let(:account_1) { FactoryGirl.create(:account, forename: "John", surname: "Doe", matriculation_number: "12345678") }

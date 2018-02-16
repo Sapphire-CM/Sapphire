@@ -9,6 +9,9 @@ RSpec.describe GradingReview::TermReview do
     it { is_expected.to delegate_method(:term).to(:term_registration) }
     it { is_expected.to delegate_method(:points).to(:term_registration) }
     it { is_expected.to delegate_method(:tutorial_group).to(:term_registration) }
+
+    it { is_expected.to delegate_method(:achievable_points).to(:term) }
+
     it { is_expected.to delegate_method(:all_results_published?).to(:tutorial_group) }
   end
 

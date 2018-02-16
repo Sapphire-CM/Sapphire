@@ -1,0 +1,26 @@
+<% title course_term_title(@term), "Edit Student" %>
+
+<%= render "terms/sidebar", term: current_term %>
+
+<%= simple_form_for(@term_registration, url: term_student_path(@term, @term_registration)) do |f| %>
+  <div class='panel'>
+    <%= term_account_card(@term_registration.account) %>
+  </div>
+
+  <%= f.association :tutorial_group, collection: @term.tutorial_groups.order(:title), required: true %>
+  <%= f.association :student_group, collection: @term.student_groups.order(:title) %>
+
+  <p class='text-center'>
+    <%= link_to "Cancel", term_student_path(@term, @term_registration), class: "secondary button" %>
+    <%= f.button :submit %>
+  </p>
+<% end %>
+
+
+<div class='panel alert callout'>
+  <h4>DANGER ZONE!</h4>
+
+  <p>Deleting a student removes all traces of this student's attendence, including references to the submissions as well as student group.</p>
+
+  <%= link_to "Delete Student", term_student_path(@term, @term_registration), method: :delete, data: {confirm: "Are you sure?"}, class: "small alert button" %>
+</div>

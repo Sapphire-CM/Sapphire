@@ -49,6 +49,14 @@ module FeatureHelpers
     within '.reveal-modal.open', &block
   end
 
+  def within_main(&block)
+    within "div[role=main]", &block
+  end
+
+  def within_header(&block)
+    within "div[role=header]", &block
+  end
+
   def hidden_inputs
     return unless block_given?
     previous_value = Capybara.ignore_hidden_elements

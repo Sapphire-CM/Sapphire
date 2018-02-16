@@ -58,6 +58,8 @@ class TermRegistration < ActiveRecord::Base
   scope :welcomed, lambda { where.not(welcomed_at: nil) }
   scope :waiting_for_welcome, lambda { where(welcomed_at: nil) }
 
+  delegate :title, to: :tutorial_group, prefix: true, allow_nil: true
+
   sifter :positive_grades do
     positive_grade == true
   end

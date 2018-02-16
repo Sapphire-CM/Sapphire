@@ -12,6 +12,7 @@ class GradingReview::TermReview
   attr_accessor :term_registration
 
   delegate :term, :points, :tutorial_group, to: :term_registration
+  delegate :achievable_points, to: :term
   delegate :all_results_published?, to: :tutorial_group
 
   def student
@@ -23,9 +24,9 @@ class GradingReview::TermReview
   end
 
   def submission_reviews
-    @submission_reviewes ||= fetch_exercise_registrations.map do |exercise_registration|
+    @submission_reviews ||= fetch_exercise_registrations.map do |exercise_registration|
       GradingReview::SubmissionReview.new(exercise_registration: exercise_registration, published: result_publications[exercise_registration.exercise].published?)
-    end
+    end.sort_by(&:row_order)
   end
 
   def grade

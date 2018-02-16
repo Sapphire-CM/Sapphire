@@ -2,28 +2,35 @@
 
 <%= render 'terms/sidebar', term: @term %>
 
-<% if @term_registrations.any? %>
-  <table class='small-12 sortable'>
-    <thead>
+
+<table class='small-12 sortable'>
+  <thead>
+    <tr>
+      <th>Account</th>
+      <th>Role</th>
+      <th>Tutorial Group</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @term_registrations.each do |term_registration| %>
       <tr>
-        <th>Account</th>
-        <th>Role</th>
-        <th></th>
+        <td><%= term_registration.account.fullname %></td>
+        <td><%= term_registration.role.humanize %></td>
+        <td><%= term_registration.tutorial_group_title %></td>
+        <td class='text-right'>
+          <%= link_to "Remove", term_staff_path(current_term, term_registration), class: "small alert button", method: :delete, data: {confirm: "Are you sure?"} %>
+        </td>
       </tr>
-    </thead>
-    <tbody>
-      <% @term_registrations.each do |term_registration| %>
-        <tr>
-          <td><%= term_registration.account.fullname %></td>
-          <td><%= term_registration.role.humanize %></td>
-          <td class='text-right'>
-            <%= link_to "Remove", term_staff_path(current_term, term_registration), class: "small alert button", method: :delete, data: {confirm: "Are you sure?"} %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p>No staff specified</p>
-<% end %>
-<%= link_to "Add Staff Member", new_term_staff_path(@term), class: "button" %>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th colspan="4" class='text-center'>
+        <%= link_to "#{foundation_icon(:plus)} Add".html_safe, new_term_staff_path(@term) %>
+      </th>
+    </tr>
+  </tfoot>
+</table>
+
+

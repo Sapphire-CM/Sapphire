@@ -18,5 +18,7 @@ class Impersonation
 
     sign_in(:account, Account.find(session["impersonator_id"]))
     session["impersonator_id"] = nil
+
+    true
   end
 end

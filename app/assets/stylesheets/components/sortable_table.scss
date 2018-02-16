@@ -1,6 +1,6 @@
 th[data-behaviour=sortable] {
   user-select: none;
-
+  white-space: nowrap;
   span.sortable-icon {
     display: inline-block;
     transform-origin: 50% 60%;

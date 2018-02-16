@@ -3,18 +3,26 @@ class SubmissionBlobController < ApplicationController
 
   before_action :set_submission, only: :show
 
+  rescue_from SubmissionStructure::FileNotFound, with: :redirect_to_submission_tree
+
   def show
-    @tree = @submission.tree(params[:path])
+    @tree = @submission.tree
+    @directory = @tree.resolve(params[:path])
 
     respond_to do |format|
       format.zip do
-        name = zip_name(@submission, @tree)
-        stream_zip(@tree, name, "#{name}.zip")
+        name = zip_name(@submission, @directory)
+        stream_zip(@directory, name, "#{name}.zip")
       end
     end
   end
 
   private
+  def redirect_to_submission_tree
+    redirect_to submission_tree_path(@submission, params[:path])
+  end
+
+
   def set_submission
     @submission = Submission.find(params[:id])
 

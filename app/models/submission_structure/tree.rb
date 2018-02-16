@@ -1,23 +1,18 @@
-class SubmissionStructureService
-  class FileDoesNotExist < ArgumentError; end
+class SubmissionStructure::Tree
+  include ActiveModel::Model
 
-  def self.parse_submission(submission, root_directory_name = "/")
-    parse_structure(submission.submission_assets, root_directory_name)
+  attr_accessor :submission, :base_directory_name
+
+  delegate :submission_assets, to: :submission
+  delegate :resolve, to: :base_dir
+
+  def base_dir
+    @base_dir ||= parse_submission
   end
 
   private
 
-  def self.parse_structure(submission_assets, root_directory_name)
-    parser = DirectoryTreeParser.new(root_directory_name)
-
-    submission_assets.each do |submission_asset|
-      parser << submission_asset
-    end
-
-    parser.base_dir
-  end
-
-  class DirectoryTreeParser
+  class Parser
     attr_reader :base_dir
 
     def initialize(root_directory_name)
@@ -56,5 +51,13 @@ class SubmissionStructureService
     def split_path(path)
       Pathname(path).each_filename.to_a
     end
+  end
+
+  def parse_submission
+    parser = Parser.new(base_directory_name)
+    submission_assets.each do |submission_asset|
+      parser << submission_asset
+    end
+    parser.base_dir
   end
 end

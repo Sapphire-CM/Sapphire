@@ -19,7 +19,7 @@ class SubmissionStructure::Directory < SubmissionStructure::TreeNode
   end
 
   def resolve(path, create_directories: true)
-    parts = Pathname(path).each_filename.to_a
+    parts = Pathname(path || "").each_filename.to_a
 
     node = self
     parts.each do |name|
@@ -31,7 +31,7 @@ class SubmissionStructure::Directory < SubmissionStructure::TreeNode
           node = SubmissionStructure::Directory.new(name, old_node)
           old_node << node
         else
-          raise SubmissionStructureService::FileDoesNotExist.new("#{name}, #{path}, #{@nodes.keys}")
+          raise SubmissionStructure::FileNotFound.new("#{name}, #{path}, #{@nodes.keys}")
         end
       end
     end

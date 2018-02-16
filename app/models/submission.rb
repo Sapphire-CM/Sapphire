@@ -77,12 +77,8 @@ class Submission < ActiveRecord::Base
     submission_assets.any? { |sa| sa.changed? || sa.new_record? || sa.marked_for_destruction? }
   end
 
-  def tree(path = nil)
-    tree = SubmissionStructureService.parse_submission(self, "submission")
-    tree = tree.resolve(path) if path.present?
-    tree
-  rescue SubmissionStructureService::FileDoesNotExist
-    raise ActiveRecord::RecordNotFound
+  def tree
+    @tree ||= SubmissionStructure::Tree.new(submission: self, base_directory_name: "submission")
   end
 
   def set_exercise_of_exercise_registrations!

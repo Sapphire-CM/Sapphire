@@ -53,5 +53,21 @@ FactoryGirl.define do
     trait :outdated do
       outdated true
     end
+
+    trait :with_basic_structure do
+      transient do
+        files %w(file1.txt nested/file2.txt nested/file3.txt nested/further/file4.txt very/deeply/nested/folder/file5.txt)
+      end
+
+      after(:create) do |instance, evaluator|
+        evaluator.files.each do |file|
+          path, filename = File.split(file)
+
+          path = "" if path == "."
+
+          create(:submission_asset, submission: instance, path: path, file: prepare_static_test_file('simple_submission.txt', open: true, rename_to: filename))
+        end
+      end
+    end
   end
 end

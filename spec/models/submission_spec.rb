@@ -257,29 +257,25 @@ RSpec.describe Submission do
     end
 
     describe '#tree' do
-      let!(:submission_assets) do
-        [
-          FactoryGirl.create(:submission_asset, path: "", file: prepare_static_test_file("simple_submission.txt")),
-          FactoryGirl.create(:submission_asset, path: "/folder", file: prepare_static_test_file("simple_submission.txt"))
-        ]
-      end
+      subject { FactoryGirl.create(:submission, :with_basic_structure) }
 
       it 'returns a submission tree created by the SubmissionStructureService' do
-        expect(SubmissionStructureService).to receive(:parse_submission).with(subject, "submission").and_call_original
-        expect(subject.tree).to be_a(SubmissionStructure::TreeNode)
+        expect(subject.tree).to be_a(SubmissionStructure::Tree)
       end
 
-      it 'is able to resolve the tree path' do
-        tree = subject.tree("folder")
-
-        expect(tree).to be_a(SubmissionStructure::TreeNode)
-        expect(tree.path_without_root).to eq("folder")
+      it 'sets submission of submission tree' do
+        expect(subject.tree.submission).to eq(subject)
       end
 
-      it 'does not raise an error when a non-existent folder is accessed' do
-        expect do
-          subject.tree("does/not/exist")
-        end.not_to raise_error
+      it 'sets the base_directory_name to "submission"' do
+        expect(subject.tree.base_directory_name).to eq("submission")
+      end
+
+      it 'memoizes the returned tree' do
+        first_tree = subject.tree
+        second_tree = subject.tree
+
+        expect(first_tree.object_id).to eq(second_tree.object_id)
       end
     end
 

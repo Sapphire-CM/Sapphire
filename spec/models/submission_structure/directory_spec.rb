@@ -30,24 +30,24 @@ RSpec.describe SubmissionStructure::Directory do
 
   context 'with entries' do
     let!(:direct_decendants) do
-      decendants = []
-      3.times do |i|
-        node = described_class.new("node-#{i + 1}")
-        decendants << node
-        subject << node
+      [].tap do |decendants|
+        3.times do |i|
+          node = described_class.new("node-#{i + 1}")
+          decendants << node
+          subject << node
+        end
       end
-      decendants
     end
 
     let!(:further_decendants) do
       direct_decendants.map do |parent|
-        decendants = []
-        3.times do |i|
-          node = described_class.new("#{parent.name}-#{i + 1}", parent)
-          decendants << node
-          subject << node
+        [].tap do |decendants|
+          3.times do |i|
+            node = described_class.new("#{parent.name}-#{i + 1}", parent)
+            decendants << node
+            subject << node
+          end
         end
-        decendants
       end
     end
 
@@ -120,7 +120,7 @@ RSpec.describe SubmissionStructure::Directory do
       it 'raises an error if create_directories is false' do
         expect do
           subject.resolve("does/not-exist", create_directories: false)
-        end.to raise_error(SubmissionStructureService::FileDoesNotExist)
+        end.to raise_error(SubmissionStructure::FileNotFound)
       end
     end
 

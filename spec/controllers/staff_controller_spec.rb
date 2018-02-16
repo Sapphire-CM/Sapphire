@@ -10,11 +10,11 @@ RSpec.describe StaffController do
   let(:tutorial_group) { FactoryGirl.create :tutorial_group, term: term }
 
   describe 'GET index' do
-    it 'assigns all term_registrations as @term_registrations' do
-      students = FactoryGirl.create_list :term_registration, 4, :student, term: term
-      tutors = FactoryGirl.create_list :term_registration, 4, :tutor, term: term
-      lecturers = FactoryGirl.create_list :term_registration, 4, :lecturer, term: term
+    let!(:students) { FactoryGirl.create_list(:term_registration, 3, :student, term: term) }
+    let!(:tutors) { FactoryGirl.create_list(:term_registration, 3, :tutor, term: term) }
+    let!(:lecturers) { FactoryGirl.create_list(:term_registration, 3, :lecturer, term: term) }
 
+    it 'assigns all term_registrations as @term_registrations' do
       get :index, term_id: term.id
 
       expect(response).to have_http_status(:success)

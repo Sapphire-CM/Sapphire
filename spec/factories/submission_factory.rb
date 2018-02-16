@@ -21,7 +21,7 @@ FactoryGirl.define do
       end
 
       after(:create) do |instance, evaluator|
-        create_list(:exercise_registration, evaluator.exercise_registrations_count, exercise: instance.exercise, submission: instance)
+        create_list(:exercise_registration, evaluator.exercise_registrations_count, exercise: instance.exercise, outdated: instance.outdated, submission: instance)
       end
     end
 
@@ -33,6 +33,14 @@ FactoryGirl.define do
       after(:create) do |instance, evaluator|
         instance.submission_evaluation.update(evaluator: evaluator.evaluator, evaluated_at: Time.now)
       end
+    end
+
+    trait :recent do
+      outdated false
+    end
+
+    trait :outdated do
+      outdated true
     end
 
     trait :without_submission_evaluation do
@@ -48,10 +56,6 @@ FactoryGirl.define do
       end
 
       sequence(:submitted_at) { |n| start_time + time_increment * n}
-    end
-
-    trait :outdated do
-      outdated true
     end
 
     trait :with_basic_structure do

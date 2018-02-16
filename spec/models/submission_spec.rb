@@ -15,6 +15,7 @@ RSpec.describe Submission do
     it { is_expected.to belong_to :exercise }
     it { is_expected.to belong_to :submitter }
     it { is_expected.to belong_to :student_group }
+    it { is_expected.to belong_to(:exercise_attempt) }
     it { is_expected.to have_one(:submission_evaluation).dependent(:destroy) }
     it { is_expected.to have_many(:exercise_registrations).dependent(:destroy).inverse_of(:submission) }
     it { is_expected.to have_many(:term_registrations).through(:exercise_registrations) }
@@ -26,11 +27,27 @@ RSpec.describe Submission do
     it { is_expected.to validate_presence_of(:submitter) }
     it { is_expected.to validate_presence_of(:submitted_at) }
 
+    describe 'student group uniqueness' do
+      context "with student group" do
+        let(:student_group) { FactoryGirl.create(:student_group) }
+        subject { FactoryGirl.build(:submission, student_group: student_group) }
+
+        it { is_expected.to validate_uniqueness_of(:student_group).scoped_to([:exercise_id, :exercise_attempt_id]) }
+      end
+
+      context "without student group" do
+        subject { FactoryGirl.build(:submission, student_group: nil) }
+
+        it { is_expected.not_to validate_uniqueness_of(:student_group) }
+      end
+    end
+
     it 'validates size of all submission_assets combined must be below the maximum allowed size of the exercise'
   end
 
   describe 'delegation' do
     it { is_expected.to delegate_method(:submission_viewer?).to(:exercise) }
+    it { is_expected.to delegate_method(:enable_multiple_attempts?).to(:exercise) }
   end
 
   describe 'scoping' do
@@ -171,12 +188,48 @@ RSpec.describe Submission do
   end
 
   describe 'callbacks' do
-    describe '#create_submission_evaluation after create' do
-      subject { FactoryGirl.build(:submission) }
+    let(:term) { FactoryGirl.create(:term) }
+    let(:exercise) { FactoryGirl.create(:exercise, term: term) }
+    let(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
+    let(:exercise_registration) { FactoryGirl.build(:exercise_registration, exercise: exercise, submission: subject, term_registration: term_registration) }
+
+    describe 'after_create' do
+      subject { FactoryGirl.build(:submission, exercise: exercise) }
 
       it 'calls #create_submission_evaluation after creating a record' do
         expect(subject).to receive(:create_submission_evaluation!)
         subject.save
+      end
+
+      it 'calls #update_points! on exercise_registrations' do
+        subject.exercise_registrations = [exercise_registration]
+
+        expect(exercise_registration).to receive(:update_points!)
+
+        subject.save
+      end
+    end
+
+    describe 'after_update' do
+      describe 'changing #outdated', :doing do
+        subject { FactoryGirl.create(:submission, exercise: exercise) }
+
+        let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, submission: subject, term_registration: term_registration) }
+
+        it 'calls #update_points! on term_registrations' do
+          subject.exercise_registrations = [exercise_registration]
+
+          expect(term_registration).to receive(:update_points!)
+          subject.update(outdated: true)
+
+          expect(term_registration).to receive(:update_points!)
+          subject.update(outdated: false)
+        end
+
+        it 'does not call #update_points if outdated does not change' do
+          expect(term_registration).not_to receive(:update_points!)
+          subject.update(submitted_at: 3.days.ago)
+        end
       end
     end
   end
@@ -253,6 +306,20 @@ RSpec.describe Submission do
 
       it 'returns false if a term_registration for given account is not associated with submission' do
         expect(subject.visible_for_student?(another_account)).to be_falsey
+      end
+    end
+
+    describe '#recent?' do
+      it 'returns true if subject is not outdated' do
+        subject.outdated = false
+
+        expect(subject.recent?).to be_truthy
+      end
+
+      it 'returns false if subject is not outdated' do
+        subject.outdated = true
+
+        expect(subject.recent?).to be_falsey
       end
     end
 
@@ -391,6 +458,61 @@ RSpec.describe Submission do
         exercise_registrations.each do |exercise_registration|
           expect(exercise_registration.exercise).to eq(exercise)
         end
+      end
+    end
+
+    describe '#update_outdated' do
+      subject { FactoryGirl.create(:submission) }
+
+      let(:exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 3, submission: subject, exercise: subject.exercise) }
+
+      before :each do
+        subject.exercise_registrations = exercise_registrations
+      end
+
+      it 'sets outdated to true if one exercise_registration is outdated' do
+        exercise_registrations.second.update(outdated: true)
+
+        subject.outdated = false
+        subject.update_outdated
+
+        expect(subject).to be_outdated
+      end
+
+      it 'sets outdated to true if all exercise_registration are recent' do
+        exercise_registrations.each { |er| er.update(outdated: false) }
+
+        subject.outdated = true
+        subject.update_outdated
+
+        expect(subject).not_to be_outdated
+      end
+    end
+
+    describe '#update_outdated!' do
+      it 'calls #update_outdated then #save!' do
+        expect(subject).to receive(:update_outdated).ordered
+        expect(subject).to receive(:save!).ordered
+
+        subject.update_outdated!
+      end
+    end
+
+    describe '#mark_as_recent!' do
+      subject { FactoryGirl.create(:submission, exercise: exercise) }
+
+      let(:exercise) { FactoryGirl.create(:exercise) }
+      let(:exercise_registration) { FactoryGirl.create(:exercise_registration, :outdated, exercise: exercise, submission: subject) }
+
+      before :each do
+        subject.exercise_registrations = [exercise_registration]
+      end
+
+      it 'updates all exercise registrations to be recent' do
+        subject.mark_as_recent!
+
+        expect(exercise_registration.reload).to be_recent
+        expect(subject.reload).to be_recent
       end
     end
   end

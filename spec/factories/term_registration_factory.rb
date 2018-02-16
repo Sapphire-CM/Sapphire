@@ -4,7 +4,7 @@ FactoryGirl.define do
     account
     term
     role :student
-    tutorial_group { FactoryGirl.create(:tutorial_group, term: term) }
+    tutorial_group { |tutorial_group| tutorial_group.association(:tutorial_group, term: term) }
 
     trait :student do
       role :student

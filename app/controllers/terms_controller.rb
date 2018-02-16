@@ -1,7 +1,7 @@
 class TermsController < ApplicationController
   include TermContext
   before_action :set_term, only: [:show, :edit, :update, :destroy,
-                                  :points_overview, :send_welcome_notifications]
+                                  :points_overview]
 
   def show
     @tutorial_groups = @term.tutorial_groups.ordered_by_title

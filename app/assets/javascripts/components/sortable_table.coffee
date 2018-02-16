@@ -51,6 +51,7 @@ class SortableTable
         values: values
         sort: sort
         keep_on_top: !!row.element.data("sort-top")
+        class: row.element.attr("class")
       }
 
       data.push(row_data)
@@ -134,6 +135,7 @@ class SortableTable
   _update_table_with_data: (data) ->
     for row_data, row_idx in data
       row = @rows[row_idx]
+      row.element.attr("class", row_data.class || "")
 
       for value, cell_idx in row_data.values
         row.cells[cell_idx].html(value)
@@ -152,5 +154,5 @@ setup_sortable_tables = ->
     new SortableTable($table)
 
 
-$(document).on "page:load ready", ->
+$(document).on "page:change", ->
   setup_sortable_tables()

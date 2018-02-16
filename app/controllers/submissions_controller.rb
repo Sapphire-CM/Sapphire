@@ -38,6 +38,6 @@ class SubmissionsController < ApplicationController
   end
 
   def submission_params
-    params.require(:submission).permit(:student_group_id, exercise_registrations_attributes: [:id, :_destroy, :individual_subtractions, :term_registration_id])
+    params.require(:submission).permit(:exercise_attempt_id, :student_group_id, exercise_registrations_attributes: [:id, :_destroy, :individual_subtractions, :term_registration_id])
   end
 end

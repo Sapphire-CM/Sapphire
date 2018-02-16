@@ -69,6 +69,14 @@ module SubmissionsHelper
     end
   end
 
+  def submission_attempt_title(submission)
+    submission.exercise_attempt.try(:title)
+  end
+
+  def submission_exercise_attempts_options(submission)
+    submission.exercise.attempts.order(:title)
+  end
+
   def submission_tutorial_group(submission)
     if submission.student_group.present?
       tutorial_group_title(submission.student_group.tutorial_group)

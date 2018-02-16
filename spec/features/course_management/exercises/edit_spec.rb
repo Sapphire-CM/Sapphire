@@ -46,7 +46,7 @@ RSpec.feature "Exercises Editing" do
 
     click_button "Save"
 
-    expect(page).to have_current_path(edit_exercise_path(exercise))
+    expect(page).to have_current_path(exercise_path(exercise))
     expect(page).to have_content("Fancy Exercise")
     expect(page).to have_content("successfully updated")
   end

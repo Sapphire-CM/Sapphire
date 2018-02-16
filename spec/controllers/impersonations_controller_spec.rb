@@ -76,7 +76,6 @@ RSpec.describe ImpersonationsController, type: :controller do
 
       session[:impersonator_id] = admin_account.id
       allow(impersonation).to receive(:sign_in).with(:account, admin_account)
-
     end
 
     it 'removes impersonation' do

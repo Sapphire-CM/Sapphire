@@ -25,6 +25,8 @@ RSpec.describe SubmissionBulk::Item do
     it { is_expected.to delegate_method(:exercise).to(:bulk) }
     it { is_expected.to delegate_method(:ratings).to(:bulk) }
     it { is_expected.to delegate_method(:account).to(:bulk) }
+    it { is_expected.to delegate_method(:exercise_attempt).to(:bulk) }
+    it { is_expected.to delegate_method(:multiple_attempts?).to(:bulk) }
   end
 
   describe 'validations' do
@@ -199,11 +201,14 @@ RSpec.describe SubmissionBulk::Item do
       let(:account) { FactoryGirl.create(:account, :admin) }
       let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
       let(:submission_evaluation) { submission.submission_evaluation }
+      let(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, submission: submission) }
+      let!(:exercise_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
 
       subject { described_class.new(bulk: bulk, subject: submission_subject) }
 
       before :each do
         allow(bulk).to receive(:ratings).and_return(ratings)
+        allow(bulk).to receive(:multiple_attempts?).and_return(false)
 
         subject.evaluations.each do |evaluation|
           allow(evaluation).to receive(:save)
@@ -211,6 +216,8 @@ RSpec.describe SubmissionBulk::Item do
       end
 
       shared_examples "saving behaviour" do
+        let(:mocked_submission_service) { instance_double(SubmissionCreationService) }
+
         it 'creates a submission if it is not present' do
           expect(SubmissionCreationService).to receive(:new_staff_submission).with(account, submission_subject, exercise).and_call_original
 
@@ -219,6 +226,18 @@ RSpec.describe SubmissionBulk::Item do
           expect do
             subject.save
           end.to change(Submission, :count).by(1)
+        end
+
+        it 'assigns the exercise_attempt' do
+          allow(bulk).to receive(:multiple_attempts?).and_return(true)
+          allow(bulk).to receive(:exercise_attempt).and_return(exercise_attempt)
+
+          exercise.update(enable_multiple_attempts: true)
+          subject.submission = nil
+
+          subject.save
+
+          expect(subject.submission.exercise_attempt).to eq(exercise_attempt)
         end
 
         it 'does not create a submission if it is present' do
@@ -250,6 +269,24 @@ RSpec.describe SubmissionBulk::Item do
           submission_evaluation.reload
           expect(submission_evaluation.evaluated_at).not_to be_blank
           expect(submission_evaluation.evaluator).to eq(account)
+        end
+
+        it 'calls #mark_as_recent! on existing submission if it is outdated' do
+          expect(submission).to receive(:mark_as_recent!)
+
+          submission.outdated = true
+
+          subject.submission = submission
+          subject.save
+        end
+
+        it 'does not call #mark_as_recent! on existing submission if it is recent' do
+          expect(submission).not_to receive(:mark_as_recent!)
+
+          submission.outdated = false
+
+          subject.submission = submission
+          subject.save
         end
       end
 

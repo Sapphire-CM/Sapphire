@@ -91,7 +91,6 @@ RSpec.describe 'Viewing results' do
       expect(page).to have_content("12 out of 14")
       expect(page).to have_content("Individual Subtractions")
       expect(page).to have_content("-2")
-
     end
   end
 

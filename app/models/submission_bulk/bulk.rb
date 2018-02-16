@@ -3,11 +3,14 @@ class SubmissionBulk::Bulk
   include ActiveModel::Validations
 
   attr_accessor :exercise, :account
-  attr_writer :items
+  attr_writer :items, :exercise_attempt, :exercise_attempt_id
 
   delegate :group_submission?, :solitary_submission?, to: :exercise
+  delegate :id, to: :exercise_attempt, prefix: true
 
   validate :validate_items
+  validates :exercise_attempt_id, presence: true, if: :multiple_attempts?
+  validates :exercise_attempt_id, absence: true, unless: :multiple_attempts?
 
   def items_attributes=(item_attributes)
     @items = item_attributes.map do |id, attributes|
@@ -15,6 +18,23 @@ class SubmissionBulk::Bulk
     end
 
     set_missing_subjects!
+  end
+
+  def exercise_attempt_id
+    @exercise_attempt_id ||= @exercise_attempt.try(:id)
+  end
+
+  def exercise_attempt
+    if @exercise_attempt_id.present?
+      @exercise_attempt = exercise.attempts.find(@exercise_attempt_id)
+      @exercise_attempt_id = nil
+    end
+
+    @exercise_attempt
+  end
+
+  def multiple_attempts?
+    exercise.enable_multiple_attempts? if exercise
   end
 
   def ratings
@@ -73,7 +93,7 @@ class SubmissionBulk::Bulk
   end
 
   def submission_finder
-    SubmissionBulk::SubmissionsFinder.new(exercise: exercise)
+    SubmissionBulk::SubmissionsFinder.new(exercise: exercise, exercise_attempt: exercise_attempt)
   end
 
   def validate_items

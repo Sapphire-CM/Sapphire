@@ -1,0 +1,20 @@
+<div class='row'>
+  <% if submission_review.submission_assets.any? %>
+    <div class='small-4 columns'>
+      <%= render "evaluation_details", submission_review: submission_review %>
+    </div>
+    <div class='small-8 columns'>
+      <% submission_review.submission_assets.each do |submission_asset| %>
+        <h4>
+          <%= shorten(submission_asset.complete_path, 50) %>
+          <small><%= filesize(submission_asset.filesystem_size) %><%= ", #{submission_asset.asset_identifier}" if submission_asset.asset_identifier.present? %></small>
+        </h4>
+        <%= inline_submission_asset submission_asset %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class='small-12 columns'>
+      <%= render "evaluation_details", submission_review: submission_review %>
+    </div>
+  <% end %>
+</div>

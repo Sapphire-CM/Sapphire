@@ -120,6 +120,46 @@ RSpec.describe TermRegistration do
       end
     end
 
+    describe '#update_points', doing: true do
+      let(:term) { FactoryGirl.create(:term) }
+      let(:exercises) { FactoryGirl.create_list(:exercise, 2, term: term) }
+
+      let(:submissions) { exercises.map { |exercise| FactoryGirl.create(:submission, exercise: exercise) } }
+      let!(:exercise_registrations) { submissions.map { |submission| FactoryGirl.create(:exercise_registration, exercise: submission.exercise, term_registration: subject, submission: submission) }}
+
+      subject { FactoryGirl.create(:term_registration, :student, term: term) }
+
+      before :each do
+        exercise_registrations.first.update(points: 12)
+        exercise_registrations.second.update(points: 30)
+      end
+
+      it 'sums up all exercise registrations' do
+        subject.points = nil
+        subject.update_points
+
+        expect(subject.points).to eq(42)
+      end
+
+      it 'excludes outdated exercise registrations' do
+        exercise_registrations.first.update(outdated: true)
+
+        subject.points = nil
+        subject.update_points
+
+        expect(subject.points).to eq(30)
+      end
+    end
+
+    describe '#update_points!' do
+      it 'calls #update_points then #save!' do
+        expect(subject).to receive(:update_points).ordered
+        expect(subject).to receive(:save!).ordered
+
+        subject.update_points!
+      end
+    end
+
     describe '#welcomed?' do
       it 'returns true if welcomed_at is present' do
         subject.welcomed_at = 2.days.ago
@@ -224,30 +264,6 @@ RSpec.describe TermRegistration do
 
       subject.tutorial_group = FactoryGirl.create(:tutorial_group)
       expect(subject).not_to be_valid
-    end
-  end
-
-
-
-  context 'updating points' do
-    let(:term) { create :term }
-    let(:exercises) { create_list :exercise, 2, term: term }
-    let(:term_registration) do
-      create :term_registration, :student, term: term
-    end
-
-    before :each do
-      exercises.each do |exercise|
-        create :exercise_registration, exercise: exercise, term_registration: term_registration, submission: create(:submission)
-      end
-      ExerciseRegistration.update_all(points: 12)
-    end
-
-    it 'updates points correctly' do
-      term_registration.update!(points: nil)
-      term_registration.update_points!
-
-      expect(term_registration.reload.points).to eq(12 * 2)
     end
   end
 end

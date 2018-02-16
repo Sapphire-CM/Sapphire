@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180214222334) do
+ActiveRecord::Schema.define(version: 20180218212521) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -103,14 +103,25 @@ ActiveRecord::Schema.define(version: 20180214222334) do
   add_index "events", ["account_id"], name: "index_events_on_account_id"
   add_index "events", ["subject_type", "subject_id"], name: "index_events_on_subject_type_and_subject_id"
 
+  create_table "exercise_attempts", force: :cascade do |t|
+    t.integer  "exercise_id"
+    t.string   "title"
+    t.datetime "date"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "exercise_attempts", ["exercise_id"], name: "index_exercise_attempts_on_exercise_id"
+
   create_table "exercise_registrations", force: :cascade do |t|
     t.integer  "exercise_id"
     t.integer  "term_registration_id"
     t.integer  "submission_id"
     t.integer  "points"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.integer  "individual_subtractions"
+    t.boolean  "outdated",                default: false, null: false
   end
 
   add_index "exercise_registrations", ["exercise_id"], name: "index_exercise_registrations_on_exercise_id"
@@ -139,6 +150,7 @@ ActiveRecord::Schema.define(version: 20180214222334) do
     t.integer  "visible_points"
     t.string   "instructions_url"
     t.boolean  "enable_bulk_submission_management", default: false
+    t.boolean  "enable_multiple_attempts",          default: false, null: false
   end
 
   add_index "exercises", ["term_id"], name: "index_exercises_on_term_id"
@@ -346,13 +358,15 @@ ActiveRecord::Schema.define(version: 20180214222334) do
   create_table "submissions", force: :cascade do |t|
     t.integer  "exercise_id"
     t.datetime "submitted_at"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.integer  "submitter_id"
     t.integer  "student_group_id"
-    t.boolean  "outdated",         default: false, null: false
+    t.boolean  "outdated",            default: false, null: false
+    t.integer  "exercise_attempt_id"
   end
 
+  add_index "submissions", ["exercise_attempt_id"], name: "index_submissions_on_exercise_attempt_id"
   add_index "submissions", ["exercise_id"], name: "index_submissions_on_exercise_id"
   add_index "submissions", ["student_group_id"], name: "index_submissions_on_student_group_id"
   add_index "submissions", ["submitter_id"], name: "index_submissions_on_submitter_id"

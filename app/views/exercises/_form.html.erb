@@ -27,8 +27,23 @@
   <%= f.input :maximum_upload_size, label: false,
     wrapper_html: {class: ('hide' unless @exercise.enable_max_upload_size)} %>
 
-  <%= f.input :enable_bulk_submission_management, label: "Enable Bulk Operations" %>
+  <%= f.input :enable_bulk_submission_management, label: "Enable bulk operations" %>
   <%= f.input :submission_viewer_identifier, collection: submission_viewer_form_collection, as: :select %>
+
+  <%= f.input :enable_multiple_attempts, label: "Enable multiple attempts ▾"%>
+  <fieldset id='exercise_attempts' class='<%= "hide" unless @exercise.enable_multiple_attempts? %>'>
+    <table class='attempts small-12'>
+      <tbody>
+        <%= f.simple_fields_for(:attempts) do |attempt| %>
+          <%= render "attempt_fields", f: attempt %>
+        <% end %>
+      </tbody>
+    </table>
+    <%= link_to_add_association "Add attempt", f, :attempts, class: "small secondary button", data: {association_insertion_node: "#exercise_attempts table.attempts", association_insertion_method: "append"} %>
+  </fieldset>
+  <% if @exercise.errors[:attempts].present? %>
+    <div class='error'><%= f.full_error :attempts %></div>
+  <% end %>
 
   <div class='row'>
     <div class='large-12 large-centered columns text-center'>

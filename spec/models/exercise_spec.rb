@@ -26,6 +26,7 @@ describe Exercise do
     it { is_expected.to have_db_column(:visible_points).of_type(:integer) }
     it { is_expected.to have_db_column(:instructions_url).of_type(:string) }
     it { is_expected.to have_db_column(:enable_bulk_submission_management).of_type(:boolean).with_options(default: false) }
+    it { is_expected.to have_db_column(:enable_multiple_attempts).of_type(:boolean).with_options(null: false, default: false) }
   end
 
   describe 'associations' do
@@ -35,9 +36,13 @@ describe Exercise do
     it { is_expected.to have_many(:services).dependent(:destroy) }
     it { is_expected.to have_many(:rating_groups).dependent(:destroy) }
     it { is_expected.to have_many(:exercise_registrations).dependent(:destroy) }
-
+    it { is_expected.to have_many(:attempts).class_name("ExerciseAttempt").inverse_of(:exercise).dependent(:destroy).autosave(true) }
     it { is_expected.to have_many(:submission_evaluations).through(:submissions) }
     it { is_expected.to have_many(:ratings).through(:rating_groups) }
+  end
+
+  describe 'attributes' do
+    it { is_expected.to accept_nested_attributes_for(:attempts).allow_destroy(true) }
   end
 
   describe 'validations' do
@@ -102,7 +107,7 @@ describe Exercise do
 
 
     describe '#starting_points_sum' do
-      let!(:rating_groups) {FactoryGirl.create_list(:rating_group, 3, points: 7, exercise: subject) }
+      let!(:rating_groups) { FactoryGirl.create_list(:rating_group, 3, points: 7, exercise: subject) }
 
       it 'returns the sum of rating group points' do
         expect(subject.starting_points_sum).to eq(21)

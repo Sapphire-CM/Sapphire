@@ -4,7 +4,7 @@ class SubmissionBulk::Item
 
   attr_accessor :bulk, :subject_id, :subject, :submission
 
-  delegate :exercise, :ratings, :account, to: :bulk
+  delegate :exercise, :exercise_attempt, :multiple_attempts?, :ratings, :account, to: :bulk
 
   validates :subject_id, presence: true
   validate :validate_subject_uniqueness
@@ -37,11 +37,14 @@ class SubmissionBulk::Item
   end
 
   def save
-    ensure_submission!
+    ActiveRecord::Base.transaction do
+      ensure_submission!
 
-    evaluations.each(&:save)
+      evaluations.each(&:save)
 
-    submission.submission_evaluation.update(evaluated_at: Time.zone.now, evaluator: account)
+      submission.submission_evaluation.update(evaluated_at: Time.zone.now, evaluator: account)
+      submission.mark_as_recent! unless submission.recent?
+    end
   end
 
   def values?
@@ -67,6 +70,7 @@ class SubmissionBulk::Item
 
   def create_submission
     service = SubmissionCreationService.new_staff_submission(account, subject, exercise)
+    service.exercise_attempt = exercise_attempt if multiple_attempts?
     raise ::SubmissionBulk::BulkNotValid unless service.save
     service.submission
   end

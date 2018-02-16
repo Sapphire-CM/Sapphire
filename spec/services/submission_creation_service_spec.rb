@@ -5,10 +5,7 @@ RSpec.describe SubmissionCreationService, type: :model do
     describe 'methods' do
       describe '#submission' do
         freeze_time
-
-        it 'returns a valid submission' do
-          expect(subject.submission).to be_valid
-        end
+        let(:exercise_attempt) { FactoryGirl.build(:exercise_attempt, exercise: exercise) }
 
         it 'sets the submission time to current time' do
           expect(subject.submission.submitted_at).to eq(now)
@@ -20,6 +17,12 @@ RSpec.describe SubmissionCreationService, type: :model do
 
         it 'builds a valid submission' do
           expect(subject.submission).to be_valid
+        end
+
+        it 'assigns the exercise attempt' do
+          subject.exercise_attempt = exercise_attempt
+
+          expect(subject.submission.exercise_attempt).to eq(exercise_attempt)
         end
       end
 

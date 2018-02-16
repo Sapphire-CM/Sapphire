@@ -1,5 +1,5 @@
 <% if @term_review.submission_reviews.any? %>
-  <table class='small-12 sortable'>
+  <table class='small-12 sortable submission-list'>
     <thead>
       <tr>
         <th>Exercise</th>
@@ -10,8 +10,14 @@
     </thead>
     <tbody>
       <% @term_review.submission_reviews.each do |submission_review| %>
-        <tr>
-          <td sort-by='<%= submission_review.exercise.row_order %>'><%= submission_review.exercise_title %></td>
+        <tr<%= " class='outdated'".html_safe if submission_review.outdated? %>>
+          <td sort-by='<%= submission_review.exercise.row_order %>'>
+            <strong><%= submission_review.exercise_title %></strong>
+            <% if submission_review.exercise_attempt.present? %>
+              <br />
+              <%= submission_attempt_title(submission_review.submission) %>
+            <% end %>
+          </td>
           <td><%= submission_review.submitted_at.present? ? iso_time(submission_review.submitted_at) : "unknown" %></td>
           <td sort-by='<%= submission_review.points %>' sort-as="integer">
             <%= submission_review.points %> / <%= submission_review.achievable_points %>

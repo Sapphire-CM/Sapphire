@@ -4,64 +4,21 @@
   <section class="active">
     <p class="title" data-section-title><a href="#panel1">Overview</a></p>
     <div class="content" data-section-content>
-      <table class='small-12'>
-        <thead>
-          <tr>
-            <th>Exercise</th>
-            <th>Submitted at</th>
-            <th>Points</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @term_review.submission_reviews.each do |submission_review| %>
-            <tr>
-              <td><%= submission_review.exercise_title %></td>
-              <td><%= submission_review.submitted_at.present? ? iso_time(submission_review.submitted_at) : "unknown" %></td>
-              <td>
-                <%= submission_review.points %> / <%= submission_review.achievable_points %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th></th>
-            <th>Grade: <%= @term_review.grade %></th>
-            <th>Sum: <%= @term_review.points %></th>
-          </tr>
-        </tfoot>
-      </table>
+      <%= render "overview_table", term_review: @term_review %>
     </div>
   </section>
 
   <% @term_review.submission_reviews.each_with_index do |submission_review, i| %>
     <section>
-      <p class="title" data-section-title><a href="#panel<%= i+1 %>"><%= submission_review.exercise_title %></a></p>
-      <div class="content" data-section-content>
-        <div class='row'>
-          <% if submission_review.submission_assets.any? %>
-            <div class='small-9 columns'>
-              <% submission_review.submission_assets.each do |submission_asset| %>
-                <h4>
-                  <%= shorten(submission_asset.complete_path, 50) %>
-                  <small><%= filesize(submission_asset.filesystem_size) %><%= ", #{submission_asset.asset_identifier}" if submission_asset.asset_identifier.present? %></small>
-                </h4>
-                <%= inline_submission_asset submission_asset %>
-              <% end %>
-            </div>
-            <div class='small-3 columns'>
-              <%= render "evaluation_result", submission_review: submission_review %>
-              <hr />
-              <%= render "review_links", submission_review: submission_review %>
-            </div>
-          </div>
-        <% else %>
-          <div class='small-12 columns'>
-            <%= render "evaluation_result", submission_review: submission_review %>
-            <hr />
-            <%= render "review_links", submission_review: submission_review %>
-          </div>
+      <p class="title" data-section-title><a href="#panel<%= i+1 %>">
+
+        <%= submission_review.exercise_title %>
+        <% if submission_review.exercise_attempt.present? %>
+          @ <%= submission_attempt_title(submission_review.submission) %>
         <% end %>
+      </a></p>
+      <div class="content" data-section-content>
+        <%= render "submission_review", submission_review: submission_review %>
       </div>
     </section>
   <% end %>

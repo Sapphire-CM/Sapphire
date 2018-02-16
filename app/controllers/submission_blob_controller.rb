@@ -22,7 +22,6 @@ class SubmissionBlobController < ApplicationController
     redirect_to submission_tree_path(@submission, params[:path])
   end
 
-
   def set_submission
     @submission = Submission.find(params[:id])
 

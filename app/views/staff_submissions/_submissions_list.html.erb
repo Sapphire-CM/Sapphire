@@ -6,6 +6,9 @@
           <th>Student</th>
         <% end %>
         <th data-sort-default>Group</th>
+        <% if exercise.enable_multiple_attempts? %>
+          <th>Attempt</th>
+        <% end %>
         <th>Submitted at</th>
         <th>Evaluated at</th>
         <th>Result</th>
@@ -24,6 +27,10 @@
         <td>
           <%= submission_group_author_links(submission) %>
         </td>
+
+        <% if exercise.enable_multiple_attempts? %>
+          <td><%= submission_attempt_title(submission) %></td>
+        <% end %>
 
         <%= content_tag :td, class: "minimum-width", data: {sort: submission.submitted_at.to_i, sort_as: "integer"}  do %>
           <%= iso_time submission.submitted_at %></td>

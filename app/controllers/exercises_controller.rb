@@ -45,7 +45,7 @@ class ExercisesController < ApplicationController
 
   def update
     if @exercise.update(exercise_params)
-      redirect_to edit_exercise_path(@exercise), notice:  'Exercise was successfully updated.'
+      redirect_to exercise_path(@exercise), notice:  'Exercise was successfully updated.'
     else
       render :edit
     end
@@ -84,6 +84,13 @@ class ExercisesController < ApplicationController
       :max_total_points,
       :min_required_points,
       :submission_viewer_identifier,
-      :maximum_upload_size)
+      :maximum_upload_size,
+      :enable_multiple_attempts,
+      attempts_attributes: [
+        :id,
+        :title,
+        :date,
+        :_destroy
+      ])
   end
 end

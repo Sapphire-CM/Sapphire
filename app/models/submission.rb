@@ -1,13 +1,15 @@
 # create_table :submissions, force: :cascade do |t|
 #   t.integer  :exercise_id
 #   t.datetime :submitted_at
-#   t.datetime :created_at,                       null: false
-#   t.datetime :updated_at,                       null: false
+#   t.datetime :created_at,                          null: false
+#   t.datetime :updated_at,                          null: false
 #   t.integer  :submitter_id
 #   t.integer  :student_group_id
-#   t.boolean  :outdated,         default: false, null: false
+#   t.boolean  :outdated,            default: false, null: false
+#   t.integer  :exercise_attempt_id
 # end
 #
+# add_index :submissions, [:exercise_attempt_id], name: :index_submissions_on_exercise_attempt_id
 # add_index :submissions, [:exercise_id], name: :index_submissions_on_exercise_id
 # add_index :submissions, [:student_group_id], name: :index_submissions_on_student_group_id
 # add_index :submissions, [:submitter_id], name: :index_submissions_on_submitter_id
@@ -16,6 +18,8 @@ class Submission < ActiveRecord::Base
   belongs_to :exercise
   belongs_to :submitter, class_name: 'Account', foreign_key: 'submitter_id'
   belongs_to :student_group
+
+  belongs_to :exercise_attempt
 
   has_one :submission_evaluation, dependent: :destroy
   has_one :term, through: :exercise
@@ -30,11 +34,12 @@ class Submission < ActiveRecord::Base
   validates :submitter, presence: true
   validates :submitted_at, presence: true
   validates :exercise, presence: true
-  validates :student_group, uniqueness: { scope: :exercise_id }, if: :student_group
+  validates :student_group, uniqueness: { scope: [:exercise_id, :exercise_attempt_id] }, if: :student_group
 
   validate :upload_size_below_exercise_maximum_upload_size
 
   delegate :submission_viewer?, to: :exercise, allow_nil: true
+  delegate :enable_multiple_attempts?, to: :exercise, allow_nil: true
 
   scope :for_term, lambda { |term| joins(:exercise).where(exercise: { term_id: term.id }) }
   scope :for_exercise, lambda { |exercise| where(exercise_id: exercise) }
@@ -52,6 +57,7 @@ class Submission < ActiveRecord::Base
   accepts_nested_attributes_for :exercise_registrations, allow_destroy: true, reject_if: :all_blank
 
   after_create :create_submission_evaluation!
+  after_update :update_term_registration_points!, if: :outdated_changed?
 
   def self.find_by_account_and_exercise(account, exercise)
     for_account(account).find_by(exercise: exercise)
@@ -77,6 +83,10 @@ class Submission < ActiveRecord::Base
     submission_assets.any? { |sa| sa.changed? || sa.new_record? || sa.marked_for_destruction? }
   end
 
+  def recent?
+    !outdated?
+  end
+
   def tree
     @tree ||= SubmissionStructure::Tree.new(submission: self, base_directory_name: "submission")
   end
@@ -87,7 +97,28 @@ class Submission < ActiveRecord::Base
     end
   end
 
+  def update_outdated
+    self.outdated = exercise_registrations.outdated.exists?
+  end
+
+  def update_outdated!
+    update_outdated
+    save!
+  end
+
+  def mark_as_recent!
+    exercise_registrations(true).find_each do |exercise_registration|
+      exercise_registration.update(outdated: false)
+    end
+  end
+
   private
+  def update_term_registration_points!
+    exercise_registrations.each do |exercise_registrations|
+      exercise_registrations.term_registration.update_points!
+    end
+  end
+
   def upload_size_below_exercise_maximum_upload_size
     size = submission_assets.map(&:filesystem_size).sum || 0
 

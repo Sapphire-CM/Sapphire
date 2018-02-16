@@ -1,2 +1,0 @@
-module Submissions::StudentsHelper
-end

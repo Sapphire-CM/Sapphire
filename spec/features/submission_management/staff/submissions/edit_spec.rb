@@ -8,12 +8,14 @@ RSpec.describe 'Editing a submission' do
   let(:exercise) { FactoryGirl.create(:exercise, term: term) }
   let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
 
+  let(:described_path) { edit_submission_path(submission) }
+
   before :each do
     sign_in(account)
   end
 
   describe 'behaviours' do
-    let(:base_path) { edit_submission_path(submission) }
+    let(:base_path) { described_path }
 
     it_behaves_like "Exercise Sub Navigation", [:admin, :lecturer, :tutor]
     it_behaves_like "Exercise Side Navigation" do
@@ -32,7 +34,7 @@ RSpec.describe 'Editing a submission' do
           click_link("Edit")
         end
 
-        expect(page).to have_current_path(edit_submission_path(submission))
+        expect(page).to have_current_path(described_path)
       end
 
       scenario 'through the evaluation page' do
@@ -42,7 +44,28 @@ RSpec.describe 'Editing a submission' do
           click_link "Edit"
         end
 
-        expect(page).to have_current_path(edit_submission_path(submission))
+        expect(page).to have_current_path(described_path)
+      end
+
+      context 'with student' do
+        let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
+        let!(:student_exercise_registration) { FactoryGirl.create(:exercise_registration, term_registration: student_term_registration, exercise: exercise, submission: submission) }
+
+        scenario 'through the grading review page opens the edit page in a new window', js: true do
+          visit term_grading_review_path(term, student_term_registration)
+
+          within_main do
+            click_link exercise.title
+
+            within "section.active" do
+              new_window = window_opened_by { click_link "Edit" }
+
+              within_window new_window do
+                expect(page).to have_current_path(described_path)
+              end
+            end
+          end
+        end
       end
     end
 
@@ -53,9 +76,10 @@ RSpec.describe 'Editing a submission' do
       let(:other_student_term_registration) { student_term_registrations.last }
       let(:student_term_registration) { student_term_registrations.second }
       let(:lookup_string) { student_term_registration.account.matriculation_number }
+      let!(:exercise_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
 
       scenario 'Setting a student group' do
-        visit edit_submission_path(submission)
+        visit described_path
 
         within "form" do
           select(student_groups.second.title)
@@ -66,7 +90,7 @@ RSpec.describe 'Editing a submission' do
       end
 
       scenario 'Adding a student to the submission', js: true do
-        visit edit_submission_path(submission)
+        visit described_path
 
         within 'form' do
           find("a[data-behaviour=add-item]").click
@@ -86,7 +110,7 @@ RSpec.describe 'Editing a submission' do
       scenario 'Changing a student of the submission', js: true do
         submission.exercise_registrations.create(exercise: submission.exercise, term_registration: other_student_term_registration)
 
-        visit edit_submission_path(submission)
+        visit described_path
 
         within 'form' do
           find("a[data-behaviour=edit-subject]").click
@@ -108,7 +132,7 @@ RSpec.describe 'Editing a submission' do
       scenario 'Removing an existing student from the submission', js: true do
         submission.exercise_registrations.create(exercise: submission.exercise, term_registration: other_student_term_registration)
 
-        visit edit_submission_path(submission)
+        visit described_path
 
         within 'form' do
           find("a[data-behaviour=remove-item]").click
@@ -122,7 +146,7 @@ RSpec.describe 'Editing a submission' do
       end
 
       scenario 'Removing a newly added student from the submission', js: true do
-        visit edit_submission_path(submission)
+        visit described_path
 
         within 'form' do
           find("a[data-behaviour=add-item]").click
@@ -141,6 +165,44 @@ RSpec.describe 'Editing a submission' do
           click_button "Submit"
         end.not_to change(ExerciseRegistration, :count)
         expect(page).to have_content("Successful")
+      end
+
+      scenario 'Updating the submission attempt' do
+        exercise.update(enable_multiple_attempts: true)
+
+        visit described_path
+
+        select exercise_attempt.title
+
+        click_button "Submit"
+      end
+    end
+
+    describe 'attempts field' do
+      let(:exercise_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
+
+      it 'shows the attempts field if multiple attempts are enabled' do
+        exercise.update(enable_multiple_attempts: true)
+
+        visit described_path
+
+        expect(page).to have_css("label", text: "Exercise attempt")
+      end
+
+      it 'shows the attempts field if an attempt is set' do
+        submission.update(exercise_attempt: exercise_attempt)
+
+        visit described_path
+
+        expect(page).to have_css("label", text: "Exercise attempt")
+      end
+
+      it 'hides the attempts field if multiple attempts are disabled and no attempt is set' do
+        exercise.update(enable_multiple_attempts: false)
+
+        visit described_path
+
+        expect(page).not_to have_css("label", text: "Exercise attempt")
       end
     end
   end

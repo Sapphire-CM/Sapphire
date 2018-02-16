@@ -54,5 +54,21 @@ FactoryGirl.define do
       enable_min_required_points false
       min_required_points nil
     end
+
+    trait :bulk_operations do
+      enable_bulk_submission_management true
+    end
+
+    trait :multiple_attempts do
+      enable_multiple_attempts true
+
+      attempts do |attempts|
+        [attempts.association(:exercise_attempt, title: "Attempt 1", date: Time.now), attempts.association(:exercise_attempt, title: "Attempt 2")]
+      end
+    end
+
+    trait :single_attempt do
+      enable_multiple_attempts false
+    end
   end
 end

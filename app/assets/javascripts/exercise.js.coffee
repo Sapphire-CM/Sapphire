@@ -8,6 +8,16 @@ $ ->
   $('#exercise_enable_max_upload_size').on 'change', ->
     $('#exercise_maximum_upload_size').parent().slideToggle($(this).val() == 1)
 
+  $('#exercise_enable_multiple_attempts').on 'change', ->
+    active = $(this).is(":checked") == 1
+    $('#exercise_attempts').slideToggle(active)
+
+    if active
+      $trs = $('#exercise_attempts tr:visible')
+
+      if $trs.length() == 0
+        $('#exercise_attempts .add_fields').trigger("click")
+
   get_rating_group_id = ($rating_group)->
     $rating_group.attr("id").replace("rating_group_id_", "")
 

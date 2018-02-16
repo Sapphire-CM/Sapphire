@@ -131,6 +131,18 @@ RSpec.describe GradingReview::TermReview do
 
         expect(subject.published_points).to eq(42)
       end
+
+      it 'excludes outdated submissions' do
+        exercises.flat_map(&:result_publications).each(&:publish!)
+
+        submissions.second.update(outdated: true)
+
+        exercise_registrations.first.update(points: 15)
+        exercise_registrations.second.update(points: 42)
+        exercise_registrations.third.update(points: 31)
+
+        expect(subject.published_points).to eq(46)
+      end
     end
 
   end

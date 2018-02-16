@@ -23,6 +23,9 @@ RSpec.describe GradingReview::SubmissionReview do
 
     it { is_expected.to delegate_method(:submission_evaluation).to(:submission) }
     it { is_expected.to delegate_method(:submitted_at).to(:submission) }
+    it { is_expected.to delegate_method(:recent?).to(:submission) }
+    it { is_expected.to delegate_method(:outdated?).to(:submission) }
+    it { is_expected.to delegate_method(:exercise_attempt).to(:submission) }
 
     it { is_expected.to delegate_method(:evaluations).to(:submission_evaluation) }
 
@@ -202,6 +205,5 @@ RSpec.describe GradingReview::SubmissionReview do
         subject.published?
       end
     end
-
   end
 end

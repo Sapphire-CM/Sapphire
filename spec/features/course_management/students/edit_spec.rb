@@ -67,7 +67,6 @@ RSpec.describe 'Editing a student term registration' do
       within_main do
         expect(page).to have_content(other_tutorial_group.title)
       end
-
     end
 
     scenario 'Changing the student group' do

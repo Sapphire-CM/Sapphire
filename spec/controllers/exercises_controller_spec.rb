@@ -93,7 +93,7 @@ RSpec.describe ExercisesController do
         put :update, valid_attributes
 
         exercise.reload
-        expect(response).to redirect_to(edit_exercise_path(exercise))
+        expect(response).to redirect_to(exercise_path(exercise))
         expect(assigns(:exercise)).to eq(exercise)
         expect(exercise.title).to eq valid_attributes[:exercise][:title]
         expect(exercise.description).to eq valid_attributes[:exercise][:description]

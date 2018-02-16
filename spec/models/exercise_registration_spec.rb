@@ -4,6 +4,7 @@ describe ExerciseRegistration do
   describe 'db columns' do
     it { is_expected.to have_db_column(:points).of_type(:integer) }
     it { is_expected.to have_db_column(:individual_subtractions).of_type(:integer) }
+    it { is_expected.to have_db_column(:outdated).of_type(:boolean).with_options(null: false, default: false) }
     it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
     it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
   end
@@ -26,15 +27,21 @@ describe ExerciseRegistration do
   end
 
   describe 'scoping' do
-    describe '.current' do
-      let!(:current_submissions) { FactoryGirl.create_list(:submission, 3) }
-      let!(:outdated_submissions) { FactoryGirl.create_list(:submission, 3, :outdated) }
+    describe '.recent' do
+      let!(:recent_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :recent) }
+      let!(:outdated_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :outdated) }
 
-      let!(:current_exercise_registrations) { current_submissions.map { |s| FactoryGirl.create(:exercise_registration, exercise: s.exercise, submission: s) } }
-      let!(:outdated_exercise_registrations) { outdated_submissions.map { |s| FactoryGirl.create(:exercise_registration, exercise: s.exercise, submission: s) } }
+      it 'returns recent exercise registrations' do
+        expect(described_class.recent).to match_array(recent_exercise_registrations)
+      end
+    end
 
-      it 'returns exercise registrations only for current submissions' do
-        expect(described_class.current).to match_array(current_exercise_registrations)
+    describe '.outdated' do
+      let!(:recent_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :recent) }
+      let!(:outdated_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :outdated) }
+
+      it 'returns outdated exercise registrations' do
+        expect(described_class.outdated).to match_array(outdated_exercise_registrations)
       end
     end
   end
@@ -45,20 +52,25 @@ describe ExerciseRegistration do
   end
 
   describe 'callbacks' do
-    describe 'creation' do
+    describe 'creation', :doing do
       let(:submission) do
         FactoryGirl.create(:submission).tap do |submission|
           submission.submission_evaluation.update(evaluation_result: 20)
         end
       end
 
-      it 'updates the points after create' do
-        exercise_registration = build(:exercise_registration, submission: submission, exercise: submission.exercise)
-        expect(exercise_registration.points).to be_nil
-        expect(exercise_registration.term_registration).to receive(:update_points!)
+      subject { FactoryGirl.build(:exercise_registration, submission: submission, exercise: submission.exercise) }
 
-        exercise_registration.save
-        expect(exercise_registration.points).to eq(20)
+      it 'updates the points after create' do
+        expect(subject.points).to be_nil
+        expect(subject.term_registration).to receive(:update_points!)
+
+        subject.save
+        expect(subject.points).to eq(20)
+      end
+
+      it 'calls #mark_as_recent!' do
+        subject.save
       end
     end
 
@@ -75,8 +87,7 @@ describe ExerciseRegistration do
     end
 
     describe 'changing a term_registration' do
-      # sic!
-      let!(:subject) { FactoryGirl.create(:exercise_registration, submission: submission, exercise: submission.exercise, term_registration: old_term_registration) }
+      subject! { FactoryGirl.create(:exercise_registration, submission: submission, exercise: submission.exercise, term_registration: old_term_registration) }
 
       let(:term) { FactoryGirl.create(:term) }
       let(:exercise) { FactoryGirl.create(:exercise, term: term) }
@@ -107,15 +118,21 @@ describe ExerciseRegistration do
       end
     end
 
-    describe 'changing points' do
+    describe 'changing points', :doing do
       subject { FactoryGirl.create(:exercise_registration, points: 21) }
 
-      let(:term_registration) { subject.term_registration}
+      let(:term_registration) { subject.term_registration }
 
       it 'calls #update_points! on term_registration if points are changed' do
         expect(term_registration).to receive(:update_points!)
 
         subject.update(points: 42)
+      end
+
+      it 'does not call #update_points! on term_registration if points do not change' do
+        expect(term_registration).to receive(:update_points!)
+
+        subject.update(points: 21)
       end
     end
 
@@ -137,6 +154,84 @@ describe ExerciseRegistration do
         subject.update(individual_subtractions: -20)
 
         expect(subject.points).to eq(22)
+      end
+    end
+
+    describe 'changing outdated', :doing do
+      let(:term_registration) { subject.term_registration }
+      let(:submission) { subject.submission }
+
+      context 'on recent exercise registration' do
+        subject { FactoryGirl.create(:exercise_registration, :recent, points: 21) }
+
+        it 'calls #update_points! on term_registration' do
+          expect(term_registration).to receive(:update_points!)
+
+          subject.update(outdated: true)
+        end
+
+        it 'calls #update_outdated! on submission' do
+          expect(submission).to receive(:update_outdated!)
+
+          subject.update(outdated: true)
+        end
+
+        it 'does not call #update_points! on term_registration if outdated does not change' do
+          expect(term_registration).not_to receive(:update_points!)
+
+          subject.update(outdated: false)
+        end
+
+        it 'does not call #update_outdated! on submission if outdated does not change' do
+          expect(submission).not_to receive(:update_outdated!)
+
+          subject.update(outdated: false)
+        end
+      end
+
+      context 'on outdated exercise registration' do
+        subject { FactoryGirl.create(:exercise_registration, :outdated, points: 21) }
+
+        let!(:similar_exercise_registration) { FactoryGirl.create(:exercise_registration, :recent, exercise: subject.exercise, term_registration: subject.term_registration) }
+        let!(:exercise_registration_with_different_exercise) { FactoryGirl.create(:exercise_registration, :recent, term_registration: subject.term_registration) }
+        let!(:exercise_registration_with_different_term_registration) { FactoryGirl.create(:exercise_registration, :recent, term_registration: subject.term_registration) }
+
+        it 'calls #update_points! on term_registration' do
+          expect(term_registration).to receive(:update_points!)
+
+          subject.update(outdated: false)
+        end
+
+        it 'calls #update_outdated! on submission' do
+          expect(submission).to receive(:update_outdated!)
+
+          subject.update(outdated: false)
+        end
+
+        it 'updates similar exercise registrations to be outdated' do
+          subject.update(outdated: false)
+
+          expect(similar_exercise_registration.reload).to be_outdated
+        end
+
+        it 'does not call #update_points! on term_registration if outdated does not change' do
+          expect(term_registration).not_to receive(:update_points!)
+
+          subject.update(outdated: true)
+        end
+
+        it 'does not call #update_outdated! on submission if outdated does not change' do
+          expect(submission).not_to receive(:update_outdated!)
+
+          subject.update(outdated: true)
+        end
+
+        it 'does not update unrelated exercise registrations' do
+          subject.update(outdated: false)
+
+          expect(exercise_registration_with_different_exercise.reload).to be_recent
+          expect(exercise_registration_with_different_term_registration.reload).to be_recent
+        end
       end
     end
   end
@@ -252,6 +347,20 @@ describe ExerciseRegistration do
         subject.individual_subtractions = nil
 
         expect(subject.individual_subtractions?).to be_falsey
+      end
+    end
+
+    describe '#recent?', :doing do
+      it 'returns false if outdated is set to true' do
+        subject.outdated = true
+
+        expect(subject).not_to be_recent
+      end
+
+      it 'returns true if outdated is set to false' do
+        subject.outdated = false
+
+        expect(subject).to be_recent
       end
     end
   end

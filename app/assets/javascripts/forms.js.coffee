@@ -11,4 +11,7 @@ $(document).on "ready page:load", ->
   $(document).delegate "input[type|=range]", "change", (e)->
     update_value_tag $ this
 
-    
+  $(document).on "cocoon:after-insert", (e) ->
+    $this = $(this)
+    window.update_date_pickers($this)
+

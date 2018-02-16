@@ -2,7 +2,7 @@ class SubmissionCreationService
   include ActiveModel::Model
   include ActiveModel::Validations
 
-  attr_accessor :exercise, :creator, :on_behalf_of
+  attr_accessor :exercise, :creator, :on_behalf_of, :exercise_attempt
 
   validates :exercise, :creator, presence: true
   validate :validate_submission
@@ -38,7 +38,7 @@ class SubmissionCreationService
 
   private
   def build_submission
-    Submission.new(exercise: exercise, submitter: creator, submitted_at: Time.zone.now).tap do |submission|
+    Submission.new(exercise: exercise, submitter: creator, submitted_at: Time.zone.now, exercise_attempt: exercise_attempt).tap do |submission|
       submission.student_group = receiver_student_group if group_submission?
 
       build_exercise_registrations(submission)

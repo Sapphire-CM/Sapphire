@@ -1,0 +1,33 @@
+<table class='small-12 submission-list sortable'>
+  <thead>
+    <tr>
+      <th>Exercise</th>
+      <th>Submitted at</th>
+      <th>Points</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% term_review.submission_reviews.each do |submission_review| %>
+      <tr<%= " class='outdated'".html_safe if submission_review.outdated? %>>
+        <td data-sort-as='integer' data-sort='<%= submission_review.row_order %>'>
+          <strong><%= submission_review.exercise_title %></strong>
+          <% if submission_review.exercise_attempt.present? %>
+            <br />
+            Attempt: <%= submission_attempt_title(submission_review.submission) %>
+          <% end %>
+        </td>
+        <td><%= submission_review.submitted_at.present? ? iso_time(submission_review.submitted_at) : "unknown" %></td>
+        <td data-sort="<%= submission_review.points %>" data-sort-as='integer'>
+          <%= submission_review.points %> / <%= submission_review.achievable_points %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th></th>
+      <th>Grade: <%= term_review.grade %></th>
+      <th>Sum: <%= term_review.points %></th>
+    </tr>
+  </tfoot>
+</table>

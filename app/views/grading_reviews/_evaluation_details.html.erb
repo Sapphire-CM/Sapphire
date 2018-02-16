@@ -1,0 +1,31 @@
+
+<div class='panel'>
+  <h3><%= submission_review.points %> / <%= points submission_review.achievable_points %></h3>
+</div>
+
+<% if submission_review.exercise_attempt.present? %>
+  <div class='panel'>
+    <h6><%= foundation_icon(:bookmark) %> <%= submission_review.exercise_attempt.title %></h6>
+    <p>
+      <% if submission_review.exercise_attempt.date.present? %>
+        This submission is part of attempt "<%= submission_review.exercise_attempt.title %>"
+        and was scheduled at <%= iso_time(submission_review.exercise_attempt.date) %>.
+      <% else %>
+        This submission is part of attempt "<%= submission_review.exercise_attempt.title %>".
+      <% end %>
+    </p>
+  </div>
+<% end %>
+
+<% if submission_review.outdated? %>
+  <div class='panel'>
+    <h6><%= foundation_icon(:alert) %> Outdated Submission</h6>
+    <p>This submission is outdated and does not contribute to the points used for grading.</p>
+  </div>
+<% end %>
+
+<%= render "evaluation_result", submission_review: submission_review %>
+
+<%= link_to "Reopen Evaluation", submission_evaluation_path(submission_review.submission_evaluation), class: "small button", target: "_blank" %>
+<%= link_to "Edit", edit_submission_path(submission_review.submission), class: "small button", target: "_blank" %>
+<%= link_to "Open Viewer", submission_viewer_path(submission_review.submission), class: "small button" if submission_review.submission_viewer? %>

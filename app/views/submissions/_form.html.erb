@@ -1,4 +1,5 @@
 <%= simple_form_for(submission, html: { data: { behaviour: "association-list-lookup", lookup_url: submission_students_path(submission, format: :json)} }) do |f| %>
+  <%= f.association :exercise_attempt, collection: submission_exercise_attempts_options(submission) if submission.enable_multiple_attempts? || submission.exercise_attempt.present? %>
   <%= f.association :student_group, collection: submission.term.student_groups.order(:title) %>
 
   <table class='small-12'>

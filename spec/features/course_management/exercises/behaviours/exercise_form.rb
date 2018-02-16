@@ -6,11 +6,14 @@ RSpec.shared_examples "Exercise Form" do
 
     expect(page).not_to have_field("exercise_min_required_points")
 
+    fill_in "Title", with: "Fancy Exercise"
+
     check "Minimum points required for positive grade"
     fill_in 'exercise_min_required_points', with: "20"
 
     click_button "Save"
 
+    click_sub_nav_link "Administrate"
     expect(page).to have_field('exercise_min_required_points', with: "20")
 
     uncheck "Minimum points required for positive grade"
@@ -23,11 +26,14 @@ RSpec.shared_examples "Exercise Form" do
 
     expect(page).not_to have_field("exercise_max_total_points")
 
+    fill_in "Title", with: "Fancy Exercise"
+
     check "Maximum points in total"
     fill_in 'exercise_max_total_points', with: "25"
 
     click_button "Save"
 
+    click_sub_nav_link "Administrate"
     expect(page).to have_field('exercise_max_total_points', with: "25")
 
     uncheck "Maximum points in total"
@@ -40,10 +46,13 @@ RSpec.shared_examples "Exercise Form" do
 
     expect(page).not_to have_field("exercise_maximum_upload_size")
 
+    fill_in "Title", with: "Fancy Exercise"
+
     check "Maximum upload size"
     fill_in 'exercise_maximum_upload_size', with: "30"
 
     click_button "Save"
+    click_sub_nav_link "Administrate"
 
     expect(page).to have_field('exercise_maximum_upload_size', with: "30")
 

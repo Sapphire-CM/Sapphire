@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe SubmissionBulk::Bulk do
-  let(:exercise) { instance_double(Exercise) }
+  let(:exercise) { instance_double(Exercise, enable_multiple_attempts?: false) }
   let(:account) { instance_double(Account) }
 
   subject { described_class.new(exercise: exercise, account: account) }
@@ -21,9 +21,23 @@ RSpec.describe SubmissionBulk::Bulk do
   describe 'delegation' do
     it { is_expected.to delegate_method(:group_submission?).to(:exercise) }
     it { is_expected.to delegate_method(:solitary_submission?).to(:exercise) }
+    it { is_expected.to delegate_method(:multiple_attempts?).to(:exercise).as(:enable_multiple_attempts?) }
   end
 
   describe 'validations' do
+    describe 'exercise_attempt_id' do
+      context 'exercise with attempts' do
+        let(:exercise) { FactoryGirl.build(:exercise, :multiple_attempts) }
+
+        it { is_expected.to validate_presence_of(:exercise_attempt_id) }
+      end
+
+      context 'exercise without attempts' do
+        let(:exercise) { FactoryGirl.build(:exercise, :single_attempt) }
+
+        it { is_expected.to validate_absence_of(:exercise_attempt_id) }
+      end
+    end
     describe 'item validation' do
       let(:blank_item) { instance_double(SubmissionBulk::Item).tap { |item| allow(item).to receive(:values?).and_return(false) } }
       let(:filled_item_1) { instance_double(SubmissionBulk::Item).tap { |item| allow(item).to receive(:values?).and_return(true) } }
@@ -68,8 +82,74 @@ RSpec.describe SubmissionBulk::Bulk do
   end
 
   describe 'methods' do
+    describe '#exercise_attempt' do
+      let(:exercise) { FactoryGirl.create(:exercise) }
+      let(:exercise_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
+      let(:other_exercise_attempt) { FactoryGirl.create(:exercise_attempt) }
+
+      it 'looks up the exercise attempt using the exercise' do
+        subject.exercise_attempt_id = exercise_attempt.id
+        expect(exercise.attempts).to receive(:find).and_call_original
+
+        expect(subject.exercise_attempt).to eq(exercise_attempt)
+      end
+
+      it 'memoizes previous results' do
+        subject.exercise_attempt_id = exercise_attempt.id
+        expect(exercise.attempts).to receive(:find).and_call_original.once
+
+        expect(subject.exercise_attempt).to eq(exercise_attempt)
+        expect(subject.exercise_attempt).to eq(exercise_attempt)
+      end
+
+      it 'raises an error if an unknown id is passed' do
+        subject.exercise_attempt_id = other_exercise_attempt.id
+
+        expect do
+          subject.exercise_attempt
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'returns the previously set exercise_attempt' do
+        expect(exercise.attempts).not_to receive(:find)
+        subject.exercise_attempt = exercise_attempt
+
+        expect(subject.exercise_attempt).to eq(exercise_attempt)
+      end
+    end
+
+    describe '#exercise_attempt_id' do
+      let(:exercise_attempt_id) { double }
+      let(:exercise_attempt) { instance_double(ExerciseAttempt, id: exercise_attempt_id) }
+
+      it 'returns the previously set exercise id' do
+        subject.exercise_attempt_id = exercise_attempt_id
+
+        expect(subject.exercise_attempt_id).to eq(exercise_attempt_id)
+      end
+
+      it 'tries to extract the exercise id from the given exercise attempt' do
+        subject.exercise_attempt_id = nil
+        subject.exercise_attempt =  exercise_attempt
+
+        expect(exercise_attempt).to receive(:id).and_return(exercise_attempt_id)
+
+        expect(subject.exercise_attempt_id).to eq(exercise_attempt_id)
+      end
+
+      it 'does not raise an error if exercise_attempt_id and exercise_attempt are blank' do
+        subject.exercise_attempt_id = nil
+        subject.exercise_attempt = nil
+
+        expect do
+          subject.exercise_attempt_id
+        end.not_to raise_error
+      end
+    end
+
     describe '#items_attributes=' do
       let(:exercise) { FactoryGirl.build(:exercise) }
+
       let(:item_1_attributes) { {subject_id: 1, evaluations_attributes: {"0" => {rating_id: 1, value: 1}}} }
       let(:item_2_attributes) { {subject_id: 2, evaluations_attributes: {"0" => {rating_id: 1, value: 1}}} }
       let(:item_3_attributes) { {subject_id: 3, evaluations_attributes: {"0" => {rating_id: 1, value: 1}}} }
@@ -221,7 +301,7 @@ RSpec.describe SubmissionBulk::Bulk do
     end
 
     describe '#save' do
-      let(:exercise) { FactoryGirl.build(:exercise) }
+      let(:exercise) { FactoryGirl.create(:exercise) }
 
       let(:item_1) { instance_double(SubmissionBulk::Item, subject: subject_1) }
       let(:item_2) { instance_double(SubmissionBulk::Item, subject: subject_2) }
@@ -235,6 +315,7 @@ RSpec.describe SubmissionBulk::Bulk do
 
       let(:subject_2_submission) { instance_double(Submission) }
       let(:submissions_finder) { instance_double(SubmissionBulk::SubmissionsFinder) }
+      let(:exericse_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
 
       it 'raises an error if there are validation errors' do
         allow(subject).to receive(:valid?).and_return(false)
@@ -246,7 +327,7 @@ RSpec.describe SubmissionBulk::Bulk do
 
       it 'sets existing submissions on items' do
         allow(subject).to receive(:items).and_return(items)
-        allow(SubmissionBulk::SubmissionsFinder).to receive(:new).and_return(submissions_finder)
+        allow(SubmissionBulk::SubmissionsFinder).to receive(:new).with({exercise: exercise, exercise_attempt: nil}).and_return(submissions_finder)
         allow(submissions_finder).to receive(:find_submissions_for_subjects).with(subjects).and_return({subject_2 => subject_2_submission})
 
         items.each do |item|
@@ -256,6 +337,25 @@ RSpec.describe SubmissionBulk::Bulk do
         end
 
         expect(item_2).to receive(:submission=).with(subject_2_submission)
+
+        subject.save
+      end
+
+      it 'accounts for the exercise attempt' do
+        allow(subject).to receive(:items).and_return(items)
+        allow(SubmissionBulk::SubmissionsFinder).to receive(:new).with({exercise: exercise, exercise_attempt: exericse_attempt}).and_return(submissions_finder)
+        allow(submissions_finder).to receive(:find_submissions_for_subjects).with(subjects).and_return({subject_2 => subject_2_submission})
+
+        items.each do |item|
+          allow(item).to receive(:values?).and_return(true)
+          allow(item).to receive(:valid?).and_return(true)
+          allow(item).to receive(:save)
+        end
+
+        expect(item_2).to receive(:submission=).with(subject_2_submission)
+
+        exercise.enable_multiple_attempts = true
+        subject.exercise_attempt = exericse_attempt
 
         subject.save
       end

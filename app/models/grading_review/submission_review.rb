@@ -4,7 +4,7 @@ class GradingReview::SubmissionReview
   attr_accessor :exercise_registration, :published
 
   delegate :exercise, :points, :individual_subtractions, :individual_subtractions?, :submission, :term_registration, to: :exercise_registration
-  delegate :submission_evaluation, :submitted_at, to: :submission
+  delegate :submission_evaluation, :submitted_at, :recent?, :outdated?, :exercise_attempt, to: :submission
   delegate :evaluations, to: :submission_evaluation
 
   delegate :tutorial_group, to: :term_registration

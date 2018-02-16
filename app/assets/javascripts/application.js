@@ -28,21 +28,11 @@
 
 $(function(){
   $(document).foundation();
-
-  $('.date_picker input').fdatepicker();
-  $('.date_picker label, .date_picker a.button').click(function(){
-    $(this).closest('div.date_picker').find('input').fdatepicker('show');
-  });
-
-  $('.datetime_picker input').fdatetimepicker();
-  $('.datetime_picker label, .datetime_picker a.button').click(function(e){
-    $(this).closest('div.datetime_picker').find('input').fdatetimepicker('show');
-    e.preventDefault();
-    e.stopPropagation();
-  });
+  window.update_date_pickers();
 
   $reveal_modal = $("#reveal_modal");
   $reveal_modal.remove();
+
   $('body').append($reveal_modal);
 
   $('.alert-box').on('click', function(){

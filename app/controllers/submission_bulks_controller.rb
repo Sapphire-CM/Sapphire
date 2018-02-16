@@ -34,6 +34,6 @@ class SubmissionBulksController < ApplicationController
   end
 
   def submission_bulk_params
-    params.require(:submission_bulk_bulk).permit(items_attributes: [:subject_id, evaluations_attributes: [:rating_id, :evaluation_id, :value]])
+    params.require(:submission_bulk_bulk).permit(:exercise_attempt_id, items_attributes: [:subject_id, evaluations_attributes: [:rating_id, :evaluation_id, :value]])
   end
 end

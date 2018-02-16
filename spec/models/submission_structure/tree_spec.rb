@@ -38,7 +38,7 @@ RSpec.describe SubmissionStructure::Tree do
           expect(entry).to be_a(SubmissionStructure::TreeNode)
         end
 
-        directory = base_dir.directories.first
+        directory = base_dir.directories.sort_by(&:name).first
         expect(directory).to be_a(SubmissionStructure::Directory)
         expect(directory.name).to eq("nested")
         expect(directory.entries.map(&:name)).to match_array(%w(file2.txt file3.txt further))

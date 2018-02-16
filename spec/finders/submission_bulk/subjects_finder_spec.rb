@@ -12,22 +12,26 @@ RSpec.describe SubmissionBulk::SubjectsFinder do
 
   describe 'methods' do
     subject { described_class.new(exercise: exercise) }
+
     let(:term) { FactoryGirl.create(:term) }
     let(:other_term) { FactoryGirl.create(:term) }
 
     describe '#search' do
-      let(:student_group_g1_01) { FactoryGirl.create(:student_group, title: "G1-01", term: term) }
-      let(:student_group_g1_02) { FactoryGirl.create(:student_group, title: "G1-02", term: term) }
-      let(:student_group_g5_02) { FactoryGirl.create(:student_group, title: "G5-02", term: term) }
-      let(:other_student_group_g5_02) { FactoryGirl.create(:student_group, title: "G5-02", term: other_term) }
+      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
+      let(:other_tutorial_group) { FactoryGirl.create(:tutorial_group, term: other_term) }
+
+      let(:student_group_g1_01) { FactoryGirl.create(:student_group, title: "G1-01", tutorial_group: tutorial_group) }
+      let(:student_group_g1_02) { FactoryGirl.create(:student_group, title: "G1-02", tutorial_group: tutorial_group) }
+      let(:student_group_g5_02) { FactoryGirl.create(:student_group, title: "G5-02", tutorial_group: tutorial_group) }
+      let(:other_student_group_g5_02) { FactoryGirl.create(:student_group, title: "G5-02", tutorial_group: other_tutorial_group) }
 
       let!(:student_groups) { [student_group_g1_01, student_group_g1_02, student_group_g5_02] }
       let!(:other_student_groups) { [other_student_group_g5_02] }
 
-      let(:student_account_1) { FactoryGirl.create(:account, :student, matriculation_number: "12345678", forename: "Homer", surname: "Simpson") }
-      let(:student_account_2) { FactoryGirl.create(:account, :student, matriculation_number: "12345679", forename: "Marge", surname: "Simpson") }
-      let(:student_account_3) { FactoryGirl.create(:account, :student, matriculation_number: "13345679", forename: "Maude", surname: "Flanders") }
-      let(:student_account_4) { FactoryGirl.create(:account, :student, matriculation_number: "13345680", forename: "Ned", surname: "Flanders") }
+      let(:student_account_1) { FactoryGirl.create(:account, email: "hs@example.com", matriculation_number: "12345678", forename: "Homer", surname: "Simpson") }
+      let(:student_account_2) { FactoryGirl.create(:account, email: "ms@example.com", matriculation_number: "12345679", forename: "Marge", surname: "Simpson") }
+      let(:student_account_3) { FactoryGirl.create(:account, email: "mf@example.com", matriculation_number: "13345679", forename: "Maude", surname: "Flanders") }
+      let(:student_account_4) { FactoryGirl.create(:account, email: "nf@example.com", matriculation_number: "13345680", forename: "Ned", surname: "Flanders") }
 
       let(:term_registration_1) { FactoryGirl.create(:term_registration, :student, account: student_account_1, term: term) }
       let(:term_registration_2) { FactoryGirl.create(:term_registration, :student, account: student_account_2, term: term) }
@@ -74,6 +78,10 @@ RSpec.describe SubmissionBulk::SubjectsFinder do
         it 'returns term_registrations with matching forenames' do
           expect(subject.search("Homer")).to match_array([term_registration_1])
           expect(subject.search("Ma")).to match_array([term_registration_2, term_registration_3])
+        end
+
+        it 'returns term_registrations with matching emails' do
+          expect(subject.search("hs@example.com")).to match_array([term_registration_1])
         end
 
         it 'does not return term_registrations of other terms' do

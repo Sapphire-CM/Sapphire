@@ -29,8 +29,10 @@ RSpec.describe "Viewing students" do
   describe 'student details' do
     let(:student_group) { student_term_registration.student_group }
     let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-    let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
+    let(:exercise_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
+    let(:submission) { FactoryGirl.create(:submission, exercise: exercise, exercise_attempt: exercise_attempt) }
     let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, submission: submission, term_registration: student_term_registration) }
+    let(:submission_evaluation) { submission.submission_evaluation }
 
     scenario 'links the tutorial group' do
       visit described_path
@@ -90,15 +92,59 @@ RSpec.describe "Viewing students" do
       end
     end
 
-
     scenario 'shows a sortable submission table' do
       visit described_path
 
       within_main do
-        within "table.sortable" do
+        within "table.sortable.submission-list" do
           expect(page).to have_content(exercise.title)
         end
       end
+    end
+
+    scenario 'shows the exercise attempt' do
+      visit described_path
+
+      within_main do
+        within "table.submission-list" do
+          expect(page).to have_content(exercise_attempt.title)
+        end
+      end
+    end
+
+    scenario 'indicates outdated submissions' do
+      submission.update(outdated: true)
+
+      visit described_path
+
+      within_main do
+        within "table.submission-list" do
+          expect(page).to have_css("tr.outdated", count: 1)
+        end
+      end
+    end
+
+    scenario 'shows the result of outdated submissions' do
+      submission.reload
+      exercise.update(enable_max_total_points: true, max_total_points: 50)
+      submission_evaluation.update(evaluation_result: 40)
+      submission.update(outdated: true)
+
+      visit described_path
+
+      within_main do
+        within "table.submission-list tr.outdated" do
+          expect(page).to have_content("40 / 50")
+        end
+      end
+    end
+
+    scenario 'does not raise an error if exercise attempt is blank' do
+      submission.update(exercise_attempt: nil)
+
+      expect do
+        visit described_path
+      end.not_to raise_error
     end
   end
 

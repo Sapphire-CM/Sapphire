@@ -5,16 +5,17 @@ require 'features/course_management/behaviours/exercise_sub_navigation_behaviour
 RSpec.feature 'Managing submissions as a staff member' do
   let(:account) { FactoryGirl.create(:account) }
   let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-  let(:term) { group_exercise.term }
-  let!(:group_exercise) { FactoryGirl.create(:exercise) }
+  let(:term) { FactoryGirl.create(:term) }
+  let!(:exercise) { FactoryGirl.create(:exercise, term: term) }
+
+  let(:described_path) { exercise_submissions_path(exercise) }
 
   before :each do
     sign_in(account)
   end
 
   describe 'behaviours' do
-    let(:base_path) { exercise_submissions_path(group_exercise) }
-    let(:exercise) { group_exercise }
+    let(:base_path) { described_path }
 
     it_behaves_like "Exercise Sub Navigation", [:admin, :lecturer, :tutor]
     it_behaves_like "Exercise Side Navigation" do
@@ -31,10 +32,10 @@ RSpec.feature 'Managing submissions as a staff member' do
       visit root_path
 
       click_link term.title
-      click_top_bar_link group_exercise.title
+      click_top_bar_link exercise.title
       click_sub_nav_link "Submissions"
 
-      expect(page).to have_current_path(exercise_submissions_path(group_exercise))
+      expect(page).to have_current_path(described_path)
     end
 
     context 'existing submissions for group exercise' do
@@ -44,25 +45,25 @@ RSpec.feature 'Managing submissions as a staff member' do
       let!(:term_registrations) { FactoryGirl.create_list(:term_registration, 5, :with_student_group, term: term, tutorial_group: tutorial_group) }
       let!(:other_term_registrations) { FactoryGirl.create_list(:term_registration, 2, term: term, tutorial_group: another_tutorial_group) }
 
-      let!(:submissions) { FactoryGirl.create_list(:submission, 5, :spreaded_submission_time, exercise: group_exercise) }
-      let!(:other_submissions) { FactoryGirl.create_list(:submission, 2, :spreaded_submission_time, exercise: group_exercise) }
-      let!(:unmatched_submissions) { FactoryGirl.create_list(:submission, 2, :spreaded_submission_time, exercise: group_exercise) }
+      let!(:submissions) { FactoryGirl.create_list(:submission, 5, :spreaded_submission_time, exercise: exercise) }
+      let!(:other_submissions) { FactoryGirl.create_list(:submission, 2, :spreaded_submission_time, exercise: exercise) }
+      let!(:unmatched_submissions) { FactoryGirl.create_list(:submission, 2, :spreaded_submission_time, exercise: exercise) }
 
       let(:student_groups) { term_registrations.map(&:student_group) }
 
       let!(:exercise_registrations) {
         term_registrations.zip(submissions).map { |tr, s|
-          FactoryGirl.create(:exercise_registration, exercise: group_exercise, term_registration: tr, submission: s)
+          FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: tr, submission: s)
         }
       }
       let!(:other_exercise_registrations) {
         other_term_registrations.zip(other_submissions).map { |tr, s|
-          FactoryGirl.create(:exercise_registration, exercise: group_exercise, term_registration: tr, submission: s)
+          FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: tr, submission: s)
         }
       }
 
       before :each do
-        visit exercise_submissions_path(group_exercise)
+        visit described_path
       end
 
       scenario 'viewing submissions of own tutorial group' do
@@ -74,7 +75,7 @@ RSpec.feature 'Managing submissions as a staff member' do
       end
 
       scenario 'viewing unmatched submissions', js: true do
-        visit exercise_submissions_path(group_exercise)
+        visit described_path
 
         within '.tutorial-group-dropdown' do
           find_link(class: "dropdown").click
@@ -93,7 +94,7 @@ RSpec.feature 'Managing submissions as a staff member' do
       end
 
       scenario 'viewing all submissions', js: true do
-        visit exercise_submissions_path(group_exercise)
+        visit described_path
 
         within '.tutorial-group-dropdown' do
           find_link(class: "dropdown").click
@@ -155,11 +156,91 @@ RSpec.feature 'Managing submissions as a staff member' do
       end
     end
 
+    describe 'table contents' do
+      let!(:submission) { FactoryGirl.create(:submission, :recent, exercise: exercise, submitted_at: submission_date, exercise_attempt: exercise_attempt) }
+      let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, :recent, exercise: exercise, submission: submission, term_registration: student_term_registration) }
+      let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, :with_student_group, term: term, tutorial_group: tutorial_group) }
+
+      let(:submission_date) { 2.days.ago }
+      let(:evaluation_date) { 1.day.ago }
+      let(:submission_evaluation) { submission.submission_evaluation }
+      let(:student_account) { student_term_registration.account }
+      let(:student_group) { student_term_registration.student_group }
+
+      let(:exercise_attempt) { exercise.attempts.first }
+
+      context 'solitary submissions' do
+        let!(:exercise) { FactoryGirl.create(:exercise, :solitary_exercise, term: term) }
+
+        scenario 'viewing submission meta data' do
+          submission_evaluation.update(evaluation_result: 30, evaluated_at: evaluation_date)
+
+          visit described_path
+
+          within '.submission-list' do
+            expect(page).to have_content(student_account.fullname)
+            expect(page).to have_content(student_account.matriculation_number)
+            expect(page).to have_link(student_group.title)
+            expect(page).to have_content("30 points")
+
+            expect(page).to have_content(submission_date.strftime("%Y-%m-%d %H:%M"))
+            expect(page).to have_content(evaluation_date.strftime("%Y-%m-%d %H:%M"))
+          end
+        end
+      end
+
+      context 'group submissions' do
+        let!(:exercise) { FactoryGirl.create(:exercise, :group_exercise, term: term) }
+
+        scenario 'viewing submission meta data' do
+          submission_evaluation.update(evaluation_result: 30, evaluated_at: evaluation_date)
+
+          visit described_path
+
+          within '.submission-list' do
+            expect(page).to have_link(student_group.title)
+            expect(page).to have_content("30 points")
+
+            expect(page).to have_content(submission_date.strftime("%Y-%m-%d %H:%M"))
+            expect(page).to have_content(evaluation_date.strftime("%Y-%m-%d %H:%M"))
+          end
+        end
+      end
+
+      context 'exercise with multiple attempts' do
+        let!(:exercise) { FactoryGirl.create(:exercise, :multiple_attempts, term: term) }
+
+        scenario 'Shows attempt' do
+          visit described_path
+
+          within '.submission-list' do
+            expect(page).to have_content(exercise_attempt.title)
+          end
+        end
+      end
+
+      context 'outdated submissions' do
+        let(:exercise_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
+        let(:student_term_registration) { FactoryGirl.create(:term_registration, :student, :with_student_group, term: term, tutorial_group: tutorial_group) }
+
+        let!(:outdated_submission) { FactoryGirl.create(:submission, :outdated, exercise: exercise, submitted_at: submission_date, exercise_attempt: exercise_attempt) }
+        let!(:outdated_exercise_registration) { FactoryGirl.create(:exercise_registration, :outdated, exercise: exercise, submission: outdated_submission, term_registration: student_term_registration) }
+
+        scenario 'indicate outdatedness' do
+          visit described_path
+
+          within '.submission-list' do
+            expect(page).to have_css("tr.outdated", count: 1)
+          end
+        end
+      end
+    end
+
     context 'exercise allowing bulk submission management' do
       let(:exercise) { FactoryGirl.create(:exercise, term: term, enable_bulk_submission_management: true) }
 
       scenario 'shows link to bulk operations' do
-        visit exercise_submissions_path(exercise)
+        visit described_path
 
         expect(page).to have_link("Bulk Operation", href: new_exercise_submission_bulk_path(exercise))
       end
@@ -169,7 +250,7 @@ RSpec.feature 'Managing submissions as a staff member' do
       let(:exercise) { FactoryGirl.create(:exercise, term: term, enable_bulk_submission_management: false) }
 
       scenario 'shows link to bulk operations' do
-        visit exercise_submissions_path(exercise)
+        visit described_path
 
         expect(page).not_to have_link("Bulk Operation", href: new_exercise_submission_bulk_path(exercise))
       end

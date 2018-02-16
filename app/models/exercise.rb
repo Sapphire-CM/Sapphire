@@ -20,6 +20,7 @@
 #   t.integer  :visible_points
 #   t.string   :instructions_url
 #   t.boolean  :enable_bulk_submission_management, default: false
+#   t.boolean  :enable_multiple_attempts,          default: false, null: false
 # end
 #
 # add_index :exercises, [:term_id], name: :index_exercises_on_term_id
@@ -36,10 +37,13 @@ class Exercise < ActiveRecord::Base
   has_many :services, dependent: :destroy
   has_many :result_publications, dependent: :destroy
   has_many :rating_groups, dependent: :destroy
-
+  has_many :attempts, dependent: :destroy, class_name: "ExerciseAttempt", inverse_of: :exercise
   has_many :submissions
+
   has_many :submission_evaluations, through: :submissions
   has_many :ratings, through: :rating_groups
+
+  has_one :default_attempt, lambda { default }, class_name: "ExerciseAttempt", inverse_of: :exercise
 
   default_scope { rank(:row_order) }
   scope :for_evaluations_table, lambda { includes(submissions: [{ submission_evaluation: { evaluation_groups: [:rating_group, { evaluations: :rating }] } }, { student_group_registration: { student_group: :students } }]) }
@@ -53,13 +57,15 @@ class Exercise < ActiveRecord::Base
   after_save :update_term_points, if: :points_changed?
   after_save :recalculate_term_registrations_results, if: lambda { |exercise| exercise.enable_min_required_points_changed? || exercise.min_required_points_changed? || exercise.points_changed? }
 
+  accepts_nested_attributes_for :attempts, allow_destroy: true
+
   validates :term, presence: true
   validates :title, presence: true, uniqueness: { scope: :term_id }
   validates :min_required_points, presence: true, if: :enable_min_required_points
   validates :max_total_points, presence: true, if: :enable_max_total_points
   validates :maximum_upload_size, presence: true, if: :enable_max_upload_size
   validates :deadline, presence: true, if: lambda { |_e| late_deadline.present? }
-  validate :deadlines_order
+  validate :validate_deadlines_order
 
   delegate :course, to: :term
 
@@ -130,16 +136,16 @@ class Exercise < ActiveRecord::Base
   end
 
   private
-
   def ensure_result_publications
     term.tutorial_groups.each do |tutorial_group|
       ResultPublication.find_or_create_by(exercise: self, tutorial_group: tutorial_group)
     end
   end
 
-  def deadlines_order
+  def validate_deadlines_order
     if deadline.present? && late_deadline.present? && late_deadline < deadline
       errors.add(:late_deadline, 'must be chronological after deadline')
     end
   end
+
 end

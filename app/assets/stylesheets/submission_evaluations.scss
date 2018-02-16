@@ -21,10 +21,6 @@ $bar-line-color: #C5C5C5;
 .evaluation-top-bar {
   top: $top-bar-offset;
 
-  h1 {
-//    margin-bottom: 0;
-  }
-
   .bar {
     border-bottom: thin solid $bar-line-color;
   }

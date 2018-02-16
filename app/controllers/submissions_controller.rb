@@ -18,8 +18,6 @@ class SubmissionsController < ApplicationController
 
     if @submission.save
       redirect_to edit_submission_path(@submission), notice: "Successfully updated submission"
-
-      # redirect_to submission_path(@submission), notice: "Successfully updated submission"
     else
       set_context
 

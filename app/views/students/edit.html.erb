@@ -7,8 +7,8 @@
     <%= term_account_card(@term_registration.account) %>
   </div>
 
-  <%= f.association :tutorial_group, collection: @term.tutorial_groups.order(:title), required: true %>
-  <%= f.association :student_group, collection: @term.student_groups.order(:title) %>
+  <%= f.association :tutorial_group, collection: term_registrations_tutorial_group_options(@term), required: true %>
+  <%= f.association :student_group, collection: term_registrations_student_group_options(@term) %>
 
   <p class='text-center'>
     <%= link_to "Cancel", term_student_path(@term, @term_registration), class: "secondary button" %>

@@ -63,7 +63,6 @@ class Exercise < ActiveRecord::Base
 
   delegate :course, to: :term
 
-
   def before_deadline?
     deadline.present? ? Time.now <= deadline : true
   end

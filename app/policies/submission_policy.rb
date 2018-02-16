@@ -24,13 +24,7 @@ class SubmissionPolicy < TermBasedPolicy
   end
 
   def update?
-    staff_permissions? ||
-    false #modifiable?
-  end
-
-  def destroy?
-    staff_permissions? ||
-    modifiable?
+    staff_permissions?
   end
 
   def directory?

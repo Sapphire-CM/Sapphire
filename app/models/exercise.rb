@@ -127,18 +127,15 @@ class Exercise < ActiveRecord::Base
   end
 
   def submission_sizes
-    submissions = self.submissions
-    submission_sizes = []
-    submissions.each do |submission|
-      submission_sizes.push(submission.filesystem_size_sum)
-    end
-    submission_sizes
+    submissions.map(&:filesystem_size_sum)
   end
 
   def mean_upload_size
-    sum = self.submission_sizes.sum
-    sum /= submissions.count unless sum.zero?
-    sum   
+    if submissions.count > 0
+      sum_upload_size / submissions.count
+    else
+      0
+    end   
   end
 
   def max_upload_size
@@ -158,8 +155,6 @@ class Exercise < ActiveRecord::Base
     size = SubmissionAsset.where(submission_id: submission_ids).sum("filesystem_size")
     unless size.zero?
       size
-    else
-      "Empty"
     end
   end
 

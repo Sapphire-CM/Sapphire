@@ -41,7 +41,11 @@
 				  <% @exercise.term.student_groups.each do |student_group|	%>
 				  	<tr>
 				  		<td><%= student_group.title %></td>
-				  		<td><%= filesize @exercise.student_group_submission_size(student_group)%></td>	
+				  		<% if @exercise.student_group_submission_size(student_group).present? %>
+				  			<td><%= filesize @exercise.student_group_submission_size(student_group) %></td>	
+				  		<% else %>
+				  			<td>No Upload present</td>
+				  		<% end %>		
 				  	</tr>	
 				  <% end %>
 				</tbody>

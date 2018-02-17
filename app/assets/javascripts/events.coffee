@@ -184,5 +184,5 @@ $(document).ready ->
   $(window).ready ->
     scopes = $("input:checkbox")
     for scope in scopes
-      if(scope.hasAttribute("checked"))
-        $(scope).parent().css({"fontWeight":"bold"; "color":"black";})
+      if(!(scope.hasAttribute("checked")))
+        scope.parentElement.firstElementChild.style.visibility = "hidden"

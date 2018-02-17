@@ -7,8 +7,9 @@
 			<div class="small-3 columns">
 			    <label>
 			    	<div class="scope">
+				      <i class='fi-check' style="visibility: visible;"></i>
 				      <%= check_box_tag 'scopes[]', type_id, event_type_service.checked(params[:scopes], type_id) %>
-		      		<%= type_id %>
+		      		<%= type_id  %>
 		      	</div>	
 			    </label>
 			</div> 

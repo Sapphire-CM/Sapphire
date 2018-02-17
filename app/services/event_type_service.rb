@@ -3,7 +3,6 @@ class EventTypeService
 
   def initialize
     @types = create_types
-
   end
 
   def types_for_scopes(scope_ids)

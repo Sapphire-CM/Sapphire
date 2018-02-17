@@ -181,8 +181,10 @@ $(document).ready ->
   $('label input').click ->
     $('#scope_form').submit();
 
-  $(window).ready ->
-    scopes = $("input:checkbox")
-    for scope in scopes
-      if(!(scope.hasAttribute("checked")))
-        scope.parentElement.firstElementChild.style.visibility = "hidden"
+
+$(document).on "page:change", -> 
+  $scopes = $("input:checkbox")
+  $scopes.each -> 
+    $scope = $(this)
+    if(!($scope.prop('checked')))
+      $scope.parent().find('.fi-check').css('visibility', 'hidden')

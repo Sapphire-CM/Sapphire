@@ -71,7 +71,7 @@ class Exports::TextExtraction < Export
 	def add_file_to_zip(student_group, file_path, zip_tmp_dir, type)
   	filename = student_group + "-" + File.basename(file_path)
   	parent_directory = zip_tmp_dir.last + "-" + type
-    path = File.join(zip_tmp_dir[0..-2], parent_directory, File.join(filename))
+    path = File.join(zip_tmp_dir, parent_directory, File.join(filename))
     hardlink_file(file_path, path)
   end 
 

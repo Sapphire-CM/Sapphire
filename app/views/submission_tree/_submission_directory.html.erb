@@ -1,4 +1,4 @@
-<%= cache [submission, tree.path, policy(submission).update?] do %>
+<%= cache [submission, directory.path, policy(submission).update?] do %>
 <table class='small-12 sortable'>
   <thead>
     <tr>
@@ -12,21 +12,21 @@
     </tr>
   </thead>
   <tbody>
-    <% unless tree.root? %>
+    <% unless directory.root? %>
       <tr data-sort-top="true">
         <td class='icon'></td>
         <td>
-          <%= link_to "..", tree_submission_path(submission, path: tree.parent.path_without_root), title: "Goto parent folder" %>
+          <%= link_to "..", tree_submission_path(submission, path: directory.parent.path_without_root), title: "Goto parent folder" %>
         </td>
-        <td class='modification-date'><%= iso_time tree.parent.mtime %></td>
-        <td class='size'><%= filesize tree.size %></td>
+        <td class='modification-date'><%= submission_tree_modification_date(directory.parent.mtime) %></td>
+        <td class='size'><%= filesize directory.size %></td>
         <% if submission.modifiable_by_students? %>
           <td></td>
         <% end %>
       </tr>
     <% end %>
 
-    <% tree.entries.sort_by(&:name).each do |entry| %>
+    <% directory.entries.sort_by(&:name).each do |entry| %>
       <tr>
         <td class='icon'>
           <%= foundation_icon entry.icon %>
@@ -44,7 +44,7 @@
             <%= link_to entry.name, tree_submission_path(submission, path: entry.path_without_root) %>
           <% end %>
         </td>
-        <td class='modification-date' data-sort="<%= entry.mtime %>" data-sort-as="integer"><%= iso_time(entry.mtime) %></td>
+        <td class='modification-date' data-sort="<%= entry.mtime %>" data-sort-as="integer"><%= submission_tree_modification_date(entry.mtime) %></td>
         <td class='size' data-sort="<%= entry.size %>" data-sort-as="integer"><%= filesize entry.size %></td>
         <% if submission.modifiable_by_students? %>
           <td class='buttons'>

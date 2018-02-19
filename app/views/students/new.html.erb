@@ -1,0 +1,27 @@
+<% title course_term_title(@term), "Add Student" %>
+
+<%= render "terms/sidebar", term: current_term %>
+
+<%= simple_form_for(@term_registration, url: term_students_path(@term)) do |f| %>
+  <div class='lookup-input-container'>
+    <%= search_field_tag :subject_lookup, "", placeholder: "MNr. or Name", autocomplete: "off", data: { behaviour: "association-lookup", input: "#term_registration_account_id", subject_container: ".subject-container", lookup_url: term_accounts_path(format: :json) } %>
+  </div>
+
+  <div class='panel subject-container'>
+    <% if @term_registration.account.present? %>
+      <%= term_account_card(@term_registration.account) %>
+    <% else %>
+      No account selected. Start searching for accounts by typing in the search field above
+    <% end %>
+  </div>
+
+  <%= f.input :account_id, as: :hidden %>
+
+  <%= f.association :tutorial_group, collection: term_registrations_tutorial_group_options(@term), required: true %>
+  <%= f.association :student_group, collection: term_registrations_student_group_options(@term) %>
+
+  <p class='text-center'>
+    <%= link_to "Cancel", term_students_path(@term), class: "secondary button" %>
+    <%= f.button :submit %>
+  </p>
+<% end %>

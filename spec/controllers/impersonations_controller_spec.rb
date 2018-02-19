@@ -19,12 +19,12 @@ RSpec.describe ImpersonationsController, type: :controller do
 
   describe 'POST #create' do
     before :each do
-      allow(impersonation).to receive(:impersonate).with(other_account).and_return(true)
+      allow(impersonation).to receive(:impersonate!).and_return(true)
     end
 
     context "with valid params" do
       it 'impersonates given account' do
-        expect(impersonation).to receive(:impersonate).with(other_account).and_return(true)
+        expect(impersonation).to receive(:impersonate!).and_return(true)
 
         post :create, account_id: other_account.id
       end
@@ -47,10 +47,21 @@ RSpec.describe ImpersonationsController, type: :controller do
         expect(response).to render_template("record_not_found")
       end
 
+      it 'does not fail if warden declines access' do
+        allow(impersonation).to receive(:impersonate!).and_return(false)
+
+        expect do
+          post :create, account_id: non_admin_account.id
+        end.not_to raise_error
+
+        expect(flash[:alert]).to match(/failed/i)
+        expect(response).to redirect_to(root_path)
+      end
+
       it "prohibits unauthorized access" do
         sign_in(non_admin_account)
 
-        expect(impersonation).not_to receive(:impersonate)
+        expect(impersonation).not_to receive(:impersonate!)
 
         post :create, account_id: other_account.id
       end
@@ -60,12 +71,26 @@ RSpec.describe ImpersonationsController, type: :controller do
   describe 'DELETE #destroy' do
     let(:admin_account) { FactoryGirl.create(:account) }
 
-    it 'removes impersonation' do
+    before :each do
+      request.env["HTTP_REFERER"] = root_path
+
       session[:impersonator_id] = admin_account.id
-      expect(impersonation).to receive(:sign_in).with(:account, admin_account)
+      allow(impersonation).to receive(:sign_in).with(:account, admin_account)
+
+    end
+
+    it 'removes impersonation' do
+      expect(impersonation).to receive(:destroy)
 
       delete :destroy
+
       expect(subject.instance_variable_get("@impersonation")).to eq(impersonation)
+    end
+
+    it 'sets a flash notice' do
+      delete :destroy
+
+      expect(flash[:notice]).to match(/no longer impersonating/i)
     end
 
     it 'fails silently, if no :impersonator_id is set' do
@@ -73,7 +98,7 @@ RSpec.describe ImpersonationsController, type: :controller do
 
       delete :destroy
 
-      expect(session["flash"]).to be_blank
+      expect(flash[:notice]).to be_blank
     end
   end
 end

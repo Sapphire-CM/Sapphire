@@ -123,7 +123,7 @@ module Import::Importer
     new_record = term_registration.new_record?
     if term_registration.save
       import_result.imported_term_registrations += 1 if new_record
-      NotificationJob.welcome_notification(term_registration) if import_options.send_welcome_notifications
+      Notification::WelcomeJob.perform_later(term_registration) if import_options.send_welcome_notifications
     else
       import_result.success = false
       create_problem_definition row, term_registration.errors.full_messages

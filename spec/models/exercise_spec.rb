@@ -34,6 +34,7 @@ describe Exercise do
     it { is_expected.to have_many(:submissions) }
     it { is_expected.to have_many(:services).dependent(:destroy) }
     it { is_expected.to have_many(:rating_groups).dependent(:destroy) }
+    it { is_expected.to have_many(:exercise_registrations).dependent(:destroy) }
 
     it { is_expected.to have_many(:submission_evaluations).through(:submissions) }
     it { is_expected.to have_many(:ratings).through(:rating_groups) }

@@ -32,7 +32,7 @@ RSpec.describe StaffController do
       expect(response).to have_http_status(:success)
       expect(assigns(:term_registration)).to be_a_new(TermRegistration)
       expect(assigns(:term_registration).term).to eq(term)
-      expect(assigns(:term_registration).role).to eq(Roles::LECTURER)
+      expect(assigns(:term_registration).role).to eq(Roles::TUTOR)
     end
   end
 
@@ -109,20 +109,6 @@ RSpec.describe StaffController do
       end.to change(TermRegistration, :count).by(-1)
 
       expect(response).to redirect_to(term_staff_index_path(term))
-    end
-  end
-
-  describe 'GET search' do
-    it 'filters the accounts list' do
-      matching_account = FactoryGirl.create :account, forename: 'Hans Foo'
-      non_matching_account = FactoryGirl.create :account
-
-      xhr :get, :search, term_id: term.id, q: 'foo'
-
-      expect(response).to have_http_status(:success)
-      expect(assigns(:accounts)).to include(matching_account)
-      expect(assigns(:accounts)).not_to include(non_matching_account)
-      expect(assigns(:search_terms)).to eq('foo')
     end
   end
 end

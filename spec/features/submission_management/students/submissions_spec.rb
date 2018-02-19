@@ -46,7 +46,9 @@ RSpec.describe 'Managing submissions as a student' do
 
       expect(page).to have_content("solitary")
 
-      click_link "Create a Submission for Fancy Exercise"
+      expect do
+        click_link "Create a Submission for Fancy Exercise"
+      end.to change(Submission, :count).by(1)
 
       expect(page).to have_current_path(tree_submission_path(Submission.last))
     end

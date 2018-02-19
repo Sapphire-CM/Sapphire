@@ -1,4 +1,4 @@
-<tr class='item' data-has-subject='<%= f.object.subject? %>'>
+<tr class='association-item' data-has-subject='<%= f.object.subject? %>'>
   <td class='small-5'>
     <div class='subject-container'>
       <% if f.object.subject? %>
@@ -12,7 +12,7 @@
       <div class='small-9 columns search-field'><%= search_field_tag :subject_lookup, "", placeholder: (f.object.exercise.solitary_submission? ? "MNr. or Name" : "Student Group Name"), autocomplete: "off" %></div>
       <div class='small-3 columns cancel-button'><%= link_to "cancel", '#', class: "button postfix", data: { behaviour: "cancel-lookup" } %></div>
     </div>
-    <%= f.input :subject_id, as: :hidden, input_html: { data: { behaviour: "subject-id" } } %>
+    <%= f.input :subject_id, as: :hidden, input_html: { data: { behaviour: "association-id" } } %>
   </td>
   <%= f.simple_fields_for :evaluations do |f| %>
     <td>

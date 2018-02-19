@@ -10,8 +10,8 @@ RSpec.describe SubmissionPolicy do
     it { is_expected.to permit_authorization(:index) }
     it { is_expected.to permit_authorization(:show) }
     it { is_expected.to permit_authorization(:new) }
+    it { is_expected.to permit_authorization(:edit) }
     it { is_expected.to permit_authorization(:update) }
-    it { is_expected.to permit_authorization(:destroy) }
     it { is_expected.to permit_authorization(:directory) }
     it { is_expected.to permit_authorization(:tree) }
   end
@@ -24,8 +24,8 @@ RSpec.describe SubmissionPolicy do
     it { is_expected.to permit_authorization(:index) }
     it { is_expected.to permit_authorization(:show) }
     it { is_expected.to permit_authorization(:new) }
+    it { is_expected.to permit_authorization(:edit) }
     it { is_expected.to permit_authorization(:update) }
-    it { is_expected.to permit_authorization(:destroy) }
     it { is_expected.to permit_authorization(:directory) }
     it { is_expected.to permit_authorization(:tree) }
   end
@@ -38,8 +38,8 @@ RSpec.describe SubmissionPolicy do
     it { is_expected.to permit_authorization(:index) }
     it { is_expected.to permit_authorization(:show) }
     it { is_expected.to permit_authorization(:new) }
+    it { is_expected.to permit_authorization(:edit) }
     it { is_expected.to permit_authorization(:update) }
-    it { is_expected.to permit_authorization(:destroy) }
     it { is_expected.to permit_authorization(:directory) }
     it { is_expected.to permit_authorization(:tree) }
   end
@@ -57,8 +57,8 @@ RSpec.describe SubmissionPolicy do
 
       it { is_expected.to permit_authorization(:show) }
       it { is_expected.to permit_authorization(:new) }
-      it { is_expected.to permit_authorization(:update) }
-      it { is_expected.to permit_authorization(:destroy) }
+      it { is_expected.not_to permit_authorization(:edit) }
+      it { is_expected.not_to permit_authorization(:update) }
       it { is_expected.to permit_authorization(:directory) }
       it { is_expected.to permit_authorization(:tree) }
     end
@@ -66,8 +66,8 @@ RSpec.describe SubmissionPolicy do
     context 'without exercise registration' do
       it { is_expected.not_to permit_authorization(:index) }
       it { is_expected.not_to permit_authorization(:show) }
+      it { is_expected.not_to permit_authorization(:edit) }
       it { is_expected.not_to permit_authorization(:update) }
-      it { is_expected.not_to permit_authorization(:destroy) }
       it { is_expected.not_to permit_authorization(:directory) }
       it { is_expected.not_to permit_authorization(:tree) }
     end
@@ -85,8 +85,8 @@ RSpec.describe SubmissionPolicy do
 
       it { is_expected.not_to permit_authorization(:index) }
       it { is_expected.not_to permit_authorization(:new) }
+      it { is_expected.not_to permit_authorization(:edit) }
       it { is_expected.not_to permit_authorization(:update) }
-      it { is_expected.not_to permit_authorization(:destroy) }
     end
 
     context 'disabled student uploads' do
@@ -102,8 +102,8 @@ RSpec.describe SubmissionPolicy do
 
       it { is_expected.not_to permit_authorization(:index) }
       it { is_expected.not_to permit_authorization(:new) }
+      it { is_expected.not_to permit_authorization(:edit) }
       it { is_expected.not_to permit_authorization(:update) }
-      it { is_expected.not_to permit_authorization(:destroy) }
     end
   end
 
@@ -115,8 +115,8 @@ RSpec.describe SubmissionPolicy do
     it { is_expected.not_to permit_authorization(:index) }
     it { is_expected.not_to permit_authorization(:show) }
     it { is_expected.not_to permit_authorization(:new) }
+    it { is_expected.not_to permit_authorization(:edit) }
     it { is_expected.not_to permit_authorization(:update) }
-    it { is_expected.not_to permit_authorization(:destroy) }
     it { is_expected.not_to permit_authorization(:directory) }
     it { is_expected.not_to permit_authorization(:tree) }
   end
@@ -130,8 +130,8 @@ RSpec.describe SubmissionPolicy do
     it { is_expected.not_to permit_authorization(:index) }
     it { is_expected.not_to permit_authorization(:show) }
     it { is_expected.not_to permit_authorization(:new) }
+    it { is_expected.not_to permit_authorization(:edit) }
     it { is_expected.not_to permit_authorization(:update) }
-    it { is_expected.not_to permit_authorization(:destroy) }
     it { is_expected.not_to permit_authorization(:directory) }
     it { is_expected.not_to permit_authorization(:tree) }
   end
@@ -145,8 +145,8 @@ RSpec.describe SubmissionPolicy do
     it { is_expected.not_to permit_authorization(:index) }
     it { is_expected.not_to permit_authorization(:show) }
     it { is_expected.not_to permit_authorization(:new) }
+    it { is_expected.not_to permit_authorization(:edit) }
     it { is_expected.not_to permit_authorization(:update) }
-    it { is_expected.not_to permit_authorization(:destroy) }
     it { is_expected.not_to permit_authorization(:directory) }
     it { is_expected.not_to permit_authorization(:tree) }
   end

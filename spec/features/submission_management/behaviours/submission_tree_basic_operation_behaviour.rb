@@ -187,37 +187,72 @@ RSpec.shared_examples "basic submission tree operations" do
   end
 
   describe 'creating folders' do
-    context 'without JS' do
-      scenario 'redirects to the appropriate path' do
-        visit tree_submission_path(submission)
+    shared_examples "basic folder creation" do
+      let(:simple_path) { "test/path" }
+      let(:deeply_nested_path) { "test/path/with/deeply/nested/directory" }
 
-        within '.submission-tree-toolbar' do
-          click_link "Folder"
+      let(:unsanitized_path) { "test/path//with/inappropriate/../sanitation" }
+      let(:sanitized_path) { "test/path/with/sanitation" }
+
+      shared_examples "redirections" do
+        scenario 'redirects to the appropriate simple path' do
+          perform_redirection_test(simple_path)
         end
 
-        fill_in 'submission_folder_name', with: "test/path"
-        click_button "Create"
+        scenario 'redirects to the appropriate deeply nested path' do
+          perform_redirection_test(deeply_nested_path)
+        end
 
-        expect(page).to have_current_path(tree_submission_path(submission, path: "test/path"))
+        scenario 'redirects to the sanitized path' do
+          perform_redirection_test(unsanitized_path, sanitized_path)
+        end
+      end
+
+      context 'without JS' do
+        def perform_redirection_test(entered_path, expected_path = entered_path)
+          visit tree_submission_path(submission)
+
+          within '.submission-tree-toolbar' do
+            click_link "Folder"
+          end
+
+          fill_in 'submission_folder_name', with: entered_path
+          click_button "Create"
+
+          expect(page).to have_current_path(tree_submission_path(submission, path: expected_path))
+        end
+
+        it_behaves_like "redirections"
+      end
+
+      context 'with JS', js: true do
+        def perform_redirection_test(entered_path, expected_path = entered_path)
+          visit tree_submission_path(submission)
+
+          within '.submission-tree-toolbar' do
+            click_link "Folder"
+          end
+
+          fill_in 'submission_folder_name', with: entered_path
+          expect(page).to have_content("Folder name available")
+
+          click_button "Create"
+
+          expect(page).to have_current_path(tree_submission_path(submission, path: expected_path))
+        end
+
+        it_behaves_like "redirections"
       end
     end
 
-    context 'with JS' do
-      scenario 'redirects to the appropriate path', js: true do
-        visit tree_submission_path(submission)
+    describe 'with existing submission assets' do
+      let!(:submission_asset) { FactoryGirl.create(:submission_asset, submission: submission, path: "sub-folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "text-2.txt")) }
 
-        within '.submission-tree-toolbar' do
-          click_link "Folder"
-        end
+      it_behaves_like "basic folder creation"
+    end
 
-        fill_in 'submission_folder_name', with: "test/path"
-
-        expect(page).to have_content("Folder name available")
-
-        click_button "Create"
-
-        expect(page).to have_current_path(tree_submission_path(submission, path: "test/path"))
-      end
+    describe 'without existing assets' do
+      it_behaves_like "basic folder creation"
     end
   end
 

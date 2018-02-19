@@ -4,7 +4,7 @@ class StudentResultsPolicy < TermBasedPolicy
   end
 
   def show?
-    record.submission.result_published? &&
-    record.submission.exercise_registrations.for_student(user).exists?
+    record.submission_review.published? &&
+    record.submission_review.term_registration.account == user
   end
 end

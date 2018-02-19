@@ -1,0 +1,25 @@
+<%= simple_form_for(submission, html: { data: { behaviour: "association-list-lookup", lookup_url: submission_students_path(submission, format: :json)} }) do |f| %>
+  <%= f.association :student_group, collection: submission.term.student_groups.order(:title) %>
+
+  <table class='small-12'>
+    <thead>
+      <th>Student</th>
+      <th>Individual Subtractions</th>
+      <th></th>
+    </thead>
+    <tbody>
+    <%= f.simple_fields_for :exercise_registrations do |exercise_registration| %>
+      <%= render "exercise_registration_fields", f: exercise_registration %>
+    <% end %>
+    </tbody>
+    <tfoot>
+      <th colspan="3" class='text-center'>
+        <%= link_to "#{foundation_icon(:plus)} Add Student".html_safe, "#", data: { behaviour: "add-item" }, class: "small primary button" %>
+      </th>
+    </tfoot>
+  </table>
+
+  <p><%= f.button :submit, "Submit" %></p>
+
+  <%= tag :div, data: { behaviour: "new-item-template", template: "#{render("new_exercise_registration_fields", f: f, submission: submission).strip}" } %>
+<% end %>

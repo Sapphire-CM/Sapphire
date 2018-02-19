@@ -2,7 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-$top-bar-height: 80px;
+$top-bar-height: 120px;
 $top-bar-offset: 45px;
 $bottom-bar-height: 80px;
 $bottom-bar-offset: 0;
@@ -16,10 +16,6 @@ $bar-line-color: #C5C5C5;
   z-index: 98;
   width: 100%;
   background: white;
-
-  .buttons {
-    padding-top: 20px;
-  }
 }
 
 .evaluation-top-bar {
@@ -27,6 +23,12 @@ $bar-line-color: #C5C5C5;
 
   .bar {
     border-bottom: thin solid $bar-line-color;
+  }
+
+  .evaluation-result {
+    font-size: 1.65em;
+    color: #6f6f6f;
+    font-weight: bold;
   }
 }
 

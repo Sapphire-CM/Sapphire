@@ -9,32 +9,37 @@ RSpec.describe 'Term Editing' do
     sign_in account
   end
 
-  scenario 'Navigating to the term edit page' do
-    visit term_path(term)
+  describe 'navigation' do
+    scenario 'Navigating to the term edit page through the term path' do
+      visit term_path(term)
 
-    click_side_nav_link("Administrate")
+      click_side_nav_link("Administrate")
 
-    expect(page).to have_current_path(edit_term_path(term))
+      expect(page).to have_current_path(edit_term_path(term))
+    end
   end
 
-  scenario 'Updating a term' do
-    visit edit_term_path(term)
+  describe 'attributes' do
+    scenario 'Updating a term' do
+      visit edit_term_path(term)
 
-    fill_in "Title", with: "My fancy Term"
-    fill_in "Description", with: "This term is really fancy"
-    click_button "Save"
+      fill_in "Title", with: "My fancy Term"
+      fill_in "Description", with: "This term is really fancy"
+      click_button "Save"
 
-    expect(page).to have_content("successfully updated")
-    expect(page).to have_current_path(term_path(term))
+      expect(page).to have_content("successfully updated")
+      expect(page).to have_current_path(term_path(term))
+    end
+
+    scenario 'Removing term title' do
+      visit edit_term_path(term)
+
+      fill_in "Title", with: ""
+      click_button "Save"
+
+      expect(page).not_to have_content("successfully updated")
+      expect(page).to have_content("can't be blank")
+    end
   end
 
-  scenario 'Removing term title' do
-    visit edit_term_path(term)
-
-    fill_in "Title", with: ""
-    click_button "Save"
-
-    expect(page).not_to have_content("successfully updated")
-    expect(page).to have_content("can't be blank")
-  end
 end

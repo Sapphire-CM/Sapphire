@@ -1,0 +1,29 @@
+<% if @term_review.submission_reviews.any? %>
+  <table class='small-12 sortable'>
+    <thead>
+      <tr>
+        <th>Exercise</th>
+        <th>Submitted at</th>
+        <th>Points</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @term_review.submission_reviews.each do |submission_review| %>
+        <tr>
+          <td sort-by='<%= submission_review.exercise.row_order %>'><%= submission_review.exercise_title %></td>
+          <td><%= submission_review.submitted_at.present? ? iso_time(submission_review.submitted_at) : "unknown" %></td>
+          <td sort-by='<%= submission_review.points %>' sort-as="integer">
+            <%= submission_review.points %> / <%= submission_review.achievable_points %>
+          </td>
+          <td class='text-right'>
+            <%= link_to "Show", submission_path(submission_review.submission), class: "small button" %>
+            <%= link_to "Evaluate", submission_evaluation_path(submission_review.submission_evaluation), class: "small button" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No submissions for this student.</p>
+<% end %>

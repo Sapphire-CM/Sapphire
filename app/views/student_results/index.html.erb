@@ -2,7 +2,6 @@
 
 <%= render "terms/sidebar", term: current_term %>
 
-<% sum = 0 %>
 <table class='small-12'>
   <thead>
     <tr>
@@ -13,16 +12,14 @@
     </tr>
   </thead>
   <tbody>
-    <% @exercise_registrations.each do |exercise_registration| %>
+    <% @term_review.submission_reviews.each do |submission_review| %>
       <tr>
-        <td><%= exercise_registration.exercise.title %></td>
-        <td><%= exercise_registration.exercise.achievable_points %></td>
+        <td><%= submission_review.exercise_title %></td>
+        <td><%= submission_review.achievable_points %></td>
 
-        <% if @term_registration.tutorial_group.results_published_for?(exercise_registration.exercise) %>
-          <% sum += exercise_registration.points %>
-
-          <td><%= exercise_registration.points || "na" %></td>
-          <td><%= link_to "Details", term_result_path(current_term, exercise_registration.exercise) %></td>
+        <% if submission_review.published? %>
+          <td><%= submission_review.points || "na" %></td>
+          <td><%= link_to "Details", term_result_path(current_term, submission_review.exercise) %></td>
         <% else %>
           <td colspan='2'>
             Not yet published
@@ -33,15 +30,15 @@
     <tr>
       <td></td>
       <td></td>
-      <td><%= sum %></td>
+      <td><%= @term_review.published_points %></td>
       <td></td>
     </tr>
   </tbody>
 </table>
 
 <hr />
-<% if @term_registration.tutorial_group.all_results_published? %>
-  <h4>Grade: <%= @grading_scale_service.grade_for(@term_registration) %></h4>
+<% if @term_review.all_results_published? %>
+  <h4>Grade: <%= @term_review.grade %></h4>
 <% else %>
   <h4>Your provisional grade will be available, when the results for all exercises are published.</h4>
 <% end %>

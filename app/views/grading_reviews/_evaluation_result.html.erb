@@ -1,0 +1,37 @@
+<% if submission_review.deductions? %>
+  <% submission_review.reviewable_evaluation_groups.each do |group| %>
+    <h4><%= evaluation_group_title group.evaluation_group %></h4>
+    <table class='small-12'>
+      <thead>
+        <tr>
+          <th>Rating</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% group.evaluations.each do |evaluation| %>
+        <tr>
+          <td><%= evaluation.rating.title %></td>
+          <td>
+          <% if evaluation.is_a? Evaluations::FixedEvaluation %>
+            <%= rating_points_description evaluation.rating %>
+          <% else %>
+            <%= evaluation.points %>
+          <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+
+  <% if submission_review.individual_subtractions? %>
+    <h4>Individual Subtractions</h4>
+    <%= points submission_review.individual_subtractions %>
+  <% end %>
+<% else %>
+  <div class='panel callout radius'>
+    <h5>Well Done!</h5>
+    <p>Nothing wrong with this submission</p>
+  </div>
+<% end %>

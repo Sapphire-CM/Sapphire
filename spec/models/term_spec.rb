@@ -15,7 +15,7 @@ describe Term do
   describe 'associations' do
     it { is_expected.to belong_to(:course) }
     it { is_expected.to have_many(:term_registrations).dependent(:destroy) }
-    it { is_expected.to have_many(:exercises).inverse_of(:term).dependent(:destroy) }
+    it { is_expected.to have_many(:exercises).dependent(:destroy) }
     it { is_expected.to have_many(:tutorial_groups).dependent(:destroy) }
     it { is_expected.to have_many(:term_registrations).dependent(:destroy) }
     it { is_expected.to have_many(:events).dependent(:destroy) }

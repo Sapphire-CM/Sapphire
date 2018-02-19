@@ -14,12 +14,14 @@
 
 class EvaluationGroup < ActiveRecord::Base
   belongs_to :rating_group
-  belongs_to :submission_evaluation, touch: true, inverse_of: :evaluation_groups
+  belongs_to :submission_evaluation, touch: true
 
   has_many :evaluations, dependent: :delete_all
 
   validates :rating_group, presence: true
   validates :submission_evaluation, presence: true
+
+  before_create :calc_result
 
   after_create :create_evaluations
   after_update :update_submission_evaluation_results, if: lambda { |eg| eg.points_changed? || eg.percent_changed? }
@@ -41,11 +43,7 @@ class EvaluationGroup < ActiveRecord::Base
   end
 
   def self.create_for_submission_evaluation_and_rating_group(submission_evaluation, rating_group)
-    eg = new
-    eg.rating_group = rating_group
-    eg.points = rating_group.points
-    eg.submission_evaluation = submission_evaluation
-    eg.save!
+    submission_evaluation.evaluation_groups.create(rating_group: rating_group)
   end
 
   def update_result!

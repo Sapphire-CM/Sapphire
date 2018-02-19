@@ -14,7 +14,7 @@ class TutorialGroup < ActiveRecord::Base
   has_one :course, through: :term
 
   has_many :result_publications, dependent: :destroy
-  has_many :student_groups, dependent: :destroy, inverse_of: :tutorial_group
+  has_many :student_groups, dependent: :destroy
 
   has_many :term_registrations, dependent: :destroy
   has_many :student_term_registrations, lambda { students }, source: :term_registrations, class_name: 'TermRegistration'

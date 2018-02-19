@@ -6,7 +6,7 @@ class TermRegistrationsPointsUpdateJob < ActiveJob::Base
       term = Term.find(term_id)
 
       term_registrations = term.term_registrations.students.includes(exercise_registrations: [:exercise, submission: :submission_evaluation])
-      term_registrations.each(&:update_points!)
+      term_registrations.find_each(&:update_points!)
     end
   end
 end

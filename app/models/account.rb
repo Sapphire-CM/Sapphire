@@ -114,6 +114,10 @@ class Account < ActiveRecord::Base
     term_registrations.lecturers.joins(:term).where(term: { course: course }).exists?
   end
 
+  def lecturer_of_any_term?
+    term_registrations.lecturers.exists?
+  end
+
   def tutor_of_term?(term)
     term_registrations.tutors.where(term_id: term.id).exists?
   end

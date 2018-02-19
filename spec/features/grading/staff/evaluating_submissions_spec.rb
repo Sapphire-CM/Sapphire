@@ -46,12 +46,12 @@ RSpec.feature 'Evaluating submissions' do
       expect(page).to have_current_path(submission_evaluation_path(submission.submission_evaluation))
     end
 
+    scenario 'to submission evaluation page through the submission edit page' do
+      visit edit_submission_path(submission)
 
-    scenario 'to submission tree' do
-      visit submission_evaluation_path(submission)
+      click_link('Evaluate')
 
-      click_link 'Files'
-      expect(page).to have_current_path(tree_submission_path(submission))
+      expect(page).to have_current_path(submission_evaluation_path(submission.submission_evaluation))
     end
   end
 

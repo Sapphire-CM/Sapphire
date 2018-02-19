@@ -12,7 +12,7 @@
 # add_index :student_groups, [:tutorial_group_id], name: :index_student_groups_on_tutorial_group_id
 
 class StudentGroup < ActiveRecord::Base
-  belongs_to :tutorial_group, inverse_of: :student_groups
+  belongs_to :tutorial_group
 
   has_one :term, through: :tutorial_group
   has_many :term_registrations, dependent: :nullify

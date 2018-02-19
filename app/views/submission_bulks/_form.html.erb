@@ -1,4 +1,4 @@
-<%= simple_form_for bulk, url: exercise_submission_bulk_path(bulk.exercise), method: :post, html: { data: { lookup_url: exercise_submission_bulk_subjects_path(format: :json)}, class: "submission-bulk" } do |f| %>
+<%= simple_form_for bulk, url: exercise_submission_bulk_path(bulk.exercise), method: :post, html: { data: { behaviour: "association-list-lookup", ensure_blank_line: true, lookup_url: exercise_submission_bulk_subjects_path(format: :json)}, class: "submission-bulk" } do |f| %>
   <table class='small-12'>
     <thead>
       <th>

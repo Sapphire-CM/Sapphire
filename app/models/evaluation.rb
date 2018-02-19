@@ -14,7 +14,7 @@
 # add_index :evaluations, [:rating_id], name: :index_evaluations_on_rating_id
 
 class Evaluation < ActiveRecord::Base
-  belongs_to :evaluation_group, touch: true, inverse_of: :evaluations
+  belongs_to :evaluation_group, touch: true
   belongs_to :rating
 
   has_one :submission_evaluation, through: :evaluation_group
@@ -40,19 +40,18 @@ class Evaluation < ActiveRecord::Base
   scope :for_exercise, lambda { |exercise| joins { submission }.where { submission.exercise_id == my { exercise.id } } }
   scope :automatically_checked, lambda { where { checked_automatically == true } }
 
+  delegate :row_order, to: :rating
+
   def self.create_for_evaluation_group(evaluation_group)
-    evaluation_group.rating_group.ratings.each do |rating|
-      evaluation = build_for_rating(rating)
-      evaluation.evaluation_group = evaluation_group
-      evaluation.save!
+    evaluation_group.evaluations = evaluation_group.rating_group.ratings.map do |rating|
+      rating.evaluation_class.new(rating: rating)
     end
   end
 
   def self.create_for_rating(rating)
     rating.rating_group.evaluation_groups.each do |eval_group|
-      evaluation = build_for_rating(rating)
-      evaluation.evaluation_group = eval_group
-      evaluation.save!
+      evaluation = new(rating: rating, type: rating.evaluation_class.to_s).becomes(rating.evaluation_class)
+      eval_group.evaluations << evaluation
     end
   end
 
@@ -70,16 +69,14 @@ class Evaluation < ActiveRecord::Base
     submission_evaluation.update_plagiarized! if rating.is_a?(Ratings::PlagiarismRating)
   end
 
+  def show_to_students?
+    raise NotImplementedError
+  end
+
   private
 
   def update_needs_review!
     evaluation_group.update_needs_review!
-  end
-
-  def self.build_for_rating(rating)
-    evaluation = rating.evaluation_class.new
-    evaluation.rating = rating
-    evaluation
   end
 
   def validate_evaluation_type

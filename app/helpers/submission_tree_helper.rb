@@ -12,4 +12,12 @@ module SubmissionTreeHelper
 
     links.join(File::SEPARATOR).html_safe
   end
+
+  def submission_tree_modification_date(date)
+    if date.present?
+      iso_time(date)
+    else
+      content_tag(:em, "not yet created")
+    end
+  end
 end

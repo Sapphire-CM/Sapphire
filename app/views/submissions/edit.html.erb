@@ -1,0 +1,13 @@
+<% title @exercise.title, "Edit Submission" %>
+
+<%= render "terms/sidebar", term: @term %>
+<%= render "exercises/subnav", exercise: @exercise %>
+
+<div class='row'>
+  <div class='small-12 columns text-right'>
+    <%= link_to "Evaluate", submission_evaluation_path(@submission.submission_evaluation), class: "tiny button" %>
+    <%= link_to "Files", tree_submission_path(@submission), class: "tiny button" %>
+  </div>
+</div>
+
+<%= render "form", submission: @submission %>

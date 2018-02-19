@@ -1,6 +1,6 @@
 class ImpersonationPolicy < ApplicationPolicy
   def create?
-    user.admin?
+    user.admin? && user != record.impersonatable
   end
 
   def destroy?

@@ -2,44 +2,14 @@
 
 <%= render "terms/sidebar", term: current_term %>
 
-<% if @student_group.present? %>
-  <p>This student is part of <%= link_to @student_group.title, term_student_group_path(current_term, @student_group) %></p>
-<% end %>
 
-<h2>Submissions</h2>
+<p class='text-right'>
+  <%= link_to "Edit", edit_term_student_path(@term, @term_registration), class: "small button" if policy(@term_registration).edit? %>
+  <%= link_to "Grading Review", term_grading_review_path(@term, @term_registration), class: "small button" %>
+</p>
 
-<% if @exercise_registrations.any? %>
-  <table class='small-12'>
-    <thead>
-      <tr>
-        <th>Exercise</th>
-        <th>Points</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @exercise_registrations.each do |exercise_registration| %>
-      <tr>
-        <td><%= exercise_registration.exercise.title %></td>
-        <td><%= exercise_registration.points %>/<%= exercise_registration.exercise.achievable_points %></td>
-        <td class='text-right'>
-          <%= link_to "Show", submission_path(exercise_registration.submission), class: "small button" %>
-          <%= link_to "Evaluate", submission_evaluation_path(exercise_registration.submission.submission_evaluation), class: "small button" %>
-        </td>
-      </tr>
-      <% end %>
-    </tbody>
-    <tfoot>
-      <tr>
-        <th>Sum:</th>
-        <th><%= @term_registration.points %>/<%= @term_registration.term.achievable_points %></th>
-        <th colspan='2'></th>
-      </tr>
+<%= render "info_panel", term_review: @term_review, term_registration: @term_registration %>
 
-    </tfoot>
-  </table>
-<% else %>
-  <p>No Submissions for this student</p>
-<% end %>
+<h3>Submissions</h3>
 
-<p><strong>Grade: <%= @grading_scale_service.grade_for(@term_registration) %></strong></p>
+<%= render "term_review_table", term_review: @term_review %>

@@ -19,6 +19,10 @@ FactoryGirl.define do
       end
     end
 
+    trait :without_viewer do
+      submission_viewer_identifier nil
+    end
+
     trait :with_upload_limit do
       maximum_upload_size 1024**1 * 5
     end
@@ -44,6 +48,11 @@ FactoryGirl.define do
     trait :with_minimum_points do
       enable_min_required_points true
       min_required_points 5
+    end
+
+    trait :without_minimum_points do
+      enable_min_required_points false
+      min_required_points nil
     end
   end
 end

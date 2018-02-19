@@ -12,14 +12,15 @@ RSpec.describe SubmissionTreeController, type: :controller do
       expect(assigns[:submission]).to eq(submission)
       expect(assigns[:exercise]).to eq(exercise)
       expect(assigns[:term]).to eq(term)
-      expect(assigns[:tree]).to be_a(SubmissionStructure::TreeNode)
+      expect(assigns[:tree]).to be_a(SubmissionStructure::Tree)
+      expect(assigns[:directory]).to be_a(SubmissionStructure::Directory)
       expect(assigns[:submission_upload]).to be_a(SubmissionUpload)
     end
 
     it 'resolves the path if it is given' do
       get :show, id: submission.id, path: "test-folder/path"
 
-      expect(assigns[:tree].path_without_root).to eq("test-folder/path")
+      expect(assigns[:directory].path_without_root).to eq("test-folder/path")
       expect(assigns[:submission_upload].path).to eq("test-folder/path")
     end
   end
@@ -28,7 +29,8 @@ RSpec.describe SubmissionTreeController, type: :controller do
     it 'assigns @tree' do
       get :directory, id: submission.id, path: "test", format: :json
 
-      expect(assigns[:tree]).to be_a(SubmissionStructure::TreeNode)
+      expect(assigns[:tree]).to be_a(SubmissionStructure::Tree)
+      expect(assigns[:directory]).to be_a(SubmissionStructure::Directory)
     end
 
     it 'does not respond to html' do

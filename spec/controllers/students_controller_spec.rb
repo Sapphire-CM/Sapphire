@@ -44,31 +44,12 @@ RSpec.describe StudentsController do
     let(:term_registration) { create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
     let(:student_group) { create(:student_group, tutorial_group: tutorial_group) }
 
-    it 'assigns the requested exercise_registrations as @exercise_registrations' do
-      term = FactoryGirl.create :term
-      term_registration = FactoryGirl.create :term_registration, term: term
-      FactoryGirl.create :exercise_registration, term_registration: term_registration
-
+    it 'assigns @term_review' do
       get :show, term_id: term.id, id: term_registration.id
 
       expect(response).to have_http_status(:success)
-      expect(assigns(:exercise_registrations)).to match_array(term_registration.exercise_registrations)
-    end
-
-    it 'assigns @tutorial_group' do
-      get :show, term_id: term.id, id: term_registration.id
-
-      expect(response).to have_http_status(:success)
-      expect(assigns(:tutorial_group)).to eq(tutorial_group)
-    end
-
-    it 'assigns @student_group, if one is present' do
-      term_registration.update(student_group: student_group)
-
-      get :show, term_id: term.id, id: term_registration.id
-
-      expect(response).to have_http_status(:success)
-      expect(assigns(:student_group)).to eq(student_group)
+      expect(assigns(:term_review)).to be_a(GradingReview::TermReview)
+      expect(assigns(:term_review).term_registration).to eq(term_registration)
     end
 
     context 'as a tutor' do

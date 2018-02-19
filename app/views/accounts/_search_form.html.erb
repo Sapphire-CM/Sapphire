@@ -1,0 +1,10 @@
+<%= form_tag search_path, method: :get do |f| %>
+  <div class='row collapse'>
+    <div class='small-10 columns'>
+      <%= search_field_tag :q, params[:q] %>
+    </div>
+    <div class='small-2 columns'>
+      <%= submit_tag "search!", class: "postfix button" %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,23 @@
+<% title "Create a new Account" %>
+
+<div class="large-12 columns large-centered grid-center">
+  <%= simple_form_for @account do |f| %>
+    <div class="row">
+      <fieldset>
+        <%= f.input :email, required: true %>
+        <%= f.input :forename, required: true %>
+        <%= f.input :surname, required: true %>
+        <%= f.input :matriculation_number, required: false %>
+        <%= f.input :password, required: true, autocomplete: 'off' %>
+        <%= f.input :password_confirmation, required: true %>
+      </fieldset>
+    </div>
+
+    <div class='row'>
+      <div class='large-12 large-centered columns text-center'>
+        <%= link_to "Cancel", accounts_path, class: "secondary button" %>
+        <%= f.submit class: "button" %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -75,7 +75,7 @@ class SortableTable
         e.stopPropagation()
         e.preventDefault()
 
-      $icon = $("<span>").css("visibility", "hidden").text("▾")
+      $icon = $("<span>").addClass("sortable-icon").addClass("hidden").text("▴")
 
       $inserted_link.append("&nbsp;")
       $inserted_link.append($icon)
@@ -142,14 +142,9 @@ class SortableTable
     for $link in @links
       idx = $link.data("sort-index")
       if idx == active_idx
-        icon = if desc
-          "▾"
-        else
-          "▴"
-
-        $link.find("span").css("visibility", "visible").text(icon)
+        $link.find("span.sortable-icon").removeClass("hidden").toggleClass("asc", !desc).toggleClass("desc", desc)
       else
-        $link.find("span").css("visibility", "hidden")
+        $link.find("span.sortable-icon").addClass("hidden").removeClass("asc desc")
 
 setup_sortable_tables = ->
   $("table.sortable").each ->

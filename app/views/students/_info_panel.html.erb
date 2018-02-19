@@ -1,0 +1,29 @@
+<div class='panel'>
+  <div class='row'>
+    <div class='small-6 columns'>
+      <dl>
+        <dt>Points</dt>
+        <dd><%= points term_review.points %></dd>
+
+        <dt>Grade</dt>
+        <dd><%= term_review.grade %></dd>
+      </dl>
+    </div>
+    <div class='small-6 columns'>
+      <dl>
+        <dt>Tutorial Group</dt>
+        <dd><%= link_to term_registration.tutorial_group.title, term_tutorial_group_path(current_term, term_registration.tutorial_group) %></dd>
+
+        <dt>Student Group</dt>
+        <dd>
+          <% if term_registration.student_group.present? %>
+            <%= link_to term_registration.student_group.title, term_student_group_path(current_term, term_registration.student_group) %>
+          <% else %>
+            <em>None</em>
+          <% end %>
+        </dd>
+      </dl>
+
+    </div>
+  </div>
+</div>

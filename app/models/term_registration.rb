@@ -9,6 +9,7 @@
 #   t.boolean  :receives_grade,    default: false, null: false
 #   t.integer  :role,              default: 0
 #   t.integer  :student_group_id
+#   t.datetime :welcomed_at
 # end
 #
 # add_index :term_registrations, [:account_id, :term_id], name: :index_term_registrations_on_account_id_and_term_id, unique: true
@@ -54,6 +55,11 @@ class TermRegistration < ActiveRecord::Base
   scope :ordered_by_matriculation_number, lambda { joins(:account).order { account.matriculation_number.asc } }
   scope :ordered_by_name, lambda { joins(:account).order { account.forename.asc }.order { account.surname.asc } }
 
+  scope :welcomed, lambda { where.not(welcomed_at: nil) }
+  scope :waiting_for_welcome, lambda { where(welcomed_at: nil) }
+
+  delegate :title, to: :tutorial_group, prefix: true, allow_nil: true
+
   sifter :positive_grades do
     positive_grade == true
   end
@@ -98,8 +104,11 @@ class TermRegistration < ActiveRecord::Base
     all_minimum_points_reached? && exercise_registrations.any?
   end
 
-  private
+  def welcomed?
+    welcomed_at.present?
+  end
 
+  private
   def validate_term_consistency
     errors.add(:term, 'is not consistent') if tutorial_group.present? && term != tutorial_group.term
   end

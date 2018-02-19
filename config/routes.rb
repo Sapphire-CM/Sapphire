@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   devise_for :accounts, skip: :registration
 
-  resources :accounts, except: [:new, :create] do
+  resources :accounts do
     resources :email_addresses, except: [:show]
   end
 
@@ -17,8 +17,11 @@ Rails.application.routes.draw do
   resources :terms, except: [:index] do
     member do
       get :points_overview
-      post :send_welcome_notifications
     end
+
+    resources :accounts, only: :index, controller: "terms/accounts"
+
+    resources :students
 
     resources :grading_scales, only: [:index, :update]
 
@@ -29,8 +32,6 @@ Rails.application.routes.draw do
     resources :staff, except: [:show, :edit, :update] do
       post :search, on: :collection
     end
-
-    resources :students, only: [:index, :show]
 
     resources :imports, except: [:index, :edit] do
       get :file, on: :member
@@ -45,12 +46,16 @@ Rails.application.routes.draw do
     resources :tutorial_groups do
       get :points_overview, on: :member
     end
+
     resources :student_groups do
       post :search_students, on: :collection
     end
+
     resources :grading_reviews, only: [:index, :show]
     resources :results, only: [:index, :show], controller: :student_results
     resources :events, only: [:index]
+
+    resource :welcome_notifications, only: :create
   end
 
   resources :tutorial_groups
@@ -68,7 +73,8 @@ Rails.application.routes.draw do
       resources :subjects, controller: "submission_bulks/subjects", only: :index
     end
 
-    resources :submissions, only: [:index], controller: "staff_submissions"
+    resources :submissions, only: :index, controller: "staff_submissions"
+
     resources :result_publications, only: :index do
       member do
         put :publish
@@ -89,13 +95,14 @@ Rails.application.routes.draw do
   resources :evaluation_groups, only: :update
   resources :submission_evaluations, controller: :submission_evaluations, only: :show
 
-  resources :submissions, only: :show do
+  resources :submissions, only: [:show, :edit, :update] do
     member do
       get "blob(/*path)", controller: :submission_blob, action: :show, as: :blob
       get "tree(/*path)", controller: :submission_tree, action: :show, as: :tree
       get "directory(/*path)", controller: :submission_tree, action: :directory, as: :tree_directory
       delete "tree(/*path)", controller: :submission_tree, action: :destroy
     end
+    resources :students, controller: "submissions/students"
     resource :folder, controller: :submission_folders, only: [:show, :new, :create]
     resource :upload, controller: :submission_uploads, only: [:new, :create]
   end

@@ -5,25 +5,22 @@
 <%= render "form" %>
 
 <hr />
-<div class='panel secondary'>
-  <h4>DANGER ZONE!</h4>
+<div class='panel secondary' data-behaviour='welcome-notifications'>
+  <h4>Welcome new Students</h4>
 
-  <p>
-    Send Welcome Notifications to all registered students of this term.
+  <% if @term_registrations_awaiting_welcome.any? %>
+    <p>
+      There <%= 'is'.pluralize(@term_registrations_awaiting_welcome.count) %> <%= pluralize(@term_registrations_awaiting_welcome.count, "welcome notification") %> waiting to be sent.
+    </p>
 
-    <% if @term.imports.includes(:import_options).exists?(import_options: { send_welcome_notifications: true }) %>
-      It looks like an import job ALREADY sent the notifications.
-    <% else %>
-      It looks like no import job was configured to send notifications, but somebody else might have triggered this already!
-    <% end %>
-  </p>
-
-  <%= link_to "Send Welcome Notifications",
-    send_welcome_notifications_term_path(@term),
-    method: :post,
-    data: {confirm: "Are you sure?"},
-    class: "small secondary button" %>
-
+    <%= link_to "Send #{pluralize(@term_registrations_awaiting_welcome.count, "welcome notification")}",
+      term_welcome_notifications_path(@term),
+      method: :post,
+      data: {confirm: "Are you sure?"},
+      class: "small secondary button" %>
+  <% else %>
+    <p>All welcome notifications have been sent.</p>
+  <% end %>
 </div>
 
 <hr />
@@ -37,5 +34,4 @@
     method: :delete,
     data: {confirm: "Are you sure?"},
     class: "small alert button" %>
-
 </div>

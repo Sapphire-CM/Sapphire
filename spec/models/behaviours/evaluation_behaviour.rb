@@ -28,4 +28,20 @@ RSpec.shared_examples 'an evaluation' do
       pending "is called after destroy"
     end
   end
+
+  describe 'methods' do
+    subject { described_class.new }
+
+    it { is_expected.to respond_to(:points) }
+    it { is_expected.to respond_to(:percent) }
+    it { is_expected.to respond_to(:show_to_students?) }
+
+    describe '#show_to_students?' do
+      it "does not raise an error when called" do
+        expect do
+          subject.show_to_students?
+        end.not_to raise_error
+      end
+    end
+  end
 end

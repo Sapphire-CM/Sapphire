@@ -20,7 +20,7 @@ RSpec.describe ResultPublicationService do
 
     it 'publishes given result_publication, creates an event and sends notifications' do
       expect(result_publication.published?).to be_falsey
-      expect(NotificationJob).to receive(:result_publication_notifications).with(result_publication).and_return(true)
+      expect(Notification::ResultPublicationJob).to receive(:perform_later).with(result_publication).and_return(true)
 
       expect do
         subject.publish!(result_publication)
@@ -33,7 +33,7 @@ RSpec.describe ResultPublicationService do
       result_publication.update(published: true)
 
       expect(result_publication.published?).to be_truthy
-      expect(NotificationJob).not_to receive(:result_publication_notifications).with(result_publication)
+      expect(Notification::ResultPublicationJob).not_to receive(:perform_later).with(result_publication)
 
       expect do
         subject.publish!(result_publication)
@@ -59,7 +59,7 @@ RSpec.describe ResultPublicationService do
     it 'conceals given result_publication, creates an event but does not send emails' do
       expect(result_publication.concealed?).to be_falsey
 
-      expect(NotificationJob).not_to receive(:result_publication_notifications).with(result_publication)
+      expect(Notification::ResultPublicationJob).not_to receive(:perform_later).with(result_publication)
 
       expect do
         subject.conceal!(result_publication)

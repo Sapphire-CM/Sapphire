@@ -15,8 +15,8 @@ RSpec.describe Submission do
     it { is_expected.to belong_to :exercise }
     it { is_expected.to belong_to :submitter }
     it { is_expected.to belong_to :student_group }
-    it { is_expected.to have_one :submission_evaluation }
-    it { is_expected.to have_many(:exercise_registrations) }
+    it { is_expected.to have_one(:submission_evaluation).dependent(:destroy) }
+    it { is_expected.to have_many(:exercise_registrations).dependent(:destroy).inverse_of(:submission) }
     it { is_expected.to have_many(:term_registrations).through(:exercise_registrations) }
     it { is_expected.to have_many(:associated_student_groups).through(:term_registrations) }
   end
@@ -27,6 +27,10 @@ RSpec.describe Submission do
     it { is_expected.to validate_presence_of(:submitted_at) }
 
     it 'validates size of all submission_assets combined must be below the maximum allowed size of the exercise'
+  end
+
+  describe 'delegation' do
+    it { is_expected.to delegate_method(:submission_viewer?).to(:exercise) }
   end
 
   describe 'scoping' do
@@ -177,6 +181,10 @@ RSpec.describe Submission do
     end
   end
 
+  describe 'attributes' do
+    it { is_expected.to accept_nested_attributes_for(:exercise_registrations).allow_destroy(true) }
+  end
+
   describe 'methods' do
     describe '#evaluated?' do
       subject { FactoryGirl.create(:submission) }
@@ -249,29 +257,25 @@ RSpec.describe Submission do
     end
 
     describe '#tree' do
-      let!(:submission_assets) do
-        [
-          FactoryGirl.create(:submission_asset, path: "", file: prepare_static_test_file("simple_submission.txt")),
-          FactoryGirl.create(:submission_asset, path: "/folder", file: prepare_static_test_file("simple_submission.txt"))
-        ]
-      end
+      subject { FactoryGirl.create(:submission, :with_basic_structure) }
 
       it 'returns a submission tree created by the SubmissionStructureService' do
-        expect(SubmissionStructureService).to receive(:parse_submission).with(subject, "submission").and_call_original
-        expect(subject.tree).to be_a(SubmissionStructure::TreeNode)
+        expect(subject.tree).to be_a(SubmissionStructure::Tree)
       end
 
-      it 'is able to resolve the tree path' do
-        tree = subject.tree("folder")
-
-        expect(tree).to be_a(SubmissionStructure::TreeNode)
-        expect(tree.path_without_root).to eq("folder")
+      it 'sets submission of submission tree' do
+        expect(subject.tree.submission).to eq(subject)
       end
 
-      it 'does not raise an error when a non-existent folder is accessed' do
-        expect do
-          subject.tree("does/not/exist")
-        end.not_to raise_error
+      it 'sets the base_directory_name to "submission"' do
+        expect(subject.tree.base_directory_name).to eq("submission")
+      end
+
+      it 'memoizes the returned tree' do
+        first_tree = subject.tree
+        second_tree = subject.tree
+
+        expect(first_tree.object_id).to eq(second_tree.object_id)
       end
     end
 
@@ -369,6 +373,24 @@ RSpec.describe Submission do
         allow(submission_asset).to receive(:changed?).and_return(false)
 
         expect(subject.submission_assets_changed?).to be_truthy
+      end
+    end
+
+    describe '#set_exercise_of_exercise_registrations!' do
+      let(:exercise) { FactoryGirl.build(:exercise) }
+      let(:other_exercise) { FactoryGirl.build(:exercise) }
+      let(:exercise_registrations) { FactoryGirl.build_list(:exercise_registration, 3, submission: subject, exercise: other_exercise) }
+
+      subject { FactoryGirl.build(:submission, exercise: exercise) }
+
+      it 'assigns the submissions exercise to the exercise registrations\' exercise' do
+        subject.exercise_registrations = exercise_registrations
+
+        subject.set_exercise_of_exercise_registrations!
+
+        exercise_registrations.each do |exercise_registration|
+          expect(exercise_registration.exercise).to eq(exercise)
+        end
       end
     end
   end

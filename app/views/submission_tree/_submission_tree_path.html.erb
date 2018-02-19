@@ -1,7 +1,7 @@
-<%= cache [submission, tree.path] do %>
+<%= cache [submission, directory.path] do %>
   <ul class='breadcrumbs tree-path'>
-    <% tree.parents.each.with_index do |entry, index| %>
-      <%= content_tag :li, class: "#{"current" if index + 1 == tree.parents.length}" do %>
+    <% directory.parents.each.with_index do |entry, index| %>
+      <%= content_tag :li, class: "#{"current" if index + 1 == directory.parents.length}" do %>
         <%= link_to entry.name, tree_submission_path(submission, path: entry.path_without_root) %>
       <% end %>
     <% end %>

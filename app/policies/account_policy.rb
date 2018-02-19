@@ -1,20 +1,24 @@
 class AccountPolicy < ApplicationPolicy
   def index?
-    admin?
+    lecturer_permissions?
   end
 
   def show?
-    admin? ||
-    self?
+    self? ||
+    lecturer_permissions?
+  end
+
+  def create?
+    lecturer_permissions?
   end
 
   def update?
-    admin? ||
-    self?
+    self? ||
+    lecturer_permissions?
   end
 
   def destroy?
-    admin?
+    lecturer_permissions? && !self?
   end
 
   def change_password?
@@ -26,6 +30,14 @@ class AccountPolicy < ApplicationPolicy
   end
 
   private
+  def lecturer_permissions?
+    admin? || lecturer?
+  end
+
+  def lecturer?
+    user.lecturer_of_any_term?
+  end
+
   def self?
     record == user
   end

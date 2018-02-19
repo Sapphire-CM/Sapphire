@@ -3,9 +3,9 @@
 <%= render "terms/sidebar", term: @term %>
 <%= render "exercises/subnav", exercise: @exercise %>
 
-<%= cache [@exercise, @submission.submission_evaluation] do %>
-  <h4>You have reached <%= @submission.submission_evaluation.evaluation_result %> out of <%= pluralize @exercise.achievable_points, "point" %></h4>
+<%= cache @submission_review do %>
+  <h4>You have reached <%= @submission_review.points %> out of <%= points @submission_review.achievable_points %></h4>
   <hr />
 
-  <%= grading_review_evaluations(@submission) %>
+  <%= render "grading_reviews/evaluation_result", submission_review: @submission_review %>
 <% end %>

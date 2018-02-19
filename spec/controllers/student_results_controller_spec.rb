@@ -21,7 +21,7 @@ RSpec.describe StudentResultsController do
       get :index, term_id: term.id
 
       expect(response).to have_http_status(:success)
-      expect(assigns(:exercise_registrations)).to match_array(term_registration.exercise_registrations)
+      expect(assigns[:term_review].submission_reviews.map(&:exercise_registration)).to match_array(term_registration.exercise_registrations)
     end
   end
 
@@ -34,15 +34,13 @@ RSpec.describe StudentResultsController do
         submission_creation_service.save
       end
 
-      it 'assigns the requested submission as @submission' do
-
+      it 'assigns the requested submission review as @submission_review' do
         get :show, term_id: term.id, id: exercise.id
 
         expect(response).to have_http_status(:success)
-        expect(assigns[:submission]).to eq(submission)
-        expect(assigns[:submission_evaluation]).to eq(submission.submission_evaluation)
-        expect(assigns[:term]).to eq(term)
-        expect(assigns[:exercise]).to eq(exercise)
+        expect(assigns[:submission_review]).to be_a(GradingReview::SubmissionReview)
+        expect(assigns[:submission_review].submission).to eq(submission)
+        expect(assigns[:submission_review].exercise).to eq(exercise)
       end
     end
 
@@ -50,7 +48,7 @@ RSpec.describe StudentResultsController do
       it 'redirects to submission path' do
         get :show, id: exercise.id, term_id: term.id
 
-        expect(response).to redirect_to(exercise_student_submission_path(exercise))
+        expect(response).to have_http_status(:not_found)
       end
     end
   end

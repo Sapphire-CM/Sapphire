@@ -48,6 +48,8 @@ class TermsController < ApplicationController
   def edit
     @tutorial_groups = @term.tutorial_groups.ordered_by_title
     @exercises = @term.exercises
+
+    @term_registrations_awaiting_welcome = @term.term_registrations.student.waiting_for_welcome
   end
 
   def update
@@ -57,6 +59,8 @@ class TermsController < ApplicationController
         format.js
       end
     else
+      @term_registrations_awaiting_welcome = @term.term_registrations.student.waiting_for_welcome
+
       render :edit
     end
   end
@@ -70,10 +74,6 @@ class TermsController < ApplicationController
     @grading_scale_service = GradingScaleService.new(@term)
   end
 
-  def send_welcome_notifications
-    NotificationJob.welcome_notifications_for_term(@term)
-    redirect_to term_path(@term), notice: 'Welcome Notifications successfully queued for sending'
-  end
 
   private
 

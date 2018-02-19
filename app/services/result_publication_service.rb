@@ -49,7 +49,7 @@ class ResultPublicationService
   end
 
   def send_notifications!(result_publication)
-    NotificationJob.result_publication_notifications(result_publication)
+    Notification::ResultPublicationJob.perform_later(result_publication)
   end
 
   def event_service

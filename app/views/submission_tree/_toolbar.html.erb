@@ -1,12 +1,14 @@
 <div class='submission-tree-toolbar'>
   <div class='row'>
     <div class='large-8 columns '>
-      <%= link_to foundation_icon(:upload) + ' Upload', new_submission_upload_path(submission), class: "tiny button#{" disabled" unless policy(submission_upload).create?}", data: { reveal_id: "upload-modal" } %>
-      <%= link_to foundation_icon(:folder_add) + ' Folder', new_submission_folder_path(submission), class: "tiny button#{" disabled" unless policy(submission_upload).create?}", data: { reveal_id: "change-folder-modal" } %>
-      <%= link_to foundation_icon(:archive) + ' Download', blob_submission_path(submission, path: params[:path], format: :zip), class: "tiny button#{" disabled" if tree.entries.empty?}" %>
+      <%= link_to foundation_icon(:upload) + ' Upload', new_submission_upload_path(tree.submission), class: "tiny button#{" disabled" unless policy(submission_upload).create?}", data: { reveal_id: "upload-modal" } %>
+      <%= link_to foundation_icon(:folder_add) + ' Folder', new_submission_folder_path(tree.submission), class: "tiny button#{" disabled" unless policy(submission_upload).create?}", data: { reveal_id: "change-folder-modal" } %>
+      <%= link_to foundation_icon(:archive) + ' Download', blob_submission_path(tree.submission, path: params[:path], format: :zip), class: "tiny button#{" disabled" if directory.entries.empty?}" %>
     </div>
     <div class='large-4 columns text-right'>
-      <%= link_to 'Evaluate', submission_evaluation_path(submission.submission_evaluation), class: "tiny button" if policy(submission.submission_evaluation).show? %>
+      <%= link_to 'Edit', edit_submission_path(tree.submission), class: "tiny button" if policy(tree.submission).edit? %>
+      <%= link_to 'Open Viewer', submission_viewer_path(tree.submission), class: "tiny button" if policy(SubmissionViewerPolicy.policy_record_with(submission: tree.submission)).show? && tree.submission.submission_viewer? %>
+      <%= link_to 'Evaluate', submission_evaluation_path(tree.submission.submission_evaluation), class: "tiny button" if policy(tree.submission.submission_evaluation).show? %>
     </div>
   </div>
 </div>

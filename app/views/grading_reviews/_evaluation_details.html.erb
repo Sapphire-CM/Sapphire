@@ -19,7 +19,7 @@
 
 <% if submission_review.outdated? %>
   <div class='panel'>
-    <h6><%= foundation_icon(:alert) %> Outdated Submission</h6>
+    <h6><%= content_tag :span, foundation_icon(:alert), class: 'warning' %> Outdated Submission</h6>
     <p>This submission is outdated and does not contribute to the points used for grading.</p>
   </div>
 <% end %>

@@ -2,7 +2,7 @@
 
 <%= render "terms/sidebar", term: current_term %>
 
-<table class='small-12'>
+<table class='small-12 submission-list'>
   <thead>
     <tr>
       <th>Exercise</th>
@@ -13,8 +13,11 @@
   </thead>
   <tbody>
     <% @term_review.submission_reviews.each do |submission_review| %>
-      <tr>
-        <td><%= submission_review.exercise_title %></td>
+      <tr<%= " class='outdated'".html_safe if submission_review.outdated? %>>
+        <td>
+          <strong><%= submission_review.exercise_title %></strong>
+          <br> <%= submission_attempt_title(submission_review.submission) %>
+        </td>
         <td><%= submission_review.achievable_points %></td>
 
         <% if submission_review.published? %>
@@ -27,13 +30,15 @@
         <% end %>
       </tr>
     <% end %>
+  </tbody>
+  <tfoot>
     <tr>
       <td></td>
       <td></td>
       <td><%= @term_review.published_points %></td>
       <td></td>
     </tr>
-  </tbody>
+  </tfoot>
 </table>
 
 <hr />

@@ -49,7 +49,7 @@ RSpec.describe "Viewing the points overview of a term" do
       end
     end
 
-    context 'with student results', :focus do
+    context 'with student results' do
       let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
       let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
       let!(:exercise) { FactoryGirl.create(:exercise, term: term) }

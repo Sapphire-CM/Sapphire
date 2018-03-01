@@ -29,8 +29,6 @@ RSpec.describe "Viewing the points overview of a term" do
       scenario 'shows all tutorial groups and tutors' do
         visit described_path
 
-        save_and_open_page
-
         within_main do
           tutorial_groups.each do |tutorial_group|
             expect(page).to have_content(tutorial_group.title)

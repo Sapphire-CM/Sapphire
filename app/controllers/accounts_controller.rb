@@ -59,7 +59,7 @@ class AccountsController < ApplicationController
   end
 
   def new_account_params
-    params.require(:account).permit(:email, :forename, :surname, :password)
+    params.require(:account).permit(:email, :forename, :surname, :matriculation_number, :password)
   end
 
   def edit_account_params

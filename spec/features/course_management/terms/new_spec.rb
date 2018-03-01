@@ -43,27 +43,7 @@ RSpec.describe "Term Creation" do
   end
 
   describe 'with JS', js: true do
-    let!(:other_term) { FactoryGirl.create(:term, course: course) }
-
     it_behaves_like "Term Creation"
-
-    scenario 'Copying elements from previous term' do
-      visit root_path
-      within "#course_id_#{course.id}" do
-        click_link href: new_term_path(course_id: course.id)
-      end
-
-      fill_in "Title", with: "My new term"
-      check "Copy elements from previous term"
-      select other_term.title
-      check "Lecturer"
-      check "Exercises, Rating groups and Ratings"
-      check "Grading scale"
-      click_button "Save"
-
-      expect(page).to have_current_path(term_path(Term.last))
-      expect(page).to have_content("previous term is being copied in the background")
-    end
   end
 
   describe 'without JS' do

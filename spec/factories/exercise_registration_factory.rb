@@ -3,14 +3,14 @@ FactoryGirl.define do
     exercise
     term_registration
     submission { FactoryGirl.create(:submission, exercise: exercise) }
-    outdated false
+    active true
 
-    trait :recent do
-      outdated false
+    trait :active do
+      active true
     end
 
-    trait :outdated do
-      outdated true
+    trait :inactive do
+      active false
     end
   end
 end

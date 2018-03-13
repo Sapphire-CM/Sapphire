@@ -17,6 +17,6 @@ class RenameOutdatedToActiveOfSubmissions < ActiveRecord::Migration
       end
     end
 
-    remove_column :submissions, :outdated, :boolean
+    remove_column :submissions, :outdated, :boolean, default: true, null: false
   end
 end

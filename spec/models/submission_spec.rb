@@ -470,8 +470,8 @@ RSpec.describe Submission do
         subject.exercise_registrations = exercise_registrations
       end
 
-      it 'sets active to false if one exercise_registration is outdated' do
-        exercise_registrations.second.update(outdated: true)
+      it 'sets active to false if one exercise_registration is inactive' do
+        exercise_registrations.second.update(active: false)
 
         subject.active = true
         subject.update_active
@@ -479,8 +479,8 @@ RSpec.describe Submission do
         expect(subject).not_to be_active
       end
 
-      it 'sets active to true if all exercise_registration are recent' do
-        exercise_registrations.each { |er| er.update(outdated: false) }
+      it 'sets active to true if all exercise_registration are active' do
+        exercise_registrations.each { |er| er.update(active: true) }
 
         subject.active = false
         subject.update_active
@@ -502,16 +502,16 @@ RSpec.describe Submission do
       subject { FactoryGirl.create(:submission, exercise: exercise) }
 
       let(:exercise) { FactoryGirl.create(:exercise) }
-      let(:exercise_registration) { FactoryGirl.create(:exercise_registration, :outdated, exercise: exercise, submission: subject) }
+      let(:exercise_registration) { FactoryGirl.create(:exercise_registration, :inactive, exercise: exercise, submission: subject) }
 
       before :each do
         subject.exercise_registrations = [exercise_registration]
       end
 
-      it 'updates all exercise registrations to be recent' do
+      it 'updates all exercise registrations to be active' do
         subject.mark_as_active!
 
-        expect(exercise_registration.reload).to be_recent
+        expect(exercise_registration.reload).to be_active
       end
 
       it 'marks the submission as active' do

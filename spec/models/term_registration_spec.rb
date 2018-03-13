@@ -141,8 +141,8 @@ RSpec.describe TermRegistration do
         expect(subject.points).to eq(42)
       end
 
-      it 'excludes outdated exercise registrations' do
-        exercise_registrations.first.update(outdated: true)
+      it 'excludes inactive exercise registrations' do
+        exercise_registrations.first.update(active: false)
 
         subject.points = nil
         subject.update_points

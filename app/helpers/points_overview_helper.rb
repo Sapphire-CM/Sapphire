@@ -1,6 +1,6 @@
 module PointsOverviewHelper
   def exercise_result(term_registration, exercise)
-    term_registration.exercise_registrations.recent.find { |ex_reg| ex_reg.exercise_id == exercise.id }.try(:points).presence || 'na'
+    term_registration.exercise_registrations.active.find { |ex_reg| ex_reg.exercise_id == exercise.id }.try(:points).presence || 'na'
   end
 
   def submission_result(term_registration, submission)

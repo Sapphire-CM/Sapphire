@@ -4,7 +4,7 @@ describe ExerciseRegistration do
   describe 'db columns' do
     it { is_expected.to have_db_column(:points).of_type(:integer) }
     it { is_expected.to have_db_column(:individual_subtractions).of_type(:integer) }
-    it { is_expected.to have_db_column(:outdated).of_type(:boolean).with_options(null: false, default: false) }
+    it { is_expected.to have_db_column(:active).of_type(:boolean).with_options(null: false, default: true) }
     it { is_expected.to have_db_column(:created_at).of_type(:datetime) }
     it { is_expected.to have_db_column(:updated_at).of_type(:datetime) }
   end
@@ -27,21 +27,21 @@ describe ExerciseRegistration do
   end
 
   describe 'scoping' do
-    describe '.recent' do
-      let!(:recent_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :recent) }
-      let!(:outdated_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :outdated) }
+    describe '.active' do
+      let!(:active_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :active) }
+      let!(:inactive_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :inactive) }
 
-      it 'returns recent exercise registrations' do
-        expect(described_class.recent).to match_array(recent_exercise_registrations)
+      it 'returns active exercise registrations' do
+        expect(described_class.active).to match_array(active_exercise_registrations)
       end
     end
 
-    describe '.outdated' do
-      let!(:recent_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :recent) }
-      let!(:outdated_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :outdated) }
+    describe '.inactive' do
+      let!(:active_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :active) }
+      let!(:inactive_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :inactive) }
 
-      it 'returns outdated exercise registrations' do
-        expect(described_class.outdated).to match_array(outdated_exercise_registrations)
+      it 'returns inactive exercise registrations' do
+        expect(described_class.inactive).to match_array(inactive_exercise_registrations)
       end
     end
   end
@@ -157,80 +157,80 @@ describe ExerciseRegistration do
       end
     end
 
-    describe 'changing outdated', :doing do
+    describe 'changing active' do
       let(:term_registration) { subject.term_registration }
       let(:submission) { subject.submission }
 
-      context 'on recent exercise registration' do
-        subject { FactoryGirl.create(:exercise_registration, :recent, points: 21) }
+      context 'on active exercise registration' do
+        subject { FactoryGirl.create(:exercise_registration, :active, points: 21) }
 
         it 'calls #update_points! on term_registration' do
           expect(term_registration).to receive(:update_points!)
 
-          subject.update(outdated: true)
+          subject.update(active: false)
         end
 
         it 'calls #update_active! on submission' do
           expect(submission).to receive(:update_active!)
 
-          subject.update(outdated: true)
+          subject.update(active: false)
         end
 
-        it 'does not call #update_points! on term_registration if outdated does not change' do
+        it 'does not call #update_points! on term_registration if active does not change' do
           expect(term_registration).not_to receive(:update_points!)
 
-          subject.update(outdated: false)
+          subject.update(active: true)
         end
 
-        it 'does not call #update_active! on submission if outdated does not change' do
+        it 'does not call #update_active! on submission if active does not change' do
           expect(submission).not_to receive(:update_active!)
 
-          subject.update(outdated: false)
+          subject.update(active: true)
         end
       end
 
-      context 'on outdated exercise registration' do
-        subject { FactoryGirl.create(:exercise_registration, :outdated, points: 21) }
+      context 'on inactive exercise registration' do
+        subject { FactoryGirl.create(:exercise_registration, :inactive, points: 21) }
 
-        let!(:similar_exercise_registration) { FactoryGirl.create(:exercise_registration, :recent, exercise: subject.exercise, term_registration: subject.term_registration) }
-        let!(:exercise_registration_with_different_exercise) { FactoryGirl.create(:exercise_registration, :recent, term_registration: subject.term_registration) }
-        let!(:exercise_registration_with_different_term_registration) { FactoryGirl.create(:exercise_registration, :recent, term_registration: subject.term_registration) }
+        let!(:similar_exercise_registration) { FactoryGirl.create(:exercise_registration, :active, exercise: subject.exercise, term_registration: subject.term_registration) }
+        let!(:exercise_registration_with_different_exercise) { FactoryGirl.create(:exercise_registration, :active, term_registration: subject.term_registration) }
+        let!(:exercise_registration_with_different_term_registration) { FactoryGirl.create(:exercise_registration, :active, term_registration: subject.term_registration) }
 
         it 'calls #update_points! on term_registration' do
           expect(term_registration).to receive(:update_points!)
 
-          subject.update(outdated: false)
+          subject.update(active: true)
         end
 
         it 'calls #update_active! on submission' do
           expect(submission).to receive(:update_active!)
 
-          subject.update(outdated: false)
+          subject.update(active: true)
         end
 
-        it 'updates similar exercise registrations to be outdated' do
-          subject.update(outdated: false)
+        it 'updates similar exercise registrations to be inactive' do
+          subject.update(active: true)
 
-          expect(similar_exercise_registration.reload).to be_outdated
+          expect(similar_exercise_registration.reload).to be_inactive
         end
 
-        it 'does not call #update_points! on term_registration if outdated does not change' do
+        it 'does not call #update_points! on term_registration if active does not change' do
           expect(term_registration).not_to receive(:update_points!)
 
-          subject.update(outdated: true)
+          subject.update(active: false)
         end
 
-        it 'does not call #update_active! on submission if outdated does not change' do
+        it 'does not call #update_active! on submission if active does not change' do
           expect(submission).not_to receive(:update_active!)
 
-          subject.update(outdated: true)
+          subject.update(active: false)
         end
 
         it 'does not update unrelated exercise registrations' do
-          subject.update(outdated: false)
+          subject.update(active: true)
 
-          expect(exercise_registration_with_different_exercise.reload).to be_recent
-          expect(exercise_registration_with_different_term_registration.reload).to be_recent
+          expect(exercise_registration_with_different_exercise.reload).to be_active
+          expect(exercise_registration_with_different_term_registration.reload).to be_active
         end
       end
     end
@@ -350,17 +350,17 @@ describe ExerciseRegistration do
       end
     end
 
-    describe '#recent?', :doing do
-      it 'returns false if outdated is set to true' do
-        subject.outdated = true
+    describe '#inactive?' do
+      it 'returns false if active is set to true' do
+        subject.active = true
 
-        expect(subject).not_to be_recent
+        expect(subject.inactive?).to be_falsey
       end
 
-      it 'returns true if outdated is set to false' do
-        subject.outdated = false
+      it 'returns true if active is set to false' do
+        subject.active = false
 
-        expect(subject).to be_recent
+        expect(subject.inactive?).to be_truthy
       end
     end
   end

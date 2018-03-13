@@ -69,11 +69,11 @@ RSpec.describe SubmissionBulk::SubmissionsFinder do
         let(:submission_4) { FactoryGirl.create(:submission, exercise: other_exercise) }
         let!(:submissions) { [submission_1, submission_2, submission_3]}
 
-        let(:exercise_registration_1) { FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: student_term_registration_1, submission: submission_1)}
-        let(:exercise_registration_2) { FactoryGirl.create(:exercise_registration, :outdated, exercise: exercise, term_registration: student_term_registration_2, submission: submission_2)}
-        let(:exercise_registration_3) { FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: student_term_registration_2, submission: submission_4)}
-        let(:exercise_registration_4) { FactoryGirl.create(:exercise_registration, :outdated, exercise: exercise, term_registration: student_term_registration_1, submission: submission_3)}
-        let(:exercise_registration_5) { FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: student_term_registration_3, submission: submission_4)}
+        let(:exercise_registration_1) { FactoryGirl.create(:exercise_registration, :active, exercise: exercise, term_registration: student_term_registration_1, submission: submission_1)}
+        let(:exercise_registration_2) { FactoryGirl.create(:exercise_registration, :inactive, exercise: exercise, term_registration: student_term_registration_2, submission: submission_2)}
+        let(:exercise_registration_3) { FactoryGirl.create(:exercise_registration, :active, exercise: exercise, term_registration: student_term_registration_2, submission: submission_4)}
+        let(:exercise_registration_4) { FactoryGirl.create(:exercise_registration, :inactive, exercise: exercise, term_registration: student_term_registration_1, submission: submission_3)}
+        let(:exercise_registration_5) { FactoryGirl.create(:exercise_registration, :active, exercise: exercise, term_registration: student_term_registration_3, submission: submission_4)}
 
         let!(:exercise_registrations) { [exercise_registration_1, exercise_registration_2, exercise_registration_3] }
         let!(:other_exercise_registrations) { [exercise_registration_4, exercise_registration_5] }

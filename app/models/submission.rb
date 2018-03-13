@@ -1,12 +1,12 @@
 # create_table :submissions, force: :cascade do |t|
 #   t.integer  :exercise_id
 #   t.datetime :submitted_at
-#   t.datetime :created_at,                          null: false
-#   t.datetime :updated_at,                          null: false
+#   t.datetime :created_at,                         null: false
+#   t.datetime :updated_at,                         null: false
 #   t.integer  :submitter_id
 #   t.integer  :student_group_id
 #   t.integer  :exercise_attempt_id
-#   t.boolean  :active,              default: false, null: false
+#   t.boolean  :active,              default: true, null: false
 # end
 #
 # add_index :submissions, [:exercise_attempt_id], name: :index_submissions_on_exercise_attempt_id
@@ -99,7 +99,7 @@ class Submission < ActiveRecord::Base
   end
 
   def update_active
-    self.active = !(exercise_registrations.outdated.exists?)
+    self.active = !(exercise_registrations.inactive.exists?)
   end
 
   def update_active!
@@ -109,7 +109,7 @@ class Submission < ActiveRecord::Base
 
   def mark_as_active!
     exercise_registrations(true).find_each do |exercise_registration|
-      exercise_registration.update(outdated: false)
+      exercise_registration.update(active: true)
     end
   end
 

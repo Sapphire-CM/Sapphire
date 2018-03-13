@@ -21,7 +21,7 @@ FactoryGirl.define do
       end
 
       after(:create) do |instance, evaluator|
-        create_list(:exercise_registration, evaluator.exercise_registrations_count, exercise: instance.exercise, outdated: instance.inactive?, submission: instance)
+        create_list(:exercise_registration, evaluator.exercise_registrations_count, exercise: instance.exercise, active: instance.active?, submission: instance)
       end
     end
 

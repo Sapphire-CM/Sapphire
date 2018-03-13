@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180313151812) do
+ActiveRecord::Schema.define(version: 20180313211635) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -117,10 +117,10 @@ ActiveRecord::Schema.define(version: 20180313151812) do
     t.integer  "term_registration_id"
     t.integer  "submission_id"
     t.integer  "points"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.integer  "individual_subtractions"
-    t.boolean  "outdated"
+    t.boolean  "active",                  default: true, null: false
   end
 
   add_index "exercise_registrations", ["exercise_id"], name: "index_exercise_registrations_on_exercise_id"
@@ -357,12 +357,12 @@ ActiveRecord::Schema.define(version: 20180313151812) do
   create_table "submissions", force: :cascade do |t|
     t.integer  "exercise_id"
     t.datetime "submitted_at"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "submitter_id"
     t.integer  "student_group_id"
     t.integer  "exercise_attempt_id"
-    t.boolean  "active",              default: false, null: false
+    t.boolean  "active",              default: true, null: false
   end
 
   add_index "submissions", ["exercise_attempt_id"], name: "index_submissions_on_exercise_attempt_id"

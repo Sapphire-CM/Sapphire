@@ -17,10 +17,10 @@
   </div>
 <% end %>
 
-<% if submission_review.outdated? %>
+<% if submission_review.inactive? %>
   <div class='panel'>
-    <h6><%= content_tag :span, foundation_icon(:alert), class: 'warning' %> Outdated Submission</h6>
-    <p>This submission is outdated and does not contribute to the points used for grading.</p>
+    <h6><%= content_tag :span, foundation_icon(:alert), class: 'warning' %> Inactive Submission</h6>
+    <p>This submission is inactive and does not contribute to the points used for grading.</p>
   </div>
 <% end %>
 

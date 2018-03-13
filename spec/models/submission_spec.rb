@@ -5,7 +5,7 @@ RSpec.describe Submission do
 
   describe 'db columns' do
     it { is_expected.to have_db_column(:submitted_at).of_type(:datetime) }
-    it { is_expected.to have_db_column(:outdated).of_type(:boolean).with_options(null: false, default: false) }
+    it { is_expected.to have_db_column(:active).of_type(:boolean).with_options(null: false, default: true) }
 
     it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
     it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
@@ -63,21 +63,21 @@ RSpec.describe Submission do
       end
     end
 
-    describe '.current' do
-      let!(:outdated_submissions) { FactoryGirl.create_list(:submission, 3, :outdated) }
-      let!(:current_submissions) { FactoryGirl.create_list(:submission, 3) }
+    describe '.active' do
+      let!(:inactive_submissions) { FactoryGirl.create_list(:submission, 3, :inactive) }
+      let!(:active_submissions) { FactoryGirl.create_list(:submission, 3, :active) }
 
-      it 'returns non-outdated submissions' do
-        expect(Submission.current).to match_array(current_submissions)
+      it 'returns active submissions' do
+        expect(Submission.active).to match_array(active_submissions)
       end
     end
 
-    describe '.outdated' do
-      let!(:outdated_submissions) { FactoryGirl.create_list(:submission, 3, :outdated) }
-      let!(:current_submissions) { FactoryGirl.create_list(:submission, 3) }
+    describe '.inactive' do
+      let!(:inactive_submissions) { FactoryGirl.create_list(:submission, 3, :inactive) }
+      let!(:active_submissions) { FactoryGirl.create_list(:submission, 3, :active) }
 
-      it 'returns outdated submissions' do
-        expect(Submission.outdated).to match_array(outdated_submissions)
+      it 'returns inactive submissions' do
+        expect(Submission.inactive).to match_array(inactive_submissions)
       end
     end
 
@@ -212,7 +212,7 @@ RSpec.describe Submission do
 
     describe 'after_update' do
       describe 'changing #outdated', :doing do
-        subject { FactoryGirl.create(:submission, exercise: exercise) }
+        subject { FactoryGirl.create(:submission, :inactive, exercise: exercise) }
 
         let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, submission: subject, term_registration: term_registration) }
 
@@ -220,10 +220,10 @@ RSpec.describe Submission do
           subject.exercise_registrations = [exercise_registration]
 
           expect(term_registration).to receive(:update_points!)
-          subject.update(outdated: true)
+          subject.update(active: true)
 
           expect(term_registration).to receive(:update_points!)
-          subject.update(outdated: false)
+          subject.update(active: false)
         end
 
         it 'does not call #update_points if outdated does not change' do
@@ -309,17 +309,17 @@ RSpec.describe Submission do
       end
     end
 
-    describe '#recent?' do
-      it 'returns true if subject is not outdated' do
-        subject.outdated = false
+    describe '#inactive?' do
+      it 'returns true if subject is not active' do
+        subject.active = false
 
-        expect(subject.recent?).to be_truthy
+        expect(subject.inactive?).to be_truthy
       end
 
-      it 'returns false if subject is not outdated' do
-        subject.outdated = true
+      it 'returns false if subject is active' do
+        subject.active = true
 
-        expect(subject.recent?).to be_falsey
+        expect(subject.inactive?).to be_falsey
       end
     end
 
@@ -351,17 +351,17 @@ RSpec.describe Submission do
       let(:term) { FactoryGirl.build(:term, course: course) }
       let(:exercise) { FactoryGirl.build(:exercise, term: term) }
 
-      subject { FactoryGirl.build(:submission, exercise: exercise, outdated: false) }
+      subject { FactoryGirl.build(:submission, :active, exercise: exercise) }
 
       before :each do
         allow(exercise).to receive(:before_late_deadline?).and_return(true)
       end
 
       it 'returns true if submission is modifiable' do
-        expect(subject).to receive(:outdated?).and_return(false)
-        expect(exercise).to receive(:before_late_deadline?).and_return(true)
-        expect(exercise).to receive(:enable_student_uploads?).and_return(true)
-        expect(course).to receive(:locked?).and_return(false)
+        allow(subject).to receive(:active?).and_return(true)
+        allow(exercise).to receive(:before_late_deadline?).and_return(true)
+        allow(exercise).to receive(:enable_student_uploads?).and_return(true)
+        allow(course).to receive(:locked?).and_return(false)
 
         expect(subject.modifiable_by_students?).to be_truthy
       end
@@ -369,7 +369,7 @@ RSpec.describe Submission do
       it 'returns false if submission is outdated' do
         expect(subject.modifiable_by_students?).to be_truthy
 
-        subject.outdated = true
+        subject.active = false
 
         expect(subject.modifiable_by_students?).to be_falsey
       end
@@ -461,7 +461,7 @@ RSpec.describe Submission do
       end
     end
 
-    describe '#update_outdated' do
+    describe '#update_active' do
       subject { FactoryGirl.create(:submission) }
 
       let(:exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 3, submission: subject, exercise: subject.exercise) }
@@ -470,35 +470,35 @@ RSpec.describe Submission do
         subject.exercise_registrations = exercise_registrations
       end
 
-      it 'sets outdated to true if one exercise_registration is outdated' do
+      it 'sets active to false if one exercise_registration is outdated' do
         exercise_registrations.second.update(outdated: true)
 
-        subject.outdated = false
-        subject.update_outdated
+        subject.active = true
+        subject.update_active
 
-        expect(subject).to be_outdated
+        expect(subject).not_to be_active
       end
 
-      it 'sets outdated to true if all exercise_registration are recent' do
+      it 'sets active to true if all exercise_registration are recent' do
         exercise_registrations.each { |er| er.update(outdated: false) }
 
-        subject.outdated = true
-        subject.update_outdated
+        subject.active = false
+        subject.update_active
 
-        expect(subject).not_to be_outdated
+        expect(subject).to be_active
       end
     end
 
-    describe '#update_outdated!' do
-      it 'calls #update_outdated then #save!' do
-        expect(subject).to receive(:update_outdated).ordered
+    describe '#update_active!' do
+      it 'calls #update_active then #save!' do
+        expect(subject).to receive(:update_active).ordered
         expect(subject).to receive(:save!).ordered
 
-        subject.update_outdated!
+        subject.update_active!
       end
     end
 
-    describe '#mark_as_recent!' do
+    describe '#mark_as_active!' do
       subject { FactoryGirl.create(:submission, exercise: exercise) }
 
       let(:exercise) { FactoryGirl.create(:exercise) }
@@ -509,10 +509,17 @@ RSpec.describe Submission do
       end
 
       it 'updates all exercise registrations to be recent' do
-        subject.mark_as_recent!
+        subject.mark_as_active!
 
         expect(exercise_registration.reload).to be_recent
-        expect(subject.reload).to be_recent
+      end
+
+      it 'marks the submission as active' do
+        subject.active = false
+
+        subject.mark_as_active!
+
+        expect(subject).to be_active
       end
     end
   end

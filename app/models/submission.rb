@@ -5,8 +5,8 @@
 #   t.datetime :updated_at,                          null: false
 #   t.integer  :submitter_id
 #   t.integer  :student_group_id
-#   t.boolean  :outdated,            default: false, null: false
 #   t.integer  :exercise_attempt_id
+#   t.boolean  :active,              default: false, null: false
 # end
 #
 # add_index :submissions, [:exercise_attempt_id], name: :index_submissions_on_exercise_attempt_id
@@ -51,20 +51,21 @@ class Submission < ActiveRecord::Base
   scope :with_evaluation, lambda { joins(:submission_evaluation).merge(SubmissionEvaluation.evaluated) }
   scope :ordered_by_student_group, lambda { references(:student_groups).joins(:student_group).order('student_groups.title ASC') }
   scope :ordered_by_exercises, lambda { references(:exercises).joins(:exercise).order { exercises.row_order } }
-  scope :current, lambda { where(outdated: false) }
-  scope :outdated, lambda { where(outdated: true) }
+
+  scope :active, lambda { where(active: true) }
+  scope :inactive, lambda { where(active: false) }
 
   accepts_nested_attributes_for :exercise_registrations, allow_destroy: true, reject_if: :all_blank
 
   after_create :create_submission_evaluation!
-  after_update :update_term_registration_points!, if: :outdated_changed?
+  after_update :update_term_registration_points!, if: :active_changed?
 
   def self.find_by_account_and_exercise(account, exercise)
     for_account(account).find_by(exercise: exercise)
   end
 
   def modifiable_by_students?
-    !outdated? && exercise.enable_student_uploads? && exercise.before_late_deadline? && exercise.term.course.unlocked?
+    active? && exercise.enable_student_uploads? && exercise.before_late_deadline? && exercise.term.course.unlocked?
   end
 
   def evaluated?
@@ -83,8 +84,8 @@ class Submission < ActiveRecord::Base
     submission_assets.any? { |sa| sa.changed? || sa.new_record? || sa.marked_for_destruction? }
   end
 
-  def recent?
-    !outdated?
+  def inactive?
+    !active?
   end
 
   def tree
@@ -97,16 +98,16 @@ class Submission < ActiveRecord::Base
     end
   end
 
-  def update_outdated
-    self.outdated = exercise_registrations.outdated.exists?
+  def update_active
+    self.active = !(exercise_registrations.outdated.exists?)
   end
 
-  def update_outdated!
-    update_outdated
+  def update_active!
+    update_active
     save!
   end
 
-  def mark_as_recent!
+  def mark_as_active!
     exercise_registrations(true).find_each do |exercise_registration|
       exercise_registration.update(outdated: false)
     end

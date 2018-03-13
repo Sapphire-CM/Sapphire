@@ -81,15 +81,15 @@ RSpec.feature 'Grading Review Page' do
         end
       end
 
-      scenario 'marking outdated submissions', js: true do
-        submission.update(outdated: true)
+      scenario 'marking inactive submissions', js: true do
+        submission.update(active: false)
 
         visit described_path
 
         within_main do
           click_link 'Overview'
 
-          within 'table tr.outdated' do
+          within 'table tr.inactive' do
             expect(page).to have_content(exercise.title)
           end
         end
@@ -163,15 +163,15 @@ RSpec.feature 'Grading Review Page' do
         end
       end
 
-      scenario 'indicates outdatedness', js: true do
-        submission.update(outdated: true)
+      scenario 'indicates inactiveness', js: true do
+        submission.update(active: false)
 
         visit described_path
 
         within_main do
           click_link exercise.title
 
-          expect(page).to have_content("Outdated Submission")
+          expect(page).to have_content("Inactive Submission")
         end
       end
 

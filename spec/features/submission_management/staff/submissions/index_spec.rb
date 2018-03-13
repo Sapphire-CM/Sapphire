@@ -157,7 +157,7 @@ RSpec.feature 'Managing submissions as a staff member' do
     end
 
     describe 'table contents' do
-      let!(:submission) { FactoryGirl.create(:submission, :recent, exercise: exercise, submitted_at: submission_date, exercise_attempt: exercise_attempt) }
+      let!(:submission) { FactoryGirl.create(:submission, :active, exercise: exercise, submitted_at: submission_date, exercise_attempt: exercise_attempt) }
       let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, :recent, exercise: exercise, submission: submission, term_registration: student_term_registration) }
       let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, :with_student_group, term: term, tutorial_group: tutorial_group) }
 
@@ -223,14 +223,14 @@ RSpec.feature 'Managing submissions as a staff member' do
         let(:exercise_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
         let(:student_term_registration) { FactoryGirl.create(:term_registration, :student, :with_student_group, term: term, tutorial_group: tutorial_group) }
 
-        let!(:outdated_submission) { FactoryGirl.create(:submission, :outdated, exercise: exercise, submitted_at: submission_date, exercise_attempt: exercise_attempt) }
-        let!(:outdated_exercise_registration) { FactoryGirl.create(:exercise_registration, :outdated, exercise: exercise, submission: outdated_submission, term_registration: student_term_registration) }
+        let!(:inactive_submission) { FactoryGirl.create(:submission, :inactive, exercise: exercise, submitted_at: submission_date, exercise_attempt: exercise_attempt) }
+        let!(:outdated_exercise_registration) { FactoryGirl.create(:exercise_registration, :outdated, exercise: exercise, submission: inactive_submission, term_registration: student_term_registration) }
 
-        scenario 'indicate outdatedness' do
+        scenario 'indicate inactiveness' do
           visit described_path
 
           within '.submission-list' do
-            expect(page).to have_css("tr.outdated", count: 1)
+            expect(page).to have_css("tr.inactive", count: 1)
           end
         end
       end

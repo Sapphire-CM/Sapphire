@@ -135,7 +135,7 @@ RSpec.describe GradingReview::TermReview do
       it 'excludes outdated submissions' do
         exercises.flat_map(&:result_publications).each(&:publish!)
 
-        submissions.second.update(outdated: true)
+        submissions.second.update(active: false)
 
         exercise_registrations.first.update(points: 15)
         exercise_registrations.second.update(points: 42)

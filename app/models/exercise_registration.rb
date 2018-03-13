@@ -3,10 +3,10 @@
 #   t.integer  :term_registration_id
 #   t.integer  :submission_id
 #   t.integer  :points
-#   t.datetime :created_at,                              null: false
-#   t.datetime :updated_at,                              null: false
+#   t.datetime :created_at,              null: false
+#   t.datetime :updated_at,              null: false
 #   t.integer  :individual_subtractions
-#   t.boolean  :outdated,                default: false, null: false
+#   t.boolean  :outdated
 # end
 #
 # add_index :exercise_registrations, [:exercise_id], name: :index_exercise_registrations_on_exercise_id
@@ -31,7 +31,7 @@ class ExerciseRegistration < ActiveRecord::Base
   after_update :mark_similar_as_outdated!, if: [:recent?, :outdated_changed?]
 
   after_save :update_term_registration_points, if: lambda { |er| er.points_changed? || er.outdated_changed? }
-  after_save :update_submission_outdated, if: :outdated_changed?
+  after_save :update_submission_active, if: :outdated_changed?
   after_update :update_points_of_changed_term_registrations, if: lambda { |exercise_registration| exercise_registration.term_registration_id_changed? }
   after_destroy :update_term_registration_points
 
@@ -78,8 +78,8 @@ class ExerciseRegistration < ActiveRecord::Base
     end
   end
 
-  def update_submission_outdated
-    submission.update_outdated!
+  def update_submission_active
+    submission.update_active!
   end
 
   def update_points_before_save

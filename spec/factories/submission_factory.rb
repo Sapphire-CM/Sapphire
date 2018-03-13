@@ -3,7 +3,7 @@ FactoryGirl.define do
     submitted_at { Time.now }
     exercise
     association :submitter, factory: :account
-    outdated false
+    active true
 
     trait :with_student_group do
       transient do
@@ -21,7 +21,7 @@ FactoryGirl.define do
       end
 
       after(:create) do |instance, evaluator|
-        create_list(:exercise_registration, evaluator.exercise_registrations_count, exercise: instance.exercise, outdated: instance.outdated, submission: instance)
+        create_list(:exercise_registration, evaluator.exercise_registrations_count, exercise: instance.exercise, outdated: instance.inactive?, submission: instance)
       end
     end
 
@@ -35,12 +35,12 @@ FactoryGirl.define do
       end
     end
 
-    trait :recent do
-      outdated false
+    trait :active do
+      active true
     end
 
-    trait :outdated do
-      outdated true
+    trait :inactive do
+      active false
     end
 
     trait :without_submission_evaluation do

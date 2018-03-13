@@ -271,19 +271,19 @@ RSpec.describe SubmissionBulk::Item do
           expect(submission_evaluation.evaluator).to eq(account)
         end
 
-        it 'calls #mark_as_recent! on existing submission if it is outdated' do
-          expect(submission).to receive(:mark_as_recent!)
+        it 'calls #mark_as_active! on existing submission if it is inactive' do
+          expect(submission).to receive(:mark_as_active!)
 
-          submission.outdated = true
+          submission.active = false
 
           subject.submission = submission
           subject.save
         end
 
-        it 'does not call #mark_as_recent! on existing submission if it is recent' do
-          expect(submission).not_to receive(:mark_as_recent!)
+        it 'does not call #mark_as_active! on existing submission if it is active' do
+          expect(submission).not_to receive(:mark_as_active!)
 
-          submission.outdated = false
+          submission.active = true
 
           subject.submission = submission
           subject.save

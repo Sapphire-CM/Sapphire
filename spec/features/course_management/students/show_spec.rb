@@ -112,28 +112,28 @@ RSpec.describe "Viewing students" do
       end
     end
 
-    scenario 'indicates outdated submissions' do
-      submission.update(outdated: true)
+    scenario 'indicates inactive submissions' do
+      submission.update(active: false)
 
       visit described_path
 
       within_main do
         within "table.submission-list" do
-          expect(page).to have_css("tr.outdated", count: 1)
+          expect(page).to have_css("tr.inactive", count: 1)
         end
       end
     end
 
-    scenario 'shows the result of outdated submissions' do
+    scenario 'shows the result of inactive submissions' do
       submission.reload
       exercise.update(enable_max_total_points: true, max_total_points: 50)
       submission_evaluation.update(evaluation_result: 40)
-      submission.update(outdated: true)
+      submission.update(active: false)
 
       visit described_path
 
       within_main do
-        within "table.submission-list tr.outdated" do
+        within "table.submission-list tr.inactive" do
           expect(page).to have_content("40 / 50")
         end
       end

@@ -242,7 +242,7 @@ RSpec.feature 'Managing submissions as a staff member' do
       scenario 'shows link to bulk operations' do
         visit described_path
 
-        expect(page).to have_link("Bulk Operation", href: new_exercise_submission_bulk_path(exercise))
+        expect(page).to have_link("Bulk Grading")
       end
     end
 
@@ -252,7 +252,7 @@ RSpec.feature 'Managing submissions as a staff member' do
       scenario 'shows link to bulk operations' do
         visit described_path
 
-        expect(page).not_to have_link("Bulk Operation", href: new_exercise_submission_bulk_path(exercise))
+        expect(page).not_to have_link("Bulk Grading")
       end
     end
   end

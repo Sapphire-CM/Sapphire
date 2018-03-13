@@ -1,4 +1,4 @@
-class SubmissionBulk::Evaluation
+class BulkGradings::Evaluation
   include ActiveModel::Model
   include ActiveModel::Validations
 

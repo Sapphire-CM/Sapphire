@@ -132,7 +132,7 @@ RSpec.describe GradingReview::TermReview do
         expect(subject.published_points).to eq(42)
       end
 
-      it 'excludes outdated submissions' do
+      it 'excludes inactive submissions' do
         exercises.flat_map(&:result_publications).each(&:publish!)
 
         submissions.second.update(active: false)

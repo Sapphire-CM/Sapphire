@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe SubmissionBulk::Item do
+RSpec.describe BulkGradings::Item, :doing do
   let(:account) { instance_double(Account) }
   let(:exercise) { instance_double(Exercise) }
-  let(:bulk) { instance_double(SubmissionBulk::Bulk, account: account, exercise: exercise) }
+  let(:bulk) { instance_double(BulkGradings::Bulk, account: account, exercise: exercise) }
 
   describe 'initialization' do
     let(:subject_id) { 42 }
@@ -70,7 +70,7 @@ RSpec.describe SubmissionBulk::Item do
 
     describe 'subject uniqueness' do
       let(:exercise) { FactoryGirl.build(:exercise) }
-      let(:bulk) { SubmissionBulk::Bulk.new(exercise: exercise) }
+      let(:bulk) { BulkGradings::Bulk.new(exercise: exercise) }
 
       let(:subject_1) { instance_double(TermRegistration, id: 1) }
       let(:subject_2) { instance_double(TermRegistration, id: 2) }
@@ -156,13 +156,13 @@ RSpec.describe SubmissionBulk::Item do
 
       subject { described_class.new(bulk: bulk) }
 
-      it 'returns an array of SubmissionBulk::Evaluations with correct attributes set' do
+      it 'returns an array of BulkGradings::Evaluations with correct attributes set' do
         allow(bulk).to receive(:ratings).and_return(ratings)
 
         subject.evaluations.zip(ratings) do |evaluation_and_rating|
           evaluation, rating = evaluation_and_rating
 
-          expect(evaluation).to be_a(SubmissionBulk::Evaluation)
+          expect(evaluation).to be_a(BulkGradings::Evaluation)
           expect(evaluation.item).to eq(subject)
           expect(evaluation.rating).to eq(rating)
         end
@@ -181,12 +181,12 @@ RSpec.describe SubmissionBulk::Item do
       let(:evaluation_attributes_1) { {rating_id: "21", value: "0"} }
       let(:evaluation_attributes_2) { {rating_id: "23", value: "2"} }
 
-      let(:evaluation_1) { instance_double(SubmissionBulk::Evaluation) }
-      let(:evaluation_2) { instance_double(SubmissionBulk::Evaluation) }
+      let(:evaluation_1) { instance_double(BulkGradings::Evaluation) }
+      let(:evaluation_2) { instance_double(BulkGradings::Evaluation) }
 
       it 'builds evaluations based on given attributes' do
-        expect(SubmissionBulk::Evaluation).to receive(:new).with(evaluation_attributes_1.merge(item: subject)).and_return(evaluation_1)
-        expect(SubmissionBulk::Evaluation).to receive(:new).with(evaluation_attributes_2.merge(item: subject)).and_return(evaluation_2)
+        expect(BulkGradings::Evaluation).to receive(:new).with(evaluation_attributes_1.merge(item: subject)).and_return(evaluation_1)
+        expect(BulkGradings::Evaluation).to receive(:new).with(evaluation_attributes_2.merge(item: subject)).and_return(evaluation_2)
 
         subject.evaluations_attributes = {"1" => evaluation_attributes_1, "2" => evaluation_attributes_2}
 
@@ -280,8 +280,8 @@ RSpec.describe SubmissionBulk::Item do
           subject.save
         end
 
-        it 'does not call #mark_as_active! on existing submission if it is active' do
-          expect(submission).not_to receive(:mark_as_active!)
+        it 'calls #mark_as_active! on existing submission if it is active' do
+          expect(submission).to receive(:mark_as_active!)
 
           submission.active = true
 

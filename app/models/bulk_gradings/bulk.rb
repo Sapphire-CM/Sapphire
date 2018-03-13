@@ -1,4 +1,4 @@
-class SubmissionBulk::Bulk
+class BulkGradings::Bulk
   include ActiveModel::Model
   include ActiveModel::Validations
 
@@ -14,7 +14,7 @@ class SubmissionBulk::Bulk
 
   def items_attributes=(item_attributes)
     @items = item_attributes.map do |id, attributes|
-      ::SubmissionBulk::Item.new({bulk: self}.merge(attributes))
+      BulkGradings::Item.new({bulk: self}.merge(attributes))
     end
 
     set_missing_subjects!
@@ -55,11 +55,11 @@ class SubmissionBulk::Bulk
   end
 
   def blank_item
-    SubmissionBulk::Item.new({bulk: self})
+    BulkGradings::Item.new({bulk: self})
   end
 
   def save
-    raise ::SubmissionBulk::BulkNotValid unless valid?
+    raise ::BulkGradings::BulkNotValid unless valid?
 
     set_existing_submissions!
     filled_items.each(&:save)
@@ -89,11 +89,11 @@ class SubmissionBulk::Bulk
   end
 
   def subjects_finder
-    SubmissionBulk::SubjectsFinder.new(exercise: exercise)
+    BulkGradings::SubjectsFinder.new(exercise: exercise)
   end
 
   def submission_finder
-    SubmissionBulk::SubmissionsFinder.new(exercise: exercise, exercise_attempt: exercise_attempt)
+    BulkGradings::SubmissionsFinder.new(exercise: exercise, exercise_attempt: exercise_attempt)
   end
 
   def validate_items

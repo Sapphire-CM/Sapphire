@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe SubmissionBulk::Evaluation do
+RSpec.describe BulkGradings::Evaluation, :doing do
   describe 'initialization' do
     let(:rating) { instance_double(Rating) }
     let(:value) { 42 }
-    let(:item) { instance_double(SubmissionBulk::Item) }
+    let(:item) { instance_double(BulkGradings::Item) }
 
     it 'sets given attributes' do
       subject = described_class.new({rating: rating, value: value, item: item})
@@ -65,8 +65,8 @@ RSpec.describe SubmissionBulk::Evaluation do
   end
 
   describe 'methods' do
-    let(:bulk) { instance_double(SubmissionBulk::Bulk) }
-    let(:item) { instance_double(SubmissionBulk::Item, bulk: bulk) }
+    let(:bulk) { instance_double(BulkGradings::Bulk) }
+    let(:item) { instance_double(BulkGradings::Item, bulk: bulk) }
 
     describe '#rating_id=' do
       subject { described_class.new(item: item) }
@@ -170,8 +170,8 @@ RSpec.describe SubmissionBulk::Evaluation do
       let(:rating) { ratings.second }
       let(:evaluation) { rating.evaluations(true).for_submission(submission).first }
 
-      let(:bulk) { SubmissionBulk::Bulk.new(exercise: exercise, account: staff_account) }
-      let(:item) { SubmissionBulk::Item.new(bulk: bulk, subject: term_registration, submission: submission) }
+      let(:bulk) { BulkGradings::Bulk.new(exercise: exercise, account: staff_account) }
+      let(:item) { BulkGradings::Item.new(bulk: bulk, subject: term_registration, submission: submission) }
 
       subject { described_class.new(item: item, rating: rating, value: 1) }
 

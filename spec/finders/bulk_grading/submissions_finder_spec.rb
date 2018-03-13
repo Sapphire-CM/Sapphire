@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SubmissionBulk::SubmissionsFinder do
+RSpec.describe BulkGradings::SubmissionsFinder, :doing do
   describe 'initialization' do
     let(:exercise) { instance_double(Exercise) }
     it 'accepts an exercise' do

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SubmissionBulk::SubjectPolicy do
+RSpec.describe BulkGradings::SubjectPolicy, :doing do
   subject { described_class.new(account, policy_record) }
 
   let(:policy_record) { described_class.policy_record_with(exercise: exercise) }

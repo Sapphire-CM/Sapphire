@@ -52,7 +52,7 @@ describe ExerciseRegistration do
   end
 
   describe 'callbacks' do
-    describe 'creation', :doing do
+    describe 'creation' do
       let(:submission) do
         FactoryGirl.create(:submission).tap do |submission|
           submission.submission_evaluation.update(evaluation_result: 20)
@@ -60,6 +60,10 @@ describe ExerciseRegistration do
       end
 
       subject { FactoryGirl.build(:exercise_registration, submission: submission, exercise: submission.exercise) }
+
+      let!(:similar_exercise_registration) { FactoryGirl.create(:exercise_registration, :active, exercise: subject.exercise, term_registration: subject.term_registration) }
+      let!(:exercise_registration_with_different_exercise) { FactoryGirl.create(:exercise_registration, :active, term_registration: subject.term_registration) }
+      let!(:exercise_registration_with_different_term_registration) { FactoryGirl.create(:exercise_registration, :active, term_registration: subject.term_registration) }
 
       it 'updates the points after create' do
         expect(subject.points).to be_nil
@@ -69,8 +73,17 @@ describe ExerciseRegistration do
         expect(subject.points).to eq(20)
       end
 
-      it 'calls #mark_as_recent!' do
+      it 'marks similar exercise registrations as inactive' do
         subject.save
+
+        expect(similar_exercise_registration.reload).to be_inactive
+      end
+
+      it 'does not mark unrelated exercise registrations as inactive' do
+        subject.save
+
+        expect(exercise_registration_with_different_exercise.reload).to be_active
+        expect(exercise_registration_with_different_term_registration.reload).to be_active
       end
     end
 
@@ -118,7 +131,7 @@ describe ExerciseRegistration do
       end
     end
 
-    describe 'changing points', :doing do
+    describe 'changing points' do
       subject { FactoryGirl.create(:exercise_registration, points: 21) }
 
       let(:term_registration) { subject.term_registration }

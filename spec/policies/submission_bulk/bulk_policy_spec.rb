@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe SubmissionBulk::BulkPolicy do
+RSpec.describe BulkGradings::BulkPolicy, :doing do
 
   subject { described_class.new(account, bulk) }
 
-  let(:bulk) { SubmissionBulk::Bulk.new(exercise: exercise, account: account) }
+  let(:bulk) { BulkGradings::Bulk.new(exercise: exercise, account: account) }
   let(:term) { exercise.term }
 
   context 'exercise allowing bulk management' do

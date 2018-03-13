@@ -1,4 +1,4 @@
-class SubmissionBulk::SubmissionsFinder
+class BulkGradings::SubmissionsFinder
   include ActiveModel::Model
 
   attr_accessor :exercise, :exercise_attempt

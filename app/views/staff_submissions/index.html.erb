@@ -10,7 +10,7 @@
     </div>
   </div>
   <div class='small-6 columns text-right'>
-      <%= link_to("Bulk Operation", new_exercise_submission_bulk_path(@exercise), class: "small primary button") if @exercise.enable_bulk_submission_management? %>
+      <%= link_to("Bulk Grading", new_exercise_bulk_grading_path(@exercise), class: "small primary button") if @exercise.enable_bulk_submission_management? %>
   </div>
 </div>
 

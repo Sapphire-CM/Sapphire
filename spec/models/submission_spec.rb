@@ -211,7 +211,7 @@ RSpec.describe Submission do
     end
 
     describe 'after_update' do
-      describe 'changing #outdated', :doing do
+      describe 'changing #active' do
         subject { FactoryGirl.create(:submission, :inactive, exercise: exercise) }
 
         let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, submission: subject, term_registration: term_registration) }
@@ -226,7 +226,7 @@ RSpec.describe Submission do
           subject.update(active: false)
         end
 
-        it 'does not call #update_points if outdated does not change' do
+        it 'does not call #update_points if active does not change' do
           expect(term_registration).not_to receive(:update_points!)
           subject.update(submitted_at: 3.days.ago)
         end
@@ -366,7 +366,7 @@ RSpec.describe Submission do
         expect(subject.modifiable_by_students?).to be_truthy
       end
 
-      it 'returns false if submission is outdated' do
+      it 'returns false if submission is inactive' do
         expect(subject.modifiable_by_students?).to be_truthy
 
         subject.active = false

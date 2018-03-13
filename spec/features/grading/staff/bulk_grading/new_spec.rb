@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe 'Submission Bulk Operations' do
+RSpec.describe 'Bulk Grading', :doing do
   let(:term) { FactoryGirl.create(:term) }
   let(:account) { FactoryGirl.create(:account) }
   let!(:term_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, account: account) }
   let!(:exercise) { FactoryGirl.create(:exercise, :bulk_operations, term: term)}
 
-  let(:described_path) { new_exercise_submission_bulk_path(exercise) }
+  let(:described_path) { new_exercise_bulk_grading_path(exercise) }
 
   before :each do
     sign_in(account)
@@ -16,7 +16,7 @@ RSpec.describe 'Submission Bulk Operations' do
     scenario 'through the submissions list' do
       visit exercise_submissions_path(exercise)
 
-      click_link "Bulk Operation"
+      click_link "Bulk Grading"
 
       expect(page).to have_current_path(described_path)
     end
@@ -27,7 +27,7 @@ RSpec.describe 'Submission Bulk Operations' do
       let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise, points: 10) }
       let!(:rating) { FactoryGirl.create(:variable_points_deduction_rating, :bulk, rating_group: rating_group) }
 
-      let(:table_css_query) { "form.submission-bulk table"}
+      let(:table_css_query) { "form.bulk-grading table"}
       let(:dropdown_css_query) { ".association-lookup-dropdown" }
       let(:success_message) { "Successfully completed" }
 

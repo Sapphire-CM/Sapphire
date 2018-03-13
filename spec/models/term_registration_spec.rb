@@ -120,7 +120,7 @@ RSpec.describe TermRegistration do
       end
     end
 
-    describe '#update_points', doing: true do
+    describe '#update_points' do
       let(:term) { FactoryGirl.create(:term) }
       let(:exercises) { FactoryGirl.create_list(:exercise, 2, term: term) }
 

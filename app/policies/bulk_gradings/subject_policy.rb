@@ -1,4 +1,4 @@
-class SubmissionBulk::SubjectPolicy < TermBasedPolicy
+class BulkGradings::SubjectPolicy < TermBasedPolicy
   def index?
     record.exercise.enable_bulk_submission_management? && (admin? || staff?(record.exercise.term))
   end

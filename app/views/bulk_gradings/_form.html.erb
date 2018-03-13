@@ -1,4 +1,4 @@
-<%= simple_form_for bulk, url: exercise_submission_bulk_path(bulk.exercise), method: :post, html: { data: { behaviour: "association-list-lookup", ensure_blank_line: true, lookup_url: exercise_submission_bulk_subjects_path(format: :json)}, class: "submission-bulk" } do |f| %>
+<%= simple_form_for bulk, url: exercise_bulk_grading_path(bulk.exercise), method: :post, html: { data: { behaviour: "association-list-lookup", ensure_blank_line: true, lookup_url: exercise_bulk_grading_subjects_path(format: :json)}, class: "bulk-grading" } do |f| %>
   <% if bulk.multiple_attempts? %>
     <div class='panel'>
       <h3>Select Attempt</h3>

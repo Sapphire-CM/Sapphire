@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SubmissionBulk::Bulk do
+RSpec.describe BulkGradings::Bulk, :doing do
   let(:exercise) { instance_double(Exercise, enable_multiple_attempts?: false) }
   let(:account) { instance_double(Account) }
 
@@ -39,9 +39,9 @@ RSpec.describe SubmissionBulk::Bulk do
       end
     end
     describe 'item validation' do
-      let(:blank_item) { instance_double(SubmissionBulk::Item).tap { |item| allow(item).to receive(:values?).and_return(false) } }
-      let(:filled_item_1) { instance_double(SubmissionBulk::Item).tap { |item| allow(item).to receive(:values?).and_return(true) } }
-      let(:filled_item_2) { instance_double(SubmissionBulk::Item).tap { |item| allow(item).to receive(:values?).and_return(true) } }
+      let(:blank_item) { instance_double(BulkGradings::Item).tap { |item| allow(item).to receive(:values?).and_return(false) } }
+      let(:filled_item_1) { instance_double(BulkGradings::Item).tap { |item| allow(item).to receive(:values?).and_return(true) } }
+      let(:filled_item_2) { instance_double(BulkGradings::Item).tap { |item| allow(item).to receive(:values?).and_return(true) } }
 
       let(:items) { [filled_item_1, filled_item_2, blank_item] }
       let(:filled_items) { [filled_item_1, filled_item_2]}
@@ -156,19 +156,19 @@ RSpec.describe SubmissionBulk::Bulk do
 
       let(:items_attributes) { {"0" => item_1_attributes, "1" => item_2_attributes, "2" => item_3_attributes} }
 
-      let(:item_1) { instance_double(SubmissionBulk::Item) }
-      let(:item_2) { instance_double(SubmissionBulk::Item, subject_id: 2) }
-      let(:item_3) { instance_double(SubmissionBulk::Item) }
+      let(:item_1) { instance_double(BulkGradings::Item) }
+      let(:item_2) { instance_double(BulkGradings::Item, subject_id: 2) }
+      let(:item_3) { instance_double(BulkGradings::Item) }
 
       let(:items) { [item_1, item_2, item_3]}
 
       let(:submission_subject) { instance_double(TermRegistration, id: 2) }
-      let(:subjects_finder) { instance_double(SubmissionBulk::SubjectsFinder) }
+      let(:subjects_finder) { instance_double(BulkGradings::SubjectsFinder) }
 
       it 'initialize items with given attributes' do
-        expect(SubmissionBulk::Item).to receive(:new).with(item_1_attributes.merge(bulk: subject)).and_return(item_1)
-        expect(SubmissionBulk::Item).to receive(:new).with(item_2_attributes.merge(bulk: subject)).and_return(item_2)
-        expect(SubmissionBulk::Item).to receive(:new).with(item_3_attributes.merge(bulk: subject)).and_return(item_3)
+        expect(BulkGradings::Item).to receive(:new).with(item_1_attributes.merge(bulk: subject)).and_return(item_1)
+        expect(BulkGradings::Item).to receive(:new).with(item_2_attributes.merge(bulk: subject)).and_return(item_2)
+        expect(BulkGradings::Item).to receive(:new).with(item_3_attributes.merge(bulk: subject)).and_return(item_3)
 
         allow(item_1).to receive(:subject_id?).and_return(false)
         allow(item_2).to receive(:subject_id?).and_return(false)
@@ -180,10 +180,10 @@ RSpec.describe SubmissionBulk::Bulk do
       end
 
       it 'sets subjects for items with a subject_ids but without subject' do
-        allow(SubmissionBulk::Item).to receive(:new).with(item_1_attributes.merge(bulk: subject)).and_return(item_1)
-        allow(SubmissionBulk::Item).to receive(:new).with(item_2_attributes.merge(bulk: subject)).and_return(item_2)
-        allow(SubmissionBulk::Item).to receive(:new).with(item_3_attributes.merge(bulk: subject)).and_return(item_3)
-        allow(SubmissionBulk::SubjectsFinder).to receive(:new).and_return(subjects_finder)
+        allow(BulkGradings::Item).to receive(:new).with(item_1_attributes.merge(bulk: subject)).and_return(item_1)
+        allow(BulkGradings::Item).to receive(:new).with(item_2_attributes.merge(bulk: subject)).and_return(item_2)
+        allow(BulkGradings::Item).to receive(:new).with(item_3_attributes.merge(bulk: subject)).and_return(item_3)
+        allow(BulkGradings::SubjectsFinder).to receive(:new).and_return(subjects_finder)
         allow(item_1).to receive(:subject_id?).and_return(false)
         allow(item_2).to receive(:subject_id?).and_return(true)
         allow(item_3).to receive(:subject_id?).and_return(false)
@@ -238,7 +238,7 @@ RSpec.describe SubmissionBulk::Bulk do
     end
 
     describe '#items' do
-      let(:items) { [instance_double(SubmissionBulk::Item)] }
+      let(:items) { [instance_double(BulkGradings::Item)] }
 
       it 'returns items' do
         subject.items = items
@@ -252,8 +252,8 @@ RSpec.describe SubmissionBulk::Bulk do
     end
 
     describe '#ensure_blank!' do
-      let(:blank_item) { instance_double(SubmissionBulk::Item, :"values?" => false) }
-      let(:item_with_values) { instance_double(SubmissionBulk::Item, :"values?" => true) }
+      let(:blank_item) { instance_double(BulkGradings::Item, :"values?" => false) }
+      let(:item_with_values) { instance_double(BulkGradings::Item, :"values?" => true) }
 
       it 'adds a blank item to the collection if items are empty' do
         subject.items = []
@@ -287,10 +287,10 @@ RSpec.describe SubmissionBulk::Bulk do
     end
 
     describe '#blank_item' do
-      let(:item) { instance_double(SubmissionBulk::Item) }
+      let(:item) { instance_double(BulkGradings::Item) }
 
-      it 'returns a blank SubmissionBulk::Item' do
-        expect(SubmissionBulk::Item).to receive(:new).with(bulk: subject).and_return(item)
+      it 'returns a blank BulkGradings::Item' do
+        expect(BulkGradings::Item).to receive(:new).with(bulk: subject).and_return(item)
 
         expect(subject.blank_item).to eq(item)
       end
@@ -303,9 +303,9 @@ RSpec.describe SubmissionBulk::Bulk do
     describe '#save' do
       let(:exercise) { FactoryGirl.create(:exercise) }
 
-      let(:item_1) { instance_double(SubmissionBulk::Item, subject: subject_1) }
-      let(:item_2) { instance_double(SubmissionBulk::Item, subject: subject_2) }
-      let(:item_3) { instance_double(SubmissionBulk::Item, subject: subject_3) }
+      let(:item_1) { instance_double(BulkGradings::Item, subject: subject_1) }
+      let(:item_2) { instance_double(BulkGradings::Item, subject: subject_2) }
+      let(:item_3) { instance_double(BulkGradings::Item, subject: subject_3) }
       let(:items) { [item_1, item_2, item_3] }
 
       let(:subject_1) { instance_double(TermRegistration) }
@@ -314,7 +314,7 @@ RSpec.describe SubmissionBulk::Bulk do
       let(:subjects) { [subject_1, subject_2, subject_3]}
 
       let(:subject_2_submission) { instance_double(Submission) }
-      let(:submissions_finder) { instance_double(SubmissionBulk::SubmissionsFinder) }
+      let(:submissions_finder) { instance_double(BulkGradings::SubmissionsFinder) }
       let(:exericse_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
 
       it 'raises an error if there are validation errors' do
@@ -322,12 +322,12 @@ RSpec.describe SubmissionBulk::Bulk do
 
         expect do
           subject.save
-        end.to raise_error(SubmissionBulk::BulkNotValid)
+        end.to raise_error(BulkGradings::BulkNotValid)
       end
 
       it 'sets existing submissions on items' do
         allow(subject).to receive(:items).and_return(items)
-        allow(SubmissionBulk::SubmissionsFinder).to receive(:new).with({exercise: exercise, exercise_attempt: nil}).and_return(submissions_finder)
+        allow(BulkGradings::SubmissionsFinder).to receive(:new).with({exercise: exercise, exercise_attempt: nil}).and_return(submissions_finder)
         allow(submissions_finder).to receive(:find_submissions_for_subjects).with(subjects).and_return({subject_2 => subject_2_submission})
 
         items.each do |item|
@@ -343,7 +343,7 @@ RSpec.describe SubmissionBulk::Bulk do
 
       it 'accounts for the exercise attempt' do
         allow(subject).to receive(:items).and_return(items)
-        allow(SubmissionBulk::SubmissionsFinder).to receive(:new).with({exercise: exercise, exercise_attempt: exericse_attempt}).and_return(submissions_finder)
+        allow(BulkGradings::SubmissionsFinder).to receive(:new).with({exercise: exercise, exercise_attempt: exericse_attempt}).and_return(submissions_finder)
         allow(submissions_finder).to receive(:find_submissions_for_subjects).with(subjects).and_return({subject_2 => subject_2_submission})
 
         items.each do |item|

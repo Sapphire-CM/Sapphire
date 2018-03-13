@@ -1,13 +1,13 @@
-class SubmissionBulks::SubjectsController < ApplicationController
+class BulkGradings::SubjectsController < ApplicationController
   include ScopingHelpers
   before_action :set_context
 
   respond_to :json
 
   def index
-    authorize SubmissionBulk::SubjectPolicy.policy_record_with(exercise: @exercise)
+    authorize BulkGradings::SubjectPolicy.policy_record_with(exercise: @exercise)
 
-    finder = SubmissionBulk::SubjectsFinder.new(exercise: @exercise)
+    finder = BulkGradings::SubjectsFinder.new(exercise: @exercise)
     @subjects = finder.search(params[:q]) if params[:q].present?
   end
 

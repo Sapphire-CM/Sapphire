@@ -1,4 +1,4 @@
-class SubmissionBulk::Item
+class BulkGradings::Item
   include ActiveModel::Model
   include ActiveModel::Validations
 
@@ -32,7 +32,7 @@ class SubmissionBulk::Item
 
   def evaluations_attributes=(evaluations_attributes)
     @evaluations = evaluations_attributes.map do |id, attributes|
-      ::SubmissionBulk::Evaluation.new({item: self}.merge(attributes))
+      BulkGradings::Evaluation.new({item: self}.merge(attributes))
     end
   end
 
@@ -43,7 +43,7 @@ class SubmissionBulk::Item
       evaluations.each(&:save)
 
       submission.submission_evaluation.update(evaluated_at: Time.zone.now, evaluator: account)
-      submission.mark_as_active! unless submission.active?
+      submission.mark_as_active!
     end
   end
 
@@ -58,7 +58,7 @@ class SubmissionBulk::Item
 
   def build_new_evaluations
     ratings.map do |rating|
-      ::SubmissionBulk::Evaluation.new({item: self, rating: rating})
+      BulkGradings::Evaluation.new({item: self, rating: rating})
     end
   end
 
@@ -71,7 +71,7 @@ class SubmissionBulk::Item
   def create_submission
     service = SubmissionCreationService.new_staff_submission(account, subject, exercise)
     service.exercise_attempt = exercise_attempt if multiple_attempts?
-    raise ::SubmissionBulk::BulkNotValid unless service.save
+    raise ::BulkGradings::BulkNotValid unless service.save
     service.submission
   end
 

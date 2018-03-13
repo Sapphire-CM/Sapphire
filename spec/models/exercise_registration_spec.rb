@@ -170,8 +170,8 @@ describe ExerciseRegistration do
           subject.update(outdated: true)
         end
 
-        it 'calls #update_outdated! on submission' do
-          expect(submission).to receive(:update_outdated!)
+        it 'calls #update_active! on submission' do
+          expect(submission).to receive(:update_active!)
 
           subject.update(outdated: true)
         end
@@ -182,8 +182,8 @@ describe ExerciseRegistration do
           subject.update(outdated: false)
         end
 
-        it 'does not call #update_outdated! on submission if outdated does not change' do
-          expect(submission).not_to receive(:update_outdated!)
+        it 'does not call #update_active! on submission if outdated does not change' do
+          expect(submission).not_to receive(:update_active!)
 
           subject.update(outdated: false)
         end
@@ -202,8 +202,8 @@ describe ExerciseRegistration do
           subject.update(outdated: false)
         end
 
-        it 'calls #update_outdated! on submission' do
-          expect(submission).to receive(:update_outdated!)
+        it 'calls #update_active! on submission' do
+          expect(submission).to receive(:update_active!)
 
           subject.update(outdated: false)
         end
@@ -220,8 +220,8 @@ describe ExerciseRegistration do
           subject.update(outdated: true)
         end
 
-        it 'does not call #update_outdated! on submission if outdated does not change' do
-          expect(submission).not_to receive(:update_outdated!)
+        it 'does not call #update_active! on submission if outdated does not change' do
+          expect(submission).not_to receive(:update_active!)
 
           subject.update(outdated: true)
         end

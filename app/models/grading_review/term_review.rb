@@ -34,7 +34,7 @@ class GradingReview::TermReview
   end
 
   def published_points
-    submission_reviews.select { |submission_review| submission_review.published? && submission_review.recent? }.sum(&:points)
+    submission_reviews.select { |submission_review| submission_review.published? && submission_review.active? }.sum(&:points)
   end
 
   private

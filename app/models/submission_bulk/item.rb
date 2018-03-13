@@ -43,7 +43,7 @@ class SubmissionBulk::Item
       evaluations.each(&:save)
 
       submission.submission_evaluation.update(evaluated_at: Time.zone.now, evaluator: account)
-      submission.mark_as_recent! unless submission.recent?
+      submission.mark_as_active! unless submission.active?
     end
   end
 

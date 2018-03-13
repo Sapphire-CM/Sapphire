@@ -10,7 +10,7 @@
     </thead>
     <tbody>
       <% @term_review.submission_reviews.each do |submission_review| %>
-        <tr<%= " class='outdated'".html_safe if submission_review.outdated? %>>
+        <tr<%= " class='inactive'".html_safe if submission_review.inactive? %>>
           <td sort-by='<%= submission_review.exercise.row_order %>'>
             <strong><%= submission_review.exercise_title %></strong>
             <% if submission_review.exercise_attempt.present? %>

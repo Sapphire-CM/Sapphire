@@ -114,9 +114,9 @@ group :test do
 
   gem 'capybara'                  # feature test syntax enhancements
   gem 'capybara-screenshot'       # automatically generate screenshots for failing feature tests
-  gem 'poltergeist'               # PhantomJS, headless Webkit
+  # gem 'poltergeist'               # PhantomJS, headless Webkit
 
-  # gem 'selenium-webdriver'      # Selenium, Firefox webdriver
+  gem 'selenium-webdriver'        # Selenium, Firefox webdriver
   # gem 'capybara-webkit'         # Webkit headless webdriver
 
   gem 'timecop'                   # improved time handling during tests

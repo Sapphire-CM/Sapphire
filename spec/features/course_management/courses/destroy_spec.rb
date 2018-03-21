@@ -8,7 +8,23 @@ RSpec.describe "Course Removal" do
     sign_in account
   end
 
-  shared_examples "Course Removal" do
+  describe 'with JS', js: true do
+    scenario 'Deleting courses' do
+      visit root_path
+
+      within "#course_id_#{course.id}" do
+        accept_alert do
+          click_link href: course_path(course)
+        end
+      end
+
+      expect(page).to have_current_path(root_path)
+      expect(page).not_to have_content(course.title)
+      expect(page).to have_content("No courses present")
+    end
+  end
+
+  describe 'without JS' do
     scenario 'Deleting courses' do
       visit root_path
 
@@ -20,13 +36,5 @@ RSpec.describe "Course Removal" do
       expect(page).not_to have_content(course.title)
       expect(page).to have_content("No courses present")
     end
-  end
-
-  describe 'with JS', js: true do
-    it_behaves_like "Course Removal"
-  end
-
-  describe 'without JS' do
-    it_behaves_like "Course Removal"
   end
 end

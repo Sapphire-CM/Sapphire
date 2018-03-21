@@ -91,9 +91,11 @@ RSpec.feature 'Evaluating submissions' do
       visit submission_evaluation_path(submission)
 
       fill_in 'Value Points Rating', with: '-6'
+      blur
       expect(page).to have_content('4 of 20 points')
 
       fill_in 'Value Percent Rating', with: '-25'
+      blur
       expect(page).to have_content('3 of 20 points')
     end
 

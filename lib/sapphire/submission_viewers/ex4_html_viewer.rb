@@ -37,6 +37,7 @@ module Sapphire
 
       def body
         body = @doc.css('body').dup
+
         body.css('img').each do |img|
           unless img['src'] =~ EXTERNAL_LINK
             asset = image_asset(File.basename(img['src'] || ''))
@@ -60,6 +61,8 @@ module Sapphire
             link['href'] = submission_html_path(File.basename link['href'] || '')
           end
         end
+
+        body.css("script").each(&:remove)
 
         body.children.to_s.html_safe
       end

@@ -124,7 +124,7 @@ class Exercise < ActiveRecord::Base
   end
 
   def achievable_points
-    visible_points.presence || (enable_max_total_points ? max_total_points : points)
+    visible_points.presence || (enable_max_total_points ? max_total_points : starting_points_sum)
   end
 
   def recalculate_term_registrations_results

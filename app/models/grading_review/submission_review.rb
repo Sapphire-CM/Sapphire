@@ -37,6 +37,10 @@ class GradingReview::SubmissionReview
     @published
   end
 
+  def cache_key
+    "submission_review/#{exercise_registration.cache_key}"
+  end
+
   private
   def build_reviewable_evaluation_groups
     evaluations_visible_to_students.group_by(&:evaluation_group).map do |evaluation_group, evaluations|

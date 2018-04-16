@@ -9,7 +9,7 @@ module Sapphire
       def setup
         return if asset.blank?
 
-        @contents = asset.file.read.force_encoding('UTF-8')
+        @contents = asset.utf8_contents
         @doc = Nokogiri::HTML(@contents)
         @displayable = true
       end

@@ -205,5 +205,15 @@ RSpec.describe GradingReview::SubmissionReview do
         subject.published?
       end
     end
+
+    describe '#cache_key' do
+      let(:exercise_registration_cache_key) { "exercise_registrations/42-20180313230150759656000" }
+
+      it 'returns a cache key based on the exercise registration' do
+        allow(exercise_registration).to receive(:cache_key).and_return(exercise_registration_cache_key)
+
+        expect(subject.cache_key).to eq("submission_review/#{exercise_registration_cache_key}")
+      end
+    end
   end
 end

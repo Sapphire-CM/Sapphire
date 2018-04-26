@@ -6,8 +6,8 @@
     <% if rating.description.blank? %>
       <%= rating.title %>
     <% else %>
-      <span data-tooltip class="has-tip" title="<%= rating.description %>">
-        <%= rating.title %>
+      <span data-tooltip class="has-tip rating-tip" title="<%= rating.description %>">
+        <%= rating.title %> <sup><%= foundation_icon(:info) %></sup>
       </span>
     <% end %>
     <% if rating.automatically_checked? %>

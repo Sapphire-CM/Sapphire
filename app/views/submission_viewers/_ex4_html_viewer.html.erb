@@ -13,7 +13,7 @@
   </div>
 
   <%= content_for :head, viewer.headers %>
-  <%= sanitize viewer.body %>
+  <%= viewer.body %>
 
   <%= javascript_include_tag :html_viewer, "data-turbolinks-track" => true %>
 <% else %>

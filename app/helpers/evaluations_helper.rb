@@ -16,7 +16,11 @@ module EvaluationsHelper
       1
     end
 
-    link_to evaluation.rating.title, evaluation_path(evaluation, evaluation: { value: value }), method: 'put', data: { remote: true }, class: "#{evaluation_button_class(evaluation)} tiny button expand"
+    if evaluation.rating.description.blank?
+      link_to evaluation.rating.title, evaluation_path(evaluation, evaluation: { value: value }), method: 'put', data: { remote: true }, class: "#{evaluation_button_class(evaluation)} tiny button expand"
+    else
+      link_to evaluation.rating.title, evaluation_path(evaluation, evaluation: { value: value }), method: 'put', data: { remote: true }, class: "#{evaluation_button_class(evaluation)} tiny button expand has-tip rating-tip", title: evaluation.rating.description 
+    end
   end
 
   def evaluation_form(evaluation)

@@ -1,6 +1,3 @@
-
-
-
 <% if viewer.displayable? %>
 
   <%= render "toolbar_style" %>
@@ -18,12 +15,7 @@
   <%= content_for :head, viewer.headers %>
   <%= viewer.body %>
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script type="text/javascript" charset="utf-8">
-  $("#toolbar select").change(function(){
-    window.location = $(this).val();
-  });
-  </script>
+  <%= javascript_include_tag :html_viewer, "data-turbolinks-track" => true %>
 <% else %>
 
 <center>

@@ -153,6 +153,5 @@ setup_sortable_tables = ->
     $table = $(this)
     new SortableTable($table)
 
-
-$(document).on "page:change", ->
+$(document).on "ready page:load", ->
   setup_sortable_tables()

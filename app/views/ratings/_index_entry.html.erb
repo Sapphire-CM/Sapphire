@@ -6,8 +6,8 @@
     <% if rating.description.blank? %>
       <%= rating.title %>
     <% else %>
-      <span data-tooltip class="has-tip rating-tip" style="font-weight: normal;" title="<%= rating.description %>">
-        <%= rating.title %> <sup>&#9432;</sup>
+      <span data-tooltip class="has-tip rating-tip" title="<%= rating.description %>">
+        <%= rating.title %> <sup>🛈</sup>
       </span>
     <% end %>
     <% if rating.automatically_checked? %>

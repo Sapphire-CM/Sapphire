@@ -16,13 +16,15 @@ module EvaluationsHelper
       1
     end
 
-    evaluation_class = "#{evaluation_button_class(evaluation)} tiny button expand"
+    classes =  ["#{evaluation_button_class(evaluation)}", "tiny", "button", "expand"]
     if evaluation.rating.description.present?
-      evaluation_class = evaluation_class + " has-tip evaluation-tip"
+      classes << ["has-tip", "evaluation-tip"]
     end
 
-    link_to evaluation.rating.title, evaluation_path(evaluation, evaluation: { value: value }), method: 'put', data: { remote: true }, class: evaluation_class, 
-      title: evaluation.rating.description.present? ? evaluation.rating.description : nil
+    classes.join(' ')
+
+    link_to evaluation.rating.title, evaluation_path(evaluation, evaluation: { value: value }), method: 'put', data: { remote: true }, class: classes, 
+      title: (evaluation.rating.description.presence || nil)
     end
 
   def evaluation_form(evaluation)

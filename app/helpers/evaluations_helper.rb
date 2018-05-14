@@ -21,10 +21,8 @@ module EvaluationsHelper
       classes << ["has-tip", "evaluation-tip"]
     end
 
-    classes.join(' ')
-
-    link_to evaluation.rating.title, evaluation_path(evaluation, evaluation: { value: value }), method: 'put', data: { remote: true }, class: classes, 
-      title: (evaluation.rating.description.presence || nil)
+    link_to evaluation.rating.title, evaluation_path(evaluation, evaluation: { value: value }), method: 'put', data: { remote: true }, class: classes.join(' '), 
+      title: evaluation.rating.description.presence
     end
 
   def evaluation_form(evaluation)

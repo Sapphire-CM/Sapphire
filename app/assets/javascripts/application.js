@@ -18,6 +18,7 @@
 //= require jquery-ui/position
 //= require jquery-ui/sortable
 //= require jquery_ujs
+//= require d3
 //= require foundation
 //= require turbolinks
 //= require dropzone

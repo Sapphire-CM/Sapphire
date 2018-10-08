@@ -1,0 +1,186 @@
+.grading-scales-editor {
+  $negative-grades-color: #9e9e9e;
+  $positive-grades-color: #6464ee;
+
+  user-select: none;
+
+  svg {
+    &.draggable {
+      cursor: ns-resize;
+    }
+
+
+    .chart-labels {
+      .label {
+        &.positive-grades {
+          text-anchor: start;
+          fill: darken($positive-grades-color, 10);
+        }
+        &.negative-grades {
+          text-anchor: end;
+          fill: darken($negative-grades-color, 10);
+        }
+      }
+    }
+
+    .bars {
+      .bar {
+        &.positive {
+          fill: $positive-grades-color;
+        }
+        &.negative {
+          fill: $negative-grades-color;
+        }
+      }
+
+      .label {
+        font-size: 12px;
+
+        &.positive {
+          text-anchor: start;
+          fill: darken($positive-grades-color, 10);
+        }
+
+        &.negative {
+          text-anchor: end;
+          fill: darken($negative-grades-color, 10);
+        }
+      }
+    }
+
+    .stop-backgrounds {
+      .background {
+        opacity: 0.5;
+
+        &.hovered {
+          opacity: 1;
+        }
+      }
+    }
+
+    .stops {
+      .stop {
+        &.hovered {
+          .line {
+            opacity: 1;
+          }
+        }
+
+        .label {
+          font-size: 12px;
+
+          &.prefix {
+            text-anchor: end;
+          }
+
+          &.suffix {
+            text-anchor: start;
+          }
+        }
+
+        .line {
+          stroke-width: 2;
+          opacity: 0.6;
+        }
+      }
+    }
+
+    .tick-lines {
+      .line {
+        stroke: #ddd;
+      }
+    }
+
+    .cursors {
+      .cursor {
+        .line {
+          stroke: black;
+        }
+
+        .label {
+          fill: back;
+
+          &.main {
+            text-anchor: start;
+          }
+
+          &.above, &.below {
+            font-size: 12px;
+            text-anchor: start;
+          }
+
+          .positive {
+            fill: $positive-grades-color;
+          }
+
+          .negative {
+            fill: $negative-grades-color;
+          }
+        }
+      }
+    }
+
+    .drag-labels {
+      .grade-label, .students-label {
+        text-anchor: middle;
+        font-weight: bold;
+      }
+
+      .grade-label {
+        font-size: 110%;
+      }
+
+      .students-label {
+        font-size: 80%;
+      }
+    }
+
+    .significant-points {
+      .point {
+        .line {
+          stroke: #aaa;
+          stroke-width: 1;
+        }
+
+        .name-label, .points-label {
+          text-anchor: end;
+          fill: #aaa;
+          font-size: 11px;
+        }
+      }
+    }
+
+    .line {
+      .label {
+        font-size: 12px;
+
+        &.prefix {
+          text-anchor: end;
+        }
+
+        &.suffix {
+          text-anchor: start;
+        }
+      }
+
+      .line {
+        &.max-points {
+          stroke: #999;
+        }
+      }
+    }
+  }
+
+  .canvas {
+    position: relative;
+
+    .stop-editor {
+      position: absolute;
+      display: none;
+
+      &.open {
+        display: block;
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 $('#evaluation_result').text('<%= submission_evaluation_pluralized_points @submission_evaluation %>')
 
-$('#<%= evaluation_group_title_id(@evaluation_group) %>').text("<%= evaluation_group_title(@evaluation_group) %>")
+$('#<%= evaluation_group_title_id(@evaluation_group) %>').html("<%= evaluation_group_title(@evaluation_group) %>")
 $('#<%= evaluation_id(@evaluation) %>').replaceWith("<%=j evaluation_input(@evaluation) %>")
 
 $('#<%= evaluation_group_label_id(@evaluation_group) %>').html("<%=j evaluation_group_label(@evaluation_group) %>")

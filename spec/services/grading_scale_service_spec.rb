@@ -69,4 +69,9 @@ RSpec.describe GradingScaleService, type: :model, sidekiq: :inline do
       end
     end
   end
+
+  describe 'methods' do
+    describe '#distribution' do
+    end
+  end
 end

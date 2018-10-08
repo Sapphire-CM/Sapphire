@@ -1,5 +1,6 @@
 class GradingScaleService
   attr_accessor :term, :term_registrations
+  attr_reader :grading_scales
 
   def initialize(term, term_registrations = nil)
     @term = term
@@ -89,5 +90,19 @@ class GradingScaleService
 
   def ungraded_count
     @term_registrations.ungraded.count
+  end
+
+  def distribution
+    distribution = Hash.new { |h,k| h[k] = {positive: 0, negative: 0, points: k} }
+
+    @term_registrations.dup.group(:points, :positive_grade).count.each do |group, count|
+      points, positive = *group
+
+      group_key = positive ? :positive : :negative
+
+      distribution[points][group_key] = count
+    end
+
+    distribution.values
   end
 end

@@ -148,6 +148,8 @@ GEM
     crass (1.0.3)
     css_parser (1.4.1)
       addressable
+    d3-rails (4.13.0)
+      railties (>= 3.1)
     daemons (1.2.3)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
@@ -478,6 +480,7 @@ DEPENDENCIES
   compass-rails (~> 2.0, >= 2.0.2)
   consistency_fail
   css_parser
+  d3-rails
   database_cleaner
   devise (~> 3.2)
   dropzonejs-rails

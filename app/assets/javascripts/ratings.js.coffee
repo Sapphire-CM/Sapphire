@@ -50,15 +50,15 @@ update_fields_visibility = (form) ->
       min_field.show()
       max_field.show()
       multiplication_factor_field.hide()
-      min_label.text "Minimum Value (points)"
-      max_label.text "Maximum Value (points)"
+      min_label.text "Minimum Points"
+      max_label.text "Maximum Points"
     when "Ratings::VariableBonusPointsRating"
       value_field.hide()
       min_field.show()
       max_field.show()
       multiplication_factor_field.hide()
-      min_label.text "Minimum Value (points)"
-      max_label.text "Maximum Value (points)"
+      min_label.text "Minimum Points"
+      max_label.text "Maximum Points"
     when "Ratings::VariablePercentageDeductionRating"
       value_field.hide()
       min_field.show()

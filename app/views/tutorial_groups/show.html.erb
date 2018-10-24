@@ -2,26 +2,5 @@
 
 <%= render "sidebar", tutorial_group: @tutorial_group %>
 
-<div class="section-container tabs" data-section="tabs">
-  <section class="active">
-    <p class="title" data-section-title><a href="#">Students</a></p>
-    <div class="content" data-section-content>
-      <% if @student_term_registrations.any? %>
-        <%= render "term_registrations/student_term_registrations_table", term_registrations: @student_term_registrations %>
-      <% else %>
-        <p>No students present.</p>
-      <% end %>
-    </div>
-  </section>
-
-  <section>
-    <p class="title" data-section-title><a href="#">Description</a></p>
-    <div class="content" data-section-content>
-      <% if @tutorial_group.description? %>
-        <%= simple_format @tutorial_group.description %>
-      <% else %>
-        <p>No description present.</p>
-      <% end %>
-    </div>
-  </section>
-</div>
+<%= render "info_panel", tutorial_group: @tutorial_group %>
+<%= render "students_table", term_registrations_group: @student_term_registrations %>

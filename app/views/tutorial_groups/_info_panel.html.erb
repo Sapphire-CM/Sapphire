@@ -1,0 +1,8 @@
+<% if tutorial_group.description.present? %>
+  <div class='panel'>
+    <dl>
+      <dt>Description</dt>
+      <dd><%= simple_format(tutorial_group.description) %></dd>
+    </dl>
+  </div>
+<% end %>

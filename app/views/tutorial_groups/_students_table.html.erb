@@ -1,0 +1,6 @@
+<h3>Students</h3>
+<% if @student_term_registrations.any? %>
+  <%= render "term_registrations/student_term_registrations_table", term_registrations: @student_term_registrations %>
+<% else %>
+  <p>No students present.</p>
+<% end %>

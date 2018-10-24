@@ -52,5 +52,28 @@ RSpec.describe "Students list" do
 
       expect(page).to have_css("table.sortable")
     end
+
+    scenario 'provides an add student link' do
+      visit described_path
+
+      within_main do
+        within "table" do
+          expect(page).to have_link("Add", href: new_term_student_path(term))
+        end
+      end
+    end
+
+    context 'as tutor' do
+      let(:account) { FactoryGirl.create(:account, :tutor) }
+      let(:term) { account.term_registrations.last.term }
+
+      scenario 'hides add link' do
+        visit described_path
+
+        within_main do
+          expect(page).not_to have_link("Add")
+        end
+      end
+    end
   end
 end

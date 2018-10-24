@@ -2,5 +2,9 @@
 
 <%= render "sidebar", tutorial_group: @tutorial_group %>
 
-<%= render "info_panel", tutorial_group: @tutorial_group %>
-<%= render "students_table", term_registrations_group: @student_term_registrations %>
+<section class='info-panel'>
+  <%= render "info_panel", tutorial_group: @tutorial_group %>
+</section>
+<section class='students-table'>
+  <%= render "students_table", term_registrations_group: @student_term_registrations %>
+</section>

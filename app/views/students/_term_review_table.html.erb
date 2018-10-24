@@ -1,4 +1,4 @@
-<% if @term_review.submission_reviews.any? %>
+<% if term_review.submission_reviews.any? %>
   <table class='small-12 sortable submission-list'>
     <thead>
       <tr>
@@ -9,7 +9,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @term_review.submission_reviews.each do |submission_review| %>
+      <% term_review.submission_reviews.each do |submission_review| %>
         <tr<%= " class='inactive'".html_safe if submission_review.inactive? %>>
           <td sort-by='<%= submission_review.exercise.row_order %>'>
             <strong><%= submission_review.exercise_title %></strong>

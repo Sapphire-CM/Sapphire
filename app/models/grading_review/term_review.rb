@@ -9,7 +9,7 @@ class GradingReview::TermReview
     new(term_registration: term.term_registrations.student.find_by!(account: account))
   end
 
-  attr_accessor :term_registration
+  attr_accessor :term_registration, :eager_load_evaluations
 
   delegate :term, :points, :tutorial_group, to: :term_registration
   delegate :achievable_points, to: :term
@@ -37,6 +37,10 @@ class GradingReview::TermReview
     submission_reviews.select { |submission_review| submission_review.published? && submission_review.active? }.sum(&:points)
   end
 
+  def eager_load_evaluations!
+    self.eager_load_evaluations = true
+  end
+
   private
   def result_publications
     @result_publications ||= fetch_result_publications
@@ -49,7 +53,15 @@ class GradingReview::TermReview
   def fetch_exercise_registrations
     term_registration.exercise_registrations
       .joins(:submission)
-      .includes(submission: [:exercise, submission_evaluation: { evaluations: [:rating, evaluation_group: :rating_group] }])
+      .includes(submission: [:exercise, submission_evaluation_eager_loading_definition])
       .merge(Submission.ordered_by_exercises)
+  end
+
+  def submission_evaluation_eager_loading_definition
+    if eager_load_evaluations
+      {submission_evaluation: { evaluations: [:rating, evaluation_group: :rating_group] }}
+    else
+      :submission_evaluation
+    end
   end
 end

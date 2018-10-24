@@ -4,6 +4,12 @@ RSpec.describe GradingReview::TermReview do
   let(:term) { FactoryGirl.create(:term) }
   let(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
 
+  describe 'initialization' do
+    it 'sets eager_load_evaluations to falsey' do
+      expect(subject.eager_load_evaluations).to be_falsey
+    end
+  end
+
   describe 'delegation' do
     it { is_expected.to delegate_method(:student).to(:term_registration).as(:account) }
     it { is_expected.to delegate_method(:term).to(:term_registration) }
@@ -106,6 +112,42 @@ RSpec.describe GradingReview::TermReview do
         expect(reviews.first).not_to be_published
         expect(reviews.second).to be_published
         expect(reviews.third).not_to be_published
+      end
+
+      it 'queries for records only once' do
+        expect(term_registration).to receive(:exercise_registrations).once.and_call_original
+
+        subject.submission_reviews
+        subject.submission_reviews
+      end
+
+      context "with exercises containing ratings" do
+        let(:exercises) { FactoryGirl.create_list(:exercise, 3, :with_ratings, term: term) }
+
+        it 'eager loads evaluations if requested' do
+          subject.eager_load_evaluations!
+
+          subject.submission_reviews.each do |review|
+            expect(review.submission_evaluation.association(:evaluations)).to be_loaded
+            expect(review.submission_evaluation.evaluations.first.association(:rating)).to be_loaded
+            expect(review.submission_evaluation.evaluations.first.association(:evaluation_group)).to be_loaded
+            expect(review.submission_evaluation.evaluations.first.evaluation_group.association(:rating_group)).to be_loaded
+          end
+        end
+
+        it 'does not eager load evaluations unless requested' do
+          subject.submission_reviews.each do |review|
+            expect(review.submission_evaluation.association(:evaluations)).not_to be_loaded
+          end
+        end
+      end
+    end
+
+    describe '#eager_load_evaluations!' do
+      it 'sets eager_load_evaluations to true' do
+        subject.eager_load_evaluations!
+
+        expect(subject.eager_load_evaluations).to be_truthy
       end
     end
 

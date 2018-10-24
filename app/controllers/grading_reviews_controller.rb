@@ -14,6 +14,7 @@ class GradingReviewsController < ApplicationController
   private
   def set_term_review
     @term_review = GradingReview::TermReview.find_with_term_and_term_registration_id(current_term, params[:id])
+    @term_review.eager_load_evaluations!
 
     authorize @term_review
   end

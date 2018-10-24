@@ -4,8 +4,8 @@
   <%= f.input :title %>
   <%= f.input :description, input_html: { rows: 3 } %>
 
-  <% if @tutorial_group.new_record? %>
-    <%= link_to "Cancel", term_path(@term), class: "secondary button" %>
+  <% if tutorial_group.new_record? %>
+    <%= link_to "Cancel", term_tutorial_groups_path(term), class: "secondary button" %>
   <% end %>
 
   <%= f.submit class: "button"%>

@@ -1,0 +1,28 @@
+<div class='panel'>
+  <div class='row'>
+    <div class='large-4 columns'>
+      <dl>
+        <dt>Tutorial Group</dt>
+        <dd><%= tutorial_group_title(student_group.tutorial_group) %></dd>
+      </dl>
+    </div>
+    <div class='large-4 columns'>
+      <dl>
+        <dt>Topic</dt>
+        <dd><%= student_group.topic.presence || content_tag(:em, "none") %></dd>
+      </dl>
+    </div>
+    <div class='large-4 columns'>
+      <dl>
+        <dt>Keyword</dt>
+        <dd><%= student_group.keyword.presence || content_tag(:em, "none") %></dd>
+      </dl>
+    </div>
+    <% if student_group.description.present?  %>
+      <dl>
+        <dt>Description</dt>
+        <dd><%= student_group.description %></dd>
+      </dl>
+    <% end %>
+  </div>
+</div>

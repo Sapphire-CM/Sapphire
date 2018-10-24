@@ -27,11 +27,14 @@
       </tr>
     <% end %>
   </tbody>
-  <tfoot>
-    <tr>
-      <th colspan='6' class='text-center'>
-        <%= link_to "#{foundation_icon(:plus)} Add".html_safe, new_term_student_path(current_term) %>
-      </th>
-    </tr>
-  </tfoot>
+
+  <% if policy(TermRegistrationPolicy.term_policy_record(@term)).new? %>
+    <tfoot>
+      <tr>
+        <th colspan='6' class='text-center'>
+          <%= link_to "#{foundation_icon(:plus)} Add".html_safe, new_term_student_path(current_term) %>
+        </th>
+      </tr>
+    </tfoot>
+  <% end %>
 </table>

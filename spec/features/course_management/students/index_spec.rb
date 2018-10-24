@@ -4,6 +4,8 @@ RSpec.describe "Students list" do
   let!(:term) { FactoryGirl.create(:term) }
   let(:account) { FactoryGirl.create(:account, :admin) }
 
+  let(:described_path) { term_students_path(term) }
+
   before :each do
     sign_in(account)
   end
@@ -14,7 +16,7 @@ RSpec.describe "Students list" do
 
       click_side_nav_link "Students"
 
-      expect(page).to have_current_path(term_students_path(term))
+      expect(page).to have_current_path(described_path)
     end
   end
 
@@ -25,7 +27,7 @@ RSpec.describe "Students list" do
     scenario "Viewing basic information about the students" do
       student_term_registrations.second.update(points: 30)
 
-      visit term_students_path(term)
+      visit described_path
 
       within "table" do
         student_term_registrations.each do |term_registration|
@@ -38,7 +40,7 @@ RSpec.describe "Students list" do
     end
 
     scenario "Provides links to students detail page" do
-      visit term_students_path(term)
+      visit described_path
 
       student_term_registrations.each do |term_registration|
         expect(page).to have_link("Show", href: term_student_path(term, term_registration))
@@ -46,7 +48,7 @@ RSpec.describe "Students list" do
     end
 
     scenario 'is sortable' do
-      visit term_students_path(term)
+      visit described_path
 
       expect(page).to have_css("table.sortable")
     end

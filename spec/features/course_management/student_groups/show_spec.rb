@@ -1,9 +1,11 @@
 require 'rails_helper'
 
-RSpec.feature 'Updating Student Groups' do
+RSpec.feature 'Viewing Student Groups' do
   let(:account) { FactoryGirl.create(:account) }
   let(:term) { FactoryGirl.create(:term) }
   let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term, account: account) }
+
+  let(:described_path) { term_student_group_path(term, student_group) }
 
   before :each do
     sign_in account
@@ -21,22 +23,21 @@ RSpec.feature 'Updating Student Groups' do
 
     click_link "Show"
 
-    expect(page).to have_current_path(term_student_group_path(term, student_group))
+    expect(page).to have_current_path(described_path)
   end
 
   scenario 'Highlighting link in side nav' do
-    visit term_student_group_path(term, student_group)
+    visit described_path
 
     within ".side-nav li.active" do
       expect(page).to have_link("Student Groups")
     end
   end
 
-  scenario 'Viewing student group info', js: true do
-    visit term_student_group_path(term, student_group)
+  scenario 'Viewing student group infos', js: true do
+    visit described_path
 
-    within ".section-container .overview" do
-      click_link "Overview"
+    within ".info-panel" do
       expect(page).to have_content(keyword)
       expect(page).to have_content(topic)
       expect(page).to have_content(description)
@@ -47,9 +48,9 @@ RSpec.feature 'Updating Student Groups' do
     student_term_registrations = FactoryGirl.create_list(:term_registration, 3, :student, term: term, tutorial_group: tutorial_group, student_group: student_group)
     students = student_term_registrations.map(&:account)
 
-    visit term_student_group_path(term, student_group)
+    visit described_path
 
-    within ".section-container .students" do
+    within ".students-table" do
       expect(page).to have_css("table.sortable")
       student_term_registrations.each do |student_term_registration|
         expect(page).to have_content(student_term_registration.account.fullname)
@@ -60,9 +61,9 @@ RSpec.feature 'Updating Student Groups' do
   end
 
   scenario 'Viewing students list without students' do
-    visit term_student_group_path(term, student_group)
+    visit described_path
 
-    within ".section-container .students" do
+    within ".students-table" do
       expect(page).to have_content("No students present.")
     end
   end
@@ -82,10 +83,9 @@ RSpec.feature 'Updating Student Groups' do
       submission
     end
 
-    visit term_student_group_path(term, student_group)
+    visit described_path
 
-    within ".section-container .submissions" do
-      click_link "Submissions"
+    within ".submissions-table" do
       expect(page).to have_css("table.sortable")
 
       within "table.sortable" do
@@ -105,10 +105,9 @@ RSpec.feature 'Updating Student Groups' do
   end
 
   scenario 'Viewing submission list without students' do
-    visit term_student_group_path(term, student_group)
+    visit described_path
 
-    within ".section-container" do
-      click_link "Submissions"
+    within ".submissions-table" do
       expect(page).to have_content("This group has not submitted any submission.")
     end
   end

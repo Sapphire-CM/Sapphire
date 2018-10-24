@@ -89,9 +89,7 @@ RSpec.feature 'Updating Student Groups' do
 
     expect(page).not_to have_content("Edit Student Group")
 
-    within ".section-container" do
-      click_link "Students"
-
+    within ".students-table" do
       expect(page).to have_content(student.fullname)
     end
   end

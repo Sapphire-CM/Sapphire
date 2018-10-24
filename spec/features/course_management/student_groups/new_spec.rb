@@ -5,6 +5,8 @@ RSpec.feature 'Adding Student Groups' do
   let(:term) { FactoryGirl.create(:term) }
   let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term, account: account) }
 
+  let(:described_path) { new_term_student_group_path(term) }
+
   before :each do
     sign_in account
   end
@@ -14,11 +16,11 @@ RSpec.feature 'Adding Student Groups' do
 
     click_link "New Student Group"
 
-    expect(page).to have_current_path(new_term_student_group_path(term))
+    expect(page).to have_current_path(described_path)
   end
 
   scenario 'Highlighting link in side nav' do
-    visit new_term_student_group_path(term)
+    visit described_path
 
     within ".side-nav li.active" do
       expect(page).to have_link("Student Groups")
@@ -28,7 +30,7 @@ RSpec.feature 'Adding Student Groups' do
   scenario 'Adding a new student group' do
     tutorial_group = FactoryGirl.create(:tutorial_group, term: term)
 
-    visit new_term_student_group_path(term)
+    visit described_path
 
     expect(page).to have_content("New Student Group")
 
@@ -44,7 +46,7 @@ RSpec.feature 'Adding Student Groups' do
 
     expect(page).to have_current_path(term_student_group_path(term, StudentGroup.last))
 
-    within '.section-container' do
+    within '.info-panel' do
       expect(page).to have_content("Test Group")
       expect(page).to have_content(tutorial_group.title)
       expect(page).to have_content("Sapphire Course Management")
@@ -59,7 +61,7 @@ RSpec.feature 'Adding Student Groups' do
 
     tutorial_group = FactoryGirl.create(:tutorial_group, term: term)
 
-    visit new_term_student_group_path(term)
+    visit described_path
 
     fill_in "Title", with: "Test Group"
     select "#{tutorial_group.title} - (no tutor)", from: "Tutorial group"
@@ -78,8 +80,7 @@ RSpec.feature 'Adding Student Groups' do
     expect(page).not_to have_content("New Student Group")
     expect(page).to have_content("Test Group")
 
-    within ".section-container" do
-      click_link "Students"
+    within ".students-table" do
       expect(page).to have_content(student.fullname)
     end
   end
@@ -87,7 +88,7 @@ RSpec.feature 'Adding Student Groups' do
   scenario 'Not filling out title shows validation errors' do
     tutorial_group = FactoryGirl.create(:tutorial_group, term: term)
 
-    visit new_term_student_group_path(term)
+    visit described_path
 
     fill_in "Title", with: ""
 
@@ -100,7 +101,7 @@ RSpec.feature 'Adding Student Groups' do
   end
 
   scenario 'Canceling adding new student group' do
-    visit new_term_student_group_path(term)
+    visit described_path
 
     click_link "Cancel"
 

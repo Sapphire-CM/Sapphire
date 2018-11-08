@@ -245,7 +245,7 @@ GEM
     multi_json (1.13.1)
     multi_logger (0.1.0)
       railties
-    mysql2 (0.4.4)
+    mysql2 (0.5.2)
     net-http-digest_auth (1.4)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)

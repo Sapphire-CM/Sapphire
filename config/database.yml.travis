@@ -23,7 +23,7 @@ development:
   <<: *defaults
 
 test:
-  database: sapphire_test
+  database: sapphire_test<%= ENV['TEST_ENV_NUMBER'] %>
   <<: *defaults
 
 production:

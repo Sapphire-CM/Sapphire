@@ -448,14 +448,19 @@ class GradingScaleEditor
   # = Submission Handling =
   # =======================
 
+  _updateSubmitButtonDisabled: (disabled) ->
+    @submitButton.prop("disabled", disabled)
+
   _updateSubmitButton: ->
     disabled = @stops.filter((d) => d.dirty).length == 0
-
-    @submitButton.prop("disabled", disabled)
+    @_updateSubmitButtonDisabled(disabled)
 
   _submitScales: ->
     serializer = new GradingScaleSerializer()
     params = serializer.serialize(@scales)
+
+    @submitButton.html("Saving Changes...")
+    @_updateSubmitButtonDisabled(true)
 
     $.ajax(@update_url, {
       method: "PUT",

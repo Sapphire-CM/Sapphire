@@ -23,7 +23,9 @@ Rails.application.routes.draw do
 
     resources :students
 
-    resources :grading_scales, only: [:index, :update]
+    resources :grading_scales, only: [:index] do
+      put :update, action: :bulk_update, on: :collection
+    end
 
     resources :exercises, except: [:show] do
       resources :services, only: [:index, :edit, :update]

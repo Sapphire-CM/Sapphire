@@ -6,4 +6,8 @@ class GradingScalePolicy < TermBasedPolicy
   def update?
     lecturer_permissions?
   end
+
+  def bulk_update?
+    update?
+  end
 end

@@ -45,8 +45,7 @@ class StopEditor
   # ==================
 
   _moveTo: (stop) ->
-    inChartPosition = @gradingScaleEditor.yScale(stop.points)
-    offset = inChartPosition + @gradingScaleEditor.padding.top - @input.height() / 2
+    offset = @gradingScaleEditor.yScale(stop.points) + @gradingScaleEditor.padding.top - @input.outerHeight() / 2
 
     @element.css({top: offset})
 

@@ -62,6 +62,11 @@ RSpec.describe GradingScale::Bulk do
         expect(term.grading_scales.find_by(grade: "1").max_points).to eq(new_max_points)
       end
 
+      it 'returns false if grading_scale_attributes are blank' do
+        subject.grading_scale_attributes = nil
+        expect(subject.save).to be_falsey
+      end
+
       it 'returns false if grading scale cannot be found' do
         subject.grading_scale_attributes = [ {id: -1, min_points: 0, max_points: 10} ]
 

@@ -12,7 +12,7 @@ sudo: false
 
 rvm:
   - 2.1.6 # current production
-  - 2.3.6
+  - 2.3.8
 
 env:
   - DB=sqlite

@@ -64,13 +64,16 @@ RSpec.feature "Sending welcome notifications" do
       scenario 'it sends pending welcome notifications' do
         visit edit_term_path(term)
 
-        expect do
-          within section_selector do
-            click_link("Send #{term_registrations.length} welcome notifications")
-          end
+        perform_enqueued_jobs do
+          expect do
+            within section_selector do
 
-          expect(page).to have_content("queued for sending")
-        end.to change(ActionMailer::Base.deliveries, :length).by(3)
+              click_link("Send #{term_registrations.length} welcome notifications")
+            end
+
+            expect(page).to have_content("queued for sending")
+          end.to change(ActionMailer::Base.deliveries, :length).by(3)
+        end
       end
     end
   end

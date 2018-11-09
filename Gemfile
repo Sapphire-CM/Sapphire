@@ -69,6 +69,10 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'bond'
   gem 'jist'
+
+  gem 'mysql2'                    # MySQL database connector
+  gem 'sqlite3'                   # sqlite3 database connector
+  gem 'parallel_tests'            # Parallelize Tests
 end
 
 group :development do
@@ -117,9 +121,4 @@ group :test do
   # gem 'capybara-webkit'         # Webkit headless webdriver
 
   gem 'timecop'                   # improved time handling during tests
-end
-
-group :development, :test do
-  gem 'mysql2'                    # MySQL database connector
-  gem 'sqlite3'                   # sqlite3 database connector
 end

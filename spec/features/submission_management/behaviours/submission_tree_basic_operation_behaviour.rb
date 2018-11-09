@@ -96,7 +96,9 @@ RSpec.shared_examples "basic submission tree operations" do
         fill_in 'Path', with: 'zip-subfolder'
         attach_file 'File', 'spec/support/data/submission.zip'
 
-        click_button 'Save'
+        perform_enqueued_jobs do
+          click_button 'Save'
+        end
 
         visit tree_submission_path(submission, path: "zip-subfolder")
 
@@ -154,9 +156,12 @@ RSpec.shared_examples "basic submission tree operations" do
           click_link "Upload"
         end
 
-        drop_in_dropzone ['spec/support/data/submission.zip'], '.dropzone-placeholder'
-        # wait for the upload to finish
-        find('.preview-container .status-success')
+        perform_enqueued_jobs do
+          drop_in_dropzone ['spec/support/data/submission.zip'], '.dropzone-placeholder'
+
+          # wait for the upload to finish
+          find('.preview-container .status-success')
+        end
 
         visit tree_submission_path(submission, path: "non-existent-folder")
 

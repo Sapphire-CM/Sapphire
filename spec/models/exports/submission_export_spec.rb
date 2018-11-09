@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'zip'
 
-RSpec.describe Exports::SubmissionExport, sidekiq: :inline do
+RSpec.describe Exports::SubmissionExport do
   describe '#set_default_values!' do
     it 'sets default values' do
       expect(subject.base_path).to eq(nil)

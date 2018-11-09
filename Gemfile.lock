@@ -254,6 +254,9 @@ GEM
       mini_portile2 (~> 2.3.0)
     ntlm-http (0.1.1)
     orm_adapter (0.5.0)
+    parallel (1.12.1)
+    parallel_tests (2.26.2)
+      parallel
     parser (2.3.1.0)
       ast (~> 2.2)
     pg (0.18.4)
@@ -502,6 +505,7 @@ DEPENDENCIES
   mysql2
   nntp-client!
   nokogiri
+  parallel_tests
   pg
   poltergeist
   pry

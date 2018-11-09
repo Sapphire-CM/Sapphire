@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'zip'
 
-RSpec.describe Exports::ExcelSpreadsheetExport, sidekiq: :inline do
+RSpec.describe Exports::ExcelSpreadsheetExport do
   let!(:term) { FactoryGirl.create :term }
   let!(:exercises) { FactoryGirl.create_list :exercise, 4, :with_ratings }
   let!(:tutorial_groups) { FactoryGirl.create_list :tutorial_group, 4, term: term }

@@ -20,7 +20,7 @@ class GradingScalesController < ApplicationController
     if @grading_scale_bulk.save
       redirect_to term_grading_scales_path(@term), notice: "Successfully updated grading scale"
     else
-      redirect_to term_grading_scales_path(@term), alert: "An error occurred during updating the grading scale"
+      redirect_to term_grading_scales_path(@term), alert: "Failed updating grading scale!"
     end
   end
 

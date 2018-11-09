@@ -37,7 +37,7 @@ class GradingScaleService
   end
 
   def average_grade_for_term_registrations(term_registrations)
-    grades = term_registrations.map { |tr| grade_for(tr) }
+    grades = @term_registrations.map { |tr| grade_for(tr) }
 
     stats = grades.inject(Hash.new {|h,k| h[k] = 0}) do |hash, grade|
       hash[grade] += 1
@@ -95,7 +95,7 @@ class GradingScaleService
   def distribution
     distribution = Hash.new { |h,k| h[k] = {positive: 0, negative: 0, points: k} }
 
-    @term_registrations.dup.group(:points, :positive_grade).count.each do |group, count|
+    @term_registrations.group(:points, :positive_grade).count.each do |group, count|
       points, positive = *group
 
       group_key = positive ? :positive : :negative

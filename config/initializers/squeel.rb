@@ -22,3 +22,19 @@ Squeel.configure do |config|
   #
   # config.alias_predicate :less_than, :lt
 end
+
+
+# FIXME: hotfix for https://github.com/activerecord-hackery/squeel/issues/374
+module Squeel
+  module Adapters
+    module ActiveRecord
+      module RelationExtensions
+
+        def execute_grouped_calculation(operation, column_name, distinct)
+          super
+        end
+
+      end
+    end
+  end
+end

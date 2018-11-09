@@ -465,8 +465,8 @@ class GradingScaleEditor
     $.ajax(@update_url, {
       method: "PUT",
       data: params,
-      success: ->
-        Turbolinks.visit(window.location)
+      complete: ->
+        Turbolinks.visit(window.location, action: "replace")
     })
 
   # =================

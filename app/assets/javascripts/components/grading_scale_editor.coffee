@@ -50,6 +50,22 @@ class StopEditor
 
     @element.css({top: offset})
 
+class GradingScaleSerializer
+  serialize: (scales) ->
+    {
+      grading_scales: {
+        grading_scale_attributes: @_serializeScales(scales)
+      }
+    }
+
+  _serializeScales: (scales) ->
+    for scale in scales
+      {
+        id: scale.id,
+        min_points: scale.min_points,
+        max_points: scale.max_points
+      }
+
 class GradingScaleEditor
   padding: {
     top: 35,
@@ -106,11 +122,13 @@ class GradingScaleEditor
 
   _setInitialValues: ->
     @resolution = @resolutions[0]
+    @tickInterval = 10
 
   _loadData: ->
     @data = @element.data("distribution")
     @scales = @element.data("scales")
     @maximumPoints = @element.data("max-points")
+    @update_url = @element.data("update-url")
 
   _setupElement: ->
     template = """
@@ -133,7 +151,9 @@ class GradingScaleEditor
             </div>
           </div>
           <div class='small-4 columns'>
-            <button class='small small-12 submit'>Save Changes</button>
+            <form method='PUT' class='update-form'>
+              <button class='small small-12 submit'>Save Changes</button>
+            </form>
           </div>
         </div>
         <div class='canvas'></div>
@@ -143,10 +163,13 @@ class GradingScaleEditor
     @element.html(template)
 
     $resolutionSelectContainer = @element.find(".res-selector")
+    $tickSelectContainer = @element.find(".tick-selector")
+
     @gridToggler = @element.find("input#grid-toggler").prop("checked", @options.showGrid)
     @significantPointsToggler = @element.find("input#significant-points-toggler").prop("checked", @options.showSignificantPoints)
     @submitButton = @element.find("button.submit")
     @resolutionSelect = @_buildResolutionSelect().appendTo($resolutionSelectContainer)
+
     @svgContainer = @element.find(".canvas")
 
   _setupSVG: ->
@@ -171,8 +194,6 @@ class GradingScaleEditor
     @dragLabelsGroup = @chartGroup.append("g").attr("class", "drag-labels")
     @cursorGroup = @chartGroup.append("g").attr("class", "cursors")
 
-
-
   _setupScales: ->
     @yScale = d3.scaleLinear()
     @xScale = d3.scaleLinear()
@@ -182,8 +203,10 @@ class GradingScaleEditor
     @chartGroup.attr("transform", "translate(#{[@padding.left, @padding.top]})")
 
   _setupChartLabels: ->
-    @positiveChartLabel = @chartLabelsGroup.append("text").attr("class", "label negative-grades").attr("y", -20).text("# Negative")
-    @negativeChartLabel = @chartLabelsGroup.append("text").attr("class", "label positive-grades").attr("y", -20).text("# Positive")
+    yOffset = -25
+    @positiveChartLabel = @chartLabelsGroup.append("text").attr("class", "label negative-grades").attr("y", yOffset).text("Negative")
+    @negativeChartLabel = @chartLabelsGroup.append("text").attr("class", "label positive-grades").attr("y", yOffset).text("Positive")
+    @noStudentsLabel = @chartLabelsGroup.append("text").attr("class", "label").attr("y", yOffset).text("No. Students")
 
   _setupStopEditor: ->
     $element = $("<div>")
@@ -273,7 +296,7 @@ class GradingScaleEditor
     @_render()
 
   _onSubmitClicked: ->
-    alert("Submitting is not yet implemented")
+    @_submitScales()
 
   # =================
   # = Drag Handling =
@@ -422,14 +445,25 @@ class GradingScaleEditor
     @significantPoints.push({name: "Max.", points: @maximumPoints})
     @significantPoints.push({name: "Half", points: Math.round(@maximumPoints / 2)})
 
-  # ==========================
-  # = Submit Button Handling =
-  # ==========================
+  # =======================
+  # = Submission Handling =
+  # =======================
 
   _updateSubmitButton: ->
-    console.log(@stops)
     disabled = @stops.filter((d) => d.dirty).length == 0
+
     @submitButton.prop("disabled", disabled)
+
+  _submitScales: ->
+    serializer = new GradingScaleSerializer()
+    params = serializer.serialize(@scales)
+
+    $.ajax(@update_url, {
+      method: "PUT",
+      data: params,
+      success: ->
+        Turbolinks.visit(window.location)
+    })
 
   # =================
   # = Points Editor =
@@ -457,12 +491,15 @@ class GradingScaleEditor
     @_renderSignificantPoints()
 
   _renderChartLabels: ->
+    positiveChartLabelWidth = @positiveChartLabel.node().getBBox().width
+
     @positiveChartLabel.attr("x", @xScale(0) - @labelPadding * 2)
     @negativeChartLabel.attr("x", @xScale(0) + @labelPadding * 2)
+    @noStudentsLabel.attr("x", @xScale(0) + @labelPadding * 4 + positiveChartLabelWidth)
 
   _renderAxes: ->
     xAxis = d3.axisTop(@xScale).tickFormat((d) => Math.abs(d))
-    yAxis = d3.axisLeft(@yScale)
+    yAxis = d3.axisLeft(@yScale).ticks(Math.floor(@yScale.domain()[0] / @tickInterval))
 
     @xAxisGroup.call(xAxis)
     @yAxisGroup.attr("transform", "translate(#{[@xScale(0), 0]})").call(yAxis)

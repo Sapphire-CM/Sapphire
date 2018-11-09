@@ -1,6 +1,6 @@
 class GradingScalesController < ApplicationController
   include TermContext
-  before_action :fetch_term, only: [:index, :update]
+  before_action :fetch_term, only: [:index, :bulk_update]
 
   def index
     authorize GradingScalePolicy.term_policy_record(@term)
@@ -11,15 +11,16 @@ class GradingScalesController < ApplicationController
     flash[:alert] = 'GradingScale is not valid' unless @term.valid_grading_scales?
   end
 
-  def update
-    @grading_scale = @term.grading_scales.find(params[:id])
+  def bulk_update
+    authorize GradingScalePolicy.term_policy_record(@term)
 
-    authorize @grading_scale
+    @grading_scale_bulk = GradingScale::Bulk.new(grading_scale_params)
+    @grading_scale_bulk.term = @term
 
-    if @grading_scale.update(grading_scale_params)
-      redirect_to term_grading_scales_path, notice: 'Successfully updated grading scale'
+    if @grading_scale_bulk.save
+      redirect_to term_grading_scales_path(@term), notice: "Successfully updated grading scale"
     else
-      redirect_to term_grading_scales_path, alert: 'Failed updating grading scale!'
+      redirect_to term_grading_scales_path(@term), alert: "An error occurred during updating the grading scale"
     end
   end
 
@@ -30,6 +31,6 @@ class GradingScalesController < ApplicationController
   end
 
   def grading_scale_params
-    params.require(:grading_scale).permit(:positive, :min_points, :max_points)
+    params.require(:grading_scales).permit(grading_scale_attributes: [:id, :min_points, :max_points])
   end
 end

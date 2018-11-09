@@ -12,8 +12,7 @@ sudo: false
 
 rvm:
   - 2.3.8 # current production
-  - 2.5.1 # latest stable ruby
-
+  - 2.4.4
 env:
   - DB=sqlite
   - DB=postgresql

@@ -96,7 +96,7 @@ group :development do
   gem 'capistrano-rvm'         # capistrano plugin for RVM
   gem 'capistrano-rails'       # capistrano plugin for Rails
   gem 'capistrano-sidekiq'     # capistrano plugin for Sidekiq
-  gem 'capistrano-passenger', '0.0.5'# capistrano plugin for Passenger
+  gem 'capistrano-passenger'   # capistrano plugin for Passenger
 end
 
 group :test do

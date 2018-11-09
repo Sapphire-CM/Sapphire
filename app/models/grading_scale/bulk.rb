@@ -6,6 +6,7 @@ class GradingScale::Bulk
   delegate :grading_scales, to: :term
 
   def save
+    return false unless grading_scale_attributes.present?
     normalized_grading_scale_attributes.map do |attributes|
       grading_scale = grading_scales.find_by(id: attributes.delete(:id))
 

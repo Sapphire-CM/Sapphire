@@ -132,27 +132,27 @@ class GradingScaleEditor
   _setupElement: ->
     template = """
       <div>
-        <div class='row'>
-          <div class='small-3 columns'>
-            <label>Resolution</label>
-            <div class='res-selector'></div>
-          </div>
-          <div class='small-3 columns grid-toggle'>
-            <label for='significant-points-toggler'>Significant Points</label>
-            <div class='significant-points-toggler'>
-              <input type='checkbox' id='significant-points-toggler' value='1'/>
+        <div class='panel'>
+          <div class='row'>
+            <div class='small-3 columns'>
+              <label>Resolution</label>
+              <div class='res-selector'></div>
             </div>
-          </div>
-          <div class='small-2 columns grid-toggle'>
-            <label for='grid-toggler'>Grid</label>
-            <div class='grid-toggler'>
-              <input type='checkbox' id='grid-toggler' value='1'/>
+            <div class='small-3 columns grid-toggle'>
+              <label for='significant-points-toggler'>Significant Points</label>
+              <div class='significant-points-toggler'>
+                <input type='checkbox' id='significant-points-toggler' value='1'/>
+              </div>
             </div>
-          </div>
-          <div class='small-4 columns'>
-            <form method='PUT' class='update-form'>
+            <div class='small-2 columns grid-toggle'>
+              <label for='grid-toggler'>Grid</label>
+              <div class='grid-toggler'>
+                <input type='checkbox' id='grid-toggler' value='1'/>
+              </div>
+            </div>
+            <div class='small-4 columns'>
               <button class='small small-12 submit'>Save Changes</button>
-            </form>
+            </div>
           </div>
         </div>
         <div class='canvas'></div>

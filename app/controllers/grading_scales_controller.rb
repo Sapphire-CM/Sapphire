@@ -18,9 +18,17 @@ class GradingScalesController < ApplicationController
     @grading_scale_bulk.term = @term
 
     if @grading_scale_bulk.save
-      redirect_to term_grading_scales_path(@term), notice: "Successfully updated grading scale"
+      flash[:notice] = "Successfully updated grading scale"
+      respond_to do |format|
+        format.html { redirect_to term_grading_scales_path(@term) }
+        format.json { head :ok }
+      end
     else
-      redirect_to term_grading_scales_path(@term), alert: "Failed updating grading scale!"
+      flash[:alert] = "Failed updating grading scale!"
+      respond_to do |format|
+        format.html { redirect_to term_grading_scales_path(@term) }
+        format.json { head :bad_request }
+      end
     end
   end
 

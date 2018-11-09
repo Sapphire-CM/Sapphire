@@ -22,7 +22,7 @@ RSpec.describe GradingScalesController do
           term_id: term.id,
           grading_scales: {
             grading_scale_attributes: {
-              "0": {
+              "0" => {
                 id: term.grading_scales.negative,
                 max_points: 123,
               }
@@ -44,7 +44,7 @@ RSpec.describe GradingScalesController do
           term_id: term.id,
           grading_scales: {
             grading_scale_attributes: {
-              "0": {
+              "0" => {
                 id: term.grading_scales.ordered.first,
                 max_points: 5,
               }

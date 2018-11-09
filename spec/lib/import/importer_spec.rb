@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Import::Importer do
+
   context 'imports successfully' do
     def basic_import_test(new_accounts: 8, new_tutorial_groups: 4, send_welcome_notifications: true, emails_delivered: 8)
       term = FactoryGirl.create :term
@@ -11,7 +12,9 @@ RSpec.describe Import::Importer do
       expect do
         expect do
           expect do
-            ImportJob.perform_later import.id
+            perform_enqueued_jobs do
+              ImportJob.perform_later import.id
+            end
             import.reload
 
             import.import_result.inspect
@@ -29,25 +32,25 @@ RSpec.describe Import::Importer do
       end
     end
 
-    it 'everything ok - standard', sidekiq: :inline do
+    it 'everything ok - standard' do
       basic_import_test
     end
 
-    it 'everything ok - no welcome_notifications', sidekiq: :inline do
+    it 'everything ok - no welcome_notifications' do
       basic_import_test send_welcome_notifications: false, emails_delivered: 0
     end
 
-    it 'everything ok - with existing account with email', sidekiq: :inline do
+    it 'everything ok - with existing account with email' do
       FactoryGirl.create :account, email: 'owinkler@student.tugraz.at'
       basic_import_test new_accounts: 7
     end
 
-    it 'everything ok - with existing account with matriculation_number', sidekiq: :inline do
+    it 'everything ok - with existing account with matriculation_number' do
       FactoryGirl.create :account, matriculation_number: '1434949'
       basic_import_test new_accounts: 7
     end
 
-    it 'with faulty non-matching group regexp', sidekiq: :inline do
+    it 'with faulty non-matching group regexp' do
       term = FactoryGirl.create :term
       import = FactoryGirl.create :import, term: term, file: prepare_static_test_file('import_data_faulty_group_regexp.csv', open: true)
       import.reload
@@ -57,7 +60,10 @@ RSpec.describe Import::Importer do
         expect do
           expect do
             expect do
-              ImportJob.perform_later import.id
+              perform_enqueued_jobs do
+                ImportJob.perform_later import.id
+              end
+
               import.reload
             end.to change(ActionMailer::Base.deliveries, :count).by(7)
           end.to change(TutorialGroup, :count).by(2)

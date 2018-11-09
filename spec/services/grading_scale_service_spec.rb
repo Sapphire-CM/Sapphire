@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe GradingScaleService, type: :model, sidekiq: :inline do
+RSpec.describe GradingScaleService, type: :model do
   let!(:account) { FactoryGirl.create :account }
   let!(:term) { FactoryGirl.create :term }
   let!(:exercise) { FactoryGirl.create :exercise, :with_ratings, term: term }
@@ -62,7 +62,11 @@ RSpec.describe GradingScaleService, type: :model, sidekiq: :inline do
 
       it 'gives negative grade if exercise required minimum points' do
         term_registration.update! points: 55
-        exercise.update! enable_min_required_points: true, min_required_points: 54
+
+        perform_enqueued_jobs do
+          exercise.update! enable_min_required_points: true, min_required_points: 54
+        end
+
         term_registration.reload
 
         expect_grade_to_be '5'

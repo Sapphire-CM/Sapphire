@@ -11,8 +11,7 @@ cache:
 sudo: false
 
 rvm:
-  - 2.1.6 # current production
-  - 2.3.8
+  - 2.3.8 # current production
 
 env:
   - DB=sqlite

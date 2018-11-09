@@ -11,22 +11,26 @@ RSpec.describe GradingScalesController do
       get :index, term_id: term.id
 
       expect(response).to have_http_status(:success)
-      expect(response).to render_template('_grade_distribution')
+      expect(response).to render_template('_grade_overview')
     end
   end
 
-  describe 'POST update' do
+  describe 'POST bulk_update' do
     context 'with valid params' do
       it 'works' do
         attributes = {
           term_id: term.id,
-          id: term.grading_scales.negative,
-          grading_scale: {
-            max_points: 123,
+          grading_scales: {
+            grading_scale_attributes: {
+              "0": {
+                id: term.grading_scales.negative,
+                max_points: 123,
+              }
+            }
           }
         }
 
-        post :update, attributes
+        post :bulk_update, attributes
         term.reload
 
         expect(response).to redirect_to(term_grading_scales_path(term.id))
@@ -38,13 +42,17 @@ RSpec.describe GradingScalesController do
       it 'shows an error message' do
         attributes = {
           term_id: term.id,
-          id: term.grading_scales.ordered.first,
-          grading_scale: {
-            max_points: 5
+          grading_scales: {
+            grading_scale_attributes: {
+              "0": {
+                id: term.grading_scales.ordered.first,
+                max_points: 5,
+              }
+            }
           }
         }
 
-        post :update, attributes
+        post :bulk_update, attributes
         term.reload
 
         expect(response).to redirect_to(term_grading_scales_path(term.id))

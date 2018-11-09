@@ -777,7 +777,7 @@ class GradingScaleEditor
 editors = []
 $(document).on "ready page:load", ->
   for editor in editors
-    editors.destroy()
+    editor.destroy()
 
   editors = []
   $elements = $(document).find("*[data-behavior=grading-scale-editor]")

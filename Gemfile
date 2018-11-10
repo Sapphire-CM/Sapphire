@@ -47,8 +47,7 @@ gem 'rubyzip'                     # handling submission ZIP archives
 gem 'cocoon'                      # for nested upload forms
 gem 'dropzonejs-rails'            # Drag and drop support for file uploads
 
-gem 'sidekiq', '~>3.3.3'          # async jobs in background, used for imports
-gem 'sinatra', '>= 1.3.0', require: false    # small rack framework, used for sidekiq ui
+gem 'sidekiq', '~>5.2.3'          # async jobs in background, used for imports
 
 gem 'writeexcel'                  # exporting excel spreadsheets
 gem 'multi_logger'                # custom log files

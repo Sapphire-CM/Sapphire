@@ -1,4 +1,6 @@
 class TermCopyService
+  attr_accessor :term, :source_term, :copy_lecturers, :copy_exercises, :copy_grading_scale
+
   def initialize(term, source_term, options = {})
     @term = term
     @source_term = source_term
@@ -52,9 +54,10 @@ class TermCopyService
   def copy_grading_scale!
     Rails.logger.info 'Copying Grading Scale'
     @source_term.grading_scales.each do |source_grading_scale|
-      grading_scale = source_grading_scale.dup
-      grading_scale.term = @term
-      grading_scale.save
+      source_attributes = source_grading_scale.attributes.except("id", "term_id", "created_at", "updated_at")
+
+      grading_scale = @term.grading_scales.find_or_initialize_by(grade: source_grading_scale.grade)
+      grading_scale.update(source_attributes)
     end
   end
 end

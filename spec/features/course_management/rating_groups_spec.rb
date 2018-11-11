@@ -120,7 +120,27 @@ RSpec.feature 'Ratings and Rating Groups' do
 
         expect(RatingGroup.find_by(id: rating_group.id)).not_to be_present
       end
+
+      scenario 'not flagging a local rating group' do
+        rating_group.update(global: false)
+
+        visit exercise_rating_groups_path(exercise)
+
+        within "#rating_group_id_#{rating_group.id} .index_entry_header" do
+          expect(page).not_to have_selector("i.fi-flag")
+        end
+      end
+
+      scenario 'flagging a global rating group' do
+        rating_group.update(global: true)
+
+        visit exercise_rating_groups_path(exercise)
+        within "#rating_group_id_#{rating_group.id} .index_entry_header" do
+          expect(page).to have_selector("i.fi-flag")
+        end
+      end
     end
+
 
     scenario 'reordering of rating groups'
   end

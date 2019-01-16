@@ -16,7 +16,7 @@ class StudentsController < ApplicationController
   end
 
   def new
-    @term_registration = TermRegistration.new
+    @term_registration = TermRegistration.new(term: current_term)
     authorize @term_registration
   end
 

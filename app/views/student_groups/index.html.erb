@@ -21,8 +21,11 @@
           <td><%= tutorial_group_title student_group.tutorial_group %></td>
           <td><%= student_group.students.length %></td>
           <td class='text-right'>
-            <%= link_to "Show", term_student_group_path(current_term, student_group), class: "tiny primary button" %>
-            <%= link_to "Edit", edit_term_student_group_path(current_term, student_group), class: "tiny primary button" %>
+            <%= link_to "Show", term_student_group_path(current_term, student_group), class: "small primary button" %>
+
+            <% if policy(student_group).edit? %>
+              <%= link_to "Edit", edit_term_student_group_path(current_term, student_group), class: "small primary button" %>
+            <% end %>
           </td>
         </tr>
       <% end %>

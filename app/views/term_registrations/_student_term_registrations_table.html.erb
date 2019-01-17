@@ -13,7 +13,7 @@
       <td><%= term_registration.account.surname %></td>
       <td><%= term_registration.account.matriculation_number %></td>
       <td><%= mail_to term_registration.account.email %></td>
-      <td><%= link_to "show", term_student_path(current_term, term_registration) %></td>
+      <td class='text-right'><%= link_to "show", term_student_path(current_term, term_registration), class: "small button" %></td>
     </tr>
     <% end %>
   </tbody>

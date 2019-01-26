@@ -131,6 +131,7 @@ RSpec.describe GradingReview::SubmissionReview do
       let(:visible_evaluations) { [instance_double(Evaluation, show_to_students?: true), instance_double(Evaluation, show_to_students?: true)] }
       let(:invisible_evaluations) { [instance_double(Evaluation, show_to_students?: false), instance_double(Evaluation, show_to_students?: false)] }
 
+
       let(:submission) { instance_double(Submission, submission_evaluation: submission_evaluation) }
       let(:submission_evaluation) { instance_double(SubmissionEvaluation) }
       let(:exercise_registration) { instance_double(ExerciseRegistration, submission: submission) }

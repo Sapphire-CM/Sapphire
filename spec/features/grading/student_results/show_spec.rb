@@ -50,6 +50,7 @@ RSpec.describe 'Viewing results' do
     let!(:rating_groups) { FactoryGirl.create_list(:rating_group, 2, :with_ratings, exercise: exercise, points: 7, enable_range_points: false) }
 
     let(:rating_group) { rating_groups.first }
+    let(:other_rating_group) { rating_groups.second }
     let(:rating) { rating_group.ratings(true).last }
 
     scenario 'visiting results page of submission without any wrongdoings' do
@@ -72,12 +73,23 @@ RSpec.describe 'Viewing results' do
 
       expect(page).not_to have_content("Well Done!")
       expect(page).to have_content("9 out of 14")
-      expect(page).to have_content(rating_group.title)
-      expect(page).to have_content("2/7")
 
-      within "table" do
-        expect(page).to have_content(rating.title)
-        expect(page).to have_content("-5")
+      within ".rating-group-#{rating_group.id}" do
+        expect(page).to have_content(rating_group.title)
+        expect(page).to have_content("2/7")
+
+
+        within "table" do
+          expect(page).to have_content(rating.title)
+          expect(page).to have_content("-5")
+        end
+      end
+
+      within ".rating-group-#{other_rating_group.id}" do
+        expect(page).to have_content(other_rating_group.title)
+        expect(page).to have_content("7/7")
+
+        expect(page).not_to have_selector("table")
       end
     end
 

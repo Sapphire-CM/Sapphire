@@ -1,4 +1,41 @@
 <h4>Please Choose an Export</h4>
 
-<%= link_to "Submission Export", new_term_export_path(current_term, type: "submission"), class: "small button" %>
-<%= link_to "Excel Spreadsheet Export", new_term_export_path(current_term, type: "excel_spreadsheet"), class: "small button" %>
+<div class='row'>
+
+  <div class='large-6 columns'>
+    <div class='panel export-panel'>
+      <div class='row'>
+        <div class='small-3 large-12 columns'>
+          <div class='icon text-center'><%= foundation_icon(:list_thumbnails) %></div>
+        </div>
+        <div class='small-9 large-12 columns'>
+          <h5>Excel Spreadsheet Export</h5>
+
+          <p>Export the results of this term in form of an excel spreadsheet per tutorial group.</p>
+
+          <%= link_to "Create Excel Spreadsheet Export", new_term_export_path(current_term, type: "excel_spreadsheet"), class: "small button" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='large-6 columns'>
+    <div class='panel export-panel'>
+      <div class='row'>
+        <div class='small-3 large-12 columns'>
+          <div class='icon text-center'><%= foundation_icon(:archive) %></div>
+        </div>
+        <div class='small-9 large-12 columns'>
+          <h5>Submission Export</h5>
+
+          <p>Create an archive of the submissions of this term.</p>
+
+          <%= link_to "Create Submission Export", new_term_export_path(current_term, type: "submission"), class: "small button" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+

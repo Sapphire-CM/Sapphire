@@ -1,13 +1,16 @@
-<%= f.input :base_path, label: "Base path, eg. %{course}-%{term}" %>
+<fieldset>
+  <legend>Submission Export Options</legend>
 
-<%= f.input :include_solitary_submissions, as: :boolean %>
-<%= f.input :solitary_path, label: "Solitary submissions Path, joined with basepath, eg. solitary/%{matriculation_number}/%{exercise}" %>
+  <%= f.input :base_path, label: "Base path, eg. %{course}-%{term}" %>
 
-<%= f.input :include_group_submissions, as: :boolean %>
-<%= f.input :group_path, label: "Group submissions Path, joined with basepath, eg. groups/%{student_group}-%{av_grade}/%{exercise}" %>
+  <%= f.input :include_solitary_submissions, as: :boolean %>
+  <%= f.input :solitary_path, label: "Solitary submissions Path, joined with basepath, eg. solitary/%{matriculation_number}/%{exercise}" %>
 
-<%= f.input :extract_zips, label: "Extract submitted zip files", as: :boolean %>
+  <%= f.input :include_group_submissions, as: :boolean %>
+  <%= f.input :group_path, label: "Group submissions Path, joined with basepath, eg. groups/%{student_group}-%{av_grade}/%{exercise}" %>
 
+  <%= f.input :extract_zips, label: "Extract submitted zip files", as: :boolean %>
+</fieldset>
 <div class='panel'>
   <p>Use placeholders to generate a zip-archive fitted for your need. Following options are supported:</p>
 

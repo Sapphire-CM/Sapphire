@@ -43,8 +43,8 @@ class GradingReview::SubmissionReview
 
   private
   def build_reviewable_evaluation_groups
-    evaluations_visible_to_students.group_by(&:evaluation_group).map do |evaluation_group, evaluations|
-      GradingReview::ReviewableEvaluationGroup.new(evaluation_group: evaluation_group, evaluations: evaluations)
+    evaluations.group_by(&:evaluation_group).map do |evaluation_group, evaluations|
+      GradingReview::ReviewableEvaluationGroup.new(evaluation_group: evaluation_group, evaluations: evaluations.select(&:show_to_students?))
     end.sort_by(&:row_order)
   end
 

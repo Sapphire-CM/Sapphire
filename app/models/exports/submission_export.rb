@@ -10,10 +10,8 @@
 #
 # add_index :exports, [:term_id], name: :index_exports_on_term_id
 
-require 'zip'
-
 class Exports::SubmissionExport < Export
-  prop_accessor :base_path, :solitary_path, :group_path, :extract_zips, :include_solitary_submissions, :include_group_submissions
+  prop_accessor :base_path, :solitary_path, :group_path, :include_solitary_submissions, :include_group_submissions
 
   validates :base_path, presence: true
   validates :solitary_path, presence: true, if: :include_solitary_submissions?
@@ -38,15 +36,10 @@ class Exports::SubmissionExport < Export
     include_group_submissions == '1'
   end
 
-  def extract_zips?
-    extract_zips == '1'
-  end
-
   def set_default_values!
     self.base_path ||= "%{course}-%{term}"
     self.solitary_path ||= "solitary/%{matriculation_number}/%{exercise}"
     self.group_path ||= "groups/%{student_group}-%{av_grade}/%{exercise}"
-    self.extract_zips = "1" if self.extract_zips.nil?
     self.include_solitary_submissions = "1" if self.include_solitary_submissions.nil?
     self.include_group_submissions = "1" if self.include_group_submissions.nil?
     true
@@ -70,42 +63,7 @@ class Exports::SubmissionExport < Export
   def add_asset_to_zip(submission_asset, zip_tmp_dir)
     path = File.join(zip_tmp_dir, submission_asset_path(submission_asset))
 
-    if extract_zips? && submission_asset.content_type == SubmissionAsset::Mime::ZIP
-      extraction_dir = path_without_extension(path)
-
-      begin
-        extract_zip_to(submission_asset.file.to_s, unique_path(extraction_dir))
-      rescue => e
-        # zip could not be extracted, falling back to hardlinking original file instead
-
-        FileUtils.rm_r(extraction_dir) if File.exist?(extraction_dir)
-        hardlink_file(submission_asset.file.to_s, unique_path(path))
-      end
-    else
-      hardlink_file(submission_asset.file.to_s, unique_path(path))
-    end
-  end
-
-  def extract_zip_to(zip_path, extraction_dir)
-    zip_name = File.basename(zip_path, File.extname(zip_path))
-    Zip::File.open(zip_path) do |archive|
-      archive.entries.each do |entry|
-        # ignoring directories - as mkdir_p is more reliable
-        next if entry.name[-1] == '/'
-
-        # do not include zip file name twice
-        entry_name = entry.name
-        if entry_name.start_with?(zip_name)
-          entry_name = entry_name[zip_name.length..-1]
-        elsif entry_name.start_with?("/#{zip_name}")
-          entry_name = entry_name[(zip_name.length + 1)..-1]
-        end
-
-        extraction_path = File.join(extraction_dir, entry_name)
-        FileUtils.mkdir_p(File.dirname(extraction_path))
-        entry.extract(extraction_path)
-      end
-    end
+    hardlink_file(submission_asset.file.to_s, unique_path(path))
   end
 
   def hardlink_file(source_path, dst_path)

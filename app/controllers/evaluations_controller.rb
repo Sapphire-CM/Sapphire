@@ -13,6 +13,11 @@ class EvaluationsController < ApplicationController
     end
   end
 
+  def edit
+    set_evaluation
+    render 'comment'
+  end
+
   private
   def set_evaluation
     @evaluation = Evaluation.find(params[:id])
@@ -44,6 +49,6 @@ class EvaluationsController < ApplicationController
   end
 
   def evaluation_params
-    params.require(:evaluation).permit(:value, :needs_review)
+    params.require(:evaluation).permit(:value, :needs_review, :comment)
   end
 end

@@ -93,7 +93,7 @@ Rails.application.routes.draw do
   resources :submission_assets, only: [:show, :destroy]
   resources :submission_viewers, only: [:show]
 
-  resources :evaluations, only: :update
+  resources :evaluations, only: [:update, :edit]
   resources :evaluation_groups, only: :update
   resources :submission_evaluations, controller: :submission_evaluations, only: :show
 

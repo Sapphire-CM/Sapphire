@@ -20,4 +20,12 @@ module SubmissionTreeHelper
       content_tag(:em, "not yet created")
     end
   end
+
+  def submission_tree_submitter(submitter)
+    if submitter.present?
+      submitter.fullname
+    else
+      content_tag(:em, "not yet created")
+    end
+  end
 end

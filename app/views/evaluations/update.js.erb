@@ -9,3 +9,5 @@ $('#<%= evaluation_group_bubble_id(@evaluation_group) %>').html("<%=j evaluation
 <% if evaluation_group_should_collapse?(@evaluation_group) %>
   $('#<%= evaluation_group_element_id(@evaluation_group) %> .evaluations').show().slideUp(400);
 <% end %>
+
+$('#reveal_modal').foundation('reveal', 'close');

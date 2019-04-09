@@ -7,13 +7,4 @@
   <%= render collection: @submission_evaluation.evaluation_groups.ranked, partial: "evaluation_group" %>
 <% end %>
 
-<div id="new_comment_modal" class='reveal-modal small'>
-  <h1 id="reveal_modal_header" class="subheader">
-    New Comment
-  </h1>
-  <div id="reveal_modal_content">
-    <%= text_area_tag :text, "Enter your comment here...", placeholder: "test" %>
-    <%= link_to "Add Comment", '#', class: "primary button"  %>
-  </div>
-  <a class="close-reveal-modal">&#215;</a>
-</div>
+<%= render 'application/reveal_modal' %>

@@ -48,7 +48,7 @@
         </td>
         <td class='modification-date' data-sort="<%= entry.mtime %>" data-sort-as="integer"><%= submission_tree_modification_date(entry.mtime) %></td>
         <% if entry.file? %>
-          <td><%= submission_tree_submitter(entry.submitter) %></td>
+          <td data-sort="<%= entry.submitter %>"><%= submission_tree_submitter(entry.submitter) %></td>
         <% else %>
           <td></td>
         <% end %>

@@ -1,5 +1,5 @@
 class SubmissionStructure::File < SubmissionStructure::TreeNode
-  attr_reader :icon, :size, :name, :mtime, :submission_asset
+  attr_reader :icon, :size, :name, :mtime, :submission_asset, :submitter
 
   def initialize(submission_asset, parent = nil)
     @icon = icon_for_submission_asset(submission_asset)
@@ -7,6 +7,7 @@ class SubmissionStructure::File < SubmissionStructure::TreeNode
     @name = submission_asset.filename
     @mtime = submission_asset.updated_at
     @submission_asset = submission_asset
+    @submitter = submission_asset.submitter
   end
 
   def file?

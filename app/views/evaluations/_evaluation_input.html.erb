@@ -1,16 +1,18 @@
 <%= cache evaluation do %>
   <div class='row collapse' id='<%= evaluation_id(evaluation) %>'>
+    <div class='small-<%= evaluation_button_size(evaluation) %> columns'>
+      <%= evaluation_input_content %>
+    </div>
     <% if evaluation.needs_review? %>
-      <div class='small-11 columns'>
-        <%= evaluation_input_content %>
-      </div>
       <div class='small-1 columns review_button'>
         <%= evaluation_review_done_button(evaluation) %>
       </div>
-    <% else %>
-      <div class='small-12 columns'>
-        <%= evaluation_input_content %>
+    <% end %>
+    <% if evaluation.value == 1 %>
+      <div class='small-1 columns review_button'>
+        <%= evaluation_comment_button(evaluation) %>
       </div>
     <% end %>
   </div>
 <% end %>
+      

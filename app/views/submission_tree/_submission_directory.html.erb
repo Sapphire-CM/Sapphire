@@ -5,6 +5,7 @@
       <th data-sort-disabled="true"></th>
       <th data-sort-default="true"><%= SubmissionStructure::File.human_attribute_name(:name) %></th>
       <th class='modification-date'><%= SubmissionStructure::File.human_attribute_name(:mtime) %></th>
+      <th><%= SubmissionStructure::File.human_attribute_name(:submitter) %></th>
       <th class='size'><%= SubmissionStructure::File.human_attribute_name(:size) %></th>
       <% if submission.modifiable_by_students? %>
         <th data-sort-disabled="true"></th>
@@ -19,6 +20,7 @@
           <%= link_to "..", tree_submission_path(submission, path: directory.parent.path_without_root), title: "Goto parent folder" %>
         </td>
         <td class='modification-date'><%= submission_tree_modification_date(directory.parent.mtime) %></td>
+        <td></td>
         <td class='size'><%= filesize directory.size %></td>
         <% if submission.modifiable_by_students? %>
           <td></td>
@@ -45,6 +47,11 @@
           <% end %>
         </td>
         <td class='modification-date' data-sort="<%= entry.mtime %>" data-sort-as="integer"><%= submission_tree_modification_date(entry.mtime) %></td>
+        <% if entry.file? %>
+          <td data-sort="<%= entry.submitter %>"><%= submission_tree_submitter(entry.submitter) %></td>
+        <% else %>
+          <td></td>
+        <% end %>
         <td class='size' data-sort="<%= entry.size %>" data-sort-as="integer"><%= filesize entry.size %></td>
         <% if submission.modifiable_by_students? %>
           <td class='buttons'>

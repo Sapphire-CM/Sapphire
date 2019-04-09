@@ -42,6 +42,18 @@ module EvaluationsHelper
     link_to foundation_icon(:check), evaluation_path(evaluation, evaluation: { needs_review: 0 }), method: 'put', data: { remote: true }, class: "tiny button expand"
   end
 
+  def evaluation_comment_button(evaluation)
+    if evaluation.comment?
+      link_to "Comment", edit_evaluation_path(evaluation), data: {remote: :true, "reveal-id" => "reveal_modal"}, class: "tiny button expand"
+    else
+      link_to "Comment", edit_evaluation_path(evaluation), data: {remote: :true, "reveal-id" => "reveal_modal"}, class: "tiny button expand"
+    end
+  end
+
+  def evaluation_button_size(evaluation)
+    return 12 - (evaluation.needs_review? ? 1 : 0) - (evaluation.value == 1 ? 1 : 0)
+  end 
+
   def evaluation_button_class(evaluation)
     if evaluation.value == 1
       # "secondary"

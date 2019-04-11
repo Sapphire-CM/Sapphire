@@ -14,7 +14,15 @@
           <tbody>
             <% group.evaluations.each do |evaluation| %>
             <tr>
+              <% unless evaluation.comment? %>
               <td><%= evaluation.rating.title %></td>
+              <% else %>
+              <td>
+                <span data-tooltip class="has-tip rating-tip" title="<%= evaluation.comment %>">
+                  <%= evaluation.rating.title %> <strong>🛈</strong>
+                </span>
+              </td>
+              <% end %> 
               <td>
               <% if evaluation.is_a? Evaluations::FixedEvaluation %>
                 <%= rating_points_description evaluation.rating %>

@@ -32,6 +32,7 @@ class SubmissionUpload
   def save_asset
     sa = submission_asset
     sa.submission = submission
+    sa.submitter  = submitter
 
     sa.file = file if file.present?
     sa.path = path.presence || ""

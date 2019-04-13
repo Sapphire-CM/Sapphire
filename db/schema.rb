@@ -334,10 +334,12 @@ ActiveRecord::Schema.define(version: 20200412142124) do
     t.integer  "processed_size",    default: 0
     t.integer  "filesystem_size",   default: 0
     t.integer  "extraction_status"
+    t.integer  "submitter_id"
   end
 
   add_index "submission_assets", ["filename", "path", "submission_id"], name: "index_submission_assets_on_filename_and_path_and_submission_id", unique: true
   add_index "submission_assets", ["submission_id"], name: "index_submission_assets_on_submission_id"
+  add_index "submission_assets", ["submitter_id"], name: "index_submission_assets_on_submitter_id"
 
   create_table "submission_evaluations", force: :cascade do |t|
     t.integer  "submission_id"

@@ -12,15 +12,18 @@
 #   t.integer  :processed_size,    default: 0
 #   t.integer  :filesystem_size,   default: 0
 #   t.integer  :extraction_status
+#   t.integer  :submitter_id
 # end
 #
 # add_index :submission_assets, [:filename, :path, :submission_id], name: :index_submission_assets_on_filename_and_path_and_submission_id, unique: true
 # add_index :submission_assets, [:submission_id], name: :index_submission_assets_on_submission_id
+# add_index :submission_assets, [:submitter_id], name: :index_submission_assets_on_submitter_id
 
 require "charlock_holmes"
 
 class SubmissionAsset < ActiveRecord::Base
   belongs_to :submission, touch: true
+  belongs_to :submitter, class_name: 'Account', foreign_key: 'submitter_id'
   mount_uploader :file, SubmissionAssetUploader
 
   enum extraction_status: [:extraction_pending, :extraction_in_progress, :extraction_done, :extraction_failed]
@@ -47,7 +50,6 @@ class SubmissionAsset < ActiveRecord::Base
   scope :for_exercise, lambda { |exercise| joins(:submission).where(submissions: { exercise_id: exercise.id }) }
   scope :for_term, lambda { |term| joins(submission: :exercise).where(submission: { exercise: { term: term } }) }
 
-  delegate :submitter, to: :submission
   delegate :exercise, to: :submission
 
   EXCLUDED_FILTER = [

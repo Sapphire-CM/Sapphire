@@ -8,6 +8,7 @@
 #   t.integer  :evaluation_group_id
 #   t.boolean  :checked_automatically, default: false, null: false
 #   t.boolean  :needs_review,          default: false
+#   t.text     :comment
 # end
 #
 # add_index :evaluations, [:evaluation_group_id], name: :index_evaluations_on_evaluation_group_id

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180313211635) do
+ActiveRecord::Schema.define(version: 20190414071516) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 20180313211635) do
     t.integer  "evaluation_group_id"
     t.boolean  "checked_automatically", default: false, null: false
     t.boolean  "needs_review",          default: false
+    t.text     "comment"
   end
 
   add_index "evaluations", ["evaluation_group_id"], name: "index_evaluations_on_evaluation_group_id"

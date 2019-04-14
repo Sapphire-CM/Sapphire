@@ -91,7 +91,18 @@ RSpec.describe EvaluationsController, type: :controller do
             end
           end
         end
+        it 'updates an evaluation with a comment' do
+          rating = FactoryGirl.create rating_factory(Ratings::FixedPointsDeductionRating), rating_group: rating_group
+          evaluation = submission_evaluation.evaluations.where(rating_id: rating.id).first    
+          xhr :put, :update, id: evaluation.id, evaluation: { comment: "foobar" }
+
+          evaluation.reload
+          expect(response).to have_http_status(:success)
+          expect(evaluation.comment).to eq("foobar")
+        end
       end
+
+
     end
 
     describe 'with invalid params' do

@@ -1,6 +1,8 @@
-<%= simple_form_for @evaluation.becomes(Evaluation), remote: request.format.js? do |f| %>
-	<%= f.input_field :comment, rows: 3 %>
+<h4><%= @evaluation.rating.title %></h4>
 
+<%= simple_form_for @evaluation.becomes(Evaluation), remote: request.format.js? do |f| %>
+	<%= f.text_field :comment, rows: 3 %>
+	
 	<div class='row'>
     <div class='large-12 large-centered columns text-center'>
       <%= f.submit class: "button" %>

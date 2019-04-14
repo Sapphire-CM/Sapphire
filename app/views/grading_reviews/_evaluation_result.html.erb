@@ -15,7 +15,7 @@
             <% group.evaluations.each do |evaluation| %>
             <tr>
               <% unless evaluation.comment? %>
-              <td><%= evaluation.rating.title %></td>
+                <td><%= evaluation.rating.title %></td>
               <% else %>
               <td>
                 <span data-tooltip class="has-tip rating-tip" title="<%= evaluation.comment %>">

@@ -15,7 +15,7 @@ class EvaluationsController < ApplicationController
 
   def edit
     set_evaluation
-    render 'comment'
+    render :comment
   end
 
   private

@@ -135,7 +135,7 @@ RSpec.shared_examples "basic submission tree operations" do
         sleep 1 # neccessary to make this spec more robust - otherwise the edit link does not behave as intended
 
         within '.reveal-modal.open' do
-          click_link 'edit'
+          click_link 'Edit'
 
           fill_in 'submission_upload_path', with: "another/test/path"
         end

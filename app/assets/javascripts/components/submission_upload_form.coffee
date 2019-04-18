@@ -38,7 +38,7 @@ class SubmissionUploadFormController
     $ok_placeholder = $path_el.find(".ok-button-placeholder")
 
     $path_description = $("<p>").addClass("path-description").text("Files will be added to folder ")
-    $path_edit_button = $("<a>").attr("href", '#').text("edit")
+    $path_edit_button = $("<a>").attr("href", '#').text("Edit")
     $path_text_el = $("<strong>").text(path_description())
     $path_ok_button = $("<a>").text("ok").addClass("postfix button")
 

@@ -45,26 +45,9 @@ RSpec.describe TermCopyService do
       context 'with exercises' do
         let!(:source_exercises) { FactoryGirl.create_list(:exercise, 2, :with_ratings, term: source_term) }
 
-        let(:term_attributes) do
-          {
-            only: [],
-            include: {
-              exercises: {
-                only: %I(title description deadline late_deadline enable_max_total_points enable_student_uploads max_total_points group_submission),
-                include: {
-                  rating_groups: {
-                    only: %I(title title points description global min_points max_points enable_range_points),
-                    include: {
-                      ratings: {
-                        only: %I(title value description type max_value min_value row_order multiplication_factor automated_checker_identifier bulk)
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        end
+        let(:exercise_attributes) { %I(title description deadline late_deadline enable_max_total_points enable_student_uploads max_total_points group_submission) }
+        let(:rating_group_attributes) { %I(title title points description global min_points max_points enable_range_points) }
+        let(:rating_attributes) { %I(title value description type max_value min_value row_order multiplication_factor automated_checker_identifier bulk) }
 
         it 'copies exercises if options include exercises' do
           subject = described_class.new(term, source_term, exercises: true)
@@ -73,7 +56,22 @@ RSpec.describe TermCopyService do
             subject.perform!
           end.to change(term.exercises, :count).by(2)
 
-          expect(term.as_json(term_attributes)).to match(source_term.as_json(term_attributes))
+          source_term.exercises.each do |source_exercise|
+            destination_exercise = term.exercises.find_by!(title: source_exercise.title)
+            exercise_attributes.each { |attribute| expect(destination_exercise.send(attribute)).to eq(source_exercise.send(attribute)) }
+
+            source_exercise.rating_groups.each do |source_rating_group|
+              destination_rating_group = destination_exercise.rating_groups.find_by!(title: source_rating_group.title)
+
+              rating_group_attributes.each { |attribute| expect(destination_rating_group.send(attribute)).to eq(source_rating_group.send(attribute)) }
+
+              source_rating_group.ratings.each do |source_rating|
+                destination_rating = destination_rating_group.ratings.find_by!(title: source_rating.title)
+
+                rating_attributes.each { |attribute| expect(destination_rating.send(attribute)).to eq(source_rating.send(attribute)) }
+              end
+            end
+          end
         end
 
         it 'does not copy exercises if options do not include exercises' do

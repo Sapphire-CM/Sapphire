@@ -1,5 +1,5 @@
 <div class='reveal-modal' id='change-folder-modal'>
-  <h1>Add Folder</h1>
+  <h1>New Folder</h1>
 
   <% if policy(submission_upload).create? %>
     <%= render "submission_folders/form", submission_folder: SubmissionFolder.new(path: directory.path), submission: submission_upload.submission, directory: directory %>

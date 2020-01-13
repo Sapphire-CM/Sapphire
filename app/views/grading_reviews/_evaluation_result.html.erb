@@ -8,18 +8,18 @@
           <thead>
             <tr>
               <th>Rating</th>
-              <th>Points</th>
+              <th class="text-right">Points</th>
             </tr>
           </thead>
           <tbody>
             <% group.evaluations.each do |evaluation| %>
             <tr>
               <td><%= evaluation.rating.title %></td>
-              <td>
+              <td class="text-right">
               <% if evaluation.is_a? Evaluations::FixedEvaluation %>
                 <%= rating_points_description evaluation.rating %>
               <% else %>
-                <%= evaluation.points %>
+                <%= "%g" % evaluation.points %>
               <% end %>
               </td>
             </tr>

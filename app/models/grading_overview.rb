@@ -34,6 +34,14 @@ class GradingOverview
     overall_grading_scale_service.ungraded_count
   end
 
+  def graded_count_for_tutorial_group(tutorial_group)
+    @grading_scale_services[tutorial_group].term_registrations.graded.count
+  end
+
+  def ungraded_count_for_tutorial_group(tutorial_group)
+    @grading_scale_services[tutorial_group].term_registrations.ungraded.count
+  end
+
   def students_count
     graded_count + ungraded_count
   end

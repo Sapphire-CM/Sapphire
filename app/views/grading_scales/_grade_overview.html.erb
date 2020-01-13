@@ -21,15 +21,18 @@
   </tbody>
   <tfoot>
     <tr>
-      <th></th>
+      <th class='text-right'>Count:</th>
       <% grading_overview.tutorial_groups.each do |tutorial_group| %>
-        <th class='text-right'><%= grading_overview.student_count_for_tutorial_group(tutorial_group) %></th>
+        <th class='text-right'><%= grading_overview.graded_count_for_tutorial_group(tutorial_group) %></th>
       <% end %>
       <th class='text-right'><%= grading_overview.graded_count %></th>
       <th></th>
     </tr>
     <tr>
-      <th colspan='<%= grading_overview.tutorial_groups.count + 1 %>' class='text-right'>Ungraded:</th>
+      <th class='text-right'>Ungraded:</th>
+      <% grading_overview.tutorial_groups.each do |tutorial_group| %>
+        <th class='text-right'><%= grading_overview.ungraded_count_for_tutorial_group(tutorial_group) %></th>
+      <% end %>
       <th class='text-right'><%= grading_overview.ungraded_count %></th>
       <th></th>
     </tr>

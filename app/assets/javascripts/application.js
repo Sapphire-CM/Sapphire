@@ -26,6 +26,8 @@
 //= require cocoon
 //= require vendor
 //= require_tree .
+//= require nprogress
+//= require nprogress-turbolinks
 
 $(function(){
   $(document).foundation();
@@ -40,3 +42,4 @@ $(function(){
     $(this).children('a').trigger('click.fndtn.alerts');
   });
 });
+

@@ -19,6 +19,7 @@ RSpec.describe SubmissionAsset do
 
   describe 'associations' do
     it { is_expected.to belong_to(:submission) }
+    it { is_expected.to belong_to(:submitter) }
   end
 
   describe 'validations' do

@@ -70,6 +70,14 @@ RSpec.describe SubmissionExtractionService do
         end
       end
 
+      it 'sets the submitter correctly' do
+        subject.perform!
+
+        submission.submission_assets.each do |submission_asset|
+          expect(submission_asset.submitter).to eq(submitter)
+        end
+      end
+
       it 'keeps the zip path of the zip archive' do
         zip_asset.path = "funny/path"
 

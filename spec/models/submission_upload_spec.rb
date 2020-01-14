@@ -120,6 +120,14 @@ RSpec.describe SubmissionUpload do
         end.to change(SubmissionAsset, :count).by(1)
       end
 
+      it 'sets the submitter after it saves' do
+        expect do
+          expect(subject.save).to be_truthy
+        end.to change(SubmissionAsset, :count).by(1)
+
+        expect(subject.submission_asset.submitter).to eq(account)
+      end
+
       it 'calls the event service' do
         expect(EventService).to receive(:new).with(account, term).and_return(event_service)
         expect(event_service).to receive(:submission_asset_uploaded!).with(subject.submission_asset)

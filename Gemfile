@@ -29,6 +29,8 @@ gem 'coffee-rails',    '~> 4.0'   # Use CoffeeScript for .js.coffee assets and v
 gem 'uglifier',        '>= 1.3'   # Use Uglifier as compressor for JavaScript assets
 gem 'zurb-foundation', '~> 4.3.0'
 gem 'foundation-icons-sass-rails', '~> 3.0'
+gem 'nprogress-rails'
+
 
 gem 'remotipart', '~> 1.2'        # fileuploads via ajax
 gem 'jbuilder'                    # rendering .jbuilder templates (json responses)

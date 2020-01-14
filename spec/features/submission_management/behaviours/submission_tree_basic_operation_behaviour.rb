@@ -16,6 +16,15 @@ RSpec.shared_examples "basic submission tree operations" do
       expect(page).to have_link("tl-text-1.txt")
     end
 
+    scenario 'sees submitter' do
+      visit tree_submission_path(submission)
+
+      expect(page).to have_content("Submitter")
+      submission.submission_assets(true).each do |submission_asset|
+        expect(page).to have_content(submission_asset.submitter.fullname)
+      end
+    end
+
     scenario 'can open a submission asset' do
       visit tree_submission_path(submission)
 

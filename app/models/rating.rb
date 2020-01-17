@@ -27,6 +27,7 @@ class Rating < ActiveRecord::Base
   has_one :exercise, through: :rating_group
   has_many :evaluations, dependent: :destroy
   has_many :submission_evaluations, through: :evaluations
+  has_many :comments, as: :commentable
 
   validates :rating_group, presence: true
   validates :title, presence: true

@@ -27,6 +27,7 @@ class Term < ActiveRecord::Base
   has_many :imports, dependent: :destroy
   has_many :exports, dependent: :destroy
   has_many :events, dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   has_many :submissions, through: :exercises
   has_many :student_groups, through: :tutorial_groups

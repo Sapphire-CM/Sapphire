@@ -21,6 +21,7 @@ class SubmissionEvaluation < ActiveRecord::Base
 
   has_many :evaluation_groups, dependent: :destroy
   has_many :evaluations, through: :evaluation_groups
+  has_many :comments, as: :commentable
 
   has_many :ratings, through: :evaluations
   has_many :rating_groups, through: :ratings

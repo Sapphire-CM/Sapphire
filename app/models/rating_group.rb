@@ -22,6 +22,7 @@ class RatingGroup < ActiveRecord::Base
   belongs_to :exercise, touch: true
   has_many :ratings, dependent: :destroy
   has_many :evaluation_groups, dependent: :destroy
+  has_many :comments, as: :commentable
 
   validates :exercise, presence: true
   validates :title, presence: true, uniqueness: { scope: :exercise_id }

@@ -21,6 +21,7 @@ class Evaluation < ActiveRecord::Base
   has_one :student_group, through: :submission_evaluation
   has_one :submission, through: :submission_evaluation
   has_one :rating_group, through: :evaluation_group
+  has_many :comments, as: :commentable
 
   validates :evaluation_group, presence: true
   validates :rating, presence: true

@@ -8,10 +8,10 @@ module PointsHelper
       "points"
     end
 
-    "#{"%g" % points} #{pluralized_string}"
+    "#{number_with_precision(points, strip_insignificant_zeros: true)} #{pluralized_string}"
   end
 
   def trim_points(points)
-    "#{"%g" % points}"
+    "#{number_with_precision(points, strip_insignificant_zeros: true)}"
   end
 end

@@ -10,13 +10,13 @@ RSpec.shared_examples "basic submission tree operations" do
 
     let(:top_level_asset) { FactoryGirl.create(:submission_asset, submission: submission, path:"", file: prepare_static_test_file("simple_submission.txt", rename_to: "tl-text-1.txt")) }
 
-    scenario 'sees top-level files' do
+    scenario 'provides top-level files' do
       visit tree_submission_path(submission)
 
       expect(page).to have_link("tl-text-1.txt")
     end
 
-    scenario 'sees submitter' do
+    scenario 'provides submitter' do
       visit tree_submission_path(submission)
 
       expect(page).to have_content("Submitter")

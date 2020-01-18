@@ -3,7 +3,8 @@ require "zip"
 class SubmissionExtractionService
   class ExtractionError < StandardError; end
 
-  attr_accessor :submission_asset, :created_assets, :errors, :submitter
+  attr_accessor :submission_asset, :created_assets, :errors
+  delegate :submitter, to: :submission_asset
 
   def initialize(submission_asset)
     self.submission_asset = submission_asset
@@ -72,8 +73,7 @@ class SubmissionExtractionService
 
         asset_path = File.join(submission_asset.path, zip_path)
 
-        new_submission_asset = submission.submission_assets.create(file: File.open(destination), path: asset_path, submitted_at: submission_asset.submitted_at, submitter: current_account)
-
+        new_submission_asset = submission.submission_assets.create(file: File.open(destination), path: asset_path, submitted_at: submission_asset.submitted_at, submitter: submitter)
         unless new_submission_asset.valid?
           self.errors << new_submission_asset
         else

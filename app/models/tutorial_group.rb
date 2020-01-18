@@ -57,11 +57,11 @@ class TutorialGroup < ActiveRecord::Base
   end
 
   def graded_count
-    term_registrations.where(receives_grade: true).count
+    term_registrations.graded.count
   end
 
   def ungraded_count
-    term_registrations.where(receives_grade: false).count
+    term_registrations.ungraded.count
   end
 
   private

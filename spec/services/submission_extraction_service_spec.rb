@@ -29,6 +29,8 @@ RSpec.describe SubmissionExtractionService do
     subject { described_class.new(zip_asset) }
 
     context 'with valid ZIP archive' do
+      it { is_expected.to delegate_method(:submitter).to(:submission_asset) }
+
       it 'extracts zip asset' do
         zip_asset.path = "folder"
         expect do
@@ -67,14 +69,6 @@ RSpec.describe SubmissionExtractionService do
 
         submission.submission_assets(true).each do |submission_asset|
           expect(submission_asset.submitted_at).to eq(zip_asset.submitted_at)
-        end
-      end
-
-      it 'sets the submitter correctly' do
-        subject.perform!
-
-        submission.submission_assets.each do |submission_asset|
-          expect(submission_asset.submitter).to eq(submitter)
         end
       end
 

@@ -5,7 +5,7 @@ FactoryGirl.define do
     content_type 'foobar'
     file { prepare_static_test_file 'simple_submission.txt', open: true }
     sequence(:path) {|i| "simple/submission/path#{i}" }
-    submitter factory: :account
+    submitter { association(:account) }
 
     trait :zip do
       file { prepare_static_test_file 'submission.zip', open: true }

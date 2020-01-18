@@ -27,12 +27,6 @@ RSpec.describe SubmissionStructure::File do
     end
   end
 
-  describe '#submitter' do
-    it 'returns the submission_assets submitter' do
-      expect(subject.submitter).to eq(submission_asset.submitter)
-    end
-  end
-
   describe '#icon' do
     it 'returns "photo" for images' do
       SubmissionAsset::Mime::IMAGES.each do |ct|

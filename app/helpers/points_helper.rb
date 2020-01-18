@@ -8,6 +8,10 @@ module PointsHelper
       "points"
     end
 
-    "#{points} #{pluralized_string}"
+    "#{"%g" % points} #{pluralized_string}"
+  end
+
+  def trim_points(points)
+    "#{"%g" % points}"
   end
 end

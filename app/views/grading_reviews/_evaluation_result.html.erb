@@ -19,7 +19,7 @@
               <% if evaluation.is_a? Evaluations::FixedEvaluation %>
                 <%= rating_points_description evaluation.rating %>
               <% else %>
-                <%= "%g" % evaluation.points %>
+                <%= trim_points evaluation.points %>
               <% end %>
               </td>
             </tr>

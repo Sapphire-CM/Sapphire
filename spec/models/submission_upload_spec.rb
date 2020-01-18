@@ -120,10 +120,8 @@ RSpec.describe SubmissionUpload do
         end.to change(SubmissionAsset, :count).by(1)
       end
 
-      it 'sets the submitter after it saves' do
-        expect do
-          expect(subject.save).to be_truthy
-        end.to change(SubmissionAsset, :count).by(1)
+      it 'sets the submitter during save' do
+        subject.save
 
         expect(subject.submission_asset.submitter).to eq(account)
       end

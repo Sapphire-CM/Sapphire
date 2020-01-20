@@ -93,9 +93,14 @@ Rails.application.routes.draw do
   resources :submission_assets, only: [:show, :destroy]
   resources :submission_viewers, only: [:show]
 
-  resources :evaluations, only: :update
+  resources :evaluations, only: :update do
+    resource :comments, module: :evaluations
+  end
+
   resources :evaluation_groups, only: :update
-  resources :submission_evaluations, controller: :submission_evaluations, only: :show
+  resources :submission_evaluations, controller: :submission_evaluations, only: :show do
+    resource :comments, module: :submission_evaluations
+  end
 
   resources :submissions, only: [:show, :edit, :update] do
     member do

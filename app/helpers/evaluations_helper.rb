@@ -55,4 +55,12 @@ module EvaluationsHelper
   def evaluation_id(evaluation)
     "evaluation_#{evaluation.id}"
   end
+
+  def evaluation_comment_button(evaluation)
+    if evaluation.comments.any?
+      link_to "Comment", evaluation_comments_path(evaluation), data: {remote: :true, "reveal-id" => "reveal_modal"}, class: "info tiny button expand has-tip comment-tip"
+    else
+      link_to "Comment", evaluation_comments_path(evaluation), data: {remote: :true, "reveal-id" => "reveal_modal"}, class: "secondary tiny button expand"
+    end
+  end
 end

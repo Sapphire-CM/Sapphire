@@ -8,4 +8,5 @@
   <hr />
 
   <%= render "grading_reviews/evaluation_result", submission_review: @submission_review %>
+  <%= render "grading_reviews/evaluation_comments", commentable: @submission_review.submission_evaluation %>
 <% end %>

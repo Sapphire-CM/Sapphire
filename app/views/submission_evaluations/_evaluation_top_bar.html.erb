@@ -13,7 +13,8 @@
       </div>
 
       <div class='small-6 large-4 columns text-right buttons'>
-        <%= link_to "Comments", submission_evaluation_comments_path(submission.submission_evaluation), class: "small button", remote: true, data: {"reveal-id" => "reveal_modal"} %>
+        <%= link_to "Notes", submission_evaluation_comments_path(submission.submission_evaluation), class: "small button", remote: true, data: {"reveal-id" => "reveal_modal"} %>
+        <%= link_to "Feedback", submission_evaluation_comments_path(submission.submission_evaluation), class: "small button", remote: true, data: {"reveal-id" => "reveal_modal"} %>
         <%= link_to "Edit", edit_submission_path(submission), class: "small button" %>
         <%= link_to "Open Viewer", submission_viewer_path(submission), class: "small button", target: "sapphire_submission_viewer" if submission.exercise.submission_viewer? %>
         <%= link_to "Files", tree_submission_path(submission), class: "small button" %>

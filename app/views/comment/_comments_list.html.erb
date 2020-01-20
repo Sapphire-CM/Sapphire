@@ -1,0 +1,14 @@
+<% if @commentable.comments.any? %>
+  <div>
+    <% @commentable.comments.each do |comment| %>
+      <div class="panel">
+        <strong><%= comment.account.fullname %></strong> commented:
+        <p><%= comment.content %></p>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div>
+    No Comments Yet
+  </div>
+<% end %>

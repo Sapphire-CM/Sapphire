@@ -34,7 +34,6 @@ gem 'remotipart', '~> 1.2'        # fileuploads via ajax
 gem 'jbuilder'                    # rendering .jbuilder templates (json responses)
 
 gem 'whenever'                    # cron tasks
-gem 'nntp-client', github: 'matthee/Sapphire-NNTP'  # fetching newsgroup posts
 gem 'mail'                        # fetching, delivering and parsing of emails
 
 gem 'coderay'                     # doing code-highlighting for submission_assets

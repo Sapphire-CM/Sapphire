@@ -104,6 +104,10 @@ i[class*="fi-"] {
   text-align: center;
 }
 
+body.progress-cursor * {
+	cursor: progress !important;
+}
+
 dl.sub-nav {
   dd {
    margin-left: 10px;

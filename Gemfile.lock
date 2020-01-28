@@ -161,7 +161,7 @@ GEM
     factory_girl_rails (4.7.0)
       factory_girl (~> 4.7.0)
       railties (>= 3.0.0)
-    ffi (1.9.18)
+    ffi (1.12.1)
     flash_render (1.2.0)
       rails (>= 2.3.8)
     foundation-icons-sass-rails (3.0.0)

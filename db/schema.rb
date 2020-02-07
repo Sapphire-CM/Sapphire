@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200116200434) do
+ActiveRecord::Schema.define(version: 20200129142426) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -40,14 +40,13 @@ ActiveRecord::Schema.define(version: 20200116200434) do
   add_index "accounts", ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
 
   create_table "comments", force: :cascade do |t|
-    t.integer  "commentable_id",                   null: false
-    t.string   "commentable_type",                 null: false
-    t.integer  "account_id",                       null: false
-    t.integer  "term_id",                          null: false
+    t.integer  "commentable_id",   null: false
+    t.string   "commentable_type", null: false
+    t.integer  "account_id",       null: false
+    t.integer  "term_id",          null: false
     t.text     "content"
-    t.boolean  "internal",         default: false
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   add_index "comments", ["account_id"], name: "index_comments_on_account_id"
@@ -265,6 +264,19 @@ ActiveRecord::Schema.define(version: 20200116200434) do
 
   add_index "imports", ["term_id"], name: "index_imports_on_term_id"
 
+  create_table "notes", force: :cascade do |t|
+    t.integer  "notable_id",   null: false
+    t.string   "notable_type", null: false
+    t.integer  "account_id",   null: false
+    t.integer  "term_id",      null: false
+    t.text     "content"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "notes", ["account_id"], name: "index_notes_on_account_id"
+  add_index "notes", ["notable_type", "notable_id"], name: "index_notes_on_notable_type_and_notable_id"
+
   create_table "rating_groups", force: :cascade do |t|
     t.integer  "exercise_id"
     t.string   "title"
@@ -348,10 +360,12 @@ ActiveRecord::Schema.define(version: 20200116200434) do
     t.integer  "processed_size",    default: 0
     t.integer  "filesystem_size",   default: 0
     t.integer  "extraction_status"
+    t.integer  "submitter_id"
   end
 
   add_index "submission_assets", ["filename", "path", "submission_id"], name: "index_submission_assets_on_filename_and_path_and_submission_id", unique: true
   add_index "submission_assets", ["submission_id"], name: "index_submission_assets_on_submission_id"
+  add_index "submission_assets", ["submitter_id"], name: "index_submission_assets_on_submitter_id"
 
   create_table "submission_evaluations", force: :cascade do |t|
     t.integer  "submission_id"

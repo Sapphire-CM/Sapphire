@@ -1,0 +1,9 @@
+<div class="comments-list">
+  <% if @commentable.comments.any? %>
+    <%= render collection: @commentable.comments, partial:'comments/comment', as: :comment %>
+  <% else %>
+    <div class="panel">
+      No Comments Yet
+    </div>
+  <% end %>
+</div>

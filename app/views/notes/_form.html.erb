@@ -1,0 +1,13 @@
+<%= simple_form_for [@notable, Note.new], remote: true do |f| %>
+  <div class='row'>
+    <div class='large-12'>
+      <%= f.input :content, input_html: { rows: 5 }, label: "New Note", placeholder: "Add a new Note" %>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class='large-12 large-centered columns text-center'>
+      <%= f.submit class: "button" %>
+    </div>
+  </div>
+<% end %>

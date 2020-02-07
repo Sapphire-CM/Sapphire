@@ -95,12 +95,15 @@ Rails.application.routes.draw do
   resources :submission_viewers, only: [:show]
 
   resources :evaluations, only: :update do
-    resource :comments, module: :evaluations
+    resource :comments, module: :evaluations, only: [:create, :show]
+    resources :comments, module: :evaluations, only: [:edit, :destroy]
   end
 
   resources :evaluation_groups, only: :update
   resources :submission_evaluations, controller: :submission_evaluations, only: :show do
-    resource :comments, module: :submission_evaluations
+    resource :comments, module: :submission_evaluations, only: [:create, :show]
+    resources :comments, module: :submission_evaluations, only: [:edit, :destroy]
+    resource :notes, module: :submission_evaluations, only: [:create, :show]
   end
 
   resources :submissions, only: [:show, :edit, :update] do

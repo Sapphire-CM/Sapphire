@@ -1,4 +1,7 @@
 class CommentsController < ApplicationController
+
+  before_action :set_context, only: [:edit, :update, :destroy]
+
   def show
     authorize Comment
   end
@@ -11,11 +14,25 @@ class CommentsController < ApplicationController
     authorize @comment
     @comment.save
 
-    render partial: 'comment/overview', notice: "Comment successfully saved"
+    render partial: 'comments/render_list'
+  end
+
+  def edit
+  end
+
+  def destroy
+    @comment.destroy
+    render partial: 'comments/render_list'
   end
 
   private
-   
+
+  def set_context
+    @comment = Comment.find(params[:id])
+
+    authorize @comment
+  end
+
   def comment_params
     params.require(:comment).permit(:content)
   end

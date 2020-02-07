@@ -2,15 +2,15 @@ class SubmissionEvaluations::CommentsController < CommentsController
   before_action :set_commentable, :set_term
 
   def show
-    authorize Comment
-    puts("rendering comment show")
-    render "comment/show"
+    render "comments/show"
   end
 
   private
   
   def set_commentable
     @commentable = SubmissionEvaluation.find(params[:submission_evaluation_id])
+
+    authorize @commentable
   end
 
   def set_term

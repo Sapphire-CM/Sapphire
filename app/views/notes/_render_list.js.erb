@@ -1,0 +1,4 @@
+var notes_list = "<%=j render 'notes/notes_list', notable: @notable, formats: [:html] %>";
+
+$(".notes-list").replaceWith(notes_list);
+$("#note_content")[0].reset();

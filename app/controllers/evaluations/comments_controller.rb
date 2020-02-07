@@ -2,7 +2,6 @@ class Evaluations::CommentsController < CommentsController
   before_action :set_commentable, :set_term
 
   def show
-    authorize Comment
     render "comment/show"
   end
 
@@ -10,6 +9,8 @@ class Evaluations::CommentsController < CommentsController
   
   def set_commentable
     @commentable = Evaluation.find(params[:evaluation_id])
+
+    authorize @commentable
   end
 
   def set_term

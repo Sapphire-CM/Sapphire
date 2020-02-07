@@ -1,4 +1,4 @@
-class CommentPolicy < TermBasedPolicy
+class NotePolicy < TermBasedPolicy
   def show?
     create?
   end

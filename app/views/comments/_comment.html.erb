@@ -1,0 +1,17 @@
+<div class='row'>
+  <div class='large-12 columns'>
+    <span>
+      <strong><%= comment.account.fullname %></strong> commented:
+    <span class='comment_entry_icons right-aligned'>
+      <%= link_to foundation_icon(:page_edit), edit_polymorphic_path([@commentable, comment]) %>
+      <%= link_to foundation_icon(:x), polymorphic_path([@commentable, comment]), method: :delete %>
+    </span>
+  </div>
+</div>
+
+
+<div class="panel">
+  <div>
+    <%= comment.content.html_safe %>
+  </div>
+</div>

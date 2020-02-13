@@ -14,8 +14,13 @@
           <tbody>
             <% group.evaluations.each do |evaluation| %>
             <tr>
-              <td><%= evaluation.rating.title %></td>
-              <td class="text-right">
+              <td>
+                <%= evaluation.rating.title %>
+                <% if evaluation.comments.any? %>
+                  <%= link_to foundation_icon(:megaphone), evaluation_comments_path(evaluation.becomes(Evaluation)), data: {remote: :true, "reveal-id" => "reveal_modal"}  %>
+                <% end %>
+              </td>
+              <td>
               <% if evaluation.is_a? Evaluations::FixedEvaluation %>
                 <%= rating_points_description evaluation.rating %>
               <% else %>
@@ -42,3 +47,5 @@
     <p>Nothing wrong with this submission</p>
   </div>
 <% end %>
+
+<%= render 'application/reveal_modal' %>

@@ -102,7 +102,7 @@ Rails.application.routes.draw do
   resources :evaluation_groups, only: :update
   resources :submission_evaluations, controller: :submission_evaluations, only: :show do
     resource :comments, module: :submission_evaluations, only: [:create, :show]
-    resources :comments, module: :submission_evaluations, only: [:edit, :destroy]
+    resources :comments, module: :submission_evaluations, only: [:update, :destroy]
     resource :notes, module: :submission_evaluations, only: [:create, :show]
   end
 

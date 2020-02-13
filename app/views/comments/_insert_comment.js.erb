@@ -1,0 +1,5 @@
+var comment = "<%=j render 'comments/comment', comment: @comment, formats: [:html] %>";
+
+$('.no_comment').remove();
+$('.comments_list').append(comment);
+$('.new_comment').find('textarea').val('')

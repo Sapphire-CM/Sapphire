@@ -1,2 +1,4 @@
 <%= render partial: 'comments/comments_list', formats: [:html] %>
-<%= render partial: 'comments/form' %>
+<% if current_account.admin? || policy(@term).staff? %>
+  <%= render partial: 'comments/form' %>
+<% end %>

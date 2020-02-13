@@ -1,0 +1,9 @@
+var $comment = $("<%= "#comment_id_#{comment.id}" %>");
+var $comment_edit_form = $("<%= "form#comment_id_#{comment.id}" %>");
+$comment.remove()
+$comment_edit_form.remove()
+
+if ($(".comments_list").find('.comment').length == 0) {
+  var html = "<%=j render "comments/no_comments" %>";
+  $(".comments_list").html(html);
+}

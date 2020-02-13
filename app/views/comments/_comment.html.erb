@@ -1,17 +1,24 @@
-<div class='row'>
-  <div class='large-12 columns'>
-    <span>
-      <strong><%= comment.account.fullname %></strong> commented:
-    <span class='comment_entry_icons right-aligned'>
-      <%= link_to foundation_icon(:page_edit), edit_polymorphic_path([@commentable, comment]) %>
-      <%= link_to foundation_icon(:x), polymorphic_path([@commentable, comment]), method: :delete %>
-    </span>
+<div id="<%= "comment_id_#{comment.id}" %>" class="comment">
+  <div class='row'>
+    <div class='large-12 columns'>
+      <span>
+        <strong><%= comment.account.fullname %></strong> commented:
+      </span>
+      <% if current_account.admin? || policy(@term).staff? %>
+        <span class='comment_entry_icons right-aligned'>
+          <%= link_to foundation_icon(:page_edit), '#', id:'edit_comment' %>
+          <%= link_to foundation_icon(:x), polymorphic_path([upcast(@commentable), comment]), method: :delete, remote: true, data: { confirm: "Are you sure?" } %>
+        </span>
+      <% end %>
+    </div>
   </div>
-</div>
 
-
-<div class="panel">
-  <div>
+  <div class="panel radius">
     <%= comment.content.html_safe %>
   </div>
+
 </div>
+
+<% if current_account.admin? || policy(@term).staff? %>
+  <%= render partial:'comments/edit_form' , locals: { comment: comment } %>
+<% end %>

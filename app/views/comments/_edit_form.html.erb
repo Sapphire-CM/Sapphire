@@ -1,0 +1,14 @@
+<%= simple_form_for [upcast(@commentable), comment], remote: true, html: { class: 'hidden' , id: "comment_id_#{comment.id}" } do |f| %> 
+  <div class='row'>
+    <div class='large-12'>
+      <%= f.input :content, input_html: { rows: 5 }, label: "Edit Comment" %>
+    </div>
+  </div>
+
+  <div class='row'>
+    <div class='large-12 large-centered columns text-center'>
+      <%= f.submit class: "save button" %>
+      <%= f.button :button, 'Cancel', class: "secondary button", id: 'edit_comment_cancel' %>
+    </div>
+  </div>
+<% end %>

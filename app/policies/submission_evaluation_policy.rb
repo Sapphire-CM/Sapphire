@@ -4,11 +4,15 @@ class SubmissionEvaluationPolicy < TermBasedPolicy
   end
 
   def create?
-    update? ## Comment create also asks for this permission
+    update?
+  end
+
+  def update?
+    update?
   end
 
   def destroy?
-    update? ## Comment destroy also asks for this permission
+    update?
   end
 
   def update?

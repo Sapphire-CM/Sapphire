@@ -14,15 +14,24 @@ class CommentsController < ApplicationController
     authorize @comment
     @comment.save
 
-    render partial: 'comments/render_list'
+    render partial: 'comments/insert_comment'
   end
 
   def edit
   end
 
+  def update
+    @comment.assign_attributes(comment_params)
+    @comment.save
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
   def destroy
     @comment.destroy
-    render partial: 'comments/render_list'
+    render partial: 'comments/remove_comment', locals: { comment: @comment }
   end
 
   private

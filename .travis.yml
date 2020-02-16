@@ -17,6 +17,8 @@ env:
   - DB=sqlite
   - DB=postgresql
 
+dist: trusty
+
 before_script:
   - set -eux;
     export PHANTOMJS_VERSION=2.1.1;

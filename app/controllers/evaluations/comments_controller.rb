@@ -3,8 +3,6 @@ class Evaluations::CommentsController < CommentsController
 
   def show
     @commentable.becomes(Evaluation)
-
-    render "comments/show"
   end
 
   private

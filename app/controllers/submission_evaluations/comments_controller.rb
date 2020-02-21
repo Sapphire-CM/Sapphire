@@ -2,7 +2,6 @@ class SubmissionEvaluations::CommentsController < CommentsController
   before_action :set_commentable, :set_term
 
   def show
-    render "comments/show"
   end
 
   private

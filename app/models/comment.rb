@@ -16,5 +16,7 @@ class Comment < ActiveRecord::Base
   belongs_to :account
   belongs_to :term
 
-  validates :account, :term, presence: true
+  validates :account, presence: true
+  validates :term, presence: true
+  validates :content, presence: true
 end

@@ -12,9 +12,11 @@ class CommentsController < ApplicationController
     @comment.term = @term
 
     authorize @comment
-    @comment.save
-
-    render partial: 'comments/insert_comment'
+    if @comment.save
+      respond_to :js
+    else 
+      render :show
+    end
   end
 
   def edit
@@ -24,14 +26,11 @@ class CommentsController < ApplicationController
     @comment.assign_attributes(comment_params)
     @comment.save
 
-    respond_to do |format|
-      format.js
-    end
+    respond_to :js
   end
 
   def destroy
     @comment.destroy
-    render partial: 'comments/remove_comment', locals: { comment: @comment }
   end
 
   private

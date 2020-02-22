@@ -3,6 +3,10 @@ class EvaluationPolicy < TermBasedPolicy
     staff_permissions?(record.evaluation_group.submission_evaluation.submission.term)
   end
 
+  def index?
+    show?
+  end
+
   def show?
     update? || student?(record.evaluation_group.submission_evaluation.submission.term)
   end

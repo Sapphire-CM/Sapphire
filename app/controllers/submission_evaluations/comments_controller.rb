@@ -1,6 +1,9 @@
 class SubmissionEvaluations::CommentsController < CommentsController
   before_action :set_commentable, :set_term
 
+  def index
+  end
+
   def show
   end
 

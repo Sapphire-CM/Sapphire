@@ -1,4 +1,4 @@
-<div id="<%= "comment_id_#{comment.id}" %>" class="comment">
+<div id="<%= dom_id(comment) %>" class="<%= "#{upcast(@commentable).class}" %> comment ">
   <div class='row'>
     <div class='large-12 columns'>
       <span>
@@ -6,8 +6,8 @@
       </span>
       <% if policy(Comment.new(term: @term)).create? %>
         <span class='comment_entry_icons'>
-          <%= link_to foundation_icon(:page_edit), '#', id: 'edit_comment' %>
-          <%= link_to foundation_icon(:x), polymorphic_path([upcast(@commentable), comment]), method: :delete, remote: true, data: { confirm: "Are you sure?" }, id: 'delete_comment' %>
+          <%= link_to foundation_icon(:page_edit), edit_polymorphic_path([upcast(@commentable), comment]), remote: true %>
+          <%= link_to foundation_icon(:x), polymorphic_path([upcast(@commentable), comment]), method: :delete, remote: true, data: { confirm: "Are you sure?" } %>
         </span>
       <% end %>
     </div>
@@ -17,7 +17,3 @@
     <%= comment.content.html_safe %>
   </div>
 </div>
-
-<% if policy(Comment.new(term: @term)).create? %>
-  <%= render partial:'comments/edit_form' , locals: { comment: comment } %>
-<% end %>

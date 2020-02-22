@@ -1,2 +1,1 @@
-$('#reveal_modal_header').html("Comments");
-$('#reveal_modal_content').html("<%=j render 'comments/overview' %>");
+$('#<%= dom_id(@comment, :edit) %>').replaceWith("<%=j render 'comments/comment', comment: @comment %>");

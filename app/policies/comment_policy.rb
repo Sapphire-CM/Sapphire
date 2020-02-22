@@ -1,4 +1,8 @@
 class CommentPolicy < TermBasedPolicy
+  def index?
+    create?
+  end
+
   def show?
     create?
   end

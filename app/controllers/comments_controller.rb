@@ -1,9 +1,11 @@
 class CommentsController < ApplicationController
+  before_action :set_context, only: [:show, :edit, :update, :destroy]
 
-  before_action :set_context, only: [:edit, :update, :destroy]
+  def index
+    authorize Comment
+  end
 
   def show
-    authorize Comment
   end
 
   def create
@@ -15,7 +17,7 @@ class CommentsController < ApplicationController
     if @comment.save
       respond_to :js
     else 
-      render :show
+      render :index
     end
   end
 

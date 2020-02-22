@@ -1,4 +1,8 @@
 class SubmissionEvaluationPolicy < TermBasedPolicy
+  def index?
+    update?
+  end
+
   def show?
     update?
   end

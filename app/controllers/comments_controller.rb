@@ -26,9 +26,11 @@ class CommentsController < ApplicationController
 
   def update
     @comment.assign_attributes(comment_params)
-    @comment.save
-
-    respond_to :js
+    if @comment.save
+      render :show
+    else 
+      render :edit
+    end
   end
 
   def destroy

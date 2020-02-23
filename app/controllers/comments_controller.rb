@@ -17,6 +17,7 @@ class CommentsController < ApplicationController
     if @comment.save
       respond_to :js
     else 
+      @commentable.comments.delete(@comment)
       render :index
     end
   end

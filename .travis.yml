@@ -37,4 +37,4 @@ before_script:
   - bundle exec rake db:create db:migrate
 
 script:
-  - bundle exec rspec
+  - bundle exec rspec spec/features

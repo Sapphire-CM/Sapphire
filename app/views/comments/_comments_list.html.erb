@@ -1,6 +1,6 @@
 <div class="comments_list">
   <% if @commentable.comments.any? %>
-    <%= render collection: @commentable.comments, partial:'comments/comment', as: :comment %>
+    <%= render collection: @commentable.comments, partial:'comment', as: :comment %>
   <% else %>
     <%= render partial:'comments/no_comments' %>
   <% end %>

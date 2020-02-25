@@ -11,7 +11,7 @@ gem 'jquery-mousewheel-rails'     # jquery MouseWheel support
 gem 'd3-rails'
 
 gem 'simple_form', '~> 3.0'       # forms
-gem 'devise',      '~> 3.2'       # user authentication
+gem 'devise',      '~> 4.0'       # user authentication
 gem 'squeel',      '~> 1.2'       # easy DSL
 gem 'carrierwave'                 # fileuploads
 gem 'kaminari'                    # pagination

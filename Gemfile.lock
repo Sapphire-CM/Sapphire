@@ -50,7 +50,7 @@ GEM
     autoprefixer-rails (7.1.6)
       execjs
     awesome_print (1.6.1)
-    bcrypt (3.1.11)
+    bcrypt (3.1.13)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -135,12 +135,11 @@ GEM
     daemons (1.2.3)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
-    devise (3.5.10)
+    devise (4.7.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 3.2.6, < 5)
+      railties (>= 4.1.0)
       responders
-      thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
     docile (1.1.5)
@@ -322,8 +321,9 @@ GEM
     redis-namespace (1.6.0)
       redis (>= 3.0.4)
     remotipart (1.2.1)
-    responders (2.2.0)
-      railties (>= 4.2.0, < 5.1)
+    responders (2.4.1)
+      actionpack (>= 4.2.0, < 6.0)
+      railties (>= 4.2.0, < 6.0)
     rexml (3.2.4)
     rspec-core (3.4.4)
       rspec-support (~> 3.4.0)
@@ -419,7 +419,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.2)
     unicode-display_width (1.6.1)
-    warden (1.2.6)
+    warden (1.2.7)
       rack (>= 1.0)
     webrobots (0.1.2)
     websocket-driver (0.7.0)
@@ -461,7 +461,7 @@ DEPENDENCIES
   css_parser
   d3-rails
   database_cleaner
-  devise (~> 3.2)
+  devise (~> 4.0)
   dropzonejs-rails
   email_validator
   exception_notification
@@ -524,4 +524,4 @@ DEPENDENCIES
   zurb-foundation (~> 4.3.0)
 
 BUNDLED WITH
-   1.16.1
+   1.17.2

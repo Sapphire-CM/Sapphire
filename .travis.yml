@@ -1,3 +1,5 @@
+os: linux
+dist: xenial
 language: ruby
 
 notifications:
@@ -8,8 +10,6 @@ addons:
 
 cache:
   bundler: true
-  directories:
-  - $HOME/travis_phantomjs
 
 rvm:
   - 2.6.5
@@ -25,7 +25,7 @@ os: linux
 dist: xenial
 
 services:
-  - postgres
+  - postgresql
   - xvfb
 
 before_script:
@@ -33,6 +33,4 @@ before_script:
   - bundle exec rake db:create db:migrate
 
 script:
-  - export DISPLAY=:99.0
-  - xvfb-run make test
-  - bundle exec rspec
+  - DISPLAY=:99.0 && bundle exec rspec

@@ -39,7 +39,7 @@ class AccountsController < ApplicationController
     end
 
     if updated
-      sign_in @account, bypass: true if current_account == @account
+      bypass_sign_in @account if current_account == @account
       redirect_to root_path, notice: 'Account was successfully updated.'
     else
       render :edit

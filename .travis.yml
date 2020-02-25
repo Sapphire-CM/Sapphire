@@ -3,6 +3,9 @@ language: ruby
 notifications:
   email: false
 
+addons:
+  chrome: stable
+
 cache:
   bundler: true
   directories:
@@ -10,35 +13,26 @@ cache:
 
 rvm:
   - 2.6.5
+
 env:
+  global:
+    - RAILS_ENV=test
+    - COVERAGE=true
   - DB=sqlite
   - DB=postgresql
 
 os: linux
-dist: trusty
+dist: xenial
+
+services:
+  - postgres
+  - xvfb
 
 before_script:
-  - set -eux;
-    export PHANTOMJS_VERSION=2.1.1;
-    phantomjs --version;
-    export PATH=$HOME/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin:$PATH;
-    phantomjs --version;
-    if [ "$(phantomjs --version)" != "$PHANTOMJS_VERSION" ]; then
-      rm -rf $HOME/travis_phantomjs;
-      mkdir -p $HOME/travis_phantomjs;
-      if [ ! -f $HOME/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 ]; then
-        travis_retry wget
-          https://github.com/Medium/phantomjs/releases/download/v$PHANTOMJS_VERSION/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2
-          -O $HOME/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2;
-      fi;
-      tar -xvf
-        $HOME/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2
-        -C $HOME/travis_phantomjs;
-    fi;
-    phantomjs --version;
-    set +eux
   - cp config/database.yml.travis config/database.yml
-  - RAILS_ENV=test bundle exec rake parallel:create parallel:migrate
+  - bundle exec rake db:create db:migrate
 
 script:
-  - COVERAGE=true bundle exec rake parallel:spec
+  - export DISPLAY=:99.0
+  - xvfb-run make test
+  - bundle exec rspec

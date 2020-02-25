@@ -2,10 +2,7 @@ class Evaluations::CommentsController < CommentsController
   before_action :set_commentable, :set_term
 
   def index
-  end
-
-  def show
-    @commentable.becomes(Evaluation)
+    @comment = Comment.new(commentable: @commentable)
   end
 
   private

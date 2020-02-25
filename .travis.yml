@@ -8,8 +8,7 @@ notifications:
 addons:
   chrome: stable
 
-cache:
-  bundler: true
+cache: bundler
 
 rvm:
   - 2.6.5

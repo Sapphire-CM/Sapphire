@@ -116,6 +116,7 @@ group :test do
   # gem 'capybara-screenshot'       # automatically generate screenshots for failing feature tests
   # gem 'poltergeist'               # PhantomJS, headless Webkit
 
+  gem "webdrivers"                # Installing Selenium Webdrivers
   gem 'selenium-webdriver'        # Selenium, Firefox webdriver
   # gem 'capybara-webkit'         # Webkit headless webdriver
 

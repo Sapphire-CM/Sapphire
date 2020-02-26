@@ -4,21 +4,27 @@ class CommentsController < ApplicationController
   def index
     authorize Comment
   end
+  
+  def new
+  end
 
   def show
   end
 
   def create
-    @comment = @commentable.comments.new(comment_params)
+    @comment = Comment.new(commentable: @commentable)
+    @comment.assign_attributes(comment_params)
     @comment.account = current_account
     @comment.term = @term
 
     authorize @comment
     if @comment.save
-      respond_to :js
-    else 
-      @commentable.comments.delete(@comment)
-      render :index
+      respond_to do |format|
+        format.html { redirect_to :index, notice: "Success" }
+        format.js
+      end
+    else
+      render :new
     end
   end
 
@@ -27,9 +33,13 @@ class CommentsController < ApplicationController
 
   def update
     @comment.assign_attributes(comment_params)
+
     if @comment.save
-      render :show
-    else 
+      respond_to do |format|
+        format.html { redirect_to :index, notice: "Success" }
+        format.js
+      end
+    else
       render :edit
     end
   end

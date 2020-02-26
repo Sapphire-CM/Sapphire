@@ -1,0 +1,8 @@
+var formContent = "<%= j render "form", comment: @comment %>"
+var $form = $("#<$= dom_id(@comment, "form") %>")
+
+if ($form.length > 0) {
+  $form.replaceWith(formContent)
+} else {
+  $('#<%= dom_id(@commentable, "comment_list") %>').append(formContent)
+}

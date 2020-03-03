@@ -14,6 +14,8 @@
 # add_index :evaluations, [:rating_id], name: :index_evaluations_on_rating_id
 
 class Evaluation < ActiveRecord::Base
+  include Commentable
+
   belongs_to :evaluation_group, touch: true
   belongs_to :rating
 
@@ -21,7 +23,8 @@ class Evaluation < ActiveRecord::Base
   has_one :student_group, through: :submission_evaluation
   has_one :submission, through: :submission_evaluation
   has_one :rating_group, through: :evaluation_group
-  has_many :comments, as: :commentable
+
+  has_many_comments :explanations
 
   validates :evaluation_group, presence: true
   validates :rating, presence: true

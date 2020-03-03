@@ -3,7 +3,8 @@
 #   t.string   :commentable_type, null: false
 #   t.integer  :account_id,       null: false
 #   t.integer  :term_id,          null: false
-#   t.text     :content
+#   t.string   :name,             null: false
+#   t.text     :content,          null: false
 #   t.datetime :created_at,       null: false
 #   t.datetime :updated_at,       null: false
 # end

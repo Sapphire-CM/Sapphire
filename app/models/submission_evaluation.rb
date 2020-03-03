@@ -14,6 +14,8 @@
 # add_index :submission_evaluations, [:submission_id], name: :index_submission_evaluations_on_submission_id, unique: true
 
 class SubmissionEvaluation < ActiveRecord::Base
+  include Commentable
+
   belongs_to :submission
   belongs_to :evaluator, class_name: 'Account'
 
@@ -21,8 +23,9 @@ class SubmissionEvaluation < ActiveRecord::Base
 
   has_many :evaluation_groups, dependent: :destroy
   has_many :evaluations, through: :evaluation_groups
-  has_many :comments, as: :commentable
-  has_many :notes, as: :notable
+
+  has_many_comments :feedback
+  has_many_comments :note
 
   has_many :ratings, through: :evaluations
   has_many :rating_groups, through: :ratings

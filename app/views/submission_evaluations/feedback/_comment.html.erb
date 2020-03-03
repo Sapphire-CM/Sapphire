@@ -1,0 +1,16 @@
+<div id="<%= dom_id(comment) %>" class="comment">
+  <div class='row'>
+    <div class='large-12 columns'>
+      <span>
+        <strong><%= comment.account.fullname %></strong> commented:
+      </span>
+      <% if policy(Comment.new(term: @term)).create? %>
+        <span class='comment_entry_icons'>
+          <%= link_to foundation_icon(:page_edit), edit_submission_evaluation_feedback_path(@commentable, comment), remote: true %>
+          <%= link_to foundation_icon(:x), submission_evaluation_feedback_path(@commentable, comment), method: :delete, remote: true, data: { confirm: "Are you sure?" } %>
+        </span>
+      <% end %>
+    </div>
+  </div>
+  <%= render "comment_content", comment: comment %> 
+</div>

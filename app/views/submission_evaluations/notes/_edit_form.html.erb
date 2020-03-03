@@ -1,0 +1,10 @@
+<%= simple_form_for(@comment, url: submission_evaluation_note_path(@commentable, @comment), method: :patch, remote: true) do |f| %>
+  <%= render "comment_fields", f: f %>
+
+  <div class='row'>
+    <div class='large-12 large-centered columns text-center'>
+      <%= f.submit class: "button" %>
+      <%= link_to "Cancel", submission_evaluation_note_path(@commentable, @comment), remote: true, class: "secondary button" %>
+    </div>
+  </div>
+<% end %>

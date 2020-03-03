@@ -1,0 +1,7 @@
+<div class="comments_list">
+  <% if @commentable.note_comments.any? %>
+    <%= render collection: @commentable.note_comments, partial:'comment', as: :comment %>
+  <% else %>
+    <%= render partial:'comments/no_comments' %>
+  <% end %>
+</div>

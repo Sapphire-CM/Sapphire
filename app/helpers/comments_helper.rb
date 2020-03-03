@@ -1,17 +1,9 @@
 module CommentsHelper 
   def evaluation_comment_button(evaluation)
     classes =  ["tiny", "button", "expand"]
-    if evaluation.comments.present?
+    unless evaluation.explanations_comments.any?
       classes << ["secondary"]
     end
-    link_to "Comment", evaluation_comments_path(evaluation.becomes(Evaluation)), data: {remote: :true, "reveal-id" => "reveal_modal"}, class: classes.join(' ')
-  end
-
-  def upcast(commentable)
-    if commentable.is_a?(Evaluation)
-      commentable.becomes(Evaluation) 
-    else
-      commentable
-    end
+    link_to "Comment", evaluation_explanations_path(evaluation.becomes(Evaluation)), data: {remote: :true, "reveal-id" => "reveal_modal"}, class: classes.join(' '), id: dom_id(evaluation.becomes(Evaluation), 'comment_button')
   end
 end

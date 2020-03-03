@@ -1,9 +1,0 @@
-<%= simple_form_for(@comment, url: submission_evaluation_comments_path(@comment.commentable), remote: true, html: { id: dom_id(@comment, 'form') }) do |f| %>
-  <%= render "comment_fields", f: f %>
-
-	<div class='row'>
-		<div class='large-12 large-centered columns text-center'>
-			<%= f.submit class: "button" %>
-		</div>
-	</div>
-<% end %>

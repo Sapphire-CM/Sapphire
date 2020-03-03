@@ -1,10 +1,6 @@
 class SubmissionEvaluations::CommentsController < CommentsController
   before_action :set_commentable, :set_term
 
-  def index
-    @comment = Comment.new(commentable: @commentable)
-  end
-
   private
   
   def set_commentable
@@ -17,4 +13,3 @@ class SubmissionEvaluations::CommentsController < CommentsController
     @term = @commentable.submission.term
   end
 end
-  

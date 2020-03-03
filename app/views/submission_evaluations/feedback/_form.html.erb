@@ -1,0 +1,10 @@
+<%= simple_form_for(@comment, url: submission_evaluation_feedback_index_path(@commentable), remote: true) do |f| %>
+  <%= render "comment_fields", f: f %>
+  <%= f.hidden_field :name, value:'feedback' %>
+
+	<div class='row'>
+		<div class='large-12 large-centered columns text-center'>
+			<%= f.submit class: "button" %>
+		</div>
+	</div>
+<% end %>

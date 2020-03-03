@@ -1,0 +1,10 @@
+<%= simple_form_for(Comment.new, url: submission_evaluation_notes_path(@commentable), remote: true) do |f| %>
+  <%= render "comment_fields", f: f %>
+  <%= f.hidden_field :name, value:'notes' %>
+
+	<div class='row'>
+		<div class='large-12 large-centered columns text-center'>
+			<%= f.submit class: "button" %>
+		</div>
+	</div>
+<% end %>

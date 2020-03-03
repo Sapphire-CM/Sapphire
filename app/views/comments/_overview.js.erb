@@ -1,4 +1,4 @@
-<%= render partial: 'comments/comments_list', formats: [:html] %>
+<%= render partial: 'list', formats: [:html] %>
 <% if policy(Comment.new(term: @term)).create? %>
-  <%= render partial: 'form' %>
+  <%= render 'form' %>
 <% end %>

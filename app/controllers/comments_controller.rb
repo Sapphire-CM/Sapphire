@@ -2,7 +2,9 @@ class CommentsController < ApplicationController
   before_action :set_context, only: [:show, :edit, :update, :destroy]
 
   def index
-    authorize Comment
+    authorize CommentPolicy.term_policy_record(@term)
+
+    @comment = Comment.new(commentable: @commentable)
   end
   
   def new
@@ -57,6 +59,6 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:content)
+    params.require(:comment).permit(:content, :name)
   end
 end

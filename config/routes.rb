@@ -94,13 +94,13 @@ Rails.application.routes.draw do
   resources :submission_viewers, only: [:show]
 
   resources :evaluations, only: :update do
-    resources :comments, module: :evaluations, except: :new
+    resources :explanations, module: :evaluations
   end
 
   resources :evaluation_groups, only: :update
   resources :submission_evaluations, controller: :submission_evaluations, only: :show do
-    resources :comments, module: :submission_evaluations, except: :new#, only: [:create, :show, :index, :edit, :update, :destroy]
-    resource :notes, module: :submission_evaluations, only: [:create, :show]
+    resources :feedback, module: :submission_evaluations
+    resources :notes, module: :submission_evaluations
   end
 
   resources :submissions, only: [:show, :edit, :update] do

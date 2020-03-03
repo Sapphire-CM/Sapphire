@@ -1,10 +1,10 @@
-<% if commentable.comments.any? %>
+<% if commentable.feedback_comments.any? %>
   <h4>Feedback</h4>
   <div>
-    <% commentable.comments.each do |comment| %>
+    <% commentable.feedback_comments.each do |comment| %>
       <div class="panel radius">
         <strong><%= comment.account.fullname %></strong> commented:
-        <p><%= comment.content.html_safe %></p>
+        <p><%= markdown(comment.content) %></p>
       </div>
     <% end %>
   </div>

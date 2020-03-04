@@ -1,4 +1,4 @@
-<%= simple_form_for(Comment.new, url: evaluation_explanations_path(@commentable), remote: true) do |f| %>
+<%= simple_form_for(@comment, url: evaluation_explanations_path(@commentable), remote: true, html: { id: dom_id(@comment, 'form') }) do |f| %>
   <%= render "comment_fields", f: f %>
   <%= f.hidden_field :name, value:'explanations' %>
 

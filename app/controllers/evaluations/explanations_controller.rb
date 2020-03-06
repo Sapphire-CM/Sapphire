@@ -1,6 +1,11 @@
 class Evaluations::ExplanationsController < CommentsController
   before_action :set_commentable, :set_term
 
+  def index
+    authorize @commentable.becomes(Evaluation)
+    super
+  end
+
   private
   
   def set_commentable

@@ -1,8 +1,4 @@
 class CommentPolicy < TermBasedPolicy
-  def index?
-    staff_permissions? || student?
-  end
-
   def show?
     create?
   end

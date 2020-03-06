@@ -43,6 +43,7 @@ gem 'css_parser'                  # for parsing css files
 gem 'mechanize'                   # grabing inm websites
 gem 'nokogiri'                    # for parsing HTML-Files
 gem 'rubyzip'                     # handling submission ZIP archives
+gem 'kramdown'
 
 gem 'cocoon'                      # for nested upload forms
 gem 'dropzonejs-rails'            # Drag and drop support for file uploads

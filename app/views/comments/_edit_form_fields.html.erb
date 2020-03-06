@@ -1,0 +1,8 @@
+<%= render "comment_fields", f: f %>
+
+<div class='row'>
+  <div class='large-12 large-centered columns text-center'>
+    <%= f.submit class: "button" %>
+    <%= link_to "Cancel", cancel_path, remote: true, class: "secondary button" %>
+  </div>
+</div>

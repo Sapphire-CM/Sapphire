@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   before_action :set_context, only: [:show, :edit, :update, :destroy]
 
   def index
-    authorize CommentPolicy.term_policy_record(@term)
+    authorize @commentable unless @_pundit_policy_authorized 
 
     @comment = Comment.new(commentable: @commentable)
   end

@@ -52,6 +52,8 @@ class SubmissionAsset < ActiveRecord::Base
 
   delegate :exercise, to: :submission
 
+  after_save :add_to_submission_filsize
+
   EXCLUDED_FILTER = [
     # no operating system meta data files
     %r{Thumbs\.db}i.freeze,
@@ -234,5 +236,9 @@ class SubmissionAsset < ActiveRecord::Base
       errors.add(:file, "is not an archive")
     end
     true
+  end
+
+  def add_to_submission_filsize
+    submission.update('filesystem_size' => (filesystem_size + submission.filesystem_size))
   end
 end

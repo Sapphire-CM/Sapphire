@@ -53,6 +53,7 @@ class SubmissionAsset < ActiveRecord::Base
   delegate :exercise, to: :submission
 
   after_save :add_to_submission_filsize
+  after_destroy :remove_from_submission_filesize
 
   EXCLUDED_FILTER = [
     # no operating system meta data files
@@ -240,5 +241,11 @@ class SubmissionAsset < ActiveRecord::Base
 
   def add_to_submission_filsize
     submission.update('filesystem_size' => (filesystem_size + submission.filesystem_size))
+    submission.exercise.update('filesystem_size' => (filesystem_size + submission.exercise.filesystem_size))
+  end
+
+  def remove_from_submission_filesize
+    submission.update('filesystem_size' => (submission.filesystem_size - filesystem_size))
+    submission.exercise.update('filesystem_size' => (submission.exercise.filesystem_size - filesystem_size))   
   end
 end

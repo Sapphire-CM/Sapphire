@@ -57,8 +57,9 @@ Rails.application.routes.draw do
     resources :results, only: [:index, :show], controller: :student_results
     resources :events, only: [:index]
 
-    resource :welcome_notifications, only: :create
+    resource :welcome_notifications, only: :create 
   end
+  resources :statistic, only: :show
 
   resources :tutorial_groups
 

@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(version: 20200620205805) do
     t.string   "instructions_url"
     t.boolean  "enable_bulk_submission_management", default: false
     t.boolean  "enable_multiple_attempts",          default: false, null: false
+    t.integer  "filesystem_size",                   default: 0
   end
 
   add_index "exercises", ["term_id"], name: "index_exercises_on_term_id"

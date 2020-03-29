@@ -1,0 +1,24 @@
+<% title 'Statistics', course_term_title %> 
+
+<%= render 'terms/sidebar', term: @term %>
+
+<% if @term.exercises.any? %>
+  <table class='small-12 sortable exercises'>
+    <thead>
+      <tr>
+        <th>Exercise</th>
+        <th>Filesystem size</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%@term.exercises.each do |exercise| %>
+        <tr>
+          <td data-sort='<%= exercise.title %>'><%= link_to exercise.title, exercise %></td>
+          <td><%= exercise.filesystem_size %> Bytes</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No exercises present.</p>
+<%end %>

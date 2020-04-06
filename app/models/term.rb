@@ -31,6 +31,7 @@ class Term < ActiveRecord::Base
   has_many :submissions, through: :exercises
   has_many :student_groups, through: :tutorial_groups
   has_many :exercise_registrations, through: :term_registrations
+  has_many :statistics, through: :exercises
 
   validates :course, presence: true
   validates :title, presence: true, uniqueness: { scope: :course_id }

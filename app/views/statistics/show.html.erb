@@ -1,0 +1,41 @@
+<% title 'Statistics', course_term_title %> 
+
+<%= render 'terms/sidebar', term: @term %>
+
+<% if @term.exercises.any? %>
+  <table class='small-12 sortable exercises'>
+    <thead>
+      <tr>
+        <th>Exercise</th>
+        <th>Filesystem size</th>
+        <th>Average</th>
+        <th>Max</th>
+        <th>Min</th>
+        <th>Median</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @term.statistics.each do |stat| %>
+        <% if stat.exercise.submissions.any? %>
+          <% statistics = stat.get_statistics() %>
+          <tr>
+            <td data-sort='<%= stat.exercise.title %>'><%= link_to stat.exercise.title, stat.exercise %></td>
+            <td><%= statistics['sum']%></td>
+            <td><%= statistics['average']%></td>
+            <td><%= statistics['max']%></td>
+            <td><%= statistics['min']%></td>
+            <td><%= statistics['median']%></td>
+          </tr>
+        <% else %>
+          <tr>
+            <td data-sort='<%= stat.exercise.title %>'><%= link_to stat.exercise.title, stat.exercise %></td>
+            <td colspan=5>No submissions for this exercise yet.</td>
+          </tr>
+        <% end %>
+       
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No exercises present.</p>
+<%end %>

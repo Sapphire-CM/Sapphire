@@ -58,8 +58,8 @@ Rails.application.routes.draw do
     resources :events, only: [:index]
 
     resource :welcome_notifications, only: :create 
+    resource :statistics, only: :show
   end
-  resources :statistic, only: :show
 
   resources :tutorial_groups
 

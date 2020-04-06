@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200329184053) do
+ActiveRecord::Schema.define(version: 20200405163339) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -307,6 +307,20 @@ ActiveRecord::Schema.define(version: 20200329184053) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
   end
+
+  create_table "statistics", force: :cascade do |t|
+    t.integer  "exercise_id"
+    t.integer  "sum"
+    t.integer  "min"
+    t.integer  "max"
+    t.integer  "average"
+    t.integer  "median"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.boolean  "dirty_bit"
+  end
+
+  add_index "statistics", ["exercise_id"], name: "index_statistics_on_exercise_id"
 
   create_table "student_groups", force: :cascade do |t|
     t.string   "title"

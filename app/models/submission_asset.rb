@@ -238,12 +238,12 @@ class SubmissionAsset < ActiveRecord::Base
   end
 
   def add_to_submission_filsize
-    submission.update('filesystem_size' => (filesystem_size + submission.filesystem_size))
-    submission.exercise.update('filesystem_size' => (filesystem_size + submission.exercise.filesystem_size))
+    submission.update('filesystem_size' => (filesystem_size + submission.filesystem_size)) 
+    submission.exercise.statistics.dirty_bit = true
   end
 
   def remove_from_submission_filesize
     submission.update('filesystem_size' => (submission.filesystem_size - filesystem_size))
-    submission.exercise.update('filesystem_size' => (submission.exercise.filesystem_size - filesystem_size))   
+    submission.exercise.statistics.dirty_bit = true
   end
 end

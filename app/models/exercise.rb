@@ -40,7 +40,8 @@ class Exercise < ActiveRecord::Base
   has_many :rating_groups, dependent: :destroy
   has_many :attempts, dependent: :destroy, class_name: "ExerciseAttempt", inverse_of: :exercise
   has_many :submissions
-
+  has_one :statistics, dependent: :destroy
+  
   has_many :submission_evaluations, through: :submissions
   has_many :ratings, through: :rating_groups
 
@@ -55,6 +56,7 @@ class Exercise < ActiveRecord::Base
 
   before_save :update_points, if: lambda { |exercise| exercise.enable_max_total_points_changed? || exercise.max_total_points_changed? }
   after_create :ensure_result_publications
+  after_create :create_exercise_statistics
   after_save :update_term_points, if: :points_changed?
   after_save :recalculate_term_registrations_results, if: lambda { |exercise| exercise.enable_min_required_points_changed? || exercise.min_required_points_changed? || exercise.points_changed? }
 
@@ -136,6 +138,22 @@ class Exercise < ActiveRecord::Base
     rating_groups.sum(:points)
   end
 
+  def get_statistics
+    submissions.sort_by(&:filesystem_size)
+    submission_file_size_max = submissions[submissions.length() - 1].filesystem_size
+    submission_file_size_min = submissions[0].filesystem_size
+    exercise_file_size = 0
+    if submissions.length() % 2 == 0 
+      submission_file_size_median = (submissions[submissions.length() / 2].filesystem_size + submissions[submissions.length() / 2 - 1].filesystem_size) / 2
+    else
+      submission_file_size_median = submissions[submissions.length() / 2 - 1].filesystem_size
+    end
+    submissions.each do |submission|
+      exercise_file_size += submission.filesystem_size
+    end
+    {'sum' => exercise_file_size, 'max' => submission_file_size_max, 'min' => submission_file_size_min, 'median' => submission_file_size_median, 'average' => exercise_file_size / submissions.length()} 
+  end
+
   private
   def ensure_result_publications
     term.tutorial_groups.each do |tutorial_group|
@@ -149,4 +167,7 @@ class Exercise < ActiveRecord::Base
     end
   end
 
+  def create_exercise_statistics
+    self.statistics = Statistics.create(exercise_id: id)
+  end
 end

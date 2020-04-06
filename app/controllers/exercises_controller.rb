@@ -62,7 +62,7 @@ class ExercisesController < ApplicationController
     @exercise = Exercise.find(params[:id] || params[:exercise_id])
     authorize @exercise
 
-    @term = @exercise.term
+    @term = @exercise.term 
   end
 
   def exercise_params

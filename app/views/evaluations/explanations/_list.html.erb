@@ -1,7 +1,7 @@
+<div class="radius panel">
+  for <strong><%= @commentable.rating.rating_group.title %></strong> <%= @commentable.rating.title %>
+</div>
 <div class="comments_list">
-  <div class="radius panel">
-    for <strong><%= @commentable.rating.rating_group.title %></strong> <%= @commentable.rating.title %>
-  </div>
   <% if @commentable.explanations_comments.any? %>
     <%= render collection: @commentable.explanations_comments, partial:'comment', as: :comment %>
   <% else %>

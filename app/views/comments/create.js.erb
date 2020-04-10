@@ -1,5 +1,13 @@
 var comment = "<%=j render 'comment', comment: @comment, formats: [:html] %>";
-
 $('.no_comment').remove();
 $('.comments_list').append(comment);
-$('.new_comment').find('textarea').val('')
+
+<% @comment = Comment.new(commentable: @commentable) %>
+var formContent = "<%= j render "form", comment: @comment %>"
+var $form = $("#<%= dom_id(Comment.new, 'form') %>")
+
+if ($form.length > 0) {
+  $form.replaceWith(formContent)
+} else {
+  $('#<%= dom_id(@commentable, "comments_list") %>').append(formContent)
+}

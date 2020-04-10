@@ -38,7 +38,7 @@ class CommentsController < ApplicationController
 
     if @comment.save
       respond_to do |format|
-        format.html { redirect_to :index, notice: "Success" }
+        format.html { redirect_to :show, notice: "Success" }
         format.js
       end
     else

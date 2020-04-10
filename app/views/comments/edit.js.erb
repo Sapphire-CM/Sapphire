@@ -1,1 +1,8 @@
-$('#<%= dom_id(@comment) %>').replaceWith("<%=j render 'edit_form' %>");
+var formContent = "<%=j render 'edit_form', comment: @comment %>"
+var $form = $('#<%= dom_id(@comment, 'edit') %>')
+
+if ($form.length > 0) {
+  $comment.replaceWith(formContent);
+} else {
+  $('#<%= dom_id(@comment) %>').replaceWith(formContent);
+}

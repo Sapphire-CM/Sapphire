@@ -1,15 +1,23 @@
 require 'rails_helper'
 
-# Specs in this file have access to a helper object that includes
-# the CommentHelper. For example:
-#
-# describe CommentHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
-RSpec.describe CommentHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+RSpec.describe CommentsHelper, type: :helper do
+  describe 'evaluation comment button' do 
+    let(:account) { FactoryGirl.create(:account, :admin) }
+    let(:evaluation) { FactoryGirl.create :fixed_evaluation }
+
+    context 'without comment' do
+      it 'sets the correct classes' do
+        expect(helper.evaluation_comment_button(evaluation)).to include('class="tiny button expand secondary"')
+      end
+    end
+
+    context 'with comment' do
+      let!(:comment) { FactoryGirl.create :explanations_comment, account: account, commentable: evaluation }
+      it 'sets the correct classes' do
+        html = helper.evaluation_comment_button(evaluation)
+        expect(html).to include('class="tiny button expand"')
+        expect(html).not_to include('secondary')
+      end
+    end
+  end
 end

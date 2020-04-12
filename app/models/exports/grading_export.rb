@@ -10,7 +10,7 @@
 #
 # add_index :exports, [:term_id], name: :index_exports_on_term_id
 
-class Exports::ExcelSpreadsheetExport < Export
+class Exports::GradingExport < Export
   include ZipGeneration
   include TutorsHelper
   include TutorialGroupsHelper

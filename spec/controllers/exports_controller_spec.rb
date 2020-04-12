@@ -147,19 +147,19 @@ RSpec.describe ExportsController do
       end
     end
 
-    context 'ExcelSpreadsheetExport' do
+    context 'GradingExport' do
       describe 'with invalid params' do
         it 'assigns a newly created but unsaved export as @export' do
           invalid_attributes[:term_id] = term.id
-          invalid_attributes[:type] = 'excel_spreadsheet'
+          invalid_attributes[:type] = 'grading'
 
           expect do
             post :create, invalid_attributes
-          end.not_to change(Exports::ExcelSpreadsheetExport, :count)
+          end.not_to change(Exports::GradingExport, :count)
 
           expect(response).to have_http_status(:success)
           expect(response).to render_template(:new)
-          expect(assigns(:export)).to be_a_new(Exports::ExcelSpreadsheetExport)
+          expect(assigns(:export)).to be_a_new(Exports::GradingExport)
           expect(assigns(:export).term).to eq(term)
         end
       end

@@ -8,7 +8,7 @@ RSpec.describe SubmissionEvaluations::FeedbackController, type: :controller do
   let(:term) { FactoryGirl.create :term }
   let(:exercise) { FactoryGirl.create :exercise, :with_ratings, term: term }
 
-  let(:submission) { FactoryGirl.create_list(:submission, 3, exercise: exercise)[1] }
+  let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
   let(:commentable) { submission.submission_evaluation }
 
   describe 'GET index' do
@@ -43,6 +43,6 @@ RSpec.describe SubmissionEvaluations::FeedbackController, type: :controller do
       }
     end
 
-    let(:comment) { FactoryGirl.create :feedback_comment, account: current_account, commentable: commentable }
+    let(:comment) { FactoryGirl.create :feedback_comment }
   end
 end

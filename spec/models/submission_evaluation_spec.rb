@@ -20,7 +20,8 @@ RSpec.describe SubmissionEvaluation do
     it { is_expected.to have_many(:evaluations).through(:evaluation_groups) }
     it { is_expected.to have_many(:ratings).through(:evaluations) }
     it { is_expected.to have_many(:rating_groups).through(:ratings) }
-    it { is_expected.to have_many(:comments) }
+    it { is_expected.to have_many(:feedback_comments) }
+    it { is_expected.to have_many(:note_comments) }
   end
 
   describe 'validations' do

@@ -9,7 +9,7 @@ RSpec.describe Evaluations::ExplanationsController, type: :controller do
   let(:exercise) { FactoryGirl.create :exercise, :with_ratings, term: term }
   let(:rating_group) { exercise.rating_groups.first }
 
-  let(:submission) { FactoryGirl.create_list(:submission, 3, exercise: exercise)[1] }
+  let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
   let(:submission_evaluation) { submission.submission_evaluation }
   let(:evaluation) { submission_evaluation.evaluations.first }
 
@@ -47,6 +47,6 @@ RSpec.describe Evaluations::ExplanationsController, type: :controller do
       }
     end
 
-    let(:comment) { FactoryGirl.create :explanations_comment, account: current_account, commentable: commentable }
+    let(:comment) { FactoryGirl.create :explanations_comment }
   end
 end

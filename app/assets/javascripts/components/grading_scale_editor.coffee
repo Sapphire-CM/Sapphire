@@ -502,7 +502,9 @@ class GradingScaleEditor
     @noStudentsLabel.attr("x", @xScale(0) + @labelPadding * 4 + positiveChartLabelWidth)
 
   _renderAxes: ->
-    xAxis = d3.axisTop(@xScale).tickFormat((d) => Math.abs(d))
+    xTickValues = @xScale.ticks().filter(Number.isInteger)
+
+    xAxis = d3.axisTop(@xScale).tickFormat((d) => Math.abs(d)).tickValues(xTickValues)
     yAxis = d3.axisLeft(@yScale).ticks(Math.floor(@yScale.domain()[0] / @tickInterval))
 
     @xAxisGroup.call(xAxis)

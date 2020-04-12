@@ -10,7 +10,7 @@
 #
 # add_index :exports, [:term_id], name: :index_exports_on_term_id
 
-class Exports::SubmissionExport < Export
+class Exports::SubmissionsExport < Export
   prop_accessor :base_path, :solitary_path, :group_path, :include_solitary_submissions, :include_group_submissions
 
   validates :base_path, presence: true

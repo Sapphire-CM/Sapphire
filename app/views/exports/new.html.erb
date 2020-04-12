@@ -1,4 +1,4 @@
-<% title course_term_title(current_term), "New Export" %>
+<% title course_term_title(current_term), "New #{@export.present? ? @export.class.model_name.human : "Export"}" %>
 
 <%= render 'terms/sidebar', term: @term %>
 

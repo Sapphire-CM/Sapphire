@@ -14,7 +14,7 @@ RSpec.describe Evaluation do
   describe 'associations' do
     it { is_expected.to belong_to(:rating) }
     it { is_expected.to belong_to(:evaluation_group) }
-    it { is_expected.to have_many(:comments) }
+    it { is_expected.to have_many(:explanations_comments) }
   end
 
   describe 'validations' do

@@ -1,11 +1,11 @@
 require 'rails_helper'
 require 'zip'
 
-RSpec.describe Exports::ExcelSpreadsheetExport do
+RSpec.describe Exports::GradingExport do
   let!(:term) { FactoryGirl.create :term }
   let!(:exercises) { FactoryGirl.create_list :exercise, 4, :with_ratings }
   let!(:tutorial_groups) { FactoryGirl.create_list :tutorial_group, 4, term: term }
-  let(:export) { FactoryGirl.create :excel_spreadsheet_export, term: term }
+  let(:export) { FactoryGirl.create :grading_export, term: term }
 
   describe 'initialization' do
     it 'calls #set_default_values!' do

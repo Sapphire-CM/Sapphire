@@ -21,7 +21,7 @@
     <tbody>
       <% @exports.each do |export| %>
       <tr>
-        <td><%= export.type.underscore.humanize %></td>
+        <td><%= export.class.model_name.human %></td>
         <td><%= export.status %></td>
         <td><%= iso_time(export.created_at) %></td>
         <td><%= iso_time(export.updated_at) %></td>

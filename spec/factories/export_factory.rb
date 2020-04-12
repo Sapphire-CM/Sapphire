@@ -5,8 +5,8 @@ FactoryGirl.define do
     term
     file nil
 
-    factory :submission_export, class: 'Exports::SubmissionExport' do
-      type 'Exports::SubmissionExport'
+    factory :submission_export, class: 'Exports::SubmissionsExport' do
+      type 'Exports::SubmissionsExport'
       base_path '%{course}-%{term}'
       solitary_path 'solitary/%{exercise}/'
       group_path ''

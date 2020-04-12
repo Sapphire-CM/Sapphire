@@ -37,4 +37,4 @@ en:
   activerecord:
     models:
       exports/grading_export: Grading Export
-      exports/submission_export: Submissions Export
+      exports/submissions_export: Submissions Export

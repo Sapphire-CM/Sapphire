@@ -21,7 +21,7 @@ class Export < ActiveRecord::Base
   mount_uploader :file, ExportsUploader
 
   enum status: [:pending, :running, :finished, :failed]
-  polymorphic submission: 'Exports::SubmissionExport', grading: 'Exports::GradingExport'
+  polymorphic submissions: 'Exports::SubmissionsExport', grading: 'Exports::GradingExport'
 
   validates :term, presence: true
 

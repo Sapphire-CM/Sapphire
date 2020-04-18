@@ -9,30 +9,26 @@
         <th>Exercise</th>
         <th>Filesystem size</th>
         <th>Average</th>
-        <th>Max</th>
-        <th>Min</th>
-        <th>Median</th>
+        <th>Minimum</th>
+        <th>Maximum</th>
       </tr>
     </thead>
     <tbody>
-      <% @term.statistics.each do |stat| %>
-        <% if stat.exercise.submissions.any? %>
-          <% statistics = stat.get_statistics() %>
+      <% @term.exercises.each do |exercise| %>
+        <% if exercise.submissions.any? %>
           <tr>
-            <td data-sort='<%= stat.exercise.title %>'><%= link_to stat.exercise.title, stat.exercise %></td>
-            <td><%= statistics['sum']%></td>
-            <td><%= statistics['average']%></td>
-            <td><%= statistics['max']%></td>
-            <td><%= statistics['min']%></td>
-            <td><%= statistics['median']%></td>
+            <td data-sort='<%= exercise.title %>'><%= link_to exercise.title, exercise %></td>
+            <td><%= exercise.get_disk_usage_sum %></td>
+            <td><%= exercise.get_disk_usage_average %></td>
+            <td><%= exercise.get_disk_usage_minimum %></td>
+            <td><%= exercise.get_disk_usage_maximum %></td>
           </tr>
         <% else %>
           <tr>
-            <td data-sort='<%= stat.exercise.title %>'><%= link_to stat.exercise.title, stat.exercise %></td>
+            <td data-sort='<%= exercise.title %>'><%= link_to exercise.title, exercise %></td>
             <td colspan=5>No submissions for this exercise yet.</td>
           </tr>
         <% end %>
-       
       <% end %>
     </tbody>
   </table>

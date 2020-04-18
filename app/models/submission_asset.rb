@@ -52,7 +52,7 @@ class SubmissionAsset < ActiveRecord::Base
 
   delegate :exercise, to: :submission
 
-  after_save :add_to_submission_filsize
+  after_create :add_to_submission_filsize
   after_destroy :remove_from_submission_filesize
 
   EXCLUDED_FILTER = [
@@ -240,12 +240,10 @@ class SubmissionAsset < ActiveRecord::Base
   end
 
   def add_to_submission_filsize
-    submission.update('filesystem_size' => (filesystem_size + submission.filesystem_size)) 
-    submission.exercise.statistics.dirty_bit = true
+    submission.increment!(:filesystem_size, filesystem_size) 
   end
 
   def remove_from_submission_filesize
-    submission.update('filesystem_size' => (submission.filesystem_size - filesystem_size))
-    submission.exercise.statistics.dirty_bit = true
+    submission.decrement!(:filesystem_size, filesystem_size)
   end
 end

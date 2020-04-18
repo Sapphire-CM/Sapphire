@@ -11,6 +11,9 @@
 # end
 #
 # add_index :statistics, [:exercise_id], name: :index_statistics_on_exercise_id
+# 
+# DELETE THIS MODEL
+#
 
 class Statistics < ActiveRecord::Base
   belongs_to :exercise

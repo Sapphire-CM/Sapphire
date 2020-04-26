@@ -155,6 +155,18 @@ class EventService
     Events::ResultPublication::Concealed.create(result_publication_options(result_publication))
   end
 
+  def comment_created!(comment)
+    Events::Comment::Created.create(comment_options(comment))
+  end
+
+  def comment_updated!(comment)
+    Events::Comment::Updated.create(comment_options(comment))
+  end
+
+  def comment_destroyed!(comment)
+    Events::Comment::Destroyed.create(comment_options(comment))
+  end
+
   private
 
   def options(subject, data = {})
@@ -212,7 +224,7 @@ class EventService
     options comment, {
       commentable_type: comment.commentable_type,
       commentable_id: comment.commentable_id,
-      commentable_index: comment.commentable_index.class.name.underscore,
+      commentable_index: comment.commentable_index,
       name: comment.name
     }.merge(attributes)
   end

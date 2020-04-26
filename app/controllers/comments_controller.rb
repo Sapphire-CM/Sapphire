@@ -1,4 +1,6 @@
 class CommentsController < ApplicationController
+  include EventSourcing
+
   before_action :set_context, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -21,6 +23,7 @@ class CommentsController < ApplicationController
 
     authorize @comment
     if @comment.save
+      event_service.comment_created!(@comment)
       respond_to do |format|
         format.html { redirect_to :index, notice: "Success" }
         format.js
@@ -36,7 +39,9 @@ class CommentsController < ApplicationController
   def update
     @comment.assign_attributes(comment_params)
 
-    if @comment.save
+    if @comment.valid?
+      event_service.comment_updated!(@comment)
+      @comment.save
       respond_to do |format|
         format.html { redirect_to :show, notice: "Success" }
         format.js
@@ -48,6 +53,7 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment.destroy
+    event_service.comment_destroyed!(@comment)
   end
 
   private

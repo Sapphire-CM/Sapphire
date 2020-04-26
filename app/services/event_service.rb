@@ -208,6 +208,15 @@ class EventService
     }.merge(attributes)
   end
 
+  def comment_options(comment, attributes = {})
+    options comment, {
+      commentable_type: comment.commentable_type,
+      commentable_id: comment.commentable_id,
+      commentable_index: comment.commentable_index.class.name.underscore,
+      name: comment.name
+    }.merge(attributes)
+  end
+
   def submission_asset_description(submission_asset)
     {
       file: File.basename(submission_asset.file.to_s),

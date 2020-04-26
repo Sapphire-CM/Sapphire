@@ -15,7 +15,9 @@ class EventPolicy < ApplicationPolicy
                   ResultPublication.where do
                     tutorial_group_id.in(my { my { user.tutorial_groups } })
                   end
-                ))
+                )) | 
+                (events.type.in(my { comment_event_types }) &
+                 events.subject_id.in(my { SubmissionEvaluation.joins(:submission).merge(Submission.for_account(user)) }))
               )
             )
           ) & (term_registrations.account_id == my { user.id })
@@ -31,6 +33,10 @@ class EventPolicy < ApplicationPolicy
 
     def result_publication_event_types
       [Events::ResultPublication::Published, Events::ResultPublication::Concealed]
+    end
+
+    def comment_event_types
+      [Events::Comment::Created, Events::Comment::Updated, Events::Comment::Destroyed]
     end
   end
 end

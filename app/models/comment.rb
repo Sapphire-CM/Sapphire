@@ -20,4 +20,12 @@ class Comment < ActiveRecord::Base
   validates :account, presence: true
   validates :term, presence: true
   validates :content, presence: true
+
+  def commentable_index()
+    if commentable.is_a?(SubmissionEvaluation)
+      [commentable, commentable.id]
+    elsif commentable.is_a?(Evaluation)
+      [commentable.submission_evaluation, commentable.submission_evaluation.id]
+    end
+  end 
 end

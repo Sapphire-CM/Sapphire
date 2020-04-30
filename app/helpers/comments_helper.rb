@@ -4,6 +4,6 @@ module CommentsHelper
     unless evaluation.explanations_comments.any?
       classes << ["secondary"]
     end
-    link_to "Comment", evaluation_explanations_path(evaluation.becomes(Evaluation)), data: {remote: :true, "reveal-id" => "reveal_modal"}, class: classes.join(' '), id: dom_id(evaluation.becomes(Evaluation), 'comment_button')
+    link_to "Explanation", evaluation_explanations_path(evaluation.becomes(Evaluation)), data: {remote: :true, "reveal-id" => "reveal_modal"}, class: classes.join(' '), id: dom_id(evaluation.becomes(Evaluation), 'comment_button')
   end
 end

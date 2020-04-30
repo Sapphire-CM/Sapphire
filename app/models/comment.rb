@@ -21,11 +21,11 @@ class Comment < ActiveRecord::Base
   validates :term, presence: true
   validates :content, presence: true
 
-  def commentable_index()
+  def commentable_index
     if commentable.is_a?(SubmissionEvaluation)
-      [commentable, commentable.id]
+      {klass: commentable, id: commentable.id}
     elsif commentable.is_a?(Evaluation)
-      [commentable.submission_evaluation, commentable.submission_evaluation.id]
+      {klass: commentable.submission_evaluation, id: commentable.submission_evaluation.id}
     end
-  end 
+  end
 end

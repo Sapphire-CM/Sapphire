@@ -224,7 +224,7 @@ class EventService
     options comment, {
       commentable_type: comment.commentable_type,
       commentable_id: comment.commentable_id,
-      commentable_index: comment.commentable_index,
+      index_path: comment.index_path,
       name: comment.name
     }.merge(attributes)
   end

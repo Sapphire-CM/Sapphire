@@ -1,5 +1,5 @@
 <%= event_box(destroyed) do |event| %>
   <div class='title'>
-    <%= event.account.fullname %> <strong>deleted</strong> <%= indefinite_articlerize(event.name) %> <strong>comment</strong> for <%= link_to event.commentable_type, polymorphic_path(event.commentable_index.first, id: event.commentable_index.second) %>.
+    <%= event.account.fullname %> <strong>deleted</strong> <%= indefinite_articlerize(event.name) %> <strong>comment</strong> for <%= link_to event.commentable_type, polymorphic_path(event.index_path[:klass], id: event.index_path[:id]) %>.
   </div>
 <% end %>

@@ -15,7 +15,7 @@
 module Events
   module Comment
     class Updated < ::Event
-      data_reader :name, :commentable_type, :commentable_id, :commentable_index
+      data_reader :name, :commentable_type, :commentable_id, :index_path
     end
   end
 end

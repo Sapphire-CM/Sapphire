@@ -21,7 +21,7 @@ class Comment < ActiveRecord::Base
   validates :term, presence: true
   validates :content, presence: true
 
-  def commentable_index
+  def index_path
     if commentable.is_a?(SubmissionEvaluation)
       {klass: commentable, id: commentable.id}
     elsif commentable.is_a?(Evaluation)

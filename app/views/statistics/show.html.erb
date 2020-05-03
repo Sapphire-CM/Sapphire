@@ -7,7 +7,7 @@
     <thead>
       <tr>
         <th>Exercise</th>
-        <th>Filesystem size</th>
+        <th>Total on filesystem</th>
         <th>Average</th>
         <th>Minimum</th>
         <th>Maximum</th>
@@ -18,10 +18,10 @@
         <% if exercise.submissions.any? %>
           <tr>
             <td data-sort='<%= exercise.title %>'><%= link_to exercise.title, exercise %></td>
-            <td><%= exercise.get_disk_usage_sum %></td>
-            <td><%= exercise.get_disk_usage_average %></td>
-            <td><%= exercise.get_disk_usage_minimum %></td>
-            <td><%= exercise.get_disk_usage_maximum %></td>
+            <td class='text-right'><%= filesize(number_with_delimiter(exercise.get_disk_usage_sum)) %></td>
+            <td class='text-right'><%= filesize(number_with_precision(exercise.get_disk_usage_average, :precision => 1, :delimiter => ',', :seperator => '.')) %></td>
+            <td class='text-right'><%= filesize(number_with_delimiter(exercise.get_disk_usage_minimum)) %></td>
+            <td class='text-right'><%= filesize(number_with_delimiter(exercise.get_disk_usage_maximum)) %></td>
           </tr>
         <% else %>
           <tr>

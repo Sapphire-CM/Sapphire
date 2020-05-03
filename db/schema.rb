@@ -150,7 +150,6 @@ ActiveRecord::Schema.define(version: 20200620205805) do
     t.string   "instructions_url"
     t.boolean  "enable_bulk_submission_management", default: false
     t.boolean  "enable_multiple_attempts",          default: false, null: false
-    t.integer  "filesystem_size",                   default: 0
   end
 
   add_index "exercises", ["term_id"], name: "index_exercises_on_term_id"
@@ -307,20 +306,6 @@ ActiveRecord::Schema.define(version: 20200620205805) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
   end
-
-  create_table "statistics", force: :cascade do |t|
-    t.integer  "exercise_id"
-    t.integer  "sum"
-    t.integer  "min"
-    t.integer  "max"
-    t.integer  "average"
-    t.integer  "median"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.boolean  "dirty_bit"
-  end
-
-  add_index "statistics", ["exercise_id"], name: "index_statistics_on_exercise_id"
 
   create_table "student_groups", force: :cascade do |t|
     t.string   "title"

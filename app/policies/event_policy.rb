@@ -16,7 +16,9 @@ class EventPolicy < ApplicationPolicy
                     tutorial_group_id.in(my { my { user.tutorial_groups } })
                   end
                 )) | 
-                (events.type.in(my { comment_event_types }) & events.internal.in( my { false } ) )
+                (events.type.in(my { comment_event_types }) &
+                 events.internal.in(my { false }) &
+                 events.subject_id.in(my { SubmissionEvaluation.joins(:submission).merge(Submission.for_account(user)) }))
               )
             )
           ) & (term_registrations.account_id == my { user.id })

@@ -23,9 +23,9 @@ class Comment < ActiveRecord::Base
 
   def index_path
     if commentable.is_a?(SubmissionEvaluation)
-      {klass: commentable, id: commentable.id}
+      commentable
     elsif commentable.is_a?(Evaluation)
-      {klass: commentable.submission_evaluation, id: commentable.submission_evaluation.id}
+      commentable.submission_evaluation
     end
   end
 end

@@ -156,15 +156,21 @@ class EventService
   end
 
   def comment_created!(comment)
-    Events::Comment::Created.create(comment_options(comment)).update(internal: comment_internal(comment))
+    event = Events::Comment::Created.create(comment_options(comment))
+    event.update(internal: comment_internal(comment))
+    update_comment_event_subject(event, comment)
   end
 
   def comment_updated!(comment)
-    Events::Comment::Updated.create(comment_options(comment)).update(internal: comment_internal(comment))
+    event = Events::Comment::Updated.create(comment_options(comment))
+    event.update(internal: comment_internal(comment))
+    update_comment_event_subject(event, comment)
   end
 
   def comment_destroyed!(comment)
-    Events::Comment::Destroyed.create(comment_options(comment)).update(internal: comment_internal(comment))
+    event = Events::Comment::Destroyed.create(comment_options(comment))
+    event.update(internal: comment_internal(comment))
+    update_comment_event_subject(event, comment)
   end
 
   private
@@ -222,9 +228,6 @@ class EventService
 
   def comment_options(comment, attributes = {})
     options comment, {
-      commentable_type: comment.commentable_type,
-      commentable_id: comment.commentable_id,
-      index_path: comment.index_path,
       name: comment.name,
     }.merge(attributes)
   end
@@ -235,6 +238,10 @@ class EventService
 
   def comments_shown_to_students
     ["feedback", "explanations"]
+  end
+
+  def update_comment_event_subject(event, comment)
+    event.update(subject: comment.index_path)
   end
 
   def submission_asset_description(submission_asset)

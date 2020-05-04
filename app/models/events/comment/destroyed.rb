@@ -16,7 +16,7 @@
 module Events
   module Comment
     class Destroyed < ::Event
-      data_reader :name, :commentable_type, :commentable_id, :index_path, :internal
+      data_reader :name
     end
   end
 end

@@ -16,7 +16,7 @@
 module Events
   module Comment
     class Created < ::Event
-      data_reader :name, :commentable_type, :commentable_id, :index_path
+      data_reader :name
     end
   end
 end

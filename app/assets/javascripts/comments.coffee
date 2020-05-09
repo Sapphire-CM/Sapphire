@@ -1,9 +1,11 @@
 $(document).on 'click', "[id^=comment_save_evaluation]", () ->
   $("##{evaluation_comment_button($(this))}").removeClass('secondary')
+  $("##{evaluation_comment_button($(this))}").addClass('annotate')
 
 $(document).on 'click', "[id^=comment_delete_evaluation]", () ->
   $comments = $(this).closest('.comments_list')
   if($comments.find('.comment').length == 1)
+    $("##{evaluation_comment_button($(this))}").removeClass('annotate')
     $("##{evaluation_comment_button($(this))}").addClass('secondary')
 
 evaluation_comment_button = (button) ->

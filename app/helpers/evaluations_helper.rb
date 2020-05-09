@@ -22,7 +22,8 @@ module EvaluationsHelper
     end
 
     link_to evaluation.rating.title, evaluation_path(evaluation, evaluation: { value: value }), method: 'put', data: { remote: true }, class: classes.join(' '), 
-      title: evaluation.rating.description.presence
+      title: evaluation.rating.description.presence,
+      id: dom_id(evaluation.becomes(Evaluation), 'rating_button')
     end
 
   def evaluation_form(evaluation)

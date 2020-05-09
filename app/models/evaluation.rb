@@ -67,6 +67,10 @@ class Evaluation < ActiveRecord::Base
     1
   end
 
+  def ticked
+    value != 0 ? true : false
+  end
+
   def update_result!
     evaluation_group.update_result!
 

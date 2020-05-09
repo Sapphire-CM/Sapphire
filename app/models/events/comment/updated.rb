@@ -16,7 +16,7 @@
 module Events
   module Comment
     class Updated < ::Event
-      data_reader :name
+      data_reader :name, :exercise_title
     end
   end
 end

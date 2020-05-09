@@ -229,6 +229,7 @@ class EventService
   def comment_options(comment, attributes = {})
     options comment, {
       name: comment.name,
+      exercise_title: comment.commentable.submission.exercise.title
     }.merge(attributes)
   end
 

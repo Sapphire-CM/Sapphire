@@ -141,4 +141,9 @@ module LayoutHelper
   def markdown(text)
     return sanitize Kramdown::Document.new(text).to_html
   end
+
+  def indefinite_articlerize(noun)
+    noun = noun.singularize
+    %w(a e i o u).include?(noun[0].downcase) ? "an #{noun}" : "a #{noun}"
+  end
 end

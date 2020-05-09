@@ -14,9 +14,9 @@
 # add_index :events, [:subject_type, :subject_id], name: :index_events_on_subject_type_and_subject_id
 
 module Events
-  module RatingGroup
+  module Comment
     class Destroyed < ::Event
-      data_reader :exercise_title, :exercise_id, :rating_group_title, :rating_group_id, :points
+      data_reader :name, :exercise_title
     end
   end
 end

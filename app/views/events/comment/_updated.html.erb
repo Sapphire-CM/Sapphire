@@ -1,0 +1,4 @@
+<%= event_box(updated) do |event| %>
+  <div class='title'>
+    <%= event.account.fullname %> <strong>edited</strong> <%= indefinite_articlerize(event.name) %> <strong>comment</strong> for <%= comment_event_index(event) %>.
+<% end %>

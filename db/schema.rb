@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200129142426) do
+ActiveRecord::Schema.define(version: 20200501070941) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -104,13 +104,14 @@ ActiveRecord::Schema.define(version: 20200129142426) do
 
   create_table "events", force: :cascade do |t|
     t.string   "type"
-    t.integer  "subject_id",   null: false
-    t.string   "subject_type", null: false
-    t.integer  "account_id",   null: false
-    t.integer  "term_id",      null: false
+    t.integer  "subject_id",                   null: false
+    t.string   "subject_type",                 null: false
+    t.integer  "account_id",                   null: false
+    t.integer  "term_id",                      null: false
     t.text     "data"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.boolean  "internal",     default: false
   end
 
   add_index "events", ["account_id"], name: "index_events_on_account_id"

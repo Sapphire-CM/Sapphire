@@ -155,6 +155,24 @@ class EventService
     Events::ResultPublication::Concealed.create(result_publication_options(result_publication))
   end
 
+  def comment_created!(comment)
+    event = Events::Comment::Created.create(comment_options(comment))
+    event.update(internal: comment_internal(comment))
+    update_comment_event_subject(event, comment)
+  end
+
+  def comment_updated!(comment)
+    event = Events::Comment::Updated.create(comment_options(comment))
+    event.update(internal: comment_internal(comment))
+    update_comment_event_subject(event, comment)
+  end
+
+  def comment_destroyed!(comment)
+    event = Events::Comment::Destroyed.create(comment_options(comment))
+    event.update(internal: comment_internal(comment))
+    update_comment_event_subject(event, comment)
+  end
+
   private
 
   def options(subject, data = {})
@@ -206,6 +224,25 @@ class EventService
       exercise_id: submission.exercise.id,
       exercise_title: submission.exercise.title,
     }.merge(attributes)
+  end
+
+  def comment_options(comment, attributes = {})
+    options comment, {
+      name: comment.name,
+      exercise_title: comment.commentable.submission.exercise.title
+    }.merge(attributes)
+  end
+
+  def comment_internal(comment)
+    !comment.name.in?(comments_shown_to_students)
+  end
+
+  def comments_shown_to_students
+    ["feedback", "explanations"]
+  end
+
+  def update_comment_event_subject(event, comment)
+    event.update(subject: comment.index_path)
   end
 
   def submission_asset_description(submission_asset)

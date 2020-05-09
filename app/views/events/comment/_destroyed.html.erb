@@ -1,0 +1,5 @@
+<%= event_box(destroyed) do |event| %>
+  <div class='title'>
+    <%= event.account.fullname %> <strong>deleted</strong> <%= indefinite_articlerize(event.name) %> <strong>comment</strong> for <%= comment_event_index(event) %>.
+  </div>
+<% end %>

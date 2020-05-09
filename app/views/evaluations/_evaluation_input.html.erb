@@ -1,6 +1,6 @@
 <%= cache evaluation do %>
   <div class='row collapse' id='<%= evaluation_id(evaluation) %>'>
-    <% if evaluation.needs_review? %>
+    <% if evaluation.needs_review? and evaluation.ticked %>
       <div class='small-10 columns'>
         <%= evaluation_input_content %>
       </div>
@@ -10,12 +10,16 @@
       <div class='small-1 columns review_button'>
         <%= evaluation_review_done_button(evaluation) %>
       </div>
-    <% else %>
+    <% elsif evaluation.ticked %>
       <div class='small-11 columns'>
         <%= evaluation_input_content %>
       </div>
       <div class='small-1 columns comment_button'>
         <%= evaluation_comment_button(evaluation) %>
+      </div>
+    <% else %>
+      <div class='small-12 columns'>
+        <%= evaluation_input_content %>
       </div>
     <% end %>
   </div>

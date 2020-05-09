@@ -188,6 +188,14 @@ class SubmissionAsset < ActiveRecord::Base
     Mime::ARCHIVES.include? self.content_type
   end
 
+  def add_to_submission_filsize
+    submission.increment!(:filesystem_size, filesystem_size) 
+  end
+
+  def remove_from_submission_filesize
+    submission.decrement!(:filesystem_size, filesystem_size)
+  end
+
   private
 
   def self.extract_path_components(path)
@@ -237,13 +245,5 @@ class SubmissionAsset < ActiveRecord::Base
       errors.add(:file, "is not an archive")
     end
     true
-  end
-
-  def add_to_submission_filsize
-    submission.increment!(:filesystem_size, filesystem_size) 
-  end
-
-  def remove_from_submission_filesize
-    submission.decrement!(:filesystem_size, filesystem_size)
   end
 end

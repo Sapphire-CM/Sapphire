@@ -525,4 +525,30 @@ RSpec.describe SubmissionAsset do
       expect(subject.path).to eq("test/path")
     end
   end
+
+  describe '#add_to_submission_filsize' do
+    let(:submission) { FactoryGirl.create(:submission) }
+ 
+    it 'increments the submission filesize' do
+      subject.file = prepare_static_test_file("simple_submission.txt")
+      subject.set_filesizes
+      subject.submission = submission
+      old_submission_size = submission.filesystem_size
+      subject.add_to_submission_filsize
+
+      expect(submission.filesystem_size).to eq(old_submission_size + 447)
+    end
+  end
+
+  describe '#remove_from_submission_filesize' do
+    it 'decrements the submission filesize' do
+      subject.file = prepare_static_test_file("simple_submission.txt")
+      subject.set_filesizes
+      subject.submission = submission
+      old_submission_size = submission.filesystem_size
+      subject.remove_from_submission_filesize
+
+      expect(submission.filesystem_size).to eq(old_submission_size - 447)
+    end
+  end
 end

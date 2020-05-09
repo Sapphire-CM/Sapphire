@@ -1,8 +1,8 @@
 <% if commentable.feedback_comments.any? %>
-  <h4>Feedback</h4>
+  <h4>Feedback for <%= @exercise.title %></h4>
   <div>
     <% commentable.feedback_comments.each do |comment| %>
-      <div class="panel radius">
+      <div class="annotate panel radius">
         <strong><%= comment.account.fullname %></strong> commented:
         <p><%= markdown(comment.content) %></p>
       </div>

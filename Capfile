@@ -1,7 +1,7 @@
 require 'capistrano/setup'
 require 'capistrano/deploy'
 
-require 'capistrano/rvm'
+require 'capistrano/rbenv'
 require 'capistrano/rails'
 require 'capistrano/sidekiq'
 require 'capistrano/passenger'

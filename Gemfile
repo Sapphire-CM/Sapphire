@@ -96,7 +96,7 @@ group :development do
   # gem 'sextant'             # route /rails/routes for displaying all routes
 
   gem 'capistrano', '~> 3.4.0' # deployment via SSH
-  gem 'capistrano-rvm'         # capistrano plugin for RVM
+  gem 'capistrano-rbenv'         # capistrano plugin for RVM
   gem 'capistrano-rails'       # capistrano plugin for Rails
   gem 'capistrano-sidekiq'     # capistrano plugin for Sidekiq
   gem 'capistrano-passenger'   # capistrano plugin for Passenger

@@ -17,11 +17,9 @@ env:
   global:
     - RAILS_ENV=test
     - COVERAGE=true
-  - DB=sqlite
-  - DB=postgresql
-
-os: linux
-dist: xenial
+  matrix:
+    - DB=sqlite
+    - DB=postgresql
 
 services:
   - postgresql

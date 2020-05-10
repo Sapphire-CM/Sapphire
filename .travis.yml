@@ -9,7 +9,6 @@ cache:
   - $HOME/travis_phantomjs
 
 rvm:
-  - 2.3.8 # current production
   - 2.6.5
 env:
   - DB=sqlite

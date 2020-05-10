@@ -8,8 +8,6 @@ cache:
   directories:
   - $HOME/travis_phantomjs
 
-sudo: false
-
 rvm:
   - 2.3.8 # current production
   - 2.6.5
@@ -17,6 +15,7 @@ env:
   - DB=sqlite
   - DB=postgresql
 
+os: linux
 dist: trusty
 
 before_script:

@@ -55,7 +55,7 @@ class SubmissionStructure::Tree
 
   def parse_submission
     parser = Parser.new(base_directory_name)
-    submission_assets.each do |submission_asset|
+    submission_assets.includes(:submitter).each do |submission_asset|
       parser << submission_asset
     end
     parser.base_dir

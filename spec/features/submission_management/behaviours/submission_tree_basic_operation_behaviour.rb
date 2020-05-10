@@ -275,7 +275,10 @@ RSpec.shared_examples "basic submission tree operations" do
 
       within '.submission-tree table tr:nth-child(2)' do
         expect(page).to have_content("simple_submission.txt")
-        find("a[data-method=delete]").click
+
+        accept_alert do
+          find("a[data-method=delete]").click
+        end
       end
 
       visit tree_submission_path(submission)
@@ -288,7 +291,10 @@ RSpec.shared_examples "basic submission tree operations" do
 
       within '.submission-tree table tbody tr:nth-child(1)' do
         expect(page).to have_content("folder")
-        find("a[data-method=delete]").click
+
+        accept_alert do
+          find("a[data-method=delete]").click
+        end
       end
 
       visit tree_submission_path(submission)

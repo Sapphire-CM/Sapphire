@@ -67,6 +67,10 @@ module FeatureHelpers
     Capybara.ignore_hidden_elements = previous_value
   end
 
+  def blur
+    page.execute_script("$('input:focus').blur()")
+  end
+
   def drop_in_dropzone(files, css_selector)
     js_script = 'fileList = Array(); '
     files.count.times do |index|
@@ -77,7 +81,7 @@ module FeatureHelpers
                           ".appendTo('body'); }")
 
       # Attach file to the fake input selector through Capybara
-      attach_file("seleniumUpload#{index}", files[index], visible: false)
+      attach_file("seleniumUpload#{index}", Rails.root.join(files[index]), visible: false)
       # Build up the fake js event
       #
       js_script << "fileList.push(seleniumUpload#{index}.get(0).files[0]); "

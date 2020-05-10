@@ -33,6 +33,8 @@ RSpec.describe "Course Editing" do
         click_link href: edit_course_path(course)
       end
 
+      expect(page).to have_content("Edit Course")
+
       fill_in "Title", with: ""
 
       click_button "Save"

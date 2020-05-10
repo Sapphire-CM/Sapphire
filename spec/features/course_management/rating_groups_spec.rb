@@ -90,12 +90,14 @@ RSpec.feature 'Ratings and Rating Groups' do
         end
 
         within_modal do
+          expect(page).to have_content("Edit Rating Group")
           fill_in 'Points', with: '5'
 
-          hidden_inputs do
-            fill_in 'Min points', with: '-5'
-            fill_in 'Max points', with: '15'
-          end
+          click_on "Change Pointrange"
+          expect(page).to have_field("Min points")
+
+          fill_in 'Min points', with: '-5'
+          fill_in 'Max points', with: '15'
 
           click_button 'Save'
         end
@@ -112,7 +114,9 @@ RSpec.feature 'Ratings and Rating Groups' do
       scenario 'removing a rating group' do
         expect do
           within "#rating_group_id_#{rating_group.id}" do
-            first('.index_entry_remove').click
+            accept_confirm do
+              first('.index_entry_remove').click
+            end
           end
 
           expect(page).not_to have_content('My Rating Group')
@@ -181,7 +185,9 @@ RSpec.feature 'Ratings and Rating Groups' do
       expect do
         within_rating_group do
           within "#rating_id_#{rating.id}" do
-            first('a.index_entry_remove').click
+            accept_confirm do
+              first('a.index_entry_remove').click
+            end
           end
 
           expect(page).not_to have_content('My great Rating')

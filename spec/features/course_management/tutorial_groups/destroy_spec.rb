@@ -15,9 +15,11 @@ RSpec.describe "Removing tutorial group" do
     visit described_path
 
     expect do
-      page.accept_alert do
+      accept_confirm do
         click_link "Delete Tutorial Group"
       end
+
+      expect(page).to have_content("Tutorial group successfully deleted.")
     end.to change(TutorialGroup, :count).by(-1)
   end
 end

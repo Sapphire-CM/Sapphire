@@ -1,1 +1,1 @@
-server 'sapphire.iicm.tugraz.at', user: 'sapphire', roles: %w{app db web}
+server 'sapphire.isds.tugraz.at', user: 'sapphire', roles: %w{app db web}

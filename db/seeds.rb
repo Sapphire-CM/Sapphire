@@ -108,7 +108,7 @@ puts "Done!" if debug
 
 puts "Creating a Submission for Student Group #{student_groups.first.title}" if debug
 SubmissionCreationService.new_student_submission(student_accounts.first, exercises.first).save
-puts "Done!" if debug
+puts "Done!\n" if debug
 
 puts <<-MESSAGE
 You are now good to go! You may start the server with:
@@ -117,10 +117,10 @@ and:
 $ redis-server
 $ bundle exec sidekiq
 
-You may login with:
+Open your browser at 'localhost:3000' and login with:
  Email:'{admin,lecturer,tutor,student}@testing'
  Password:'testing'
 
 Note: The Email prefix will put you into the respective role, 
-      use 'student@testing' to have a look at how students will see Sapphire.
+      e.g. use 'student@testing' to have a look at how students will see Sapphire.
 MESSAGE

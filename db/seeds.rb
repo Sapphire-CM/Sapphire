@@ -1,6 +1,6 @@
 require 'date'
 
-debug = false
+debug = true
 
 puts "Creating Accounts..." if debug
 

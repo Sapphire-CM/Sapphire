@@ -1,0 +1,30 @@
+<table class='small-12 sortable exercises'>
+  <thead>
+    <tr>
+      <th>Exercise</th>
+      <th class='text-right'>Total on File System</th>
+      <th class='text-right'>Average</th>
+      <th class='text-right'>Minimum</th>
+      <th class='text-right'>Maximum</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% exercises.each do |exercise| %>
+      <% if exercise.submissions.any? %>
+      <% stats = Exercise::SubmissionsDiskUsageStatistics.new(exercise).submissions_disk_usage %>
+        <tr>
+          <td data-sort='<%= exercise.title %>'><%= link_to exercise.title, exercise %></td>
+          <td class='text-right'><%= filesize(stats.sum) %></td>
+          <td class='text-right'><%= filesize(stats.average) %></td>
+          <td class='text-right'><%= filesize(stats.minimum) %></td>
+          <td class='text-right'><%= filesize(stats.maximum) %></td>
+        </tr>
+      <% else %>
+        <tr>
+          <td data-sort='<%= exercise.title %>'><%= link_to exercise.title, exercise %></td>
+          <td colspan=5>No submissions for this exercise yet.</td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

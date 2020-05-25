@@ -109,6 +109,7 @@ module SubmissionsHelper
   end
 
   def filesize(number)
+    number = number_with_delimiter(number)
     content_tag :span, raw("#{h(number)}&nbsp;bytes"), title: number_to_human_size(number)
   end
 end

@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Login Feature' do
+  let(:invalid_credentials_flash_message) { 'Invalid Email or password.' }
+
   it 'shows the login-page if not logged in' do
     ensure_logged_out!
 
@@ -49,7 +51,7 @@ RSpec.describe 'Login Feature' do
       visit new_account_session_path
       click_on 'Sign in'
 
-      expect(page).to have_content('Invalid email or password.')
+      expect(page).to have_content(invalid_credentials_flash_message)
       expect(page).to have_current_path(new_account_session_path)
     end
 
@@ -58,7 +60,7 @@ RSpec.describe 'Login Feature' do
       fill_in 'Password', with: 'barbarbar'
       click_on 'Sign in'
 
-      expect(page).to have_content('Invalid email or password.')
+      expect(page).to have_content(invalid_credentials_flash_message)
       expect(page).to have_current_path(new_account_session_path)
     end
 
@@ -68,7 +70,7 @@ RSpec.describe 'Login Feature' do
       fill_in 'Password', with: 'barbarbar'
       click_on 'Sign in'
 
-      expect(page).to have_content('Invalid email or password.')
+      expect(page).to have_content(invalid_credentials_flash_message)
       expect(page).to have_current_path(new_account_session_path)
     end
 
@@ -79,7 +81,7 @@ RSpec.describe 'Login Feature' do
       fill_in 'Email', with: account.email
       click_on 'Sign in'
 
-      expect(page).to have_content('Invalid email or password.')
+      expect(page).to have_content(invalid_credentials_flash_message)
       expect(page).to have_current_path(new_account_session_path)
     end
 
@@ -91,7 +93,7 @@ RSpec.describe 'Login Feature' do
       fill_in 'Password', with: 'barbarbar'
       click_on 'Sign in'
 
-      expect(page).to have_content('Invalid email or password.')
+      expect(page).to have_content(invalid_credentials_flash_message)
       expect(page).to have_current_path(new_account_session_path)
     end
   end

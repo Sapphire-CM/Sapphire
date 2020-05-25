@@ -56,6 +56,14 @@ class TutorialGroup < ActiveRecord::Base
     !result_publications.concealed.where(exercise_id: term.exercises.pluck(:id)).exists?
   end
 
+  def graded_count
+    term_registrations.graded.count
+  end
+
+  def ungraded_count
+    term_registrations.ungraded.count
+  end
+
   private
 
   def ensure_result_publications

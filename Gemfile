@@ -11,7 +11,7 @@ gem 'jquery-mousewheel-rails'     # jquery MouseWheel support
 gem 'd3-rails'
 
 gem 'simple_form', '~> 3.0'       # forms
-gem 'devise',      '~> 3.2'       # user authentication
+gem 'devise',      '~> 4.0'       # user authentication
 gem 'squeel',      '~> 1.2'       # easy DSL
 gem 'carrierwave'                 # fileuploads
 gem 'kaminari'                    # pagination
@@ -96,7 +96,7 @@ group :development do
   # gem 'sextant'             # route /rails/routes for displaying all routes
 
   gem 'capistrano', '~> 3.4.0' # deployment via SSH
-  gem 'capistrano-rvm'         # capistrano plugin for RVM
+  gem 'capistrano-rbenv'         # capistrano plugin for RVM
   gem 'capistrano-rails'       # capistrano plugin for Rails
   gem 'capistrano-sidekiq'     # capistrano plugin for Sidekiq
   gem 'capistrano-passenger'   # capistrano plugin for Passenger

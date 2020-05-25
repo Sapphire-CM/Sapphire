@@ -34,3 +34,7 @@ en:
         mtime: "Modified At"
         size: "Size"
         name: "Name"
+  activerecord:
+    models:
+      exports/grading_export: Grading Export
+      exports/submissions_export: Submissions Export

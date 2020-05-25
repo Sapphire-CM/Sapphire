@@ -58,7 +58,7 @@ Rails.application.routes.draw do
     resources :events, only: [:index]
 
     resource :welcome_notifications, only: :create 
-    resource :statistics, only: :show
+    resource :statistics, controller: "term_statistics", only: :show
   end
 
   resources :tutorial_groups

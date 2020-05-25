@@ -28,7 +28,6 @@
 
 class Exercise < ActiveRecord::Base
   include RankedModel
-  include Exercises::DiskUsageStatistics
 
   belongs_to :term
 
@@ -39,8 +38,8 @@ class Exercise < ActiveRecord::Base
   has_many :result_publications, dependent: :destroy
   has_many :rating_groups, dependent: :destroy
   has_many :attempts, dependent: :destroy, class_name: "ExerciseAttempt", inverse_of: :exercise
-  has_many :submissions 
-  
+  has_many :submissions
+
   has_many :submission_evaluations, through: :submissions
   has_many :ratings, through: :rating_groups
 
@@ -135,7 +134,7 @@ class Exercise < ActiveRecord::Base
   def starting_points_sum
     rating_groups.sum(:points)
   end
-   
+
   private
   def ensure_result_publications
     term.tutorial_groups.each do |tutorial_group|

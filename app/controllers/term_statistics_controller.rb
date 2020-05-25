@@ -1,4 +1,4 @@
-class StatisticsController < ApplicationController
+class TermStatisticsController < ApplicationController
   include TermContext
 
   before_action :set_term, only: [:show]

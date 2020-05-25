@@ -20,6 +20,6 @@
     <%= sidenav_item(:upload, 'Imports', new_term_import_path(term), params[:controller] == 'imports') %>
     <%= sidenav_item(:download, 'Exports', term_exports_path(term), params[:controller] == 'exports') %>
     <%= sidenav_item(:pencil, 'Administrate', edit_term_path(term), params[:controller] == 'terms' && params[:action] == 'edit') %>
-    <%= sidenav_item(:list_thumbnails, 'Statistics', term_statistics_path(term), params[:controller] == 'statistics') %>
+    <%= sidenav_item(:list_thumbnails, 'Statistics', term_statistics_path(term), params[:controller] == 'term_statistics') %>
   <% end %>
 <% end %>

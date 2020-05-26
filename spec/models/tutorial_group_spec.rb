@@ -61,7 +61,7 @@ describe TutorialGroup do
       end.to change(TermRegistration, :count).by(-1)
     end
 
-    it 'destroys tutor_term_registrations on delete' do
+    it 'destroys student_term_registrations on delete' do
       tutorial_group = FactoryGirl.create(:tutorial_group, :with_students, students_count: 3, term: term)
 
       expect(tutorial_group.student_term_registrations.count).to eq(3)

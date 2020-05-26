@@ -27,7 +27,6 @@ puts "Creating a Term for that Course..."
 terms = Term.create! [
   { title: "Term #{Time.now.year}",     course: course }
 ]
-Term.all.map{ |obj| obj.row_order_position = :last; obj.save }
 puts "Done!"
 
 puts "Creating Tutorial and Student Groups..."
@@ -44,7 +43,7 @@ student_groups = [
   {title: "G4"}
 ].map {|sg_hash| sg = StudentGroup.new(sg_hash); sg.term = course.terms.last; sg}
 
-student_groups.each_slice(tutorial_groups.size).to_a.each.with_index do |groups, i|
+student_groups.in_groups_of(student_groups.size / tutorial_groups.size).each.with_index do |groups, i|
   tg = tutorial_groups[i]
   groups.each do |sg|
     sg.tutorial_group = tg
@@ -57,7 +56,7 @@ puts "Registering Accounts..."
 TermRegistration.create! account: accounts[0], term: course.terms.last, role: Roles::TUTOR, tutorial_group: tutorial_groups.first
 TermRegistration.create! account: accounts[1], term: course.terms.last, role: Roles::LECTURER
 
-student_accounts.each_slice(student_accounts.size / student_groups.size).to_a.each.with_index do |student_group, i|
+student_accounts.in_groups_of(student_accounts.size / student_groups.size).each.with_index do |student_group, i|
   sg = student_groups[i]
   student_group.each do |acc|
     TermRegistration.create! account: acc, term: course.terms.last, role: Roles::STUDENT, student_group: sg, tutorial_group: sg.tutorial_group

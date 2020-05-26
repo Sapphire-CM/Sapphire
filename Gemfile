@@ -72,6 +72,8 @@ group :development, :test do
   gem 'mysql2'                    # MySQL database connector
   gem 'sqlite3'                   # sqlite3 database connector
   gem 'parallel_tests'            # Parallelize Tests
+
+  gem 'faker'                     # fake data for seeds
 end
 
 group :development do

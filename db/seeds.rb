@@ -1,5 +1,3 @@
-require 'date'
-
 puts "Creating Accounts..."
 
 accounts = Account.create! [

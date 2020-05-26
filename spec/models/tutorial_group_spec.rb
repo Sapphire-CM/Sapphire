@@ -82,8 +82,23 @@ describe TutorialGroup do
   end
 
   describe 'methods' do
+    let(:course) { FactoryGirl.create(:course) }
+    let(:term) { FactoryGirl.create(:term, course: course) }
+    let(:tutorial_group) { FactoryGirl.create(:tutorial_group, :with_tutor, :with_students, students_count: 3, term: term) }
+
     pending '#student_has_submission_for_exercise?'
     pending '#results_published_for?'
     pending '#all_results_published?'
+    describe '#graded_count' do
+      it 'returns the amount of graded students' do
+        expect(tutorial_group.graded_count).to eq(0)
+      end
+    end
+    describe '#ungraded_count' do
+      it 'returns the amount of ungraded students' do
+        expect(tutorial_group.ungraded_count).to eq(3)
+      end
+
+    end
   end
 end

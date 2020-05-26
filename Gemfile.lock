@@ -160,6 +160,8 @@ GEM
     factory_girl_rails (4.7.0)
       factory_girl (~> 4.7.0)
       railties (>= 3.0.0)
+    faker (2.2.1)
+      i18n (>= 0.8)
     ffi (1.12.2)
     flash_render (1.2.0)
       rails (>= 2.3.8)
@@ -466,6 +468,7 @@ DEPENDENCIES
   email_validator
   exception_notification
   factory_girl_rails
+  faker
   flash_render
   foundation-icons-sass-rails (~> 3.0)
   jbuilder
@@ -524,4 +527,4 @@ DEPENDENCIES
   zurb-foundation (~> 4.3.0)
 
 BUNDLED WITH
-   1.17.2
+   1.17.3

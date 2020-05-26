@@ -66,8 +66,11 @@ puts "Done!"
 
 puts "Creating Exercises..."
 exercises = Exercise.create! [
-  { title: 'Ex 1: Something',  term: course.terms.last, group_submission: true },
-  { title: 'MC Test',          term: course.terms.last, group_submission: false }
+  { title: 'Ex 1: Initial Report',        term: course.terms.last, group_submission: true },
+  { title: 'Ex 2: Practical Assignment',  term: course.terms.last, group_submission: true },
+  { title: 'Ex 3: Second Report',         term: course.terms.last, group_submission: true },
+  { title: 'Ex 4: Final Report',          term: course.terms.last, group_submission: true },
+  { title: 'Final Exam',                  term: course.terms.last, group_submission: false }
 ]
 Exercise.all.map{ |obj| obj.row_order_position = :last; obj.save }
 puts "Done!"

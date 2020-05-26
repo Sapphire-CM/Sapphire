@@ -20,8 +20,7 @@ student_accounts = Account.create! [
 puts "Done!"
 
 puts "Creating a Course..."
-course = Course.create!({ title: 'Test Course' })
-course.update(locked: false)
+course = Course.create!({ title: 'Test Course', locked: false })
 puts "Done!"
 
 puts "Creating a Term for that Course..."

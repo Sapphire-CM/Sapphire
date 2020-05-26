@@ -1,20 +1,22 @@
+require 'faker'
+
 puts "Creating Accounts..."
 
 accounts = Account.create! [
-  { email: 'tutor@testing',    forename: 'Tutor',    surname: 'Tester', password: 'testing', password_confirmation: 'testing' },
-  { email: 'lecturer@testing', forename: 'Lecturer', surname: 'Tester', password: 'testing', password_confirmation: 'testing' },
-  { email: 'admin@testing',    forename: 'Admin',    surname: 'Tester', password: 'testing', password_confirmation: 'testing', admin: true },
+  { email: 'tutor@example.com',    forename: Faker::Name.first_name, surname: Faker::Name.last_name, password: 'testing' },
+  { email: 'lecturer@example.com', forename: Faker::Name.first_name, surname: Faker::Name.last_name, password: 'testing' },
+  { email: 'admin@example.com',    forename: Faker::Name.first_name, surname: Faker::Name.last_name, password: 'testing', admin: true },
 ]
-student_accounts = Account.create! [
-  { email: 'student@testing',   forename: 'Student',   surname: 'Tester', matriculation_number: '12345670', password: 'testing', password_confirmation: 'testing' },
-  { email: 'student1@testing',  forename: 'Student1',  surname: 'Tester', matriculation_number: '12345671', password: 'testing', password_confirmation: 'testing' },
-  { email: 'student2@testing',  forename: 'Student2',  surname: 'Tester', matriculation_number: '12345672', password: 'testing', password_confirmation: 'testing' },
-  { email: 'student3@testing',  forename: 'Student3',  surname: 'Tester', matriculation_number: '12345673', password: 'testing', password_confirmation: 'testing' },
-  { email: 'student4@testing',  forename: 'Student4',  surname: 'Tester', matriculation_number: '12345674', password: 'testing', password_confirmation: 'testing' },
-  { email: 'student5@testing',  forename: 'Student5',  surname: 'Tester', matriculation_number: '12345675', password: 'testing', password_confirmation: 'testing' },
-  { email: 'student6@testing',  forename: 'Student6',  surname: 'Tester', matriculation_number: '12345676', password: 'testing', password_confirmation: 'testing' },
-  { email: 'student7@testing',  forename: 'Student7',  surname: 'Tester', matriculation_number: '12345677', password: 'testing', password_confirmation: 'testing' }
-]
+student_account_attributes = 8.times.map do |i|
+  {
+    email: "student#{i}@testing",
+    forename: Faker::Name.first_name,
+    surname: Faker::Name.last_name,
+    matriculation_number: "123456#{i.to_s.rjust(2, '0')}",
+    password: 'testing'
+  }
+end
+student_accounts = Account.create!(student_account_attributes)
 puts "Done!"
 
 puts "Creating a Course..."
@@ -109,13 +111,12 @@ puts <<-MESSAGE
 You are now good to go! You may start the server with:
 $ rails server
 and:
-$ redis-server
 $ bundle exec sidekiq
 
 Open your browser at 'localhost:3000' and login with:
- Email:'{admin,lecturer,tutor,student}@testing'
+ Email:'{admin,lecturer,tutor,student}@example.com'
  Password:'testing'
 
 Note: The Email prefix will put you into the respective role,
-      e.g. use 'student@testing' to have a look at how students will see Sapphire.
+      e.g. use 'student@example.com' to have a look at how students will see Sapphire.
 MESSAGE

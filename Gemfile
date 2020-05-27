@@ -100,6 +100,9 @@ group :development do
   gem 'capistrano-rails'       # capistrano plugin for Rails
   gem 'capistrano-sidekiq'     # capistrano plugin for Sidekiq
   gem 'capistrano-passenger'   # capistrano plugin for Passenger
+
+  gem 'ed25519'                # enable ed25519 support for net-ssh
+  gem 'bcrypt_pbkdf'
 end
 
 group :test do

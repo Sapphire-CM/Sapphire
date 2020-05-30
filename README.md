@@ -6,7 +6,7 @@ This project is intended to be used to evaluate students during a course-term ba
 
 ## Requirements
 
-* Ruby 2.1.6 or higher
+* Ruby 2.6.5 or higher
 * Database
     - PostgreSQL or
     - sqlite3 (only basic support, no background jobs)

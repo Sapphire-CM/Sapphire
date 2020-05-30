@@ -1,5 +1,7 @@
 require 'faker'
 
+Faker::Config.random = Random.new(42)
+
 puts "Creating Accounts..."
 
 accounts = Account.create! [

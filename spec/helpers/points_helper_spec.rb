@@ -25,5 +25,13 @@ RSpec.describe PointsHelper, type: :helper do
     it "returns valid string if -2 is passed" do
       expect(helper.points(-2)).to eq("-2 points")
     end
+
+    it "returns valid string if -1.0 is passed" do
+      expect(helper.points(-1.0)).to eq("-1 point")
+    end
+
+    it "returns valid string if -2.0 is passed" do
+      expect(helper.points(-2.0)).to eq("-2 points")
+    end
   end
 end

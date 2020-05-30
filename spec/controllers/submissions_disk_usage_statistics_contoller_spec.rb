@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe TermStatisticsController, type: :controller do
+RSpec.describe SubmissionsDiskUsageStatisticsController, type: :controller do
   render_views
   include_context 'active_admin_session_context'
   let!(:term) { FactoryGirl.create :term}
@@ -18,7 +18,7 @@ RSpec.describe TermStatisticsController, type: :controller do
         expect(response.body).to include('Average')
         expect(response.body).to include('Minimum')
         expect(response.body).to include('Maximum')
-        expect(response).to render_template("term_statistics/_stat_table")
+        expect(response).to render_template("submissions_disk_usage_statistics/_statistics_table")
         expect(assigns(:term)).to eq(term)
       end
     end

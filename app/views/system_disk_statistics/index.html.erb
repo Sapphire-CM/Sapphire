@@ -1,0 +1,12 @@
+<% title "System" %>
+
+<%= render 'system_statistics_table' %>
+
+<% @courses.each do |course| %>
+  <h2><%= course.title %></h2>
+  <% if course.terms.any? %>
+    <%= render 'term_statistics_table', terms: course.terms %>
+  <% else %>
+    <p>No terms present.</p>
+  <% end %>
+<% end %>

@@ -76,35 +76,37 @@ exercises = Exercise.create! [
 Exercise.all.map{ |obj| obj.row_order_position = :last; obj.save }
 puts "Done!"
 
-puts "Creating Rating Groups and Ratings for #{exercises.first.title}..."
-rating_groups_attributes = [
-  {title: "Introduction",  enable_range_points: true, points: 2, max_points:2,  min_points:0, global: false},
-  {title: "First Section", enable_range_points: true, points: 10, max_points:10, min_points:0, global: false},
-  {title: "Formatting and Miscellaneous", enable_range_points: true, points:0, max_points:5, min_points:-20, global: true}
-].map {|attributes| attributes.merge(exercise: exercises.first) }
-rating_groups = RatingGroup.create(rating_groups_attributes)
+exercises.each do |exercise|
+  puts "Creating Rating Groups and Ratings for #{exercise.title}..."
+  rating_groups_attributes = [
+    {title: "Introduction",  enable_range_points: true, points: 2, max_points:2,  min_points:0, global: false},
+    {title: "First Section", enable_range_points: true, points: 10, max_points:10, min_points:0, global: false},
+    {title: "Formatting and Miscellaneous", enable_range_points: true, points:0, max_points:5, min_points:-20, global: true}
+  ].map {|attributes| attributes.merge(exercise: exercise) }
+  rating_groups = RatingGroup.create(rating_groups_attributes)
 
-introduction_ratings_attributes = [
-  {title: "missing", value: -100, type: "Ratings::FixedPercentageDeductionRating"},
-  {title: "incorrect", value: -1, type: "Ratings::FixedPointsDeductionRating"}
-].map {|attributes| attributes.merge(rating_group: rating_groups[0])}
-introduction_ratings = Rating.create(introduction_ratings_attributes)
+  introduction_ratings_attributes = [
+    {title: "missing", value: -100, type: "Ratings::FixedPercentageDeductionRating"},
+    {title: "incorrect", value: -1, type: "Ratings::FixedPointsDeductionRating"}
+  ].map {|attributes| attributes.merge(rating_group: rating_groups[0])}
+  introduction_ratings = Rating.create(introduction_ratings_attributes)
 
-first_section_ratings_attributes = [
-  {title: "missing", value: -100, type: "Ratings::FixedPercentageDeductionRating"},
-  {title: "incorrect", value: -2, type: "Ratings::FixedPointsDeductionRating"},
-  {title: "# bullet points missing", value: -1, multiplication_factor: 2, type: "Ratings::PerItemPointsDeductionRating"},
-].map {|attributes| attributes.merge(rating_group: rating_groups[1])}
-first_section_ratings = Rating.create(first_section_ratings_attributes)
+  first_section_ratings_attributes = [
+    {title: "missing", value: -100, type: "Ratings::FixedPercentageDeductionRating"},
+    {title: "incorrect", value: -2, type: "Ratings::FixedPointsDeductionRating"},
+    {title: "# bullet points missing", value: -1, multiplication_factor: 2, type: "Ratings::PerItemPointsDeductionRating"},
+  ].map {|attributes| attributes.merge(rating_group: rating_groups[1])}
+  first_section_ratings = Rating.create(first_section_ratings_attributes)
 
-miscellaneous_ratings_attributes = [
-  {title: "too late for the assignment interview", value: -100, type: "Ratings::FixedPercentageDeductionRating"},
-  {title: "not valid html in report", value: -1, multiplication_factor: -1, min_value: -5, max_value:0, type: "Ratings::VariablePointsDeductionRating"},
-  {title: "bonus: very good report", value: 1, multiplication_factor: 1, min_value: 0, max_value: 5, type: "Ratings::VariableBonusPointsRating"},
-].map {|attributes| attributes.merge(rating_group: rating_groups[2])}
-miscellaneous_ratings = Rating.create(miscellaneous_ratings_attributes)
+  miscellaneous_ratings_attributes = [
+    {title: "too late for the assignment interview", value: -100, type: "Ratings::FixedPercentageDeductionRating"},
+    {title: "not valid html in report", value: -1, multiplication_factor: -1, min_value: -5, max_value:0, type: "Ratings::VariablePointsDeductionRating"},
+    {title: "bonus: very good report", value: 1, multiplication_factor: 1, min_value: 0, max_value: 5, type: "Ratings::VariableBonusPointsRating"},
+  ].map {|attributes| attributes.merge(rating_group: rating_groups[2])}
+  miscellaneous_ratings = Rating.create(miscellaneous_ratings_attributes)
 
-puts "Done!"
+  puts "Done!"
+end
 
 puts "Creating a Submission for Student Group #{student_groups.first.title}"
 SubmissionCreationService.new_student_submission(student_accounts.first, exercises.first).save

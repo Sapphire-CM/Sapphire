@@ -12,6 +12,6 @@ module PointsHelper
   end
 
   def number_to_points(points)
-    number_with_precision(points, strip_insignificant_zeros: true)
+    number_with_delimiter(points.round)
   end
 end

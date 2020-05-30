@@ -10,7 +10,7 @@ accounts = Account.create! [
   { email: 'admin@example.com',    forename: Faker::Name.first_name, surname: Faker::Name.last_name, password: 'testing', admin: true },
 ]
 student_account_attributes = 8.times.map do |i| {
-    email: "student#{i}@testing",
+    email: "student#{i}@example.com",
     forename: Faker::Name.first_name,
     surname: Faker::Name.last_name,
     matriculation_number: "123456#{i.to_s.rjust(2, '0')}",

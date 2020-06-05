@@ -60,7 +60,7 @@ Rails.application.routes.draw do
     resources :events, only: [:index]
 
     resource :welcome_notifications, only: :create 
-    resource :submissions_statistics, controller: "submissions_disk_usage_statistics", only: :show
+    resource :submission_statistics, controller: "submissions_disk_usage_statistics", only: :show
   end
 
   resources :tutorial_groups

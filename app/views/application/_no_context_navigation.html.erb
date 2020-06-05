@@ -10,5 +10,9 @@
     <li>
       <%= link_to "System", system_disk_statistics_path%>
     </li>
+  <% elsif current_account.lecturer_of_any_term? %>
+    <li>
+      <%= link_to "System", system_disk_statistics_path%>
+    </li>
   <% end %>
 </ul>

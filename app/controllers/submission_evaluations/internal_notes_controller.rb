@@ -1,0 +1,2 @@
+class SubmissionEvaluations::InternalNotesController < SubmissionEvaluations::CommentsController
+end

@@ -1,9 +1,7 @@
-    <span>
-      <strong><%= comment.account.fullname %></strong> commented:
-    </span>
-    <% if policy(Comment.new(term: @term)).create? %>
-      <span class='comment_entry_icons'>
-        <%= link_to foundation_icon(:page_edit), edit_path, remote: true %>
-        <%= link_to foundation_icon(:x), delete_path, method: :delete, remote: true, data: { confirm: "Are you sure?" }, id: dom_id(@commentable, 'comment_delete') %>
-      </span>
-    <% end %>
+<%= comment_heading(comment) %>
+<% if policy(Comment.new(term: @term)).create? %>
+  <span class='comment_entry_icons'>
+    <%= link_to foundation_icon(:page_edit), edit_path, remote: true %>
+    <%= link_to foundation_icon(:x), delete_path, method: :delete, remote: true, data: { confirm: "Are you sure?" }, id: dom_id(@commentable, 'comment_delete') %>
+  </span>
+<% end %>

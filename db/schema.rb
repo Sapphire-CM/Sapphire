@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200129142426) do
+ActiveRecord::Schema.define(version: 20200412142124) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -361,12 +361,10 @@ ActiveRecord::Schema.define(version: 20200129142426) do
     t.integer  "processed_size",    default: 0
     t.integer  "filesystem_size",   default: 0
     t.integer  "extraction_status"
-    t.integer  "submitter_id"
   end
 
   add_index "submission_assets", ["filename", "path", "submission_id"], name: "index_submission_assets_on_filename_and_path_and_submission_id", unique: true
   add_index "submission_assets", ["submission_id"], name: "index_submission_assets_on_submission_id"
-  add_index "submission_assets", ["submitter_id"], name: "index_submission_assets_on_submitter_id"
 
   create_table "submission_evaluations", force: :cascade do |t|
     t.integer  "submission_id"
@@ -392,7 +390,7 @@ ActiveRecord::Schema.define(version: 20200129142426) do
     t.integer  "student_group_id"
     t.integer  "exercise_attempt_id"
     t.boolean  "active",              default: true, null: false
-    t.integer  "filesystem_size",     default: 0
+    t.integer  "filesystem_size"
   end
 
   add_index "submissions", ["exercise_attempt_id"], name: "index_submissions_on_exercise_attempt_id"

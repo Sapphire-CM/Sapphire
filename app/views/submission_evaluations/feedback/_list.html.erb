@@ -1,7 +1,10 @@
+<div class="radius panel">
+  for <strong><%= submission_title(@commentable.submission) %></strong>
+</div>
 <div class="comments_list">
   <% if @commentable.feedback_comments.any? %>
     <%= render collection: @commentable.feedback_comments, partial:'comment', as: :comment %>
   <% else %>
-    <%= render partial:'comments/no_comments' %>
+    <%= render partial:'no_comments' %>
   <% end %>
 </div>

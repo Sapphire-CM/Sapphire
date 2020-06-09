@@ -1,9 +1,13 @@
-.internal_notes {
-  background: #e78bb2;
-  border-color: #e78bb2;
+.internal.panel {
+  background: #f66aa5;
+  border-color: #ff62a4;
 }
 
 .internal.button {
   border-color: #851f4a;
   background: #e7689e;
+}
+
+.internal.button:hover {
+  background: #cb5b8b;
 }

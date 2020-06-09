@@ -1,0 +1,23 @@
+<% title "System" %>
+
+<%= render 'system_statistics_table' %>
+
+<% other_terms = [] %>
+<% @courses.each do |course| %>
+  <% if current_account.lecturer_of_any_term_in_course?(course) || current_account.admin? %>
+    <h2><%= course.title %></h2>
+    <% if course.terms.any? %>
+      <%= render 'term_statistics_table', terms: course.terms %>
+    <% else %>
+      <p>No terms present.</p>
+    <% end %>
+  <% else %>
+    <% course.terms.each do |term| %>
+      <% other_terms.append(term) %>
+    <% end %>
+  <% end %>
+<% end %>
+<% unless other_terms.empty? %>
+  <h2>Other Courses</h2>
+  <%= render 'other_courses_statistics_table', terms: other_terms %>
+<% end %>

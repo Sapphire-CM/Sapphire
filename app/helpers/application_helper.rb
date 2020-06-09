@@ -5,7 +5,8 @@ module ApplicationHelper
         current_controller != AccountsController &&
         current_controller != EmailAddressesController &&
         current_controller != CoursesController &&
-        current_controller != TermsController
+        current_controller != TermsController &&
+        current_controller != SystemDiskStatisticsController
       ) ||
       (params[:controller] == 'terms' && !%w(index new create).include?(params[:action])) || (params[:term_id])
     end

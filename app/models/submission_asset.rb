@@ -50,6 +50,9 @@ class SubmissionAsset < ActiveRecord::Base
   delegate :submitter, to: :submission
   delegate :exercise, to: :submission
 
+  after_create :add_to_submission_filsize
+  after_destroy :remove_from_submission_filesize
+
   EXCLUDED_FILTER = [
     # no operating system meta data files
     %r{Thumbs\.db}i.freeze,
@@ -181,6 +184,14 @@ class SubmissionAsset < ActiveRecord::Base
 
   def archive?
     Mime::ARCHIVES.include? self.content_type
+  end
+
+  def add_to_submission_filsize
+    submission.increment!(:filesystem_size, filesystem_size) 
+  end
+
+  def remove_from_submission_filesize
+    submission.decrement!(:filesystem_size, filesystem_size)
   end
 
   private

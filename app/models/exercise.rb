@@ -146,6 +146,5 @@ class Exercise < ActiveRecord::Base
     if deadline.present? && late_deadline.present? && late_deadline < deadline
       errors.add(:late_deadline, 'must be chronological after deadline')
     end
-  end
-
+  end 
 end

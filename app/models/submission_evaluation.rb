@@ -25,7 +25,7 @@ class SubmissionEvaluation < ActiveRecord::Base
   has_many :evaluations, through: :evaluation_groups
 
   has_many_comments :feedback
-  has_many_comments :notes
+  has_many_comments :internal_notes
 
   has_many :ratings, through: :evaluations
   has_many :rating_groups, through: :ratings

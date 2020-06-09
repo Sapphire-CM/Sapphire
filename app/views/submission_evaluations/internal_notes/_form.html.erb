@@ -1,0 +1,3 @@
+<%= simple_form_for(@comment, url: submission_evaluation_internal_notes_path(@commentable), remote: true, html: { id: dom_id(@comment, 'form') }) do |f| %>
+  <%= render "form_fields", f: f, type:'internal_notes' %>
+<% end %>

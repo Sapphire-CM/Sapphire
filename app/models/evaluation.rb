@@ -68,7 +68,7 @@ class Evaluation < ActiveRecord::Base
   end
 
   def ticked
-    value != 0 ? true : false
+    (value.nil? || value == 0) ? false : true
   end
 
   def update_result!

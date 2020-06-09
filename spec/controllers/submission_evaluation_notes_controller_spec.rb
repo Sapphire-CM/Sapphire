@@ -1,7 +1,7 @@
 require 'rails_helper'
 require_relative 'behaviours/comment_behaviour'
 
-RSpec.describe SubmissionEvaluations::NotesController, type: :controller do
+RSpec.describe SubmissionEvaluations::InternalNotesController, type: :controller do
   render_views
   include_context 'active_admin_session_context'
 
@@ -23,18 +23,18 @@ RSpec.describe SubmissionEvaluations::NotesController, type: :controller do
 
   it_behaves_like 'a comment' do
 
-    let(:comment_with_content) do 
+    let(:comment_with_content) do
       {
         comment: {
           content: "Some internal commment content",
-          name: "notes"
+          name: "internal_notes"
         },
         submission_evaluation_id: commentable.id,
         term: :term
       }
     end
 
-    let(:comment_without_content) do 
+    let(:comment_without_content) do
       {
         comment: {
           content: nil

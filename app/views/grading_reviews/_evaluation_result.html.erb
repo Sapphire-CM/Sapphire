@@ -17,7 +17,7 @@
               <td>
                 <%= evaluation.rating.title %>
                 <% if evaluation.explanations_comments.present? %>
-                  <%= link_to foundation_icon(:megaphone), evaluation_explanations_path(evaluation.becomes(Evaluation)), remote: :true, data: {"reveal-id" => "reveal_modal"}  %>
+                  <%= link_to foundation_icon(:info), evaluation_explanations_path(evaluation.becomes(Evaluation)), remote: :true, data: {"reveal-id" => "reveal_modal"}  %>
                 <% end %>
               </td>
               <td>

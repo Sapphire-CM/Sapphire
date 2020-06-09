@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe CommentsHelper, type: :helper do
-  describe 'evaluation comment button' do 
+  describe 'evaluation comment button' do
     let(:account) { FactoryGirl.create(:account, :admin) }
     let(:evaluation) { FactoryGirl.create :fixed_evaluation }
 
@@ -15,7 +15,7 @@ RSpec.describe CommentsHelper, type: :helper do
       let!(:comment) { FactoryGirl.create :explanations_comment, account: account, commentable: evaluation }
       it 'sets the correct classes' do
         html = helper.evaluation_comment_button(evaluation)
-        expect(html).to include('class="tiny button expand"')
+        expect(html).to include('tiny button expand')
         expect(html).not_to include('secondary')
       end
     end

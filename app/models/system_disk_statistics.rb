@@ -7,7 +7,7 @@ class SystemDiskStatistics
   def initialize
     location = YAML.load_file('config/system.yml')['db_location']
     @system_statistics = Hash.new
-    df = `df #{location}`
+    df = `df #{location} --output=used,avail,pcent`
     first_line = []
     df.each_line.with_index do |line, line_index|
       if line_index.eql? 0
@@ -16,6 +16,8 @@ class SystemDiskStatistics
       end
       line = line.split(' ')
       line.each.with_index do |token, token_index|
+	print "#{token}\n"
+	print "#{first_line[token_index].downcase}\n"
         @system_statistics[first_line[token_index].downcase] = token.to_i
       end
     end
@@ -30,6 +32,6 @@ class SystemDiskStatistics
   end
 
   def disk_available
-    @system_statistics['available']
+    @system_statistics['avail']
   end
 end

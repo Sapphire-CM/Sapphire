@@ -10,7 +10,11 @@ module CommentsHelper
   end
 
   def humanized_comment_type(comment)
-    comment.name.singularize.humanize
+    if comment.is_a?(Comment)
+      comment.name.singularize.humanize
+    elsif comment.is_a?(String)
+      comment.singularize.humanize
+    end
   end
 
   def comment_heading(comment)

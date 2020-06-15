@@ -5,6 +5,6 @@
   <% if @commentable.feedback_comments.any? %>
     <%= render collection: @commentable.feedback_comments, partial:'comment', as: :comment %>
   <% else %>
-    <%= render partial:'no_comments' %>
+    <%= render partial:'no_comments', locals: { type: 'feedback' } %>
   <% end %>
 </div>

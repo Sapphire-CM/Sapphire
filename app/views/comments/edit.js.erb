@@ -1,4 +1,4 @@
-var formContent = "<%=j render 'edit_form', comment: @comment %>"
+var formContent = "<%=j render 'edit_form', comment: @comment, type: @comment.name %>"
 var $form = $('#<%= dom_id(@comment, 'edit') %>')
 
 if ($form.length > 0) {

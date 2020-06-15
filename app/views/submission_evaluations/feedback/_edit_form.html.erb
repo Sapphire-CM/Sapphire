@@ -1,3 +1,3 @@
 <%= simple_form_for(@comment, url: submission_evaluation_feedback_path(@commentable, @comment), method: :patch, remote: true) do |f| %>
-  <%= render "edit_form_fields", f: f, cancel_path: submission_evaluation_feedback_path(@commentable, @comment) %>
+  <%= render "edit_form_fields", f: f, type: type, cancel_path: submission_evaluation_feedback_path(@commentable, @comment) %>
 <% end %>

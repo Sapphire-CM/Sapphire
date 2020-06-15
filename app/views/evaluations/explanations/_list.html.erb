@@ -5,6 +5,6 @@
   <% if @commentable.explanations_comments.any? %>
     <%= render collection: @commentable.explanations_comments, partial:'comment', as: :comment %>
   <% else %>
-    <%= render partial:'no_comments' %>
+    <%= render partial:'no_comments', locals: { type: 'explanations' } %>
   <% end %>
 </div>

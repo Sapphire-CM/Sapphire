@@ -1,6 +1,15 @@
-.internal_notes.panel {
+.internal_notes {
   background: #ff96c3;
-  border-color: #ff80b5;
+  border: 0px;
+}
+textarea.internal_notes:focus {
+  background: #ffa4cb;
+  border: 0px;
+}
+
+textarea.internal_notes {
+  background: #ffa4cb;
+  border: 0px;
 }
 
 .internal.button {

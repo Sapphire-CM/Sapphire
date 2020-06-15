@@ -7,7 +7,7 @@ class SystemDiskStatistics
   def initialize
     location = YAML.load_file('config/system.yml')['db_location']
     @system_statistics = Hash.new
-    df = `df #{location} --output=used,avail,pcent`
+    df = `df #{location} -P`
     first_line = []
     df.each_line.with_index do |line, line_index|
       if line_index.eql? 0
@@ -28,10 +28,10 @@ class SystemDiskStatistics
   end
 
   def disk_used_percentage
-    @system_statistics['use%']
+    @system_statistics['capacity']
   end
 
   def disk_available
-    @system_statistics['avail']
+    @system_statistics['available']
   end
 end

@@ -2,8 +2,8 @@
   <h4>Feedback for <%= @exercise.title %></h4>
   <div>
     <% commentable.feedback_comments.each do |comment| %>
-      <div class="annotate panel radius">
-        <strong><%= comment.account.fullname %></strong> commented:
+      <%= comment_heading(comment) %>
+      <div class="feedback foldtr panel radius">
         <p><%= markdown(comment.content) %></p>
       </div>
     <% end %>

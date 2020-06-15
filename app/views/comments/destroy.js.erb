@@ -1,6 +1,6 @@
 $("#<%= dom_id(@comment) %>").remove();
 
 if ($(".comments_list").find('.comment').length == 0) {
-  var html = "<%=j render "no_comments" %>";
+  var html = "<%=j render "no_comments", type: @comment.name %>";
   $(".comments_list").html(html);
 }

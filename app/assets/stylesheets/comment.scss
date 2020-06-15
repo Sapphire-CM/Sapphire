@@ -20,5 +20,49 @@
 .feedback, .explanations {
   color: black;
   background: #ffffca;
-  border-color: #ffffaa;
+  border:0px;
+}
+
+textarea.feedback, textarea.explanations {
+  color: black;
+  background: #ffffdc;
+  border:0px;
+}
+
+textarea.feedback:focus, textarea.explanations:focus {
+  color: black;
+  background: #ffffdc;
+  border:0px;
+}
+
+.foldtr {
+  position: relative;
+  -webkit-box-shadow: -3px 3px 3px rgba(0,0,0,0.2);
+  -moz-box-shadow: -3px 3px 3px rgba(0,0,0,0.2);
+  box-shadow: -3px 3px 3px rgba(0,0,0,0.2);
+}
+
+.foldtr:before {
+  content: "";
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  width: 0px;
+  height: 0px;
+  border-bottom: 40px solid transparent;
+  border-right: 100px solid transparent;
+  -webkit-box-shadow: -4px 4px 4px rgba(0,0,0,0.2);
+  -moz-box-shadow: -4px 4px 4px rgba(0,0,0,0.2);
+  box-shadow: -4px 4px 4px rgba(0,0,0,0.2);
+}
+
+.foldtr:after {
+  content: "";
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  width: 0px;
+  height: 0px;
+  border-top: 40px solid #ffffff;
+  border-left: 100px solid transparent;
 }

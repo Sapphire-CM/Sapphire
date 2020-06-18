@@ -119,9 +119,9 @@ and:
 $ bundle exec sidekiq
 
 Open your browser at 'localhost:3000' and login with:
- Email:'{admin,lecturer,tutor,student}@example.com'
+ Email:'{admin,lecturer,tutor,student0}@example.com'
  Password:'testing'
 
 Note: The Email prefix will put you into the respective role,
-      e.g. use 'student@example.com' to have a look at how students will see Sapphire.
+      e.g. use 'student0@example.com' to have a look at how students will see Sapphire.
 MESSAGE

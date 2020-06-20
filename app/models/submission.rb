@@ -3,7 +3,7 @@
 #   t.datetime :submitted_at
 #   t.datetime :created_at,                         null: false
 #   t.datetime :updated_at,                         null: false
-#   t.integer  :submitter_id
+#   t.integer  :submitter_id,                       null: false
 #   t.integer  :student_group_id
 #   t.integer  :exercise_attempt_id
 #   t.boolean  :active,              default: true, null: false

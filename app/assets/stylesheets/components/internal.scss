@@ -1,20 +1,16 @@
 .internal_notes {
-  background: #ff96c3;
+  background: #fc9fc7;
   border: 0px;
 }
-textarea.internal_notes:focus {
-  background: #ffa4cb;
-  border: 0px;
-}
-
-textarea.internal_notes {
-  background: #ffa4cb;
+textarea.internal_notes, textarea.internal_notes:focus {
+  background: #ffb3d3;
   border: 0px;
 }
 
 .internal.button {
-  border-color: #851f4a;
-  background: #e7689e;
+  color: black;
+  border-color: #cb5b8b;
+  background: #f285b4;
 }
 
 .internal.button:hover {

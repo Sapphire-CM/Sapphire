@@ -1,8 +1,9 @@
 require 'faker'
 
+$stdout.sync = true
 Faker::Config.random = Random.new(42)
 
-puts "Creating Accounts..."
+print "Creating Accounts... "
 
 accounts = Account.create! [
   { email: 'tutor@example.com',    forename: Faker::Name.first_name, surname: Faker::Name.last_name, password: 'testing' },

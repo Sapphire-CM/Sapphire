@@ -5,7 +5,7 @@ namespace :development do
 
     if ActiveRecord::Base.connection.table_exists? 'courses'
       course = Course.find_by_title('Test Course')
-      course.destroy unless course.nil?
+      course.destroy if course.present?
     end
 
     if ActiveRecord::Base.connection.table_exists? 'accounts'
@@ -16,7 +16,8 @@ namespace :development do
                         "student#{i}@example.com"
                       end
       (new_emails | student_emails).each do |email|
-        Account.find_by_email(email).destroy
+        account = Account.find_by_email(email)
+        account.destroy if account.present?
       end
     end
 

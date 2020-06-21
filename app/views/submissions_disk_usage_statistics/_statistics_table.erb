@@ -22,7 +22,10 @@
       <% else %>
         <tr>
           <td data-sort='<%= exercise.title %>'><%= link_to exercise.title, exercise %></td>
-          <td colspan=5>No submissions for this exercise yet.</td>
+          <td class='text-right'></td>
+          <td class='text-right'></td>
+          <td class='text-right'></td>
+          <td class='text-right'>No submissions for this exercise yet.</td>
         </tr>
       <% end %>
     <% end %>

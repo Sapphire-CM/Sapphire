@@ -1,0 +1,864 @@
+
+/* CSS 3 Standard Style Sheet */
+/* Keith Andrews */ 
+
+
+/* for old browsers which do not support new HTML5 tags */
+section, article, header, footer, nav, aside, hgroup {
+  display: block;
+}
+
+
+body {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 1em;
+  color: black;
+  background: white;
+}
+
+
+a:link {
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue;
+}
+
+a:visited {
+  cursor: pointer;
+  text-decoration: underline;
+  color: purple;
+}
+
+
+address {
+  margin: 0;
+  font: italic 1em sans-serif;
+}
+
+
+article header {
+  margin: 0 0 3em 0;
+  text-align: center;
+}
+
+article header p {
+  text-align: center;
+}
+
+
+
+big {font-size: 1em}
+
+blockquote {margin: 2em 5%}
+
+body {
+  margin: 1em 5%;
+  background: white;
+  color: black;
+  line-height: 1.3;
+  cursor: default;
+  hyphens: auto;    /* allow words to be broken at hyphenation points */
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+}
+
+/* turn hyphens off for code, tt, and kbd */
+
+code, var, kbd, samp, listing, plaintext, xmp, abbr {
+  hyphens: none;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+}
+
+
+button {cursor: auto}
+
+
+caption {
+  margin: 1em 1em 1em 1em;
+  text-align: left;
+}
+
+caption .label {font-weight: bold}
+
+
+code {
+  font-family: monospace;   /* dont override bold or italic */
+  font-size: 110%;
+}
+
+div {margin: 0em 0% 0em 0%;}
+
+
+
+dl {
+  margin: 0.8em 0 1.2em 0;
+}
+
+dt {
+  margin: 0;
+  padding: 0 1em 0 0;
+}
+
+dd {
+  margin: 0 0 1em 0;
+  padding: 0;
+}
+
+
+h1 {
+  margin: 1.5em 0% 0.5em 0%;
+  font-weight: bold;
+  font-size: 180%;
+}
+
+.title {
+  text-align: center;
+}
+
+h2 {
+  margin: 1.5em 0 0.5em 0;
+  font-weight: bold;
+  font-size: 160%;
+}
+
+h3 {
+  margin: 1.5em 0 0.5em 0;
+  font-weight: bold;
+  font-size: 140%;
+}
+
+h4 {
+  margin: 1.5em 0 0.5em 0;
+  font-weight: bold;
+  font-size: 120%;
+}
+
+h5 {
+  margin: 1.5em 0 0.5em 0;
+  font-weight: bold;
+  font-size: 110%;
+}
+
+h6 {
+  margin: 1.5em 0 0.5em 0;
+  font-weight: bold;
+}
+
+
+hr {margin: 0}
+
+html {
+  margin: 0;
+  background: white;
+}
+
+img {
+  display: block;
+  border: none;
+}
+
+
+input {cursor: auto}
+
+kbd {font: 1em monospace}
+
+li {
+  margin: 0.5em 0 1em 0;
+  padding: 0;
+}
+
+
+ol {
+  margin: 1em 0 2em 1.5em;
+  list-style: decimal;
+  padding: 0;
+}
+
+ul ul ol ol, ul ol ul ol, ol ul ol ol, ol ol ul ol, ol ul ol, ol ol {
+  list-style: lower-alpha;
+}
+
+ol ul ol ol, ol ol ul ol, ul ol ol ol, ol ol ol {
+  list-style: lower-roman;
+}
+
+ol ol ol ol {
+  list-style: decimal;
+}
+
+
+p {
+  margin: 0 0 1em 0;
+  padding: 0;
+  text-align: justify;
+}
+
+p + p {  /* indent first line of each para 2..n  */
+  text-indent: 1em;
+}
+
+p.instructions + p {  /* do not indent first line of each para 2..n  */
+  text-indent: 0;
+}
+
+p.question {  /* do not indent paragraph first line */
+  text-indent: 0;
+}
+
+p.answer {  /* do not indent paragraph first line */
+  text-indent: 0;
+  margin: 0 0 1em 2em;
+}
+
+p.noindent {  /* do not indent paragraph first line */
+  text-indent: 0;
+}
+
+
+
+p.quote {
+  background-color: #315b7f;
+  color: #d2e2e2;
+  padding: 2%;
+  font-style: italic;
+  font-size: 1.5em;
+  border: none;
+  margin: 3em 0% 3em 0%;
+}
+
+
+p.title {text-align: center}
+
+p.question {margin: 2em 0% 1em 0%;}
+p.answer {font-style: italic}
+td.answer {font-style: italic}
+
+
+pre {
+  font-size: 80%;
+  margin: 1em 0 2em 0;
+  font-family: monospace;
+}
+
+samp {font: 1em monospace}
+
+
+section {margin: 0 0 4em 0;}
+section section {margin: 0 0 2em 0;}
+section section section {margin: 0 0 1em 0;}
+
+
+small {font-size: 70%}
+
+sub {font-size: 60%}
+
+sup {font-size: 60%}
+
+
+table {
+  margin: 1em auto 0.5em auto;
+  caption-side: bottom;
+  border-style: solid;
+  border-width: thin;
+  border-collapse: collapse;
+  empty-cells: show;
+  line-break: loose;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/*
+  line-break: loose;             least restrictive line-breaking rules
+  overflow-wrap: break-word;     a word may be broken
+
+  table-layout: fixed;           does not expand accord to cell content
+  width: 100%;                   needed for table-layout: fixed;
+  word-break: break-all;         break words anywhere  radical
+*/
+
+
+td {
+  padding: 0.5ex;
+  border-style: solid;
+  border-width: thin;
+  text-align: left;
+  vertical-align: top;
+}
+
+td p {
+  margin: 0 0 0.5em 0;
+  text-align: left;
+}
+
+td.left {
+  text-align: right;
+}
+
+td.right {
+  text-align: right;
+}
+
+td.center {
+  text-align: center;
+}
+
+
+td.numeric {
+  text-align: right;
+}
+
+
+
+th {
+  font-weight: bold;
+  background-color: #dddddd;
+  padding: 0.5ex;
+  border-style: solid;
+  border-width: thin;
+  text-align: left;
+  vertical-align: top;
+}
+
+th.left {
+  text-align: left;
+}
+
+th.right {
+  text-align: right;
+}
+
+th.center {
+  text-align: center;
+}
+
+
+th.numeric {
+  text-align: right;
+}
+
+th.subheader {
+  font-weight: normal;
+  font-style: italic;
+}
+
+
+
+
+textarea {cursor: text}
+
+
+tr {
+  margin: 0;
+  padding: 0;
+}
+
+
+tt {font: 1em monospace}
+
+
+ul {
+  margin: 1em 0 1em 1em;
+  padding: 0;
+  list-style: disc;
+}
+
+ul ul, ol ol ul ul, ol ul ol ul, ul ol ol ul, ol ul ul, ul ol ul {
+  list-style: circle;
+}
+
+ol ul ul ul, ul ol ul ul, ul ul ol ul, ul ul ul {
+  list-style: square;
+}
+
+ul ul ul ul {
+  list-style: disc;
+}
+
+video {
+  display: block;
+  border: none;
+}
+
+
+
+
+
+
+
+
+
+.important {
+  color: red;
+  font-weight: bold;
+}
+
+
+div#whole {
+  margin: 0 auto 0 auto;
+  max-width: 60em;
+}
+
+
+
+
+figure {
+  margin: 2em auto;
+}
+
+div.inner-figure {
+  margin: 0 auto;
+  width: 80%;
+}
+
+div.inner-figure img {
+  margin: 0 auto;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 20em;
+}
+
+div.inner-figure video {
+  margin: 0 auto;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 20em;
+}
+
+
+
+figure.table table {
+  margin: 0 auto 0 auto;
+}
+
+
+figcaption {
+  margin: 1em auto;
+  text-align: center;
+  width: 80%;
+}
+
+figcaption .label {
+  font-weight: bold;
+}
+
+
+
+
+
+
+
+table.likert {
+  margin: 2em 0 2em 0;
+  border: none;
+  border-collapse: collapse;
+}
+
+table.likert td {
+  border: none;
+  padding: 1ex 0.5ex;
+}
+
+table.likert th {
+  border: none;
+}
+
+table.likert tr:nth-child(odd) {
+  background: #f8f8f8;
+}
+
+table.likert tr:nth-child(even) {
+  background: #ececec;
+}
+
+table.likert td {
+  vertical-align: middle ;
+}
+
+
+.likertnumber {
+  text-align: right;
+}
+
+.likertassert {}
+
+.likertleft {
+  text-align: right;
+  font-size: 70%;
+}
+
+.likertright {
+  text-align: left;
+  font-size: 70%;
+}
+
+.likertscale {
+  text-align: center;
+  white-space: nowrap;  /* disallow line break */
+}
+
+.likertscore {
+  text-align: center;
+}
+
+.likertav {
+  text-align: right;
+}
+
+.likertstd {
+  text-align: right;
+}
+
+.likertresult {
+  font-weight: bold;
+}
+
+
+
+table.feedback-summary tr:nth-child(odd) {
+  background: #f8f8f8;
+}
+
+table.feedback-summary tr:nth-child(even) {
+  background: #ececec;
+}
+
+table.feedback-summary td {
+  vertical-align: middle ;
+}
+
+
+
+
+p.facilitator {
+  font-style: italic;
+  text-indent: 0;
+}
+
+p.faclabel {font-weight: bold}
+
+
+p.testuser {
+  font-style: normal;
+  text-indent: 0;
+}
+
+p.tplabel {font-weight: bold}
+
+
+
+
+table#tasks-completed th {
+  text-align: right;
+}
+
+table#tasks-completed td {
+  text-align: right;
+}
+
+table#tasks-completed tr.total td {
+  font-weight: bold;
+  background: #f6f6f6;
+}
+
+table#tasks-completed tr.percent td {
+  font-weight: bold;
+  background: #f6f6f6;
+}
+
+
+
+
+table.transcript {
+  table-layout: fixed;
+  width: 100%;
+}
+
+
+table.transcript th.time {
+  width: 6em;
+  text-align: right;
+}
+
+table.transcript td.time {
+  text-align: right;
+}
+
+
+th.marker {
+  width: 4em;
+  text-align: center;
+}
+
+td.marker {
+  text-align: center;
+}
+
+/*
+http://tools.medialab.sciences-po.fr/iwanthue/index.php
+Colour palette for markers in Morae:
+  S  (142,175,215)  Start task.
+  E  (172,205,245)  End task.
+  N  (248,180,203)  Negative observation (problem).
+  P  (178,208,129)  Positive observation.
+  Q  (255,242,230)  Quote or comment from user.
+  X  (238,250,184)  Error, unexpected action.
+  F  (230,230,230)  Facilitator prompts user.
+  H  (200,200,200)  Facilitator helps user.
+  T  (217,221,251)  Timeout, exceeded maximum time for task.
+  I  (255,211,149)  Probe during interview (probe mark).
+*/
+
+td.marker-s {
+  background: rgb(142,175,215);
+}
+
+td.marker-e {
+  background: rgb(172,205,245);
+}
+
+td.marker-n {
+  background: rgb(248,180,203);
+}
+
+td.marker-p {
+  background: rgb(178,208,129);
+}
+
+td.marker-q {
+  background: rgb(255,242,230);
+}
+
+td.marker-x {
+  background: rgb(238,250,184);
+}
+
+td.marker-f {
+  background: rgb(230,230,230);
+}
+
+td.marker-h {
+  background: rgb(200,200,200);
+}
+
+td.marker-t {
+  background: rgb(217,221,251);
+}
+
+td.marker-i {
+  background: rgb(255,211,149);
+}
+
+
+
+
+dl.references {
+  margin: 0.8em 0 2em 0;
+}
+
+dl.references dt {
+  display: block;
+  vertical-align: top;
+  margin: 0;
+  padding: 0 1ex 0 0;
+  float:left;
+  clear: both;
+}
+
+dl.references dd {
+  display: block;
+  vertical-align: top;
+  padding: 0 0 0 2em;
+}
+
+dl.references + * {
+  clear: both;
+}
+
+
+
+
+ol.checklist ol {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 1em;
+  text-indent: -1em;
+}
+
+
+ol.checklist ol li:before {
+  font-size: 130%;
+  content: "\25a1 \0020";     /* hollow box and space  */
+}
+
+
+.instructions {
+  color: olive;
+  text-indent: 0
+}
+
+
+
+
+/* use smaller font for wide tables */
+
+
+
+table.test-users {
+  font-size: 80%;
+}
+
+
+table.evaluation-environments {
+  font-size: 80%;
+}
+
+table.test-environment {
+  font-size: 80%;
+}
+
+table.internal-tasklist {
+  font-size: 80%;
+}
+
+
+
+
+
+table.positives-table, table.problems-table {
+  font-size: 80%;
+}
+
+
+table.pos-finding, table.neg-finding {
+  font-size: 80%;
+  margin: 2em 0 1em 0;
+}
+
+
+table.ratings {
+  font-size: 80%;
+}
+
+table.name-codes {
+  font-size: 80%;
+}
+
+
+
+table.ques {
+  margin: 1.5em 0 1em 0;
+  border-style: none;
+}
+
+table.ques th {
+  padding: 1ex 1ex 1ex 0;
+  border-style: none;
+}
+
+table.ques td {
+  padding: 1ex 1ex 1ex 0;
+  border-style: none;
+}
+
+
+
+
+table.core-problem-table {
+  font-size: 80%;
+}
+
+
+.clearfix:after { 
+   content: " ";
+   display: block; 
+   height: 0; 
+   clear: both;
+}
+
+
+
+
+span.liintro {
+  font-weight: bold;
+}
+
+
+
+footer {
+  font-size: 60%;
+  margin: 4em 0 1em 0;
+  text-align: center;
+}
+
+div.validation {
+  margin: 0.5em 0 0 0;
+}
+
+
+
+
+/* override some styles when printing out */
+
+@media print {
+
+body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 11pt;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+
+h1 {
+  font-size: 18pt;
+}
+
+h2 {
+  font-size: 16pt;
+}
+
+h3 {
+  font-size: 14pt;
+}
+
+h4 {
+  font-size: 12pt;
+}
+
+
+abbr:before {
+  content: attr(title)" ("
+}
+
+abbr:after {
+  content: ")"
+}
+
+abbr {
+  border-bottom: none;
+}
+
+
+a:link, a:visited, a:hover, a:active {
+  text-decoration: none;
+  font-weight: normal;
+  color: black;
+  background: white;
+}
+
+
+div.validation {
+  display: none;
+}
+
+}
+
+

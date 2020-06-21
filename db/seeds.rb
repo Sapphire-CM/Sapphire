@@ -1,21 +1,24 @@
 require 'faker'
 
 $stdout.sync = true
+
+passwords = Array.new(11) { Faker::Number.number(digits: 8) }
+
 Faker::Config.random = Random.new(42)
 
 print "Creating Accounts... "
 
 accounts = Account.create! [
-  { email: 'tutor@example.com',    forename: Faker::Name.first_name, surname: Faker::Name.last_name, password: 'testing' },
-  { email: 'lecturer@example.com', forename: Faker::Name.first_name, surname: Faker::Name.last_name, password: 'testing' },
-  { email: 'admin@example.com',    forename: Faker::Name.first_name, surname: Faker::Name.last_name, password: 'testing', admin: true },
+  { email: 'tutor@example.com',    forename: Faker::Name.first_name, surname: Faker::Name.last_name, password: passwords[0] },
+  { email: 'lecturer@example.com', forename: Faker::Name.first_name, surname: Faker::Name.last_name, password: passwords[1] },
+  { email: 'admin@example.com',    forename: Faker::Name.first_name, surname: Faker::Name.last_name, password: passwords[2], admin: true },
 ]
 student_account_attributes = 8.times.map do |i| {
     email: "student#{i}@example.com",
     forename: Faker::Name.first_name,
     surname: Faker::Name.last_name,
     matriculation_number: "123456#{i.to_s.rjust(2, '0')}",
-    password: 'testing'
+    password: passwords[i + 3]
   }
 end
 student_accounts = Account.create!(student_account_attributes)
@@ -124,15 +127,12 @@ terms.each do |term|
   puts "Done!\n"
 end
 
-puts <<-MESSAGE
-You are now good to go! You may start the server with:
-$ rails server
-and:
-$ bundle exec sidekiq
+(accounts | student_accounts).each.with_index do |account, i|
+  puts "Email: #{account.email}, \tpassword: '#{passwords[i]}'"
+end
 
-Open your browser at 'localhost:3000' and login with:
- Email:'{admin,lecturer,tutor,student0}@example.com'
- Password:'testing'
+puts <<-MESSAGE
+This is a list of the accounts with randomized passwords.
 
 Note: The Email prefix will put you into the respective role,
       e.g. use 'student0@example.com' to have a look at how students will see Sapphire.

@@ -16,8 +16,6 @@ class SystemDiskStatistics
       end
       line = line.split(' ')
       line.each.with_index do |token, token_index|
-	print "#{token}\n"
-	print "#{first_line[token_index].downcase}\n"
         @system_statistics[first_line[token_index].downcase] = token.to_i
       end
     end

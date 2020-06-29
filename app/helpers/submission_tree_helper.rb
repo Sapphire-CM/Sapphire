@@ -25,7 +25,7 @@ module SubmissionTreeHelper
     if submitter.present?
       submitter.fullname
     else
-      content_tag(:em, "not yet created")
+      content_tag(:em, "N/A")
     end
   end
 end

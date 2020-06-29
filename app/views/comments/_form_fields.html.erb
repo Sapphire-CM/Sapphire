@@ -3,6 +3,6 @@
 
 <div class='row'>
 	<div class='large-12 large-centered columns text-center'>
-		<%= f.submit class: "button", id: dom_id(@commentable, 'comment_save') %>
+    <%= f.submit class: "button", id: dom_id(@commentable, "#{type}_comment_save") %>
 	</div>
 </div>

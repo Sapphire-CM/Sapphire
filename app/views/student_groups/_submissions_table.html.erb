@@ -5,7 +5,7 @@
       <tr>
         <th>Exercise</th>
         <th>Submitted at</th>
-        <th>Points</th>
+        <th class='text-right'>Points</th>
         <th></th>
       </tr>
     </thead>
@@ -14,7 +14,7 @@
         <tr>
           <td><%= submission.exercise.title %></td>
           <td><%= submission.submitted_at %></td>
-          <td><%= pluralize submission.submission_evaluation.evaluation_result, "point" %></td>
+          <td class='text-right'><%= pluralize submission.submission_evaluation.evaluation_result, "point" %></td>
           <td class='text-right'>
             <%= link_to "show", submission_path(submission), class: "small primary button" %>
             <%= link_to "evaluate", submission_evaluation_path(submission.submission_evaluation), class: "small primary button" %>
@@ -25,7 +25,7 @@
     <tfoot>
       <tr>
         <th colspan='2'>Sum:</th>
-        <th><%= pluralize submissions.map(&:submission_evaluation).sum(&:evaluation_result), "point" %></th>
+        <th class='text-right'><%= pluralize submissions.map(&:submission_evaluation).sum(&:evaluation_result), "point" %></th>
         <th></th>
       </tr>
     </tfoot>

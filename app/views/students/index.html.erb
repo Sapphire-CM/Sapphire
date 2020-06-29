@@ -8,8 +8,8 @@
       <th data-sort-default="true">Student</th>
       <th>Matr. No.</th>
       <th>Tutorial Group</th>
-      <th>Points</th>
-      <th>Grade</th>
+      <th class='text-right'>Points</th>
+      <th class='text-right'>Grade</th>
       <th></th>
     </tr>
   </thead>
@@ -19,8 +19,8 @@
         <td><%= term_registration.account.fullname %></td>
         <td data-sort-as='integer'><%= term_registration.account.matriculation_number %></td>
         <td><%= tutorial_group_title term_registration.tutorial_group %></td>
-        <td data-sort-as='integer'><%= term_registration.points %></td>
-        <td data-sort-as='integer'><%= @grading_scale_service.grade_for(term_registration) %></td>
+        <td data-sort-as='integer' class='text-right'><%= term_registration.points %></td>
+        <td data-sort-as='integer' class='text-right'><%= @grading_scale_service.grade_for(term_registration) %></td>
         <td>
           <%= link_to "Show", term_student_path(current_term, term_registration), class: "small button" %>
         </td>

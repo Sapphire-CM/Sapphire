@@ -78,8 +78,12 @@ class SortableTable
 
       $icon = $("<span>").addClass("sortable-icon").addClass("hidden").text("▴")
 
-      $inserted_link.append("&nbsp;")
-      $inserted_link.append($icon)
+      if $th.hasClass("text-right")
+        $inserted_link.prepend("&nbsp;")
+        $inserted_link.prepend($icon)
+      else
+        $inserted_link.append("&nbsp;")
+        $inserted_link.append($icon)
       links.push($inserted_link)
 
     @links = links

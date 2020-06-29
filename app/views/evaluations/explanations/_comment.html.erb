@@ -1,4 +1,4 @@
 <div id="<%= dom_id(comment) %>" class="comment">
-  <%= render "comment_header", comment: comment, edit_path: edit_evaluation_explanation_path(@commentable, comment), delete_path: evaluation_explanation_path(@commentable, comment) %>
+  <%= render "comment_header", comment: comment, edit_path: edit_evaluation_explanation_path(@commentable, comment), delete_path: evaluation_explanation_path(@commentable, comment), type: 'explanations' %>
   <%= render "comment_content", comment: comment %>
 </div>

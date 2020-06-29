@@ -129,6 +129,10 @@ module LayoutHelper
     "<i class='fi-#{icon.to_s.dasherize}'></i>".html_safe
   end
 
+  def badge(value)
+    "<span class='badge'>#{value}</span>".html_safe
+  end
+
   def dropdown_button(title, links, options = {})
     dropdown_identifier = "dropdown-button-#{SecureRandom.hex}"
 

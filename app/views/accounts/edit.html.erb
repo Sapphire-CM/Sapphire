@@ -24,6 +24,15 @@
       </fieldset>
     </div>
 
+    <% if @account.staff_of_any_term? || @account.admin? %>
+      <div class="row">
+        <fieldset>
+          <%= f.input :comment_markdown_preference,
+            label: "Do you want Sapphire to render your comments with markdown?" %>
+        </fieldset>
+      </div>
+    <% end %>
+
     <div class='row'>
       <div class='large-12 large-centered columns text-center'>
         <%= f.submit class: "button" %>

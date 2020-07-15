@@ -1,24 +1,25 @@
 # create_table :accounts, force: :cascade do |t|
-#   t.string   :email,                  default: "",    null: false
-#   t.string   :encrypted_password,     default: "",    null: false
+#   t.string   :email,                       default: "",    null: false
+#   t.string   :encrypted_password,          default: "",    null: false
 #   t.string   :reset_password_token
 #   t.datetime :reset_password_sent_at
 #   t.datetime :remember_created_at
-#   t.integer  :sign_in_count,          default: 0
+#   t.integer  :sign_in_count,               default: 0
 #   t.datetime :current_sign_in_at
 #   t.datetime :last_sign_in_at
 #   t.string   :current_sign_in_ip
 #   t.string   :last_sign_in_ip
-#   t.datetime :created_at,                             null: false
-#   t.datetime :updated_at,                             null: false
+#   t.datetime :created_at,                                  null: false
+#   t.datetime :updated_at,                                  null: false
 #   t.string   :forename
 #   t.string   :surname
 #   t.string   :matriculation_number
 #   t.text     :options
-#   t.integer  :failed_attempts,        default: 0
+#   t.integer  :failed_attempts,             default: 0
 #   t.string   :unlock_token
 #   t.datetime :locked_at
-#   t.boolean  :admin,                  default: false, null: false
+#   t.boolean  :admin,                       default: false, null: false
+#   t.boolean  :comment_markdown_preference, default: false
 # end
 #
 # add_index :accounts, [:email], name: :index_accounts_on_email, unique: true
@@ -105,6 +106,10 @@ class Account < ActiveRecord::Base
     term_registrations.staff.joins(:term).where(term: { course: course} ).exists?
   end
 
+  def staff_of_any_term?
+    tutor_of_any_term? || lecturer_of_any_term?
+  end
+
   def lecturer_of_term?(term)
     term_registrations.lecturers.where(term_id: term.id).exists?
   end
@@ -119,6 +124,10 @@ class Account < ActiveRecord::Base
 
   def tutor_of_term?(term)
     term_registrations.tutors.where(term_id: term.id).exists?
+  end
+
+  def tutor_of_any_term?
+    term_registrations.tutors.exists?
   end
 
   def student_of_term?(term)

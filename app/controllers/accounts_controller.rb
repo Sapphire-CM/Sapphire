@@ -79,8 +79,13 @@ class AccountsController < ApplicationController
       :password_confirmation
     ]
 
+    params_preferences = [
+      :comment_markdown_preference
+    ]
+
     permitted_params << params_password.dup if params[:account] && params[:account][:password].present?
     permitted_params << params_admin.dup if current_account.admin?
+    permitted_params << params_preferences if current_account.staff_of_any_term? || current_account.admin?
 
     params.require(:account).permit(permitted_params)
   end

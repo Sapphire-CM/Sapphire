@@ -6,7 +6,7 @@ class CommentsController < ApplicationController
 
     @comment = Comment.new(commentable: @commentable)
   end
-  
+
   def new
   end
 
@@ -17,6 +17,7 @@ class CommentsController < ApplicationController
     @comment = Comment.new(commentable: @commentable)
     @comment.assign_attributes(comment_params)
     @comment.account = current_account
+    @comment.markdown = current_account.comment_markdown_preference
     @comment.term = @term
 
     authorize @comment
@@ -59,6 +60,6 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:content, :name)
+    params.require(:comment).permit(:content, :name, :markdown)
   end
 end

@@ -5,7 +5,7 @@ module CommentsHelper
     unless commentable.internal_notes_comments.any?
       title = "Add Internal Note"
     else
-      title = "Interal Notes #{badge(commentable.internal_notes_comments.count)}".html_safe
+      title = "Internal Notes (#{commentable.internal_notes_comments.count})"
       classes << ["internal"]
     end
     link_to title, submission_evaluation_internal_notes_path(commentable), class: classes.join(' '), remote: true, data: {"reveal-id" => "reveal_modal"}, id: dom_id(commentable, 'internal_notes_button')
@@ -17,7 +17,7 @@ module CommentsHelper
     unless commentable.feedback_comments.any?
       title = "Add Feedback"
     else
-      title = "Feedback #{badge(commentable.feedback_comments.count)}".html_safe
+      title = "Feedback (#{commentable.feedback_comments.count})"
       classes << ["annotate"]
     end
 
@@ -31,7 +31,7 @@ module CommentsHelper
       title = "Explanations"
     else
       classes << ["annotate"]
-      title = "Explanations #{badge(evaluation.explanations_comments.count)}".html_safe
+      title = "Explanations (#{evaluation.explanations_comments.count})"
     end
     link_to title, evaluation_explanations_path(evaluation.becomes(Evaluation)), data: {remote: :true, "reveal-id" => "reveal_modal"}, class: classes.join(' '), id: dom_id(evaluation.becomes(Evaluation), 'comment_button')
   end

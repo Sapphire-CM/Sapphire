@@ -375,11 +375,10 @@ ActiveRecord::Schema.define(version: 20200715162106) do
     t.datetime "submitted_at"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
-    t.integer  "submitter_id",                       null: false
+    t.integer  "submitter_id"
     t.integer  "student_group_id"
     t.integer  "exercise_attempt_id"
     t.boolean  "active",              default: true, null: false
-    t.integer  "filesystem_size",     default: 0
   end
 
   add_index "submissions", ["exercise_attempt_id"], name: "index_submissions_on_exercise_attempt_id"

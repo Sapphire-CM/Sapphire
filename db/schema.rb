@@ -350,7 +350,6 @@ ActiveRecord::Schema.define(version: 20200715162106) do
     t.integer  "processed_size",    default: 0
     t.integer  "filesystem_size",   default: 0
     t.integer  "extraction_status"
-    t.integer  "submitter_id"
   end
 
   add_index "submission_assets", ["filename", "path", "submission_id"], name: "index_submission_assets_on_filename_and_path_and_submission_id", unique: true
@@ -376,11 +375,10 @@ ActiveRecord::Schema.define(version: 20200715162106) do
     t.datetime "submitted_at"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
-    t.integer  "submitter_id",                       null: false
+    t.integer  "submitter_id"
     t.integer  "student_group_id"
     t.integer  "exercise_attempt_id"
     t.boolean  "active",              default: true, null: false
-    t.integer  "filesystem_size",     default: 0
   end
 
   add_index "submissions", ["exercise_attempt_id"], name: "index_submissions_on_exercise_attempt_id"

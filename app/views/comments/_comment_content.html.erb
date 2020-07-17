@@ -2,8 +2,6 @@
   <% if comment.markdown %>
     <%= markdown(comment.content) %>
   <% else %>
-    <p>
-      <%= comment.content %>
-    </p>
+    <%= simple_format(comment.content) %>
   <% end %>
 </div>

@@ -6,13 +6,13 @@
         <h1><%= submission_author(submission) %></h1>
       </div>
 
-      <div class='small-4 columns'>
+      <div class='small-3 columns'>
         <div class='evaluation-result'>
           <span id='evaluation_result'><%= submission_evaluation_pluralized_points submission.submission_evaluation %></span>
         </div>
       </div>
 
-      <div class='small-8 large-6 columns text-right buttons'>
+      <div class='small-9 large-7 columns text-right buttons'>
         <%= internal_comment_button(submission.submission_evaluation) %>
         <%= feedback_comment_button(submission.submission_evaluation) %>
         <%= link_to "Edit", edit_submission_path(submission), class: "small button" %>

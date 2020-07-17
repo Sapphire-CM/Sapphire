@@ -1,8 +1,9 @@
 require 'faker'
+require File.join File.dirname(__FILE__), 'seeds_config.rb'
 
 $stdout.sync = true
 
-passwords = Array.new(11) { Faker::Number.number(digits: 8) }
+passwords = Array.new(STUDENT_ACCOUNTS + 3) { Faker::Number.number(digits: 8) }
 
 Faker::Config.random = Random.new(42)
 
@@ -13,11 +14,11 @@ accounts = Account.create! [
   { email: 'lecturer@example.com', forename: Faker::Name.first_name, surname: Faker::Name.last_name, password: passwords[1] },
   { email: 'admin@example.com',    forename: Faker::Name.first_name, surname: Faker::Name.last_name, password: passwords[2], admin: true },
 ]
-student_account_attributes = 8.times.map do |i| {
+student_account_attributes = STUDENT_ACCOUNTS.times.map do |i| {
     email: "student#{i}@example.com",
     forename: Faker::Name.first_name,
     surname: Faker::Name.last_name,
-    matriculation_number: "123456#{i.to_s.rjust(2, '0')}",
+    matriculation_number: "1234#{i.to_s.rjust(4, '0')}",
     password: passwords[i + 3]
   }
 end
@@ -37,14 +38,16 @@ puts "Done!"
 
 terms.each do |term|
   print "Creating Tutorial and Student Groups for #{term.title} ... "
-  tutorial_groups_attributes = [
-    {title: "T1", description: "First tutorial group"},
-    {title: "T2", description: "Second tutorial group"}
-  ].map { |attributes| attributes.merge(term: term) }
+  tutorial_groups_attributes = TUTORIAL_GROUPS.times.map do |i| {
+    title: "T#{i + 1}",
+    description: "#{(i + 1).ordinalize} tutorial group",
+    term: term
+  }
+  end
   tutorial_groups = TutorialGroup.create!(tutorial_groups_attributes)
 
-  student_groups_attributes = 4.times.map do |i| {
-    title: "G#{i}",
+  student_groups_attributes = STUDENT_GROUPS.times.map do |i| {
+    title: "G#{i + 1}",
     term: term
   }
   end

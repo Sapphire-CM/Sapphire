@@ -75,7 +75,7 @@ terms.each do |term|
 
   print "Creating Exercises for #{term.title} ... "
   exercises = Exercise.create! [
-    { title: 'Ex 1: Initial Report',        term: term, group_submission: true },
+    { title: 'Ex 1: Initial Report',        term: term, group_submission: true, submission_viewer_identifier: "Ex4HTMLViewer" },
     { title: 'Ex 2: Practical Assignment',  term: term, group_submission: true },
     { title: 'Ex 3: Second Report',         term: term, group_submission: true },
     { title: 'Ex 4: Final Report',          term: term, group_submission: true },

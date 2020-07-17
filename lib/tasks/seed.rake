@@ -9,16 +9,7 @@ namespace :development do
     end
 
     if ActiveRecord::Base.connection.table_exists? 'accounts'
-      new_emails = ["admin@example.com",
-                    "lecturer@example.com",
-                    "tutor@example.com"]
-      student_emails = 8.times.map do |i|
-                        "student#{i}@example.com"
-                      end
-      (new_emails | student_emails).each do |email|
-        account = Account.find_by_email(email)
-        account.destroy if account.present?
-      end
+      Account.where("email LIKE ?", "%@example.com").destroy_all
     end
 
     Rake::Task["db:migrate"].invoke

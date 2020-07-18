@@ -1,8 +1,8 @@
 <tr class="index_entry term" id="<%= "term_id_#{term.id}" %>">
   <td><%= link_to term.title, term_path(term) %></th>
-  <td><%= term.exercises.count %></td>
-  <td><%= term.tutorial_groups.count %></td>
+  <td class="right-aligned"><%= term.exercises.count %></td>
+  <td class="right-aligned"><%= term.tutorial_groups.count %></td>
   <% if policy(term.course).student_count? %>
-    <td><%= term.students.count %></td>
+    <td class="right-aligned"><%= term.students.count %></td>
   <% end %>
 </tr>

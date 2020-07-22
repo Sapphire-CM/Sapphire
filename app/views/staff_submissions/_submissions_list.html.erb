@@ -11,7 +11,7 @@
         <% end %>
         <th>Submitted at</th>
         <th>Evaluated at</th>
-        <th>Result</th>
+        <th class="right-aligned">Points</th>
         <th></th>
       </tr>
     </thead>
@@ -43,9 +43,9 @@
             <em>not evaluated</em>
           <% end %>
         <% end %>
-        <%= content_tag :td, data: {sort: submission.submission_evaluation.evaluation_result, sort_as: "integer"}  do %>
+        <%= content_tag :td, data: {sort: submission.submission_evaluation.evaluation_result, sort_as: "integer"}, class:"right-aligned" do %>
           <% if submission.submission_evaluation.evaluated_at.present? && submission.submission_evaluation.present? %>
-            <%= pluralize submission.submission_evaluation.evaluation_result, "point" %>
+            <%= submission.submission_evaluation.evaluation_result %>
 
             <%= content_tag(:span, foundation_icon(:alert), title: "Needs review") if submission.submission_evaluation.needs_review? %>
           <% else %>

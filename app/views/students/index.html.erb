@@ -5,7 +5,8 @@
 <table class='small-12 sortable'>
   <thead>
     <tr>
-      <th data-sort-default="true">Student</th>
+      <th>Forename</th>
+      <th data-sort-default="true">Surname</th>
       <th>Matr. No.</th>
       <th>Tutorial Group</th>
       <th class='text-right'>Points</th>
@@ -16,7 +17,8 @@
   <tbody>
     <% @term_registrations.each do |term_registration| %>
       <tr>
-        <td><%= term_registration.account.fullname %></td>
+        <td><%= term_registration.account.forename %></td>
+        <td><%= term_registration.account.surname %></td>
         <td data-sort-as='integer'><%= term_registration.account.matriculation_number %></td>
         <td><%= tutorial_group_title term_registration.tutorial_group %></td>
         <td data-sort-as='integer' class='text-right'><%= term_registration.points %></td>

@@ -6,8 +6,8 @@
   <thead>
     <tr>
       <th>Exercise</th>
-      <th>Possible Points</th>
-      <th>Your Points</th>
+      <th class="right-aligned">Possible Points</th>
+      <th class="right-aligned">Your Points</th>
       <th></th>
     </tr>
   </thead>
@@ -18,10 +18,10 @@
           <strong><%= submission_review.exercise_title %></strong>
           <br> <%= submission_attempt_title(submission_review.submission) %>
         </td>
-        <td><%= submission_review.achievable_points %></td>
+        <td class="right-aligned"><%= submission_review.achievable_points %></td>
 
         <% if submission_review.published? %>
-          <td><%= submission_review.points || "na" %></td>
+          <td class="right-aligned"><%= submission_review.points || "na" %></td>
           <td><%= link_to "Details", term_result_path(current_term, submission_review.exercise) %></td>
         <% else %>
           <td colspan='2'>
@@ -35,7 +35,7 @@
     <tr>
       <td></td>
       <td></td>
-      <td><%= @term_review.published_points %></td>
+      <td class="right-aligned"><%= @term_review.published_points %></td>
       <td></td>
     </tr>
   </tfoot>

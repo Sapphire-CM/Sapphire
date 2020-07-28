@@ -7,10 +7,8 @@
     <li>
       <%= link_to "Accounts", accounts_path %>
     </li>
-    <li>
-      <%= link_to "System", system_disk_statistics_path%>
-    </li>
-  <% elsif current_account.lecturer_of_any_term? %>
+  <% end %>
+  <% if current_account.lecturer_of_any_term? || current_account.admin? %>
     <li>
       <%= link_to "System", system_disk_statistics_path%>
     </li>

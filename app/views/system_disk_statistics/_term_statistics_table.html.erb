@@ -7,16 +7,9 @@
   </thead>
   <tbody>
     <% terms.each do |term| %>
-      <% sum = 0 %>
-      <% term.exercises.each do |exercise| %>
-        <% if exercise.submissions.any? %>
-          <% stats = Exercise::SubmissionsDiskUsageStatistics.new(exercise).submissions_disk_usage %>
-          <% sum += stats.sum %>
-        <% end %>
-      <% end %>
       <tr>
         <td data-sort='<%= term.title %>'><%= link_to term.title, term %></td>
-        <td class='text-right'><%= filesize(sum) %></td>
+        <td class='text-right'><%= filesize(term.filesystem_size) %></td>
       </tr>
     <% end %>
   </tbody>

@@ -135,6 +135,14 @@ class Exercise < ActiveRecord::Base
     rating_groups.sum(:points)
   end
 
+  def submissions_disk_usage_statistics
+    SubmissionsDiskUsageStatistics.new(self).submissions_disk_usage
+  end
+
+  def filesystem_size
+    submissions_disk_usage_statistics.sum
+  end
+
   private
   def ensure_result_publications
     term.tutorial_groups.each do |tutorial_group|

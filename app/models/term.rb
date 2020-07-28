@@ -95,4 +95,8 @@ class Term < ActiveRecord::Base
 
     checks.all?
   end
+
+  def filesystem_size
+    exercises.to_a.sum(&:filesystem_size)
+  end
 end

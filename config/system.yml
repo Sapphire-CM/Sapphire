@@ -1,1 +1,8 @@
-db_location: "."
+development:
+  db_location: "."
+
+test:
+  db_location: "."
+
+production:
+  db_location: "."

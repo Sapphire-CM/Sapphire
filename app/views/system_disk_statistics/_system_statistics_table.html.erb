@@ -11,7 +11,7 @@
       <% stats = SystemDiskStatistics.new %>
       <td class='text-right'><%= filesize(stats.disk_available) %></th>
       <td class='text-right'><%= filesize(stats.disk_used) %></th>
-      <td class='text-right'><%= stats.disk_used_percentage %> %</th>
+      <td class='text-right'><%= number_to_percentage(stats.disk_used_percentage) %></th>
     </tr>
   </tbody>
 </table>

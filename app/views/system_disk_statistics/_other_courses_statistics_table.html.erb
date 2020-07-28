@@ -1,17 +1,8 @@
 <table class='small-12'>
   <thead>
-    <% sum = 0 %>
-    <% terms.each do |term| %>
-      <% term.exercises.each do |exercise| %>
-        <% if exercise.submissions.any? %>
-          <% stats = Exercise::SubmissionsDiskUsageStatistics.new(exercise).submissions_disk_usage %>
-          <% sum += stats.sum %>
-        <% end %>
-      <% end %>
-    <% end %>
     <tr>
       <th>Total on File System</th>
-      <th class='text-right'><%= filesize(sum) %></th>
+      <th class='text-right'><%= filesize(terms.sum(&:filesystem_size)) %></th>
     </tr>
   </thead>
 </table>

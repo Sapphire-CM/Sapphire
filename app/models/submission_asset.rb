@@ -52,7 +52,7 @@ class SubmissionAsset < ActiveRecord::Base
 
   delegate :exercise, to: :submission
 
-  after_create :add_to_submission_filsize
+  after_create :add_to_submission_filesize
   after_destroy :remove_from_submission_filesize
 
   EXCLUDED_FILTER = [
@@ -188,12 +188,14 @@ class SubmissionAsset < ActiveRecord::Base
     Mime::ARCHIVES.include? self.content_type
   end
 
-  def add_to_submission_filsize
-    submission.increment!(:filesystem_size, filesystem_size) 
+  def add_to_submission_filesize
+    submission.increment(:filesystem_size, filesystem_size)
+    submission.save!
   end
 
   def remove_from_submission_filesize
-    submission.decrement!(:filesystem_size, filesystem_size)
+    submission.decrement(:filesystem_size, filesystem_size)
+    submission.save!
   end
 
   private

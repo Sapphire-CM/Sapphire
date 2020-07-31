@@ -533,7 +533,7 @@ RSpec.describe SubmissionAsset do
       subject.submission = submission
       old_submission_size = submission.filesystem_size
       subject.filesystem_size = filesystem_size
-      subject.add_to_submission_filsize
+      subject.add_to_submission_filesize
 
       expect(submission.filesystem_size).to eq(old_submission_size + filesystem_size)
     end

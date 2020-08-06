@@ -9,6 +9,8 @@ class AddSubmitterIdToSubmissionAsset < ActiveRecord::Migration
         submission.submission_assets.update_all(submitter_id: submission.exercise_registrations.first)
       end
     end
+
+    change_column_null :submission_assets, :submitter_id, false
   end
 
   def down

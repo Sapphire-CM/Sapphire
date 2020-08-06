@@ -133,14 +133,3 @@ terms.each do |term|
   end
   puts "Done!\n"
 end
-
-(accounts | student_accounts).each.with_index do |account, i|
-  puts "Email: #{account.email}, \tpassword: '#{passwords[i]}'"
-end
-
-puts <<-MESSAGE
-This is a list of the accounts with randomized passwords.
-
-Note: The Email prefix will put you into the respective role,
-      e.g. use 'student0@example.com' to have a look at how students will see Sapphire.
-MESSAGE

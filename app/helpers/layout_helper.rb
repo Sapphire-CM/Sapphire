@@ -138,7 +138,7 @@ module LayoutHelper
     render 'dropdown_button', title: title, dropdown_identifier: dropdown_identifier, links: links, dropdown_classes: dropdown_classes.join(' ')
   end
 
-  def markdown(text)
+  def format_markdown(text)
     return sanitize Kramdown::Document.new(text).to_html
   end
 end

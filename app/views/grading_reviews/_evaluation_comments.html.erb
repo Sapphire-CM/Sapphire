@@ -4,7 +4,7 @@
     <% commentable.feedback_comments.each do |comment| %>
       <%= comment_heading(comment) %>
       <div class="feedback foldtr panel radius">
-        <p><%= markdown(comment.content) %></p>
+        <p><%= format_markdown(comment.content) %></p>
       </div>
     <% end %>
   </div>

@@ -2,7 +2,10 @@
   <ul class='breadcrumbs tree-path'>
     <% directory.parents.each.with_index do |entry, index| %>
       <%= content_tag :li, class: "#{"current" if index + 1 == directory.parents.length}" do %>
-        <%= link_to index == 0 ? foundation_icon(:home).html_safe  + " " + entry.name : entry.name, tree_submission_path(submission, path: entry.path_without_root) %>
+        <%= link_to tree_submission_path(submission, path: entry.path_without_root) do %>
+          <%= foundation_icon(:home) if index == 0 %>
+          <%= entry.name %>
+        <% end %>
       <% end %>
     <% end %>
   </ul>

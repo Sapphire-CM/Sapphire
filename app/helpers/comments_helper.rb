@@ -2,7 +2,7 @@ module CommentsHelper
   def internal_comment_button(commentable)
     title = ""
     classes =  ["small", "button"]
-    unless commentable.internal_notes_comments.any?
+    if commentable.internal_notes_comments.empty?
       title = "Add Internal Note"
     else
       title = "Internal Notes (#{commentable.internal_notes_comments.count})"
@@ -14,7 +14,7 @@ module CommentsHelper
   def feedback_comment_button(commentable)
     title = ""
     classes =  ["small", "button"]
-    unless commentable.feedback_comments.any?
+    if commentable.feedback_comments.empty?
       title = "Add Feedback"
     else
       title = "Feedback (#{commentable.feedback_comments.count})"
@@ -26,7 +26,7 @@ module CommentsHelper
 
   def evaluation_comment_button(evaluation)
     classes =  ["tiny", "button", "expand"]
-    unless evaluation.explanations_comments.any?
+    if evaluation.explanations_comments.empty?
       classes << ["secondary"]
       title = "Explanations"
     else

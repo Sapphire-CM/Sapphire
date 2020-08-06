@@ -14,8 +14,8 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @comment = Comment.new(commentable: @commentable)
-    @comment.assign_attributes(comment_params)
+    @comment = Comment.new(comment_params)
+    @comment.commentable = @commentable
     @comment.account = current_account
     @comment.markdown = current_account.comment_markdown_preference
     @comment.term = @term
@@ -35,9 +35,7 @@ class CommentsController < ApplicationController
   end
 
   def update
-    @comment.assign_attributes(comment_params)
-
-    if @comment.save
+    if @comment.update(comment_params)
       respond_to do |format|
         format.html { redirect_to :show, notice: "Success" }
         format.js

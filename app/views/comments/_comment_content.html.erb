@@ -1,6 +1,6 @@
 <div class="<%= comment.name %> comment-content foldtr panel radius">
   <% if comment.markdown %>
-    <%= markdown(comment.content) %>
+    <%= format_markdown(comment.content) %>
   <% else %>
     <%= simple_format(comment.content) %>
   <% end %>

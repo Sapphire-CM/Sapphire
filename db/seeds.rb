@@ -1,15 +1,15 @@
 require 'faker'
+require 'devise'
 require File.join File.dirname(__FILE__), 'seeds_config.rb'
 
 $stdout.sync = true
+Faker::Config.random = Random.new(42)
 
 if ENV["RANDOMIZED_PASSWORDS"] == "true"
-  passwords = Array.new(STUDENT_ACCOUNTS + 3) { Faker::Number.number(digits: 8) }
+  passwords = Array.new(STUDENT_ACCOUNTS + 3) { Devise.friendly_token(length = 10) }
 else
   passwords = Array.new(STUDENT_ACCOUNTS + 3) { "testing" }
 end
-
-Faker::Config.random = Random.new(42)
 
 print "Creating Accounts... "
 

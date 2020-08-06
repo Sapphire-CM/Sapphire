@@ -1,21 +1,30 @@
 class EvaluationPolicy < TermBasedPolicy
   def update?
-    staff_permissions?(record.evaluation_group.submission_evaluation.submission.term)
+    modify?
   end
 
   def index?
-    show?
+    modify? || student_permission?
   end
 
   def show?
-    update? || student?(record.evaluation_group.submission_evaluation.submission.term)
+    modify? || student_permission?
   end
 
   def create?
-    update?
+    modify?
   end
 
   def destroy?
-    update?
+    modify?
+  end
+
+  private
+  def modify?
+    staff_permissions?(record.evaluation_group.submission_evaluation.submission.term)
+  end
+
+  def student_permission?
+    student?(record.evaluation_group.submission_evaluation.submission.term)
   end
 end

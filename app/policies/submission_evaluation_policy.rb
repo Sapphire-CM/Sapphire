@@ -1,25 +1,26 @@
 class SubmissionEvaluationPolicy < TermBasedPolicy
   def index?
-    update?
+    modify?
   end
 
   def show?
-    update?
+    modify?
   end
 
   def create?
-    update?
+    modify?
   end
 
   def update?
-    update?
+    modify?
   end
 
   def destroy?
-    update?
+    modify?
   end
 
-  def update?
+  private
+  def modify?
     staff_permissions?(record.submission.term)
   end
 end

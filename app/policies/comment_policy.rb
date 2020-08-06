@@ -1,21 +1,26 @@
 class CommentPolicy < TermBasedPolicy
   def show?
-    create?
+    modify?
   end
 
   def edit?
-    create?
+    modify?
   end
 
   def update?
-    create?
+    modify?
   end
 
   def destroy?
-    create?
+    modify?
   end
 
   def create?
+    modify?
+  end
+
+  private
+  def modify?
     staff_permissions?
   end
 end

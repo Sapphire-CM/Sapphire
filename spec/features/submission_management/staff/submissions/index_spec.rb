@@ -181,7 +181,7 @@ RSpec.feature 'Managing submissions as a staff member' do
             expect(page).to have_content(student_account.fullname)
             expect(page).to have_content(student_account.matriculation_number)
             expect(page).to have_link(student_group.title)
-            expect(page).to have_content("30 points")
+            expect(page).to have_content("30")
 
             expect(page).to have_content(submission_date.strftime("%Y-%m-%d %H:%M"))
             expect(page).to have_content(evaluation_date.strftime("%Y-%m-%d %H:%M"))

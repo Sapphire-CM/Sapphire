@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative 'concerns/commentable_spec'
 
 RSpec.describe SubmissionEvaluation do
   describe 'db columns' do
@@ -82,5 +83,8 @@ RSpec.describe SubmissionEvaluation do
         end.to change(subject, :needs_review?).to(false)
       end
     end
+
+    it_behaves_like 'a commentable', 'feedback'
+    it_behaves_like 'a commentable', 'internal_notes'
   end
 end

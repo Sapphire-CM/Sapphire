@@ -49,5 +49,7 @@ RSpec.describe Evaluation do
         expect(subject.percent).to eq(1)
       end
     end
+
+    it_behaves_like 'a commentable', 'explanations'
   end
 end

@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-RSpec.shared_examples 'a comment' do
+RSpec.shared_examples 'a comment controller', type: :controller do
   render_views
   include_context 'active_admin_session_context'
 
   let(:commentable_id) { (commentable.class.name.underscore + '_id') }
 
   describe 'POST create' do
-    describe 'with content' do 
+    describe 'with content' do
       it 'creates a new comment' do
-        expect do 
+        expect do
           xhr :post, :create, comment_with_content
         end.to change(Comment, :count).by(1)
 
@@ -17,9 +17,9 @@ RSpec.shared_examples 'a comment' do
       end
     end
 
-    describe 'without content' do 
+    describe 'without content' do
       it 'does not create a new comment' do
-        expect do 
+        expect do
           xhr :post, :create, comment_without_content
         end.to_not change(Comment, :count)
 
@@ -71,7 +71,7 @@ RSpec.shared_examples 'a comment' do
     it 'destroy the requested comment' do
       comment.reload
 
-      expect do 
+      expect do
         xhr :delete, :destroy, id: comment.id, commentable_id.to_sym => commentable.id
       end.to change(Comment, :count).by(-1)
 

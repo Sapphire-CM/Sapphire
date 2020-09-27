@@ -1,18 +1,13 @@
 namespace :development do
   desc 'Seeds a development database. This resets the "Test Course"'
-  task :seed => :environment do
+  task reseed: [:cleanup_seed_data, "db:seed"]
+
+  task cleanup_seed_data: :environment do
     raise "This should not be run in production!" if Rails.env.production?
 
-    if ActiveRecord::Base.connection.table_exists? 'courses'
-      course = Course.find_by_title('Test Course')
-      course.destroy if course.present?
-    end
+    course = Course.find_by(title: 'Test Course')
+    course.destroy if course.present?
 
-    if ActiveRecord::Base.connection.table_exists? 'accounts'
-      Account.where("email LIKE ?", "%@example.com").destroy_all
-    end
-
-    Rake::Task["db:migrate"].invoke
-    Rake::Task["db:seed"].invoke
+    Account.where("email LIKE ?", "%@example.com").destroy_all
   end
 end

@@ -39,20 +39,6 @@ ActiveRecord::Schema.define(version: 20200620205805) do
   add_index "accounts", ["email"], name: "index_accounts_on_email", unique: true
   add_index "accounts", ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
 
-  create_table "comments", force: :cascade do |t|
-    t.integer  "commentable_id",   null: false
-    t.string   "commentable_type", null: false
-    t.integer  "account_id",       null: false
-    t.integer  "term_id",          null: false
-    t.string   "name",             null: false
-    t.text     "content",          null: false
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-  end
-
-  add_index "comments", ["account_id"], name: "index_comments_on_account_id"
-  add_index "comments", ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
-
   create_table "courses", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
@@ -348,7 +334,7 @@ ActiveRecord::Schema.define(version: 20200620205805) do
     t.integer  "processed_size",    default: 0
     t.integer  "filesystem_size",   default: 0
     t.integer  "extraction_status"
-    t.integer  "submitter_id"
+    t.integer  "submitter_id",                   null: false
   end
 
   add_index "submission_assets", ["filename", "path", "submission_id"], name: "index_submission_assets_on_filename_and_path_and_submission_id", unique: true
@@ -378,7 +364,6 @@ ActiveRecord::Schema.define(version: 20200620205805) do
     t.integer  "student_group_id"
     t.integer  "exercise_attempt_id"
     t.boolean  "active",              default: true, null: false
-    t.integer  "filesystem_size",     default: 0
   end
 
   add_index "submissions", ["exercise_attempt_id"], name: "index_submissions_on_exercise_attempt_id"

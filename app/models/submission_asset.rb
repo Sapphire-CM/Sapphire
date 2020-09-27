@@ -12,7 +12,7 @@
 #   t.integer  :processed_size,    default: 0
 #   t.integer  :filesystem_size,   default: 0
 #   t.integer  :extraction_status
-#   t.integer  :submitter_id
+#   t.integer  :submitter_id,                   null: false
 # end
 #
 # add_index :submission_assets, [:filename, :path, :submission_id], name: :index_submission_assets_on_filename_and_path_and_submission_id, unique: true

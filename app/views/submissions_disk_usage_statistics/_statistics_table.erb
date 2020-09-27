@@ -9,9 +9,8 @@
     </tr>
   </thead>
   <tbody>
-    <% exercises.each do |exercise| %>
+    <% exercises_statistics.each do |exercise, stats| %>
       <% if exercise.submissions.any? %>
-      <% stats = Exercise::SubmissionsDiskUsageStatistics.new(exercise).submissions_disk_usage %>
         <tr>
           <td data-sort='<%= exercise.title %>'><%= link_to exercise.title, exercise %></td>
           <td class='text-right'><%= filesize(stats.sum) %></td>

@@ -11,9 +11,9 @@ class SubmissionsDiskUsageStatisticsController < ApplicationController
     end
 
    def set_stats
-     @exercises_statistics = Hash.new
+     @submission_disk_usages = Hash.new
      @term.exercises.each do |exercise|
-       @exercises_statistics[exercise] = Exercise::SubmissionsDiskUsageStatistics.new(exercise).submissions_disk_usage
+       @submission_disk_usages[exercise] = Exercise::SubmissionsDiskUsageStatistics.new(exercise).submissions_disk_usage
      end
    end
 end

@@ -9,7 +9,7 @@
     </tr>
   </thead>
   <tbody>
-    <% exercises_statistics.each do |exercise, stats| %>
+    <% submission_disk_usages.each do |exercise, stats| %>
       <% if exercise.submissions.any? %>
         <tr>
           <td data-sort='<%= exercise.title %>'><%= link_to exercise.title, exercise %></td>

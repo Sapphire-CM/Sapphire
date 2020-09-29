@@ -2,8 +2,8 @@
 
 <%= render 'terms/sidebar', term: @term %>
 
-<% if @exercises_statistics.any? %>
-  <%= render 'statistics_table', exercises_statistics: @exercises_statistics %>
+<% if @submission_disk_usages.any? %>
+  <%= render 'statistics_table', submission_disk_usages: @submission_disk_usages %>
 <% else %>
   <p>No exercises present.</p>
 <%end %>

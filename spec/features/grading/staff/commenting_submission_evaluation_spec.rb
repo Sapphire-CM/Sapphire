@@ -82,13 +82,51 @@ RSpec.describe 'Commenting' do
         within '.comments_list' do
           click_link href: edit_submission_evaluation_feedback_path(submission_evaluation, comment)
 
-          fill_in 'Feedback', with: 'this is an edited comment'
+          fill_in 'comment_content', with: 'this is an edited comment'
 
           click_button 'Save'
         end
       end
 
       expect(page).to have_content('this is an edited comment')
+    end
+
+    scenario 'to invalid comment', js: true do
+      visit (submission_evaluation_path(submission_evaluation))
+
+      within '.evaluation-top-bar' do
+        click_on text: 'Feedback (1)'
+      end
+
+      within_modal do
+        within '.comments_list' do
+          click_link href: edit_submission_evaluation_feedback_path(submission_evaluation, comment)
+
+          fill_in 'comment_content', with: ''
+
+          click_button 'Save'
+        end
+      end
+
+      expect(page).to have_content("Feedback can't be blank")
+    end
+  end
+
+  describe 'managing' do
+    let!(:comment) { FactoryGirl.create :feedback_comment, commentable: submission_evaluation }
+    scenario 'deleting a comment', js: true do
+      visit (submission_evaluation_path(submission_evaluation))
+
+      within '.evaluation-top-bar' do
+        click_on text: 'Feedback (1)'
+      end
+      within_modal do
+        within '.comments_list' do
+          click_link id: 'feedback_comment_delete_submission_evaluation_1'
+        end
+      end
+
+      expect(page).to have_content('No Feedback Yet!')
     end
   end
 end

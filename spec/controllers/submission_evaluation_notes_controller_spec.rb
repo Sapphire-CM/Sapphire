@@ -21,7 +21,7 @@ RSpec.describe SubmissionEvaluations::InternalNotesController, type: :controller
     end
   end
 
-  it_behaves_like 'a comment' do
+  it_behaves_like 'a comment controller' do
 
     let(:comment_with_content) do
       {

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.shared_examples 'a comment controller', type: :controller do
+RSpec.shared_examples 'a comment controller' do
   render_views
   include_context 'active_admin_session_context'
 

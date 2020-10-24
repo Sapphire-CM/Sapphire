@@ -21,8 +21,8 @@ RSpec.describe SubmissionEvaluations::FeedbackController, type: :controller do
     end
   end
 
-  it_behaves_like 'a comment' do
-    let(:comment_with_content) do 
+  it_behaves_like 'a comment controller' do
+    let(:comment_with_content) do
       {
         comment: {
           content: "Some commment content",
@@ -33,7 +33,7 @@ RSpec.describe SubmissionEvaluations::FeedbackController, type: :controller do
       }
     end
 
-    let(:comment_without_content) do 
+    let(:comment_without_content) do
       {
         comment: {
           content: nil

@@ -1,5 +1,4 @@
 require 'rails_helper'
-require_relative 'concerns/commentable_spec'
 
 RSpec.describe SubmissionEvaluation do
   describe 'db columns' do

@@ -17,17 +17,16 @@ jobs:
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-    defaults:
-      env:
-        RAILS_ENV: test
+    env:
+      RAILS_ENV: test
 
-        POSTGRES_HOST: "localhost"
-        POSTGRES_PORT: 5432
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: postgres
-        POSTGRES_DB: postgres
+      POSTGRES_HOST: "localhost"
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
 
-        DB: "${{ matrix.db }}"
+      DB: "${{ matrix.db }}"
 
     steps:
       - name: "Setup Ruby"

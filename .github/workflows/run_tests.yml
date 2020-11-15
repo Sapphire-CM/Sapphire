@@ -8,6 +8,7 @@ jobs:
       matrix:
         ruby: ["2.6.6", "2.7.2"]
         db: ["postgres", "sqlite"]
+        experimental: [false]
         include:
           - ruby: "2.7.2"
             experimental: true

@@ -1,0 +1,60 @@
+name: "Run Test Suite"
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: ["2.6.6", "2.7.2"]
+        db: ["postgres", "sqlite"]
+      services:
+        postgres:
+          image: postgres
+          env:
+            POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: "Setup Ruby"
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: "Install Bundler"
+        run: "gem install bundler"
+
+      - name: "Setup bundler cache"
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - uses: actions/checkout@v2
+
+      - name: Bundle install
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+
+      - name: Setup Database and run tests
+        env:
+          RAILS_ENV: test
+
+          POSTGRES_HOST: "postgres"
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DATABASE: postgres
+
+          DB: "${{ matrix.database }}"
+        run: |
+          cp config/database.yml.github config/database.yml
+          bundle exec rake db:create
+          bundle exec rails db:migrate
+
+          bundle exec rspec spec/models

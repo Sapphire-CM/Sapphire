@@ -9,7 +9,7 @@ jobs:
         db: ["postgres", "sqlite"]
     services:
       postgres:
-        image: postgres:8.4
+        image: postgres:10.15
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres

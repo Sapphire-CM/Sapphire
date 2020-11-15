@@ -11,6 +11,11 @@ jobs:
         experimental: [false]
         include:
           - ruby: "2.7.2"
+            db: "postgres"
+            experimental: true
+
+          - ruby: "2.7.2"
+            db: "sqlite"
             experimental: true
     services:
       postgres:

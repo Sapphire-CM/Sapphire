@@ -4,9 +4,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      # matrix:
+      #   ruby: ["2.6.6", "2.7.2"]
+      #   db: ["postgres", "sqlite"]
       matrix:
-        ruby: ["2.6.6", "2.7.2"]
-        db: ["postgres", "sqlite"]
+        ruby: ["2.6.6"]
+        db: ["postgres"]
     services:
       postgres:
         image: postgres:10.15

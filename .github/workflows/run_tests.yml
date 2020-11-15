@@ -17,6 +17,17 @@ jobs:
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    defaults:
+      env:
+        RAILS_ENV: test
+
+        POSTGRES_HOST: "localhost"
+        POSTGRES_PORT: 5432
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: postgres
+
+        DB: "${{ matrix.db }}"
 
     steps:
       - name: "Setup Ruby"
@@ -36,26 +47,16 @@ jobs:
             ${{ runner.os }}-gems-${{ matrix.ruby }}
 
       - uses: actions/checkout@v2
-
       - name: Bundle install
         run: |
           bundle config path vendor/bundle
           bundle install --jobs 4 --retry 3
 
-      - name: Setup Database and run tests
-        env:
-          RAILS_ENV: test
-
-          POSTGRES_HOST: "localhost"
-          POSTGRES_PORT: 5432
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-
-          DB: "${{ matrix.db }}"
+      - name: Setup Database
         run: |
           cp config/database.yml.github config/database.yml
           bundle exec rake db:create
           bundle exec rake db:migrate
 
-          bundle exec rspec
+      - name: Run specs
+        run: bundle exec rspec

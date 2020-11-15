@@ -54,7 +54,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
 
-          DB: "${{ matrix.database }}"
+          DB: "${{ matrix.db }}"
         run: |
           env
           cp config/database.yml.github config/database.yml

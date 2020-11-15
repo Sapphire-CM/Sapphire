@@ -7,15 +7,15 @@ jobs:
       matrix:
         ruby: ["2.6.6", "2.7.2"]
         db: ["postgres", "sqlite"]
-      services:
-        postgres:
-          image: postgres
-          env:
-            POSTGRES_PASSWORD: postgres
-          options: >-
-            --health-cmd pg_isready
-            --health-interval 10s
-            --health-timeout 5s
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
             --health-retries 5
     steps:
       - name: "Setup Ruby"

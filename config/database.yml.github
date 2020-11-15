@@ -2,7 +2,7 @@ sqlite: &sqlite
   adapter: sqlite3
   database: db/test.sqlite
 
-postgresql: &postgresql
+postgres: &postgres
   adapter: postgresql
   host: <%= ENV["POSTGRES_HOST"] %>
   database: <%= ENV["POSTGRES_DB"] %>

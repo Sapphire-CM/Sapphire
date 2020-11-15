@@ -3,20 +3,10 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
         ruby: ["2.6.6"]
         db: ["postgres", "sqlite"]
-        experimental: [false]
-        include:
-          - ruby: "2.7.2"
-            db: "postgres"
-            experimental: true
-
-          - ruby: "2.7.2"
-            db: "sqlite"
-            experimental: true
     services:
       postgres:
         image: postgres:10.15

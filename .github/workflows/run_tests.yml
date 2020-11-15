@@ -56,6 +56,7 @@ jobs:
 
           DB: "${{ matrix.database }}"
         run: |
+          env
           cp config/database.yml.github config/database.yml
           bundle exec rake db:create
           bundle exec rails db:migrate

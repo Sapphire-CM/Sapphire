@@ -363,6 +363,7 @@ ActiveRecord::Schema.define(version: 20200412142124) do
     t.integer  "student_group_id"
     t.integer  "exercise_attempt_id"
     t.boolean  "active",              default: true, null: false
+    t.integer  "filesystem_size"
   end
 
   add_index "submissions", ["exercise_attempt_id"], name: "index_submissions_on_exercise_attempt_id"

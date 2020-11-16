@@ -1,0 +1,9 @@
+<% title course_term_title, 'Submission Statistics' %> 
+
+<%= render 'terms/sidebar', term: @term %>
+
+<% if @term.exercises.any? %>
+  <%= render 'statistics_table', exercises: @term.exercises %>
+<% else %>
+  <p>No exercises present.</p>
+<%end %>

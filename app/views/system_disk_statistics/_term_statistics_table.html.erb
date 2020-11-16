@@ -1,0 +1,16 @@
+<table class='small-12 sortable'>
+  <thead>
+    <tr>
+      <th>Term</th>
+      <th class='text-right'>Total on File System</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% terms.each do |term| %>
+      <tr>
+        <td data-sort='<%= term.title %>'><%= link_to term.title, term %></td>
+        <td class='text-right'><%= filesize(term.filesystem_size) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

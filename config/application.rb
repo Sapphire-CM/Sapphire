@@ -42,6 +42,8 @@ module Sapphire
 
     config.assets.precompile += %w( jquery.js )
 
+    config.system = config_for(:system)
+
     config.generators do |g|
       g.test_framework :rspec, fixture: true
       g.fixture_replacement :factory_girl, dir: 'spec/factories'

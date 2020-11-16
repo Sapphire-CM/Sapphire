@@ -1,0 +1,8 @@
+<table class='small-12'>
+  <thead>
+    <tr>
+      <th>Total on File System</th>
+      <th class='text-right'><%= filesize(terms.sum(&:filesystem_size)) %></th>
+    </tr>
+  </thead>
+</table>

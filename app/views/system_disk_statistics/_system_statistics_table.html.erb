@@ -1,0 +1,18 @@
+<table class='small-12'>
+  <thead>
+    <tr>
+      <th class='text-right'>Disk Available</th>
+      <th class='text-right'>Disk Used</th>
+      <th class='text-right'>Disk Used Percentage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <% stats = SystemDiskStatistics.new %>
+      <td class='text-right'><%= filesize(stats.disk_available) %></th>
+      <td class='text-right'><%= filesize(stats.disk_used) %></th>
+      <td class='text-right'><%= number_to_percentage(stats.disk_used_percentage) %></th>
+    </tr>
+  </tbody>
+</table>
+

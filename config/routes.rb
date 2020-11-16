@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
   resources :courses, except: [:show]
 
+  resources :system_disk_statistics, only: :index
+
   resources :terms, except: [:index] do
     member do
       get :points_overview
@@ -57,7 +59,8 @@ Rails.application.routes.draw do
     resources :results, only: [:index, :show], controller: :student_results
     resources :events, only: [:index]
 
-    resource :welcome_notifications, only: :create
+    resource :welcome_notifications, only: :create 
+    resource :submission_statistics, controller: "submissions_disk_usage_statistics", only: :show
   end
 
   resources :tutorial_groups

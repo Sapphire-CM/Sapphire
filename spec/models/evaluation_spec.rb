@@ -50,6 +50,6 @@ RSpec.describe Evaluation do
       end
     end
 
-    it_behaves_like 'a commentable', 'explanations'
+    it_behaves_like 'a commentable', 'explanations', 'FixedEvaluation'
   end
 end

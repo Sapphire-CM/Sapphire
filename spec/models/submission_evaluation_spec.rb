@@ -83,7 +83,7 @@ RSpec.describe SubmissionEvaluation do
       end
     end
 
-    it_behaves_like 'a commentable', 'feedback'
-    it_behaves_like 'a commentable', 'internal_notes'
+    it_behaves_like 'a commentable', 'feedback', 'SubmissionEvaluation'
+    it_behaves_like 'a commentable', 'internal_notes', 'SubmissionEvaluation'
   end
 end

@@ -1,6 +1,6 @@
 class AddSubmitterIdToSubmissionAsset < ActiveRecord::Migration
   def up
-    add_reference :submission_assets, :submitter, foreign_key: { to_table: :accounts }, null: true
+    add_reference :submission_assets, :submitter, index: true, foreign_key: { to_table: :accounts }, null: true
 
     Submission.find_each do |submission|
       if submission.submitter_id.present?

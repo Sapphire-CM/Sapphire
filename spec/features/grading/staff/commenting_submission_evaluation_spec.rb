@@ -82,7 +82,7 @@ RSpec.describe 'Commenting' do
         within '.comments_list' do
           click_link href: edit_submission_evaluation_feedback_path(submission_evaluation, comment)
 
-          fill_in 'comment_content', with: 'this is an edited comment'
+          fill_in 'Feedback', with: 'this is an edited comment'
 
           click_button 'Save'
         end

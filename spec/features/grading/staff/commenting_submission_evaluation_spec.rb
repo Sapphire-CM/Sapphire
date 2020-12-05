@@ -80,7 +80,7 @@ RSpec.describe 'Commenting' do
 
       within_modal do
         within '.comments_list' do
-          click_link href: edit_submission_evaluation_feedback_path(submission_evaluation, comment)
+          click_link id: 'feedback_comment_edit_submission_evaluation_1'
 
           fill_in 'Feedback', with: 'this is an edited comment'
 
@@ -100,13 +100,14 @@ RSpec.describe 'Commenting' do
 
       within_modal do
         within '.comments_list' do
-          click_link href: edit_submission_evaluation_feedback_path(submission_evaluation, comment)
+          click_link id: 'feedback_comment_edit_submission_evaluation_1'
 
-          fill_in 'comment_content', with: ''
+          fill_in 'Feedback', with: ''
 
           click_button 'Save'
         end
       end
+
 
       expect(page).to have_content("Feedback can't be blank")
     end

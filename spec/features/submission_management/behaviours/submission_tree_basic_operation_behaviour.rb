@@ -20,9 +20,7 @@ RSpec.shared_examples "basic submission tree operations" do
       visit tree_submission_path(submission)
 
       expect(page).to have_content("Submitter")
-      submission.submission_assets(true).each do |submission_asset|
-        expect(page).to have_content(submission_asset.submitter.fullname)
-      end
+      expect(page).to have_content(top_level_asset.submitter.fullname)
     end
 
     scenario 'can open a submission asset' do

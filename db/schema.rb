@@ -11,43 +11,45 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200620205805) do
+ActiveRecord::Schema.define(version: 20200715162106) do
 
   create_table "accounts", force: :cascade do |t|
-    t.string   "email",                  default: "",    null: false
-    t.string   "encrypted_password",     default: "",    null: false
+    t.string   "email",                       default: "",    null: false
+    t.string   "encrypted_password",          default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0
+    t.integer  "sign_in_count",               default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
     t.string   "forename"
     t.string   "surname"
     t.string   "matriculation_number"
     t.text     "options"
-    t.integer  "failed_attempts",        default: 0
+    t.integer  "failed_attempts",             default: 0
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.boolean  "admin",                  default: false, null: false
+    t.boolean  "admin",                       default: false, null: false
+    t.boolean  "comment_markdown_preference", default: false
   end
 
   add_index "accounts", ["email"], name: "index_accounts_on_email", unique: true
   add_index "accounts", ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
 
   create_table "comments", force: :cascade do |t|
-    t.integer  "commentable_id",   null: false
-    t.string   "commentable_type", null: false
-    t.integer  "account_id",       null: false
-    t.integer  "term_id",          null: false
-    t.string   "name",             null: false
-    t.text     "content",          null: false
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.integer  "commentable_id",                   null: false
+    t.string   "commentable_type",                 null: false
+    t.integer  "account_id",                       null: false
+    t.integer  "term_id",                          null: false
+    t.string   "name",                             null: false
+    t.boolean  "markdown",         default: false, null: false
+    t.text     "content",                          null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
   add_index "comments", ["account_id"], name: "index_comments_on_account_id"
@@ -265,19 +267,6 @@ ActiveRecord::Schema.define(version: 20200620205805) do
 
   add_index "imports", ["term_id"], name: "index_imports_on_term_id"
 
-  create_table "notes", force: :cascade do |t|
-    t.integer  "notable_id",   null: false
-    t.string   "notable_type", null: false
-    t.integer  "account_id",   null: false
-    t.integer  "term_id",      null: false
-    t.text     "content"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
-
-  add_index "notes", ["account_id"], name: "index_notes_on_account_id"
-  add_index "notes", ["notable_type", "notable_id"], name: "index_notes_on_notable_type_and_notable_id"
-
   create_table "rating_groups", force: :cascade do |t|
     t.integer  "exercise_id"
     t.string   "title"
@@ -365,7 +354,6 @@ ActiveRecord::Schema.define(version: 20200620205805) do
 
   add_index "submission_assets", ["filename", "path", "submission_id"], name: "index_submission_assets_on_filename_and_path_and_submission_id", unique: true
   add_index "submission_assets", ["submission_id"], name: "index_submission_assets_on_submission_id"
-  add_index "submission_assets", ["submitter_id"], name: "index_submission_assets_on_submitter_id"
 
   create_table "submission_evaluations", force: :cascade do |t|
     t.integer  "submission_id"

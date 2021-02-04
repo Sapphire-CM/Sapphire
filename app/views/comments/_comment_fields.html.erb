@@ -1,5 +1,5 @@
 <div class='row'>
   <div class='large-12'>
-    <%= f.input :content, input_html: { class: "#{type}", rows: 5 }, label: humanized_comment_type(type), placeholder: "Your #{humanized_comment_type(type)}" %>
+    <%= f.input :content, input_html: { class: "#{type} #{state}", rows: 5 }, label: humanized_comment_type(type), placeholder: "Your #{humanized_comment_type(type)}" %>
   </div>
 </div>

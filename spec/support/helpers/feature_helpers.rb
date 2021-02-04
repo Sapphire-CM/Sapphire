@@ -67,16 +67,6 @@ module FeatureHelpers
     Capybara.ignore_hidden_elements = previous_value
   end
 
-  def wait_for_ajax
-    return unless block_given?
-    previous_value = Capybara.default_max_wait_time
-    Capybara.default_max_wait_time = 5
-
-    yield
-
-    Capybara.default_max_wait_time = previous_value
-  end
-
   def drop_in_dropzone(files, css_selector)
     js_script = 'fileList = Array(); '
     files.count.times do |index|

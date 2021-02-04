@@ -78,15 +78,14 @@ RSpec.describe 'Commenting' do
         click_on text: 'Feedback (1)'
       end
 
-      wait_for_ajax do
-        within_modal do
-          within '.comments_list' do
-            click_link id: 'feedback_comment_edit_submission_evaluation_1'
+      within_modal do
+        within '.comments_list' do
+          click_link id: 'feedback_comment_edit_submission_evaluation_1'
 
-            fill_in 'Feedback', with: 'this is an edited comment'
+          expect(page).to have_selector(".feedback.edit", wait: 10)
+          fill_in 'Feedback', with: 'this is an edited comment'
 
-            click_button 'Save'
-          end
+          click_button 'Save'
         end
       end
 
@@ -100,15 +99,14 @@ RSpec.describe 'Commenting' do
         click_on text: 'Feedback (1)'
       end
 
-      wait_for_ajax do
-        within_modal do
-          within '.comments_list' do
-            click_link id: 'feedback_comment_edit_submission_evaluation_1'
+      within_modal do
+        within '.comments_list' do
+          click_link id: 'feedback_comment_edit_submission_evaluation_1'
 
-            fill_in 'Feedback', with: ''
+          expect(page).to have_selector(".feedback.edit", wait: 10)
+          fill_in 'Feedback', with: ''
 
-            click_button 'Save'
-          end
+          click_button 'Save'
         end
       end
 
@@ -126,15 +124,13 @@ RSpec.describe 'Commenting' do
         click_on text: 'Feedback (1)'
       end
 
-      wait_for_ajax do
-        within_modal do
-          within '.comments_list' do
-            click_link id: 'feedback_comment_delete_submission_evaluation_1'
-          end
+      within_modal do
+        within '.comments_list' do
+          click_link id: 'feedback_comment_delete_submission_evaluation_1'
         end
-
-        expect(page).to have_content('No Feedback Yet!')
       end
+
+      expect(page).to have_content('No Feedback Yet!', wait: 10)
     end
   end
 end

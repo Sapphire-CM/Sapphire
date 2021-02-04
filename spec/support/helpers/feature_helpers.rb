@@ -70,7 +70,7 @@ module FeatureHelpers
   def wait_for_ajax
     return unless block_given?
     previous_value = Capybara.default_max_wait_time
-    Capybara.default_max_wait_time = 1
+    Capybara.default_max_wait_time = 5
 
     yield
 

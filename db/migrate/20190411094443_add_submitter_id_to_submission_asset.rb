@@ -7,7 +7,7 @@ class AddSubmitterIdToSubmissionAsset < ActiveRecord::Migration
       if submission.submitter_id.present?
         submission.submission_assets.update_all(submitter_id: submission.submitter_id)
       elsif submission.exercise_registrations.first.present?
-        submission.submission_assets.update_all(submitter_id: submission.exercise_registrations.first)
+        submission.submission_assets.update_all(submitter_id: submission.exercise_registrations.first.term_registration.account)
       end
     end
 

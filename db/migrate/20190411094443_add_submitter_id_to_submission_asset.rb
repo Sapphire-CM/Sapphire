@@ -11,11 +11,7 @@ class AddSubmitterIdToSubmissionAsset < ActiveRecord::Migration
       end
     end
 
-    SubmissionAsset.where(submitter_id:nil).each do |sa|
-      puts sa.id
-    end
-
-    change_column_null :submission_assets, :submitter_id, false
+    #change_column_null :submission_assets, :submitter_id, false
   end
 
   def down

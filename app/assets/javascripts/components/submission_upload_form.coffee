@@ -116,7 +116,10 @@ class SubmissionUploadFormController
       init: ->
         @on 'addedfile', (file) ->
           $preview_container.show()
-          $(file.previewElement).find("*[data-dz-name]").text(file.fullPath)
+
+          if file.fullPath and file.fullPath != ""
+            $(file.previewElement).find("*[data-dz-name]").text(file.fullPath)
+
           $(file.previewElement).find(".status").hide()
           $(file.previewElement).find(".status-progress").show()
           that.needs_reload = true

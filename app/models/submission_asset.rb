@@ -195,7 +195,7 @@ class SubmissionAsset < ActiveRecord::Base
 
   def remove_from_submission_filesize
     submission.decrement(:filesystem_size, filesystem_size)
-    submission.save!
+    submission.save!(validate: false)
   end
 
   private

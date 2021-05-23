@@ -56,6 +56,7 @@ class Term < ActiveRecord::Base
 
   def update_points!
     self.points = exercises.pluck(:points).compact.sum || 0
+    grading_scales.order("max_points DESC").limit(1).first.update_max_points(self.points)
     self.save!
   end
 

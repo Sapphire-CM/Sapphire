@@ -1,0 +1,22 @@
+<div id="grading_scale">
+  <table class='small-12 medium-9 medium-centered grid-center' id='grading_scale_table'>
+    <thead>
+      <th class='text-center'>Grade</th>
+      <th colspan=3 class='text-right'>Points</th>
+    </thead>
+    <tbody>
+      <% @term.grading_scales.grades.ordered.each do |grading_scale| %>
+        <tr>
+          <th class='minimum-width text-center'><%= grading_scale.grade %></th>
+          <td class='text-right'>
+            <%= grading_scale.min_points %>
+          </td>
+          <td class='minimum-width'>-</td>
+          <td class='minimum-width text-right'>
+            <%= grading_scale.max_points %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '=4.2.10'
+gem 'rails', '=4.2.11.3'
 
 gem 'pg'                          # PostgreSQL database connector
 
@@ -83,7 +83,7 @@ group :development do
   gem 'spring-commands-sidekiq'   # adding sidekiq command to spring
 
   gem 'active_record-annotate'    # adds the corresponding schema.rb snippet to each model file
-  gem 'thin'                # small development webserver
+  # gem 'thin'                # small development webserver
   gem 'awesome_print'       # nicley formatted object inspection
   gem 'better_errors'       # pretty error pages
   gem 'binding_of_caller'   # interactive shell within error pages

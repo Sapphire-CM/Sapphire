@@ -163,8 +163,6 @@ GEM
     faker (2.2.1)
       i18n (>= 0.8)
     ffi (1.12.2)
-    flash_render (1.2.0)
-      rails (>= 2.3.8)
     foundation-icons-sass-rails (3.0.0)
       railties (>= 3.1.1)
       sass-rails (>= 3.1.1)
@@ -320,8 +318,6 @@ GEM
       ruby-graphviz (~> 1.2)
     rails-html-sanitizer (1.3.0)
       loofah (~> 2.3)
-    rails_autolink (1.1.6)
-      rails (> 3.1)
     railties (4.2.11.3)
       actionpack (= 4.2.11.3)
       activesupport (= 4.2.11.3)
@@ -482,7 +478,6 @@ DEPENDENCIES
   exception_notification
   factory_girl_rails
   faker
-  flash_render
   foundation-icons-sass-rails (~> 3.0)
   jbuilder
   jist
@@ -513,7 +508,6 @@ DEPENDENCIES
   quiet_assets
   rails (= 4.2.11.3)
   rails-erd
-  rails_autolink
   ranked-model
   redis-namespace
   remotipart (~> 1.2)

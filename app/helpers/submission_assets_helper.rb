@@ -50,11 +50,11 @@ module SubmissionAssetsHelper
   end
 
   def inline_newsgroup_post_asset(submission_asset)
-    render 'submission_assets/code_panel', code: auto_link(inline_code(submission_asset.utf8_contents, :email), sanitize: false, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
+    render 'submission_assets/code_panel', code: inline_code(submission_asset.utf8_contents, :email), raw_url: submission_asset_path(submission_asset)
   end
 
   def inline_email_asset(submission_asset)
-    render 'submission_assets/code_panel', code: auto_link(inline_code(submission_asset.utf8_contents, :email), sanitize: false, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
+    render 'submission_assets/code_panel', code: inline_code(submission_asset.utf8_contents, :email), raw_url: submission_asset_path(submission_asset)
   end
 
   def inline_css_asset(submission_asset)
@@ -62,7 +62,7 @@ module SubmissionAssetsHelper
   end
 
   def inline_html_asset(submission_asset)
-    render 'submission_assets/code_panel', code: auto_link(inline_code(submission_asset.utf8_contents, :html), sanitize: false, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
+    render 'submission_assets/code_panel', code: inline_code(submission_asset.utf8_contents, :html), raw_url: submission_asset_path(submission_asset)
   end
 
   def inline_image_asset(submission_asset)
@@ -70,7 +70,7 @@ module SubmissionAssetsHelper
   end
 
   def inline_plain_text_asset(submission_asset)
-    render 'submission_assets/code_panel', code: auto_link(simple_format(h(submission_asset.utf8_contents)), sanitize: false, html: { target: '_blank' }).html_safe, raw_url: submission_asset_path(submission_asset)
+    render 'submission_assets/code_panel', code: simple_format(h(submission_asset.utf8_contents)), raw_url: submission_asset_path(submission_asset)
   end
 
   def inline_code(code, lang)

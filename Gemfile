@@ -37,7 +37,7 @@ gem 'nntp-client', github: 'matthee/Sapphire-NNTP'  # fetching newsgroup posts
 gem 'mail'                        # fetching, delivering and parsing of emails
 
 gem 'coderay'                     # doing code-highlighting for submission_assets
-gem 'rails_autolink'              # autolinking submitted newsgroup-posts and emails
+
 gem 'css_parser'                  # for parsing css files
 gem 'mechanize'                   # grabing inm websites
 gem 'nokogiri'                    # for parsing HTML-Files

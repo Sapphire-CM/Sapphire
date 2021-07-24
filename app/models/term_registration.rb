@@ -60,14 +60,6 @@ class TermRegistration < ActiveRecord::Base
 
   delegate :title, to: :tutorial_group, prefix: true, allow_nil: true
 
-  sifter :positive_grades do
-    positive_grade == true
-  end
-
-  sifter :negative_grades do
-    positive_grade == false
-  end
-
   Roles::ALL.each do |role|
     scope role.pluralize.to_sym, lambda { send(role) }
   end

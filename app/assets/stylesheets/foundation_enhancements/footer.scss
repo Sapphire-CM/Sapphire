@@ -2,10 +2,10 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-@import "compass/layout/sticky-footer";
+//@import "compass/layout/sticky-footer";
 @import "../config";
 
-@include sticky-footer(40px, "#wrapper", "#content-push", "footer");
+//@include sticky-footer(40px, "#wrapper", "#content-push", "footer");
 
 footer {
   border-top: 1px solid $hr-border-color;

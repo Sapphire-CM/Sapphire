@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'rails', '=4.2.11.3'
+gem 'rails', '~>5.0.7'
 
-gem 'pg', "~>0.15"                          # PostgreSQL database connector
+gem 'pg'               # PostgreSQL database connector
 
 gem 'jquery-rails'                # Use jquery as the JavaScript library
 gem 'jquery-ui-rails'
@@ -12,21 +12,19 @@ gem 'd3-rails'
 
 gem 'simple_form', '~> 3.0'       # forms
 gem 'devise',      '~> 4.0'       # user authentication
-gem 'squeel',      '~> 1.2'       # easy DSL
+# gem 'squeel',      '~> 1.2'       # easy DSL
 gem 'carrierwave'                 # fileuploads
 gem 'kaminari'                    # pagination
 gem 'pundit'                      # authorization based on controller actions and policies
-gem 'turbolinks'                  # Turbolinks makes following links in your web application faster
+gem 'turbolinks', "~>2.5.3"                  # Turbolinks makes following links in your web application faster
 gem 'jquery-turbolinks'           # Turbolinks jquery plugin for DOM ready events
 gem 'ranked-model'                # manages sort-position of ratings
 gem 'email_validator'             # provides ActiveRecord validation for email addresses
 gem 'charlock_holmes'             # encoding detection for submitted submission assets
 
-gem 'compass-rails',   '~> 2.0', '>= 2.0.2' # Compass intregration into assets-pipeline
-gem 'sass-rails',      '~> 5.0'   # Use SCSS for stylesheets
-gem 'coffee-rails',    '~> 4.0'   # Use CoffeeScript for .js.coffee assets and views
-gem 'uglifier',        '>= 1.3'   # Use Uglifier as compressor for JavaScript assets
-gem 'zurb-foundation', '~> 4.3.0'
+gem 'sass-rails'                  # Use SCSS for stylesheets
+gem 'coffee-rails', "~> 4.0"      # Use CoffeeScript for .js.coffee assets and views
+gem 'uglifier'                    # Use Uglifier as compressor for JavaScript assets
 gem 'foundation-icons-sass-rails', '~> 3.0'
 
 gem 'remotipart', '~> 1.2'        # fileuploads via ajax
@@ -87,7 +85,6 @@ group :development do
   gem 'better_errors'       # pretty error pages
   gem 'binding_of_caller'   # interactive shell within error pages
   gem 'rails-erd'           # Entity-Relation Diagrams of models
-  gem 'quiet_assets'        # suppresses logging of assets files
   gem 'letter_opener_web'   # local email sender to HTML pages
   gem 'traceroute'          # detects unused routes and actions
   gem 'consistency_fail'    # detects missing unique indexes

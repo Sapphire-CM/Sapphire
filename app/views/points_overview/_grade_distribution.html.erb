@@ -31,9 +31,11 @@
         <td class='text-right minimum-width'><%= grading_scale_service.graded_count %></td>
         <td></td>
       </tr>
-      <tr><td colspan='6'><hr></td></tr>
+      <tr><td colspan='6'><hr /></td></tr>
       <tr>
-        <td class='minimum-width text-center'>0</td>
+        <td class='minimum-width text-center'>
+          <em>ungraded</em>
+        </td>
         <td colspan='3'>&nbsp;</td>
         <td class='minimum-width text-right'>
           <%= grading_scale_service.ungraded_count %>

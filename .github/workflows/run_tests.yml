@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby: ["2.6.6"]
+        ruby: ["2.6.8"]
         db: ["postgres", "sqlite"]
     services:
       postgres:

@@ -13,7 +13,8 @@ class RatingsController < ApplicationController
     unless params[:rating] && params[:rating][:type] && Object.const_defined?(params[:rating][:type].classify)
       @rating = @rating_group.ratings.build
       authorize @rating
-      render :new, alert: 'Invalid type!'
+      flash.now[:alert] = 'Invalid type!'
+      render :new
       return
     end
 
@@ -26,7 +27,8 @@ class RatingsController < ApplicationController
       event_service.rating_created!(@rating)
       render partial: 'ratings/insert_index_entry', locals: { rating: @rating }
     else
-      render :new, alert: 'Error saving!'
+      flash.now[:alert] = 'Error saving!'
+      render :new
     end
   end
 

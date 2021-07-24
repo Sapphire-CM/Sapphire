@@ -30,9 +30,11 @@ class ImportsController < ApplicationController
     import_service = ImportService.new(@import)
 
     if import_service.encoding_error?
-      render :new, alert: 'Error with file encoding! UTF8-like is required.'
+      flash.now[:alert] = 'Error with file encoding! UTF8-like is required.'
+      render :new
     elsif import_service.parsing_error?
-      render :new, alert: 'Error during parsing! Corrupt data detected.'
+      flash.now[:alert] = 'Error during parsing! Corrupt data detected.'
+      render :new
     else
       # everything worked
       import_service.smart_guess_new_import_mapping

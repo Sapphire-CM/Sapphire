@@ -201,7 +201,7 @@ RSpec.describe TermRegistration do
       end
 
       it 'ordered by matriculation number' do
-        expect(described_class.students.ordered_by_matriculation_number).to eq(described_class.students.joins(:account).order { account.matriculation_number.asc })
+        expect(described_class.students.ordered_by_matriculation_number).to eq(described_class.students.joins(:account).merge(Account.order(:matriculation_number)))
       end
     end
 

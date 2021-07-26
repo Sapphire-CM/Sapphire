@@ -50,14 +50,17 @@ class Account < ActiveRecord::Base
   validate :validate_no_email_address_with_same_email_exists
 
   scope :search, lambda {|query|
-    rel = all
-
-    query.split(/\s+/).each do |part|
-      part = "%#{part}%"
-      rel = rel.where { (forename =~ part) | (surname =~ part) | (matriculation_number =~ part) | (email =~ part) }
+    scopes = query.split(/\s+/).map do |part|
+      matcher = "%#{part}%"
+      [
+        arel_table[:forename].matches(matcher),
+        arel_table[:surname].matches(matcher),
+        arel_table[:matriculation_number].matches(matcher),
+        arel_table[:email].matches(matcher)
+      ].reduce(&:or)
     end
 
-    rel
+    where(scopes.reduce(&:and))
   }
 
   %i(students tutors lecturers).each do |group|
@@ -103,7 +106,7 @@ class Account < ActiveRecord::Base
   end
 
   def staff_of_course?(course)
-    term_registrations.staff.joins(:term).where(term: { course: course} ).exists?
+    term_registrations.staff.joins(:term).where(terms: { course: course} ).exists?
   end
 
   def staff_of_any_term?
@@ -115,7 +118,7 @@ class Account < ActiveRecord::Base
   end
 
   def lecturer_of_any_term_in_course?(course)
-    term_registrations.lecturers.joins(:term).where(term: { course: course }).exists?
+    term_registrations.lecturers.joins(:term).where(terms: { course: course }).exists?
   end
 
   def lecturer_of_any_term?

@@ -43,9 +43,9 @@ class SubmissionAsset < ActiveRecord::Base
 
   scope :stylesheets, lambda { where(content_type: Mime::STYLESHEET) }
   scope :htmls, lambda { where(content_type: Mime::HTML) }
-  scope :images, lambda { where { content_type.in(Mime::IMAGES) } }
-  scope :pdfs, lambda { where { content_type.in(Mime::PDF) } }
-  scope :archives, lambda { where { content_type.in(Mime::ARCHIVES) } }
+  scope :images, lambda { where(content_type: Mime::IMAGES) }
+  scope :pdfs, lambda {  where(content_type: Mime::PDF) }
+  scope :archives, lambda {  where(content_type: Mime::ARCHIVES) }
 
   scope :for_exercise, lambda { |exercise| joins(:submission).where(submissions: { exercise_id: exercise.id }) }
   scope :for_term, lambda { |term| joins(submission: :exercise).where(submission: { exercise: { term: term } }) }

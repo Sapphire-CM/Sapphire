@@ -51,9 +51,10 @@ class TermRegistration < ActiveRecord::Base
   scope :staff, lambda { where(role: Roles::STAFF.map { |r| roles[r] }) }
   scope :with_accounts, lambda { includes(:account) }
   scope :for_account, lambda { |account| where(account_id: account.id) }
-  scope :for_email_addresses, lambda { |emails| joins(:account).joins { account.email_addresses.outer }.where { accounts.email.in(my { emails }) | email_addresses.email.in(my { emails }) } }
-  scope :ordered_by_matriculation_number, lambda { joins(:account).order { account.matriculation_number.asc } }
-  scope :ordered_by_name, lambda { joins(:account).order { account.forename.asc }.order { account.surname.asc } }
+  scope :for_email_addresses, lambda { |emails| joins(:account).where(account: Account.where(email: emails).or(Account.joins(:email_addresses).where(email_addresses: { email: emails }))) }
+
+  scope :ordered_by_matriculation_number, lambda { joins(:account).merge(Account.order(:matriculation_number)) }
+  scope :ordered_by_name, lambda { joins(:account).merge(Account.order(:forename, :surname)) }
 
   scope :welcomed, lambda { where.not(welcomed_at: nil) }
   scope :waiting_for_welcome, lambda { where(welcomed_at: nil) }

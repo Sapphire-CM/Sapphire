@@ -62,6 +62,8 @@ GEM
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
     bond (0.5.1)
+    bootsnap (1.7.5)
+      msgpack (~> 1.0)
     builder (3.2.4)
     byebug (11.1.3)
     capistrano (3.4.1)
@@ -119,7 +121,7 @@ GEM
     crass (1.0.6)
     css_parser (1.9.0)
       addressable
-    d3-rails (7.0.0)
+    d3-rails (4.13.0)
       railties (>= 3.1)
     database_cleaner (2.0.1)
       database_cleaner-active_record (~> 2.0.0)
@@ -233,6 +235,7 @@ GEM
     mini_mime (1.1.0)
     mini_portile2 (2.5.3)
     minitest (5.14.4)
+    msgpack (1.4.2)
     multi_logger (0.2.0)
       railties
     mysql2 (0.5.3)
@@ -278,6 +281,8 @@ GEM
       binding_of_caller (~> 1.0)
       pry (~> 0.13)
     public_suffix (4.0.6)
+    puma (5.3.2)
+      nio4r (~> 2.0)
     pundit (2.1.0)
       activesupport (>= 3.0.0)
     racc (1.5.2)
@@ -449,6 +454,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bond
+  bootsnap (>= 1.4.4)
   capistrano (~> 3.4.0)
   capistrano-passenger
   capistrano-rails
@@ -463,7 +469,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0)
   consistency_fail
   css_parser
-  d3-rails
+  d3-rails (~> 4.13.0)
   database_cleaner
   devise (~> 4.0)
   dropzonejs-rails
@@ -498,6 +504,7 @@ DEPENDENCIES
   pry-rails
   pry-rescue
   pry-stack_explorer
+  puma
   pundit
   rails (~> 5.0.7)
   rails-erd

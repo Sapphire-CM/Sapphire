@@ -12,7 +12,7 @@ class StudentGroupsController < ApplicationController
 
   def show
     @student_term_registrations = @student_group.term_registrations.includes(:account)
-    @submissions = @student_group.submissions.joins(:exercise).includes(:exercise, :submission_evaluation).order { exercise.row_order }
+    @submissions = @student_group.submissions.ordered_by_exercises.includes(:exercise, :submission_evaluation)
   end
 
   def new

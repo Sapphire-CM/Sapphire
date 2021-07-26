@@ -17,14 +17,13 @@ RSpec.describe Exports::GradingExport do
 
   describe '#perform_export!' do
     it 'generates a export file' do
-      expect do
-        export.reload
-        export.perform_export!
-        export.reload
-      end.to change(export.file, :to_s)
-
+      expect(export.reload.file).to be_blank
+      
+      export.perform_export!
+      
+      expect(export.reload.file).to be_present
       expect(export.status.to_sym).to eq(:finished)
-
+      
       Zip::File.open(export.file.to_s) do |zip_file|
         expect(zip_file.count).to eq(tutorial_groups.count + 1)
       end

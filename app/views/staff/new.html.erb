@@ -15,6 +15,8 @@
     <% end %>
   </div>
   <%= f.input :account_id, as: :hidden %>
+  <%= f.full_error :account_id, class: "" %>
+
   <%= f.input :role, collection: staff_role_options, include_blank: false %>
   <%= f.input :tutorial_group_id, collection: term_registrations_tutorial_group_options(@term_registration.term), include_blank: false, wrapper_html: {class: ('hide' if @term_registration.lecturer?)} %>
 

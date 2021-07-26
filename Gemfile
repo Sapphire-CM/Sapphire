@@ -8,7 +8,7 @@ gem 'jquery-rails'                # Use jquery as the JavaScript library
 gem 'jquery-ui-rails'
 gem 'jquery-mousewheel-rails'     # jquery MouseWheel support
 
-gem 'd3-rails'
+gem 'd3-rails', "~> 4.13.0"
 
 gem 'simple_form', '~> 3.0'       # forms
 gem 'devise',      '~> 4.0'       # user authentication
@@ -55,6 +55,9 @@ gem 'redis-namespace'             # namespaces for sidekiq queues
 
 gem 'autoprefixer-rails'          # automatically add vendor prefixes to CSS
 
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', '>= 1.4.4', require: false
+
 group :development, :test do
   gem 'pry'
   gem 'pry-rails'
@@ -80,7 +83,7 @@ group :development do
   gem 'spring-commands-sidekiq'   # adding sidekiq command to spring
 
   gem 'active_record-annotate'    # adds the corresponding schema.rb snippet to each model file
-  # gem 'thin'                # small development webserver
+  gem 'puma'                # small development webserver
   gem 'awesome_print'       # nicley formatted object inspection
   gem 'better_errors'       # pretty error pages
   gem 'binding_of_caller'   # interactive shell within error pages

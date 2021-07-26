@@ -88,15 +88,21 @@ module Sapphire
       end
 
       def stylesheet_asset(identifier)
-        submission.submission_assets.stylesheets.where { lower(file) == my { identifier.downcase } }.first
+        assets_for_identifier(identifier).stylesheets.first
       end
 
       def image_asset(identifier)
-        submission.submission_assets.images.where { lower(file) == my { identifier.downcase } }.first
+        assets_for_identifier(identifier).images.first
       end
 
       def generic_asset(identifier)
-        submission.submission_assets.where { lower(file) == my { identifier.downcase } }.first
+        assets_for_identifier(identifier).first
+      end
+
+      def assets_for_identifier(identifier)
+        table = SubmissionAsset.arel_table
+
+        submission.submission_assets.where(Arel::Nodes::NamedFunction.new("lower", [table[:file]]).eq(identifier.downcase))
       end
 
       def displayable?

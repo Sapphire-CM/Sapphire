@@ -9,7 +9,7 @@ RSpec.describe SubmissionAssetsController do
 
   describe 'GET show' do
     it 'assigns the requested submission_asset as @submission_asset' do
-      expect(controller).to receive(:send_file).with(submission_asset.file.to_s, filename: nil, type: submission_asset.content_type, disposition: :inline) {
+      expect(controller).to receive(:send_file).with(submission_asset.file.to_s, filename: submission_asset.filename, type: submission_asset.content_type, disposition: :inline) {
         # to prevent a 'missing template' error
         controller.head :ok
       }

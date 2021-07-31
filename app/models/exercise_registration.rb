@@ -35,7 +35,7 @@ class ExerciseRegistration < ActiveRecord::Base
   after_update :update_points_of_changed_term_registrations, if: lambda { |exercise_registration| exercise_registration.term_registration_id_changed? }
   after_destroy :update_term_registration_points
 
-  scope :for_student, lambda { |student| joins(:term_registration).where(term_registration: { account_id: student.id }).merge(TermRegistration.students) }
+  scope :for_student, lambda { |student| joins(:term_registration).merge(TermRegistration.students.where(account: student)) }
   scope :for_exercise, lambda { |exercise| where(exercise_id: exercise.id) }
   scope :ordered_by_exercise, lambda { joins(:exercise).order { exercises.row_order } }
   scope :active, lambda { where(active: true) }

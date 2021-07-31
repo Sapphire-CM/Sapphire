@@ -29,7 +29,7 @@ class Submission < ActiveRecord::Base
   has_many :exercise_registrations, dependent: :destroy, inverse_of: :submission
   has_many :term_registrations, through: :exercise_registrations
   has_many :students, through: :term_registrations, source: :account
-  has_many :tutorial_groups, lambda { uniq }, through: :term_registrations
+  has_many :tutorial_groups, lambda { distinct }, through: :term_registrations
   has_many :associated_student_groups, through: :term_registrations, class_name: "StudentGroup", source: :student_group
 
   validates :submitter, presence: true
@@ -42,13 +42,13 @@ class Submission < ActiveRecord::Base
   delegate :submission_viewer?, to: :exercise, allow_nil: true
   delegate :enable_multiple_attempts?, to: :exercise, allow_nil: true
 
-  scope :for_term, lambda { |term| joins(:exercise).where(exercise: { term_id: term.id }) }
+  scope :for_term, lambda { |term| joins(:exercise).where(exercises: { term_id: term.id }) }
   scope :for_exercise, lambda { |exercise| where(exercise_id: exercise) }
   scope :for_tutorial_group, lambda { |tutorial_group| joins(exercise_registrations: :term_registration).where(term_registrations: { tutorial_group: tutorial_group }) }
   scope :for_student_group, lambda { |student_group| where(student_group: student_group) }
   scope :for_term_registration, lambda { |term_registration| joins(:term_registrations).where(term_registrations: {id: term_registration}) }
   scope :for_account, lambda { |account| joins(:term_registrations).where(term_registrations: { account_id: account.id }) }
-  scope :unmatched, lambda { joins { exercise_registrations.outer }.where(exercise_registrations: { id:nil }) }
+  scope :unmatched, lambda { left_outer_joins(:exercise_registrations).where(exercise_registrations: { id: nil }) }
   scope :with_evaluation, lambda { joins(:submission_evaluation).merge(SubmissionEvaluation.evaluated) }
   scope :ordered_by_student_group, lambda { references(:student_groups).joins(:student_group).order('student_groups.title ASC') }
   scope :ordered_by_exercises, lambda { references(:exercises).joins(:exercise).merge(Exercise.order(:row_order)) }
@@ -109,7 +109,7 @@ class Submission < ActiveRecord::Base
   end
 
   def mark_as_active!
-    exercise_registrations(true).find_each do |exercise_registration|
+    exercise_registrations.reload.find_each do |exercise_registration|
       exercise_registration.update(active: true)
     end
   end

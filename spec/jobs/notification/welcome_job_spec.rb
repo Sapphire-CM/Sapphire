@@ -24,7 +24,7 @@ RSpec.describe Notification::WelcomeJob, type: :job do
       Timecop.freeze(now) do
         subject.perform(term_registration)
 
-        expect(term_registration.welcomed_at).to eq(now)
+        expect(term_registration.welcomed_at).to be_within(1.second).of(now)
       end
     end
   end

@@ -48,7 +48,7 @@ class SubmissionAsset < ActiveRecord::Base
   scope :archives, lambda {  where(content_type: Mime::ARCHIVES) }
 
   scope :for_exercise, lambda { |exercise| joins(:submission).where(submissions: { exercise_id: exercise.id }) }
-  scope :for_term, lambda { |term| joins(submission: :exercise).where(submission: { exercise: { term: term } }) }
+  scope :for_term, lambda { |term| joins(submission: :exercise).where(submission: { exercises: { term: term } }) }
 
   delegate :exercise, to: :submission
 
@@ -123,7 +123,7 @@ class SubmissionAsset < ActiveRecord::Base
   def self.inside_path(unnormalized_path)
     normalized_path = normalize_path(unnormalized_path)
 
-    where { path =~ my {"#{normalized_path}%"} }
+    where(arel_table[:path].matches("#{normalized_path}%"))
   end
 
   def self.normalize_path(path)

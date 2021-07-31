@@ -4,22 +4,20 @@ class EventPolicy < ApplicationPolicy
       if admin?
         scope.all
       else
-        scope.joins(term: :term_registrations).where do
-          (
-            term_registrations.id.in(my { TermRegistration.staff }) |
-            (
-              term_registrations.id.in(my { TermRegistration.students }) &
-              (
-                (events.type.in(my { submission_event_types }) & events.subject_id.in(my { Submission.for_account(user) })) |
-                (events.type.in(my { result_publication_event_types }) & events.subject_id.in(
-                  ResultPublication.where do
-                    tutorial_group_id.in(my { my { user.tutorial_groups } })
-                  end
-                ))
-              )
-            )
-          ) & (term_registrations.account_id == my { user.id })
-        end
+        events_scope = Event.joins(term: :term_registrations)
+
+        staff_events = events_scope.merge(TermRegistration.staff.for_account(user))
+        student_events_base = events_scope.merge(TermRegistration.students.for_account(user))
+
+        student_events = student_events_base.where(type: submission_event_types, subject_id: Submission.for_account(user))
+        .or(
+          student_events_base.where(type: result_publication_event_types, subject_id: ResultPublication.for_account(user))
+        )
+
+        scope.where(id: staff_events.select(:id))
+        .or(
+          scope.where(id: student_events.select(:id))
+        )
       end
     end
 

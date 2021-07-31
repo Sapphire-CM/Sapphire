@@ -167,7 +167,7 @@ RSpec.describe EventPolicy do
       it 'returns all events' do
         records = subject.resolve
 
-        expect(records.uniq).to match_array(all_events.uniq)
+        expect(records.distinct).to match_array(all_events.uniq)
       end
     end
 
@@ -175,7 +175,7 @@ RSpec.describe EventPolicy do
       let(:account) { student_account }
 
       it 'returns only own submission events and group member submission events for group submissions' do
-        expect(subject.resolve.uniq).to match_array((student_submission_events + submission_events_of_group_exercise + result_publication_events_of_tutorial_group).uniq)
+        expect(subject.resolve.distinct).to match_array((student_submission_events + submission_events_of_group_exercise + result_publication_events_of_tutorial_group).uniq)
       end
     end
 
@@ -183,7 +183,7 @@ RSpec.describe EventPolicy do
       let(:account) { tutor_account }
 
       it 'returns all events' do
-        expect(subject.resolve.uniq).to match_array(all_events.uniq)
+        expect(subject.resolve.distinct).to match_array(all_events.uniq)
       end
     end
 
@@ -191,7 +191,7 @@ RSpec.describe EventPolicy do
       let(:account) { lecturer_account }
 
       it 'returns all events' do
-        expect(subject.resolve.uniq).to match_array(all_events.uniq)
+        expect(subject.resolve.distinct).to match_array(all_events.uniq)
       end
     end
   end

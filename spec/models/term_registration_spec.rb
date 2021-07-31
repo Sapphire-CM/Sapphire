@@ -6,7 +6,7 @@ RSpec.describe TermRegistration do
     it { is_expected.to have_db_column(:points).of_type(:integer) }
     it { is_expected.to have_db_column(:positive_grade).of_type(:boolean).with_options(null: false, default: false) }
     it { is_expected.to have_db_column(:receives_grade).of_type(:boolean).with_options(null: false, default: false) }
-    it { is_expected.to have_db_column(:role).of_type(:integer).with_options(default: 0) }
+    it { is_expected.to have_db_column(:role).of_type(:integer).with_options(default: :student) }
 
     it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
     it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }

@@ -77,9 +77,9 @@ RSpec.describe ImportResult do
 
       it 'destroys all import errors' do
 
-        expect(subject.import_errors(true).count).not_to eq(0)
+        expect(subject.import_errors.reload.count).not_to eq(0)
         subject.reset!
-        expect(subject.import_errors(true).count).to eq(0)
+        expect(subject.import_errors.reload.count).to eq(0)
       end
     end
 

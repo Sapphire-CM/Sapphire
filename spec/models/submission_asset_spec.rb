@@ -287,7 +287,7 @@ RSpec.describe SubmissionAsset do
 
       subject.save
 
-      expect(subject.submitted_at).to eq(now)
+      expect(subject.submitted_at).to be_within(1.second).of(now)
 
       Timecop.return
     end
@@ -299,7 +299,7 @@ RSpec.describe SubmissionAsset do
       subject.file = prepare_static_test_file('simple_submission_2.txt')
       subject.save
 
-      expect(subject.submitted_at).to eq(date)
+      expect(subject.submitted_at).to be_within(1.second).of(date)
     end
 
     it 'sets content_type' do
@@ -439,7 +439,7 @@ RSpec.describe SubmissionAsset do
       subject.set_submitted_at
 
       Timecop.return
-      expect(subject.submitted_at).to eq(now)
+      expect(subject.submitted_at).to be_within(1.second).of(now)
     end
   end
 

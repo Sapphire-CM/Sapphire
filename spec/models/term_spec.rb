@@ -6,7 +6,7 @@ describe Term do
     it { is_expected.to have_db_column(:description).of_type(:text) }
     it { is_expected.to have_db_column(:row_order).of_type(:integer) }
     it { is_expected.to have_db_column(:points).of_type(:integer).with_options(default: 0) }
-    it { is_expected.to have_db_column(:status).of_type(:integer).with_options(default: 0) }
+    it { is_expected.to have_db_column(:status).of_type(:integer).with_options(default: :ready) }
 
     it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
     it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }

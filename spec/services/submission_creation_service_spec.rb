@@ -8,7 +8,7 @@ RSpec.describe SubmissionCreationService, type: :model do
         let(:exercise_attempt) { FactoryGirl.build(:exercise_attempt, exercise: exercise) }
 
         it 'sets the submission time to current time' do
-          expect(subject.submission.submitted_at).to eq(now)
+          expect(subject.submission.submitted_at).to be_within(1.second).of(now)
         end
 
         it 'sets the exercise' do

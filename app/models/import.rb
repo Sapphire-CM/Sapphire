@@ -28,17 +28,15 @@ class Import < ActiveRecord::Base
 
   after_initialize do
     self.status ||= :pending
-
-    if persisted?
-      self.import_options ||= ImportOptions.find_or_create_by! import: self
-    end
+    self.import_options || self.build_import_options
   end
 
   private
 
   def create_associations
     # must exist at all times
-    ImportMapping.create! import: self
-    ImportResult.create! import: self
+
+    self.create_import_mapping!
+    self.create_import_result!
   end
 end

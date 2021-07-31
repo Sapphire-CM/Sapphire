@@ -125,4 +125,6 @@ group :test do
   # gem 'capybara-webkit'         # Webkit headless webdriver
 
   gem 'timecop'                   # improved time handling during tests
+  gem "rails-controller-testing", "~> 1.0" # extracted behaviour for controller testing
 end
+

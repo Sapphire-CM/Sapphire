@@ -1,4 +1,4 @@
-class MigrateAccountRegistrationsToTermRegistrations < ActiveRecord::Migration
+class MigrateAccountRegistrationsToTermRegistrations < ActiveRecord::Migration[4.2]
   def up
     if self.class.const_defined?(:LecturerRegistration)
       LecturerRegistration.all.each do |lecturer_registration|

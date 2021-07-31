@@ -1,4 +1,4 @@
-class AddUniqueKeyForFileAndPathToSubmissionAssets < ActiveRecord::Migration
+class AddUniqueKeyForFileAndPathToSubmissionAssets < ActiveRecord::Migration[4.2]
   def up
     ActiveRecord::Base.transaction do
       while (assets = SubmissionAsset.select("filename, path, submission_id").group(:filename, :path, :submission_id).having("count(*) > 1")).length > 0

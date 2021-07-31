@@ -1,4 +1,4 @@
-class AddWelcomedAtToTermRegistrations < ActiveRecord::Migration
+class AddWelcomedAtToTermRegistrations < ActiveRecord::Migration[4.2]
   class TermRegistration < ActiveRecord::Base; end
 
   def change

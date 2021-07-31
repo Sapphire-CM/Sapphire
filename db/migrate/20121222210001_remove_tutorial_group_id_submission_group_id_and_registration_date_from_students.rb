@@ -1,4 +1,4 @@
-class RemoveTutorialGroupIdSubmissionGroupIdAndRegistrationDateFromStudents < ActiveRecord::Migration
+class RemoveTutorialGroupIdSubmissionGroupIdAndRegistrationDateFromStudents < ActiveRecord::Migration[4.2]
   def up
     remove_column :students, :tutorial_group_id
     remove_column :students, :submission_group_id

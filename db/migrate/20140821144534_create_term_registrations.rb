@@ -1,4 +1,4 @@
-class CreateTermRegistrations < ActiveRecord::Migration
+class CreateTermRegistrations < ActiveRecord::Migration[4.2]
   def change
     create_table :term_registrations do |t|
       t.string :role

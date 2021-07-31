@@ -1,4 +1,4 @@
-class RenameOutdatedToActiveOfExerciseRegistrations < ActiveRecord::Migration
+class RenameOutdatedToActiveOfExerciseRegistrations < ActiveRecord::Migration[4.2]
   class ExerciseRegistration < ActiveRecord::Base; end
   def change
     add_column :exercise_registrations, :active, :boolean, default: true, null: false

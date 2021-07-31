@@ -1,4 +1,4 @@
-class AddFilenameToSubmissionAssets < ActiveRecord::Migration
+class AddFilenameToSubmissionAssets < ActiveRecord::Migration[4.2]
   def up
     add_column :submission_assets, :filename, :string
 

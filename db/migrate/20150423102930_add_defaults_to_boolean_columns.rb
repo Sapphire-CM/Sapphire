@@ -1,4 +1,4 @@
-class AddDefaultsToBooleanColumns < ActiveRecord::Migration
+class AddDefaultsToBooleanColumns < ActiveRecord::Migration[4.2]
   def up
     change_column :evaluations,            :checked,                    :boolean, null: false, default: false
     change_column :evaluations,            :checked_automatically,      :boolean, null: false, default: false

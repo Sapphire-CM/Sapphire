@@ -1,4 +1,4 @@
-class MoveEvaluationsToSubmissionEvaluations < ActiveRecord::Migration
+class MoveEvaluationsToSubmissionEvaluations < ActiveRecord::Migration[4.2]
   def change
     remove_index :evaluations, :student_id 
     remove_column :evaluations, :student_id

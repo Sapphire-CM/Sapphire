@@ -1,4 +1,4 @@
-class CreateStudentGroups < ActiveRecord::Migration
+class CreateStudentGroups < ActiveRecord::Migration[4.2]
   def change
     create_table :student_group_registrations do |t|
       t.integer :exercise_id

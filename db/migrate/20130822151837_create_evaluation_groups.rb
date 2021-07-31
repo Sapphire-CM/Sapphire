@@ -1,4 +1,4 @@
-class CreateEvaluationGroups < ActiveRecord::Migration
+class CreateEvaluationGroups < ActiveRecord::Migration[4.2]
   def change
     create_table :evaluation_groups do |t|
       t.integer :points

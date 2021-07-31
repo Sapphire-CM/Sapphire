@@ -36,7 +36,7 @@
 
 
 
-class AddMissingIndexes < ActiveRecord::Migration
+class AddMissingIndexes < ActiveRecord::Migration[4.2]
   def change
     remove_index :submission_evaluations, column: :submission_id
     remove_index :lecturer_registrations, column: :term_id

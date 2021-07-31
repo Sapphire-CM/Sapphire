@@ -1,4 +1,4 @@
-class FixStiModelNamespaces < ActiveRecord::Migration
+class FixStiModelNamespaces < ActiveRecord::Migration[4.2]
   def up
     return unless Rails.configuration.database_configuration[Rails.env]['adapter'] == 'postgresql'
     [Evaluation, Export, Rating, Service].each do |klass|

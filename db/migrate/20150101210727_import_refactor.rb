@@ -1,4 +1,4 @@
-class ImportRefactor < ActiveRecord::Migration
+class ImportRefactor < ActiveRecord::Migration[4.2]
   def up
     rename_table :import_student_imports, :imports
     remove_column :imports, :format

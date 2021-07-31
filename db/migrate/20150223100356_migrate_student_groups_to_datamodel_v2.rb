@@ -1,4 +1,4 @@
-class MigrateStudentGroupsToDatamodelV2 < ActiveRecord::Migration
+class MigrateStudentGroupsToDatamodelV2 < ActiveRecord::Migration[4.2]
   def up
     # removing solitary student groups
     say_with_time("removing solitary groups") do

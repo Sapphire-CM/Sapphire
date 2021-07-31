@@ -1,4 +1,4 @@
-class UpdateEvaluationTypes < ActiveRecord::Migration
+class UpdateEvaluationTypes < ActiveRecord::Migration[4.2]
   TYPE_CONVERSIONS = {
     "Evaluations::BinaryEvaluation" => "Evaluations::FixedEvaluation",
     "Evaluations::ValueEvaluation" => "Evaluations::VariableEvaluation",

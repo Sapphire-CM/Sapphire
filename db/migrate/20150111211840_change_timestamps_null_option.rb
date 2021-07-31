@@ -1,4 +1,4 @@
-class ChangeTimestampsNullOption < ActiveRecord::Migration
+class ChangeTimestampsNullOption < ActiveRecord::Migration[4.2]
   def change
     ActiveRecord::Base.connection.tables.each do |table|
       [:created_at, :updated_at].each do |column|

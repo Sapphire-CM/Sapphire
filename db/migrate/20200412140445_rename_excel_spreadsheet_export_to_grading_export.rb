@@ -1,4 +1,4 @@
-class RenameExcelSpreadsheetExportToGradingExport < ActiveRecord::Migration
+class RenameExcelSpreadsheetExportToGradingExport < ActiveRecord::Migration[4.2]
   class Export < ActiveRecord::Base; end
 
   PREVIOUS_TYPE = "Exports::ExcelSpreadsheetExport"

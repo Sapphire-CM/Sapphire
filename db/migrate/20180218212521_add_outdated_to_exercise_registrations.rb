@@ -1,4 +1,4 @@
-class AddOutdatedToExerciseRegistrations < ActiveRecord::Migration
+class AddOutdatedToExerciseRegistrations < ActiveRecord::Migration[4.2]
   class ExerciseRegistration < ActiveRecord::Base
     belongs_to :submission
   end

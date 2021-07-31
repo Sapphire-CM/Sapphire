@@ -1,4 +1,4 @@
-class CreateExerciseRegistrations < ActiveRecord::Migration
+class CreateExerciseRegistrations < ActiveRecord::Migration[4.2]
   def change
     create_table :exercise_registrations do |t|
       t.belongs_to :exercise, index: true

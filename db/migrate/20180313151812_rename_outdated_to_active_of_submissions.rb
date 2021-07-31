@@ -1,4 +1,4 @@
-class RenameOutdatedToActiveOfSubmissions < ActiveRecord::Migration
+class RenameOutdatedToActiveOfSubmissions < ActiveRecord::Migration[4.2]
   class Submission < ActiveRecord::Base; end
   def change
     add_column :submissions, :active, :boolean, default: true, null: false

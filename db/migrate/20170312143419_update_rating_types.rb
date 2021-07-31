@@ -1,4 +1,4 @@
-class UpdateRatingTypes < ActiveRecord::Migration
+class UpdateRatingTypes < ActiveRecord::Migration[4.2]
   TYPE_CONVERSIONS = {
     "Ratings::BinaryNumberRating" => "Ratings::FixedPointsDeductionRating",
     "Ratings::BinaryPercentRating" => "Ratings::FixedPercentageDeductionRating",

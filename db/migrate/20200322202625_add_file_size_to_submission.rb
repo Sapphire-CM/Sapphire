@@ -1,4 +1,4 @@
-class AddFileSizeToSubmission < ActiveRecord::Migration
+class AddFileSizeToSubmission < ActiveRecord::Migration[4.2]
   def up
     add_column :submissions, :filesystem_size, :integer, default: 0
     SubmissionAsset.find_each do |submission_asset|

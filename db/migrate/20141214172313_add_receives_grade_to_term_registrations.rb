@@ -1,4 +1,4 @@
-class AddReceivesGradeToTermRegistrations < ActiveRecord::Migration
+class AddReceivesGradeToTermRegistrations < ActiveRecord::Migration[4.2]
   def change
     add_column :term_registrations, :receives_grade, :boolean
 

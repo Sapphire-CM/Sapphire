@@ -13,7 +13,7 @@ RSpec.describe SubmissionEvaluationsController, type: :controller do
 
   describe 'GET show' do
     it 'assigns the requested submission as @submission' do
-      get :show, id: submission_evaluation.id
+      get :show, params: { id: submission_evaluation.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term)).to eq(term)
@@ -28,7 +28,7 @@ RSpec.describe SubmissionEvaluationsController, type: :controller do
       it 'returns a successful response' do
         sign_in(tutor_registration.account)
 
-        get :show, id: submission_evaluation.id
+        get :show, params: { id: submission_evaluation.id }
 
         expect(response).to have_http_status(:success)
       end

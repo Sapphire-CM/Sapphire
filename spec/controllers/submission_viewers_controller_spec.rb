@@ -9,7 +9,7 @@ RSpec.describe SubmissionViewersController do
       exercise = FactoryGirl.create(:exercise, :with_viewer)
       submission = FactoryGirl.create(:submission, exercise: exercise)
 
-      get :show, id: submission.id
+      get :show, params: { id: submission.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:submission)).to eq(submission)

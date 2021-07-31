@@ -28,7 +28,7 @@ RSpec.describe TermsController do
 
   describe 'GET show' do
     it 'assigns the requested term as @term' do
-      xhr :get, :show, id: term.id
+      get :show, params: { id: term.id }, xhr: true
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term)).to eq(term)
@@ -42,7 +42,7 @@ RSpec.describe TermsController do
       end
 
       it 'hides the navigation sidebar' do
-        get :show, id: term.id
+        get :show, params: { id: term.id }
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:show)
@@ -50,7 +50,7 @@ RSpec.describe TermsController do
       end
 
       it 'hides the main navigation items' do
-        get :show, id: term.id
+        get :show, params: { id: term.id }
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:show)
@@ -58,7 +58,7 @@ RSpec.describe TermsController do
       end
 
       it 'shows a stand by message' do
-        get :show, id: term.id
+        get :show, params: { id: term.id }
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:show)
@@ -69,7 +69,7 @@ RSpec.describe TermsController do
 
   describe 'GET new' do
     it 'assigns a new term as @term' do
-      xhr :get, :new, course_id: course.id
+      get :new, params: { course_id: course.id }, xhr: true
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:new)
@@ -84,7 +84,7 @@ RSpec.describe TermsController do
         valid_attributes[:term][:course_id] = course.id
 
         expect do
-          xhr :post, :create, valid_attributes
+          post :create, params: valid_attributes, xhr: true
         end.to change(Term, :count).by(1)
 
         expect(response).to have_http_status(:success)
@@ -107,7 +107,7 @@ RSpec.describe TermsController do
         expect(TermCopyJob).to receive(:perform_later).with(kind_of(Numeric), source_term.id.to_s, anything)
 
         expect do
-          xhr :post, :create, valid_attributes
+          post :create, params: valid_attributes, xhr: true
         end.to change(Term, :count).by(1)
 
         expect(response).to have_http_status(:success)
@@ -123,7 +123,7 @@ RSpec.describe TermsController do
         FactoryGirl.create :term, course: course, title: invalid_attributes[:term][:title]
         invalid_attributes[:term][:course_id] = course.id
 
-        xhr :post, :create, invalid_attributes
+        post :create, params: invalid_attributes, xhr: true
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:new)
@@ -134,7 +134,7 @@ RSpec.describe TermsController do
 
   describe 'GET edit' do
     it 'assigns the requested term as @term' do
-      get :edit, id: term.id
+      get :edit, params: { id: term.id }
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:edit)
@@ -147,7 +147,7 @@ RSpec.describe TermsController do
       it 'updates the requested term' do
         valid_attributes[:id] = term.id
 
-        put :update, valid_attributes
+        put :update, params: valid_attributes
 
         term.reload
         expect(response).to redirect_to(term_path(term))
@@ -162,7 +162,7 @@ RSpec.describe TermsController do
         FactoryGirl.create :term, course: course, title: invalid_attributes[:term][:title]
         invalid_attributes[:id] = term.id
 
-        put :update, invalid_attributes
+        put :update, params: invalid_attributes
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:edit)
@@ -176,7 +176,7 @@ RSpec.describe TermsController do
       term.reload # trigger creation
 
       expect do
-        xhr :delete, :destroy, id: term.id
+        delete :destroy, params: { id: term.id }, xhr: true
       end.to change(Term, :count).by(-1)
 
       expect(response).to redirect_to(root_path)
@@ -185,7 +185,7 @@ RSpec.describe TermsController do
 
   describe 'GET points_overview' do
     it 'shows the points overview' do
-      get :points_overview, id: term.id
+      get :points_overview, params: { id: term.id }
 
       expect(assigns(:grading_scale_service)).to be_a(GradingScaleService)
       expect(response).to render_template(:points_overview)

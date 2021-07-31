@@ -13,7 +13,7 @@ RSpec.describe GradingReviewsController do
     let!(:lecturer_term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term) }
 
     it 'renders :index' do
-      get :index, term_id: term.id
+      get :index, params: { term_id: term.id }
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:index)
@@ -21,7 +21,7 @@ RSpec.describe GradingReviewsController do
 
     context 'without a search query' do
       it 'does not assign @term_registrations' do
-        get :index, term_id: term.id
+        get :index, params: { term_id: term.id }
 
         expect(assigns(:term_registrations)).to be_blank
       end
@@ -34,28 +34,28 @@ RSpec.describe GradingReviewsController do
       let(:lecturer_account) { tutor_term_registration.account}
 
       it 'assigns student term registrations to @term_registrations' do
-        get :index, term_id: term.id, q: student_account.fullname
+        get :index, params: { term_id: term.id, q: student_account.fullname }
 
         expect(response).to have_http_status(:success)
         expect(assigns(:term_registrations)).to match_array([student_term_registration])
       end
 
       it 'does not assign students of other terms to @term_registrations' do
-        get :index, term_id: term.id, q: other_student_account.fullname
+        get :index, params: { term_id: term.id, q: other_student_account.fullname }
 
         expect(response).to have_http_status(:success)
         expect(assigns(:term_registrations)).to match_array([])
       end
 
       it 'does not assign tutors to @term_registrations' do
-        get :index, term_id: term.id, q: tutor_account.fullname
+        get :index, params: { term_id: term.id, q: tutor_account.fullname }
 
         expect(response).to have_http_status(:success)
         expect(assigns(:term_registrations)).to match_array([])
       end
 
       it 'does not assign lecturers to @term_registrations' do
-        get :index, term_id: term.id, q: lecturer_account.fullname
+        get :index, params: { term_id: term.id, q: lecturer_account.fullname }
 
         expect(response).to have_http_status(:success)
         expect(assigns(:term_registrations)).to match_array([])
@@ -67,14 +67,14 @@ RSpec.describe GradingReviewsController do
     let(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
 
     it 'renders show template' do
-      get :show, term_id: term.id, id: term_registration.id
+      get :show, params: { term_id: term.id, id: term_registration.id }
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:show)
     end
 
     it 'assigns @term_review' do
-      get :show, term_id: term.id, id: term_registration.id
+      get :show, params: { term_id: term.id, id: term_registration.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns[:term_review]).to be_a(GradingReview::TermReview)

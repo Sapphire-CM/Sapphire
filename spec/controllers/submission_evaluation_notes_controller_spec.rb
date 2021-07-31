@@ -13,7 +13,7 @@ RSpec.describe SubmissionEvaluations::InternalNotesController, type: :controller
 
   describe 'GET index' do
     it 'assigns the commentable as @commentable' do
-      xhr :get, :index, submission_evaluation_id: commentable.id
+      get :index, params: { submission_evaluation_id: commentable.id }, xhr: true
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term)).to eq(term)

@@ -10,7 +10,7 @@ class RatingsController < ApplicationController
   end
 
   def create
-    unless params[:rating] && params[:rating][:type] && Object.const_defined?(params[:rating][:type].classify)
+    unless params[:rating] && params[:rating][:type] && Rating.valid_type?(params[:rating][:type])
       @rating = @rating_group.ratings.build
       authorize @rating
       flash.now[:alert] = 'Invalid type!'
@@ -54,7 +54,7 @@ class RatingsController < ApplicationController
     update_params = params.require(:rating).permit(:rating_group_id, :row_order_position)
     @rating.update(update_params)
 
-    render text: "#{update_position_exercise_rating_group_rating_path(@exercise, @rating.rating_group, @rating)}"
+    render plain: "#{update_position_exercise_rating_group_rating_path(@exercise, @rating.rating_group, @rating)}"
   end
 
   def destroy

@@ -5,7 +5,7 @@ RSpec.describe SubmissionUploadsController, type: :controller do
 
   describe 'GET #new' do
     it 'assigns @submission, @submission_upload, @exercise, and @term' do
-      get :new, submission_id: submission.id
+      get :new, params: { submission_id: submission.id }
 
       expect(assigns[:submission]).to eq(submission)
       expect(assigns[:exercise]).to eq(exercise)
@@ -16,7 +16,7 @@ RSpec.describe SubmissionUploadsController, type: :controller do
     end
 
     it 'sets the path on the submission upload if given in params' do
-      get :new, submission_id: submission.id, path: "test/path"
+      get :new, params: { submission_id: submission.id, path: "test/path" }
 
       expect(assigns[:submission_upload].path).to eq("test/path")
     end
@@ -58,7 +58,7 @@ RSpec.describe SubmissionUploadsController, type: :controller do
         it 'creates a submission asset' do
           expect_any_instance_of(EventService).to receive(:submission_asset_uploaded!)
           expect do
-            post :create, valid_plain_file_attributes.merge(format: :html)
+            post :create, params: valid_plain_file_attributes, format: :html
           end.to change(submission.submission_assets, :count).by(1)
 
           expect(response).to redirect_to(new_submission_upload_path(submission, path: "test"))
@@ -68,7 +68,7 @@ RSpec.describe SubmissionUploadsController, type: :controller do
           expect_any_instance_of(EventService).to receive(:submission_asset_uploaded!)
           expect(ZipExtractionJob).to receive(:perform_later)
           expect do
-            post :create, valid_zip_attributes.merge(format: :html)
+            post :create, params: valid_zip_attributes, format: :html
           end.to change(submission.submission_assets, :count).by(1)
 
           expect(response).to redirect_to(new_submission_upload_path(submission, path: "test"))
@@ -78,7 +78,7 @@ RSpec.describe SubmissionUploadsController, type: :controller do
       context 'with invalid attributes' do
         it 'does not create a submission asset' do
           expect do
-            post :create, invalid_attributes.merge(format: :html)
+            post :create, params: invalid_attributes, format: :html
           end.not_to change(submission.submission_assets, :count)
 
           expect(assigns[:submission]).to eq(submission)
@@ -96,7 +96,7 @@ RSpec.describe SubmissionUploadsController, type: :controller do
         it 'creates a submission asset' do
           expect_any_instance_of(EventService).to receive(:submission_asset_uploaded!)
           expect do
-            post :create, valid_plain_file_attributes.merge(format: :json)
+            post :create, params: valid_plain_file_attributes, format: :json
           end.to change(submission.submission_assets, :count).by(1)
 
           expect(assigns[:submission]).to eq(submission)
@@ -111,7 +111,7 @@ RSpec.describe SubmissionUploadsController, type: :controller do
           expect_any_instance_of(EventService).to receive(:submission_asset_uploaded!)
           expect(ZipExtractionJob).to receive(:perform_later)
           expect do
-            post :create, valid_zip_attributes.merge(format: :html)
+            post :create, params: valid_zip_attributes, format: :html
           end.to change(submission.submission_assets, :count).by(1)
 
           expect(response).to redirect_to(new_submission_upload_path(submission, path: "test"))
@@ -121,7 +121,7 @@ RSpec.describe SubmissionUploadsController, type: :controller do
       context 'with invalid attributes' do
         it 'does not create a submission' do
           expect do
-            post :create, invalid_attributes.merge(format: :json)
+            post :create, params: invalid_attributes, format: :json
           end.not_to change(submission.submission_assets, :count)
 
           expect(response).to have_http_status(:unprocessable_entity)

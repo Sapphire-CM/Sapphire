@@ -12,7 +12,7 @@ RSpec.describe StudentsController do
     let!(:lecturers) { FactoryGirl.create_list :term_registration, 4, :lecturer, term: term }
 
     it 'lists all registered students' do
-      get :index, term_id: term.id
+      get :index, params: { term_id: term.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term_registrations)).to match_array(term.term_registrations.students)
@@ -32,7 +32,7 @@ RSpec.describe StudentsController do
       end
 
       it 'returns a successful response' do
-        get :index, term_id: term.id
+        get :index, params: { term_id: term.id }
 
         expect(response).to have_http_status(:success)
       end
@@ -45,7 +45,7 @@ RSpec.describe StudentsController do
     let(:student_group) { create(:student_group, tutorial_group: tutorial_group) }
 
     it 'assigns @term_review' do
-      get :show, term_id: term.id, id: term_registration.id
+      get :show, params: { term_id: term.id, id: term_registration.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term_review)).to be_a(GradingReview::TermReview)
@@ -62,7 +62,7 @@ RSpec.describe StudentsController do
       end
 
       it 'returns a successful response' do
-        get :show, term_id: term.id, id: term_registration.id
+        get :show, params: { term_id: term.id, id: term_registration.id }
 
         expect(response).to have_http_status(:success)
       end

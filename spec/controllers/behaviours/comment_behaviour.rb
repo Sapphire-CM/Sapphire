@@ -10,7 +10,7 @@ RSpec.shared_examples 'a comment controller' do
     describe 'with content' do
       it 'creates a new comment' do
         expect do
-          xhr :post, :create, comment_with_content
+          post :create, params: comment_with_content, xhr: true
         end.to change(Comment, :count).by(1)
 
         expect(response).to have_http_status(:success)
@@ -20,7 +20,7 @@ RSpec.shared_examples 'a comment controller' do
     describe 'without content' do
       it 'does not create a new comment' do
         expect do
-          xhr :post, :create, comment_without_content
+          post :create, params: comment_without_content, xhr: true
         end.to_not change(Comment, :count)
 
         expect(response).to have_http_status(:success)
@@ -31,7 +31,7 @@ RSpec.shared_examples 'a comment controller' do
 
   describe 'GET edit' do
     it 'responds with edit form' do
-      xhr :get, :edit, id: comment.id, commentable_id.to_sym => commentable.id
+      get :edit, params: { id: comment.id, commentable_id.to_sym => commentable.id }, xhr: true
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:edit)
@@ -40,7 +40,7 @@ RSpec.shared_examples 'a comment controller' do
 
   describe 'GET show' do
     it 'responds with comment show' do
-      xhr :get, :show, id: comment.id, commentable_id.to_sym => commentable.id
+      get :show, params: { id: comment.id, commentable_id.to_sym => commentable.id }, xhr: true
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:show)
@@ -50,7 +50,7 @@ RSpec.shared_examples 'a comment controller' do
   describe 'PATCH update' do
     describe 'with content' do
       it 'responds with comment show' do
-        xhr :patch, :update, id: comment.id, commentable_id.to_sym => commentable.id, comment: { content: "lorem" }
+        patch :update, params: { id: comment.id, commentable_id.to_sym => commentable.id, comment: { content: "lorem" } }, xhr: true
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:update)
@@ -59,7 +59,7 @@ RSpec.shared_examples 'a comment controller' do
 
     describe 'without content' do
       it 'responds with edit form' do
-        xhr :patch, :update, id: comment.id, commentable_id.to_sym => commentable.id, comment: { content: "" }
+        patch :update, params: { id: comment.id, commentable_id.to_sym => commentable.id, comment: { content: "" } }, xhr: true
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:edit)
@@ -72,7 +72,7 @@ RSpec.shared_examples 'a comment controller' do
       comment.reload
 
       expect do
-        xhr :delete, :destroy, id: comment.id, commentable_id.to_sym => commentable.id
+        delete :destroy, params: { id: comment.id, commentable_id.to_sym => commentable.id }, xhr: true
       end.to change(Comment, :count).by(-1)
 
       expect(response).to have_http_status(:success)

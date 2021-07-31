@@ -48,7 +48,7 @@ class Rating < ActiveRecord::Base
 
     where(scopes.reduce(&:and))
   }
-  
+
   scope :bulk, lambda { where(bulk: true) }
 
   after_initialize do
@@ -74,6 +74,10 @@ class Rating < ActiveRecord::Base
 
     klass = classes.find { |klass| klass.name == params[:type].classify }
     klass.new(params.except(:type))
+  end
+
+  def self.valid_type?(type)
+    instantiable_subclasses.map(&:to_s).include?(type.to_s)
   end
 
   def evaluation_class

@@ -37,7 +37,7 @@ RSpec.describe CoursesController do
 
   describe 'GET new' do
     it 'assigns a new course as @course' do
-      xhr :get, :new
+      get :new, xhr: true
 
       expect(response).to have_http_status(:success)
       expect(assigns(:course)).to be_a_new(Course)
@@ -48,7 +48,7 @@ RSpec.describe CoursesController do
     describe 'with valid params' do
       it 'creates a new Course' do
         expect do
-          xhr :post, :create, valid_attributes
+          post :create, params: valid_attributes, xhr: true
         end.to change(Course, :count).by(1)
 
         expect(response).to have_http_status(:success)
@@ -62,7 +62,7 @@ RSpec.describe CoursesController do
       it 'assigns a newly created but unsaved course as @course' do
         FactoryGirl.create :course, title: invalid_attributes[:course][:title]
 
-        xhr :post, :create, invalid_attributes
+        post :create, params: invalid_attributes, xhr: true
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:new)
@@ -73,7 +73,7 @@ RSpec.describe CoursesController do
 
   describe 'GET edit' do
     it 'assigns the requested course as @course' do
-      xhr :get, :edit, id: course.id
+      get :edit, params: { id: course.id }, xhr: true
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:edit)
@@ -87,7 +87,7 @@ RSpec.describe CoursesController do
       it 'updates the requested course' do
         valid_attributes[:id] = course.id
 
-        xhr :put, :update, valid_attributes
+        put :update, params: valid_attributes, xhr: true
 
         course.reload
         expect(response).to have_http_status(:success)
@@ -103,7 +103,7 @@ RSpec.describe CoursesController do
         FactoryGirl.create :course, title: invalid_attributes[:course][:title]
         invalid_attributes[:id] = course.id
 
-        xhr :put, :update, invalid_attributes
+        put :update, params: invalid_attributes, xhr: true
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:edit)
@@ -113,15 +113,25 @@ RSpec.describe CoursesController do
   end
 
   describe 'DELETE destroy' do
-    it 'destroys the requested course' do
+    it 'destroys the requested course and renders a JS template using XHR requests' do
       course.reload # trigger creation
 
       expect do
-        xhr :delete, :destroy, id: course.id
+        delete :destroy, params: { id: course.id }, xhr: true
       end.to change(Course, :count).by(-1)
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template(:destroy)
+    end
+
+    it 'destroys the requested course and redirects to the root path for HTML requests' do
+      course.reload # trigger creation
+
+      expect do
+        delete :destroy, params: { id: course.id }
+      end.to change(Course, :count).by(-1)
+
+      expect(response).to redirect_to(root_path)
     end
   end
 end

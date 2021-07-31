@@ -8,7 +8,7 @@ RSpec.describe EventsController, type: :controller do
     let(:another_term) { FactoryGirl.create(:term) }
 
     it 'renders a 404 response if a format other than json is requested' do
-      get :index, term_id: term.id, format: :html
+      get :index, params: { term_id: term.id }, format: :html
 
       expect(response).to have_http_status(:not_found)
     end
@@ -18,7 +18,7 @@ RSpec.describe EventsController, type: :controller do
       let!(:other_events) { FactoryGirl.create_list(:event, 5, term: another_term) }
 
       it 'only assigns events of term' do
-        get :index, term_id: term.id, format: :json
+        get :index, params: { term_id: term.id }, format: :json
 
         expect(assigns(:events)).to match_array(events)
         expect(assigns(:events)).not_to match_array(other_events)
@@ -31,14 +31,14 @@ RSpec.describe EventsController, type: :controller do
       end
 
       it 'assigns @events with the first page of events when no page param is given' do
-        get :index, term_id: term.id, format: :json
+        get :index, params: { term_id: term.id }, format: :json
 
         expect(response).to have_http_status(:success)
         expect(assigns(:events)).to match(events.first(25))
       end
 
       it 'assigns @events with the given page of events when page param is present' do
-        get :index, term_id: term.id, page: 2, format: :json
+        get :index, params: { term_id: term.id, page: 2 }, format: :json
 
         expect(response).to have_http_status(:success)
         expect(assigns(:events)).to match(events.last(5))

@@ -31,7 +31,7 @@ RSpec.describe RatingsController do
 
   describe 'GET new' do
     it 'assigns a new rating as @rating' do
-      xhr :get, :new, exercise_id: exercise.id, rating_group_id: rating_group.id
+      get :new, params: { exercise_id: exercise.id, rating_group_id: rating_group.id }, xhr: true
 
       expect(response).to have_http_status(:success)
       expect(assigns(:rating)).to be_a_new(Rating)
@@ -46,7 +46,7 @@ RSpec.describe RatingsController do
         valid_attributes[:rating_group_id] = rating_group.id
 
         expect do
-          xhr :post, :create, valid_attributes
+          post :create, params: valid_attributes, xhr: true
         end.to change(Rating, :count).by(1)
 
 
@@ -63,7 +63,7 @@ RSpec.describe RatingsController do
         invalid_attributes[:exercise_id] = exercise.id
         invalid_attributes[:rating_group_id] = rating_group.id
 
-        xhr :post, :create, invalid_attributes
+        post :create, params: invalid_attributes, xhr: true
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:new)
@@ -79,7 +79,7 @@ RSpec.describe RatingsController do
         invalid_attributes[:rating][:type] = nil
 
         expect do
-          xhr :post, :create, invalid_attributes
+          post :create, params: invalid_attributes, xhr: true
         end.to change(Rating, :count).by(0)
 
         expect(response).to have_http_status(:success)
@@ -94,7 +94,7 @@ RSpec.describe RatingsController do
         invalid_attributes[:rating][:type] = 'foo_bar'
 
         expect do
-          xhr :post, :create, invalid_attributes
+          post :create, params: invalid_attributes, xhr: true
         end.to change(Rating, :count).by(0)
 
         expect(response).to have_http_status(:success)
@@ -105,7 +105,7 @@ RSpec.describe RatingsController do
 
   describe 'GET edit' do
     it 'assigns the requested term as @term' do
-      xhr :get, :edit, exercise_id: exercise.id, rating_group_id: rating_group.id, id: rating.id
+      get :edit, params: { exercise_id: exercise.id, rating_group_id: rating_group.id, id: rating.id }, xhr: true
 
       expect(response).to have_http_status(:success)
       expect(assigns(:rating)).to be_a(Rating)
@@ -120,7 +120,7 @@ RSpec.describe RatingsController do
         valid_attributes[:rating_group_id] = rating_group.id
         valid_attributes[:id] = rating.id
 
-        xhr :put, :update, valid_attributes
+        put :update, params: valid_attributes, xhr: true
 
         rating.reload
         expect(response).to have_http_status(:success)
@@ -138,7 +138,7 @@ RSpec.describe RatingsController do
         invalid_attributes[:id] = rating.id
         invalid_attributes[:rating][:value] = ''
 
-        xhr :put, :update, invalid_attributes
+        put :update, params: invalid_attributes, xhr: true
 
         rating.reload
         expect(response).to have_http_status(:success)
@@ -154,7 +154,7 @@ RSpec.describe RatingsController do
       rating.reload # trigger creation
 
       expect do
-        xhr :delete, :destroy, exercise_id: exercise.id, rating_group_id: rating_group.id, id: rating.id
+        delete :destroy, params: { exercise_id: exercise.id, rating_group_id: rating_group.id, id: rating.id }, xhr: true
       end.to change(Rating, :count).by(-1)
 
       expect(response).to have_http_status(:success)
@@ -178,7 +178,7 @@ RSpec.describe RatingsController do
       }
 
       expect do
-        xhr :post, :update_position, attributes
+        post :update_position, params: attributes, xhr: true
         rating.reload
       end.to change(rating, :row_order)
 

@@ -5,7 +5,7 @@ RSpec.describe SubmissionsController, type: :controller do
 
   describe 'GET #show' do
     it 'redirects to the SubmissionTreeController' do
-      get :show, id: submission.id
+      get :show, params: { id: submission.id }
     end
   end
 end

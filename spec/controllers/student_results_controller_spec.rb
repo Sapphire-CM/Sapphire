@@ -18,7 +18,7 @@ RSpec.describe StudentResultsController do
     it 'assigns all exercise_registrations as @exercise_registrations' do
       FactoryGirl.create_list :course, 4
 
-      get :index, term_id: term.id
+      get :index, params: { term_id: term.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns[:term_review].submission_reviews.map(&:exercise_registration)).to match_array(term_registration.exercise_registrations)
@@ -35,7 +35,7 @@ RSpec.describe StudentResultsController do
       end
 
       it 'assigns the requested submission review as @submission_review' do
-        get :show, term_id: term.id, id: exercise.id
+        get :show, params: { term_id: term.id, id: exercise.id }
 
         expect(response).to have_http_status(:success)
         expect(assigns[:submission_review]).to be_a(GradingReview::SubmissionReview)
@@ -46,7 +46,7 @@ RSpec.describe StudentResultsController do
 
     context 'when no submission exists' do
       it 'redirects to submission path' do
-        get :show, id: exercise.id, term_id: term.id
+        get :show, params: { id: exercise.id, term_id: term.id }
 
         expect(response).to have_http_status(:not_found)
       end

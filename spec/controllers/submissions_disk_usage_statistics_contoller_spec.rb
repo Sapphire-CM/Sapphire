@@ -12,7 +12,7 @@ RSpec.describe SubmissionsDiskUsageStatisticsController, type: :controller do
       let!(:submission_asset) { FactoryGirl.create(:submission_asset, :plain_text, submission: submission) }
 
       it 'returns http success' do
-        get :show, term_id: term.id
+        get :show, params: { term_id: term.id }
         expect(response).to have_http_status(:success)
         expect(response.body).to include('Total on File System')
         expect(response.body).to include('Average')
@@ -22,10 +22,10 @@ RSpec.describe SubmissionsDiskUsageStatisticsController, type: :controller do
         expect(assigns(:term)).to eq(term)
       end
     end
-    
+
     context 'no exercises exist' do
       it 'returns http success' do
-        get :show, term_id: term.id
+        get :show, params: { term_id: term.id }
         expect(response).to have_http_status(:success)
         expect(response.body).to include('No exercises present.')
         expect(assigns(:term)).to eq(term)

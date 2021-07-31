@@ -12,7 +12,7 @@ RSpec.describe StudentSubmissionsController do
     let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
 
     it 'redirects to the new submission page if it does not yet exist' do
-      get :show, exercise_id: exercise.id
+      get :show, params: { exercise_id: exercise.id }
 
       expect(response).to redirect_to(new_exercise_student_submission_path(exercise))
     end
@@ -20,7 +20,7 @@ RSpec.describe StudentSubmissionsController do
     it 'redirects to the submission_tree page if it already exists' do
       exercise_registration = FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission)
 
-      get :show, exercise_id: exercise.id
+      get :show, params: { exercise_id: exercise.id }
       expect(response).to redirect_to(submission_path(submission))
     end
   end
@@ -35,7 +35,7 @@ RSpec.describe StudentSubmissionsController do
       student_group = FactoryGirl.create(:student_group, tutorial_group: tutorial_group)
       term_registration.update(student_group: student_group)
 
-      get :new, exercise_id: exercise.id
+      get :new, params: { exercise_id: exercise.id }
 
       expect(assigns[:exercise]).to eq(exercise)
       expect(assigns[:term]).to eq(term)
@@ -46,7 +46,7 @@ RSpec.describe StudentSubmissionsController do
       submission = FactoryGirl.create(:submission, exercise: exercise)
       exercise_registration = FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission)
 
-      get :show, exercise_id: exercise.id
+      get :show, params: { exercise_id: exercise.id }
       expect(response).to redirect_to(submission_path(submission))
     end
   end
@@ -60,7 +60,7 @@ RSpec.describe StudentSubmissionsController do
     it 'creates a submission and assigns it to @submission' do
       expect_any_instance_of(SubmissionCreationService).to receive(:save).and_call_original
       expect do
-        post :create, exercise_id: exercise.id
+        post :create, params: { exercise_id: exercise.id }
       end.to change(Submission, :count).by(1)
 
       expect(assigns[:submission]).to be_present
@@ -71,7 +71,7 @@ RSpec.describe StudentSubmissionsController do
       allow_any_instance_of(SubmissionCreationService).to receive(:save).and_return(false)
 
       expect do
-        post :create, exercise_id: exercise.id
+        post :create, params: { exercise_id: exercise.id }
       end.not_to change(Submission, :count)
 
       expect(assigns[:submission]).to be_present
@@ -82,7 +82,7 @@ RSpec.describe StudentSubmissionsController do
       submission = FactoryGirl.create(:submission, exercise: exercise)
       exercise_registration = FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission)
 
-      get :show, exercise_id: exercise.id
+      get :show, params: { exercise_id: exercise.id }
       expect(response).to redirect_to(submission_path(submission))
     end
   end

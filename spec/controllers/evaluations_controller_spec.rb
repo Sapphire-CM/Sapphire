@@ -24,7 +24,8 @@ RSpec.describe EvaluationsController, type: :controller do
               submission_evaluation.update! updated_at: 42.days.ago
 
               expect do
-                xhr :put, :update, id: evaluation.id, evaluation: { value: (checked ? 1 : 0) }
+                put :update, params: { id: evaluation.id, evaluation: { value: (checked ? 1 : 0) } }, xhr: true
+
                 submission_evaluation.reload
                 evaluation.reload
               end.to change(submission_evaluation, :updated_at)
@@ -47,7 +48,7 @@ RSpec.describe EvaluationsController, type: :controller do
             submission_evaluation.update! updated_at: 42.days.ago
 
             expect do
-              xhr :put, :update, id: evaluation.id, evaluation: { value: '-3' }
+              put :update, params: { id: evaluation.id, evaluation: { value: '-3' } }, xhr: true
               submission_evaluation.reload
               evaluation.reload
             end.to change(submission_evaluation, :updated_at)
@@ -78,7 +79,7 @@ RSpec.describe EvaluationsController, type: :controller do
               submission_evaluation.update! updated_at: 42.days.ago
 
               expect do
-                xhr :put, :update, id: evaluation.id, evaluation: { value: (checked ? 1 : 0) }
+                put :update, params: { id: evaluation.id, evaluation: { value: (checked ? 1 : 0) } }, xhr: true
                 submission_evaluation.reload
                 evaluation.reload
               end.to change(submission_evaluation, :updated_at)
@@ -103,7 +104,7 @@ RSpec.describe EvaluationsController, type: :controller do
             submission_evaluation.update! updated_at: 42.days.ago
 
             expect do
-              xhr :put, :update, id: evaluation.id, evaluation: { value: '42' }
+              put :update, params: { id: evaluation.id, evaluation: { value: '42' } }, xhr: true
               submission_evaluation.reload
               evaluation.reload
             end.not_to change {evaluation.value}

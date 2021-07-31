@@ -12,7 +12,7 @@ RSpec.describe ServicesController do
     it 'assigns all services as @services' do
       FactoryGirl.create_list :website_fetcher_service, 4, exercise: exercise
 
-      get :index, term_id: term.id, exercise_id: exercise.id
+      get :index, params: { term_id: term.id, exercise_id: exercise.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:services)).to match_array(exercise.services)
@@ -21,7 +21,7 @@ RSpec.describe ServicesController do
 
   describe 'GET edit' do
     it 'assigns the requested course as @course' do
-      get :edit, term_id: term.id, exercise_id: exercise.id, id: service.id
+      get :edit, params: { term_id: term.id, exercise_id: exercise.id, id: service.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:service)).to eq(service)
@@ -41,7 +41,7 @@ RSpec.describe ServicesController do
             }
           }
 
-          put :update, valid_attributes
+          put :update, params: valid_attributes
 
           service.reload
           expect(response).to redirect_to(term_exercise_services_path(term, exercise))

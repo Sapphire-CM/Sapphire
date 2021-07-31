@@ -11,10 +11,10 @@ RSpec.describe SubmissionAssetsController do
     it 'assigns the requested submission_asset as @submission_asset' do
       expect(controller).to receive(:send_file).with(submission_asset.file.to_s, filename: nil, type: submission_asset.content_type, disposition: :inline) {
         # to prevent a 'missing template' error
-        controller.render nothing: true
+        controller.head :ok
       }
 
-      get :show, id: submission_asset.id
+      get :show, params: { id: submission_asset.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:submission_asset)).to eq(submission_asset)
@@ -23,7 +23,7 @@ RSpec.describe SubmissionAssetsController do
 
   describe 'DELETE destroy' do
     it 'removes the submission asset' do
-      delete :destroy, id: submission_asset.id
+      delete :destroy, params: { id: submission_asset.id }
 
       expect(assigns(:submission_asset)).to eq(submission_asset)
       expect(response).to redirect_to(tree_submission_path(submission, path: submission_asset.path))
@@ -32,7 +32,7 @@ RSpec.describe SubmissionAssetsController do
     it 'informs the event service' do
       expect_any_instance_of(EventService).to receive(:submission_asset_destroyed!).and_call_original
 
-      delete :destroy, id: submission_asset.id
+      delete :destroy, params: { id: submission_asset.id }
     end
   end
 end

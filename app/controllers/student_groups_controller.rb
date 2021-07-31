@@ -53,7 +53,7 @@ class StudentGroupsController < ApplicationController
     authorize StudentGroupPolicy.term_policy_record(current_term)
 
     if params[:q].blank?
-      render nothing: true, status: :bad_request
+      head :bad_request
       return
     end
 

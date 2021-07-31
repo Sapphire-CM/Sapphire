@@ -13,7 +13,7 @@ RSpec.describe StaffSubmissionsController do
   describe 'GET index' do
     context 'with tutorial_group' do
       it 'works' do
-        get :index, exercise_id: exercise.id, tutorial_group_id: tutorial_group.id
+        get :index, params: { exercise_id: exercise.id, tutorial_group_id: tutorial_group.id }
 
         expect(response).to have_http_status(:success)
       end
@@ -21,7 +21,7 @@ RSpec.describe StaffSubmissionsController do
 
     context 'without tutorial_group' do
       it 'works' do
-        get :index, exercise_id: exercise.id
+        get :index, params: { exercise_id: exercise.id }
 
         expect(response).to have_http_status(:success)
       end
@@ -31,7 +31,7 @@ RSpec.describe StaffSubmissionsController do
       it 'works' do
         TutorialGroup.destroy_all
 
-        get :index, exercise_id: exercise.id
+        get :index, params: { exercise_id: exercise.id }
 
         expect(response).to have_http_status(:success)
       end

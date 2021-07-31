@@ -4,15 +4,15 @@ RSpec.describe StaffController do
   render_views
   include_context 'active_admin_session_context'
 
-  let(:term) { FactoryGirl.create :term }
-  let(:term_registration) { FactoryGirl.create :term_registration, term: term }
-  let(:account) { FactoryGirl.create :account }
-  let(:tutorial_group) { FactoryGirl.create :tutorial_group, term: term }
+  let(:term) { FactoryBot.create :term }
+  let(:term_registration) { FactoryBot.create :term_registration, term: term }
+  let(:account) { FactoryBot.create :account }
+  let(:tutorial_group) { FactoryBot.create :tutorial_group, term: term }
 
   describe 'GET index' do
-    let!(:students) { FactoryGirl.create_list(:term_registration, 3, :student, term: term) }
-    let!(:tutors) { FactoryGirl.create_list(:term_registration, 3, :tutor, term: term) }
-    let!(:lecturers) { FactoryGirl.create_list(:term_registration, 3, :lecturer, term: term) }
+    let!(:students) { FactoryBot.create_list(:term_registration, 3, :student, term: term) }
+    let!(:tutors) { FactoryBot.create_list(:term_registration, 3, :tutor, term: term) }
+    let!(:lecturers) { FactoryBot.create_list(:term_registration, 3, :lecturer, term: term) }
 
     it 'assigns all term_registrations as @term_registrations' do
       get :index, params: { term_id: term.id }

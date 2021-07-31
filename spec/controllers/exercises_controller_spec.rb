@@ -22,13 +22,13 @@ RSpec.describe ExercisesController do
     }
   end
 
-  let(:term) { FactoryGirl.create :term }
+  let(:term) { FactoryBot.create :term }
 
-  let(:exercise) { FactoryGirl.create :exercise, term: term }
+  let(:exercise) { FactoryBot.create :exercise, term: term }
 
   describe 'GET index' do
     it 'assigns all exercises as @exercises' do
-      FactoryGirl.create_list :exercise, 4, term: term
+      FactoryBot.create_list :exercise, 4, term: term
 
       get :index, params: { term_id: term.id }
 
@@ -64,7 +64,7 @@ RSpec.describe ExercisesController do
 
     describe 'with invalid params' do
       it 'assigns a newly created but unsaved exercise as @exercise' do
-        FactoryGirl.create :exercise, term: term, title: invalid_attributes[:exercise][:title]
+        FactoryBot.create :exercise, term: term, title: invalid_attributes[:exercise][:title]
         invalid_attributes[:exercise][:term_id] = term.id
 
         post :create, params: invalid_attributes
@@ -102,7 +102,7 @@ RSpec.describe ExercisesController do
 
     describe 'with invalid params' do
       it 'assigns the requested exercise as @exercise' do
-        FactoryGirl.create :exercise, term: term, title: invalid_attributes[:exercise][:title]
+        FactoryBot.create :exercise, term: term, title: invalid_attributes[:exercise][:title]
         invalid_attributes[:id] = exercise.id
 
         put :update, params: invalid_attributes

@@ -5,7 +5,7 @@ RSpec.describe SubmissionUpload do
 
   describe "attr_accessor" do
     describe ':submission' do
-      let(:submission) { FactoryGirl.build(:submission) }
+      let(:submission) { FactoryBot.build(:submission) }
 
       it 'assigns and returns submission' do
         subject.submission = submission
@@ -15,7 +15,7 @@ RSpec.describe SubmissionUpload do
     end
 
     describe 'submitter' do
-      let(:account) { FactoryGirl.build(:account) }
+      let(:account) { FactoryBot.build(:account) }
 
       it 'assigns and returns submitter' do
         subject.submitter = account
@@ -43,7 +43,7 @@ RSpec.describe SubmissionUpload do
     end
 
     describe 'submission_asset' do
-      let(:submission_asset) { FactoryGirl.build(:submission_asset) }
+      let(:submission_asset) { FactoryBot.build(:submission_asset) }
 
       it 'assigns and returns submission_asset' do
         subject.submission_asset = submission_asset
@@ -104,9 +104,9 @@ RSpec.describe SubmissionUpload do
 
   describe '#save' do
     context 'valid attributes' do
-      let(:submission) { FactoryGirl.create(:submission) }
+      let(:submission) { FactoryBot.create(:submission) }
       let(:term) { submission.term }
-      let(:account) { FactoryGirl.create(:account) }
+      let(:account) { FactoryBot.create(:account) }
       let(:text_file) { prepare_static_test_file("simple_submission.txt") }
       let(:zip_file) { prepare_static_test_file("submission.zip") }
 
@@ -149,9 +149,9 @@ RSpec.describe SubmissionUpload do
     end
 
     context 'invalid attribtues' do
-      let(:submission) { FactoryGirl.create(:submission) }
+      let(:submission) { FactoryBot.create(:submission) }
       let(:term) { submission.term }
-      let(:account) { FactoryGirl.create(:account) }
+      let(:account) { FactoryBot.create(:account) }
       let(:file) { prepare_static_test_file("simple_submission.txt") }
 
       subject { described_class.new(submission: submission, submitter: account, path: "test/path", file: nil) }

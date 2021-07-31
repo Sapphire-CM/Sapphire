@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Course Creation" do
-  let(:account) { FactoryGirl.create(:account, :admin) }
+  let(:account) { FactoryBot.create(:account, :admin) }
 
   before :each do
     sign_in account

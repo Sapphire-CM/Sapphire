@@ -30,8 +30,8 @@ RSpec.describe Service do
 
   describe 'scopes' do
     describe '.active' do
-      let!(:active_services) { FactoryGirl.create_list(:website_fetcher_service, 2, :active) }
-      let!(:inactive_services) { FactoryGirl.create_list(:website_fetcher_service, 2, :inactive) }
+      let!(:active_services) { FactoryBot.create_list(:website_fetcher_service, 2, :active) }
+      let!(:inactive_services) { FactoryBot.create_list(:website_fetcher_service, 2, :inactive) }
 
       it 'returns active services' do
         expect(described_class.active).to match_array(active_services)

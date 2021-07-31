@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'models/behaviours/submission_structure_tree_node_behaviour'
 
 RSpec.describe SubmissionStructure::File do
-  let(:submission_asset) { FactoryGirl.build(:submission_asset) }
+  let(:submission_asset) { FactoryBot.build(:submission_asset) }
   subject { described_class.new(submission_asset) }
 
   it_behaves_like "submission structure tree node"

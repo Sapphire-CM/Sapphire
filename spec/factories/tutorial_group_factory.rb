@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence(:tutorial_group_title) { |n| "Tut group #{n}" }
 
   factory :tutorial_group do

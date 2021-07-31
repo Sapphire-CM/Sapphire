@@ -1,8 +1,8 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :import do
     term
     file { prepare_static_test_file 'import_data.csv', open: true }
-    status :pending
+    status { :pending }
 
     after :create do |import|
       import.import_mapping.update!(
@@ -17,7 +17,7 @@ FactoryGirl.define do
 
     trait :with_errors do
       transient do
-        error_count 3
+        error_count { 3 }
       end
 
       after(:create) do |model, evaluator|

@@ -22,13 +22,13 @@ RSpec.describe TutorialGroupsController do
     }
   end
 
-  let(:term) { FactoryGirl.create :term }
+  let(:term) { FactoryBot.create :term }
 
-  let(:tutorial_group) { FactoryGirl.create :tutorial_group, term: term }
+  let(:tutorial_group) { FactoryBot.create :tutorial_group, term: term }
 
   describe 'GET index' do
     it 'assigns all tutorial_groups as @tutorial_groups' do
-      FactoryGirl.create_list :tutorial_group, 4, term: term
+      FactoryBot.create_list :tutorial_group, 4, term: term
 
       get :index, params: { term_id: term.id }
 
@@ -72,7 +72,7 @@ RSpec.describe TutorialGroupsController do
 
     describe 'with invalid params' do
       it 'assigns a newly created but unsaved tutorial_group as @tutorial_group' do
-        FactoryGirl.create :tutorial_group, term: term, title: invalid_attributes[:tutorial_group][:title]
+        FactoryBot.create :tutorial_group, term: term, title: invalid_attributes[:tutorial_group][:title]
         invalid_attributes[:term_id] = term.id
 
         post :create, params: invalid_attributes
@@ -111,7 +111,7 @@ RSpec.describe TutorialGroupsController do
 
     describe 'with invalid params' do
       it 'assigns the requested tutorial_group as @tutorial_group' do
-        FactoryGirl.create :tutorial_group, term: term, title: invalid_attributes[:tutorial_group][:title]
+        FactoryBot.create :tutorial_group, term: term, title: invalid_attributes[:tutorial_group][:title]
         invalid_attributes[:term_id] = term.id
         invalid_attributes[:id] = tutorial_group.id
 

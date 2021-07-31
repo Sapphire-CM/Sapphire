@@ -22,21 +22,21 @@ describe ResultPublicationPolicy do
     end
 
     context 'as lecturer' do
-      let(:user) { FactoryGirl.create(:account, :lecturer) }
+      let(:user) { FactoryBot.create(:account, :lecturer) }
       let(:term) { user.term_registrations.lecturers.first.term }
 
       it { is_expected.to permit_authorization :index }
     end
 
     context 'as tutor' do
-      let(:user) { FactoryGirl.create(:account, :tutor) }
+      let(:user) { FactoryBot.create(:account, :tutor) }
       let(:term) { user.term_registrations.tutors.first.term }
 
       it { is_expected.not_to permit_authorization :index }
     end
 
     context 'as student' do
-      let(:user) { FactoryGirl.create(:account, :student) }
+      let(:user) { FactoryBot.create(:account, :student) }
       let(:term) { user.term_registrations.students.first.term }
 
       it { is_expected.not_to permit_authorization :index }
@@ -62,7 +62,7 @@ describe ResultPublicationPolicy do
     end
 
     context 'as lecturer' do
-      let(:user) { FactoryGirl.create(:account, :lecturer) }
+      let(:user) { FactoryBot.create(:account, :lecturer) }
       let(:term) { user.term_registrations.lecturers.first.term }
 
       it { is_expected.to permit_authorization :publish }
@@ -72,7 +72,7 @@ describe ResultPublicationPolicy do
     end
 
     context 'as tutor' do
-      let(:user) { FactoryGirl.create(:account, :tutor) }
+      let(:user) { FactoryBot.create(:account, :tutor) }
       let(:term) { user.term_registrations.tutors.first.term }
 
       it { is_expected.not_to permit_authorization :publish }
@@ -82,7 +82,7 @@ describe ResultPublicationPolicy do
     end
 
     context 'as student' do
-      let(:user) { FactoryGirl.create(:account, :student) }
+      let(:user) { FactoryBot.create(:account, :student) }
       let(:term) { user.term_registrations.students.first.term }
 
       it { is_expected.not_to permit_authorization :publish }

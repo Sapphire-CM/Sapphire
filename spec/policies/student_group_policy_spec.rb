@@ -2,11 +2,11 @@ require 'rails_helper'
 
 RSpec.describe StudentGroupPolicy do
   let(:term) { tutorial_group.term }
-  let(:tutorial_group) { FactoryGirl.create(:tutorial_group) }
-  let(:student_group) { FactoryGirl.create(:student_group, tutorial_group: tutorial_group) }
+  let(:tutorial_group) { FactoryBot.create(:tutorial_group) }
+  let(:student_group) { FactoryBot.create(:student_group, tutorial_group: tutorial_group) }
 
   context 'as an admin' do
-    let(:account) { FactoryGirl.create(:account, :admin) }
+    let(:account) { FactoryBot.create(:account, :admin) }
 
     context 'collections' do
       subject { described_class.new(account, described_class.term_policy_record(term)) }
@@ -28,9 +28,9 @@ RSpec.describe StudentGroupPolicy do
   end
 
   context 'as a lecturer' do
-    let(:account) { FactoryGirl.create(:account) }
+    let(:account) { FactoryBot.create(:account) }
     before :each do
-      FactoryGirl.create(:term_registration, :lecturer, term: term, account: account)
+      FactoryBot.create(:term_registration, :lecturer, term: term, account: account)
     end
 
     context 'collections' do
@@ -54,11 +54,11 @@ RSpec.describe StudentGroupPolicy do
   end
 
   context 'as a tutor' do
-    let(:account) { FactoryGirl.create(:account) }
-    let(:another_tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
+    let(:account) { FactoryBot.create(:account) }
+    let(:another_tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
 
     before :each do
-      FactoryGirl.create(:term_registration, :tutor, term: term, account: account, tutorial_group: another_tutorial_group)
+      FactoryBot.create(:term_registration, :tutor, term: term, account: account, tutorial_group: another_tutorial_group)
     end
 
     context 'collections' do
@@ -81,11 +81,11 @@ RSpec.describe StudentGroupPolicy do
   end
 
   context 'as a student' do
-    let(:account) { FactoryGirl.create(:account) }
-    let(:another_tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
+    let(:account) { FactoryBot.create(:account) }
+    let(:another_tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
 
     before :each do
-      FactoryGirl.create(:term_registration, :student, term: term, account: account, tutorial_group: another_tutorial_group)
+      FactoryBot.create(:term_registration, :student, term: term, account: account, tutorial_group: another_tutorial_group)
     end
 
     context 'collections' do

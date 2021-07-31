@@ -71,7 +71,7 @@ group :development, :test do
   gem 'jist'
 
   gem 'mysql2'                    # MySQL database connector
-  gem 'sqlite3', "~>1.3.0"                   # sqlite3 database connector
+  gem 'sqlite3', "~>1.3.0"        # sqlite3 database connector
   gem 'parallel_tests'            # Parallelize Tests
 
   gem 'faker'                     # fake data for seeds
@@ -112,7 +112,7 @@ group :test do
 
   gem 'shoulda-matchers', '~> 3.1.1' # Nice RSpec matchers for many different common tasks
 
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'database_cleaner'
 
   gem 'simplecov'                 # test-coverage reports

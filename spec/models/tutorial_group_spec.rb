@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe TutorialGroup do
-  let(:course) { FactoryGirl.create(:course) }
-  let(:term) { FactoryGirl.create(:term, course: course) }
+  let(:course) { FactoryBot.create(:course) }
+  let(:term) { FactoryBot.create(:term, course: course) }
 
   describe 'db columns' do
     it { is_expected.to have_db_column(:title).of_type(:string) }
@@ -23,7 +23,7 @@ describe TutorialGroup do
   end
 
   describe 'validations' do
-    subject { FactoryGirl.create(:tutorial_group) }
+    subject { FactoryBot.create(:tutorial_group) }
     it { is_expected.to validate_presence_of(:term) }
     it { is_expected.to validate_presence_of(:title) }
     it { is_expected.to validate_uniqueness_of(:title).scoped_to(:term_id) }
@@ -32,19 +32,19 @@ describe TutorialGroup do
 
   describe 'callbacks' do
     it 'ensures result publications on create' do
-      FactoryGirl.create_list(:exercise, 4, term: term)
+      FactoryBot.create_list(:exercise, 4, term: term)
       term.reload
 
-      tutorial_group = FactoryGirl.create(:tutorial_group, term: term)
+      tutorial_group = FactoryBot.create(:tutorial_group, term: term)
 
       expect(tutorial_group.result_publications.count).to eq(4)
     end
 
     it 'destroys result publications on delete' do
-      FactoryGirl.create_list(:exercise, 4, term: term)
+      FactoryBot.create_list(:exercise, 4, term: term)
       term.reload
 
-      tutorial_group = FactoryGirl.create(:tutorial_group, term: term)
+      tutorial_group = FactoryBot.create(:tutorial_group, term: term)
 
       expect do
         tutorial_group.destroy
@@ -52,7 +52,7 @@ describe TutorialGroup do
     end
 
     it 'destroys tutor_term_registrations on delete' do
-      tutorial_group = FactoryGirl.create(:tutorial_group, :with_tutor, term: term)
+      tutorial_group = FactoryBot.create(:tutorial_group, :with_tutor, term: term)
 
       expect(tutorial_group.tutor_term_registrations.count).to eq(1)
 
@@ -62,7 +62,7 @@ describe TutorialGroup do
     end
 
     it 'destroys student_term_registrations on delete' do
-      tutorial_group = FactoryGirl.create(:tutorial_group, :with_students, students_count: 3, term: term)
+      tutorial_group = FactoryBot.create(:tutorial_group, :with_students, students_count: 3, term: term)
 
       expect(tutorial_group.student_term_registrations.count).to eq(3)
 
@@ -82,9 +82,9 @@ describe TutorialGroup do
   end
 
   describe 'methods' do
-    let(:course) { FactoryGirl.create(:course) }
-    let(:term) { FactoryGirl.create(:term, course: course) }
-    let(:tutorial_group) { FactoryGirl.create(:tutorial_group, :with_tutor, :with_students, students_count: 3, term: term) }
+    let(:course) { FactoryBot.create(:course) }
+    let(:term) { FactoryBot.create(:term, course: course) }
+    let(:tutorial_group) { FactoryBot.create(:tutorial_group, :with_tutor, :with_students, students_count: 3, term: term) }
 
     pending '#student_has_submission_for_exercise?'
     pending '#results_published_for?'

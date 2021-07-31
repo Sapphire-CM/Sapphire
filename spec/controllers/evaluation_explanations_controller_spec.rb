@@ -5,11 +5,11 @@ RSpec.describe Evaluations::ExplanationsController, type: :controller do
   render_views
   include_context 'active_admin_session_context'
 
-  let(:term) { FactoryGirl.create :term }
-  let(:exercise) { FactoryGirl.create :exercise, :with_ratings, term: term }
+  let(:term) { FactoryBot.create :term }
+  let(:exercise) { FactoryBot.create :exercise, :with_ratings, term: term }
   let(:rating_group) { exercise.rating_groups.first }
 
-  let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
+  let(:submission) { FactoryBot.create(:submission, exercise: exercise) }
   let(:submission_evaluation) { submission.submission_evaluation }
   let(:evaluation) { submission_evaluation.evaluations.first }
 
@@ -47,6 +47,6 @@ RSpec.describe Evaluations::ExplanationsController, type: :controller do
       }
     end
 
-    let(:comment) { FactoryGirl.create :explanations_comment }
+    let(:comment) { FactoryBot.create :explanations_comment }
   end
 end

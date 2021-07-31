@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe GradingOverview do
-  let(:term) { FactoryGirl.create(:term, :with_tutorial_groups) }
+  let(:term) { FactoryBot.create(:term, :with_tutorial_groups) }
   let(:grading_scales) { term.grading_scales }
   let(:tutorial_groups) { term.tutorial_groups }
 
@@ -88,8 +88,8 @@ RSpec.describe GradingOverview do
     context 'concerning students of a tutorial group' do
       let(:first_tutorial_group) { tutorial_groups.first }
       let(:second_tutorial_group) { tutorial_groups.second }
-      let!(:students_of_first_tutorial_group) { FactoryGirl.create_list(:term_registration, 3, :student, term: term, tutorial_group: first_tutorial_group) }
-      let!(:students_of_second_tutorial_group) { FactoryGirl.create_list(:term_registration, 2, :student, term: term, tutorial_group: second_tutorial_group) }
+      let!(:students_of_first_tutorial_group) { FactoryBot.create_list(:term_registration, 3, :student, term: term, tutorial_group: first_tutorial_group) }
+      let!(:students_of_second_tutorial_group) { FactoryBot.create_list(:term_registration, 2, :student, term: term, tutorial_group: second_tutorial_group) }
 
       let(:mocked_overall_grading_scale_service) { double }
       let(:mocked_first_grading_scale_service) { double("First Grading Scale Service") }

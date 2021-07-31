@@ -22,12 +22,12 @@ RSpec.describe ExportsController do
     }
   end
 
-  let(:term) { FactoryGirl.create :term }
-  let(:export) { FactoryGirl.create :export, term: term }
+  let(:term) { FactoryBot.create :term }
+  let(:export) { FactoryBot.create :export, term: term }
 
   describe 'GET index' do
     it 'assigns all exports as @exports' do
-      FactoryGirl.create_list :export, 4, term: term
+      FactoryBot.create_list :export, 4, term: term
 
       get :index, params: { term_id: term.id }
 

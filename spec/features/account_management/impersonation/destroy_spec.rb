@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "Impersonation Creation" do
-  let(:account) { FactoryGirl.create(:account, :admin) }
-  let!(:student_account) { FactoryGirl.create(:account) }
+  let(:account) { FactoryBot.create(:account, :admin) }
+  let!(:student_account) { FactoryBot.create(:account) }
 
   before :each do
     sign_in account

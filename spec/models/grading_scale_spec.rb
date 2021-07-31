@@ -16,7 +16,7 @@ RSpec.describe GradingScale do
   end
 
   describe 'validations' do
-    subject { FactoryGirl.create(:grading_scale) }
+    subject { FactoryBot.create(:grading_scale) }
 
     it { is_expected.to validate_presence_of(:grade) }
     it { is_expected.to validate_uniqueness_of(:grade).scoped_to(:term_id).case_insensitive }

@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe 'Commenting' do
-  let(:term) { FactoryGirl.create(:term) }
-  let(:account) { FactoryGirl.create(:account, :admin) }
-  let!(:term_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, account: account) }
-  let!(:exercise) { FactoryGirl.create(:exercise, term: term)}
-  let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
+  let(:term) { FactoryBot.create(:term) }
+  let(:account) { FactoryBot.create(:account, :admin) }
+  let!(:term_registration) { FactoryBot.create(:term_registration, :tutor, term: term, account: account) }
+  let!(:exercise) { FactoryBot.create(:exercise, term: term)}
+  let(:submission) { FactoryBot.create(:submission, exercise: exercise) }
   let(:submission_evaluation) { submission.submission_evaluation }
 
   before :each do
@@ -70,7 +70,7 @@ RSpec.describe 'Commenting' do
   end
 
   describe 'editing a comment' do
-    let!(:comment) { FactoryGirl.create :feedback_comment, commentable: submission_evaluation }
+    let!(:comment) { FactoryBot.create :feedback_comment, commentable: submission_evaluation }
     scenario 'to another valid comment', js: true do
       visit (submission_evaluation_path(submission_evaluation))
 
@@ -116,7 +116,7 @@ RSpec.describe 'Commenting' do
   end
 
   describe 'managing' do
-    let!(:comment) { FactoryGirl.create :feedback_comment, commentable: submission_evaluation }
+    let!(:comment) { FactoryBot.create :feedback_comment, commentable: submission_evaluation }
     scenario 'deleting a comment', js: true do
       visit (submission_evaluation_path(submission_evaluation))
 

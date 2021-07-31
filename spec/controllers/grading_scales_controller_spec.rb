@@ -4,7 +4,7 @@ RSpec.describe GradingScalesController do
   render_views
   include_context 'active_admin_session_context'
 
-  let(:term) { FactoryGirl.create :term }
+  let(:term) { FactoryBot.create :term }
 
   describe 'GET index' do
     it 'renders the grading scale table' do

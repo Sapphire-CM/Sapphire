@@ -3,11 +3,11 @@ require 'rails_helper'
 RSpec.describe GradingReview::TermReviewPolicy do
   subject { described_class.new(account, record) }
 
-  let(:term) { FactoryGirl.create(:term) }
-  let(:term_registration_to_view) { FactoryGirl.create(:term_registration, :student, term: term) }
+  let(:term) { FactoryBot.create(:term) }
+  let(:term_registration_to_view) { FactoryBot.create(:term_registration, :student, term: term) }
 
   context 'as an admin' do
-    let(:account) { FactoryGirl.create(:account, :admin) }
+    let(:account) { FactoryBot.create(:account, :admin) }
 
     describe 'collections' do
       let(:record) { described_class.term_policy_record(term) }
@@ -24,8 +24,8 @@ RSpec.describe GradingReview::TermReviewPolicy do
 
   %I(lecturer tutor).each do |role|
     context "as a #{role}" do
-      let(:account) { FactoryGirl.create(:account) }
-      let!(:term_registration) { FactoryGirl.create(:term_registration, role, term: term, account: account) }
+      let(:account) { FactoryBot.create(:account) }
+      let!(:term_registration) { FactoryBot.create(:term_registration, role, term: term, account: account) }
 
       describe 'collections' do
         let(:record) { described_class.term_policy_record(term) }
@@ -42,8 +42,8 @@ RSpec.describe GradingReview::TermReviewPolicy do
   end
 
   context 'as a student' do
-    let(:account) { FactoryGirl.create(:account) }
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term, account: account) }
+    let(:account) { FactoryBot.create(:account) }
+    let!(:term_registration) { FactoryBot.create(:term_registration, :student, term: term, account: account) }
 
     describe 'collections' do
       let(:record) { described_class.term_policy_record(term) }

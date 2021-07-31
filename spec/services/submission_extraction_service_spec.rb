@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe SubmissionExtractionService do
   describe 'initialization' do
-    let(:submission_asset) { FactoryGirl.build(:submission_asset) }
+    let(:submission_asset) { FactoryBot.build(:submission_asset) }
 
     it 'requires a submission_asset as parameter' do
       service = nil
@@ -22,8 +22,8 @@ RSpec.describe SubmissionExtractionService do
   end
 
   describe '#perform!' do
-    let(:submitter) { FactoryGirl.create(:account) }
-    let(:zip_asset) { FactoryGirl.build(:submission_asset, :zip, path: "") }
+    let(:submitter) { FactoryBot.create(:account) }
+    let(:zip_asset) { FactoryBot.build(:submission_asset, :zip, path: "") }
     let(:submission) { zip_asset.submission }
 
     subject { described_class.new(zip_asset) }
@@ -110,7 +110,7 @@ RSpec.describe SubmissionExtractionService do
     end
 
     context 'with name collisions' do
-      let!(:existing_submission_asset) { FactoryGirl.create(:submission_asset, submission: submission, file: prepare_static_test_file("simple_submission.txt"), path: "") }
+      let!(:existing_submission_asset) { FactoryBot.create(:submission_asset, submission: submission, file: prepare_static_test_file("simple_submission.txt"), path: "") }
 
       it 'sets errors for failed submission assets and updates submission' do
         subject.perform!
@@ -134,8 +134,8 @@ RSpec.describe SubmissionExtractionService do
   end
 
   describe '#accumulated_filesize' do
-    let(:zip_asset) { FactoryGirl.create(:submission_asset, :zip) }
-    let(:plain_text_asset) { FactoryGirl.create(:submission_asset, :plain_text) }
+    let(:zip_asset) { FactoryBot.create(:submission_asset, :zip) }
+    let(:plain_text_asset) { FactoryBot.create(:submission_asset, :plain_text) }
 
     subject { described_class.new(zip_asset) }
 

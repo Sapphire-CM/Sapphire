@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe ImpersonationsController, type: :controller do
   include_context 'active_admin_session_context'
 
-  let(:other_account) { FactoryGirl.create(:account) }
+  let(:other_account) { FactoryBot.create(:account) }
   let!(:impersonation) { Impersonation.new }
 
   before :each do
@@ -37,7 +37,7 @@ RSpec.describe ImpersonationsController, type: :controller do
     end
 
     context "with invalid params" do
-      let(:non_admin_account) { FactoryGirl.create(:account, admin: false) }
+      let(:non_admin_account) { FactoryBot.create(:account, admin: false) }
 
       it "does not raise an error" do
         expect do
@@ -69,7 +69,7 @@ RSpec.describe ImpersonationsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let(:admin_account) { FactoryGirl.create(:account) }
+    let(:admin_account) { FactoryBot.create(:account) }
 
     before :each do
       request.env["HTTP_REFERER"] = root_path

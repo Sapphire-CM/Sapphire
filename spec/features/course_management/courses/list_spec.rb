@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe 'Courses List' do
-  let(:account) { FactoryGirl.create(:account, :admin) }
+  let(:account) { FactoryBot.create(:account, :admin) }
 
   before :each do
     sign_in account
@@ -20,7 +20,7 @@ RSpec.describe 'Courses List' do
   end
 
   context 'with courses without terms' do
-    let!(:courses) { FactoryGirl.create_list(:course, 3) }
+    let!(:courses) { FactoryBot.create_list(:course, 3) }
 
     scenario 'Viewing course titles' do
       visit root_path
@@ -74,7 +74,7 @@ RSpec.describe 'Courses List' do
   end
 
   context 'with two courses having three terms' do
-    let!(:courses) { FactoryGirl.create_list(:course, 3, :with_terms) }
+    let!(:courses) { FactoryBot.create_list(:course, 3, :with_terms) }
     let(:terms) { courses.flat_map(&:terms) }
 
     scenario 'Term table is sortable' do
@@ -113,7 +113,7 @@ RSpec.describe 'Courses List' do
       let(:course) { term.course }
       let(:term) { terms.first }
       let(:other_term) { terms.last }
-      let!(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term, account: account) }
+      let!(:term_registration) { FactoryBot.create(:term_registration, :student, term: term, account: account) }
 
       before :each do
         account.update(admin: false)

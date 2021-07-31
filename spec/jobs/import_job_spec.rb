@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe ImportJob do
 
   describe '#perform' do
-    let(:import) { FactoryGirl.create(:import) }
+    let(:import) { FactoryBot.create(:import) }
     let(:import_service) { instance_double(ImportService) }
 
     it 'fetches the given import and passes it on to the import service' do

@@ -31,8 +31,8 @@ RSpec.describe "Email Addresses List" do
     end
 
     context 'with email addresses' do
-      let!(:email_addresses) { FactoryGirl.create_list(:email_address, 3, account: account) }
-      let!(:other_email_address) { FactoryGirl.create(:email_address) }
+      let!(:email_addresses) { FactoryBot.create_list(:email_address, 3, account: account) }
+      let!(:other_email_address) { FactoryBot.create(:email_address) }
 
       scenario "Lists email addresses associated with account" do
         visit account_email_addresses_path(account)
@@ -52,7 +52,7 @@ RSpec.describe "Email Addresses List" do
   end
 
   context "as admin" do
-    let(:account) { FactoryGirl.create(:account, :admin) }
+    let(:account) { FactoryBot.create(:account, :admin) }
 
     it_behaves_like "Email Addresses List"
 
@@ -72,7 +72,7 @@ RSpec.describe "Email Addresses List" do
   end
 
   context "as ordinary user" do
-    let(:account) { FactoryGirl.create(:account) }
+    let(:account) { FactoryBot.create(:account) }
 
     it_behaves_like "Email Addresses List"
 

@@ -1,22 +1,22 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :term_registration do
-    points 0
+    points { 0 }
     account
     term
-    role :student
+    role { :student }
     tutorial_group { |term_registration| term_registration.association(:tutorial_group, term: term) }
 
     trait :student do
-      role :student
+      role { :student }
     end
 
     trait :tutor do
-      role :tutor
+      role { :tutor }
     end
 
     trait :lecturer do
-      role :lecturer
-      tutorial_group nil
+      role { :lecturer }
+      tutorial_group { nil }
     end
 
     trait :with_student_group do

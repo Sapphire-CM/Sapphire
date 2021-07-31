@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "Viewing the points overview of a term" do
-  let(:account) { FactoryGirl.create(:account, :admin) }
-  let(:term) { FactoryGirl.create(:term) }
+  let(:account) { FactoryBot.create(:account, :admin) }
+  let(:term) { FactoryBot.create(:term) }
 
   let(:described_path) { points_overview_term_path(term) }
 
@@ -23,8 +23,8 @@ RSpec.describe "Viewing the points overview of a term" do
 
   describe 'points overview' do
     context 'with tutorial groups' do
-      let!(:tutorial_groups) { FactoryGirl.create_list(:tutorial_group, 3, term: term) }
-      let!(:tutor_term_registrations) { tutorial_groups.map { |tg| FactoryGirl.create(:term_registration, :tutor, term: term, tutorial_group: tg) } }
+      let!(:tutorial_groups) { FactoryBot.create_list(:tutorial_group, 3, term: term) }
+      let!(:tutor_term_registrations) { tutorial_groups.map { |tg| FactoryBot.create(:term_registration, :tutor, term: term, tutorial_group: tg) } }
 
       scenario 'shows all tutorial groups and tutors' do
         visit described_path
@@ -48,11 +48,11 @@ RSpec.describe "Viewing the points overview of a term" do
     end
 
     context 'with student results' do
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-      let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
-      let!(:exercise) { FactoryGirl.create(:exercise, term: term) }
-      let!(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
-      let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: student_term_registration, submission: submission) }
+      let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+      let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
+      let!(:exercise) { FactoryBot.create(:exercise, term: term) }
+      let!(:submission) { FactoryBot.create(:submission, exercise: exercise) }
+      let!(:exercise_registration) { FactoryBot.create(:exercise_registration, exercise: exercise, term_registration: student_term_registration, submission: submission) }
       let(:student_account) { student_term_registration.account }
 
       scenario 'shows the student\'s results in a sortable table' do

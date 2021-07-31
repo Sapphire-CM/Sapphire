@@ -4,13 +4,13 @@ RSpec.describe GradingReviewsController do
   render_views
   include_context 'active_admin_session_context'
 
-  let(:term) { FactoryGirl.create :term }
+  let(:term) { FactoryBot.create :term }
 
   describe 'GET #index' do
-    let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
-    let!(:other_student_term_registration) { FactoryGirl.create(:term_registration, :student) }
-    let!(:tutor_term_registration) { FactoryGirl.create(:term_registration, :tutor, term: term) }
-    let!(:lecturer_term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term) }
+    let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
+    let!(:other_student_term_registration) { FactoryBot.create(:term_registration, :student) }
+    let!(:tutor_term_registration) { FactoryBot.create(:term_registration, :tutor, term: term) }
+    let!(:lecturer_term_registration) { FactoryBot.create(:term_registration, :lecturer, term: term) }
 
     it 'renders :index' do
       get :index, params: { term_id: term.id }
@@ -64,7 +64,7 @@ RSpec.describe GradingReviewsController do
   end
 
   describe 'GET #show' do
-    let(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
+    let(:term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
 
     it 'renders show template' do
       get :show, params: { term_id: term.id, id: term_registration.id }

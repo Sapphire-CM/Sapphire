@@ -3,11 +3,11 @@ require 'rails_helper'
 RSpec.describe WelcomeNotificationPolicy do
   subject { described_class.new(account, record) }
 
-  let(:term) { FactoryGirl.create(:term) }
+  let(:term) { FactoryBot.create(:term) }
   let(:record) { described_class.term_policy_record(term) }
 
   context 'as an admin' do
-    let(:account) { FactoryGirl.create(:account, :admin) }
+    let(:account) { FactoryBot.create(:account, :admin) }
 
     describe 'members' do
       it { is_expected.to permit_authorization(:create) }
@@ -16,8 +16,8 @@ RSpec.describe WelcomeNotificationPolicy do
 
 
   context "as a lecturer" do
-    let(:account) { FactoryGirl.create(:account) }
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term, account: account) }
+    let(:account) { FactoryBot.create(:account) }
+    let!(:term_registration) { FactoryBot.create(:term_registration, :lecturer, term: term, account: account) }
 
     describe 'members' do
       it { is_expected.to permit_authorization(:create) }
@@ -25,8 +25,8 @@ RSpec.describe WelcomeNotificationPolicy do
   end
 
   context "as a tutor" do
-    let(:account) { FactoryGirl.create(:account) }
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, account: account) }
+    let(:account) { FactoryBot.create(:account) }
+    let!(:term_registration) { FactoryBot.create(:term_registration, :tutor, term: term, account: account) }
 
     describe 'members' do
       it { is_expected.not_to permit_authorization(:create) }
@@ -34,8 +34,8 @@ RSpec.describe WelcomeNotificationPolicy do
   end
 
   context 'as a student' do
-    let(:account) { FactoryGirl.create(:account) }
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term, account: account) }
+    let(:account) { FactoryBot.create(:account) }
+    let!(:term_registration) { FactoryBot.create(:term_registration, :student, term: term, account: account) }
 
     describe 'members' do
       it { is_expected.not_to permit_authorization(:create) }

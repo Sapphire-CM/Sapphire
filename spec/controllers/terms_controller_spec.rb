@@ -22,9 +22,9 @@ RSpec.describe TermsController do
     }
   end
 
-  let(:course) { FactoryGirl.create :course }
+  let(:course) { FactoryBot.create :course }
 
-  let(:term) { FactoryGirl.create :term, course: course }
+  let(:term) { FactoryBot.create :term, course: course }
 
   describe 'GET show' do
     it 'assigns the requested term as @term' do
@@ -95,8 +95,8 @@ RSpec.describe TermsController do
       end
 
       it 'creates and copies a new Term in the background' do
-        source_term = FactoryGirl.create(:term, course: course)
-        FactoryGirl.create_list :exercise, 4, :with_ratings, term: source_term
+        source_term = FactoryBot.create(:term, course: course)
+        FactoryBot.create_list :exercise, 4, :with_ratings, term: source_term
 
         valid_attributes[:term][:course_id] = course.id
         valid_attributes[:term][:source_term_id] = source_term.id
@@ -120,7 +120,7 @@ RSpec.describe TermsController do
 
     describe 'with invalid params' do
       it 'assigns a newly created but unsaved term as @term' do
-        FactoryGirl.create :term, course: course, title: invalid_attributes[:term][:title]
+        FactoryBot.create :term, course: course, title: invalid_attributes[:term][:title]
         invalid_attributes[:term][:course_id] = course.id
 
         post :create, params: invalid_attributes, xhr: true
@@ -159,7 +159,7 @@ RSpec.describe TermsController do
 
     describe 'with invalid params' do
       it 'assigns the requested term as @term' do
-        FactoryGirl.create :term, course: course, title: invalid_attributes[:term][:title]
+        FactoryBot.create :term, course: course, title: invalid_attributes[:term][:title]
         invalid_attributes[:id] = term.id
 
         put :update, params: invalid_attributes

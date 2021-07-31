@@ -45,13 +45,13 @@ RSpec.describe GradingReview::SubmissionReview do
     let(:submission_evaluation) { instance_double(SubmissionEvaluation) }
 
     describe '.find_by_account_and_exercise' do
-      let(:term) { FactoryGirl.create(:term) }
+      let(:term) { FactoryBot.create(:term) }
       let(:account) { term_registration.account }
-      let(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
-      let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-      let(:other_exercise) { FactoryGirl.create(:exercise, term: term) }
-      let(:submission) { FactoryGirl.create(:submission) }
-      let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, submission: submission, term_registration: term_registration) }
+      let(:term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
+      let(:exercise) { FactoryBot.create(:exercise, term: term) }
+      let(:other_exercise) { FactoryBot.create(:exercise, term: term) }
+      let(:submission) { FactoryBot.create(:submission) }
+      let!(:exercise_registration) { FactoryBot.create(:exercise_registration, exercise: exercise, submission: submission, term_registration: term_registration) }
 
       it 'returns a new object if exercise registration does exist' do
         subject = described_class.find_by_account_and_exercise(account, exercise)
@@ -159,12 +159,12 @@ RSpec.describe GradingReview::SubmissionReview do
     end
 
     describe '#published?' do
-      let(:term) { FactoryGirl.create(:term) }
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-      let(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
-      let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-      let(:submission) { FactoryGirl.create(:submission, exercise: exercise)}
-      let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, submission: submission, exercise: exercise, term_registration: term_registration) }
+      let(:term) { FactoryBot.create(:term) }
+      let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+      let(:term_registration) { FactoryBot.create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
+      let(:exercise) { FactoryBot.create(:exercise, term: term) }
+      let(:submission) { FactoryBot.create(:submission, exercise: exercise)}
+      let!(:exercise_registration) { FactoryBot.create(:exercise_registration, submission: submission, exercise: exercise, term_registration: term_registration) }
 
       let(:result_publication) { exercise.result_publications.first }
 

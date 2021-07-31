@@ -4,8 +4,8 @@ RSpec.describe EventsController, type: :controller do
   describe 'GET #index' do
     include_context 'active_admin_session_context'
 
-    let(:term) { FactoryGirl.create(:term) }
-    let(:another_term) { FactoryGirl.create(:term) }
+    let(:term) { FactoryBot.create(:term) }
+    let(:another_term) { FactoryBot.create(:term) }
 
     it 'renders a 404 response if a format other than json is requested' do
       get :index, params: { term_id: term.id }, format: :html
@@ -14,8 +14,8 @@ RSpec.describe EventsController, type: :controller do
     end
 
     describe 'scoping' do
-      let!(:events) { FactoryGirl.create_list(:event, 5, term: term) }
-      let!(:other_events) { FactoryGirl.create_list(:event, 5, term: another_term) }
+      let!(:events) { FactoryBot.create_list(:event, 5, term: term) }
+      let!(:other_events) { FactoryBot.create_list(:event, 5, term: another_term) }
 
       it 'only assigns events of term' do
         get :index, params: { term_id: term.id }, format: :json
@@ -27,7 +27,7 @@ RSpec.describe EventsController, type: :controller do
 
     describe 'paging' do
       let!(:events) do
-        (1..6).map { |i| FactoryGirl.create_list(:event, 5, term: term, created_at: Time.now - i * 10.minutes, updated_at: Time.now - i * 10.minutes) }.flatten
+        (1..6).map { |i| FactoryBot.create_list(:event, 5, term: term, created_at: Time.now - i * 10.minutes, updated_at: Time.now - i * 10.minutes) }.flatten
       end
 
       it 'assigns @events with the first page of events when no page param is given' do

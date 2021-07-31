@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe Terms::AccountPolicy do
   subject { described_class.new(account, record) }
 
-  let(:term) { FactoryGirl.create(:term) }
-  let(:term_registration_to_view) { FactoryGirl.create(:term_registration, :student, term: term) }
+  let(:term) { FactoryBot.create(:term) }
+  let(:term_registration_to_view) { FactoryBot.create(:term_registration, :student, term: term) }
 
   shared_examples "full permissions" do
     describe 'collections' do
@@ -23,28 +23,28 @@ RSpec.describe Terms::AccountPolicy do
   end
 
   context 'as an admin' do
-    let(:account) { FactoryGirl.create(:account, :admin) }
+    let(:account) { FactoryBot.create(:account, :admin) }
 
     it_behaves_like "full permissions"
   end
 
   context 'as a lecturer' do
-    let(:account) { FactoryGirl.create(:account) }
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term, account: account) }
+    let(:account) { FactoryBot.create(:account) }
+    let!(:term_registration) { FactoryBot.create(:term_registration, :lecturer, term: term, account: account) }
 
     it_behaves_like "full permissions"
   end
 
   context 'as a tutor' do
-    let(:account) { FactoryGirl.create(:account) }
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, account: account) }
+    let(:account) { FactoryBot.create(:account) }
+    let!(:term_registration) { FactoryBot.create(:term_registration, :tutor, term: term, account: account) }
 
     it_behaves_like "no permissions"
   end
 
   context 'as a student' do
-    let(:account) { FactoryGirl.create(:account) }
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term, account: account) }
+    let(:account) { FactoryBot.create(:account) }
+    let!(:term_registration) { FactoryBot.create(:term_registration, :student, term: term, account: account) }
 
     it_behaves_like "no permissions"
   end

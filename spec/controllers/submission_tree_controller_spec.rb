@@ -44,9 +44,9 @@ RSpec.describe SubmissionTreeController, type: :controller do
   describe 'DELETE #destroy' do
     let!(:submission_assets) do
       [
-        FactoryGirl.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt", rename_to: "top-level.txt")),
-        FactoryGirl.create(:submission_asset, submission: submission, path: "/test", file: prepare_static_test_file("simple_submission.txt", rename_to: "test.txt")),
-        FactoryGirl.create(:submission_asset, submission: submission, path: "/test/folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "test2.txt"))
+        FactoryBot.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt", rename_to: "top-level.txt")),
+        FactoryBot.create(:submission_asset, submission: submission, path: "/test", file: prepare_static_test_file("simple_submission.txt", rename_to: "test.txt")),
+        FactoryBot.create(:submission_asset, submission: submission, path: "/test/folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "test2.txt"))
       ]
     end
 

@@ -4,13 +4,13 @@ RSpec.describe ServicesController do
   render_views
   include_context 'active_admin_session_context'
 
-  let(:term) { FactoryGirl.create :term }
-  let(:exercise) { FactoryGirl.create :exercise, term: term }
-  let(:service) { FactoryGirl.create :website_fetcher_service, exercise: exercise }
+  let(:term) { FactoryBot.create :term }
+  let(:exercise) { FactoryBot.create :exercise, term: term }
+  let(:service) { FactoryBot.create :website_fetcher_service, exercise: exercise }
 
   describe 'GET index' do
     it 'assigns all services as @services' do
-      FactoryGirl.create_list :website_fetcher_service, 4, exercise: exercise
+      FactoryBot.create_list :website_fetcher_service, 4, exercise: exercise
 
       get :index, params: { term_id: term.id, exercise_id: exercise.id }
 

@@ -26,11 +26,11 @@ RSpec.describe AccountsController do
     }
   end
 
-  let(:account) { FactoryGirl.create :account }
+  let(:account) { FactoryBot.create :account }
 
   describe 'GET index' do
     it 'assigns all accounts as @accounts' do
-      FactoryGirl.create_list :account, 4
+      FactoryBot.create_list :account, 4
 
       get :index
 

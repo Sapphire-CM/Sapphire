@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe 'Viewing results' do
-  let(:course) { FactoryGirl.create(:course) }
-  let(:term) { FactoryGirl.create(:term, course: course, title: 'Fancy Term') }
-  let(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
+  let(:course) { FactoryBot.create(:course) }
+  let(:term) { FactoryBot.create(:term, course: course, title: 'Fancy Term') }
+  let(:term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
   let!(:account) { term_registration.account }
-  let!(:exercise) { FactoryGirl.create(:exercise, title: 'Fancy Exercise', term: term) }
-  let(:submission) { FactoryGirl.create(:submission, exercise: exercise, submitter: account) }
-  let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, submission: submission, term_registration: term_registration, exercise: exercise) }
+  let!(:exercise) { FactoryBot.create(:exercise, title: 'Fancy Exercise', term: term) }
+  let(:submission) { FactoryBot.create(:submission, exercise: exercise, submitter: account) }
+  let!(:exercise_registration) { FactoryBot.create(:exercise_registration, submission: submission, term_registration: term_registration, exercise: exercise) }
 
 
   before :each do
@@ -39,7 +39,7 @@ RSpec.describe 'Viewing results' do
   end
 
   describe 'results table' do
-    let!(:rating_groups) { FactoryGirl.create_list(:rating_group, 2, :with_ratings, exercise: exercise, points: 12, max_points: 12, enable_range_points: false) }
+    let!(:rating_groups) { FactoryBot.create_list(:rating_group, 2, :with_ratings, exercise: exercise, points: 12, max_points: 12, enable_range_points: false) }
 
     let(:rating_group) { rating_groups.last }
     let(:rating) { rating_group.ratings.reload.first }

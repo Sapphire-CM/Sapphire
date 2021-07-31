@@ -27,14 +27,14 @@ RSpec.describe StudentGroup do
 
   describe 'callbacks' do
     describe 'moving students' do
-      let(:term) { FactoryGirl.create(:term) }
-      let(:other_tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-      let(:other_student_group) { FactoryGirl.create(:student_group, term: term, tutorial_group: other_tutorial_group) }
-      let!(:term_registrations_of_other_student_group) { FactoryGirl.create_list(:term_registration, 3, :student, term: term, tutorial_group: other_tutorial_group, student_group: other_student_group) }
+      let(:term) { FactoryBot.create(:term) }
+      let(:other_tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+      let(:other_student_group) { FactoryBot.create(:student_group, term: term, tutorial_group: other_tutorial_group) }
+      let!(:term_registrations_of_other_student_group) { FactoryBot.create_list(:term_registration, 3, :student, term: term, tutorial_group: other_tutorial_group, student_group: other_student_group) }
 
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
+      let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
 
-      subject { FactoryGirl.create(:student_group, tutorial_group: tutorial_group, term: term) }
+      subject { FactoryBot.create(:student_group, tutorial_group: tutorial_group, term: term) }
 
       it 'sets the tutorial group of moved term registrations' do
         term_registrations_of_other_student_group.each do |term_registration|
@@ -54,10 +54,10 @@ RSpec.describe StudentGroup do
 
   describe 'scoping' do
     describe '.for_term' do
-      let(:term) { FactoryGirl.create(:term) }
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-      let!(:student_groups_for_term) { FactoryGirl.create_list(:student_group, 3, term: term, tutorial_group: tutorial_group) }
-      let!(:other_student_groups) { FactoryGirl.create_list(:student_group, 3) }
+      let(:term) { FactoryBot.create(:term) }
+      let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+      let!(:student_groups_for_term) { FactoryBot.create_list(:student_group, 3, term: term, tutorial_group: tutorial_group) }
+      let!(:other_student_groups) { FactoryBot.create_list(:student_group, 3) }
 
       it 'only returns the student groups for the given term' do
         expect(described_class.for_term(term)).to match_array(student_groups_for_term)
@@ -65,11 +65,11 @@ RSpec.describe StudentGroup do
     end
 
     describe '.for_tutorial_group' do
-      let(:term) { FactoryGirl.create(:term) }
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-      let(:other_tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-      let!(:student_groups_for_tutorial_group) { FactoryGirl.create_list(:student_group, 3, term: term, tutorial_group: tutorial_group) }
-      let!(:other_student_groups) { FactoryGirl.create_list(:student_group, 3, term: term, tutorial_group: other_tutorial_group) }
+      let(:term) { FactoryBot.create(:term) }
+      let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+      let(:other_tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+      let!(:student_groups_for_tutorial_group) { FactoryBot.create_list(:student_group, 3, term: term, tutorial_group: tutorial_group) }
+      let!(:other_student_groups) { FactoryBot.create_list(:student_group, 3, term: term, tutorial_group: other_tutorial_group) }
 
       it 'only returns the student groups for the given tutorial group' do
         expect(described_class.for_tutorial_group(tutorial_group)).to match_array(student_groups_for_tutorial_group)
@@ -77,9 +77,9 @@ RSpec.describe StudentGroup do
     end
 
     describe '.for_account' do
-      let(:account) { FactoryGirl.create(:account) }
-      let!(:student_groups_for_account) { FactoryGirl.create_list(:student_group_for_student, 3, student: account) }
-      let!(:other_student_groups) { FactoryGirl.create_list(:student_group_for_student, 3) }
+      let(:account) { FactoryBot.create(:account) }
+      let!(:student_groups_for_account) { FactoryBot.create_list(:student_group_for_student, 3, student: account) }
+      let!(:other_student_groups) { FactoryBot.create_list(:student_group_for_student, 3) }
 
       it 'only returns student groups associated with the given account' do
         expect(described_class.for_account(account)).to match_array(student_groups_for_account)

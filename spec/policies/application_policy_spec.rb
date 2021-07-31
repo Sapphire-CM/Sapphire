@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ApplicationPolicy do
   let(:record) { "string" }
-  let(:user) { FactoryGirl.build(:account) }
+  let(:user) { FactoryBot.build(:account) }
 
   subject { described_class.new(user, record) }
 

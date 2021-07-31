@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe GradingReview::TermReview do
-  let(:term) { FactoryGirl.create(:term) }
-  let(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
+  let(:term) { FactoryBot.create(:term) }
+  let(:term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
 
   describe 'initialization' do
     it 'sets eager_load_evaluations to falsey' do
@@ -25,7 +25,7 @@ RSpec.describe GradingReview::TermReview do
     subject { described_class.new(term_registration: term_registration) }
 
     describe '.find_with_term_and_term_registration_id' do
-      let(:term_registration) { FactoryGirl.create(:term_registration) }
+      let(:term_registration) { FactoryBot.create(:term_registration) }
       let(:term) { term_registration.term }
 
       it 'returns a grading review and sets student' do
@@ -36,7 +36,7 @@ RSpec.describe GradingReview::TermReview do
 
       %I(lecturer tutor).each do |role|
         context do
-          let(:term_registration) { FactoryGirl.create(:term_registration, role) }
+          let(:term_registration) { FactoryBot.create(:term_registration, role) }
 
           it "raises ActiveRecord::RecordNotFound if term_registration belongs to a #{role}" do
             expect do
@@ -54,11 +54,11 @@ RSpec.describe GradingReview::TermReview do
     end
 
     describe '.find_with_term_and_account' do
-      let(:student_term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
-      let(:tutor_term_registration) { FactoryGirl.create(:term_registration, :tutor, term: term) }
-      let(:lecturer_term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term) }
+      let(:student_term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
+      let(:tutor_term_registration) { FactoryBot.create(:term_registration, :tutor, term: term) }
+      let(:lecturer_term_registration) { FactoryBot.create(:term_registration, :lecturer, term: term) }
 
-      let(:term) { FactoryGirl.create(:term) }
+      let(:term) { FactoryBot.create(:term) }
 
       it 'returns a grading review and sets student' do
         subject = described_class.find_with_term_and_account(term, student_term_registration.account)
@@ -88,10 +88,10 @@ RSpec.describe GradingReview::TermReview do
     end
 
     describe '#submission_reviews' do
-      let(:exercises) { FactoryGirl.create_list(:exercise, 3, term: term) }
+      let(:exercises) { FactoryBot.create_list(:exercise, 3, term: term) }
 
-      let(:submissions) { exercises.map { |exercise| FactoryGirl.create(:submission, exercise: exercise) } }
-      let!(:exercise_registrations) { submissions.map { |submission| FactoryGirl.create(:exercise_registration, term_registration: term_registration, submission: submission, exercise: submission.exercise) }  }
+      let(:submissions) { exercises.map { |exercise| FactoryBot.create(:submission, exercise: exercise) } }
+      let!(:exercise_registrations) { submissions.map { |submission| FactoryBot.create(:exercise_registration, term_registration: term_registration, submission: submission, exercise: submission.exercise) }  }
 
       it 'returns a collection of GradingReview::SubmissionReview objects' do
         subject.submission_reviews.each do |submission_review|
@@ -122,7 +122,7 @@ RSpec.describe GradingReview::TermReview do
       end
 
       context "with exercises containing ratings" do
-        let(:exercises) { FactoryGirl.create_list(:exercise, 3, :with_ratings, term: term) }
+        let(:exercises) { FactoryBot.create_list(:exercise, 3, :with_ratings, term: term) }
 
         it 'eager loads evaluations if requested' do
           subject.eager_load_evaluations!
@@ -160,9 +160,9 @@ RSpec.describe GradingReview::TermReview do
     end
 
     describe '#published_points' do
-      let(:exercises) { FactoryGirl.create_list(:exercise, 3, term: term) }
-      let(:submissions) { exercises.map { |exercise| FactoryGirl.create(:submission, exercise: exercise) } }
-      let!(:exercise_registrations) { submissions.map { |submission| FactoryGirl.create(:exercise_registration, term_registration: term_registration, submission: submission, exercise: submission.exercise) }  }
+      let(:exercises) { FactoryBot.create_list(:exercise, 3, term: term) }
+      let(:submissions) { exercises.map { |exercise| FactoryBot.create(:submission, exercise: exercise) } }
+      let!(:exercise_registrations) { submissions.map { |submission| FactoryBot.create(:exercise_registration, term_registration: term_registration, submission: submission, exercise: submission.exercise) }  }
 
       it "sums up the points of published submissions" do
         exercises.second.result_publications.each(&:publish!)

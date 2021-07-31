@@ -20,12 +20,12 @@ RSpec.describe EmailAddressesController do
     }
   end
 
-  let(:account) { FactoryGirl.create :account }
-  let(:email_address) { FactoryGirl.create :email_address, account: account }
+  let(:account) { FactoryBot.create :account }
+  let(:email_address) { FactoryBot.create :email_address, account: account }
 
   describe 'GET index' do
     it 'assigns all accounts as @accounts' do
-      FactoryGirl.create_list :email_address, 4, account: account
+      FactoryBot.create_list :email_address, 4, account: account
 
       get :index, params: { account_id: account.id }
 

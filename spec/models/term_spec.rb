@@ -50,8 +50,8 @@ describe Term do
 
   describe 'callbacks' do
     describe 'grading_scales' do
-      let(:course) { FactoryGirl.create(:course) }
-      subject { FactoryGirl.create(:term, course: course, title: 'new term') }
+      let(:course) { FactoryBot.create(:course) }
+      subject { FactoryBot.create(:term, course: course, title: 'new term') }
 
       it 'creates all grading_scales with after_create' do
         expect(subject.grading_scales.length).to eq(6)
@@ -66,41 +66,41 @@ describe Term do
   end
 
   context 'ordinary account' do
-    let(:account) { FactoryGirl.create(:account) }
+    let(:account) { FactoryBot.create(:account) }
 
     it 'scopes all terms associated with an account' do
-      terms = FactoryGirl.create_list(:term, 5)
+      terms = FactoryBot.create_list(:term, 5)
 
       t = terms[0]
-      tg = FactoryGirl.create(:tutorial_group, term: t)
-      FactoryGirl.create(:term_registration, :tutor, account: account, term: t, tutorial_group: tg)
+      tg = FactoryBot.create(:tutorial_group, term: t)
+      FactoryBot.create(:term_registration, :tutor, account: account, term: t, tutorial_group: tg)
 
       t = terms[1]
-      FactoryGirl.create(:term_registration, :lecturer, account: account, term: t)
+      FactoryBot.create(:term_registration, :lecturer, account: account, term: t)
 
       t = terms[2]
-      tg = FactoryGirl.create(:tutorial_group, term: t)
-      FactoryGirl.create(:term_registration, :student, account: account, term: t, tutorial_group: tg)
+      tg = FactoryBot.create(:tutorial_group, term: t)
+      FactoryBot.create(:term_registration, :student, account: account, term: t, tutorial_group: tg)
 
       expect(Term.associated_with(account).sort_by(&:id)).to eq(terms.first(3))
     end
 
     it 'is able to determine whether a lecturer account is associated with this term' do
-      term = FactoryGirl.create(:term)
+      term = FactoryBot.create(:term)
 
       expect(term).not_to be_associated_with(account)
-      FactoryGirl.create(:term_registration, :lecturer, account: account, term: term)
+      FactoryBot.create(:term_registration, :lecturer, account: account, term: term)
 
       expect(term).to be_associated_with(account)
     end
 
     %I(tutor student).each do |role|
       it "is able to determine whether a #{role} account is associated with this term" do
-        term = FactoryGirl.create(:term)
+        term = FactoryBot.create(:term)
 
         expect(term).not_to be_associated_with(account)
-        tg = FactoryGirl.create(:tutorial_group, term: term)
-        FactoryGirl.create(:term_registration, role, account: account, term: term, tutorial_group: tg)
+        tg = FactoryBot.create(:tutorial_group, term: term)
+        FactoryBot.create(:term_registration, role, account: account, term: term, tutorial_group: tg)
 
         expect(term).to be_associated_with(account)
       end

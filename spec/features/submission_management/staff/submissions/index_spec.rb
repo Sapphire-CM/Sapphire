@@ -3,10 +3,10 @@ require 'features/course_management/behaviours/exercise_side_navigation_behaviou
 require 'features/course_management/behaviours/exercise_sub_navigation_behaviour'
 
 RSpec.feature 'Managing submissions as a staff member' do
-  let(:account) { FactoryGirl.create(:account) }
-  let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-  let(:term) { FactoryGirl.create(:term) }
-  let!(:exercise) { FactoryGirl.create(:exercise, term: term) }
+  let(:account) { FactoryBot.create(:account) }
+  let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+  let(:term) { FactoryBot.create(:term) }
+  let!(:exercise) { FactoryBot.create(:exercise, term: term) }
 
   let(:described_path) { exercise_submissions_path(exercise) }
 
@@ -26,7 +26,7 @@ RSpec.feature 'Managing submissions as a staff member' do
   end
 
   context 'as tutor' do
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :tutor, account: account, term: term, tutorial_group: tutorial_group) }
+    let!(:term_registration) { FactoryBot.create(:term_registration, :tutor, account: account, term: term, tutorial_group: tutorial_group) }
 
     scenario 'navigating to the submissions page' do
       visit root_path
@@ -39,26 +39,26 @@ RSpec.feature 'Managing submissions as a staff member' do
     end
 
     context 'existing submissions for group exercise' do
-      let(:another_tutorial_group) { FactoryGirl.create(:tutorial_group, :with_tutor, term: term) }
+      let(:another_tutorial_group) { FactoryBot.create(:tutorial_group, :with_tutor, term: term) }
       let(:another_tutor) { another_tutorial_group.tutor_accounts.first }
 
-      let!(:term_registrations) { FactoryGirl.create_list(:term_registration, 5, :with_student_group, term: term, tutorial_group: tutorial_group) }
-      let!(:other_term_registrations) { FactoryGirl.create_list(:term_registration, 2, term: term, tutorial_group: another_tutorial_group) }
+      let!(:term_registrations) { FactoryBot.create_list(:term_registration, 5, :with_student_group, term: term, tutorial_group: tutorial_group) }
+      let!(:other_term_registrations) { FactoryBot.create_list(:term_registration, 2, term: term, tutorial_group: another_tutorial_group) }
 
-      let!(:submissions) { FactoryGirl.create_list(:submission, 5, :spreaded_submission_time, exercise: exercise) }
-      let!(:other_submissions) { FactoryGirl.create_list(:submission, 2, :spreaded_submission_time, exercise: exercise) }
-      let!(:unmatched_submissions) { FactoryGirl.create_list(:submission, 2, :spreaded_submission_time, exercise: exercise) }
+      let!(:submissions) { FactoryBot.create_list(:submission, 5, :spreaded_submission_time, exercise: exercise) }
+      let!(:other_submissions) { FactoryBot.create_list(:submission, 2, :spreaded_submission_time, exercise: exercise) }
+      let!(:unmatched_submissions) { FactoryBot.create_list(:submission, 2, :spreaded_submission_time, exercise: exercise) }
 
       let(:student_groups) { term_registrations.map(&:student_group) }
 
       let!(:exercise_registrations) {
         term_registrations.zip(submissions).map { |tr, s|
-          FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: tr, submission: s)
+          FactoryBot.create(:exercise_registration, exercise: exercise, term_registration: tr, submission: s)
         }
       }
       let!(:other_exercise_registrations) {
         other_term_registrations.zip(other_submissions).map { |tr, s|
-          FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: tr, submission: s)
+          FactoryBot.create(:exercise_registration, exercise: exercise, term_registration: tr, submission: s)
         }
       }
 
@@ -157,9 +157,9 @@ RSpec.feature 'Managing submissions as a staff member' do
     end
 
     describe 'table contents' do
-      let!(:submission) { FactoryGirl.create(:submission, :active, exercise: exercise, submitted_at: submission_date, exercise_attempt: exercise_attempt) }
-      let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, :active, exercise: exercise, submission: submission, term_registration: student_term_registration) }
-      let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, :with_student_group, term: term, tutorial_group: tutorial_group) }
+      let!(:submission) { FactoryBot.create(:submission, :active, exercise: exercise, submitted_at: submission_date, exercise_attempt: exercise_attempt) }
+      let!(:exercise_registration) { FactoryBot.create(:exercise_registration, :active, exercise: exercise, submission: submission, term_registration: student_term_registration) }
+      let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, :with_student_group, term: term, tutorial_group: tutorial_group) }
 
       let(:submission_date) { 2.days.ago }
       let(:evaluation_date) { 1.day.ago }
@@ -170,7 +170,7 @@ RSpec.feature 'Managing submissions as a staff member' do
       let(:exercise_attempt) { exercise.attempts.first }
 
       context 'solitary submissions' do
-        let!(:exercise) { FactoryGirl.create(:exercise, :solitary_exercise, term: term) }
+        let!(:exercise) { FactoryBot.create(:exercise, :solitary_exercise, term: term) }
 
         scenario 'viewing submission meta data' do
           submission_evaluation.update(evaluation_result: 30, evaluated_at: evaluation_date)
@@ -190,7 +190,7 @@ RSpec.feature 'Managing submissions as a staff member' do
       end
 
       context 'group submissions' do
-        let!(:exercise) { FactoryGirl.create(:exercise, :group_exercise, term: term) }
+        let!(:exercise) { FactoryBot.create(:exercise, :group_exercise, term: term) }
 
         scenario 'viewing submission meta data' do
           submission_evaluation.update(evaluation_result: 30, evaluated_at: evaluation_date)
@@ -208,7 +208,7 @@ RSpec.feature 'Managing submissions as a staff member' do
       end
 
       context 'exercise with multiple attempts' do
-        let!(:exercise) { FactoryGirl.create(:exercise, :multiple_attempts, term: term) }
+        let!(:exercise) { FactoryBot.create(:exercise, :multiple_attempts, term: term) }
 
         scenario 'Shows attempt' do
           visit described_path
@@ -220,11 +220,11 @@ RSpec.feature 'Managing submissions as a staff member' do
       end
 
       context 'inactive submissions' do
-        let(:exercise_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
-        let(:student_term_registration) { FactoryGirl.create(:term_registration, :student, :with_student_group, term: term, tutorial_group: tutorial_group) }
+        let(:exercise_attempt) { FactoryBot.create(:exercise_attempt, exercise: exercise) }
+        let(:student_term_registration) { FactoryBot.create(:term_registration, :student, :with_student_group, term: term, tutorial_group: tutorial_group) }
 
-        let!(:inactive_submission) { FactoryGirl.create(:submission, :inactive, exercise: exercise, submitted_at: submission_date, exercise_attempt: exercise_attempt) }
-        let!(:inactive_exercise_registration) { FactoryGirl.create(:exercise_registration, :inactive, exercise: exercise, submission: inactive_submission, term_registration: student_term_registration) }
+        let!(:inactive_submission) { FactoryBot.create(:submission, :inactive, exercise: exercise, submitted_at: submission_date, exercise_attempt: exercise_attempt) }
+        let!(:inactive_exercise_registration) { FactoryBot.create(:exercise_registration, :inactive, exercise: exercise, submission: inactive_submission, term_registration: student_term_registration) }
 
         scenario 'indicate inactiveness' do
           visit described_path
@@ -237,7 +237,7 @@ RSpec.feature 'Managing submissions as a staff member' do
     end
 
     context 'exercise allowing bulk submission management' do
-      let(:exercise) { FactoryGirl.create(:exercise, term: term, enable_bulk_submission_management: true) }
+      let(:exercise) { FactoryBot.create(:exercise, term: term, enable_bulk_submission_management: true) }
 
       scenario 'shows link to bulk operations' do
         visit described_path
@@ -247,7 +247,7 @@ RSpec.feature 'Managing submissions as a staff member' do
     end
 
     context 'exercise disallowing bulk submission management' do
-      let(:exercise) { FactoryGirl.create(:exercise, term: term, enable_bulk_submission_management: false) }
+      let(:exercise) { FactoryBot.create(:exercise, term: term, enable_bulk_submission_management: false) }
 
       scenario 'shows link to bulk operations' do
         visit described_path

@@ -4,9 +4,9 @@ RSpec.describe ResultPublicationsController do
   render_views
   include_context 'active_admin_session_context'
 
-  let(:term) { FactoryGirl.create :term }
-  let!(:exercise) { FactoryGirl.create :exercise, term: term }
-  let!(:tutorial_groups) { FactoryGirl.create_list :tutorial_group, 4, term: term }
+  let(:term) { FactoryBot.create :term }
+  let!(:exercise) { FactoryBot.create :exercise, term: term }
+  let!(:tutorial_groups) { FactoryBot.create_list :tutorial_group, 4, term: term }
 
   describe 'GET index' do
     it 'assigns all result_publications as @result_publications' do

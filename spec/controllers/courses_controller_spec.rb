@@ -22,11 +22,11 @@ RSpec.describe CoursesController do
     }
   end
 
-  let(:course) { FactoryGirl.create :course }
+  let(:course) { FactoryBot.create :course }
 
   describe 'GET index' do
     it 'assigns all courses as @courses' do
-      FactoryGirl.create_list :course, 4
+      FactoryBot.create_list :course, 4
 
       get :index
 
@@ -60,7 +60,7 @@ RSpec.describe CoursesController do
 
     describe 'with invalid params' do
       it 'assigns a newly created but unsaved course as @course' do
-        FactoryGirl.create :course, title: invalid_attributes[:course][:title]
+        FactoryBot.create :course, title: invalid_attributes[:course][:title]
 
         post :create, params: invalid_attributes, xhr: true
 
@@ -100,7 +100,7 @@ RSpec.describe CoursesController do
 
     describe 'with invalid params' do
       it 'assigns the requested course as @course' do
-        FactoryGirl.create :course, title: invalid_attributes[:course][:title]
+        FactoryBot.create :course, title: invalid_attributes[:course][:title]
         invalid_attributes[:id] = course.id
 
         put :update, params: invalid_attributes, xhr: true

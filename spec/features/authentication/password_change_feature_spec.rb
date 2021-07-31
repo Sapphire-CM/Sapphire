@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Password Change Feature' do
   context 'as student' do
-    let(:current_account) { FactoryGirl.create :account }
+    let(:current_account) { FactoryBot.create :account }
 
     before :each do
       current_account.update! password: 'secret123', password_confirmation: 'secret123'

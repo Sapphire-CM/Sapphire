@@ -1,13 +1,13 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :submission do
     submitted_at { Time.now }
     exercise
     association :submitter, factory: :account
-    active true
+    active { true }
 
     trait :with_student_group do
       transient do
-        student_group_title 'G1-01'
+        student_group_title { 'G1-01' }
       end
 
       before(:create) do |instance, evaluator|
@@ -17,7 +17,7 @@ FactoryGirl.define do
 
     trait :with_exercise_registrations do
       transient do
-        exercise_registrations_count 3
+        exercise_registrations_count { 3 }
       end
 
       after(:create) do |instance, evaluator|
@@ -27,7 +27,7 @@ FactoryGirl.define do
 
     trait :evaluated do
       transient do
-        evaluator { FactoryGirl.create(:account, :admin) }
+        evaluator { FactoryBot.create(:account, :admin) }
       end
 
       after(:create) do |instance, evaluator|
@@ -36,11 +36,11 @@ FactoryGirl.define do
     end
 
     trait :active do
-      active true
+      active { true }
     end
 
     trait :inactive do
-      active false
+      active { false }
     end
 
     trait :without_submission_evaluation do
@@ -60,7 +60,7 @@ FactoryGirl.define do
 
     trait :with_basic_structure do
       transient do
-        files %w(file1.txt nested/file2.txt nested/file3.txt nested/further/file4.txt very/deeply/nested/folder/file5.txt)
+        files { %w(file1.txt nested/file2.txt nested/file3.txt nested/further/file4.txt very/deeply/nested/folder/file5.txt) }
       end
 
       after(:create) do |instance, evaluator|

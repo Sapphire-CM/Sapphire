@@ -2,11 +2,11 @@ require 'rails_helper'
 
 RSpec.describe TermCopyJob do
   describe '#perform' do
-    let(:term) { FactoryGirl.create(:term) }
-    let(:source_term) { FactoryGirl.create(:term, course: term.course) }
+    let(:term) { FactoryBot.create(:term) }
+    let(:source_term) { FactoryBot.create(:term, course: term.course) }
     let(:options) { {option: true} }
     let(:term_copy_service) { instance_double(TermCopyService) }
-    let(:other_course) { FactoryGirl.create(:course) }
+    let(:other_course) { FactoryBot.create(:course) }
 
     it 'delegates to the TermCopyService' do
       expect(TermCopyService).to receive(:new).with(term, source_term, options).and_return(term_copy_service)

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ZipExtractionJob, type: :job do
-  let(:submission_asset) { FactoryGirl.build(:submission_asset) }
+  let(:submission_asset) { FactoryBot.build(:submission_asset) }
   let(:extraction_service) { instance_double(SubmissionExtractionService) }
 
   describe '#perform' do

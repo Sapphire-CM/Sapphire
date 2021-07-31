@@ -85,7 +85,7 @@ RSpec.describe BulkGradings::Evaluation, :doing do
       subject { described_class.new(rating: rating) }
 
       context 'fixed rating' do
-        let(:rating) { FactoryGirl.build(:fixed_points_deduction_rating) }
+        let(:rating) { FactoryBot.build(:fixed_points_deduction_rating) }
 
         it 'is false if value is nil' do
           subject.value = nil
@@ -124,7 +124,7 @@ RSpec.describe BulkGradings::Evaluation, :doing do
       end
 
       context 'variable rating' do
-        let(:rating) { FactoryGirl.build(:variable_points_deduction_rating) }
+        let(:rating) { FactoryBot.build(:variable_points_deduction_rating) }
 
         it 'is false if value is nil' do
           subject.value = nil
@@ -159,14 +159,14 @@ RSpec.describe BulkGradings::Evaluation, :doing do
     end
 
     describe '#save' do
-      let(:staff_account) { FactoryGirl.create(:account, :admin) }
-      let(:term) { FactoryGirl.create(:term) }
-      let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-      let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise) }
-      let!(:ratings) { FactoryGirl.create_list(:fixed_points_deduction_rating, 3, rating_group: rating_group) }
-      let(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
-      let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
-      let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission) }
+      let(:staff_account) { FactoryBot.create(:account, :admin) }
+      let(:term) { FactoryBot.create(:term) }
+      let(:exercise) { FactoryBot.create(:exercise, term: term) }
+      let(:rating_group) { FactoryBot.create(:rating_group, exercise: exercise) }
+      let!(:ratings) { FactoryBot.create_list(:fixed_points_deduction_rating, 3, rating_group: rating_group) }
+      let(:term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
+      let(:submission) { FactoryBot.create(:submission, exercise: exercise) }
+      let!(:exercise_registration) { FactoryBot.create(:exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission) }
       let(:rating) { ratings.second }
       let(:evaluation) { rating.evaluations.reload.for_submission(submission).first }
 

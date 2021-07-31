@@ -1,5 +1,5 @@
 module ControllerHelpers
-  def sign_in(account = FactoryGirl.create(:account))
+  def sign_in(account = FactoryBot.create(:account))
     if account.nil?
       allow(request.env['warden']).to receive(:authenticate!)
         .and_throw(:warden, scope: :account)

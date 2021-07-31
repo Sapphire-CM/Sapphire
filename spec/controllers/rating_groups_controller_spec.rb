@@ -26,12 +26,12 @@ RSpec.describe RatingGroupsController do
     }
   end
 
-  let(:exercise) { FactoryGirl.create :exercise, :with_ratings }
-  let(:rating_group) { FactoryGirl.create :rating_group, exercise: exercise }
+  let(:exercise) { FactoryBot.create :exercise, :with_ratings }
+  let(:rating_group) { FactoryBot.create :rating_group, exercise: exercise }
 
   describe 'GET index' do
     it 'assigns all rating_groups as @rating_groups' do
-      FactoryGirl.create_list :rating_group, 4
+      FactoryBot.create_list :rating_group, 4
 
       get :index, params: { exercise_id: exercise.id }
 
@@ -136,7 +136,7 @@ RSpec.describe RatingGroupsController do
 
   describe 'POST update_position' do
     it 'changes the row_order_position of the rating_group' do
-      FactoryGirl.create_list :rating_group, 4, exercise: exercise
+      FactoryBot.create_list :rating_group, 4, exercise: exercise
 
       attributes = {
         exercise_id: exercise.id,

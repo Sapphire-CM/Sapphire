@@ -3,8 +3,8 @@ require "rails_helper"
 RSpec.describe Impersonation do
   let(:warden) { double }
   let(:session) { Hash.new.with_indifferent_access }
-  let(:current_account) { FactoryGirl.build(:account) }
-  let(:impersonatable_account) { FactoryGirl.build(:account) }
+  let(:current_account) { FactoryBot.build(:account) }
+  let(:impersonatable_account) { FactoryBot.build(:account) }
 
   subject { described_class.new(warden: warden, session: session, current_account: current_account, impersonatable: impersonatable_account) }
 
@@ -49,7 +49,7 @@ RSpec.describe Impersonation do
   end
 
   describe '#destroy' do
-    let(:admin_account) { FactoryGirl.create(:account, :admin) }
+    let(:admin_account) { FactoryBot.create(:account, :admin) }
 
     before :each do
       session[:impersonator_id] = admin_account.id

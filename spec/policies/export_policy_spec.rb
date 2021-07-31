@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe ExportPolicy do
-  let(:term) { FactoryGirl.create(:term) }
-  let(:export) { FactoryGirl.create(:export, term: term) }
+  let(:term) { FactoryBot.create(:term) }
+  let(:export) { FactoryBot.create(:export, term: term) }
 
   context 'as an admin' do
-    let(:account) { FactoryGirl.create(:account, :admin) }
+    let(:account) { FactoryBot.create(:account, :admin) }
 
 
     describe 'collections and creation' do
@@ -26,8 +26,8 @@ RSpec.describe ExportPolicy do
   end
 
   context 'as a lecturer' do
-    let(:account) { FactoryGirl.create(:account) }
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: current_term, account: account) }
+    let(:account) { FactoryBot.create(:account) }
+    let!(:term_registration) { FactoryBot.create(:term_registration, :lecturer, term: current_term, account: account) }
 
     describe 'of the given term' do
       let(:current_term) { term }
@@ -50,7 +50,7 @@ RSpec.describe ExportPolicy do
     end
 
     describe 'of another term' do
-      let(:current_term) { FactoryGirl.create(:term, course: term.course) }
+      let(:current_term) { FactoryBot.create(:term, course: term.course) }
 
       describe 'collections and creation' do
         subject { described_class.new(account, described_class.term_policy_record(term)) }
@@ -72,8 +72,8 @@ RSpec.describe ExportPolicy do
 
   %I(tutor student).each do |role|
     context "as a #{role}" do
-      let(:account) { FactoryGirl.create(:account) }
-      let!(:term_registration) { FactoryGirl.create(:term_registration, role, term: current_term, account: account) }
+      let(:account) { FactoryBot.create(:account) }
+      let!(:term_registration) { FactoryBot.create(:term_registration, role, term: current_term, account: account) }
 
       describe 'of the given term' do
         let(:current_term) { term }
@@ -96,7 +96,7 @@ RSpec.describe ExportPolicy do
       end
 
       describe 'of another term' do
-        let(:current_term) { FactoryGirl.create(:term, course: term.course) }
+        let(:current_term) { FactoryBot.create(:term, course: term.course) }
 
         describe 'collections and creation' do
           subject { described_class.new(account, described_class.term_policy_record(current_term)) }

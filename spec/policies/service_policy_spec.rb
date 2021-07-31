@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe ServicePolicy do
-  let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-  let(:service) { FactoryGirl.create(:service, exercise: exercise) }
-  let(:term) { FactoryGirl.create(:term) }
+  let(:exercise) { FactoryBot.create(:exercise, term: term) }
+  let(:service) { FactoryBot.create(:service, exercise: exercise) }
+  let(:term) { FactoryBot.create(:term) }
 
   context 'as an admin' do
-    let(:account) { FactoryGirl.create(:account, :admin) }
+    let(:account) { FactoryBot.create(:account, :admin) }
 
     describe 'collections' do
       let(:policy_record) { described_class.term_policy_record(term) }
@@ -24,10 +24,10 @@ RSpec.describe ServicePolicy do
   end
 
   context 'as a lecturer' do
-    let(:account) { FactoryGirl.create(:account) }
+    let(:account) { FactoryBot.create(:account) }
 
     context 'of a lectured term' do
-      let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term, account: account) }
+      let!(:term_registration) { FactoryBot.create(:term_registration, :lecturer, term: term, account: account) }
 
       describe 'collections' do
         let(:policy_record) { described_class.term_policy_record(term) }
@@ -46,7 +46,7 @@ RSpec.describe ServicePolicy do
     end
 
     context 'of another term' do
-      let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, account: account) }
+      let!(:term_registration) { FactoryBot.create(:term_registration, :lecturer, account: account) }
 
       describe 'collections' do
         let(:policy_record) { described_class.term_policy_record(term) }
@@ -67,10 +67,10 @@ RSpec.describe ServicePolicy do
 
   %I(tutor student).each do |role|
     context "as a #{role}" do
-      let(:account) { FactoryGirl.create(:account) }
+      let(:account) { FactoryBot.create(:account) }
 
       context 'of attended term' do
-        let!(:term_registration) { FactoryGirl.create(:term_registration, role, account: account, term: term) }
+        let!(:term_registration) { FactoryBot.create(:term_registration, role, account: account, term: term) }
 
         describe 'collections' do
           let(:policy_record) { described_class.term_policy_record(term) }
@@ -89,7 +89,7 @@ RSpec.describe ServicePolicy do
       end
 
       context 'of another term' do
-        let!(:term_registration) { FactoryGirl.create(:term_registration, role, account: account) }
+        let!(:term_registration) { FactoryBot.create(:term_registration, role, account: account) }
 
         describe 'collections' do
           let(:policy_record) { described_class.term_policy_record(term) }

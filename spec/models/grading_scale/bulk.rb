@@ -19,7 +19,7 @@ RSpec.describe GradingScale::Bulk do
   end
 
   describe 'methods' do
-    let(:term) { FactoryGirl.create(:term) }
+    let(:term) { FactoryBot.create(:term) }
 
     subject { described_class.new(term: term) }
 

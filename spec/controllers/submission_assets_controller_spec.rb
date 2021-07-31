@@ -4,8 +4,8 @@ RSpec.describe SubmissionAssetsController do
   render_views
   include_context 'active_admin_session_context'
 
-  let(:submission) { FactoryGirl.create :submission }
-  let!(:submission_asset) { FactoryGirl.create :submission_asset, submission: submission }
+  let(:submission) { FactoryBot.create :submission }
+  let!(:submission_asset) { FactoryBot.create :submission_asset, submission: submission }
 
   describe 'GET show' do
     it 'assigns the requested submission_asset as @submission_asset' do

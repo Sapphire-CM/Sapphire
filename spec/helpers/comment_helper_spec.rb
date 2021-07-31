@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe CommentsHelper, type: :helper do
-  let(:account) { FactoryGirl.create(:account, :admin) }
+  let(:account) { FactoryBot.create(:account, :admin) }
 
   describe 'comment buttons' do
-    let(:evaluation) { FactoryGirl.create :fixed_evaluation }
+    let(:evaluation) { FactoryBot.create :fixed_evaluation }
 
     describe 'internal' do
-      let(:submission_evaluation) { FactoryGirl.create :submission_evaluation }
+      let(:submission_evaluation) { FactoryBot.create :submission_evaluation }
       context 'without comment' do
         it 'sets the correct title and classes' do
           html = helper.internal_comment_button(submission_evaluation)
@@ -18,7 +18,7 @@ RSpec.describe CommentsHelper, type: :helper do
       end
 
       context 'with comment' do
-        let!(:comment) { FactoryGirl.create :notes_comment, account: account, commentable: submission_evaluation }
+        let!(:comment) { FactoryBot.create :notes_comment, account: account, commentable: submission_evaluation }
         it 'sets the correct title and classes' do
           html = helper.internal_comment_button(submission_evaluation)
           expect(html).to include('Internal Notes (1)')
@@ -28,7 +28,7 @@ RSpec.describe CommentsHelper, type: :helper do
     end
 
     describe 'feedback' do
-      let(:submission_evaluation) { FactoryGirl.create :submission_evaluation }
+      let(:submission_evaluation) { FactoryBot.create :submission_evaluation }
       context 'without comment' do
         it 'sets the correct title and classes' do
           html = helper.feedback_comment_button(submission_evaluation)
@@ -39,7 +39,7 @@ RSpec.describe CommentsHelper, type: :helper do
       end
 
       context 'with comment' do
-        let!(:comment) { FactoryGirl.create :feedback_comment, account: account, commentable: submission_evaluation }
+        let!(:comment) { FactoryBot.create :feedback_comment, account: account, commentable: submission_evaluation }
         it 'sets the correct title and classes' do
           html = helper.feedback_comment_button(submission_evaluation)
           expect(html).to include('Feedback (1)')
@@ -49,7 +49,7 @@ RSpec.describe CommentsHelper, type: :helper do
     end
 
     describe 'explanation' do
-      let(:evaluation) { FactoryGirl.create :fixed_evaluation }
+      let(:evaluation) { FactoryBot.create :fixed_evaluation }
       context 'without comment' do
         it 'sets the correct title and classes' do
           html = helper.evaluation_comment_button(evaluation)
@@ -60,7 +60,7 @@ RSpec.describe CommentsHelper, type: :helper do
       end
 
       context 'with comment' do
-        let!(:comment) { FactoryGirl.create :explanations_comment, account: account, commentable: evaluation }
+        let!(:comment) { FactoryBot.create :explanations_comment, account: account, commentable: evaluation }
         it 'sets the correct title and classes' do
           html = helper.evaluation_comment_button(evaluation)
           expect(html).to include('Explanations (1)')
@@ -71,11 +71,11 @@ RSpec.describe CommentsHelper, type: :helper do
   end
 
   describe 'string manipulation' do
-    let(:evaluation) { FactoryGirl.create :fixed_evaluation }
-    let!(:explanations_comment) { FactoryGirl.create :explanations_comment, account: account, commentable: evaluation }
+    let(:evaluation) { FactoryBot.create :fixed_evaluation }
+    let!(:explanations_comment) { FactoryBot.create :explanations_comment, account: account, commentable: evaluation }
 
-    let(:submission_evaluation) { FactoryGirl.create :submission_evaluation }
-    let!(:feedback_comment) { FactoryGirl.create :feedback_comment, account: account, commentable: submission_evaluation }
+    let(:submission_evaluation) { FactoryBot.create :submission_evaluation }
+    let!(:feedback_comment) { FactoryBot.create :feedback_comment, account: account, commentable: submission_evaluation }
 
     it 'provides human readable comment names' do
       expect(helper.humanized_comment_type(explanations_comment)).to eq("Explanation")

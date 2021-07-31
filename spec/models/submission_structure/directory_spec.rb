@@ -73,7 +73,7 @@ RSpec.describe SubmissionStructure::Directory do
     end
 
     describe '#submission_assets' do
-      let(:submission_asset) { FactoryGirl.create(:submission_asset) }
+      let(:submission_asset) { FactoryBot.create(:submission_asset) }
       let(:file_node) { SubmissionStructure::File.new(submission_asset) }
 
       it 'returns the submission_assets' do

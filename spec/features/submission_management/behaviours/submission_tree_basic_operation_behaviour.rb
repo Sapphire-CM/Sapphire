@@ -3,12 +3,12 @@ RSpec.shared_examples "basic submission tree operations" do
     let!(:submission_assets) do
       assets = []
       assets << top_level_asset
-      assets << FactoryGirl.create(:submission_asset, submission: submission, path: "sub-folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "text-2.txt"))
-      assets << FactoryGirl.create(:submission_asset, submission: submission, path: "sub-folder/subsub-folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "text-3.txt"))
+      assets << FactoryBot.create(:submission_asset, submission: submission, path: "sub-folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "text-2.txt"))
+      assets << FactoryBot.create(:submission_asset, submission: submission, path: "sub-folder/subsub-folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "text-3.txt"))
       assets
     end
 
-    let(:top_level_asset) { FactoryGirl.create(:submission_asset, submission: submission, path:"", file: prepare_static_test_file("simple_submission.txt", rename_to: "tl-text-1.txt")) }
+    let(:top_level_asset) { FactoryBot.create(:submission_asset, submission: submission, path:"", file: prepare_static_test_file("simple_submission.txt", rename_to: "tl-text-1.txt")) }
 
     scenario 'provides top-level files' do
       visit tree_submission_path(submission)
@@ -258,7 +258,7 @@ RSpec.shared_examples "basic submission tree operations" do
     end
 
     describe 'with existing submission assets' do
-      let!(:submission_asset) { FactoryGirl.create(:submission_asset, submission: submission, path: "sub-folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "text-2.txt")) }
+      let!(:submission_asset) { FactoryBot.create(:submission_asset, submission: submission, path: "sub-folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "text-2.txt")) }
 
       it_behaves_like "basic folder creation"
     end
@@ -271,9 +271,9 @@ RSpec.shared_examples "basic submission tree operations" do
   describe 'removing' do
     let!(:submission_assets) do
       assets = []
-      assets << FactoryGirl.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt"))
-      assets << FactoryGirl.create(:submission_asset, submission: submission, path: "folder", file: prepare_static_test_file("simple_submission.txt"))
-      assets << FactoryGirl.create(:submission_asset, submission: submission, path: "folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "simple_submission_2.txt"))
+      assets << FactoryBot.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt"))
+      assets << FactoryBot.create(:submission_asset, submission: submission, path: "folder", file: prepare_static_test_file("simple_submission.txt"))
+      assets << FactoryBot.create(:submission_asset, submission: submission, path: "folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "simple_submission_2.txt"))
       assets
     end
 

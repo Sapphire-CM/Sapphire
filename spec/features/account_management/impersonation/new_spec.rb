@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "Impersonation Creation" do
-  let(:account) { FactoryGirl.create(:account, :admin) }
-  let!(:student_account) { FactoryGirl.create(:account) }
+  let(:account) { FactoryBot.create(:account, :admin) }
+  let!(:student_account) { FactoryBot.create(:account) }
   let(:success_flash_message) { "You are now using Sapphire as '#{student_account.email}'" }
 
   before :each do

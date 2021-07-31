@@ -4,7 +4,7 @@ RSpec.describe WelcomeNotificationsController, type: :controller do
   include_context 'active_admin_session_context'
 
   describe 'POST #create' do
-    let(:term) { FactoryGirl.create(:term) }
+    let(:term) { FactoryBot.create(:term) }
     let(:valid_params) { { term_id: term.id } }
 
     it 'schedules a send pending welcomes job' do

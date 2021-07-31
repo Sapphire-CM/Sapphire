@@ -2,8 +2,8 @@ require 'rails_helper'
 require 'features/account_management/behaviours/account_side_navigation_behaviour'
 
 RSpec.feature 'Account Details' do
-  let(:admin_account) { FactoryGirl.create(:account, :admin) }
-  let!(:student_account) { FactoryGirl.create(:account, :student, forename: 'Sam', surname: 'Secret') }
+  let(:admin_account) { FactoryBot.create(:account, :admin) }
+  let!(:student_account) { FactoryBot.create(:account, :student, forename: 'Sam', surname: 'Secret') }
   let(:term) { student_term_registration.term }
   let(:student_term_registration) { student_account.term_registrations.student.first }
 

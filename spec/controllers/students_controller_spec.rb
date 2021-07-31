@@ -4,12 +4,12 @@ RSpec.describe StudentsController do
   render_views
   include_context 'active_admin_session_context'
 
-  let(:term) { FactoryGirl.create :term }
+  let(:term) { FactoryBot.create :term }
 
   describe 'GET index' do
-    let!(:students) { FactoryGirl.create_list :term_registration, 4, :student, term: term }
-    let!(:tutors) { FactoryGirl.create_list :term_registration, 4, :tutor, term: term }
-    let!(:lecturers) { FactoryGirl.create_list :term_registration, 4, :lecturer, term: term }
+    let!(:students) { FactoryBot.create_list :term_registration, 4, :student, term: term }
+    let!(:tutors) { FactoryBot.create_list :term_registration, 4, :tutor, term: term }
+    let!(:lecturers) { FactoryBot.create_list :term_registration, 4, :lecturer, term: term }
 
     it 'lists all registered students' do
       get :index, params: { term_id: term.id }
@@ -23,8 +23,8 @@ RSpec.describe StudentsController do
     end
 
     context 'as a tutor' do
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-      let!(:tutor_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, tutorial_group: tutorial_group) }
+      let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+      let!(:tutor_registration) { FactoryBot.create(:term_registration, :tutor, term: term, tutorial_group: tutorial_group) }
 
       before :each do
         account = tutor_registration.account
@@ -53,8 +53,8 @@ RSpec.describe StudentsController do
     end
 
     context 'as a tutor' do
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-      let!(:tutor_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, tutorial_group: tutorial_group) }
+      let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+      let!(:tutor_registration) { FactoryBot.create(:term_registration, :tutor, term: term, tutorial_group: tutorial_group) }
 
       before :each do
         account = tutor_registration.account

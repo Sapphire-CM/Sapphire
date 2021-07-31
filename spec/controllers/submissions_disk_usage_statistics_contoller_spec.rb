@@ -3,13 +3,13 @@ require 'rails_helper'
 RSpec.describe SubmissionsDiskUsageStatisticsController, type: :controller do
   render_views
   include_context 'active_admin_session_context'
-  let!(:term) { FactoryGirl.create :term}
+  let!(:term) { FactoryBot.create :term}
 
   describe 'GET show' do
     context 'exercises exist' do
-      let!(:exercise) { FactoryGirl.create :exercise, term: term }
-      let!(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
-      let!(:submission_asset) { FactoryGirl.create(:submission_asset, :plain_text, submission: submission) }
+      let!(:exercise) { FactoryBot.create :exercise, term: term }
+      let!(:submission) { FactoryBot.create(:submission, exercise: exercise) }
+      let!(:submission_asset) { FactoryBot.create(:submission_asset, :plain_text, submission: submission) }
 
       it 'returns http success' do
         get :show, params: { term_id: term.id }

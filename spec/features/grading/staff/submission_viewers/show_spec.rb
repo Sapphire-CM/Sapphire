@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.feature 'Grading Review' do
-  let!(:account) { FactoryGirl.create(:account) }
-  let!(:term_registration) { FactoryGirl.create(:term_registration, :tutor, account: account) }
-  let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
-  let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, submission: submission, term_registration: student_term_registration) }
+  let!(:account) { FactoryBot.create(:account) }
+  let!(:term_registration) { FactoryBot.create(:term_registration, :tutor, account: account) }
+  let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
+  let!(:exercise_registration) { FactoryBot.create(:exercise_registration, exercise: exercise, submission: submission, term_registration: student_term_registration) }
   let(:term) { term_registration.term }
-  let!(:exercise) { FactoryGirl.create(:exercise, :with_viewer, term: term) }
-  let!(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
+  let!(:exercise) { FactoryBot.create(:exercise, :with_viewer, term: term) }
+  let!(:submission) { FactoryBot.create(:submission, exercise: exercise) }
 
   before :each do
     sign_in(account)

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ImportResult do
-  let(:import) { FactoryGirl.create(:import) }
+  let(:import) { FactoryBot.create(:import) }
   let(:updated_attributes) { {success: true, total_rows: 10, processed_rows: 3, imported_students: 4, imported_tutorial_groups: 5, imported_term_registrations: 6, imported_student_groups: 7} }
   let(:default_attributes) { {success: false, total_rows: 0, processed_rows: 0, imported_students: 0, imported_tutorial_groups: 0, imported_term_registrations: 0, imported_student_groups: 0} }
 
@@ -63,7 +63,7 @@ RSpec.describe ImportResult do
 
   describe 'methods' do
     describe '#reset!' do
-      let(:import) { FactoryGirl.create(:import, :with_errors) }
+      let(:import) { FactoryBot.create(:import, :with_errors) }
       subject { import.import_result }
 
       it 'sets default attributes' do

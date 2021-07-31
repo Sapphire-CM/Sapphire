@@ -4,9 +4,9 @@ RSpec.describe StudentResultsController do
   render_views
   include_context 'active_student_session_context'
 
-  let(:term) { FactoryGirl.create :term }
-  let(:exercise) { FactoryGirl.create :exercise, term: term }
-  let(:tutorial_group) { FactoryGirl.create :tutorial_group, term: term }
+  let(:term) { FactoryBot.create :term }
+  let(:exercise) { FactoryBot.create :exercise, term: term }
+  let(:tutorial_group) { FactoryBot.create :tutorial_group, term: term }
   let(:term_registration) { current_account.term_registrations.first }
 
   before :each do
@@ -16,7 +16,7 @@ RSpec.describe StudentResultsController do
 
   describe 'GET index' do
     it 'assigns all exercise_registrations as @exercise_registrations' do
-      FactoryGirl.create_list :course, 4
+      FactoryBot.create_list :course, 4
 
       get :index, params: { term_id: term.id }
 

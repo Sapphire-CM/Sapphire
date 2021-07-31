@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ExportJob do
   describe '#perform' do
-    let(:export) { FactoryGirl.create(:export) }
+    let(:export) { FactoryBot.create(:export) }
 
     it 'calls #perform! on export' do
       expect(export).to receive(:perform_export!)

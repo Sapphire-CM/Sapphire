@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Adding Email Addresses" do
-  let(:account) { FactoryGirl.create(:account, :admin) }
-  let(:student_account) { FactoryGirl.create(:account) }
+  let(:account) { FactoryBot.create(:account, :admin) }
+  let(:student_account) { FactoryBot.create(:account) }
   let(:new_email_address) { "example@student.tugraz.at" }
-  let!(:email_address) { FactoryGirl.create(:email_address, account: student_account) }
+  let!(:email_address) { FactoryBot.create(:email_address, account: student_account) }
 
   before :each do
     sign_in account
@@ -31,7 +31,7 @@ RSpec.describe "Adding Email Addresses" do
   end
 
   scenario "Changing email to an existing email address shows an error" do
-    existing_email_address = FactoryGirl.create(:email_address)
+    existing_email_address = FactoryBot.create(:email_address)
     visit edit_account_email_address_path(student_account, email_address)
 
     fill_in "Email", with: existing_email_address.email

@@ -31,8 +31,8 @@ RSpec.describe ImportsController do
     }
   end
 
-  let(:term) { FactoryGirl.create :term }
-  let(:import) { FactoryGirl.create :import, term: term }
+  let(:term) { FactoryBot.create :term }
+  let(:import) { FactoryBot.create :import, term: term }
 
   describe 'GET show' do
     it 'assigns the requested import as @import' do
@@ -47,7 +47,7 @@ RSpec.describe ImportsController do
   describe 'GET new' do
     context 'with existing imports to list' do
       it 'assigns a new import as @import' do
-        FactoryGirl.create_list :import, 4, term: term
+        FactoryBot.create_list :import, 4, term: term
 
         get :new, params: { term_id: term.id }
 

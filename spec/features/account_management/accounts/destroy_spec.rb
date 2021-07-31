@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.feature 'Account Removal' do
-  let(:account) { FactoryGirl.create(:account, :admin) }
-  let!(:student_account) { FactoryGirl.create(:account, :student, forename: 'Sam', surname: 'Secret') }
+  let(:account) { FactoryBot.create(:account, :admin) }
+  let!(:student_account) { FactoryBot.create(:account, :student, forename: 'Sam', surname: 'Secret') }
   let(:term) { student_account.term_registrations.first.term }
 
   before(:each) do

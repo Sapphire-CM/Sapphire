@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "Tutorial Group Detail" do
-  let(:tutorial_group) { FactoryGirl.create(:tutorial_group) }
+  let(:tutorial_group) { FactoryBot.create(:tutorial_group) }
   let(:term) { tutorial_group.term }
-  let(:account) { FactoryGirl.create(:account, :admin) }
+  let(:account) { FactoryBot.create(:account, :admin) }
 
   let(:described_path) { term_tutorial_group_path(term, tutorial_group) }
 
@@ -59,7 +59,7 @@ RSpec.describe "Tutorial Group Detail" do
 
   describe 'students table' do
     context 'with students' do
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, :with_students) }
+      let(:tutorial_group) { FactoryBot.create(:tutorial_group, :with_students) }
       let(:student_term_registrations) { tutorial_group.student_term_registrations }
 
       scenario 'shows a sortable table' do

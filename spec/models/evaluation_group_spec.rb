@@ -27,7 +27,7 @@ RSpec.describe EvaluationGroup do
 
   describe 'delegation' do
     describe '#title' do
-      let(:rating_group) { FactoryGirl.build(:rating_group) }
+      let(:rating_group) { FactoryBot.build(:rating_group) }
       let(:rating_title) { "A rating title" }
 
       it 'is delegated to #rating' do
@@ -43,8 +43,8 @@ RSpec.describe EvaluationGroup do
     pending '.ranked'
 
     describe '.needing_review' do
-      let!(:evaluation_groups_to_review) { FactoryGirl.create_list(:evaluation_group, 3, needs_review: true) }
-      let!(:evaluation_groups_not_to_review) { FactoryGirl.create_list(:evaluation_group, 3, needs_review: false) }
+      let!(:evaluation_groups_to_review) { FactoryBot.create_list(:evaluation_group, 3, needs_review: true) }
+      let!(:evaluation_groups_not_to_review) { FactoryBot.create_list(:evaluation_group, 3, needs_review: false) }
 
       it 'returns evaluation_groups where needs_review is true' do
         expect(described_class.needing_review).to match_array(evaluation_groups_to_review)
@@ -61,9 +61,9 @@ RSpec.describe EvaluationGroup do
     pending '#calc_result'
 
     describe '#update_needs_review!' do
-      let(:evaluations) { FactoryGirl.build_list(:fixed_evaluation, 3, evaluation_group: subject) }
+      let(:evaluations) { FactoryBot.build_list(:fixed_evaluation, 3, evaluation_group: subject) }
 
-      subject { FactoryGirl.create(:evaluation_group) }
+      subject { FactoryBot.create(:evaluation_group) }
 
       it 'sets needs_review to true if an evaluation needs_review' do
         evaluations.second.needs_review = true
@@ -87,7 +87,7 @@ RSpec.describe EvaluationGroup do
 
   describe 'callbacks' do
     describe 'changing needs_review' do
-      subject { FactoryGirl.create(:evaluation_group) }
+      subject { FactoryBot.create(:evaluation_group) }
 
       it 'calls #update_needs_review! on submission_evaluation' do
         expect(subject.submission_evaluation).to receive(:update_needs_review!)

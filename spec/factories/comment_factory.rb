@@ -1,8 +1,8 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :feedback_comment, class: Comment do
     account
     content { generate :lorem_ipsum }
-    name "feedback"
+    name { "feedback" }
     term
     commentable { create(:submission) }
   end
@@ -10,7 +10,7 @@ FactoryGirl.define do
   factory :notes_comment, class: Comment do
     account
     content { generate :lorem_ipsum }
-    name "internal_notes"
+    name { "internal_notes" }
     term
     commentable { create(:submission) }
   end
@@ -18,7 +18,7 @@ FactoryGirl.define do
   factory :explanations_comment, class: Comment do
     account
     content { generate :lorem_ipsum }
-    name "explanations"
+    name { "explanations" }
     term
     commentable { create(:fixed_evaluation) }
   end

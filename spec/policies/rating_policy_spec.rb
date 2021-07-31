@@ -4,8 +4,8 @@ RSpec.describe RatingPolicy do
   subject { described_class.new(account, rating) }
 
   context 'as admin' do
-    let(:account) { FactoryGirl.create(:account, :admin) }
-    let(:rating) { FactoryGirl.create(:fixed_points_deduction_rating) }
+    let(:account) { FactoryBot.create(:account, :admin) }
+    let(:rating) { FactoryBot.create(:fixed_points_deduction_rating) }
 
     it { is_expected.to permit_authorization(:new) }
     it { is_expected.to permit_authorization(:create) }
@@ -16,10 +16,10 @@ RSpec.describe RatingPolicy do
   end
 
   context 'as lecturer' do
-    let(:account) { FactoryGirl.create(:account, :lecturer) }
-    let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-    let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise) }
-    let(:rating) { FactoryGirl.create(:fixed_points_deduction_rating, rating_group: rating_group) }
+    let(:account) { FactoryBot.create(:account, :lecturer) }
+    let(:exercise) { FactoryBot.create(:exercise, term: term) }
+    let(:rating_group) { FactoryBot.create(:rating_group, exercise: exercise) }
+    let(:rating) { FactoryBot.create(:fixed_points_deduction_rating, rating_group: rating_group) }
 
     context 'of term' do
       let(:term_registration) { account.term_registrations.last }
@@ -34,7 +34,7 @@ RSpec.describe RatingPolicy do
     end
 
     context 'of other term' do
-      let(:term) { FactoryGirl.create(:term) }
+      let(:term) { FactoryBot.create(:term) }
 
       it { is_expected.not_to permit_authorization(:new) }
       it { is_expected.not_to permit_authorization(:create) }
@@ -47,10 +47,10 @@ RSpec.describe RatingPolicy do
 
   %I(tutor student).each do |role|
     context "as #{role}" do
-      let(:account) { FactoryGirl.create(:account, role) }
-      let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-      let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise) }
-      let(:rating) { FactoryGirl.create(:fixed_points_deduction_rating, rating_group: rating_group) }
+      let(:account) { FactoryBot.create(:account, role) }
+      let(:exercise) { FactoryBot.create(:exercise, term: term) }
+      let(:rating_group) { FactoryBot.create(:rating_group, exercise: exercise) }
+      let(:rating) { FactoryBot.create(:fixed_points_deduction_rating, rating_group: rating_group) }
       let(:term) { term_registration.term }
 
       let(:term_registration) { account.term_registrations.last }

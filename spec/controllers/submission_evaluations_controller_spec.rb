@@ -4,11 +4,11 @@ RSpec.describe SubmissionEvaluationsController, type: :controller do
   render_views
   include_context 'active_admin_session_context'
 
-  let(:term) { FactoryGirl.create :term }
-  let(:exercise) { FactoryGirl.create :exercise, :with_ratings, term: term }
+  let(:term) { FactoryBot.create :term }
+  let(:exercise) { FactoryBot.create :exercise, :with_ratings, term: term }
   let(:rating_group) { exercise.rating_groups.first }
 
-  let(:submission) { FactoryGirl.create_list(:submission, 3, exercise: exercise)[1] }
+  let(:submission) { FactoryBot.create_list(:submission, 3, exercise: exercise)[1] }
   let(:submission_evaluation) { submission.submission_evaluation }
 
   describe 'GET show' do
@@ -22,8 +22,8 @@ RSpec.describe SubmissionEvaluationsController, type: :controller do
     end
 
     context 'as a tutor' do
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-      let(:tutor_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, tutorial_group: tutorial_group) }
+      let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+      let(:tutor_registration) { FactoryBot.create(:term_registration, :tutor, term: term, tutorial_group: tutorial_group) }
 
       it 'returns a successful response' do
         sign_in(tutor_registration.account)

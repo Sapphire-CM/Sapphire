@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "Removing tutorial group" do
-  let(:tutorial_group) { FactoryGirl.create(:tutorial_group) }
+  let(:tutorial_group) { FactoryBot.create(:tutorial_group) }
   let(:term) { tutorial_group.term }
-  let(:account) { FactoryGirl.create(:account, :admin) }
+  let(:account) { FactoryBot.create(:account, :admin) }
 
   let(:described_path) { edit_term_tutorial_group_path(term, tutorial_group) }
 

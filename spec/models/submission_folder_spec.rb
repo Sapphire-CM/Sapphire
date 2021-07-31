@@ -20,7 +20,7 @@ RSpec.describe SubmissionFolder do
   end
 
   describe '#submission=' do
-    let(:submission) { FactoryGirl.build(:submission) }
+    let(:submission) { FactoryBot.build(:submission) }
     it 'assigns submission' do
       subject.submission = submission
 
@@ -87,7 +87,7 @@ RSpec.describe SubmissionFolder do
   end
 
   describe '#path_available?' do
-    let(:submission) { FactoryGirl.build(:submission) }
+    let(:submission) { FactoryBot.build(:submission) }
 
     it 'tests if path is available through SubmissionAsset.path_exists?' do
       expect(SubmissionAsset).to receive(:path_exists?).with("folder/test/path").and_return(false)

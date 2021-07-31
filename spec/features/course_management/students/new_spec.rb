@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Adding a new student term registration' do
-  let(:term) { FactoryGirl.create(:term) }
-  let(:account) { FactoryGirl.create(:account, :admin) }
+  let(:term) { FactoryBot.create(:term) }
+  let(:account) { FactoryBot.create(:account, :admin) }
 
   before :each do
     sign_in account
@@ -23,9 +23,9 @@ RSpec.describe 'Adding a new student term registration' do
   describe 'Form' do
     let(:described_path) { new_term_student_path(term) }
 
-    let!(:student_account) { FactoryGirl.create(:account) }
-    let!(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-    let!(:student_group) { FactoryGirl.create(:student_group, tutorial_group: tutorial_group) }
+    let!(:student_account) { FactoryBot.create(:account) }
+    let!(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+    let!(:student_group) { FactoryBot.create(:student_group, tutorial_group: tutorial_group) }
 
     scenario 'Creating a new record', js: true do
       visit described_path

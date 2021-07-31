@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence(:student_group_title) { |n| "Group #{n}" }
   factory :student_group do
     tutorial_group
@@ -6,7 +6,7 @@ FactoryGirl.define do
 
     factory :student_group_with_students do
       transient do
-        students_count 4
+        students_count { 4 }
       end
 
       after(:create) do |student_group, attrib|
@@ -16,7 +16,7 @@ FactoryGirl.define do
 
     factory :student_group_for_student do
       transient do
-        student { FactoryGirl.create(:account) }
+        student { FactoryBot.create(:account) }
       end
 
       after(:create) do |student_group, evaluator|

@@ -110,8 +110,9 @@ RSpec.describe 'Commenting' do
         end
       end
 
-
-      expect(page).to have_content("Feedback can't be blank")
+      within_modal do
+        expect(page).to have_content("can't be blank")
+      end
     end
   end
 

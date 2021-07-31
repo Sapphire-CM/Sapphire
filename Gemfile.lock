@@ -140,7 +140,7 @@ GEM
     docile (1.4.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
-    dropzonejs-rails (0.8.5)
+    dropzonejs-rails (0.7.3)
       rails (> 3.1)
     ed25519 (1.2.4)
     email_validator (2.2.3)
@@ -476,7 +476,7 @@ DEPENDENCIES
   d3-rails (~> 4.13.0)
   database_cleaner
   devise (~> 4.0)
-  dropzonejs-rails
+  dropzonejs-rails (~> 0.7.0)
   ed25519
   email_validator
   exception_notification

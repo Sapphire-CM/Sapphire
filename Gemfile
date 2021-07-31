@@ -43,7 +43,7 @@ gem 'rubyzip'                     # handling submission ZIP archives
 gem 'kramdown'
 
 gem 'cocoon'                      # for nested upload forms
-gem 'dropzonejs-rails'            # Drag and drop support for file uploads
+gem 'dropzonejs-rails', "~> 0.7.0" # Drag and drop support for file uploads
 
 gem 'sidekiq', '~>5.2.3'          # async jobs in background, used for imports
 

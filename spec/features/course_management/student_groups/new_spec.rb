@@ -1,9 +1,9 @@
 require "rails_helper"
 
 RSpec.feature 'Adding Student Groups' do
-  let(:account) { FactoryGirl.create(:account) }
-  let(:term) { FactoryGirl.create(:term) }
-  let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term, account: account) }
+  let(:account) { FactoryBot.create(:account) }
+  let(:term) { FactoryBot.create(:term) }
+  let!(:term_registration) { FactoryBot.create(:term_registration, :lecturer, term: term, account: account) }
 
   let(:described_path) { new_term_student_group_path(term) }
 
@@ -28,7 +28,7 @@ RSpec.feature 'Adding Student Groups' do
   end
 
   scenario 'Adding a new student group' do
-    tutorial_group = FactoryGirl.create(:tutorial_group, term: term)
+    tutorial_group = FactoryBot.create(:tutorial_group, term: term)
 
     visit described_path
 
@@ -56,10 +56,10 @@ RSpec.feature 'Adding Student Groups' do
   end
 
   scenario "Searching for and adding students", js: true do
-    student_term_registration = FactoryGirl.create(:term_registration, :student, term: term)
+    student_term_registration = FactoryBot.create(:term_registration, :student, term: term)
     student = student_term_registration.account
 
-    tutorial_group = FactoryGirl.create(:tutorial_group, term: term)
+    tutorial_group = FactoryBot.create(:tutorial_group, term: term)
 
     visit described_path
 
@@ -81,12 +81,13 @@ RSpec.feature 'Adding Student Groups' do
     expect(page).to have_content("Test Group")
 
     within ".students-table" do
-      expect(page).to have_content(student.fullname)
+      expect(page).to have_content(student.forename)
+      expect(page).to have_content(student.surname)
     end
   end
 
   scenario 'Not filling out title shows validation errors' do
-    tutorial_group = FactoryGirl.create(:tutorial_group, term: term)
+    tutorial_group = FactoryBot.create(:tutorial_group, term: term)
 
     visit described_path
 

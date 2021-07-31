@@ -7,7 +7,7 @@ RSpec.describe SubmissionStructure::Tree do
   end
 
   describe 'initialization' do
-    let(:submission) { FactoryGirl.build(:submission) }
+    let(:submission) { FactoryBot.build(:submission) }
 
     it "does not parse the submission" do
       expect(submission).not_to receive(:submission_assets)
@@ -17,7 +17,7 @@ RSpec.describe SubmissionStructure::Tree do
   end
 
   describe 'methods' do
-    let(:submission) { FactoryGirl.create(:submission, :with_basic_structure) }
+    let(:submission) { FactoryBot.create(:submission, :with_basic_structure) }
     let(:submission_assets) { submission.submission_assets }
     let(:base_directory_name) { "Fancy Directory" }
     subject { described_class.new(submission: submission, base_directory_name: base_directory_name) }

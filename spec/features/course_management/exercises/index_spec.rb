@@ -2,7 +2,7 @@ require "rails_helper"
 require 'features/course_management/behaviours/exercise_side_navigation_behaviour'
 
 RSpec.feature "Exercises List" do
-  let(:account) { FactoryGirl.create(:account, :lecturer) }
+  let(:account) { FactoryBot.create(:account, :lecturer) }
   let(:term_registration) { account.term_registrations.last }
   let(:term) { term_registration.term }
   let(:course) { term.course }
@@ -48,7 +48,7 @@ RSpec.feature "Exercises List" do
   end
 
   context 'with exercises' do
-    let!(:exercises) { FactoryGirl.create_list(:exercise, 3, term: term) }
+    let!(:exercises) { FactoryBot.create_list(:exercise, 3, term: term) }
 
     scenario "Lists all exercises" do
       exercises.first.update(group_submission: true)
@@ -79,7 +79,7 @@ RSpec.feature "Exercises List" do
     end
 
     context "as student" do
-      let(:account) { FactoryGirl.create(:account, :student) }
+      let(:account) { FactoryBot.create(:account, :student) }
 
       scenario 'Does not show edit links' do
         visit term_exercises_path(term)

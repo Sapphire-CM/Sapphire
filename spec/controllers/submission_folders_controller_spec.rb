@@ -5,7 +5,7 @@ RSpec.describe SubmissionFoldersController, type: :controller do
 
   describe 'GET #show' do
     it 'assigns @submission and @submission_folder and responds to json' do
-      get :show, submission_id: submission.id, submission_folder: {path: "", name: "test"}, format: :json
+      get :show, params: { submission_id: submission.id, submission_folder: { path: "", name: "test" } }, format: :json
 
       expect(assigns[:submission]).to eq(submission)
       expect(assigns[:submission_folder]).to be_a(SubmissionFolder)
@@ -13,14 +13,14 @@ RSpec.describe SubmissionFoldersController, type: :controller do
     end
 
     it 'does not respond to HTML requests' do
-      get :show, submission_id: submission.id, submission_folder: {path: "", name: "test"}, format: :html
+      get :show, params: { submission_id: submission.id, submission_folder: { path: "", name: "test" } }, format: :html
       expect(response).to render_template("record_not_found")
     end
   end
 
   describe 'GET #new' do
     it 'assigns @submission, @submission_folder, @exercise, and @term' do
-      get :new, submission_id: submission.id
+      get :new, params: { submission_id: submission.id }
 
       expect(assigns[:submission]).to eq(submission)
       expect(assigns[:exercise]).to eq(exercise)
@@ -33,7 +33,7 @@ RSpec.describe SubmissionFoldersController, type: :controller do
 
   describe 'POST #create' do
     it 'redirects to the specified path' do
-      post :create, submission_id: submission.id, submission_folder: { path: "test/folder", name: "new_folder" }
+      post :create, params: { submission_id: submission.id, submission_folder: { path: "test/folder", name: "new_folder" } }
 
       expect(response).to redirect_to(tree_submission_path(submission, path: "test/folder/new_folder"))
     end

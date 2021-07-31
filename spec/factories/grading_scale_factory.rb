@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence(:grading_scale_grades) { |n| n.to_s }
 
   factory :grading_scale do

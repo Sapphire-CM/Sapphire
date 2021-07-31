@@ -1,4 +1,4 @@
-class CreateImportStudentImports < ActiveRecord::Migration
+class CreateImportStudentImports < ActiveRecord::Migration[4.2]
   def change
     create_table :import_student_imports do |t|
       t.references :semester

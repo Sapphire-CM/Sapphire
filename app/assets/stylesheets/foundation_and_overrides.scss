@@ -1,6 +1,5 @@
-@import 'foundation_variables';
+@import './foundation_variables';
 @import 'foundation';
-
 
 .panel.alert {
   @include panel($alert-color, $panel-padding, true);

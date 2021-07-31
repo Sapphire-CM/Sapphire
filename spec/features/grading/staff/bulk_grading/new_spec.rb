@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Bulk Grading', :doing do
-  let(:term) { FactoryGirl.create(:term) }
-  let(:account) { FactoryGirl.create(:account) }
-  let!(:term_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, account: account) }
-  let!(:exercise) { FactoryGirl.create(:exercise, :bulk_operations, term: term)}
+  let(:term) { FactoryBot.create(:term) }
+  let(:account) { FactoryBot.create(:account) }
+  let!(:term_registration) { FactoryBot.create(:term_registration, :tutor, term: term, account: account) }
+  let!(:exercise) { FactoryBot.create(:exercise, :bulk_operations, term: term)}
 
   let(:described_path) { new_exercise_bulk_grading_path(exercise) }
 
@@ -24,8 +24,8 @@ RSpec.describe 'Bulk Grading', :doing do
 
   describe 'Form' do
     shared_examples "submission bulk form" do
-      let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise, points: 10) }
-      let!(:rating) { FactoryGirl.create(:variable_points_deduction_rating, :bulk, rating_group: rating_group) }
+      let(:rating_group) { FactoryBot.create(:rating_group, exercise: exercise, points: 10) }
+      let!(:rating) { FactoryBot.create(:variable_points_deduction_rating, :bulk, rating_group: rating_group) }
 
       let(:table_css_query) { "form.bulk-grading table"}
       let(:dropdown_css_query) { ".association-lookup-dropdown" }
@@ -53,7 +53,7 @@ RSpec.describe 'Bulk Grading', :doing do
       end
 
       describe 'basic functionality' do
-        let!(:exercise) { FactoryGirl.create(:exercise, :bulk_operations, exercise_factory_trait, term: term) }
+        let!(:exercise) { FactoryBot.create(:exercise, :bulk_operations, exercise_factory_trait, term: term) }
 
         scenario 'initially shows a table within a form with appropriate titles' do
           visit described_path
@@ -149,7 +149,7 @@ RSpec.describe 'Bulk Grading', :doing do
       end
 
       describe 'exercise with single attempt' do
-        let!(:exercise) { FactoryGirl.create(:exercise, :bulk_operations, :single_attempt, exercise_factory_trait, term: term) }
+        let!(:exercise) { FactoryBot.create(:exercise, :bulk_operations, :single_attempt, exercise_factory_trait, term: term) }
 
         scenario 'hides the exercise attempt selector' do
           visit described_path
@@ -159,7 +159,7 @@ RSpec.describe 'Bulk Grading', :doing do
       end
 
       describe 'exercise with multiple attempts' do
-        let!(:exercise) { FactoryGirl.create(:exercise, :bulk_operations, :multiple_attempts, exercise_factory_trait, term: term) }
+        let!(:exercise) { FactoryBot.create(:exercise, :bulk_operations, :multiple_attempts, exercise_factory_trait, term: term) }
         let(:attempt) { exercise.attempts.first }
 
         scenario 'shows the exercise attempt selector' do
@@ -193,11 +193,11 @@ RSpec.describe 'Bulk Grading', :doing do
     end
 
     context 'solitary exercise' do
-      let!(:new_term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
-      let!(:term_registration_with_submission) { FactoryGirl.create(:term_registration, :student, term: term) }
+      let!(:new_term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
+      let!(:term_registration_with_submission) { FactoryBot.create(:term_registration, :student, term: term) }
 
-      let!(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
-      let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: term_registration_with_submission, submission: submission) }
+      let!(:submission) { FactoryBot.create(:submission, exercise: exercise) }
+      let!(:exercise_registration) { FactoryBot.create(:exercise_registration, exercise: exercise, term_registration: term_registration_with_submission, submission: submission) }
 
       it_behaves_like "submission bulk form" do
         let(:subject_header) { "Student" }
@@ -208,12 +208,12 @@ RSpec.describe 'Bulk Grading', :doing do
     end
 
     context 'group exercise' do
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
+      let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
 
-      let!(:new_student_group) { FactoryGirl.create(:student_group, tutorial_group: tutorial_group) }
-      let!(:student_group_with_submission) { FactoryGirl.create(:student_group, tutorial_group: tutorial_group) }
+      let!(:new_student_group) { FactoryBot.create(:student_group, tutorial_group: tutorial_group) }
+      let!(:student_group_with_submission) { FactoryBot.create(:student_group, tutorial_group: tutorial_group) }
 
-      let!(:submission) { FactoryGirl.create(:submission, exercise: exercise, student_group: student_group_with_submission) }
+      let!(:submission) { FactoryBot.create(:submission, exercise: exercise, student_group: student_group_with_submission) }
 
       it_behaves_like "submission bulk form" do
         let(:subject_header) { "Group" }

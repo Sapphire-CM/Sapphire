@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "Tutorial Groups List" do
-  let(:term) { FactoryGirl.create(:term) }
-  let(:account) { FactoryGirl.create(:account, :admin) }
+  let(:term) { FactoryBot.create(:term) }
+  let(:account) { FactoryBot.create(:account, :admin) }
 
   let(:described_path) { term_tutorial_groups_path(term) }
 
@@ -56,7 +56,7 @@ RSpec.describe "Tutorial Groups List" do
     end
 
     context 'with tutorial group' do
-      let!(:tutorial_group) { FactoryGirl.create(:tutorial_group, :with_tutor, term: term) }
+      let!(:tutorial_group) { FactoryBot.create(:tutorial_group, :with_tutor, term: term) }
 
       let(:tutor_account) { tutorial_group.tutor_accounts.last }
 

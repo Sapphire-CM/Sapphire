@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.feature 'Account List' do
-  let(:account) { FactoryGirl.create(:account, :admin) }
+  let(:account) { FactoryBot.create(:account, :admin) }
 
   before(:each) do
     sign_in account
@@ -16,8 +16,8 @@ RSpec.feature 'Account List' do
   end
 
   scenario 'searching for a student' do
-    FactoryGirl.create(:account) # push account into another table row
-    FactoryGirl.create(:account, forename: 'Sam', surname: 'Secret', matriculation_number: '1337331')
+    FactoryBot.create(:account) # push account into another table row
+    FactoryBot.create(:account, forename: 'Sam', surname: 'Secret', matriculation_number: '1337331')
 
     visit accounts_path
 

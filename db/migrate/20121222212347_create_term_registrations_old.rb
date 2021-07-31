@@ -1,4 +1,4 @@
-class CreateTermRegistrationsOld < ActiveRecord::Migration
+class CreateTermRegistrationsOld < ActiveRecord::Migration[4.2]
   def change
     create_table :term_registrations do |t|
       t.datetime :registered_at

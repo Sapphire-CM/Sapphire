@@ -1,15 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe 'Removing students from a term' do
-  let(:term) { FactoryGirl.create(:term) }
-  let(:account) { FactoryGirl.create(:account, :admin) }
+  let(:term) { FactoryBot.create(:term) }
+  let(:account) { FactoryBot.create(:account, :admin) }
 
   before :each do
     sign_in account
   end
 
-  let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-  let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, :with_student_group, term: term, tutorial_group: tutorial_group) }
+  let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+  let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, :with_student_group, term: term, tutorial_group: tutorial_group) }
 
   scenario 'using the students edit page' do
     visit edit_term_student_path(term, student_term_registration)

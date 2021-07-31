@@ -4,19 +4,19 @@ RSpec.describe EventPolicy do
   describe 'scoping' do
     let(:event_service) { EventService.new(account, term) }
 
-    let(:term) { FactoryGirl.create(:term) }
-    let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-    let(:other_tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-    let(:student_group) { FactoryGirl.create(:student_group, tutorial_group: tutorial_group) }
+    let(:term) { FactoryBot.create(:term) }
+    let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+    let(:other_tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+    let(:student_group) { FactoryBot.create(:student_group, tutorial_group: tutorial_group) }
 
-    let(:student_term_registration) { FactoryGirl.create(:term_registration, :student, term: term, tutorial_group: tutorial_group, student_group: student_group) }
-    let(:tutor_term_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, tutorial_group: tutorial_group) }
-    let(:lecturer_term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term) }
+    let(:student_term_registration) { FactoryBot.create(:term_registration, :student, term: term, tutorial_group: tutorial_group, student_group: student_group) }
+    let(:tutor_term_registration) { FactoryBot.create(:term_registration, :tutor, term: term, tutorial_group: tutorial_group) }
+    let(:lecturer_term_registration) { FactoryBot.create(:term_registration, :lecturer, term: term) }
 
-    let(:group_member_term_registration) { FactoryGirl.create(:term_registration, :student, term: term, tutorial_group: tutorial_group, student_group: student_group) }
-    let(:other_student_term_registration) { FactoryGirl.create(:term_registration, :student, :with_student_group, term: term, tutorial_group: tutorial_group) }
+    let(:group_member_term_registration) { FactoryBot.create(:term_registration, :student, term: term, tutorial_group: tutorial_group, student_group: student_group) }
+    let(:other_student_term_registration) { FactoryBot.create(:term_registration, :student, :with_student_group, term: term, tutorial_group: tutorial_group) }
 
-    let(:admin_account) { FactoryGirl.create(:account, :admin) }
+    let(:admin_account) { FactoryBot.create(:account, :admin) }
 
     let(:student_account) { student_term_registration.account }
     let(:group_member_account) { group_member_term_registration.account }
@@ -25,38 +25,38 @@ RSpec.describe EventPolicy do
     let(:tutor_account) { tutor_term_registration.account }
     let(:lecturer_account) { lecturer_term_registration.account }
 
-    let(:solitary_exercise) { FactoryGirl.create(:exercise, :with_ratings, term: term, group_submission: false) }
-    let(:group_exercise) { FactoryGirl.create(:exercise, :with_ratings, term: term, group_submission: true) }
+    let(:solitary_exercise) { FactoryBot.create(:exercise, :with_ratings, term: term, group_submission: false) }
+    let(:group_exercise) { FactoryBot.create(:exercise, :with_ratings, term: term, group_submission: true) }
     let(:rating_group) { solitary_exercise.rating_groups.first }
     let(:rating) { rating_group.ratings.first }
 
     let(:student_solitary_submission) do
-      s = FactoryGirl.create(:submission, exercise: solitary_exercise)
-      s.submission_assets = FactoryGirl.create_list(:submission_asset, 3, submission: s)
+      s = FactoryBot.create(:submission, exercise: solitary_exercise)
+      s.submission_assets = FactoryBot.create_list(:submission_asset, 3, submission: s)
 
-      FactoryGirl.create(:exercise_registration, exercise: solitary_exercise, term_registration: student_term_registration, submission: s)
+      FactoryBot.create(:exercise_registration, exercise: solitary_exercise, term_registration: student_term_registration, submission: s)
       s
     end
 
     let(:group_member_solitary_submission) do
-      s = FactoryGirl.create(:submission, exercise: solitary_exercise)
-      s.submission_assets = FactoryGirl.create_list(:submission_asset, 5, submission: s)
-      FactoryGirl.create(:exercise_registration, exercise: solitary_exercise, term_registration: group_member_term_registration, submission: s)
+      s = FactoryBot.create(:submission, exercise: solitary_exercise)
+      s.submission_assets = FactoryBot.create_list(:submission_asset, 5, submission: s)
+      FactoryBot.create(:exercise_registration, exercise: solitary_exercise, term_registration: group_member_term_registration, submission: s)
       s
     end
 
     let!(:solitary_submission_of_other_student) do
-      s = FactoryGirl.create(:submission, exercise: solitary_exercise)
-      s.submission_assets = FactoryGirl.create_list(:submission_asset, 3, submission: s)
-      FactoryGirl.create(:exercise_registration, exercise: solitary_exercise, term_registration: other_student_term_registration, submission: s)
+      s = FactoryBot.create(:submission, exercise: solitary_exercise)
+      s.submission_assets = FactoryBot.create_list(:submission_asset, 3, submission: s)
+      FactoryBot.create(:exercise_registration, exercise: solitary_exercise, term_registration: other_student_term_registration, submission: s)
       s
     end
 
     let(:group_submission) do
-      s = FactoryGirl.create(:submission, exercise: group_exercise)
-      FactoryGirl.create(:exercise_registration,  exercise: group_exercise, term_registration: student_term_registration, submission: s)
-      s.submission_assets = FactoryGirl.create_list(:submission_asset, 3, submission: s)
-      FactoryGirl.create(:exercise_registration,  exercise: group_exercise, term_registration: group_member_term_registration, submission: s)
+      s = FactoryBot.create(:submission, exercise: group_exercise)
+      FactoryBot.create(:exercise_registration,  exercise: group_exercise, term_registration: student_term_registration, submission: s)
+      s.submission_assets = FactoryBot.create_list(:submission_asset, 3, submission: s)
+      FactoryBot.create(:exercise_registration,  exercise: group_exercise, term_registration: group_member_term_registration, submission: s)
       s
     end
 
@@ -64,7 +64,7 @@ RSpec.describe EventPolicy do
     let(:result_publication_of_other_tutorial_group) { solitary_exercise.result_publications.where(tutorial_group: other_tutorial_group).first }
 
     let(:group_member_account) do
-      FactoryGirl.create(:account)
+      FactoryBot.create(:account)
     end
 
     let!(:rating_events) do
@@ -167,7 +167,7 @@ RSpec.describe EventPolicy do
       it 'returns all events' do
         records = subject.resolve
 
-        expect(records.uniq).to match_array(all_events.uniq)
+        expect(records.distinct).to match_array(all_events.uniq)
       end
     end
 
@@ -175,7 +175,7 @@ RSpec.describe EventPolicy do
       let(:account) { student_account }
 
       it 'returns only own submission events and group member submission events for group submissions' do
-        expect(subject.resolve.uniq).to match_array((student_submission_events + submission_events_of_group_exercise + result_publication_events_of_tutorial_group).uniq)
+        expect(subject.resolve.distinct).to match_array((student_submission_events + submission_events_of_group_exercise + result_publication_events_of_tutorial_group).uniq)
       end
     end
 
@@ -183,7 +183,7 @@ RSpec.describe EventPolicy do
       let(:account) { tutor_account }
 
       it 'returns all events' do
-        expect(subject.resolve.uniq).to match_array(all_events.uniq)
+        expect(subject.resolve.distinct).to match_array(all_events.uniq)
       end
     end
 
@@ -191,7 +191,7 @@ RSpec.describe EventPolicy do
       let(:account) { lecturer_account }
 
       it 'returns all events' do
-        expect(subject.resolve.uniq).to match_array(all_events.uniq)
+        expect(subject.resolve.distinct).to match_array(all_events.uniq)
       end
     end
   end

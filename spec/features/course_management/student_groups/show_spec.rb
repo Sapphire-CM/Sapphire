@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.feature 'Viewing Student Groups' do
-  let(:account) { FactoryGirl.create(:account) }
-  let(:term) { FactoryGirl.create(:term) }
-  let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term, account: account) }
+  let(:account) { FactoryBot.create(:account) }
+  let(:term) { FactoryBot.create(:term) }
+  let!(:term_registration) { FactoryBot.create(:term_registration, :lecturer, term: term, account: account) }
 
   let(:described_path) { term_student_group_path(term, student_group) }
 
@@ -11,12 +11,12 @@ RSpec.feature 'Viewing Student Groups' do
     sign_in account
   end
 
-  let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
+  let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
   let(:keyword) { "sapphire-course-management" }
   let(:topic) { "Sapphire Course Management" }
   let(:description) { "Student Group should evaluate sapphire" }
 
-  let!(:student_group) { FactoryGirl.create(:student_group, tutorial_group: tutorial_group, keyword: keyword, topic: topic, description: description) }
+  let!(:student_group) { FactoryBot.create(:student_group, tutorial_group: tutorial_group, keyword: keyword, topic: topic, description: description) }
 
   scenario 'Navigating to the show page from index page' do
     visit term_student_groups_path(term)
@@ -45,7 +45,7 @@ RSpec.feature 'Viewing Student Groups' do
   end
 
   scenario 'Viewing students list with students' do
-    student_term_registrations = FactoryGirl.create_list(:term_registration, 3, :student, term: term, tutorial_group: tutorial_group, student_group: student_group)
+    student_term_registrations = FactoryBot.create_list(:term_registration, 3, :student, term: term, tutorial_group: tutorial_group, student_group: student_group)
     students = student_term_registrations.map(&:account)
 
     visit described_path
@@ -69,14 +69,14 @@ RSpec.feature 'Viewing Student Groups' do
   end
 
   scenario 'Viewing submission list with submissions' do
-    student_term_registrations = FactoryGirl.create_list(:term_registration, 3, :student, term: term, tutorial_group: tutorial_group, student_group: student_group)
+    student_term_registrations = FactoryBot.create_list(:term_registration, 3, :student, term: term, tutorial_group: tutorial_group, student_group: student_group)
     students = student_term_registrations.map(&:account)
 
-    exercises = FactoryGirl.create_list(:exercise, 3, term: term)
+    exercises = FactoryBot.create_list(:exercise, 3, term: term)
     submissions = exercises.map do |exercise|
-      submission = FactoryGirl.create(:submission, :evaluated, exercise: exercise, student_group: student_group)
+      submission = FactoryBot.create(:submission, :evaluated, exercise: exercise, student_group: student_group)
       student_term_registrations.each do |student_term_registration|
-        FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: student_term_registration, submission: submission)
+        FactoryBot.create(:exercise_registration, exercise: exercise, term_registration: student_term_registration, submission: submission)
       end
 
       submission.submission_evaluation.update(evaluation_result: 20)

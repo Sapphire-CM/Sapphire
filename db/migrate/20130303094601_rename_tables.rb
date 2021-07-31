@@ -1,4 +1,4 @@
-class RenameTables < ActiveRecord::Migration
+class RenameTables < ActiveRecord::Migration[4.2]
   def up
     rename_table :lecturer_term_registrations, :lecturer_registrations
     rename_table :tutor_term_registrations, :tutor_registrations

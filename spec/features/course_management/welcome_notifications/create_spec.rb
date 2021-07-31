@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.feature "Sending welcome notifications" do
   let(:section_selector) { "*[data-behaviour=welcome-notifications]"}
   let(:account) { term_registration.account }
-  let(:term_registration) { FactoryGirl.create(:term_registration, :lecturer) }
+  let(:term_registration) { FactoryBot.create(:term_registration, :lecturer) }
   let(:term) { term_registration.term }
 
   before :each do
@@ -23,7 +23,7 @@ RSpec.feature "Sending welcome notifications" do
 
   describe 'behaviour' do
     context 'without pending welcome notifications' do
-      let!(:term_registrations) { FactoryGirl.create_list(:term_registration, 3, welcomed_at: 2.days.ago, term: term) }
+      let!(:term_registrations) { FactoryBot.create_list(:term_registration, 3, welcomed_at: 2.days.ago, term: term) }
 
       scenario 'it says "All welcome notifications have been sent"' do
         visit edit_term_path(term)
@@ -43,7 +43,7 @@ RSpec.feature "Sending welcome notifications" do
     end
 
     context 'with pending welcome notifications' do
-      let!(:term_registrations) { FactoryGirl.create_list(:term_registration, 3, welcomed_at: nil, term: term) }
+      let!(:term_registrations) { FactoryBot.create_list(:term_registration, 3, welcomed_at: nil, term: term) }
 
       scenario 'it says "There are [count] welcome notifications waiting to be sent."' do
         visit edit_term_path(term)

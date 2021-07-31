@@ -1,4 +1,4 @@
-class ChangeTermRegistrationRoleType < ActiveRecord::Migration
+class ChangeTermRegistrationRoleType < ActiveRecord::Migration[4.2]
   def up
     add_column :term_registrations, :new_role, :integer, default: 0
 

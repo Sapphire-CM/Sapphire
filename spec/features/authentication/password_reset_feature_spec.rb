@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Password Reset Feature' do
   it 'work with valid email' do
-    account = FactoryGirl.create :account
+    account = FactoryBot.create :account
 
     visit new_account_password_path
     fill_in 'Email', with: account.email

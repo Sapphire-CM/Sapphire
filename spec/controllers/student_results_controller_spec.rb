@@ -4,9 +4,9 @@ RSpec.describe StudentResultsController do
   render_views
   include_context 'active_student_session_context'
 
-  let(:term) { FactoryGirl.create :term }
-  let(:exercise) { FactoryGirl.create :exercise, term: term }
-  let(:tutorial_group) { FactoryGirl.create :tutorial_group, term: term }
+  let(:term) { FactoryBot.create :term }
+  let(:exercise) { FactoryBot.create :exercise, term: term }
+  let(:tutorial_group) { FactoryBot.create :tutorial_group, term: term }
   let(:term_registration) { current_account.term_registrations.first }
 
   before :each do
@@ -16,9 +16,9 @@ RSpec.describe StudentResultsController do
 
   describe 'GET index' do
     it 'assigns all exercise_registrations as @exercise_registrations' do
-      FactoryGirl.create_list :course, 4
+      FactoryBot.create_list :course, 4
 
-      get :index, term_id: term.id
+      get :index, params: { term_id: term.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns[:term_review].submission_reviews.map(&:exercise_registration)).to match_array(term_registration.exercise_registrations)
@@ -35,7 +35,7 @@ RSpec.describe StudentResultsController do
       end
 
       it 'assigns the requested submission review as @submission_review' do
-        get :show, term_id: term.id, id: exercise.id
+        get :show, params: { term_id: term.id, id: exercise.id }
 
         expect(response).to have_http_status(:success)
         expect(assigns[:submission_review]).to be_a(GradingReview::SubmissionReview)
@@ -46,7 +46,7 @@ RSpec.describe StudentResultsController do
 
     context 'when no submission exists' do
       it 'redirects to submission path' do
-        get :show, id: exercise.id, term_id: term.id
+        get :show, params: { id: exercise.id, term_id: term.id }
 
         expect(response).to have_http_status(:not_found)
       end

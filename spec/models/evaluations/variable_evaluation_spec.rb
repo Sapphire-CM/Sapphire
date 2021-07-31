@@ -6,7 +6,7 @@ RSpec.describe Evaluations::VariableEvaluation do
 
   describe 'validations' do
     describe '#value_range' do
-      let(:rating) { FactoryGirl.build(:variable_points_deduction_rating, min_value: -10, max_value: -3) }
+      let(:rating) { FactoryBot.build(:variable_points_deduction_rating, min_value: -10, max_value: -3) }
 
       before :each do
         subject.rating = rating
@@ -38,8 +38,8 @@ RSpec.describe Evaluations::VariableEvaluation do
 
   describe 'methods' do
     describe '#points' do
-      let(:points_rating) { FactoryGirl.build(:variable_points_deduction_rating, min_value: -10, max_value: 0) }
-      let(:percentage_rating) { FactoryGirl.build(:variable_percentage_deduction_rating) }
+      let(:points_rating) { FactoryBot.build(:variable_points_deduction_rating, min_value: -10, max_value: 0) }
+      let(:percentage_rating) { FactoryBot.build(:variable_percentage_deduction_rating) }
 
       it 'returns the value if rating is a points rating' do
         subject.rating = points_rating
@@ -60,8 +60,8 @@ RSpec.describe Evaluations::VariableEvaluation do
     end
 
     describe '#percent' do
-      let(:points_rating) { FactoryGirl.build(:fixed_points_deduction_rating) }
-      let(:percentage_rating) { FactoryGirl.build(:fixed_percentage_deduction_rating, min_value: -15, max_value: 0) }
+      let(:points_rating) { FactoryBot.build(:fixed_points_deduction_rating) }
+      let(:percentage_rating) { FactoryBot.build(:fixed_percentage_deduction_rating, min_value: -15, max_value: 0) }
 
       it 'returns evaluation value if rating is a percentage rating' do
         subject.rating = percentage_rating

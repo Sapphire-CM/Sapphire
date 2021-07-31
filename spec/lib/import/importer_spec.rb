@@ -4,8 +4,8 @@ RSpec.describe Import::Importer do
 
   context 'imports successfully' do
     def basic_import_test(new_accounts: 8, new_tutorial_groups: 4, send_welcome_notifications: true, emails_delivered: 8)
-      term = FactoryGirl.create :term
-      import = FactoryGirl.create :import, term: term
+      term = FactoryBot.create :term
+      import = FactoryBot.create :import, term: term
       import.reload
       import.import_options.update! send_welcome_notifications: send_welcome_notifications
 
@@ -41,18 +41,18 @@ RSpec.describe Import::Importer do
     end
 
     it 'everything ok - with existing account with email' do
-      FactoryGirl.create :account, email: 'owinkler@student.tugraz.at'
+      FactoryBot.create :account, email: 'owinkler@student.tugraz.at'
       basic_import_test new_accounts: 7
     end
 
     it 'everything ok - with existing account with matriculation_number' do
-      FactoryGirl.create :account, matriculation_number: '1434949'
+      FactoryBot.create :account, matriculation_number: '1434949'
       basic_import_test new_accounts: 7
     end
 
     it 'with faulty non-matching group regexp' do
-      term = FactoryGirl.create :term
-      import = FactoryGirl.create :import, term: term, file: prepare_static_test_file('import_data_faulty_group_regexp.csv', open: true)
+      term = FactoryBot.create :term
+      import = FactoryBot.create :import, term: term, file: prepare_static_test_file('import_data_faulty_group_regexp.csv', open: true)
       import.reload
       import.import_options.update! matching_groups: :both_matches
 

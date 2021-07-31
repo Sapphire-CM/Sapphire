@@ -13,36 +13,36 @@ RSpec.describe BulkGradings::SubjectsFinder, :doing do
   describe 'methods' do
     subject { described_class.new(exercise: exercise) }
 
-    let(:term) { FactoryGirl.create(:term) }
-    let(:other_term) { FactoryGirl.create(:term) }
+    let(:term) { FactoryBot.create(:term) }
+    let(:other_term) { FactoryBot.create(:term) }
 
     describe '#search' do
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-      let(:other_tutorial_group) { FactoryGirl.create(:tutorial_group, term: other_term) }
+      let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+      let(:other_tutorial_group) { FactoryBot.create(:tutorial_group, term: other_term) }
 
-      let(:student_group_g1_01) { FactoryGirl.create(:student_group, title: "G1-01", tutorial_group: tutorial_group) }
-      let(:student_group_g1_02) { FactoryGirl.create(:student_group, title: "G1-02", tutorial_group: tutorial_group) }
-      let(:student_group_g5_02) { FactoryGirl.create(:student_group, title: "G5-02", tutorial_group: tutorial_group) }
-      let(:other_student_group_g5_02) { FactoryGirl.create(:student_group, title: "G5-02", tutorial_group: other_tutorial_group) }
+      let(:student_group_g1_01) { FactoryBot.create(:student_group, title: "G1-01", tutorial_group: tutorial_group) }
+      let(:student_group_g1_02) { FactoryBot.create(:student_group, title: "G1-02", tutorial_group: tutorial_group) }
+      let(:student_group_g5_02) { FactoryBot.create(:student_group, title: "G5-02", tutorial_group: tutorial_group) }
+      let(:other_student_group_g5_02) { FactoryBot.create(:student_group, title: "G5-02", tutorial_group: other_tutorial_group) }
 
       let!(:student_groups) { [student_group_g1_01, student_group_g1_02, student_group_g5_02] }
       let!(:other_student_groups) { [other_student_group_g5_02] }
 
-      let(:student_account_1) { FactoryGirl.create(:account, email: "hs@example.com", matriculation_number: "12345678", forename: "Homer", surname: "Simpson") }
-      let(:student_account_2) { FactoryGirl.create(:account, email: "ms@example.com", matriculation_number: "12345679", forename: "Marge", surname: "Simpson") }
-      let(:student_account_3) { FactoryGirl.create(:account, email: "mf@example.com", matriculation_number: "13345679", forename: "Maude", surname: "Flanders") }
-      let(:student_account_4) { FactoryGirl.create(:account, email: "nf@example.com", matriculation_number: "13345680", forename: "Ned", surname: "Flanders") }
+      let(:student_account_1) { FactoryBot.create(:account, email: "hs@example.com", matriculation_number: "12345678", forename: "Homer", surname: "Simpson") }
+      let(:student_account_2) { FactoryBot.create(:account, email: "ms@example.com", matriculation_number: "12345679", forename: "Marge", surname: "Simpson") }
+      let(:student_account_3) { FactoryBot.create(:account, email: "mf@example.com", matriculation_number: "13345679", forename: "Maude", surname: "Flanders") }
+      let(:student_account_4) { FactoryBot.create(:account, email: "nf@example.com", matriculation_number: "13345680", forename: "Ned", surname: "Flanders") }
 
-      let(:term_registration_1) { FactoryGirl.create(:term_registration, :student, account: student_account_1, term: term) }
-      let(:term_registration_2) { FactoryGirl.create(:term_registration, :student, account: student_account_2, term: term) }
-      let(:term_registration_3) { FactoryGirl.create(:term_registration, :student, account: student_account_3, term: term) }
-      let(:term_registration_4) { FactoryGirl.create(:term_registration, :student, account: student_account_4, term: other_term) }
+      let(:term_registration_1) { FactoryBot.create(:term_registration, :student, account: student_account_1, term: term) }
+      let(:term_registration_2) { FactoryBot.create(:term_registration, :student, account: student_account_2, term: term) }
+      let(:term_registration_3) { FactoryBot.create(:term_registration, :student, account: student_account_3, term: term) }
+      let(:term_registration_4) { FactoryBot.create(:term_registration, :student, account: student_account_4, term: other_term) }
 
       let!(:term_registrations) { [term_registration_1, term_registration_2, term_registration_3] }
       let!(:other_term_registrations) { [term_registration_4] }
 
       context 'with group exercise' do
-        let(:exercise) { FactoryGirl.build(:exercise, :group_exercise, term: term) }
+        let(:exercise) { FactoryBot.build(:exercise, :group_exercise, term: term) }
 
         it 'returns student groups with matching prefix' do
           expect(subject.search("G1-")).to match_array([student_group_g1_01, student_group_g1_02])
@@ -62,7 +62,7 @@ RSpec.describe BulkGradings::SubjectsFinder, :doing do
       end
 
       context 'with solitary exercise' do
-        let(:exercise) { FactoryGirl.build(:exercise, :solitary_exercise, term: term) }
+        let(:exercise) { FactoryBot.build(:exercise, :solitary_exercise, term: term) }
 
         it 'returns term_registrations with matching matriculation numbers' do
           expect(subject.search("345")).to match_array(term_registrations)
@@ -92,9 +92,9 @@ RSpec.describe BulkGradings::SubjectsFinder, :doing do
 
     describe '#find' do
       context 'with group exercise' do
-        let(:exercise) { FactoryGirl.build(:exercise, :group_exercise, term: term) }
-        let(:student_groups) { FactoryGirl.create_list(:student_group, 3, term: term) }
-        let(:other_student_groups) { FactoryGirl.create_list(:student_group, 3) }
+        let(:exercise) { FactoryBot.build(:exercise, :group_exercise, term: term) }
+        let(:student_groups) { FactoryBot.create_list(:student_group, 3, term: term) }
+        let(:other_student_groups) { FactoryBot.create_list(:student_group, 3) }
 
         it 'returns student groups' do
           expect(subject.find(student_groups[0..1].map(&:id))).to match_array(student_groups[0..1])
@@ -108,17 +108,17 @@ RSpec.describe BulkGradings::SubjectsFinder, :doing do
       end
 
       context 'with solitary exercise' do
-        let(:exercise) { FactoryGirl.build(:exercise, :solitary_exercise, term: term) }
+        let(:exercise) { FactoryBot.build(:exercise, :solitary_exercise, term: term) }
 
-        let(:student_account_1) { FactoryGirl.create(:account, :student) }
-        let(:student_account_2) { FactoryGirl.create(:account, :student) }
-        let(:student_account_3) { FactoryGirl.create(:account, :student) }
-        let(:student_account_4) { FactoryGirl.create(:account, :student) }
+        let(:student_account_1) { FactoryBot.create(:account, :student) }
+        let(:student_account_2) { FactoryBot.create(:account, :student) }
+        let(:student_account_3) { FactoryBot.create(:account, :student) }
+        let(:student_account_4) { FactoryBot.create(:account, :student) }
 
-        let(:term_registration_1) { FactoryGirl.create(:term_registration, :student, account: student_account_1, term: term) }
-        let(:term_registration_2) { FactoryGirl.create(:term_registration, :student, account: student_account_2, term: term) }
-        let(:term_registration_3) { FactoryGirl.create(:term_registration, :student, account: student_account_3, term: term) }
-        let(:term_registration_4) { FactoryGirl.create(:term_registration, :student, account: student_account_4, term: other_term) }
+        let(:term_registration_1) { FactoryBot.create(:term_registration, :student, account: student_account_1, term: term) }
+        let(:term_registration_2) { FactoryBot.create(:term_registration, :student, account: student_account_2, term: term) }
+        let(:term_registration_3) { FactoryBot.create(:term_registration, :student, account: student_account_3, term: term) }
+        let(:term_registration_4) { FactoryBot.create(:term_registration, :student, account: student_account_4, term: other_term) }
 
         let!(:term_registrations) { [term_registration_1, term_registration_2, term_registration_3] }
         let!(:other_term_registrations) { [term_registration_4] }

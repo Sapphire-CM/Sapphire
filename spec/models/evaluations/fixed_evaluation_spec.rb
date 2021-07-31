@@ -6,8 +6,8 @@ RSpec.describe Evaluations::FixedEvaluation do
 
   describe 'methods' do
     describe '#points' do
-      let(:points_rating) { FactoryGirl.build(:fixed_points_deduction_rating, value: -42) }
-      let(:percentage_rating) { FactoryGirl.build(:fixed_percentage_deduction_rating) }
+      let(:points_rating) { FactoryBot.build(:fixed_points_deduction_rating, value: -42) }
+      let(:percentage_rating) { FactoryBot.build(:fixed_percentage_deduction_rating) }
 
       it 'returns 0 if value is 0 and rating is a points rating' do
         subject.rating = points_rating
@@ -35,8 +35,8 @@ RSpec.describe Evaluations::FixedEvaluation do
     end
 
     describe '#percent' do
-      let(:points_rating) { FactoryGirl.build(:fixed_points_deduction_rating) }
-      let(:percentage_rating) { FactoryGirl.build(:fixed_percentage_deduction_rating, value: -42) }
+      let(:points_rating) { FactoryBot.build(:fixed_points_deduction_rating) }
+      let(:percentage_rating) { FactoryBot.build(:fixed_percentage_deduction_rating, value: -42) }
 
       it 'returns 1 if value is 0 and rating is a points rating' do
         subject.rating = percentage_rating

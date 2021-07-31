@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'features/account_management/behaviours/account_side_navigation_behaviour'
 
 RSpec.feature 'Adding Accounts' do
-  let(:admin_account) { FactoryGirl.create(:account, :admin) }
+  let(:admin_account) { FactoryBot.create(:account, :admin) }
 
   before(:each) do
     sign_in admin_account

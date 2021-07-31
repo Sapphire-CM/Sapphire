@@ -22,14 +22,14 @@ RSpec.describe ExportsController do
     }
   end
 
-  let(:term) { FactoryGirl.create :term }
-  let(:export) { FactoryGirl.create :export, term: term }
+  let(:term) { FactoryBot.create :term }
+  let(:export) { FactoryBot.create :export, term: term }
 
   describe 'GET index' do
     it 'assigns all exports as @exports' do
-      FactoryGirl.create_list :export, 4, term: term
+      FactoryBot.create_list :export, 4, term: term
 
-      get :index, term_id: term.id
+      get :index, params: { term_id: term.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:exports)).to match_array(term.exports)
@@ -39,7 +39,7 @@ RSpec.describe ExportsController do
   describe 'GET new' do
     context 'without a type' do
       it 'doesn\'t assign @export' do
-        get :new, term_id: term.id
+        get :new, params: { term_id: term.id }
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:_export_type_selector)
@@ -49,7 +49,7 @@ RSpec.describe ExportsController do
 
     context 'with invalid type' do
       it 'assigns a new export as @export' do
-        get :new, term_id: term.id, type: 'foobar'
+        get :new, params: { term_id: term.id, type: 'foobar' }
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:_export_type_selector)
@@ -62,7 +62,7 @@ RSpec.describe ExportsController do
         let(:mocked_export) { Export.new_from_type(type) }
 
         it 'assigns a new export as @export' do
-          get :new, term_id: term.id, type: type
+          get :new, params: { term_id: term.id, type: type }
 
           expect(response).to have_http_status(:success)
           expect(assigns(:export)).to be_a_new(Export)
@@ -74,7 +74,7 @@ RSpec.describe ExportsController do
           expect(Export).to receive(:new_from_type).with(type).and_return(mocked_export)
           expect(mocked_export).to receive(:set_default_values!).and_call_original
 
-          get :new, term_id: term.id, type: type
+          get :new, params: { term_id: term.id, type: type }
         end
       end
     end
@@ -87,7 +87,7 @@ RSpec.describe ExportsController do
           valid_attributes[:term_id] = term.id
 
           expect do
-            post :create, valid_attributes
+            post :create, params: valid_attributes
           end.not_to change(Export, :count)
 
           expect(response).to redirect_to(new_term_export_path(term))
@@ -100,7 +100,7 @@ RSpec.describe ExportsController do
           valid_attributes[:type] = 'foobar'
 
           expect do
-            post :create, valid_attributes
+            post :create, params: valid_attributes
           end.not_to change(Export, :count)
 
           expect(response).to redirect_to(new_term_export_path(term))
@@ -118,7 +118,7 @@ RSpec.describe ExportsController do
             end
 
             expect do
-              post :create, valid_attributes
+              post :create, params: valid_attributes
             end.to change(Export, :count).by(1)
 
             expect(response).to redirect_to(term_exports_path(term))
@@ -136,7 +136,7 @@ RSpec.describe ExportsController do
           invalid_attributes[:type] = 'submissions'
 
           expect do
-            post :create, invalid_attributes
+            post :create, params: invalid_attributes
           end.not_to change(Exports::SubmissionsExport, :count)
 
           expect(response).to have_http_status(:success)
@@ -154,7 +154,7 @@ RSpec.describe ExportsController do
           invalid_attributes[:type] = 'grading'
 
           expect do
-            post :create, invalid_attributes
+            post :create, params: invalid_attributes
           end.not_to change(Exports::GradingExport, :count)
 
           expect(response).to have_http_status(:success)
@@ -171,7 +171,7 @@ RSpec.describe ExportsController do
       export.reload # trigger creation
 
       expect do
-        delete :destroy, term_id: term.id, id: export.id
+        delete :destroy, params: { term_id: term.id, id: export.id }
       end.to change(Export, :count).by(-1)
 
       expect(response).to redirect_to(term_exports_path(term))
@@ -184,16 +184,16 @@ RSpec.describe ExportsController do
 
       expect(controller).to receive(:send_file).with(export.file.to_s) {
         # to prevent a 'missing template' error
-        controller.render nothing: true
+        controller.head :ok
       }
 
-      get :download, term_id: term.id, id: export.id
+      get :download, params: { term_id: term.id, id: export.id }
 
       expect(response).to have_http_status(:success)
     end
 
     it 'redirects on missing or unfinished export file' do
-      get :download, term_id: term.id, id: export.id
+      get :download, params: { term_id: term.id, id: export.id }
 
       expect(response).to redirect_to(term_exports_path(term))
     end

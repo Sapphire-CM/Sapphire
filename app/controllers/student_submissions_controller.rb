@@ -18,7 +18,9 @@ class StudentSubmissionsController < ApplicationController
     if @submission_creation_service.save
       redirect_to submission_path(@submission)
     else
-      render :new, alert: "Could not create submission"
+      flash.now[:alert] = "Could not create submission"
+
+      render :new
     end
   end
 

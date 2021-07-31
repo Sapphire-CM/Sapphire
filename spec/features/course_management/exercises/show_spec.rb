@@ -4,10 +4,10 @@ require 'features/course_management/behaviours/exercise_sub_navigation_behaviour
 
 RSpec.describe "Exercise Page" do
   let(:account) { term_registration.account }
-  let(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term) }
+  let(:term_registration) { FactoryBot.create(:term_registration, :lecturer, term: term) }
   let(:term) { exercise.term }
   let(:course) { term.course }
-  let!(:exercise) { FactoryGirl.create(:exercise) }
+  let!(:exercise) { FactoryBot.create(:exercise) }
 
   before(:each) do
     sign_in account

@@ -27,13 +27,13 @@ RSpec.describe BulkGradings::Bulk, :doing do
   describe 'validations' do
     describe 'exercise_attempt_id' do
       context 'exercise with attempts' do
-        let(:exercise) { FactoryGirl.build(:exercise, :multiple_attempts) }
+        let(:exercise) { FactoryBot.build(:exercise, :multiple_attempts) }
 
         it { is_expected.to validate_presence_of(:exercise_attempt_id) }
       end
 
       context 'exercise without attempts' do
-        let(:exercise) { FactoryGirl.build(:exercise, :single_attempt) }
+        let(:exercise) { FactoryBot.build(:exercise, :single_attempt) }
 
         it { is_expected.to validate_absence_of(:exercise_attempt_id) }
       end
@@ -83,9 +83,9 @@ RSpec.describe BulkGradings::Bulk, :doing do
 
   describe 'methods' do
     describe '#exercise_attempt' do
-      let(:exercise) { FactoryGirl.create(:exercise) }
-      let(:exercise_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
-      let(:other_exercise_attempt) { FactoryGirl.create(:exercise_attempt) }
+      let(:exercise) { FactoryBot.create(:exercise) }
+      let(:exercise_attempt) { FactoryBot.create(:exercise_attempt, exercise: exercise) }
+      let(:other_exercise_attempt) { FactoryBot.create(:exercise_attempt) }
 
       it 'looks up the exercise attempt using the exercise' do
         subject.exercise_attempt_id = exercise_attempt.id
@@ -148,7 +148,7 @@ RSpec.describe BulkGradings::Bulk, :doing do
     end
 
     describe '#items_attributes=' do
-      let(:exercise) { FactoryGirl.build(:exercise) }
+      let(:exercise) { FactoryBot.build(:exercise) }
 
       let(:item_1_attributes) { {subject_id: 1, evaluations_attributes: {"0" => {rating_id: 1, value: 1}}} }
       let(:item_2_attributes) { {subject_id: 2, evaluations_attributes: {"0" => {rating_id: 1, value: 1}}} }
@@ -198,10 +198,10 @@ RSpec.describe BulkGradings::Bulk, :doing do
     end
 
     describe '#ratings' do
-      let(:exercise) { FactoryGirl.create(:exercise) }
-      let!(:bulk_ratings) { FactoryGirl.create_list(:fixed_points_deduction_rating, 2, exercise: exercise, bulk: true) }
-      let!(:non_bulk_ratings) { FactoryGirl.create_list(:fixed_points_deduction_rating, 2, exercise: exercise, bulk: false) }
-      let!(:other_ratings) { FactoryGirl.create_list(:fixed_points_deduction_rating, 2, bulk: true) }
+      let(:exercise) { FactoryBot.create(:exercise) }
+      let!(:bulk_ratings) { FactoryBot.create_list(:fixed_points_deduction_rating, 2, exercise: exercise, bulk: true) }
+      let!(:non_bulk_ratings) { FactoryBot.create_list(:fixed_points_deduction_rating, 2, exercise: exercise, bulk: false) }
+      let!(:other_ratings) { FactoryBot.create_list(:fixed_points_deduction_rating, 2, bulk: true) }
 
       it 'returns the exercise\'s ratings' do
         expect(subject.ratings).to match_array(bulk_ratings)
@@ -301,7 +301,7 @@ RSpec.describe BulkGradings::Bulk, :doing do
     end
 
     describe '#save' do
-      let(:exercise) { FactoryGirl.create(:exercise) }
+      let(:exercise) { FactoryBot.create(:exercise) }
 
       let(:item_1) { instance_double(BulkGradings::Item, subject: subject_1) }
       let(:item_2) { instance_double(BulkGradings::Item, subject: subject_2) }
@@ -315,7 +315,7 @@ RSpec.describe BulkGradings::Bulk, :doing do
 
       let(:subject_2_submission) { instance_double(Submission) }
       let(:submissions_finder) { instance_double(BulkGradings::SubmissionsFinder) }
-      let(:exericse_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
+      let(:exericse_attempt) { FactoryBot.create(:exercise_attempt, exercise: exercise) }
 
       it 'raises an error if there are validation errors' do
         allow(subject).to receive(:valid?).and_return(false)

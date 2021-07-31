@@ -20,7 +20,7 @@ class StudentGroup < ActiveRecord::Base
   has_many :submissions, dependent: :nullify
   has_many :submission_evaluations, through: :submissions
 
-  scope :for_term, lambda { |term| joins { tutorial_group.term }.where { tutorial_group.term.id == my { term.id } } }
+  scope :for_term, lambda { |term| joins(:tutorial_group).merge(TutorialGroup.where(term: term)) }
   scope :for_tutorial_group, lambda { |tutorial_group| where(tutorial_group_id: tutorial_group.id) }
   scope :for_account, lambda { |account| joins(:term_registrations).where(term_registrations: {account: account}) }
 

@@ -1,9 +1,9 @@
 require "rails_helper"
 
 RSpec.describe "Email Address Removal" do
-  let(:account) { FactoryGirl.create(:account, :admin) }
-  let(:student_account) { FactoryGirl.create(:account) }
-  let!(:email_address) { FactoryGirl.create(:email_address, account: student_account) }
+  let(:account) { FactoryBot.create(:account, :admin) }
+  let(:student_account) { FactoryBot.create(:account) }
+  let!(:email_address) { FactoryBot.create(:email_address, account: student_account) }
 
   before :each do
     sign_in account

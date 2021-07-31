@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe 'Viewing results' do
-  let(:course) { FactoryGirl.create(:course) }
-  let(:term) { FactoryGirl.create(:term, course: course, title: 'Fancy Term') }
-  let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-  let(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
+  let(:course) { FactoryBot.create(:course) }
+  let(:term) { FactoryBot.create(:term, course: course, title: 'Fancy Term') }
+  let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+  let(:term_registration) { FactoryBot.create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
   let!(:account) { term_registration.account }
-  let!(:exercise) { FactoryGirl.create(:exercise, title: 'Fancy Exercise', term: term) }
-  let(:submission) { FactoryGirl.create(:submission, exercise: exercise, submitter: account) }
-  let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, submission: submission, term_registration: term_registration, exercise: exercise) }
+  let!(:exercise) { FactoryBot.create(:exercise, title: 'Fancy Exercise', term: term) }
+  let(:submission) { FactoryBot.create(:submission, exercise: exercise, submitter: account) }
+  let!(:exercise_registration) { FactoryBot.create(:exercise_registration, submission: submission, term_registration: term_registration, exercise: exercise) }
 
   before :each do
     exercise.result_publications.update_all(published: true)
@@ -47,11 +47,11 @@ RSpec.describe 'Viewing results' do
   end
 
   describe 'reviewing results' do
-    let!(:rating_groups) { FactoryGirl.create_list(:rating_group, 2, :with_ratings, exercise: exercise, points: 7, enable_range_points: false) }
+    let!(:rating_groups) { FactoryBot.create_list(:rating_group, 2, :with_ratings, exercise: exercise, points: 7, enable_range_points: false) }
 
     let(:rating_group) { rating_groups.first }
     let(:other_rating_group) { rating_groups.second }
-    let(:rating) { rating_group.ratings(true).last }
+    let(:rating) { rating_group.ratings.reload.last }
 
     scenario 'visiting results page of submission without any wrongdoings' do
       visit term_result_path(term, exercise)

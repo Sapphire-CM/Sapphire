@@ -22,7 +22,7 @@ RSpec.describe RatingGroup do
   end
 
   describe 'validations' do
-    subject { FactoryGirl.build(:rating_group) }
+    subject { FactoryBot.build(:rating_group) }
 
     it { is_expected.to validate_presence_of(:exercise) }
     it { is_expected.to validate_presence_of(:title) }

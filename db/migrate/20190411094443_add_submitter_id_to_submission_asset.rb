@@ -1,4 +1,4 @@
-class AddSubmitterIdToSubmissionAsset < ActiveRecord::Migration
+class AddSubmitterIdToSubmissionAsset < ActiveRecord::Migration[4.2]
   def up
     add_reference :submission_assets, :submitter, index: true, null: true
     add_foreign_key :submission_assets, :accounts, column: :submitter_id

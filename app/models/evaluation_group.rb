@@ -30,7 +30,7 @@ class EvaluationGroup < ActiveRecord::Base
 
   delegate :title, to: :rating_group
 
-  scope :ranked, lambda { includes(:rating_group).order { rating_group.row_order.asc }.references(:rating_group) }
+  scope :ranked, lambda { includes(:rating_group).merge(RatingGroup.order(:row_order)).references(:rating_group) }
 
   scope :needing_review, lambda { where(needs_review: true) }
 

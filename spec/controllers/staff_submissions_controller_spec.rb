@@ -4,16 +4,16 @@ RSpec.describe StaffSubmissionsController do
   render_views
   include_context 'active_admin_session_context'
 
-  let!(:term) { FactoryGirl.create :term }
-  let!(:exercise) { FactoryGirl.create :exercise, term: term }
-  let!(:tutorial_group) { FactoryGirl.create :tutorial_group, term: term }
-  let!(:submission) { FactoryGirl.create :submission, exercise: exercise }
-  let!(:submission_asset) { FactoryGirl.create :submission_asset, submission: submission }
+  let!(:term) { FactoryBot.create :term }
+  let!(:exercise) { FactoryBot.create :exercise, term: term }
+  let!(:tutorial_group) { FactoryBot.create :tutorial_group, term: term }
+  let!(:submission) { FactoryBot.create :submission, exercise: exercise }
+  let!(:submission_asset) { FactoryBot.create :submission_asset, submission: submission }
 
   describe 'GET index' do
     context 'with tutorial_group' do
       it 'works' do
-        get :index, exercise_id: exercise.id, tutorial_group_id: tutorial_group.id
+        get :index, params: { exercise_id: exercise.id, tutorial_group_id: tutorial_group.id }
 
         expect(response).to have_http_status(:success)
       end
@@ -21,7 +21,7 @@ RSpec.describe StaffSubmissionsController do
 
     context 'without tutorial_group' do
       it 'works' do
-        get :index, exercise_id: exercise.id
+        get :index, params: { exercise_id: exercise.id }
 
         expect(response).to have_http_status(:success)
       end
@@ -31,7 +31,7 @@ RSpec.describe StaffSubmissionsController do
       it 'works' do
         TutorialGroup.destroy_all
 
-        get :index, exercise_id: exercise.id
+        get :index, params: { exercise_id: exercise.id }
 
         expect(response).to have_http_status(:success)
       end

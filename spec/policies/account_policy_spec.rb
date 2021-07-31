@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe AccountPolicy do
-  let(:another_account) { FactoryGirl.create(:account, :student) }
+  let(:another_account) { FactoryBot.create(:account, :student) }
 
   shared_examples "basic account permissions" do
     describe 'own account' do
@@ -24,7 +24,7 @@ RSpec.describe AccountPolicy do
     end
 
     describe 'members' do
-      let(:account) { FactoryGirl.create(:account) }
+      let(:account) { FactoryBot.create(:account) }
       subject { AccountPolicy.new(current_account, account) }
 
       it { is_expected.to permit_authorization(:show) }
@@ -47,7 +47,7 @@ RSpec.describe AccountPolicy do
     end
 
     describe 'members' do
-      let(:account) { FactoryGirl.create(:account) }
+      let(:account) { FactoryBot.create(:account) }
       subject { AccountPolicy.new(current_account, account) }
 
       it { is_expected.not_to permit_authorization(:show) }
@@ -62,31 +62,31 @@ RSpec.describe AccountPolicy do
   end
 
   context 'as an admin' do
-    let(:current_account) { FactoryGirl.create(:account, :admin) }
+    let(:current_account) { FactoryBot.create(:account, :admin) }
 
     it_behaves_like "basic account permissions"
     it_behaves_like "granted general account permissions"
   end
 
   context 'as a lecturer' do
-    let(:current_account) { FactoryGirl.create(:account) }
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, account: current_account) }
+    let(:current_account) { FactoryBot.create(:account) }
+    let!(:term_registration) { FactoryBot.create(:term_registration, :lecturer, account: current_account) }
 
     it_behaves_like "basic account permissions"
     it_behaves_like "granted general account permissions"
   end
 
   context 'as a tutor' do
-    let(:current_account) { FactoryGirl.create(:account) }
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :tutor, account: current_account) }
+    let(:current_account) { FactoryBot.create(:account) }
+    let!(:term_registration) { FactoryBot.create(:term_registration, :tutor, account: current_account) }
 
     it_behaves_like "basic account permissions"
     it_behaves_like "restricted general account permissions"
   end
 
   context 'as a student' do
-    let(:current_account) { FactoryGirl.create(:account) }
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :student, account: current_account) }
+    let(:current_account) { FactoryBot.create(:account) }
+    let!(:term_registration) { FactoryBot.create(:term_registration, :student, account: current_account) }
 
     it_behaves_like "basic account permissions"
     it_behaves_like "restricted general account permissions"

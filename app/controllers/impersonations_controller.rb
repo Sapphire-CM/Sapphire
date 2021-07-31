@@ -12,10 +12,11 @@ class ImpersonationsController < ApplicationController
 
   def destroy
     old_account = current_account
+
     if @impersonation.destroy
-      redirect_to :back, notice: "No longer impersonating '#{old_account.email}'."
+      redirect_back fallback_location: root_path, notice: "No longer impersonating '#{old_account.email}'."
     else
-      redirect_to :back
+      redirect_back fallback_location: root_path
     end
   end
 

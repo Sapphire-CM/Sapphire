@@ -14,7 +14,7 @@ class Course < ActiveRecord::Base
   validates :title, presence: true, uniqueness: true
 
   scope :unlocked, lambda { where(locked: false) }
-  scope :associated_with, lambda { |account| joins(terms: :term_registrations).where(term_registrations: { account_id: account.id }).uniq }
+  scope :associated_with, lambda { |account| joins(terms: :term_registrations).where(term_registrations: { account_id: account.id }).distinct }
 
   def unlocked?
     !locked?

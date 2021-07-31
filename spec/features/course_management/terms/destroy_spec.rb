@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Term Editing' do
   let(:account) { term_registration.account }
-  let(:term_registration) { FactoryGirl.create(:term_registration, :lecturer) }
+  let(:term_registration) { FactoryBot.create(:term_registration, :lecturer) }
   let(:term) { term_registration.term }
 
   before :each do

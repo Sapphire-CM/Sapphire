@@ -3,12 +3,12 @@ require 'rails_helper'
 RSpec.describe Notification::ResultPublicationJob, type: :job do
 
   describe '#perform' do
-    let(:term) { FactoryGirl.create(:term) }
-    let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-    let(:exercise) { FactoryGirl.create(:exercise, term: term) }
+    let(:term) { FactoryBot.create(:term) }
+    let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+    let(:exercise) { FactoryBot.create(:exercise, term: term) }
 
-    let!(:student_term_registrations) { FactoryGirl.create_list(:term_registration, 3, :student, term: term, tutorial_group: tutorial_group) }
-    let!(:tutor_term_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, tutorial_group: tutorial_group) }
+    let!(:student_term_registrations) { FactoryBot.create_list(:term_registration, 3, :student, term: term, tutorial_group: tutorial_group) }
+    let!(:tutor_term_registration) { FactoryBot.create(:term_registration, :tutor, term: term, tutorial_group: tutorial_group) }
     let!(:result_publication) { exercise.result_publications.first }
 
     it 'notifies students about the result publication' do

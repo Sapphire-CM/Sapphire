@@ -5,7 +5,7 @@ module FeatureHelpers
     sign_out
   end
 
-  def sign_in(account = FactoryGirl.create(:account))
+  def sign_in(account = FactoryBot.create(:account))
     ensure_logged_out!
 
     sign_in_with(account.email, account.password)

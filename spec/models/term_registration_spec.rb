@@ -6,7 +6,7 @@ RSpec.describe TermRegistration do
     it { is_expected.to have_db_column(:points).of_type(:integer) }
     it { is_expected.to have_db_column(:positive_grade).of_type(:boolean).with_options(null: false, default: false) }
     it { is_expected.to have_db_column(:receives_grade).of_type(:boolean).with_options(null: false, default: false) }
-    it { is_expected.to have_db_column(:role).of_type(:integer).with_options(default: 0) }
+    it { is_expected.to have_db_column(:role).of_type(:integer).with_options(default: :student) }
 
     it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
     it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
@@ -38,16 +38,16 @@ RSpec.describe TermRegistration do
 
   describe 'methods' do
     describe '.search' do
-      let(:account_1) { FactoryGirl.create(:account, forename: "John", surname: "Doe", matriculation_number: "12345678") }
-      let(:account_2) { FactoryGirl.create(:account, forename: "Jane", surname: "Doe", matriculation_number: "87654321") }
+      let(:account_1) { FactoryBot.create(:account, forename: "John", surname: "Doe", matriculation_number: "12345678") }
+      let(:account_2) { FactoryBot.create(:account, forename: "Jane", surname: "Doe", matriculation_number: "87654321") }
 
-      let!(:student_term_registration_1) { FactoryGirl.create(:term_registration, :student, account: account_1) }
-      let!(:tutor_term_registration_1) { FactoryGirl.create(:term_registration, :tutor, account: account_1) }
-      let!(:tutor_term_registration_2) { FactoryGirl.create(:term_registration, :tutor, account: account_1) }
-      let!(:lecturer_term_registration_1) { FactoryGirl.create(:term_registration, :lecturer, account: account_1) }
+      let!(:student_term_registration_1) { FactoryBot.create(:term_registration, :student, account: account_1) }
+      let!(:tutor_term_registration_1) { FactoryBot.create(:term_registration, :tutor, account: account_1) }
+      let!(:tutor_term_registration_2) { FactoryBot.create(:term_registration, :tutor, account: account_1) }
+      let!(:lecturer_term_registration_1) { FactoryBot.create(:term_registration, :lecturer, account: account_1) }
 
-      let!(:student_term_registration_2) { FactoryGirl.create(:term_registration, :student, account: account_2) }
-      let!(:tutor_term_registration_3) { FactoryGirl.create(:term_registration, :tutor, account: account_2) }
+      let!(:student_term_registration_2) { FactoryBot.create(:term_registration, :student, account: account_2) }
+      let!(:tutor_term_registration_3) { FactoryBot.create(:term_registration, :tutor, account: account_2) }
 
       let(:term_registrations_of_account_1) {
         [
@@ -121,13 +121,13 @@ RSpec.describe TermRegistration do
     end
 
     describe '#update_points' do
-      let(:term) { FactoryGirl.create(:term) }
-      let(:exercises) { FactoryGirl.create_list(:exercise, 2, term: term) }
+      let(:term) { FactoryBot.create(:term) }
+      let(:exercises) { FactoryBot.create_list(:exercise, 2, term: term) }
 
-      let(:submissions) { exercises.map { |exercise| FactoryGirl.create(:submission, exercise: exercise) } }
-      let!(:exercise_registrations) { submissions.map { |submission| FactoryGirl.create(:exercise_registration, exercise: submission.exercise, term_registration: subject, submission: submission) }}
+      let(:submissions) { exercises.map { |exercise| FactoryBot.create(:submission, exercise: exercise) } }
+      let!(:exercise_registrations) { submissions.map { |submission| FactoryBot.create(:exercise_registration, exercise: submission.exercise, term_registration: subject, submission: submission) }}
 
-      subject { FactoryGirl.create(:term_registration, :student, term: term) }
+      subject { FactoryBot.create(:term_registration, :student, term: term) }
 
       before :each do
         exercise_registrations.first.update(points: 12)
@@ -177,9 +177,9 @@ RSpec.describe TermRegistration do
 
   describe 'scopes' do
     context 'role based' do
-      let!(:lecturer_registrations) { FactoryGirl.create_list :term_registration, 3, :lecturer }
-      let!(:tutor_registrations) { FactoryGirl.create_list :term_registration, 5, :tutor }
-      let!(:student_registrations) { FactoryGirl.create_list :term_registration, 7, :student }
+      let!(:lecturer_registrations) { FactoryBot.create_list :term_registration, 3, :lecturer }
+      let!(:tutor_registrations) { FactoryBot.create_list :term_registration, 5, :tutor }
+      let!(:student_registrations) { FactoryBot.create_list :term_registration, 7, :student }
 
       it 'scopes lecturers' do
         expect(described_class.lecturer).to eq(described_class.lecturers)
@@ -201,13 +201,13 @@ RSpec.describe TermRegistration do
       end
 
       it 'ordered by matriculation number' do
-        expect(described_class.students.ordered_by_matriculation_number).to eq(described_class.students.joins(:account).order { account.matriculation_number.asc })
+        expect(described_class.students.ordered_by_matriculation_number).to eq(described_class.students.joins(:account).merge(Account.order(:matriculation_number)))
       end
     end
 
     context 'welcoming users' do
-      let!(:welcomed_term_registrations) { FactoryGirl.create_list(:term_registration, 3, welcomed_at: 2.days.ago) }
-      let!(:not_welcomed_term_registrations) { FactoryGirl.create_list(:term_registration, 3, welcomed_at: nil) }
+      let!(:welcomed_term_registrations) { FactoryBot.create_list(:term_registration, 3, welcomed_at: 2.days.ago) }
+      let!(:not_welcomed_term_registrations) { FactoryBot.create_list(:term_registration, 3, welcomed_at: nil) }
 
       describe '.welcomed' do
         it 'returns term_registrations which have been welcomed' do
@@ -224,9 +224,9 @@ RSpec.describe TermRegistration do
   end
 
   context 'validations' do
-    let(:term) { FactoryGirl.create(:term) }
-    let(:another_term) { FactoryGirl.create(:term) }
-    let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
+    let(:term) { FactoryBot.create(:term) }
+    let(:another_term) { FactoryBot.create(:term) }
+    let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
 
     describe 'ensuring term consistency' do
       it 'is valid when tutorial group is in the same term' do
@@ -262,7 +262,7 @@ RSpec.describe TermRegistration do
       subject.tutorial_group = nil
       expect(subject).to be_valid
 
-      subject.tutorial_group = FactoryGirl.create(:tutorial_group)
+      subject.tutorial_group = FactoryBot.create(:tutorial_group)
       expect(subject).not_to be_valid
     end
   end

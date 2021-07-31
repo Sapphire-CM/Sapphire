@@ -1,34 +1,34 @@
 require 'rails_helper'
 
 describe ExercisePolicy do
-  let(:term) { FactoryGirl.create(:term) }
-  let(:exercise) { FactoryGirl.create(:exercise, term: term) }
+  let(:term) { FactoryBot.create(:term) }
+  let(:exercise) { FactoryBot.create(:exercise, term: term) }
 
   context 'for index' do
     subject { ExercisePolicy.new(user, ExercisePolicy.term_policy_record(term)) }
 
     context 'as an admin' do
-      let(:user) { FactoryGirl.create(:account, :admin) }
+      let(:user) { FactoryBot.create(:account, :admin) }
 
       it { is_expected.to permit_authorization :index }
     end
 
     context 'as a lecturer' do
-      let(:user) { FactoryGirl.create(:account, :lecturer) }
+      let(:user) { FactoryBot.create(:account, :lecturer) }
       let(:term) { user.term_registrations.lecturers.first.term }
 
       it { is_expected.to permit_authorization :index }
     end
 
     context 'as a tutor' do
-      let(:user) { FactoryGirl.create(:account, :tutor) }
+      let(:user) { FactoryBot.create(:account, :tutor) }
       let(:term) {  user.term_registrations.tutors.first.term }
 
       it { is_expected.to permit_authorization :index }
     end
 
     context 'as a student' do
-      let(:user) { FactoryGirl.create(:account, :student) }
+      let(:user) { FactoryBot.create(:account, :student) }
       let(:term) { user.term_registrations.students.first.term }
 
       it { is_expected.to permit_authorization :index }
@@ -39,8 +39,8 @@ describe ExercisePolicy do
     subject { Pundit.policy(user, exercise) }
 
     context 'as an admin' do
-      let(:user) { FactoryGirl.create(:account, :admin) }
-      let(:exercise) { FactoryGirl.create(:exercise, term: term) }
+      let(:user) { FactoryBot.create(:account, :admin) }
+      let(:exercise) { FactoryBot.create(:exercise, term: term) }
 
       it { is_expected.to permit_authorization :show }
       it { is_expected.to permit_authorization :new }
@@ -51,7 +51,7 @@ describe ExercisePolicy do
     end
 
     context 'as a lecturer' do
-      let(:user) { FactoryGirl.create(:account, :lecturer) }
+      let(:user) { FactoryBot.create(:account, :lecturer) }
       let(:term) { user.term_registrations.lecturers.first.term }
 
       it { is_expected.to permit_authorization :show }
@@ -63,7 +63,7 @@ describe ExercisePolicy do
     end
 
     context 'as a tutor' do
-      let(:user) { FactoryGirl.create(:account, :tutor) }
+      let(:user) { FactoryBot.create(:account, :tutor) }
       let(:term) { user.term_registrations.tutors.first.term }
 
       it { is_expected.to permit_authorization :show }
@@ -75,7 +75,7 @@ describe ExercisePolicy do
     end
 
     context 'as a student' do
-      let(:user) { FactoryGirl.create(:account, :student) }
+      let(:user) { FactoryBot.create(:account, :student) }
       let(:term) { user.term_registrations.students.first.term }
 
       it { is_expected.to permit_authorization :show }

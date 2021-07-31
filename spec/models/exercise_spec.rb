@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe Exercise do
-  let!(:term) { FactoryGirl.create :term }
-  let!(:tutorial_groups) { FactoryGirl.create_list :tutorial_group, 4, term: term }
-  subject { FactoryGirl.create :exercise, term: term }
+  let!(:term) { FactoryBot.create :term }
+  let!(:tutorial_groups) { FactoryBot.create_list :tutorial_group, 4, term: term }
+  subject { FactoryBot.create :exercise, term: term }
 
   describe 'db columns' do
     it { is_expected.to have_db_column(:title).of_type(:string) }
@@ -107,7 +107,7 @@ describe Exercise do
 
 
     describe '#starting_points_sum' do
-      let!(:rating_groups) { FactoryGirl.create_list(:rating_group, 3, points: 7, exercise: subject) }
+      let!(:rating_groups) { FactoryBot.create_list(:rating_group, 3, points: 7, exercise: subject) }
 
       it 'returns the sum of rating group points' do
         expect(subject.starting_points_sum).to eq(21)

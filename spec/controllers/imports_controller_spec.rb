@@ -31,12 +31,12 @@ RSpec.describe ImportsController do
     }
   end
 
-  let(:term) { FactoryGirl.create :term }
-  let(:import) { FactoryGirl.create :import, term: term }
+  let(:term) { FactoryBot.create :term }
+  let(:import) { FactoryBot.create :import, term: term }
 
   describe 'GET show' do
     it 'assigns the requested import as @import' do
-      get :show, term_id: term.id, id: import.id
+      get :show, params: { term_id: term.id, id: import.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term)).to eq(term)
@@ -47,9 +47,9 @@ RSpec.describe ImportsController do
   describe 'GET new' do
     context 'with existing imports to list' do
       it 'assigns a new import as @import' do
-        FactoryGirl.create_list :import, 4, term: term
+        FactoryBot.create_list :import, 4, term: term
 
-        get :new, term_id: term.id
+        get :new, params: { term_id: term.id }
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:_import_list)
@@ -60,7 +60,7 @@ RSpec.describe ImportsController do
 
     context 'without existing imports to list' do
       it 'assigns a new import as @import' do
-        get :new, term_id: term.id
+        get :new, params: { term_id: term.id }
 
         expect(response).to have_http_status(:success)
         expect(response).not_to render_template(:_import_list)
@@ -76,7 +76,7 @@ RSpec.describe ImportsController do
         valid_attributes[:term_id] = term.id
 
         expect do
-          post :create, valid_attributes
+          post :create, params: valid_attributes
         end.to change(Import, :count).by(1)
 
         expect(response).to redirect_to(term_import_path(term, assigns(:import)))
@@ -91,7 +91,7 @@ RSpec.describe ImportsController do
         valid_attributes[:import][:import_options_attributes][:quote_char] = "'"
 
         expect do
-          post :create, valid_attributes
+          post :create, params: valid_attributes
         end.to change(Import, :count).by(1)
 
         expect(response).to redirect_to(term_import_path(term, assigns(:import)))
@@ -106,7 +106,7 @@ RSpec.describe ImportsController do
       it 'assigns a newly created but unsaved import as @import' do
         invalid_attributes[:term_id] = term.id
 
-        post :create, invalid_attributes
+        post :create, params: invalid_attributes
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:new)
@@ -117,7 +117,7 @@ RSpec.describe ImportsController do
         invalid_attributes[:term_id] = term.id
         invalid_attributes[:import][:file] = Rack::Test::UploadedFile.new(prepare_static_test_file('import_data_invalid_encoding.csv'), 'text/csv')
 
-        post :create, invalid_attributes
+        post :create, params: invalid_attributes
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:new)
@@ -128,7 +128,7 @@ RSpec.describe ImportsController do
         invalid_attributes[:term_id] = term.id
         invalid_attributes[:import][:file] = Rack::Test::UploadedFile.new(prepare_static_test_file('import_data_invalid_parsing.csv'), 'text/csv')
 
-        post :create, invalid_attributes
+        post :create, params: invalid_attributes
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:new)
@@ -142,9 +142,10 @@ RSpec.describe ImportsController do
       it 'updates the requested import' do
         valid_attributes[:term_id] = term.id
         valid_attributes[:id] = import.id
+        import.update(updated_at: 5.minutes.ago)
 
         expect do
-          put :update, valid_attributes
+          put :update, params: valid_attributes
           import.reload
         end.to change(import, :updated_at)
 
@@ -162,7 +163,7 @@ RSpec.describe ImportsController do
       import.reload # trigger creation
 
       expect do
-        delete :destroy, term_id: term.id, id: import.id
+        delete :destroy, params: { term_id: term.id, id: import.id }
       end.to change(Import, :count).by(-1)
 
       expect(response).to redirect_to(new_term_import_path(term))
@@ -173,10 +174,10 @@ RSpec.describe ImportsController do
     it 'sends a file' do
       expect(controller).to receive(:send_file).with(import.file.to_s) {
         # to prevent a 'missing template' error
-        controller.render nothing: true
+        controller.head :ok
       }
 
-      get :file, term_id: term.id, id: import.id
+      get :file, params: { term_id: term.id, id: import.id }
 
       expect(response).to have_http_status(:success)
     end
@@ -184,7 +185,7 @@ RSpec.describe ImportsController do
 
   describe 'GET full_mapping_table' do
     it 'assigns the requested import as @import' do
-      xhr :get, :full_mapping_table, term_id: term.id, id: import.id
+      get :full_mapping_table, params: { term_id: term.id, id: import.id }, xhr: true
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term)).to eq(term)
@@ -196,7 +197,7 @@ RSpec.describe ImportsController do
 
   describe 'GET results' do
     it 'assigns the requested import as @import' do
-      get :results, term_id: term.id, id: import.id
+      get :results, params: { term_id: term.id, id: import.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term)).to eq(term)

@@ -1,4 +1,4 @@
-class RemoveSubmissionTimeFromExercises < ActiveRecord::Migration
+class RemoveSubmissionTimeFromExercises < ActiveRecord::Migration[4.2]
   def up
     remove_column :exercises, :submission_time
   end

@@ -94,7 +94,7 @@ class Exercise < ActiveRecord::Base
   end
 
   def update_points
-    self.points = rating_groups(true).map { |rg| rg.max_points || rg.points }.compact.sum || 0
+    self.points = rating_groups.reload.map { |rg| rg.max_points || rg.points }.compact.sum || 0
     self.points = max_total_points if enable_max_total_points && points > max_total_points
   end
 
@@ -146,5 +146,5 @@ class Exercise < ActiveRecord::Base
     if deadline.present? && late_deadline.present? && late_deadline < deadline
       errors.add(:late_deadline, 'must be chronological after deadline')
     end
-  end 
+  end
 end

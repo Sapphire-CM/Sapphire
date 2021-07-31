@@ -40,7 +40,15 @@ class Rating < ActiveRecord::Base
 
   after_save :evaluations_need_review!, if: lambda { |rating| rating.title_changed? || rating.value_changed? || rating.max_value_changed? || rating.min_value_changed? || rating.multiplication_factor_changed? }
 
-  scope :automated_ratings, lambda { where { !automated_checker_identifier.nil? && automated_checker_identifier != '' } }
+  scope :automated_ratings, lambda {
+    scopes = [
+      arel_table[:automated_checker_identifier].not_eq(nil),
+      arel_table[:automated_checker_identifier].not_eq("")
+    ]
+
+    where(scopes.reduce(&:and))
+  }
+
   scope :bulk, lambda { where(bulk: true) }
 
   after_initialize do
@@ -66,6 +74,10 @@ class Rating < ActiveRecord::Base
 
     klass = classes.find { |klass| klass.name == params[:type].classify }
     klass.new(params.except(:type))
+  end
+
+  def self.valid_type?(type)
+    instantiable_subclasses.map(&:to_s).include?(type.to_s)
   end
 
   def evaluation_class

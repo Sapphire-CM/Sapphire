@@ -22,15 +22,15 @@ RSpec.describe ExercisesController do
     }
   end
 
-  let(:term) { FactoryGirl.create :term }
+  let(:term) { FactoryBot.create :term }
 
-  let(:exercise) { FactoryGirl.create :exercise, term: term }
+  let(:exercise) { FactoryBot.create :exercise, term: term }
 
   describe 'GET index' do
     it 'assigns all exercises as @exercises' do
-      FactoryGirl.create_list :exercise, 4, term: term
+      FactoryBot.create_list :exercise, 4, term: term
 
-      get :index, term_id: term.id
+      get :index, params: { term_id: term.id }
 
       term.reload
       expect(response).to have_http_status(:success)
@@ -40,7 +40,7 @@ RSpec.describe ExercisesController do
 
   describe 'GET new' do
     it 'assigns a new exercise as @exercise' do
-      xhr :get, :new, term_id: term.id
+      get :new, params: { term_id: term.id }, xhr: true
 
       expect(response).to have_http_status(:success)
       expect(assigns(:exercise)).to be_a_new(Exercise)
@@ -53,7 +53,7 @@ RSpec.describe ExercisesController do
         valid_attributes[:exercise][:term_id] = term.id
 
         expect do
-          post :create, valid_attributes
+          post :create, params: valid_attributes
         end.to change(Exercise, :count).by(1)
 
         expect(response).to redirect_to(exercise_path(Exercise.last))
@@ -64,10 +64,10 @@ RSpec.describe ExercisesController do
 
     describe 'with invalid params' do
       it 'assigns a newly created but unsaved exercise as @exercise' do
-        FactoryGirl.create :exercise, term: term, title: invalid_attributes[:exercise][:title]
+        FactoryBot.create :exercise, term: term, title: invalid_attributes[:exercise][:title]
         invalid_attributes[:exercise][:term_id] = term.id
 
-        post :create, invalid_attributes
+        post :create, params: invalid_attributes
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:new)
@@ -78,7 +78,7 @@ RSpec.describe ExercisesController do
 
   describe 'GET edit' do
     it 'assigns the requested exercise as @exercise' do
-      get :edit, id: exercise.id
+      get :edit, params: { id: exercise.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:exercise)).to eq(exercise)
@@ -90,7 +90,7 @@ RSpec.describe ExercisesController do
       it 'updates the requested exercise' do
         valid_attributes[:id] = exercise.id
 
-        put :update, valid_attributes
+        put :update, params: valid_attributes
 
         exercise.reload
         expect(response).to redirect_to(exercise_path(exercise))
@@ -102,10 +102,10 @@ RSpec.describe ExercisesController do
 
     describe 'with invalid params' do
       it 'assigns the requested exercise as @exercise' do
-        FactoryGirl.create :exercise, term: term, title: invalid_attributes[:exercise][:title]
+        FactoryBot.create :exercise, term: term, title: invalid_attributes[:exercise][:title]
         invalid_attributes[:id] = exercise.id
 
-        put :update, invalid_attributes
+        put :update, params: invalid_attributes
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:edit)
@@ -119,7 +119,7 @@ RSpec.describe ExercisesController do
       exercise.reload # trigger creation
 
       expect do
-        xhr :delete, :destroy, id: exercise.id
+        delete :destroy, params: { id: exercise.id }, xhr: true
       end.to change(Exercise, :count).by(-1)
 
       expect(response).to redirect_to(term_exercises_path(term))

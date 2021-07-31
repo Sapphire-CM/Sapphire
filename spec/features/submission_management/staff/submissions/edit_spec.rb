@@ -3,10 +3,10 @@ require 'features/course_management/behaviours/exercise_side_navigation_behaviou
 require 'features/course_management/behaviours/exercise_sub_navigation_behaviour'
 
 RSpec.describe 'Editing a submission' do
-  let(:term) { FactoryGirl.create(:term) }
-  let(:account) { FactoryGirl.create(:account) }
-  let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-  let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
+  let(:term) { FactoryBot.create(:term) }
+  let(:account) { FactoryBot.create(:account) }
+  let(:exercise) { FactoryBot.create(:exercise, term: term) }
+  let(:submission) { FactoryBot.create(:submission, exercise: exercise) }
 
   let(:described_path) { edit_submission_path(submission) }
 
@@ -48,8 +48,8 @@ RSpec.describe 'Editing a submission' do
       end
 
       context 'with student' do
-        let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
-        let!(:student_exercise_registration) { FactoryGirl.create(:exercise_registration, term_registration: student_term_registration, exercise: exercise, submission: submission) }
+        let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
+        let!(:student_exercise_registration) { FactoryBot.create(:exercise_registration, term_registration: student_term_registration, exercise: exercise, submission: submission) }
 
         scenario 'through the grading review page opens the edit page in a new window', js: true do
           visit term_grading_review_path(term, student_term_registration)
@@ -70,13 +70,13 @@ RSpec.describe 'Editing a submission' do
     end
 
     describe "updating attributes" do
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-      let!(:student_groups) { FactoryGirl.create_list(:student_group, 3, tutorial_group: tutorial_group) }
-      let!(:student_term_registrations) { FactoryGirl.create_list(:term_registration, 3, :student, term: term) }
+      let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+      let!(:student_groups) { FactoryBot.create_list(:student_group, 3, tutorial_group: tutorial_group) }
+      let!(:student_term_registrations) { FactoryBot.create_list(:term_registration, 3, :student, term: term) }
       let(:other_student_term_registration) { student_term_registrations.last }
       let(:student_term_registration) { student_term_registrations.second }
       let(:lookup_string) { student_term_registration.account.matriculation_number }
-      let!(:exercise_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
+      let!(:exercise_attempt) { FactoryBot.create(:exercise_attempt, exercise: exercise) }
 
       scenario 'Setting a student group' do
         visit described_path
@@ -179,7 +179,7 @@ RSpec.describe 'Editing a submission' do
     end
 
     describe 'attempts field' do
-      let(:exercise_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
+      let(:exercise_attempt) { FactoryBot.create(:exercise_attempt, exercise: exercise) }
 
       it 'shows the attempts field if multiple attempts are enabled' do
         exercise.update(enable_multiple_attempts: true)
@@ -208,7 +208,7 @@ RSpec.describe 'Editing a submission' do
   end
 
   describe 'as a lecturer' do
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term, account: account) }
+    let!(:term_registration) { FactoryBot.create(:term_registration, :lecturer, term: term, account: account) }
 
     it_behaves_like "Submission Editing"
   end

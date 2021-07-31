@@ -4,11 +4,11 @@ RSpec.describe EvaluationPolicy do
   subject { described_class.new(account, evaluation) }
 
   context 'as admin' do
-    let(:account) { FactoryGirl.create(:account, :admin) }
-    let(:exercise) { FactoryGirl.create(:exercise) }
-    let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise) }
-    let!(:rating) { FactoryGirl.create(:fixed_points_deduction_rating, rating_group: rating_group) }
-    let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
+    let(:account) { FactoryBot.create(:account, :admin) }
+    let(:exercise) { FactoryBot.create(:exercise) }
+    let(:rating_group) { FactoryBot.create(:rating_group, exercise: exercise) }
+    let!(:rating) { FactoryBot.create(:fixed_points_deduction_rating, rating_group: rating_group) }
+    let(:submission) { FactoryBot.create(:submission, exercise: exercise) }
     let(:submission_evaluation) { submission.submission_evaluation }
     let(:evaluation) { submission_evaluation.evaluations.first }
 
@@ -17,12 +17,12 @@ RSpec.describe EvaluationPolicy do
 
   %I(lecturer tutor).each do |role|
     context "as #{role}" do
-      let(:account) { FactoryGirl.create(:account, role) }
+      let(:account) { FactoryBot.create(:account, role) }
 
-      let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-      let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise) }
-      let!(:rating) { FactoryGirl.create(:fixed_points_deduction_rating, rating_group: rating_group) }
-      let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
+      let(:exercise) { FactoryBot.create(:exercise, term: term) }
+      let(:rating_group) { FactoryBot.create(:rating_group, exercise: exercise) }
+      let!(:rating) { FactoryBot.create(:fixed_points_deduction_rating, rating_group: rating_group) }
+      let(:submission) { FactoryBot.create(:submission, exercise: exercise) }
       let(:submission_evaluation) { submission.submission_evaluation }
       let(:evaluation) { submission_evaluation.evaluations.first }
 
@@ -34,7 +34,7 @@ RSpec.describe EvaluationPolicy do
       end
 
       context 'of other term' do
-        let(:term) { FactoryGirl.create(:term) }
+        let(:term) { FactoryBot.create(:term) }
 
         it { is_expected.not_to permit_authorization :update }
       end
@@ -42,11 +42,11 @@ RSpec.describe EvaluationPolicy do
   end
 
   context "as student" do
-    let(:account) { FactoryGirl.create(:account, :student) }
-    let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-    let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise) }
-    let!(:rating) { FactoryGirl.create(:fixed_points_deduction_rating, rating_group: rating_group) }
-    let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
+    let(:account) { FactoryBot.create(:account, :student) }
+    let(:exercise) { FactoryBot.create(:exercise, term: term) }
+    let(:rating_group) { FactoryBot.create(:rating_group, exercise: exercise) }
+    let!(:rating) { FactoryBot.create(:fixed_points_deduction_rating, rating_group: rating_group) }
+    let(:submission) { FactoryBot.create(:submission, exercise: exercise) }
     let(:submission_evaluation) { submission.submission_evaluation }
     let(:evaluation) { submission_evaluation.evaluations.first }
 
@@ -58,7 +58,7 @@ RSpec.describe EvaluationPolicy do
     end
 
     context 'of other term' do
-      let(:term) { FactoryGirl.create(:term) }
+      let(:term) { FactoryBot.create(:term) }
 
       it { is_expected.not_to permit_authorization :update }
     end

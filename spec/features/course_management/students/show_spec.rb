@@ -1,19 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe "Viewing students" do
-  let(:term) { FactoryGirl.create(:term) }
-  let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-  let(:account) { FactoryGirl.create(:account, :admin) }
+  let(:term) { FactoryBot.create(:term) }
+  let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+  let(:account) { FactoryBot.create(:account, :admin) }
 
   let(:described_path) { term_student_path(term, student_term_registration) }
-  let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, :with_student_group, term: term, tutorial_group: tutorial_group) }
+  let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, :with_student_group, term: term, tutorial_group: tutorial_group) }
 
   before :each do
     sign_in(account)
   end
 
   describe 'navigation' do
-    let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
+    let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
 
     scenario 'from the students list' do
       visit term_students_path(term)
@@ -28,10 +28,10 @@ RSpec.describe "Viewing students" do
 
   describe 'student details' do
     let(:student_group) { student_term_registration.student_group }
-    let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-    let(:exercise_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
-    let(:submission) { FactoryGirl.create(:submission, exercise: exercise, exercise_attempt: exercise_attempt) }
-    let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, submission: submission, term_registration: student_term_registration) }
+    let(:exercise) { FactoryBot.create(:exercise, term: term) }
+    let(:exercise_attempt) { FactoryBot.create(:exercise_attempt, exercise: exercise) }
+    let(:submission) { FactoryBot.create(:submission, exercise: exercise, exercise_attempt: exercise_attempt) }
+    let!(:exercise_registration) { FactoryBot.create(:exercise_registration, exercise: exercise, submission: submission, term_registration: student_term_registration) }
     let(:submission_evaluation) { submission.submission_evaluation }
 
     scenario 'links the tutorial group' do
@@ -149,8 +149,8 @@ RSpec.describe "Viewing students" do
   end
 
   describe 'tutor adaptations' do
-    let(:account) { FactoryGirl.create(:account) }
-    let!(:tutor_term_registration) { FactoryGirl.create(:term_registration, :tutor, term: term, account: account) }
+    let(:account) { FactoryBot.create(:account) }
+    let!(:tutor_term_registration) { FactoryBot.create(:term_registration, :tutor, term: term, account: account) }
 
     scenario 'hides the edit link' do
       visit described_path

@@ -7,7 +7,7 @@ class StaffSubmissionsController < ApplicationController
     authorize SubmissionPolicy.term_policy_record(@term)
 
     @submissions = scoped_submissions(@tutorial_group, @exercise.submissions)
-    @submissions = @submissions.uniq.includes({ exercise_registrations: { term_registration: :account } }, :submission_evaluation, :exercise).load
+    @submissions = @submissions.distinct.includes({ exercise_registrations: { term_registration: :account } }, :submission_evaluation, :exercise).load
     @submission_count = @submissions.count
   end
 

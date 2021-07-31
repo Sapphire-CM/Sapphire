@@ -1,6 +1,8 @@
 /*
  *  This file requires all files and subfiles in vendor/stylesheets
  *
- *= require_tree .
+ *= require normalize
+ *= require jquery.fixedHeaderTable
+ *= require_tree ./zurb
  *= require_self
 */

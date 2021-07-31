@@ -2,11 +2,11 @@ require 'rails_helper'
 
 RSpec.describe CoursePolicy do
   context 'as an admin' do
-    let(:account) { FactoryGirl.create(:account, :admin) }
-    let(:course) { FactoryGirl.create(:course) }
+    let(:account) { FactoryBot.create(:account, :admin) }
+    let(:course) { FactoryBot.create(:course) }
 
     describe 'scoping' do
-      let!(:courses) { FactoryGirl.create_list(:course, 2) + [course] }
+      let!(:courses) { FactoryBot.create_list(:course, 2) + [course] }
       subject { described_class::Scope.new(account, Course.all) }
 
       it 'returns all courses' do
@@ -36,13 +36,13 @@ RSpec.describe CoursePolicy do
   end
 
   context 'as lecturer' do
-    let(:account) { FactoryGirl.create(:account, :lecturer) }
+    let(:account) { FactoryBot.create(:account, :lecturer) }
     let(:term_registration) { account.term_registrations.lecturer.first }
     let(:term) { term_registration.term }
     let(:course) { term.course }
 
     describe 'scoping' do
-      let!(:other_course) { FactoryGirl.create(:course) }
+      let!(:other_course) { FactoryBot.create(:course) }
 
       subject { described_class::Scope.new(account, Course.all) }
 
@@ -53,7 +53,7 @@ RSpec.describe CoursePolicy do
 
     describe 'permissions' do
       context 'of other course' do
-        let(:course) { FactoryGirl.create(:course) }
+        let(:course) { FactoryBot.create(:course) }
 
         describe 'collections' do
           subject { described_class.new(account, nil) }
@@ -98,13 +98,13 @@ RSpec.describe CoursePolicy do
   end
 
   context 'as tutor' do
-    let(:account) { FactoryGirl.create(:account, :tutor) }
+    let(:account) { FactoryBot.create(:account, :tutor) }
     let(:term_registration) { account.term_registrations.tutor.first }
     let(:term) { term_registration.term }
     let(:course) { term.course }
 
     describe 'scoping' do
-      let!(:other_course) { FactoryGirl.create(:course) }
+      let!(:other_course) { FactoryBot.create(:course) }
 
       subject { described_class::Scope.new(account, Course.all) }
 
@@ -135,13 +135,13 @@ RSpec.describe CoursePolicy do
   end
 
   context 'as student' do
-    let(:account) { FactoryGirl.create(:account, :student) }
+    let(:account) { FactoryBot.create(:account, :student) }
     let(:term_registration) { account.term_registrations.student.first }
     let(:term) { term_registration.term }
     let(:course) { term.course }
 
     describe 'scoping' do
-      let!(:other_course) { FactoryGirl.create(:course) }
+      let!(:other_course) { FactoryBot.create(:course) }
 
       subject { described_class::Scope.new(account, Course.all) }
 

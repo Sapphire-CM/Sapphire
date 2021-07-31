@@ -3,17 +3,17 @@ require 'rails_helper'
 RSpec.describe Notification::ExportFinishedJob, type: :job do
 
   describe '#perform' do
-    let(:term) { FactoryGirl.create(:term) }
-    let!(:export) { FactoryGirl.create(:export, term: term) }
+    let(:term) { FactoryBot.create(:term) }
+    let!(:export) { FactoryBot.create(:export, term: term) }
 
-    let!(:lecturer_term_registrations) { FactoryGirl.create_list(:term_registration, 3, :lecturer, term: term) }
-    let!(:tutor_term_registration) { FactoryGirl.create(:term_registration, :tutor, term: term) }
-    let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
-    let!(:other_lecturer_term_registrations) { FactoryGirl.create_list(:term_registration, 3, :lecturer) }
+    let!(:lecturer_term_registrations) { FactoryBot.create_list(:term_registration, 3, :lecturer, term: term) }
+    let!(:tutor_term_registration) { FactoryBot.create(:term_registration, :tutor, term: term) }
+    let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
+    let!(:other_lecturer_term_registrations) { FactoryBot.create_list(:term_registration, 3, :lecturer) }
 
     let(:lecturers) { lecturer_term_registrations.map(&:account) }
     let(:other_lecturers) { other_lecturer_term_registrations.map(&:account) }
-    let(:admins) { FactoryGirl.create_list(:account, 3, :admin) }
+    let(:admins) { FactoryBot.create_list(:account, 3, :admin) }
 
     let(:accounts) { admins + lecturers }
 

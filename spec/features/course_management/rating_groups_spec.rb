@@ -3,10 +3,10 @@ require 'features/course_management/behaviours/exercise_side_navigation_behaviou
 require 'features/course_management/behaviours/exercise_sub_navigation_behaviour'
 
 RSpec.feature 'Ratings and Rating Groups' do
-  let(:account) { FactoryGirl.create(:account, :admin) }
+  let(:account) { FactoryBot.create(:account, :admin) }
   let(:course) { term.course }
   let(:term) { exercise.term }
-  let!(:exercise) { FactoryGirl.create(:exercise) }
+  let!(:exercise) { FactoryBot.create(:exercise) }
 
   before :each do
     sign_in account
@@ -60,7 +60,7 @@ RSpec.feature 'Ratings and Rating Groups' do
     end
 
     context 'with existing rating group' do
-      let!(:rating_group) { FactoryGirl.create(:rating_group, title: 'My Rating Group', exercise: exercise) }
+      let!(:rating_group) { FactoryBot.create(:rating_group, title: 'My Rating Group', exercise: exercise) }
 
       before :each do
         visit exercise_rating_groups_path(exercise)
@@ -146,7 +146,7 @@ RSpec.feature 'Ratings and Rating Groups' do
   end
 
   describe 'Ratings', js: true do
-    let!(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise) }
+    let!(:rating_group) { FactoryBot.create(:rating_group, exercise: exercise) }
 
     def within_rating_group(rg = nil, &block)
       within "#rating_group_id_#{(rg || rating_group).id}", &block
@@ -174,7 +174,7 @@ RSpec.feature 'Ratings and Rating Groups' do
 
     scenario 'updating rating'
     scenario 'removing a rating' do
-      rating = FactoryGirl.create(:fixed_points_deduction_rating, rating_group: rating_group, title: 'My great Rating')
+      rating = FactoryBot.create(:fixed_points_deduction_rating, rating_group: rating_group, title: 'My great Rating')
 
       visit exercise_rating_groups_path(exercise)
 

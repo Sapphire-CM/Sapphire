@@ -48,11 +48,11 @@ describe Account do
     end
 
     describe 'email uniqueness' do
-      subject { FactoryGirl.create(:account) }
+      subject { FactoryBot.create(:account) }
       let(:email_address) { "taken@student.tugraz.at" }
 
       it 'adds an error if the email address is used as secondary email' do
-        FactoryGirl.create(:email_address, email: email_address)
+        FactoryBot.create(:email_address, email: email_address)
 
         subject.email = email_address
         subject.validate
@@ -71,8 +71,8 @@ describe Account do
 
   describe 'scopes' do
     describe '.admins' do
-      let!(:admin_accounts) { FactoryGirl.create_list(:account, 3, :admin) }
-      let!(:other_accounts) { FactoryGirl.create_list(:account, 3) }
+      let!(:admin_accounts) { FactoryBot.create_list(:account, 3, :admin) }
+      let!(:other_accounts) { FactoryBot.create_list(:account, 3) }
 
       it 'only returns sapphire admins' do
         expect(described_class.admins).to match_array(admin_accounts)
@@ -81,9 +81,9 @@ describe Account do
 
     describe '.search' do
       let(:matriculation_number_prefix) { "110000" }
-      let(:first_account) { FactoryGirl.create(:account, email: "student1@student.tugraz.at", forename: "Matthias", surname: "Link", matriculation_number: "1100000") }
-      let(:second_account) { FactoryGirl.create(:account, email: "student2@student.tugraz.at", forename: "Thomas", surname: "Kriechbaumer", matriculation_number: "1100001") }
-      let(:third_account) { FactoryGirl.create(:account, email: "lecturerer@student.tugraz.at", forename: "Keith", surname: "Andrews") }
+      let(:first_account) { FactoryBot.create(:account, email: "student1@student.tugraz.at", forename: "Matthias", surname: "Link", matriculation_number: "1100000") }
+      let(:second_account) { FactoryBot.create(:account, email: "student2@student.tugraz.at", forename: "Thomas", surname: "Kriechbaumer", matriculation_number: "1100001") }
+      let(:third_account) { FactoryBot.create(:account, email: "lecturerer@student.tugraz.at", forename: "Keith", surname: "Andrews") }
 
       let!(:accounts) { [first_account, second_account, third_account] }
 
@@ -127,7 +127,7 @@ describe Account do
 
   describe 'methods' do
     describe '#fullname' do
-      subject { FactoryGirl.build(:account, forename: "Matthias", surname: "Link") }
+      subject { FactoryBot.build(:account, forename: "Matthias", surname: "Link") }
 
       it 'returns a concatinated name, forename first' do
         expect(subject.fullname).to eq("Matthias Link")
@@ -135,7 +135,7 @@ describe Account do
     end
 
     describe '#reverse_fullname' do
-      subject { FactoryGirl.build(:account, forename: "Matthias", surname: "Link") }
+      subject { FactoryBot.build(:account, forename: "Matthias", surname: "Link") }
 
       it 'returns a concatinated name, surname first' do
         expect(subject.reverse_fullname).to eq("Link Matthias")
@@ -143,7 +143,7 @@ describe Account do
     end
 
     describe '#default_password' do
-      subject { FactoryGirl.build(:account, matriculation_number: "1234567") }
+      subject { FactoryBot.build(:account, matriculation_number: "1234567") }
 
       it 'returns the default password based on matriculation number' do
         expect(subject.default_password).to eq("sapphire1234567")
@@ -154,12 +154,12 @@ describe Account do
     end
 
     describe '#student_of_term?' do
-      let(:term) { FactoryGirl.create(:term) }
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-      let!(:term_registration) { FactoryGirl.create(:term_registration, :student, tutorial_group: tutorial_group, term: term, account: subject) }
-      let!(:another_term) { FactoryGirl.create(:term) }
+      let(:term) { FactoryBot.create(:term) }
+      let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+      let!(:term_registration) { FactoryBot.create(:term_registration, :student, tutorial_group: tutorial_group, term: term, account: subject) }
+      let!(:another_term) { FactoryBot.create(:term) }
 
-      subject { FactoryGirl.create(:account) }
+      subject { FactoryBot.create(:account) }
 
       it 'returns true if user is student of term' do
         expect(subject).to be_student_of_term(term)
@@ -171,12 +171,12 @@ describe Account do
     end
 
     describe '#tutor_of_term?' do
-      let(:term) { FactoryGirl.create(:term) }
-      let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-      let!(:term_registration) { FactoryGirl.create(:term_registration, :tutor, tutorial_group: tutorial_group, term: term, account: subject) }
-      let!(:another_term) { FactoryGirl.create(:term) }
+      let(:term) { FactoryBot.create(:term) }
+      let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+      let!(:term_registration) { FactoryBot.create(:term_registration, :tutor, tutorial_group: tutorial_group, term: term, account: subject) }
+      let!(:another_term) { FactoryBot.create(:term) }
 
-      subject { FactoryGirl.create(:account) }
+      subject { FactoryBot.create(:account) }
 
       it 'returns true if user is tutor of term' do
         expect(subject).to be_tutor_of_term(term)
@@ -188,11 +188,11 @@ describe Account do
     end
 
     describe '#lecturer_of_term?' do
-      let(:term) { FactoryGirl.create(:term) }
-      let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term, account: subject) }
-      let!(:another_term) { FactoryGirl.create(:term) }
+      let(:term) { FactoryBot.create(:term) }
+      let!(:term_registration) { FactoryBot.create(:term_registration, :lecturer, term: term, account: subject) }
+      let!(:another_term) { FactoryBot.create(:term) }
 
-      subject { FactoryGirl.create(:account) }
+      subject { FactoryBot.create(:account) }
 
       it 'returns true if user is tutor of term' do
         expect(subject).to be_lecturer_of_term(term)
@@ -204,20 +204,20 @@ describe Account do
     end
 
     describe '#staff_of_term?' do
-      let(:tutor_term) { FactoryGirl.create(:term) }
-      let(:tutor_tutorial_group) { FactoryGirl.create(:tutorial_group, term: tutor_term) }
-      let!(:tutor_term_registration) { FactoryGirl.create(:term_registration, :tutor, tutorial_group: tutor_tutorial_group, term: tutor_term, account: subject) }
+      let(:tutor_term) { FactoryBot.create(:term) }
+      let(:tutor_tutorial_group) { FactoryBot.create(:tutorial_group, term: tutor_term) }
+      let!(:tutor_term_registration) { FactoryBot.create(:term_registration, :tutor, tutorial_group: tutor_tutorial_group, term: tutor_term, account: subject) }
 
-      let(:student_term) { FactoryGirl.create(:term) }
-      let(:student_tutorial_group) { FactoryGirl.create(:tutorial_group, term: student_term) }
-      let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, tutorial_group: student_tutorial_group, term: student_term, account: subject) }
+      let(:student_term) { FactoryBot.create(:term) }
+      let(:student_tutorial_group) { FactoryBot.create(:tutorial_group, term: student_term) }
+      let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, tutorial_group: student_tutorial_group, term: student_term, account: subject) }
 
-      let(:lecturer_term) { FactoryGirl.create(:term) }
-      let!(:lecturer_term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: lecturer_term, account: subject) }
+      let(:lecturer_term) { FactoryBot.create(:term) }
+      let!(:lecturer_term_registration) { FactoryBot.create(:term_registration, :lecturer, term: lecturer_term, account: subject) }
 
-      let!(:another_term) { FactoryGirl.create(:term) }
+      let!(:another_term) { FactoryBot.create(:term) }
 
-      subject { FactoryGirl.create(:account) }
+      subject { FactoryBot.create(:account) }
 
       it 'returns true if user is tutor of term' do
         expect(subject).to be_staff_of_term(tutor_term)
@@ -237,22 +237,22 @@ describe Account do
     end
 
     describe '#staff_of_course?' do
-      subject { FactoryGirl.create(described_class.to_s.underscore.to_sym) }
+      subject { FactoryBot.create(described_class.to_s.underscore.to_sym) }
 
       let(:student_course) { student_term.course }
-      let(:student_term) { FactoryGirl.create(:term) }
-      let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, term: student_term, account: subject) }
+      let(:student_term) { FactoryBot.create(:term) }
+      let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, term: student_term, account: subject) }
 
       let(:tutor_course) { tutor_term.course }
-      let(:tutor_term) { FactoryGirl.create(:term) }
-      let!(:tutor_term_registration) { FactoryGirl.create(:term_registration, :tutor, term: tutor_term, account: subject) }
+      let(:tutor_term) { FactoryBot.create(:term) }
+      let!(:tutor_term_registration) { FactoryBot.create(:term_registration, :tutor, term: tutor_term, account: subject) }
 
       let(:lecturer_course) { lecturer_term.course }
-      let(:lecturer_term) { FactoryGirl.create(:term) }
-      let!(:lecturer_term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: lecturer_term, account: subject) }
+      let(:lecturer_term) { FactoryBot.create(:term) }
+      let!(:lecturer_term_registration) { FactoryBot.create(:term_registration, :lecturer, term: lecturer_term, account: subject) }
 
       let(:another_course) { another_term.course }
-      let(:another_term) { FactoryGirl.create(:term) }
+      let(:another_term) { FactoryBot.create(:term) }
 
       it 'returns true if account is lecturer of term' do
         expect(subject.staff_of_course?(lecturer_course)).to be_truthy
@@ -272,22 +272,22 @@ describe Account do
     end
 
     describe '#lecturer_of_any_term?' do
-      subject { FactoryGirl.create(:account) }
+      subject { FactoryBot.create(:account) }
 
       it 'returns true if there exists a lecturer term registration' do
-        term_registration = FactoryGirl.create(:term_registration, :lecturer, account: subject)
+        term_registration = FactoryBot.create(:term_registration, :lecturer, account: subject)
 
         expect(subject).to be_lecturer_of_any_term
       end
 
       it 'returns false if there exists a tutor registration' do
-        term_registration = FactoryGirl.create(:term_registration, :tutor, account: subject)
+        term_registration = FactoryBot.create(:term_registration, :tutor, account: subject)
 
         expect(subject).not_to be_lecturer_of_any_term
       end
 
       it 'returns false if there exists a tutor registration' do
-        term_registration = FactoryGirl.create(:term_registration, :student, account: subject)
+        term_registration = FactoryBot.create(:term_registration, :student, account: subject)
 
         expect(subject).not_to be_lecturer_of_any_term
       end

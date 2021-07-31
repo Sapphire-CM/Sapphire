@@ -10,10 +10,11 @@ class RatingsController < ApplicationController
   end
 
   def create
-    unless params[:rating] && params[:rating][:type] && Object.const_defined?(params[:rating][:type].classify)
+    unless params[:rating] && params[:rating][:type] && Rating.valid_type?(params[:rating][:type])
       @rating = @rating_group.ratings.build
       authorize @rating
-      render :new, alert: 'Invalid type!'
+      flash.now[:alert] = 'Invalid type!'
+      render :new
       return
     end
 
@@ -26,7 +27,8 @@ class RatingsController < ApplicationController
       event_service.rating_created!(@rating)
       render partial: 'ratings/insert_index_entry', locals: { rating: @rating }
     else
-      render :new, alert: 'Error saving!'
+      flash.now[:alert] = 'Error saving!'
+      render :new
     end
   end
 
@@ -52,7 +54,7 @@ class RatingsController < ApplicationController
     update_params = params.require(:rating).permit(:rating_group_id, :row_order_position)
     @rating.update(update_params)
 
-    render text: "#{update_position_exercise_rating_group_rating_path(@exercise, @rating.rating_group, @rating)}"
+    render plain: "#{update_position_exercise_rating_group_rating_path(@exercise, @rating.rating_group, @rating)}"
   end
 
   def destroy

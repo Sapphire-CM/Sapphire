@@ -45,10 +45,11 @@ class SubmissionEvaluation < ActiveRecord::Base
   end
 
   def update_plagiarized!
-    plagiarized = evaluations.joins { rating }
+    plagiarized = evaluations.joins(:rating)
+      .where(type: Ratings::PlagiarismRating.to_s)
       .where.not(value: 0)
-      .where { rating.type == Ratings::PlagiarismRating }
       .exists?
+
     self.plagiarized = plagiarized
     self.save!
   end
@@ -72,7 +73,7 @@ class SubmissionEvaluation < ActiveRecord::Base
     final_sum = 0
     percent = 1
 
-    evaluation_groups(true).each do |eval_group|
+    evaluation_groups.reload.each do |eval_group|
       final_sum += eval_group.points || 0
       percent *= eval_group.percent || 1
     end

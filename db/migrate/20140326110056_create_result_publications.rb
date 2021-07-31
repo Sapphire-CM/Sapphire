@@ -1,4 +1,4 @@
-class CreateResultPublications < ActiveRecord::Migration
+class CreateResultPublications < ActiveRecord::Migration[4.2]
   def change
     create_table :result_publications do |t|
       t.belongs_to :exercise, index: true

@@ -12,11 +12,7 @@
 //
 //= require jquery
 //= require jquery.turbolinks
-//= require jquery-ui/core
-//= require jquery-ui/widget
-//= require jquery-ui/mouse
-//= require jquery-ui/position
-//= require jquery-ui/sortable
+//= require jquery-ui
 //= require jquery_ujs
 //= require d3
 //= require foundation

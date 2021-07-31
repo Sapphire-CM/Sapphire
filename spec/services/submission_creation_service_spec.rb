@@ -5,10 +5,10 @@ RSpec.describe SubmissionCreationService, type: :model do
     describe 'methods' do
       describe '#submission' do
         freeze_time
-        let(:exercise_attempt) { FactoryGirl.build(:exercise_attempt, exercise: exercise) }
+        let(:exercise_attempt) { FactoryBot.build(:exercise_attempt, exercise: exercise) }
 
         it 'sets the submission time to current time' do
-          expect(subject.submission.submitted_at).to eq(now)
+          expect(subject.submission.submitted_at).to be_within(1.second).of(now)
         end
 
         it 'sets the exercise' do
@@ -121,18 +121,18 @@ RSpec.describe SubmissionCreationService, type: :model do
   end
 
   describe 'student submissions' do
-    let(:exercise) { FactoryGirl.create(:exercise, :solitary_submission) }
-    let(:term_registration) { FactoryGirl.create(:term_registration, :student, :with_student_group) }
+    let(:exercise) { FactoryBot.create(:exercise, :solitary_submission) }
+    let(:term_registration) { FactoryBot.create(:term_registration, :student, :with_student_group) }
     let(:student_group) { term_registration.student_group }
     let(:account) { term_registration.account }
     let(:term) { term_registration.term }
 
-    let!(:fellow_term_registrations) { FactoryGirl.create_list(:term_registration, 2, :student, term: term, student_group: student_group, tutorial_group: term_registration.tutorial_group) }
+    let!(:fellow_term_registrations) { FactoryBot.create_list(:term_registration, 2, :student, term: term, student_group: student_group, tutorial_group: term_registration.tutorial_group) }
 
     subject { described_class.new(creator: account, exercise: exercise) }
 
     context 'solitary exercise' do
-      let(:exercise) { FactoryGirl.create(:exercise, :solitary_exercise, term: term) }
+      let(:exercise) { FactoryBot.create(:exercise, :solitary_exercise, term: term) }
 
       it_behaves_like "solitary submission creation"
       it_behaves_like "basic submission creation" do
@@ -141,7 +141,7 @@ RSpec.describe SubmissionCreationService, type: :model do
     end
 
     context 'group exercise' do
-      let(:exercise) { FactoryGirl.create(:exercise, :group_exercise, term: term) }
+      let(:exercise) { FactoryBot.create(:exercise, :group_exercise, term: term) }
 
       it_behaves_like "group submission creation"
       it_behaves_like "basic submission creation" do
@@ -151,18 +151,18 @@ RSpec.describe SubmissionCreationService, type: :model do
   end
 
   describe 'staff submissions on behalf of student term registration' do
-    let(:term) { FactoryGirl.create(:term)}
-    let(:staff_term_registration) { FactoryGirl.create(:term_registration, :tutor, term: term) }
+    let(:term) { FactoryBot.create(:term)}
+    let(:staff_term_registration) { FactoryBot.create(:term_registration, :tutor, term: term) }
     let(:staff_account) { staff_term_registration.account }
-    let(:student_term_registration) { FactoryGirl.create(:term_registration, :student, :with_student_group, term: term) }
+    let(:student_term_registration) { FactoryBot.create(:term_registration, :student, :with_student_group, term: term) }
     let(:student_group) { student_term_registration.student_group }
 
-    let!(:fellow_student_term_registrations) { FactoryGirl.create_list(:term_registration, 2, :student, term: term, student_group: student_group, tutorial_group: student_term_registration.tutorial_group) }
+    let!(:fellow_student_term_registrations) { FactoryBot.create_list(:term_registration, 2, :student, term: term, student_group: student_group, tutorial_group: student_term_registration.tutorial_group) }
 
     subject { described_class.new(creator: staff_account, exercise: exercise, on_behalf_of: student_term_registration) }
 
     context 'solitary exercise' do
-      let(:exercise) { FactoryGirl.create(:exercise, :solitary_exercise, term: term) }
+      let(:exercise) { FactoryBot.create(:exercise, :solitary_exercise, term: term) }
 
       it_behaves_like "solitary submission creation"
       it_behaves_like "staff submission creation"
@@ -178,7 +178,7 @@ RSpec.describe SubmissionCreationService, type: :model do
     end
 
     context 'group exercise' do
-      let(:exercise) { FactoryGirl.create(:exercise, :group_exercise, term: term) }
+      let(:exercise) { FactoryBot.create(:exercise, :group_exercise, term: term) }
 
       it_behaves_like "group submission creation"
       it_behaves_like "staff submission creation"
@@ -189,18 +189,18 @@ RSpec.describe SubmissionCreationService, type: :model do
   end
 
   describe 'staff submissions on behalf of student group' do
-    let(:term) { FactoryGirl.create(:term)}
-    let(:staff_term_registration) { FactoryGirl.create(:term_registration, :tutor, term: term) }
+    let(:term) { FactoryBot.create(:term)}
+    let(:staff_term_registration) { FactoryBot.create(:term_registration, :tutor, term: term) }
     let(:staff_account) { staff_term_registration.account }
-    let(:student_term_registration) { FactoryGirl.create(:term_registration, :student, :with_student_group, term: term) }
+    let(:student_term_registration) { FactoryBot.create(:term_registration, :student, :with_student_group, term: term) }
     let(:student_group) { student_term_registration.student_group }
 
-    let!(:fellow_student_term_registrations) { FactoryGirl.create_list(:term_registration, 2, :student, term: term, student_group: student_group, tutorial_group: student_term_registration.tutorial_group) }
+    let!(:fellow_student_term_registrations) { FactoryBot.create_list(:term_registration, 2, :student, term: term, student_group: student_group, tutorial_group: student_term_registration.tutorial_group) }
 
     subject { described_class.new(creator: staff_account, exercise: exercise, on_behalf_of: student_term_registration) }
 
     context 'group exercise' do
-      let(:exercise) { FactoryGirl.create(:exercise, :group_exercise, term: term) }
+      let(:exercise) { FactoryBot.create(:exercise, :group_exercise, term: term) }
 
       it_behaves_like "group submission creation"
       it_behaves_like "staff submission creation"

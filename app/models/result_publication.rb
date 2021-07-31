@@ -18,6 +18,7 @@ class ResultPublication < ActiveRecord::Base
 
   scope :published, lambda { where(published: true) }
   scope :concealed, lambda { where(published: false) }
+  scope :for_account, lambda { |account| where(tutorial_group: TutorialGroup.for_account(account)) }
 
   validates :exercise, presence: true
   validates :exercise_id, uniqueness: { scope: :tutorial_group_id }

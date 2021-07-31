@@ -1,4 +1,4 @@
-class CreateSubmissionAssets < ActiveRecord::Migration
+class CreateSubmissionAssets < ActiveRecord::Migration[4.2]
   def change
     create_table :submission_assets do |t|
       t.belongs_to :submission, index: true

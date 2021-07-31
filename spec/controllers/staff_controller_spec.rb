@@ -4,18 +4,18 @@ RSpec.describe StaffController do
   render_views
   include_context 'active_admin_session_context'
 
-  let(:term) { FactoryGirl.create :term }
-  let(:term_registration) { FactoryGirl.create :term_registration, term: term }
-  let(:account) { FactoryGirl.create :account }
-  let(:tutorial_group) { FactoryGirl.create :tutorial_group, term: term }
+  let(:term) { FactoryBot.create :term }
+  let(:term_registration) { FactoryBot.create :term_registration, term: term }
+  let(:account) { FactoryBot.create :account }
+  let(:tutorial_group) { FactoryBot.create :tutorial_group, term: term }
 
   describe 'GET index' do
-    let!(:students) { FactoryGirl.create_list(:term_registration, 3, :student, term: term) }
-    let!(:tutors) { FactoryGirl.create_list(:term_registration, 3, :tutor, term: term) }
-    let!(:lecturers) { FactoryGirl.create_list(:term_registration, 3, :lecturer, term: term) }
+    let!(:students) { FactoryBot.create_list(:term_registration, 3, :student, term: term) }
+    let!(:tutors) { FactoryBot.create_list(:term_registration, 3, :tutor, term: term) }
+    let!(:lecturers) { FactoryBot.create_list(:term_registration, 3, :lecturer, term: term) }
 
     it 'assigns all term_registrations as @term_registrations' do
-      get :index, term_id: term.id
+      get :index, params: { term_id: term.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term_registrations)).to match_array(term.term_registrations.staff)
@@ -27,7 +27,7 @@ RSpec.describe StaffController do
 
   describe 'GET new' do
     it 'assigns a new term_registration as @term_registration' do
-      get :new, term_id: term.id
+      get :new, params: { term_id: term.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term_registration)).to be_a_new(TermRegistration)
@@ -48,7 +48,7 @@ RSpec.describe StaffController do
         }
 
         expect do
-          post :create, valid_attributes
+          post :create, params: valid_attributes
         end.to change(TermRegistration, :count).by(1)
 
         expect(response).to redirect_to(term_staff_index_path(term))
@@ -69,7 +69,7 @@ RSpec.describe StaffController do
         }
 
         expect do
-          post :create, valid_attributes
+          post :create, params: valid_attributes
         end.to change(TermRegistration, :count).by(1)
 
         expect(response).to redirect_to(term_staff_index_path(term))
@@ -90,7 +90,7 @@ RSpec.describe StaffController do
         }
 
         expect do
-          post :create, invalid_attributes
+          post :create, params: invalid_attributes
         end.to change(TermRegistration, :count).by(0)
 
         expect(response).to have_http_status(:success)
@@ -105,7 +105,7 @@ RSpec.describe StaffController do
       term_registration.reload # trigger creation
 
       expect do
-        xhr :delete, :destroy, term_id: term.id, id: term_registration.id
+        delete :destroy, params: { term_id: term.id, id: term_registration.id }, xhr: true
       end.to change(TermRegistration, :count).by(-1)
 
       expect(response).to redirect_to(term_staff_index_path(term))

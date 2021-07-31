@@ -26,6 +26,7 @@ class GradingScale < ActiveRecord::Base
   scope :negative, lambda { find_by(positive: false, not_graded: false) }
   scope :not_graded, lambda { find_by(not_graded: true) }
   scope :for_grade, lambda { |grade| find_by(grade: grade) }
+  scope :for_points, lambda { |points| where([arel_table[:min_points].lteq(points), arel_table[:max_points].gteq(points)].reduce(&:and)) }
   scope :grades, lambda { where(not_graded: false) }
 
   private

@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "Term Creation" do
-  let(:account) { FactoryGirl.create(:account, :admin) }
-  let!(:course) { FactoryGirl.create(:course) }
+  let(:account) { FactoryBot.create(:account, :admin) }
+  let!(:course) { FactoryBot.create(:course) }
 
   before :each do
     sign_in account

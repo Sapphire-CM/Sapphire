@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence(:lorem_ipsum) { |n| "Lorem ipsum dolor sit amet, consectetur adipisicing elit. #{n}" }
 end
 

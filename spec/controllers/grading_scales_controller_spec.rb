@@ -4,11 +4,11 @@ RSpec.describe GradingScalesController do
   render_views
   include_context 'active_admin_session_context'
 
-  let(:term) { FactoryGirl.create :term }
+  let(:term) { FactoryBot.create :term }
 
   describe 'GET index' do
     it 'renders the grading scale table' do
-      get :index, term_id: term.id
+      get :index, params: { term_id: term.id }
 
       expect(response).to have_http_status(:success)
       expect(response).to render_template('_grade_overview')
@@ -30,7 +30,7 @@ RSpec.describe GradingScalesController do
           }
         }
 
-        post :bulk_update, attributes
+        post :bulk_update, params: attributes
         term.reload
 
         expect(response).to redirect_to(term_grading_scales_path(term.id))
@@ -52,7 +52,7 @@ RSpec.describe GradingScalesController do
           }
         }
 
-        post :bulk_update, attributes
+        post :bulk_update, params: attributes
         term.reload
 
         expect(response).to redirect_to(term_grading_scales_path(term.id))

@@ -30,6 +30,7 @@ class TutorialGroup < ActiveRecord::Base
   validates :title, presence: true, uniqueness: { scope: :term_id }
 
   scope :ordered_by_title, lambda { order(:title) }
+  scope :for_account, lambda { |account| where(id: TermRegistration.for_account(account).select(:tutorial_group_id)) }
 
   def student_has_submission_for_exercise?(student, exercise)
     @values ||= begin

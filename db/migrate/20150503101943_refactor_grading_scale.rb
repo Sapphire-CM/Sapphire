@@ -1,4 +1,4 @@
-class RefactorGradingScale < ActiveRecord::Migration
+class RefactorGradingScale < ActiveRecord::Migration[4.2]
   def up
     create_table :grading_scales do |t|
       t.references :term,       index: true

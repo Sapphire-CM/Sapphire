@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe 'Managing submissions as a student' do
-  let(:course) { FactoryGirl.create(:course) }
-  let(:term) { FactoryGirl.create(:term, course: course, title: 'Fancy Term') }
-  let(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
+  let(:course) { FactoryBot.create(:course) }
+  let(:term) { FactoryBot.create(:term, course: course, title: 'Fancy Term') }
+  let(:term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
   let!(:account) { term_registration.account }
-  let!(:exercise) { FactoryGirl.create(:exercise, title: 'Fancy Exercise', term: term)}
+  let!(:exercise) { FactoryBot.create(:exercise, title: 'Fancy Exercise', term: term)}
 
   before :each do
     sign_in account
@@ -55,7 +55,7 @@ RSpec.describe 'Managing submissions as a student' do
 
     scenario 'for group exercises' do
       exercise.update!(group_submission: true)
-      sg = FactoryGirl.create(:student_group, tutorial_group: term_registration.tutorial_group)
+      sg = FactoryBot.create(:student_group, tutorial_group: term_registration.tutorial_group)
       term_registration.update(student_group: sg)
 
       visit new_exercise_student_submission_path(exercise)

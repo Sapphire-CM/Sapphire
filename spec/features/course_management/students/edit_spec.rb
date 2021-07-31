@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe 'Editing a student term registration' do
-  let(:term) { FactoryGirl.create(:term) }
-  let(:account) { FactoryGirl.create(:account, :admin) }
-  let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-  let!(:other_tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-  let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
+  let(:term) { FactoryBot.create(:term) }
+  let(:account) { FactoryBot.create(:account, :admin) }
+  let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+  let!(:other_tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+  let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, term: term, tutorial_group: tutorial_group) }
 
   before :each do
     sign_in account
@@ -26,8 +26,8 @@ RSpec.describe 'Editing a student term registration' do
   describe 'Form' do
     let(:described_path) { edit_term_student_path(term, student_term_registration) }
 
-    let!(:student_group) { FactoryGirl.create(:student_group, tutorial_group: tutorial_group) }
-    let!(:other_student_group) { FactoryGirl.create(:student_group, tutorial_group: tutorial_group) }
+    let!(:student_group) { FactoryBot.create(:student_group, tutorial_group: tutorial_group) }
+    let!(:other_student_group) { FactoryBot.create(:student_group, tutorial_group: tutorial_group) }
     let(:student_account) { student_term_registration.account }
 
     scenario 'Shows details about the student\'s account' do

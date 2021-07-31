@@ -1,6 +1,6 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :submission_evaluation do
-    submission { FactoryGirl.create(:submission, :without_submission_evaluation)}
+    submission { FactoryBot.create(:submission, :without_submission_evaluation)}
 
     trait :evaluated do
       association :evaluator, factory: :account

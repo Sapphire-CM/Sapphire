@@ -16,11 +16,16 @@ class GradingScaleService
     else
       range = (grading_scale.min_points..grading_scale.max_points)
       tr = if grading_scale.positive
-        @term_registrations.graded.where { (points >> my { range }) & sift(:positive_grades) }
+        @term_registrations.positive_grades.where(points: range) #{ (points >> my { range }) & sift(:positive_grades) }
       else
-        @term_registrations.graded.where { (points >> my { range }) | sift(:negative_grades) }
+        scopes = [
+          TermRegistration.arel_table[:points].between(range),
+          TermRegistration.arel_table[:positive_grade].eq(false)
+        ]
+
+        @term_registrations.graded.where(scopes.reduce(&:or))
       end
-      tr.length
+      tr.count
     end
   end
 
@@ -69,11 +74,7 @@ class GradingScaleService
         elsif term_registration.points < @grading_scales.negative.min_points
           @grading_scales.negative
         else
-          @grading_scales.where {
-            (min_points <= my { term_registration.points }) &
-            (max_points >= my { term_registration.points }) &
-            (not_graded == false)
-          }.ordered.first
+          @grading_scales.grades.for_points(term_registration.points).ordered.first
         end
       else
         @grading_scales.negative

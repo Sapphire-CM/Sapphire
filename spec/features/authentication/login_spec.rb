@@ -35,7 +35,7 @@ RSpec.describe 'Login Feature' do
   end
 
   it 'logs me in with correct credentials' do
-    account = FactoryGirl.create :account
+    account = FactoryBot.create :account
 
     visit new_account_session_path
     fill_in 'Email', with: account.email
@@ -75,7 +75,7 @@ RSpec.describe 'Login Feature' do
     end
 
     it 'with missing password' do
-      account = FactoryGirl.create :account
+      account = FactoryBot.create :account
 
       visit new_account_session_path
       fill_in 'Email', with: account.email
@@ -86,7 +86,7 @@ RSpec.describe 'Login Feature' do
     end
 
     it 'with wrong password' do
-      account = FactoryGirl.create :account
+      account = FactoryBot.create :account
 
       visit new_account_session_path
       fill_in 'Email', with: account.email

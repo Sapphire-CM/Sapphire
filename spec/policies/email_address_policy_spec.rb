@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe EmailAddressPolicy do
-  let(:account) { FactoryGirl.create(:account) }
-  let(:email_address) { FactoryGirl.create(:email_address, account: account) }
+  let(:account) { FactoryBot.create(:account) }
+  let(:email_address) { FactoryBot.create(:email_address, account: account) }
 
   context 'as an admin' do
-    let(:current_account) { FactoryGirl.create(:account, :admin) }
+    let(:current_account) { FactoryBot.create(:account, :admin) }
 
     describe 'collections' do
       subject { described_class.new(current_account, described_class.policy_record_with(account: account)) }
@@ -25,7 +25,7 @@ RSpec.describe EmailAddressPolicy do
   end
 
   context 'as an arbirary user' do
-    let(:current_account) { FactoryGirl.create(:account) }
+    let(:current_account) { FactoryBot.create(:account) }
 
     describe 'collections' do
       subject { described_class.new(current_account, described_class.policy_record_with(account: account)) }

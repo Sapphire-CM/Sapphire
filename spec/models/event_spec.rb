@@ -29,11 +29,11 @@ RSpec.describe Event, type: :model do
 
   context 'scoping' do
     describe '#for_term' do
-      let(:term) { FactoryGirl.create(:term) }
-      let(:another_term) { FactoryGirl.create(:term) }
+      let(:term) { FactoryBot.create(:term) }
+      let(:another_term) { FactoryBot.create(:term) }
 
-      let!(:events_of_term) { FactoryGirl.create_list(:event, 3, term: term) }
-      let!(:events_of_other_term) { FactoryGirl.create_list(:event, 3, term: another_term) }
+      let!(:events_of_term) { FactoryBot.create_list(:event, 3, term: term) }
+      let!(:events_of_other_term) { FactoryBot.create_list(:event, 3, term: another_term) }
 
       it 'returns events only related to given term' do
         expect(Event.for_term(term)).to match_array(events_of_term)
@@ -44,9 +44,9 @@ RSpec.describe Event, type: :model do
       let(:term) { create(:term) }
 
       it 'returns events ordered by descending creation date' do
-        event_1 = FactoryGirl.create(:event, term: term, created_at: 5.days.ago, updated_at: 5.days.ago)
-        event_2 = FactoryGirl.create(:event, term: term, created_at: 3.days.ago, updated_at: 3.days.ago)
-        event_3 = FactoryGirl.create(:event, term: term, created_at: 7.days.ago, updated_at: 7.days.ago)
+        event_1 = FactoryBot.create(:event, term: term, created_at: 5.days.ago, updated_at: 5.days.ago)
+        event_2 = FactoryBot.create(:event, term: term, created_at: 3.days.ago, updated_at: 3.days.ago)
+        event_3 = FactoryBot.create(:event, term: term, created_at: 7.days.ago, updated_at: 7.days.ago)
 
         expect(Event.time_ordered).to eq([event_2, event_1, event_3])
       end

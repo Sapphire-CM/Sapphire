@@ -2,10 +2,10 @@ require 'rails_helper'
 require 'zip'
 
 RSpec.describe Exports::GradingExport do
-  let!(:term) { FactoryGirl.create :term }
-  let!(:exercises) { FactoryGirl.create_list :exercise, 4, :with_ratings }
-  let!(:tutorial_groups) { FactoryGirl.create_list :tutorial_group, 4, term: term }
-  let(:export) { FactoryGirl.create :grading_export, term: term }
+  let!(:term) { FactoryBot.create :term }
+  let!(:exercises) { FactoryBot.create_list :exercise, 4, :with_ratings }
+  let!(:tutorial_groups) { FactoryBot.create_list :tutorial_group, 4, term: term }
+  let(:export) { FactoryBot.create :grading_export, term: term }
 
   describe 'initialization' do
     it 'calls #set_default_values!' do
@@ -17,14 +17,13 @@ RSpec.describe Exports::GradingExport do
 
   describe '#perform_export!' do
     it 'generates a export file' do
-      expect do
-        export.reload
-        export.perform_export!
-        export.reload
-      end.to change(export.file, :to_s)
-
+      expect(export.reload.file).to be_blank
+      
+      export.perform_export!
+      
+      expect(export.reload.file).to be_present
       expect(export.status.to_sym).to eq(:finished)
-
+      
       Zip::File.open(export.file.to_s) do |zip_file|
         expect(zip_file.count).to eq(tutorial_groups.count + 1)
       end

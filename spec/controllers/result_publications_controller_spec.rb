@@ -4,13 +4,13 @@ RSpec.describe ResultPublicationsController do
   render_views
   include_context 'active_admin_session_context'
 
-  let(:term) { FactoryGirl.create :term }
-  let!(:exercise) { FactoryGirl.create :exercise, term: term }
-  let!(:tutorial_groups) { FactoryGirl.create_list :tutorial_group, 4, term: term }
+  let(:term) { FactoryBot.create :term }
+  let!(:exercise) { FactoryBot.create :exercise, term: term }
+  let!(:tutorial_groups) { FactoryBot.create_list :tutorial_group, 4, term: term }
 
   describe 'GET index' do
     it 'assigns all result_publications as @result_publications' do
-      get :index, exercise_id: exercise.id
+      get :index, params: { exercise_id: exercise.id }
 
       expect(assigns[:term]).to eq(term)
       expect(assigns[:exercise]).to eq(exercise)
@@ -42,7 +42,7 @@ RSpec.describe ResultPublicationsController do
         it 'updates the publication status of a tutorial group' do
           expect(mocked_result_publication_service).to receive(:publish!).with(result_publication)
 
-          put :publish, url_params
+          put :publish, params: url_params
 
           expect(flash[:notice]).not_to be_blank
           expect(response).to redirect_to exercise_result_publications_path(exercise)
@@ -53,7 +53,7 @@ RSpec.describe ResultPublicationsController do
         it 'shows a different flash message if the publication status is not updated' do
           expect(mocked_result_publication_service).to receive(:conceal!).with(result_publication)
 
-          put :conceal, url_params
+          put :conceal, params: url_params
 
           expect(flash[:notice]).not_to be_blank
           expect(response).to redirect_to exercise_result_publications_path(exercise)
@@ -66,7 +66,7 @@ RSpec.describe ResultPublicationsController do
         it 'publishes all result publications' do
           expect(mocked_result_publication_service).to receive(:publish_all!)
 
-          put :publish_all, exercise_id: exercise.id
+          put :publish_all, params: { exercise_id: exercise.id }
 
           expect(flash[:notice]).not_to be_blank
           expect(response).to redirect_to exercise_result_publications_path(exercise)
@@ -77,7 +77,7 @@ RSpec.describe ResultPublicationsController do
         it 'conceals all result publications' do
           expect(mocked_result_publication_service).to receive(:conceal_all!)
 
-          put :conceal_all, exercise_id: exercise.id
+          put :conceal_all, params: { exercise_id: exercise.id }
 
           expect(flash[:notice]).not_to be_blank
           expect(response).to redirect_to exercise_result_publications_path(exercise)

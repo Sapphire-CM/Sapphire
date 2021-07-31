@@ -1,4 +1,4 @@
-class DeleteAccountableFromAccount < ActiveRecord::Migration
+class DeleteAccountableFromAccount < ActiveRecord::Migration[4.2]
   def up
     remove_index :accounts, :column => [ :accountable_id, :accountable_type ]
     remove_column :accounts, :accountable_type

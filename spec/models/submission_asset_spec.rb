@@ -24,7 +24,7 @@ RSpec.describe SubmissionAsset do
 
   describe 'validations' do
     let(:exercise) { submission.exercise }
-    let(:submission) { FactoryGirl.create(:submission) }
+    let(:submission) { FactoryBot.create(:submission) }
 
     describe 'basic' do
       it { is_expected.to validate_presence_of(:submission) }
@@ -32,7 +32,7 @@ RSpec.describe SubmissionAsset do
     end
 
     describe 'custom' do
-      subject { FactoryGirl.build(:submission_asset, submission: submission) }
+      subject { FactoryBot.build(:submission_asset, submission: submission) }
 
       describe 'upload size' do
         it 'does not validate the upload size if the limit is disabled' do
@@ -51,7 +51,7 @@ RSpec.describe SubmissionAsset do
           expect(subject).to be_valid
           expect(subject.processed_size).to be > 400
 
-          FactoryGirl.create(:submission_asset, submission: submission, file: prepare_static_test_file("simple_submission.txt"))
+          FactoryBot.create(:submission_asset, submission: submission, file: prepare_static_test_file("simple_submission.txt"))
 
           expect(subject).not_to be_valid
         end
@@ -83,7 +83,7 @@ RSpec.describe SubmissionAsset do
         it 'validates the uniqueness of a simple path and file combination' do
           expect(subject).to be_valid
 
-          FactoryGirl.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt"))
+          FactoryBot.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt"))
 
           subject.path = ""
           subject.file = prepare_static_test_file("simple_submission.txt")
@@ -94,7 +94,7 @@ RSpec.describe SubmissionAsset do
         it 'validates the uniqueness of a non-normalized path and file combination' do
           expect(subject).to be_valid
 
-          FactoryGirl.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt"))
+          FactoryBot.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt"))
 
           subject.path = "test/.."
           subject.file = prepare_static_test_file("simple_submission.txt")
@@ -105,7 +105,7 @@ RSpec.describe SubmissionAsset do
         it 'detects collision if path is resolves to an existing submission asset with a path at some point' do
           expect(subject).to be_valid
 
-          sa = FactoryGirl.create(:submission_asset, submission: submission, path: "test/folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
+          sa = FactoryBot.create(:submission_asset, submission: submission, path: "test/folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
 
           subject.path = "test/folder/path"
           subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
@@ -116,7 +116,7 @@ RSpec.describe SubmissionAsset do
         it 'detects collision if path is resolves to an existing submission asset without a path' do
           expect(subject).to be_valid
 
-          sa = FactoryGirl.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
+          sa = FactoryBot.create(:submission_asset, submission: submission, path: "", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
 
           subject.path = "//path/"
           subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
@@ -127,7 +127,7 @@ RSpec.describe SubmissionAsset do
         it 'detects collision if path resolves to a path of an existing submission asset' do
           expect(subject).to be_valid
 
-          sa = FactoryGirl.create(:submission_asset, submission: submission, path: "test/folder", file: prepare_static_test_file("simple_submission.txt"))
+          sa = FactoryBot.create(:submission_asset, submission: submission, path: "test/folder", file: prepare_static_test_file("simple_submission.txt"))
 
           subject.path = "test"
           subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
@@ -138,7 +138,7 @@ RSpec.describe SubmissionAsset do
         it 'detects collision if path resolves to a sub_path of an existing submission asset' do
           expect(subject).to be_valid
 
-          sa = FactoryGirl.create(:submission_asset, submission: submission, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
+          sa = FactoryBot.create(:submission_asset, submission: submission, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
 
           subject.path = "test"
           subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
@@ -149,7 +149,7 @@ RSpec.describe SubmissionAsset do
         it 'is not influenced by other submissions' do
           expect(subject).to be_valid
 
-          sa = FactoryGirl.create(:submission_asset, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
+          sa = FactoryBot.create(:submission_asset, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
 
           subject.path = "test"
           subject.file = prepare_static_test_file("simple_submission.txt", rename_to: "folder")
@@ -183,11 +183,11 @@ RSpec.describe SubmissionAsset do
 
   describe 'scoping' do
     context 'content types' do
-      let(:submission) { FactoryGirl.create(:submission) }
+      let(:submission) { FactoryBot.create(:submission) }
 
       %w(newsgroup_post email stylesheet html jpeg png zip favicon pdf).each do |type|
         let!(type.pluralize.to_sym) do
-          sa = FactoryGirl.create(:submission_asset, submission: submission)
+          sa = FactoryBot.create(:submission_asset, submission: submission)
           sa.content_type = "SubmissionAsset::Mime::#{type.upcase}".constantize
           sa.save(validate: false)
           [sa]
@@ -208,7 +208,7 @@ RSpec.describe SubmissionAsset do
 
     describe '.for_exercise' do
       it 'returns only submission assets for a given exercise' do
-        assets = FactoryGirl.create_list(:submission_asset, 3)
+        assets = FactoryBot.create_list(:submission_asset, 3)
 
         expect(SubmissionAsset.for_exercise(assets.first.submission.exercise)).to eq([assets.first])
       end
@@ -216,7 +216,7 @@ RSpec.describe SubmissionAsset do
 
     describe '.for_term' do
       it 'returns only submission assets for a given term' do
-        assets = FactoryGirl.create_list(:submission_asset, 3)
+        assets = FactoryBot.create_list(:submission_asset, 3)
 
         expect(SubmissionAsset.for_term(assets.first.submission.exercise.term)).to eq([assets.first])
       end
@@ -224,50 +224,50 @@ RSpec.describe SubmissionAsset do
 
     describe '.at_path_components' do
       it 'matches with a simple path and file combination' do
-        sa = FactoryGirl.create(:submission_asset, path: "", file: prepare_static_test_file("simple_submission.txt"))
+        sa = FactoryBot.create(:submission_asset, path: "", file: prepare_static_test_file("simple_submission.txt"))
 
         expect(described_class.at_path_components("simple_submission.txt").first).to eq(sa)
       end
 
       it 'matches non-normalized path and file combination' do
-        sa = FactoryGirl.create(:submission_asset, path: "", file: prepare_static_test_file("simple_submission.txt"))
+        sa = FactoryBot.create(:submission_asset, path: "", file: prepare_static_test_file("simple_submission.txt"))
 
         expect(described_class.at_path_components("test/../simple_submission.txt").first).to eq(sa)
       end
 
       it 'matches if path is resolves to an existing submission asset with a path at some point' do
-        sa = FactoryGirl.create(:submission_asset, path: "test/folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
+        sa = FactoryBot.create(:submission_asset, path: "test/folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
 
         expect(described_class.at_path_components("test/folder/path/folder").first).to eq(sa)
       end
 
       it 'matches if path is resolves to an existing submission asset without a path' do
-        sa = FactoryGirl.create(:submission_asset, path: "", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
+        sa = FactoryBot.create(:submission_asset, path: "", file: prepare_static_test_file("simple_submission.txt", rename_to: "path"))
 
         expect(described_class.at_path_components("//path/folder").first).to eq(sa)
       end
 
       it 'matches if path resolves to a path of an existing submission asset' do
-        sa = FactoryGirl.create(:submission_asset, path: "test/folder", file: prepare_static_test_file("simple_submission.txt"))
+        sa = FactoryBot.create(:submission_asset, path: "test/folder", file: prepare_static_test_file("simple_submission.txt"))
 
         expect(described_class.at_path_components("test/folder").first).to eq(sa)
 
       end
 
       it 'matches if path resolves to a sub_path of an existing submission asset' do
-        sa = FactoryGirl.create(:submission_asset, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
+        sa = FactoryBot.create(:submission_asset, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
 
         expect(described_class.at_path_components("test/folder").first).to eq(sa)
       end
 
       it 'does not match if path is the same but the file names differ' do
-        sa = FactoryGirl.create(:submission_asset, path: "test", file: prepare_static_test_file("simple_submission.txt", rename_to: "file"))
+        sa = FactoryBot.create(:submission_asset, path: "test", file: prepare_static_test_file("simple_submission.txt", rename_to: "file"))
 
         expect(described_class.at_path_components("test/file2").exists?).to be_falsey
       end
 
       it 'does not match if path contains only a part of a path' do
-        sa = FactoryGirl.create(:submission_asset, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
+        sa = FactoryBot.create(:submission_asset, path: "test/folder/that/is/fancy", file: prepare_static_test_file("simple_submission.txt"))
 
         expect(described_class.at_path_components("test/fol").exists?).to be_falsey
       end
@@ -278,7 +278,7 @@ RSpec.describe SubmissionAsset do
   describe 'save callbacks' do
     let(:now) { Time.now }
 
-    subject { FactoryGirl.build(:submission_asset) }
+    subject { FactoryBot.build(:submission_asset) }
 
     it 'sets submitted_at' do
       Timecop.freeze(now)
@@ -287,7 +287,7 @@ RSpec.describe SubmissionAsset do
 
       subject.save
 
-      expect(subject.submitted_at).to eq(now)
+      expect(subject.submitted_at).to be_within(1.second).of(now)
 
       Timecop.return
     end
@@ -299,7 +299,7 @@ RSpec.describe SubmissionAsset do
       subject.file = prepare_static_test_file('simple_submission_2.txt')
       subject.save
 
-      expect(subject.submitted_at).to eq(date)
+      expect(subject.submitted_at).to be_within(1.second).of(date)
     end
 
     it 'sets content_type' do
@@ -346,15 +346,15 @@ RSpec.describe SubmissionAsset do
   describe '.inside_path' do
     let!(:assets_outside_path) do
       [
-        FactoryGirl.create(:submission_asset, path: "test", file: prepare_static_test_file("simple_submission.txt", rename_to: "file")),
-        FactoryGirl.create(:submission_asset, path: "", file: prepare_static_test_file("simple_submission.txt", rename_to: "file"))
+        FactoryBot.create(:submission_asset, path: "test", file: prepare_static_test_file("simple_submission.txt", rename_to: "file")),
+        FactoryBot.create(:submission_asset, path: "", file: prepare_static_test_file("simple_submission.txt", rename_to: "file"))
       ]
     end
 
     let!(:assets_inside_path) do
       [
-        FactoryGirl.create(:submission_asset, path: "test/folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "folder")),
-        FactoryGirl.create(:submission_asset, path: "test/folder/path", file: prepare_static_test_file("simple_submission.txt", rename_to: "folder"))
+        FactoryBot.create(:submission_asset, path: "test/folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "folder")),
+        FactoryBot.create(:submission_asset, path: "test/folder/path", file: prepare_static_test_file("simple_submission.txt", rename_to: "folder"))
       ]
     end
 
@@ -439,7 +439,7 @@ RSpec.describe SubmissionAsset do
       subject.set_submitted_at
 
       Timecop.return
-      expect(subject.submitted_at).to eq(now)
+      expect(subject.submitted_at).to be_within(1.second).of(now)
     end
   end
 
@@ -528,7 +528,7 @@ RSpec.describe SubmissionAsset do
 
   describe 'update submission filsize' do
     let!(:filesystem_size) { 447 }
-    let!(:submission) { FactoryGirl.create(:submission).tap { |submission| submission.assign_attributes(filesystem_size: filesystem_size) } }
+    let!(:submission) { FactoryBot.create(:submission).tap { |submission| submission.assign_attributes(filesystem_size: filesystem_size) } }
 
     it 'increments the submission filesize' do
       subject.submission = submission

@@ -11,7 +11,7 @@ RSpec.shared_examples "Exercise Sub Navigation" do |roles|
 
   if roles.include?(:lecturer)
     context 'as lecturer' do
-      let(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: exercise.term) }
+      let(:term_registration) { FactoryBot.create(:term_registration, :lecturer, term: exercise.term) }
 
       scenario "Provides sub navigation links" do
         visit base_path
@@ -30,7 +30,7 @@ RSpec.shared_examples "Exercise Sub Navigation" do |roles|
 
   if roles.include?(:tutor)
     context 'as tutor' do
-      let(:term_registration) { FactoryGirl.create(:term_registration, :tutor, term: exercise.term) }
+      let(:term_registration) { FactoryBot.create(:term_registration, :tutor, term: exercise.term) }
 
       scenario "Provides sub navigation links" do
         visit base_path
@@ -50,7 +50,7 @@ RSpec.shared_examples "Exercise Sub Navigation" do |roles|
 
   if roles.include?(:student)
     context 'as student' do
-      let(:term_registration) { FactoryGirl.create(:term_registration, :student, term: exercise.term) }
+      let(:term_registration) { FactoryBot.create(:term_registration, :student, term: exercise.term) }
 
       scenario "Provides sub navigation links" do
         visit base_path

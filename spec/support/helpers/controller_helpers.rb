@@ -1,5 +1,5 @@
 module ControllerHelpers
-  def sign_in(account = FactoryGirl.create(:account))
+  def sign_in(account = FactoryBot.create(:account))
     if account.nil?
       allow(request.env['warden']).to receive(:authenticate!)
         .and_throw(:warden, scope: :account)
@@ -35,18 +35,18 @@ RSpec.configure do |config|
   config.include ControllerHelpers, type: :controller
 end
 
-
-if RUBY_VERSION>='2.6.0'
-  if Rails.version < '5'
-    class ActionController::TestResponse < ActionDispatch::TestResponse
-      def recycle!
-        # hack to avoid MonitorMixin double-initialize error:
-        @mon_mutex_owner_object_id = nil
-        @mon_mutex = nil
-        initialize
-      end
-    end
-  else
-    raise "Monkeypatch for ActionController::TestResponse no longer needed"
-  end
-end
+#
+# if RUBY_VERSION>='2.6.0'
+#   if Rails.version < '5'
+#     class ActionController::TestResponse < ActionDispatch::TestResponse
+#       def recycle!
+#         # hack to avoid MonitorMixin double-initialize error:
+#         @mon_mutex_owner_object_id = nil
+#         @mon_mutex = nil
+#         initialize
+#       end
+#     end
+#   else
+#     raise "Monkeypatch for ActionController::TestResponse no longer needed"
+#   end
+# end

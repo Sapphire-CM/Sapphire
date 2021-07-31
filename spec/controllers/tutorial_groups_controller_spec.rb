@@ -22,15 +22,15 @@ RSpec.describe TutorialGroupsController do
     }
   end
 
-  let(:term) { FactoryGirl.create :term }
+  let(:term) { FactoryBot.create :term }
 
-  let(:tutorial_group) { FactoryGirl.create :tutorial_group, term: term }
+  let(:tutorial_group) { FactoryBot.create :tutorial_group, term: term }
 
   describe 'GET index' do
     it 'assigns all tutorial_groups as @tutorial_groups' do
-      FactoryGirl.create_list :tutorial_group, 4, term: term
+      FactoryBot.create_list :tutorial_group, 4, term: term
 
-      get :index, term_id: term.id
+      get :index, params: { term_id: term.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:tutorial_groups)).to match_array(term.tutorial_groups)
@@ -39,7 +39,7 @@ RSpec.describe TutorialGroupsController do
 
   describe 'GET show' do
     it 'assigns the requested tutorial_group as @tutorial_group' do
-      get :show, term_id: term.id, id: tutorial_group.id
+      get :show, params: { term_id: term.id, id: tutorial_group.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:tutorial_group)).to eq(tutorial_group)
@@ -48,7 +48,7 @@ RSpec.describe TutorialGroupsController do
 
   describe 'GET new' do
     it 'assigns a new tutorial_group as @tutorial_group' do
-      xhr :get, :new, term_id: term.id
+      get :new, params: { term_id: term.id }, xhr: true
 
       expect(response).to have_http_status(:success)
       expect(assigns(:tutorial_group)).to be_a_new(TutorialGroup)
@@ -61,7 +61,7 @@ RSpec.describe TutorialGroupsController do
         valid_attributes[:term_id] = term.id
 
         expect do
-          post :create, valid_attributes
+          post :create, params: valid_attributes
         end.to change(TutorialGroup, :count).by(1)
 
         expect(response).to redirect_to(term_tutorial_group_path(term, assigns(:tutorial_group)))
@@ -72,10 +72,10 @@ RSpec.describe TutorialGroupsController do
 
     describe 'with invalid params' do
       it 'assigns a newly created but unsaved tutorial_group as @tutorial_group' do
-        FactoryGirl.create :tutorial_group, term: term, title: invalid_attributes[:tutorial_group][:title]
+        FactoryBot.create :tutorial_group, term: term, title: invalid_attributes[:tutorial_group][:title]
         invalid_attributes[:term_id] = term.id
 
-        post :create, invalid_attributes
+        post :create, params: invalid_attributes
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:new)
@@ -86,7 +86,7 @@ RSpec.describe TutorialGroupsController do
 
   describe 'GET edit' do
     it 'assigns the requested tutorial_group as @tutorial_group' do
-      get :edit, term_id: term.id, id: tutorial_group.id
+      get :edit, params: { term_id: term.id, id: tutorial_group.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:tutorial_group)).to eq(tutorial_group)
@@ -99,7 +99,7 @@ RSpec.describe TutorialGroupsController do
         valid_attributes[:term_id] = term.id
         valid_attributes[:id] = tutorial_group.id
 
-        put :update, valid_attributes
+        put :update, params: valid_attributes
 
         tutorial_group.reload
         expect(response).to redirect_to(term_tutorial_group_path(term, tutorial_group))
@@ -111,11 +111,11 @@ RSpec.describe TutorialGroupsController do
 
     describe 'with invalid params' do
       it 'assigns the requested tutorial_group as @tutorial_group' do
-        FactoryGirl.create :tutorial_group, term: term, title: invalid_attributes[:tutorial_group][:title]
+        FactoryBot.create :tutorial_group, term: term, title: invalid_attributes[:tutorial_group][:title]
         invalid_attributes[:term_id] = term.id
         invalid_attributes[:id] = tutorial_group.id
 
-        put :update, invalid_attributes
+        put :update, params: invalid_attributes
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:edit)
@@ -129,7 +129,7 @@ RSpec.describe TutorialGroupsController do
       tutorial_group.reload # trigger creation
 
       expect do
-        delete :destroy, term_id: term.id, id: tutorial_group.id
+        delete :destroy, params: { term_id: term.id, id: tutorial_group.id }
       end.to change(TutorialGroup, :count).by(-1)
 
       expect(response).to redirect_to(term_path(term))
@@ -138,7 +138,7 @@ RSpec.describe TutorialGroupsController do
 
   describe 'GET points_overview' do
     it 'shows the points overview' do
-      get :points_overview, term_id: term.id, id: tutorial_group.id
+      get :points_overview, params: { term_id: term.id, id: tutorial_group.id }
 
       expect(assigns(:tutorial_group)).to eq(tutorial_group)
     end

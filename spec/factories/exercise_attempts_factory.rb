@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :exercise_attempt do
     exercise
     sequence(:title) { |n| "Attempt #{n}"}

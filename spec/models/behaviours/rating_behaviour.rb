@@ -22,9 +22,9 @@ RSpec.shared_examples 'a rating' do
     let(:factory_name) { rating_factory(described_class) }
 
     describe '.automated_ratings' do
-      let!(:automated_ratings) { FactoryGirl.create_list(factory_name, 2, automated_checker_identifier: "automated") }
-      let!(:non_automated_nil_ratings) { FactoryGirl.create_list(factory_name, 2, automated_checker_identifier: nil) }
-      let!(:non_automated_blank_ratings) { FactoryGirl.create_list(factory_name, 2, automated_checker_identifier: "") }
+      let!(:automated_ratings) { FactoryBot.create_list(factory_name, 2, automated_checker_identifier: "automated") }
+      let!(:non_automated_nil_ratings) { FactoryBot.create_list(factory_name, 2, automated_checker_identifier: nil) }
+      let!(:non_automated_blank_ratings) { FactoryBot.create_list(factory_name, 2, automated_checker_identifier: "") }
 
       it 'returns ratings where automated_checker_identifier is present' do
         expect(described_class.automated_ratings).to match_array(automated_ratings)
@@ -32,8 +32,8 @@ RSpec.shared_examples 'a rating' do
     end
 
     describe '.bulk' do
-      let!(:bulk_ratings) { FactoryGirl.create_list(factory_name, 2, bulk: true) }
-      let!(:non_bulk_ratings) { FactoryGirl.create_list(factory_name, 2, bulk: false) }
+      let!(:bulk_ratings) { FactoryBot.create_list(factory_name, 2, bulk: true) }
+      let!(:non_bulk_ratings) { FactoryBot.create_list(factory_name, 2, bulk: false) }
 
       it 'returns ratings where bulk is true' do
         expect(described_class.bulk).to match_array(bulk_ratings)
@@ -113,15 +113,15 @@ RSpec.shared_examples 'a rating' do
     let(:factory_name) { rating_factory(described_class) }
 
     describe 'setting needs review' do
-      let(:exercise) { FactoryGirl.create(:exercise) }
-      let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise) }
+      let(:exercise) { FactoryBot.create(:exercise) }
+      let(:rating_group) { FactoryBot.create(:rating_group, exercise: exercise) }
 
       context 'existing submissions' do
-        let(:submissions) { FactoryGirl.create_list(:submission, 3, exercise: exercise) }
+        let(:submissions) { FactoryBot.create_list(:submission, 3, exercise: exercise) }
         let(:evaluations) { submissions.map(&:submission_evaluation).map(&:evaluations).flatten }
 
         it 'sets needs_review of the evaluations associated with the rating if title is changed' do
-          subject = FactoryGirl.create(factory_name, rating_group: rating_group)
+          subject = FactoryBot.create(factory_name, rating_group: rating_group)
 
           expect(submissions.length).to eq(3)
           subject.update!(title: "Another Rating")
@@ -133,7 +133,7 @@ RSpec.shared_examples 'a rating' do
 
         it 'sets needs_review of the evaluations after creating a rating' do
           expect(submissions.length).to eq(3)
-          subject = FactoryGirl.create(:fixed_points_deduction_rating, rating_group: rating_group)
+          subject = FactoryBot.create(:fixed_points_deduction_rating, rating_group: rating_group)
 
           evaluations.each do |evaluation|
             expect(evaluation.needs_review?).to be_truthy
@@ -142,11 +142,11 @@ RSpec.shared_examples 'a rating' do
       end
 
       context 'new submissions' do
-        let(:submissions) { FactoryGirl.create_list(:submission, 3, exercise: exercise) }
+        let(:submissions) { FactoryBot.create_list(:submission, 3, exercise: exercise) }
         let(:evaluations) { submissions.map(&:submission_evaluation).map(&:evaluations).flatten }
 
         it 'doesn\'t set needs_review of the evaluations associated of submissions created after the rating' do
-          subject = FactoryGirl.create(factory_name, rating_group: rating_group)
+          subject = FactoryBot.create(factory_name, rating_group: rating_group)
 
           expect(submissions.length).to eq(3)
           evaluations.each do |evaluation|

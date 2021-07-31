@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe GradingScaleService, type: :model do
-  let!(:account) { FactoryGirl.create :account }
-  let!(:term) { FactoryGirl.create :term }
-  let!(:exercise) { FactoryGirl.create :exercise, :with_ratings, term: term }
-  let!(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term, account: account, points: 40) }
+  let!(:account) { FactoryBot.create :account }
+  let!(:term) { FactoryBot.create :term }
+  let!(:exercise) { FactoryBot.create :exercise, :with_ratings, term: term }
+  let!(:term_registration) { FactoryBot.create(:term_registration, :student, term: term, account: account, points: 40) }
 
   context 'gives the correct grade for term_registration' do
     def expect_grade_to_be(grade)

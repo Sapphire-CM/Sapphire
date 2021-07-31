@@ -28,8 +28,8 @@ describe ExerciseRegistration do
 
   describe 'scoping' do
     describe '.active' do
-      let!(:active_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :active) }
-      let!(:inactive_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :inactive) }
+      let!(:active_exercise_registrations) { FactoryBot.create_list(:exercise_registration, 2, :active) }
+      let!(:inactive_exercise_registrations) { FactoryBot.create_list(:exercise_registration, 2, :inactive) }
 
       it 'returns active exercise registrations' do
         expect(described_class.active).to match_array(active_exercise_registrations)
@@ -37,8 +37,8 @@ describe ExerciseRegistration do
     end
 
     describe '.inactive' do
-      let!(:active_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :active) }
-      let!(:inactive_exercise_registrations) { FactoryGirl.create_list(:exercise_registration, 2, :inactive) }
+      let!(:active_exercise_registrations) { FactoryBot.create_list(:exercise_registration, 2, :active) }
+      let!(:inactive_exercise_registrations) { FactoryBot.create_list(:exercise_registration, 2, :inactive) }
 
       it 'returns inactive exercise registrations' do
         expect(described_class.inactive).to match_array(inactive_exercise_registrations)
@@ -54,16 +54,16 @@ describe ExerciseRegistration do
   describe 'callbacks' do
     describe 'creation' do
       let(:submission) do
-        FactoryGirl.create(:submission).tap do |submission|
+        FactoryBot.create(:submission).tap do |submission|
           submission.submission_evaluation.update(evaluation_result: 20)
         end
       end
 
-      subject { FactoryGirl.build(:exercise_registration, submission: submission, exercise: submission.exercise) }
+      subject { FactoryBot.build(:exercise_registration, submission: submission, exercise: submission.exercise) }
 
-      let!(:similar_exercise_registration) { FactoryGirl.create(:exercise_registration, :active, exercise: subject.exercise, term_registration: subject.term_registration) }
-      let!(:exercise_registration_with_different_exercise) { FactoryGirl.create(:exercise_registration, :active, term_registration: subject.term_registration) }
-      let!(:exercise_registration_with_different_term_registration) { FactoryGirl.create(:exercise_registration, :active, term_registration: subject.term_registration) }
+      let!(:similar_exercise_registration) { FactoryBot.create(:exercise_registration, :active, exercise: subject.exercise, term_registration: subject.term_registration) }
+      let!(:exercise_registration_with_different_exercise) { FactoryBot.create(:exercise_registration, :active, term_registration: subject.term_registration) }
+      let!(:exercise_registration_with_different_term_registration) { FactoryBot.create(:exercise_registration, :active, term_registration: subject.term_registration) }
 
       it 'updates the points after create' do
         expect(subject.points).to be_nil
@@ -88,8 +88,8 @@ describe ExerciseRegistration do
     end
 
     describe 'destruction' do
-      subject { FactoryGirl.create(:exercise_registration, submission: submission, exercise: submission.exercise) }
-      let(:submission) { FactoryGirl.create(:submission) }
+      subject { FactoryBot.create(:exercise_registration, submission: submission, exercise: submission.exercise) }
+      let(:submission) { FactoryBot.create(:submission) }
       let(:term_registration) { subject.term_registration }
 
       it 'calls #update_points! on term_registration' do
@@ -100,18 +100,18 @@ describe ExerciseRegistration do
     end
 
     describe 'changing a term_registration' do
-      subject! { FactoryGirl.create(:exercise_registration, submission: submission, exercise: submission.exercise, term_registration: old_term_registration) }
+      subject! { FactoryBot.create(:exercise_registration, submission: submission, exercise: submission.exercise, term_registration: old_term_registration) }
 
-      let(:term) { FactoryGirl.create(:term) }
-      let(:exercise) { FactoryGirl.create(:exercise, term: term) }
+      let(:term) { FactoryBot.create(:term) }
+      let(:exercise) { FactoryBot.create(:exercise, term: term) }
       let(:submission) do
-         FactoryGirl.create(:submission, exercise: exercise).tap do |submission|
+         FactoryBot.create(:submission, exercise: exercise).tap do |submission|
            submission.submission_evaluation.update(evaluation_result: 42)
          end
        end
 
-      let!(:old_term_registration) { FactoryGirl.create(:term_registration, term: term) }
-      let!(:new_term_registration) { FactoryGirl.create(:term_registration, term: term) }
+      let!(:old_term_registration) { FactoryBot.create(:term_registration, term: term) }
+      let!(:new_term_registration) { FactoryBot.create(:term_registration, term: term) }
 
       it 'calls #update_points! on old term_registration' do
         old_term_registration.update(points: 21)
@@ -132,7 +132,7 @@ describe ExerciseRegistration do
     end
 
     describe 'changing points' do
-      subject { FactoryGirl.create(:exercise_registration, points: 21) }
+      subject { FactoryBot.create(:exercise_registration, points: 21) }
 
       let(:term_registration) { subject.term_registration }
 
@@ -150,12 +150,12 @@ describe ExerciseRegistration do
     end
 
     describe 'changing individual subtractions' do
-      let(:term) { FactoryGirl.create(:term) }
-      let(:term_registration) { FactoryGirl.create(:term_registration, term: term) }
-      let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-      let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
+      let(:term) { FactoryBot.create(:term) }
+      let(:term_registration) { FactoryBot.create(:term_registration, term: term) }
+      let(:exercise) { FactoryBot.create(:exercise, term: term) }
+      let(:submission) { FactoryBot.create(:submission, exercise: exercise) }
 
-      subject { FactoryGirl.create(:exercise_registration, submission: submission, exercise: exercise, term_registration: term_registration) }
+      subject { FactoryBot.create(:exercise_registration, submission: submission, exercise: exercise, term_registration: term_registration) }
 
       before :each do
         submission.submission_evaluation.update(evaluation_result: 42)
@@ -175,7 +175,7 @@ describe ExerciseRegistration do
       let(:submission) { subject.submission }
 
       context 'on active exercise registration' do
-        subject { FactoryGirl.create(:exercise_registration, :active, points: 21) }
+        subject { FactoryBot.create(:exercise_registration, :active, points: 21) }
 
         it 'calls #update_points! on term_registration' do
           expect(term_registration).to receive(:update_points!)
@@ -203,11 +203,11 @@ describe ExerciseRegistration do
       end
 
       context 'on inactive exercise registration' do
-        subject { FactoryGirl.create(:exercise_registration, :inactive, points: 21) }
+        subject { FactoryBot.create(:exercise_registration, :inactive, points: 21) }
 
-        let!(:similar_exercise_registration) { FactoryGirl.create(:exercise_registration, :active, exercise: subject.exercise, term_registration: subject.term_registration) }
-        let!(:exercise_registration_with_different_exercise) { FactoryGirl.create(:exercise_registration, :active, term_registration: subject.term_registration) }
-        let!(:exercise_registration_with_different_term_registration) { FactoryGirl.create(:exercise_registration, :active, term_registration: subject.term_registration) }
+        let!(:similar_exercise_registration) { FactoryBot.create(:exercise_registration, :active, exercise: subject.exercise, term_registration: subject.term_registration) }
+        let!(:exercise_registration_with_different_exercise) { FactoryBot.create(:exercise_registration, :active, term_registration: subject.term_registration) }
+        let!(:exercise_registration_with_different_term_registration) { FactoryBot.create(:exercise_registration, :active, term_registration: subject.term_registration) }
 
         it 'calls #update_points! on term_registration' do
           expect(term_registration).to receive(:update_points!)
@@ -251,7 +251,7 @@ describe ExerciseRegistration do
 
   describe 'methods' do
     describe '#update_points' do
-      let(:submission) { FactoryGirl.create(:submission) }
+      let(:submission) { FactoryBot.create(:submission) }
       let(:submission_evaluation) { submission.submission_evaluation }
       let(:evaluation_result) { 42 }
 
@@ -311,8 +311,8 @@ describe ExerciseRegistration do
       let(:above_threshold_points) { 42 }
       let(:below_threshold_points) { 41 }
 
-      let(:exercise_without_min_points) { FactoryGirl.build(:exercise, :without_minimum_points) }
-      let(:exercise_with_min_points) { FactoryGirl.build(:exercise, :with_minimum_points, min_required_points: minimum_points) }
+      let(:exercise_without_min_points) { FactoryBot.build(:exercise, :without_minimum_points) }
+      let(:exercise_with_min_points) { FactoryBot.build(:exercise, :with_minimum_points, min_required_points: minimum_points) }
 
       it 'returns true if exercise does not require minimum points and points are below the threshold' do
         subject.exercise = exercise_without_min_points

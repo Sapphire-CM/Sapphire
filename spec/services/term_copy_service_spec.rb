@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe TermCopyService do
 
   describe 'initialization' do
-    let(:term) { FactoryGirl.build(:term) }
+    let(:term) { FactoryBot.build(:term) }
     let(:course) { term.course }
-    let(:source_term) { FactoryGirl.build(:term, course: course) }
+    let(:source_term) { FactoryBot.build(:term, course: course) }
 
     it 'assigns term, source term' do
       subject = described_class.new(term, source_term)
@@ -39,11 +39,11 @@ RSpec.describe TermCopyService do
 
   describe 'methods' do
     describe '#perform!' do
-      let(:term) { FactoryGirl.create(:term) }
-      let(:source_term) { FactoryGirl.create(:term, course: term.course) }
+      let(:term) { FactoryBot.create(:term) }
+      let(:source_term) { FactoryBot.create(:term, course: term.course) }
 
       context 'with exercises' do
-        let!(:source_exercises) { FactoryGirl.create_list(:exercise, 2, :with_ratings, term: source_term) }
+        let!(:source_exercises) { FactoryBot.create_list(:exercise, 2, :with_ratings, term: source_term) }
 
         let(:exercise_attributes) { %I(title description deadline late_deadline enable_max_total_points enable_student_uploads max_total_points group_submission) }
         let(:rating_group_attributes) { %I(title title points description global min_points max_points enable_range_points) }
@@ -84,7 +84,7 @@ RSpec.describe TermCopyService do
       end
 
       context 'with lecturers' do
-        let!(:source_lecturers) { FactoryGirl.create_list(:term_registration, 3, :lecturer, term: source_term) }
+        let!(:source_lecturers) { FactoryBot.create_list(:term_registration, 3, :lecturer, term: source_term) }
 
         let(:term_attributes) do
           {

@@ -37,12 +37,12 @@ class Evaluation < ActiveRecord::Base
   after_destroy :update_result!
   after_destroy :update_needs_review!
 
-  scope :ranked, lambda { includes(:rating).order { rating.row_order.asc }.references(:rating) }
+  scope :ranked, lambda { joins(:rating).merge(Rating.order(:row_order)) }
 
   scope :needing_review, lambda { where(needs_review: true) }
-  scope :for_submission, lambda { |submission| joins { evaluation_group.submission_evaluation }.where { evaluation_group.submission_evaluation.submission_id == my { submission.id } }.readonly(false) }
+  scope :for_submission, lambda { |submission| joins(:submission_evaluation).merge(SubmissionEvaluation.where(submission: submission)) }
   scope :for_exercise, lambda { |exercise| joins { submission }.where { submission.exercise_id == my { exercise.id } } }
-  scope :automatically_checked, lambda { where { checked_automatically == true } }
+  scope :automatically_checked, lambda { where(checked_automatically: true) }
 
   delegate :row_order, to: :rating
 

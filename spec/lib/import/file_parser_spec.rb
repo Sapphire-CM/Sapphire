@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Import::FileParser do
-  let(:term) { FactoryGirl.create :term }
-  let(:import) { FactoryGirl.create :import, term: term }
+  let(:term) { FactoryBot.create :term }
+  let(:import) { FactoryBot.create :import, term: term }
   let(:import_service) { ImportService.new(import) }
 
   it 'splits columns for semicolon separated values' do

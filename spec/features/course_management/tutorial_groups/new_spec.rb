@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "New Tutorial Group" do
-  let(:term) { FactoryGirl.create(:term) }
-  let(:account) { FactoryGirl.create(:account, :admin) }
+  let(:term) { FactoryBot.create(:term) }
+  let(:account) { FactoryBot.create(:account, :admin) }
 
   let(:described_path) { new_term_tutorial_group_path(term) }
 

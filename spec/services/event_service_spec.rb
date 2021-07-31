@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe EventService do
-  let(:account) { FactoryGirl.create(:account) }
-  let(:term) { FactoryGirl.create(:term) }
+  let(:account) { FactoryBot.create(:account) }
+  let(:term) { FactoryBot.create(:term) }
 
   subject { EventService.new(account, term) }
 
@@ -49,11 +49,11 @@ RSpec.describe EventService do
   end
 
   context 'submission events' do
-    let(:term_registration) { FactoryGirl.create(:term_registration, :student) }
+    let(:term_registration) { FactoryBot.create(:term_registration, :student) }
     let(:account) { term_registration.account }
     let(:term) { term_registration.term }
-    let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-    let(:submission) { FactoryGirl.create(:submission, exercise: exercise, submitter: account) }
+    let(:exercise) { FactoryBot.create(:exercise, term: term) }
+    let(:submission) { FactoryBot.create(:submission, exercise: exercise, submitter: account) }
 
     describe '#submission_created!' do
       it 'creates a Events::Submission::Created event' do
@@ -72,12 +72,12 @@ RSpec.describe EventService do
     end
 
     describe '#submission_extracted!' do
-      let(:zip_submission_asset) { FactoryGirl.create(:submission_asset, submission: submission, path: 'zip/path', file: prepare_static_test_file('submission.zip')) }
+      let(:zip_submission_asset) { FactoryBot.create(:submission_asset, submission: submission, path: 'zip/path', file: prepare_static_test_file('submission.zip')) }
       let(:extracted_submission_assets) do
         [
-          FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'one'),
-          FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'two'),
-          FactoryGirl.create(:submission_asset, :plain_text, submission: submission, path: 'three')
+          FactoryBot.create(:submission_asset, :plain_text, submission: submission, path: 'one'),
+          FactoryBot.create(:submission_asset, :plain_text, submission: submission, path: 'two'),
+          FactoryBot.create(:submission_asset, :plain_text, submission: submission, path: 'three')
         ]
       end
 
@@ -109,9 +109,9 @@ RSpec.describe EventService do
   context 'submission asset events' do
     let(:exercise) { submission.exercise }
     let(:term) { exercise.term }
-    let(:submission) { FactoryGirl.create(:submission) }
-    let(:submission_assets) { FactoryGirl.create_list(:submission_asset, 3, :plain_text, submission: submission) }
-    let(:zip_asset) { FactoryGirl.create(:submission_asset, :zip, submission: submission) }
+    let(:submission) { FactoryBot.create(:submission) }
+    let(:submission_assets) { FactoryBot.create_list(:submission_asset, 3, :plain_text, submission: submission) }
+    let(:zip_asset) { FactoryBot.create(:submission_asset, :zip, submission: submission) }
 
     describe '#submission_asset_destroyed!' do
       let(:now) { Time.now }
@@ -181,9 +181,9 @@ RSpec.describe EventService do
   end
 
   context 'rating events' do
-    let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-    let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise) }
-    let(:rating) { FactoryGirl.create(:fixed_points_deduction_rating, rating_group: rating_group, title: 'my rating', value: -2, description: 'nice!') }
+    let(:exercise) { FactoryBot.create(:exercise, term: term) }
+    let(:rating_group) { FactoryBot.create(:rating_group, exercise: exercise) }
+    let(:rating) { FactoryBot.create(:fixed_points_deduction_rating, rating_group: rating_group, title: 'my rating', value: -2, description: 'nice!') }
 
     describe '#rating_created!' do
       it 'creates a Events::Rating::Created event' do
@@ -252,8 +252,8 @@ RSpec.describe EventService do
   end
 
   context 'rating group events' do
-    let(:exercise) { FactoryGirl.create(:exercise, term: term) }
-    let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise, title: 'nice title', points: 5) }
+    let(:exercise) { FactoryBot.create(:exercise, term: term) }
+    let(:rating_group) { FactoryBot.create(:rating_group, exercise: exercise, title: 'nice title', points: 5) }
 
     describe '#rating_group_created!' do
       it 'creates a Events::RatingGroup::Created event' do
@@ -318,8 +318,8 @@ RSpec.describe EventService do
   end
 
   context 'result publication events' do
-    let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-    let(:exercise) { FactoryGirl.create(:exercise, term: term) }
+    let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+    let(:exercise) { FactoryBot.create(:exercise, term: term) }
     let(:result_publication) { ResultPublication.find_by(exercise: exercise, tutorial_group: tutorial_group) }
 
     describe '#result_publication_published!' do

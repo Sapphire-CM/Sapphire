@@ -1,4 +1,4 @@
-class SplitImportModel < ActiveRecord::Migration
+class SplitImportModel < ActiveRecord::Migration[4.2]
   def change
     create_table :import_options do |t|
       t.references :import

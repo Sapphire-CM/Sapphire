@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "Students list" do
-  let!(:term) { FactoryGirl.create(:term) }
-  let(:account) { FactoryGirl.create(:account, :admin) }
+  let!(:term) { FactoryBot.create(:term) }
+  let(:account) { FactoryBot.create(:account, :admin) }
 
   let(:described_path) { term_students_path(term) }
 
@@ -21,8 +21,8 @@ RSpec.describe "Students list" do
   end
 
   describe 'students list' do
-    let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-    let!(:student_term_registrations) { FactoryGirl.create_list(:term_registration, 3, term: term, tutorial_group: tutorial_group) }
+    let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+    let!(:student_term_registrations) { FactoryBot.create_list(:term_registration, 3, term: term, tutorial_group: tutorial_group) }
 
     scenario "Viewing basic information about the students" do
       student_term_registrations.second.update(points: 30)
@@ -64,7 +64,7 @@ RSpec.describe "Students list" do
     end
 
     context 'as tutor' do
-      let(:account) { FactoryGirl.create(:account, :tutor) }
+      let(:account) { FactoryBot.create(:account, :tutor) }
       let(:term) { account.term_registrations.last.term }
 
       scenario 'hides add link' do

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe ImpersonationsController, type: :controller do
   include_context 'active_admin_session_context'
 
-  let(:other_account) { FactoryGirl.create(:account) }
+  let(:other_account) { FactoryBot.create(:account) }
   let!(:impersonation) { Impersonation.new }
 
   before :each do
@@ -26,22 +26,22 @@ RSpec.describe ImpersonationsController, type: :controller do
       it 'impersonates given account' do
         expect(impersonation).to receive(:impersonate!).and_return(true)
 
-        post :create, account_id: other_account.id
+        post :create, params: { account_id: other_account.id }
       end
 
       it 'redirects to root_path' do
-        post :create, account_id: other_account.id
+        post :create, params: { account_id: other_account.id }
 
         expect(response).to redirect_to(root_path)
       end
     end
 
     context "with invalid params" do
-      let(:non_admin_account) { FactoryGirl.create(:account, admin: false) }
+      let(:non_admin_account) { FactoryBot.create(:account, admin: false) }
 
       it "does not raise an error" do
         expect do
-          post :create, account_id: "does not exist"
+          post :create, params: { account_id: "does not exist" }
         end.not_to raise_error
 
         expect(response).to render_template("record_not_found")
@@ -51,7 +51,7 @@ RSpec.describe ImpersonationsController, type: :controller do
         allow(impersonation).to receive(:impersonate!).and_return(false)
 
         expect do
-          post :create, account_id: non_admin_account.id
+          post :create, params: { account_id: non_admin_account.id }
         end.not_to raise_error
 
         expect(flash[:alert]).to match(/failed/i)
@@ -63,13 +63,13 @@ RSpec.describe ImpersonationsController, type: :controller do
 
         expect(impersonation).not_to receive(:impersonate!)
 
-        post :create, account_id: other_account.id
+        post :create, params: { account_id: other_account.id }
       end
     end
   end
 
   describe 'DELETE #destroy' do
-    let(:admin_account) { FactoryGirl.create(:account) }
+    let(:admin_account) { FactoryBot.create(:account) }
 
     before :each do
       request.env["HTTP_REFERER"] = root_path

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Export do
-  subject { FactoryGirl.create(:export) }
+  subject { FactoryBot.create(:export) }
 
   describe 'db columns' do
     it { is_expected.to have_db_column(:type).of_type(:string) }

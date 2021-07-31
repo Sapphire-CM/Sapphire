@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.feature 'Grading Reviews Page' do
-  let!(:account) { FactoryGirl.create(:account, :admin) }
-  let!(:term) { FactoryGirl.create(:term) }
+  let!(:account) { FactoryBot.create(:account, :admin) }
+  let!(:term) { FactoryBot.create(:term) }
 
   let(:described_path) { term_grading_reviews_path(term) }
 
@@ -22,13 +22,13 @@ RSpec.feature 'Grading Reviews Page' do
   end
 
   describe 'List' do
-    let(:student_account) { FactoryGirl.create(:account, forename: 'Max', surname: 'Mustermann')}
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term, account: student_account) }
-    let!(:another_term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
-    let!(:exercise) { FactoryGirl.create(:exercise, title: 'My Exercise', term: term) }
-    let!(:rating_group) { FactoryGirl.create(:rating_group, :with_ratings, exercise: exercise, points: 10) }
-    let!(:submission) { FactoryGirl.create(:submission, :evaluated, exercise: exercise) }
-    let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission) }
+    let(:student_account) { FactoryBot.create(:account, forename: 'Max', surname: 'Mustermann')}
+    let!(:term_registration) { FactoryBot.create(:term_registration, :student, term: term, account: student_account) }
+    let!(:another_term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
+    let!(:exercise) { FactoryBot.create(:exercise, title: 'My Exercise', term: term) }
+    let!(:rating_group) { FactoryBot.create(:rating_group, :with_ratings, exercise: exercise, points: 10) }
+    let!(:submission) { FactoryBot.create(:submission, :evaluated, exercise: exercise) }
+    let!(:exercise_registration) { FactoryBot.create(:exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission) }
 
     scenario 'hides students if no search is performed' do
       visit described_path

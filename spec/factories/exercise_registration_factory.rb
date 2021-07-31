@@ -1,16 +1,16 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :exercise_registration do
     exercise
     term_registration
-    submission { FactoryGirl.create(:submission, exercise: exercise) }
-    active true
+    submission { FactoryBot.create(:submission, exercise: exercise) }
+    active { true }
 
     trait :active do
-      active true
+      active { true }
     end
 
     trait :inactive do
-      active false
+      active { false }
     end
   end
 end

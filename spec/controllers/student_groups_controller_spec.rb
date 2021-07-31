@@ -37,7 +37,7 @@ RSpec.describe StudentGroupsController, type: :controller do
     let!(:all_student_groups) { student_groups + other_student_groups}
 
     it 'assigns @student_groups to the student groups in the current term' do
-      get :index, path_options
+      get :index, params: path_options
 
       expect(assigns[:student_groups]).to match_array(all_student_groups)
     end
@@ -49,21 +49,21 @@ RSpec.describe StudentGroupsController, type: :controller do
     let!(:submissions) { exercises.map { |exercise| create(:submission, exercise: exercise, student_group: student_group) } }
 
     it 'assigns @student_group' do
-      get :show, path_options_with_student_group
+      get :show, params: path_options_with_student_group
 
       expect(response).to have_http_status(:success)
       expect(assigns(:student_group)).to eq(student_group)
     end
 
     it 'assigns @submissions' do
-      get :show, path_options_with_student_group
+      get :show, params: path_options_with_student_group
 
       expect(response).to have_http_status(:success)
       expect(assigns(:submissions)).to match_array(submissions)
     end
 
     it 'assigns @student_term_registrations' do
-      get :show, path_options_with_student_group
+      get :show, params: path_options_with_student_group
 
       expect(response).to have_http_status(:success)
       expect(assigns(:student_term_registrations)).to match_array(student_term_registrations)
@@ -72,7 +72,7 @@ RSpec.describe StudentGroupsController, type: :controller do
 
   describe '#new' do
     it 'assigns @student_group to a new one' do
-      get :new, path_options
+      get :new, params: path_options
 
       expect(response).to have_http_status(:success)
       expect(assigns(:student_group)).to be_a_new(StudentGroup)
@@ -83,7 +83,7 @@ RSpec.describe StudentGroupsController, type: :controller do
     describe 'with valid attributes' do
       it 'creates a new student group' do
         expect do
-          post :create, path_options.merge(student_group: valid_attributes)
+          post :create, params: path_options.merge(student_group: valid_attributes)
         end.to change(StudentGroup, :count).by 1
 
         expect(assigns(:student_group).title).to eq('G4-05')
@@ -94,7 +94,7 @@ RSpec.describe StudentGroupsController, type: :controller do
     describe 'with invalid attributes' do
       it 'does not create a student group' do
         expect do
-          post :create, path_options.merge(student_group: invalid_attributes)
+          post :create, params: path_options.merge(student_group: invalid_attributes)
         end.not_to change(StudentGroup, :count)
 
         expect(response).to have_http_status(:success)
@@ -107,7 +107,7 @@ RSpec.describe StudentGroupsController, type: :controller do
 
   describe '#edit' do
     it 'assigns @student_group to the specified one' do
-      get :edit, path_options_with_student_group
+      get :edit, params: path_options_with_student_group
 
       expect(response).to have_http_status(:success)
       expect(assigns(:student_group)).to eq(student_group)
@@ -117,7 +117,7 @@ RSpec.describe StudentGroupsController, type: :controller do
   describe '#update' do
     describe 'with valid attributes' do
       it 'updates the given student group' do
-        put :update, path_options_with_student_group.merge(student_group: valid_attributes)
+        put :update, params: path_options_with_student_group.merge(student_group: valid_attributes)
 
         student_group.reload
         expect(student_group.title).to eq('G4-05')
@@ -127,7 +127,7 @@ RSpec.describe StudentGroupsController, type: :controller do
 
     describe 'with invalid attributes' do
       it 'does not update the given student group' do
-        put :update, path_options_with_student_group.merge(student_group: invalid_attributes)
+        put :update, params: path_options_with_student_group.merge(student_group: invalid_attributes)
 
         expect(assigns(:student_group).errors).to be_present
         expect(response).to render_template(:edit)
@@ -140,7 +140,7 @@ RSpec.describe StudentGroupsController, type: :controller do
       student_group.reload
 
       expect do
-        delete :destroy, path_options_with_student_group
+        delete :destroy, params: path_options_with_student_group
       end.to change(StudentGroup, :count).by -1
 
       expect(response).to redirect_to(term_student_groups_path(term))
@@ -155,14 +155,14 @@ RSpec.describe StudentGroupsController, type: :controller do
     it 'assigns @term_registrations with students of given term' do
       student_registrations_in_term.first(2).flat_map(&:account).each { |a| a.update!(forename: 'Ron') }
 
-      xhr :get, :search_students, path_options.merge(q: 'Ron')
+      get :search_students, params: path_options.merge(q: 'Ron'), xhr: true
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term_registrations)).to match_array(student_registrations_in_term.first(2))
     end
 
     it 'returns a response with status bad request, when no q parameter is present' do
-      xhr :get, :search_students, path_options
+      get :search_students, params: path_options, xhr: true
 
       expect(response).to have_http_status(:bad_request)
       expect(response.body).to be_blank
@@ -171,7 +171,7 @@ RSpec.describe StudentGroupsController, type: :controller do
     it 'issues search when q parameter is present' do
       expect(TermRegistration).to receive(:search).with('Ron Burgundy').and_return(TermRegistration.where(id: student_registrations_in_term.first.id))
 
-      xhr :get, :search_students, path_options.merge(q: 'Ron Burgundy')
+      get :search_students, params: path_options.merge(q: 'Ron Burgundy'), xhr: true
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term_registrations)).to eq(student_registrations_in_term.first(1))

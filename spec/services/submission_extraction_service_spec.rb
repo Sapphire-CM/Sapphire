@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe SubmissionExtractionService do
   describe 'initialization' do
-    let(:submission_asset) { FactoryGirl.build(:submission_asset) }
+    let(:submission_asset) { FactoryBot.build(:submission_asset) }
 
     it 'requires a submission_asset as parameter' do
       service = nil
@@ -22,8 +22,8 @@ RSpec.describe SubmissionExtractionService do
   end
 
   describe '#perform!' do
-    let(:submitter) { FactoryGirl.create(:account) }
-    let(:zip_asset) { FactoryGirl.build(:submission_asset, :zip, path: "") }
+    let(:submitter) { FactoryBot.create(:account) }
+    let(:zip_asset) { FactoryBot.build(:submission_asset, :zip, path: "") }
     let(:submission) { zip_asset.submission }
 
     subject { described_class.new(zip_asset) }
@@ -37,7 +37,7 @@ RSpec.describe SubmissionExtractionService do
           subject.perform!
         end.to change(SubmissionAsset, :count).by(2)
 
-        expect(submission.submission_assets(true).map(&:complete_path)).to match_array(%w(folder/simple_submission.txt folder/some_xa__x_xu__x_xo__x_x__x_nasty_file.txt))
+        expect(submission.submission_assets.reload.map(&:complete_path)).to match_array(%w(folder/simple_submission.txt folder/some_xa__x_xu__x_xo__x_x__x_nasty_file.txt))
       end
 
       it 'notifies the event service' do
@@ -54,7 +54,7 @@ RSpec.describe SubmissionExtractionService do
       it 'keeps the submission' do
         subject.perform!
 
-        submission.submission_assets(true).each do |submission_asset|
+        submission.submission_assets.reload.each do |submission_asset|
           expect(submission_asset.submission).to eq(submission)
         end
       end
@@ -67,7 +67,7 @@ RSpec.describe SubmissionExtractionService do
 
         subject.perform!
 
-        submission.submission_assets(true).each do |submission_asset|
+        submission.submission_assets.reload.each do |submission_asset|
           expect(submission_asset.submitted_at).to eq(zip_asset.submitted_at)
         end
       end
@@ -77,7 +77,7 @@ RSpec.describe SubmissionExtractionService do
 
         subject.perform!
 
-        submission.submission_assets(true).each do |submission_asset|
+        submission.submission_assets.reload.each do |submission_asset|
           expect(submission_asset.path).to eq("funny/path")
         end
       end
@@ -87,7 +87,7 @@ RSpec.describe SubmissionExtractionService do
 
         subject.perform!
 
-        expect(submission.submission_assets(true).map(&:complete_path)).to match_array(%w(import_data.csv import_data_not.csv simple_submission.txt some_folder/submission.zip some_other_folder/some_dir/import_data_invalid_parsing.csv))
+        expect(submission.submission_assets.reload.map(&:complete_path)).to match_array(%w(import_data.csv import_data_not.csv simple_submission.txt some_folder/submission.zip some_other_folder/some_dir/import_data_invalid_parsing.csv))
       end
 
       it 'schedules nested zip files for extraction' do
@@ -110,7 +110,7 @@ RSpec.describe SubmissionExtractionService do
     end
 
     context 'with name collisions' do
-      let!(:existing_submission_asset) { FactoryGirl.create(:submission_asset, submission: submission, file: prepare_static_test_file("simple_submission.txt"), path: "") }
+      let!(:existing_submission_asset) { FactoryBot.create(:submission_asset, submission: submission, file: prepare_static_test_file("simple_submission.txt"), path: "") }
 
       it 'sets errors for failed submission assets and updates submission' do
         subject.perform!
@@ -134,8 +134,8 @@ RSpec.describe SubmissionExtractionService do
   end
 
   describe '#accumulated_filesize' do
-    let(:zip_asset) { FactoryGirl.create(:submission_asset, :zip) }
-    let(:plain_text_asset) { FactoryGirl.create(:submission_asset, :plain_text) }
+    let(:zip_asset) { FactoryBot.create(:submission_asset, :zip) }
+    let(:plain_text_asset) { FactoryBot.create(:submission_asset, :plain_text) }
 
     subject { described_class.new(zip_asset) }
 

@@ -1,4 +1,4 @@
-class CreateSubmissionEvaluations < ActiveRecord::Migration
+class CreateSubmissionEvaluations < ActiveRecord::Migration[4.2]
   def change
     create_table :submission_evaluations do |t|
       t.belongs_to :submission

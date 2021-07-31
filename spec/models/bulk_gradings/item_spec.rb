@@ -69,7 +69,7 @@ RSpec.describe BulkGradings::Item, :doing do
     end
 
     describe 'subject uniqueness' do
-      let(:exercise) { FactoryGirl.build(:exercise) }
+      let(:exercise) { FactoryBot.build(:exercise) }
       let(:bulk) { BulkGradings::Bulk.new(exercise: exercise) }
 
       let(:subject_1) { instance_double(TermRegistration, id: 1) }
@@ -195,14 +195,14 @@ RSpec.describe BulkGradings::Item, :doing do
     end
 
     describe '#save' do
-      let(:ratings) { FactoryGirl.create_list(:fixed_points_deduction_rating, 3, exercise: exercise) }
-      let(:term) { FactoryGirl.create(:term) }
-      let(:exercise) { FactoryGirl.create(:exercise) }
-      let(:account) { FactoryGirl.create(:account, :admin) }
-      let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
+      let(:ratings) { FactoryBot.create_list(:fixed_points_deduction_rating, 3, exercise: exercise) }
+      let(:term) { FactoryBot.create(:term) }
+      let(:exercise) { FactoryBot.create(:exercise) }
+      let(:account) { FactoryBot.create(:account, :admin) }
+      let(:submission) { FactoryBot.create(:submission, exercise: exercise) }
       let(:submission_evaluation) { submission.submission_evaluation }
-      let(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, submission: submission) }
-      let!(:exercise_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
+      let(:exercise_registration) { FactoryBot.create(:exercise_registration, exercise: exercise, submission: submission) }
+      let!(:exercise_attempt) { FactoryBot.create(:exercise_attempt, exercise: exercise) }
 
       subject { described_class.new(bulk: bulk, subject: submission_subject) }
 
@@ -291,27 +291,27 @@ RSpec.describe BulkGradings::Item, :doing do
       end
 
       context 'solitary exercise' do
-        let(:exercise) { FactoryGirl.create(:exercise, :solitary_exercise, term: term) }
-        let(:submission_subject) { FactoryGirl.create(:term_registration, :student, term: term)}
+        let(:exercise) { FactoryBot.create(:exercise, :solitary_exercise, term: term) }
+        let(:submission_subject) { FactoryBot.create(:term_registration, :student, term: term)}
 
         it_behaves_like "saving behaviour"
       end
 
       context 'group exercise' do
-        let(:exercise) { FactoryGirl.create(:exercise, :group_exercise, term: term) }
-        let(:submission_subject) { FactoryGirl.create(:student_group, term: term)}
+        let(:exercise) { FactoryBot.create(:exercise, :group_exercise, term: term) }
+        let(:submission_subject) { FactoryBot.create(:student_group, term: term)}
 
         it_behaves_like "saving behaviour"
       end
     end
 
     describe '#evaluation_for_rating' do
-      let(:exercise) { FactoryGirl.create(:exercise) }
-      let(:rating_group) { FactoryGirl.create(:rating_group, exercise: exercise) }
-      let!(:ratings) { FactoryGirl.create_list(:fixed_points_deduction_rating, 3, rating_group: rating_group) }
-      let!(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
+      let(:exercise) { FactoryBot.create(:exercise) }
+      let(:rating_group) { FactoryBot.create(:rating_group, exercise: exercise) }
+      let!(:ratings) { FactoryBot.create_list(:fixed_points_deduction_rating, 3, rating_group: rating_group) }
+      let!(:submission) { FactoryBot.create(:submission, exercise: exercise) }
       let(:rating) { ratings.second }
-      let(:other_rating) { FactoryGirl.create(:fixed_points_deduction_rating) }
+      let(:other_rating) { FactoryBot.create(:fixed_points_deduction_rating) }
       let(:evaluation) { rating.evaluations.for_submission(submission).first }
 
       subject { described_class.new(submission: submission) }

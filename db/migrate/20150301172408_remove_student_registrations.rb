@@ -1,4 +1,4 @@
-class RemoveStudentRegistrations < ActiveRecord::Migration
+class RemoveStudentRegistrations < ActiveRecord::Migration[4.2]
   def up
     drop_table :student_registrations
   end

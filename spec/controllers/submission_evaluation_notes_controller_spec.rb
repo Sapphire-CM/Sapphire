@@ -5,15 +5,15 @@ RSpec.describe SubmissionEvaluations::InternalNotesController, type: :controller
   render_views
   include_context 'active_admin_session_context'
 
-  let(:term) { FactoryGirl.create :term }
-  let(:exercise) { FactoryGirl.create :exercise, :with_ratings, term: term }
+  let(:term) { FactoryBot.create :term }
+  let(:exercise) { FactoryBot.create :exercise, :with_ratings, term: term }
 
-  let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
+  let(:submission) { FactoryBot.create(:submission, exercise: exercise) }
   let(:commentable) { submission.submission_evaluation }
 
   describe 'GET index' do
     it 'assigns the commentable as @commentable' do
-      xhr :get, :index, submission_evaluation_id: commentable.id
+      get :index, params: { submission_evaluation_id: commentable.id }, xhr: true
 
       expect(response).to have_http_status(:success)
       expect(assigns(:term)).to eq(term)
@@ -44,6 +44,6 @@ RSpec.describe SubmissionEvaluations::InternalNotesController, type: :controller
       }
     end
 
-    let(:comment) { FactoryGirl.create :notes_comment }
+    let(:comment) { FactoryBot.create :notes_comment }
   end
 end

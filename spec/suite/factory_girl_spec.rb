@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe 'FactoryGirl' do
+RSpec.describe 'FactoryBot' do
   it 'passes linting' do
     expect do
-      FactoryGirl.lint traits: true
+      FactoryBot.lint traits: true
     end.not_to raise_error
   end
 end

@@ -1,4 +1,4 @@
-class CreateRatingGroups < ActiveRecord::Migration
+class CreateRatingGroups < ActiveRecord::Migration[4.2]
   def change
     create_table :rating_groups do |t|
       t.references :exercise

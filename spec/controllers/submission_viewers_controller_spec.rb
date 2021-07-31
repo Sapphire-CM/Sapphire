@@ -6,10 +6,10 @@ RSpec.describe SubmissionViewersController do
 
   describe 'GET show' do
     it 'assigns the requested viewer as @viewer' do
-      exercise = FactoryGirl.create(:exercise, :with_viewer)
-      submission = FactoryGirl.create(:submission, exercise: exercise)
+      exercise = FactoryBot.create(:exercise, :with_viewer)
+      submission = FactoryBot.create(:submission, exercise: exercise)
 
-      get :show, id: submission.id
+      get :show, params: { id: submission.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:submission)).to eq(submission)

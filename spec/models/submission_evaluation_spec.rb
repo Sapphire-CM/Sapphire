@@ -25,7 +25,7 @@ RSpec.describe SubmissionEvaluation do
   end
 
   describe 'validations' do
-    subject { FactoryGirl.build(:submission_evaluation) }
+    subject { FactoryBot.build(:submission_evaluation) }
 
     it { is_expected.to validate_presence_of(:submission) }
     it { is_expected.to validate_uniqueness_of(:submission_id) }
@@ -33,8 +33,8 @@ RSpec.describe SubmissionEvaluation do
 
   describe 'scoping' do
     describe '.evaluated' do
-      let(:submission_evaluations) { FactoryGirl.create_list(:submission_evaluation, 3, :evaluated) }
-      let(:other_submission_evaluations) { FactoryGirl.create_list(:submission_evaluation, 3) }
+      let(:submission_evaluations) { FactoryBot.create_list(:submission_evaluation, 3, :evaluated) }
+      let(:other_submission_evaluations) { FactoryBot.create_list(:submission_evaluation, 3) }
 
       it 'returns submission_evaluations where an evaluator is present' do
         expect(described_class.evaluated).to match_array(submission_evaluations)
@@ -42,8 +42,8 @@ RSpec.describe SubmissionEvaluation do
     end
 
     describe '.not_evaluated' do
-      let(:submission_evaluations) { FactoryGirl.create_list(:submission_evaluation, 3) }
-      let(:other_submission_evaluations) { FactoryGirl.create_list(:submission_evaluation, 3, :evaluated) }
+      let(:submission_evaluations) { FactoryBot.create_list(:submission_evaluation, 3) }
+      let(:other_submission_evaluations) { FactoryBot.create_list(:submission_evaluation, 3, :evaluated) }
 
       it 'returns submission_evaluations where an evaluator is present' do
         expect(described_class.not_evaluated).to match_array(submission_evaluations)
@@ -58,8 +58,8 @@ RSpec.describe SubmissionEvaluation do
     pending '#evaluation_for_rating'
 
     describe '#update_needs_review!' do
-      let(:evaluation_groups) { FactoryGirl.create_list(:evaluation_group, 3, submission_evaluation: subject, needs_review: false) }
-      let(:submission) { FactoryGirl.create(:submission) }
+      let(:evaluation_groups) { FactoryBot.create_list(:evaluation_group, 3, submission_evaluation: subject, needs_review: false) }
+      let(:submission) { FactoryBot.create(:submission) }
 
       subject { submission.submission_evaluation }
 

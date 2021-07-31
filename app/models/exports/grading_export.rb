@@ -86,9 +86,8 @@ class Exports::GradingExport < Export
     term_registrations = tutorial_group.student_term_registrations
       .includes(:account, :exercise_registrations, :student_group)
       .references(:account, :student_group)
-      .order { student_group.title.asc }
-      .order { account.surname.asc }
-      .order { account.forename.asc }
+      .merge(StudentGroup.order(:title))
+      .merge(Account.order(:surname, :forename))
 
     if summary?
       add_student_group_summary(workbook, styles, tutorial_group, term_registrations) if term.group_submissions?

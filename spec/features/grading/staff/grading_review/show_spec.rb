@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 RSpec.feature 'Grading Review Page' do
-  let!(:account) { FactoryGirl.create(:account, :admin) }
+  let!(:account) { FactoryBot.create(:account, :admin) }
 
-  let!(:term) { FactoryGirl.create(:term) }
-  let!(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term, account: student_account) }
+  let!(:term) { FactoryBot.create(:term) }
+  let!(:term_registration) { FactoryBot.create(:term_registration, :student, term: term, account: student_account) }
 
   let(:described_path) { term_grading_review_path(term, term_registration) }
 
-  let(:student_account) { FactoryGirl.create(:account, forename: 'Max', surname: 'Mustermann') }
+  let(:student_account) { FactoryBot.create(:account, forename: 'Max', surname: 'Mustermann') }
 
   before :each do
     sign_in account
@@ -39,14 +39,14 @@ RSpec.feature 'Grading Review Page' do
   end
 
   describe 'grading review' do
-    let!(:term_registration) { FactoryGirl.create(:term_registration, :student, term: term, account: student_account) }
-    let!(:another_term_registration) { FactoryGirl.create(:term_registration, :student, term: term) }
-    let!(:exercise) { FactoryGirl.create(:exercise, title: 'My Exercise', term: term) }
-    let!(:rating_group) { FactoryGirl.create(:rating_group, :with_ratings, exercise: exercise, points: 10) }
-    let!(:submission) { FactoryGirl.create(:submission, :evaluated, exercise: exercise) }
-    let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission) }
+    let!(:term_registration) { FactoryBot.create(:term_registration, :student, term: term, account: student_account) }
+    let!(:another_term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
+    let!(:exercise) { FactoryBot.create(:exercise, title: 'My Exercise', term: term) }
+    let!(:rating_group) { FactoryBot.create(:rating_group, :with_ratings, exercise: exercise, points: 10) }
+    let!(:submission) { FactoryBot.create(:submission, :evaluated, exercise: exercise) }
+    let!(:exercise_registration) { FactoryBot.create(:exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission) }
 
-    let(:exercise_attempt) { FactoryGirl.create(:exercise_attempt, exercise: exercise) }
+    let(:exercise_attempt) { FactoryBot.create(:exercise_attempt, exercise: exercise) }
     let(:submission_evaluation) { submission.submission_evaluation }
 
     scenario 'starts with the overview tab open', js: true do
@@ -191,7 +191,7 @@ RSpec.feature 'Grading Review Page' do
       end
 
       context 'with ratings' do
-        let(:exercise) { FactoryGirl.create(:exercise, :with_ratings, term: term) }
+        let(:exercise) { FactoryBot.create(:exercise, :with_ratings, term: term) }
         let(:evaluation_group) { submission_evaluation.evaluation_groups.first }
         let(:evaluation) { evaluation_group.evaluations.first }
         let(:rating) { evaluation.rating }
@@ -216,7 +216,7 @@ RSpec.feature 'Grading Review Page' do
       end
 
       context "with submission assets" do
-        let!(:submission_asset) { FactoryGirl.create(:submission_asset, submission: submission) }
+        let!(:submission_asset) { FactoryBot.create(:submission_asset, submission: submission) }
 
         scenario 'shows submission assets', js: true do
           visit described_path
@@ -232,7 +232,7 @@ RSpec.feature 'Grading Review Page' do
       end
 
       context "with viewer" do
-        let(:exercise) { FactoryGirl.create(:exercise, :with_viewer, term: term) }
+        let(:exercise) { FactoryBot.create(:exercise, :with_viewer, term: term) }
 
         scenario 'provides link to open submission viewer', js: true do
           visit described_path
@@ -248,7 +248,7 @@ RSpec.feature 'Grading Review Page' do
       end
 
       context "without viewer" do
-        let(:exercise) { FactoryGirl.create(:exercise, :without_viewer, term: term) }
+        let(:exercise) { FactoryBot.create(:exercise, :without_viewer, term: term) }
 
         scenario 'hides link to open submission viewer', js: true do
           visit described_path

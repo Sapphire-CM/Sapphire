@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe ResultPublicationService do
   let(:term) { create(:term) }
-  let!(:exercise) { FactoryGirl.create(:exercise, term: term) }
-  let!(:tutorial_groups) { FactoryGirl.create_list(:tutorial_group, 4, term: term) }
-  let(:account) { FactoryGirl.create(:account, :admin) }
+  let!(:exercise) { FactoryBot.create(:exercise, term: term) }
+  let!(:tutorial_groups) { FactoryBot.create_list(:tutorial_group, 4, term: term) }
+  let(:account) { FactoryBot.create(:account, :admin) }
 
   subject { ResultPublicationService.new(account, exercise) }
 

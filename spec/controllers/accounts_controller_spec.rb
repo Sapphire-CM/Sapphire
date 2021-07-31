@@ -26,11 +26,11 @@ RSpec.describe AccountsController do
     }
   end
 
-  let(:account) { FactoryGirl.create :account }
+  let(:account) { FactoryBot.create :account }
 
   describe 'GET index' do
     it 'assigns all accounts as @accounts' do
-      FactoryGirl.create_list :account, 4
+      FactoryBot.create_list :account, 4
 
       get :index
 
@@ -41,7 +41,7 @@ RSpec.describe AccountsController do
 
   describe 'GET show' do
     it 'assigns the requested account as @account' do
-      get :show, id: account.id
+      get :show, params: { id: account.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:account)).to eq(account)
@@ -51,7 +51,7 @@ RSpec.describe AccountsController do
 
   describe 'GET edit' do
     it 'assigns the requested account as @account' do
-      xhr :get, :edit, id: account.id
+      get :edit, params: { id: account.id }, xhr: true
 
       expect(response).to have_http_status(:success)
       expect(assigns(:account)).to eq(account)
@@ -63,7 +63,7 @@ RSpec.describe AccountsController do
       it 'updates the requested account' do
         valid_attributes[:id] = account.id
 
-        put :update, valid_attributes
+        put :update, params: valid_attributes
 
         account.reload
         expect(response).to redirect_to(root_path)
@@ -79,7 +79,7 @@ RSpec.describe AccountsController do
         valid_attributes[:account][:password_confirmation] = valid_attributes[:account][:password]
 
         expect do
-          put :update, valid_attributes
+          put :update, params: valid_attributes
           account.reload
         end.to change(account, :encrypted_password)
 
@@ -91,7 +91,7 @@ RSpec.describe AccountsController do
       it 'assigns the requested account as @account' do
         invalid_attributes[:id] = account.id
 
-        put :update, invalid_attributes
+        put :update, params: invalid_attributes
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:edit)
@@ -106,7 +106,7 @@ RSpec.describe AccountsController do
           invalid_attributes[:account][:password_confirmation] = invalid_attributes[:account][:password]
 
           expect do
-            put :update, invalid_attributes
+            put :update, params: invalid_attributes
             account.reload
           end.not_to change(account, :encrypted_password)
 
@@ -121,7 +121,7 @@ RSpec.describe AccountsController do
           invalid_attributes[:account][:password_confirmation] = 'foobar'
 
           expect do
-            put :update, invalid_attributes
+            put :update, params: invalid_attributes
             account.reload
           end.not_to change(account, :encrypted_password)
 
@@ -137,7 +137,7 @@ RSpec.describe AccountsController do
       account.reload # trigger creation
 
       expect do
-        delete :destroy, id: account.id
+        delete :destroy, params: { id: account.id }
       end.to change(Account, :count).by(-1)
 
       expect(response).to redirect_to(accounts_path)

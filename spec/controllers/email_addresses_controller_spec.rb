@@ -20,14 +20,14 @@ RSpec.describe EmailAddressesController do
     }
   end
 
-  let(:account) { FactoryGirl.create :account }
-  let(:email_address) { FactoryGirl.create :email_address, account: account }
+  let(:account) { FactoryBot.create :account }
+  let(:email_address) { FactoryBot.create :email_address, account: account }
 
   describe 'GET index' do
     it 'assigns all accounts as @accounts' do
-      FactoryGirl.create_list :email_address, 4, account: account
+      FactoryBot.create_list :email_address, 4, account: account
 
-      get :index, account_id: account.id
+      get :index, params: { account_id: account.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:email_addresses)).to eq(account.email_addresses)
@@ -36,7 +36,7 @@ RSpec.describe EmailAddressesController do
 
   describe 'GET new' do
     it 'assigns a new email_address as @email_address' do
-      get :new, account_id: account.id
+      get :new, params: { account_id: account.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:email_address)).to be_a_new(EmailAddress)
@@ -50,7 +50,7 @@ RSpec.describe EmailAddressesController do
         valid_attributes[:account_id] = account.id
 
         expect do
-          post :create, valid_attributes
+          post :create, params: valid_attributes
         end.to change(EmailAddress, :count).by(1)
 
         expect(response).to redirect_to(account_email_addresses_path(account))
@@ -63,7 +63,7 @@ RSpec.describe EmailAddressesController do
       it 'assigns a newly created but unsaved email_address as @email_address' do
         invalid_attributes[:account_id] = account.id
 
-        post :create, invalid_attributes
+        post :create, params: invalid_attributes
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:new)
@@ -74,7 +74,7 @@ RSpec.describe EmailAddressesController do
 
   describe 'GET edit' do
     it 'assigns the requested email_address as @email_address' do
-      get :edit, account_id: account.id, id: email_address.id
+      get :edit, params: { account_id: account.id, id: email_address.id }
 
       expect(response).to have_http_status(:success)
       expect(assigns(:account)).to eq(account)
@@ -88,7 +88,7 @@ RSpec.describe EmailAddressesController do
         valid_attributes[:account_id] = account.id
         valid_attributes[:id] = email_address.id
 
-        put :update, valid_attributes
+        put :update, params: valid_attributes
 
         email_address.reload
         expect(response).to redirect_to(account_email_addresses_path(account))
@@ -101,7 +101,7 @@ RSpec.describe EmailAddressesController do
         invalid_attributes[:account_id] = account.id
         invalid_attributes[:id] = email_address.id
 
-        put :update, invalid_attributes
+        put :update, params: invalid_attributes
 
         expect(response).to have_http_status(:success)
         expect(response).to render_template(:edit)
@@ -115,7 +115,7 @@ RSpec.describe EmailAddressesController do
       email_address.reload # trigger creation
 
       expect do
-        delete :destroy, account_id: account.id, id: email_address.id
+        delete :destroy, params: { account_id: account.id, id: email_address.id }
       end.to change(EmailAddress, :count).by(-1)
 
       expect(response).to redirect_to(account_email_addresses_path(account))

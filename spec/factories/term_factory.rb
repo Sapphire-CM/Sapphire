@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence(:term_title) { |n| "Term #{n}" }
   factory :term do
     title { generate :term_title }
@@ -7,7 +7,7 @@ FactoryGirl.define do
 
     trait :with_tutorial_groups do
       transient do
-        tutorial_group_count 3
+        tutorial_group_count { 3 }
       end
 
       after :create do |term, evaluator|

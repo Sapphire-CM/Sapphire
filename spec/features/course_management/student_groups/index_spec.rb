@@ -1,9 +1,9 @@
 require "rails_helper"
 
 RSpec.feature 'Student Group List' do
-  let(:account) { FactoryGirl.create(:account) }
-  let(:term) { FactoryGirl.create(:term) }
-  let!(:term_registration) { FactoryGirl.create(:term_registration, :lecturer, term: term, account: account) }
+  let(:account) { FactoryBot.create(:account) }
+  let(:term) { FactoryBot.create(:term) }
+  let!(:term_registration) { FactoryBot.create(:term_registration, :lecturer, term: term, account: account) }
 
   before :each do
     sign_in account
@@ -36,8 +36,8 @@ RSpec.feature 'Student Group List' do
   end
 
   context "with student groups" do
-    let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-    let!(:student_groups) { FactoryGirl.create_list(:student_group, 3, tutorial_group: tutorial_group) }
+    let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+    let!(:student_groups) { FactoryBot.create_list(:student_group, 3, tutorial_group: tutorial_group) }
 
     scenario 'Student groups table is sortable' do
       visit term_student_groups_path(term)

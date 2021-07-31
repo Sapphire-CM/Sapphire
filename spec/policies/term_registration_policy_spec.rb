@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe TermRegistrationPolicy do
   subject { described_class.new(account, term_registration) }
 
-  let(:term) { FactoryGirl.create(:term) }
-  let(:term_registration) { FactoryGirl.create(:term_registration, term: term) }
+  let(:term) { FactoryBot.create(:term) }
+  let(:term_registration) { FactoryBot.create(:term_registration, term: term) }
 
   shared_examples "administration permissions" do
     describe 'members' do
@@ -40,7 +40,7 @@ RSpec.describe TermRegistrationPolicy do
   end
 
   context 'as a admin' do
-    let(:account) { FactoryGirl.create(:account, :admin) }
+    let(:account) { FactoryBot.create(:account, :admin) }
 
     it_behaves_like "read permissions"
     it_behaves_like "administration permissions"
@@ -48,26 +48,26 @@ RSpec.describe TermRegistrationPolicy do
   end
 
   context 'as a lecturer' do
-    let(:account) { FactoryGirl.create(:account) }
-    let!(:lecturer_term_registration) { FactoryGirl.create(:term_registration, :lecturer, account: account, term: term) }
+    let(:account) { FactoryBot.create(:account) }
+    let!(:lecturer_term_registration) { FactoryBot.create(:term_registration, :lecturer, account: account, term: term) }
 
     it_behaves_like "read permissions"
     it_behaves_like "administration permissions"
   end
 
   context 'as a tutor' do
-    let(:account) { FactoryGirl.create(:account) }
-    let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-    let!(:tutor_term_registration) { FactoryGirl.create(:term_registration, :tutor, account: account, term: term, tutorial_group: tutorial_group) }
+    let(:account) { FactoryBot.create(:account) }
+    let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+    let!(:tutor_term_registration) { FactoryBot.create(:term_registration, :tutor, account: account, term: term, tutorial_group: tutorial_group) }
 
     it_behaves_like "read permissions"
     it_behaves_like "no administration permissions"
   end
 
   context 'as a student' do
-    let(:account) { FactoryGirl.create(:account) }
-    let(:tutorial_group) { FactoryGirl.create(:tutorial_group, term: term) }
-    let!(:student_term_registration) { FactoryGirl.create(:term_registration, :student, account: account, term: term, tutorial_group: tutorial_group) }
+    let(:account) { FactoryBot.create(:account) }
+    let(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+    let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, account: account, term: term, tutorial_group: tutorial_group) }
 
     it_behaves_like "no administration permissions"
     it_behaves_like "no read permissions"

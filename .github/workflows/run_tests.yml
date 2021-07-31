@@ -6,7 +6,8 @@ jobs:
     strategy:
       matrix:
         ruby: ["2.6.8"]
-        db: ["postgres", "sqlite"]
+        # db: ["postgres", "sqlite"]
+        db: ["postgres"]
     services:
       postgres:
         image: postgres:10.15

@@ -70,6 +70,7 @@ group :development, :test do
   gem 'bond'
   gem 'jist'
 
+  gem 'listen'
   gem 'mysql2'                    # MySQL database connector
   gem 'sqlite3', "~>1.3.0"        # sqlite3 database connector
   gem 'parallel_tests'            # Parallelize Tests

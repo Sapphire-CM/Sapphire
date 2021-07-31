@@ -209,6 +209,9 @@ GEM
       actionmailer (>= 3.2)
       letter_opener (~> 1.0)
       railties (>= 3.2)
+    listen (3.6.0)
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.11.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -326,6 +329,9 @@ GEM
     rake (13.0.6)
     ranked-model (0.4.7)
       activerecord (>= 4.2)
+    rb-fsevent (0.11.0)
+    rb-inotify (0.10.1)
+      ffi (~> 1.0)
     redis (4.1.4)
     redis-namespace (1.8.1)
       redis (>= 3.0.4)
@@ -491,6 +497,7 @@ DEPENDENCIES
   kaminari
   kramdown
   letter_opener_web
+  listen
   mail
   mechanize
   multi_logger

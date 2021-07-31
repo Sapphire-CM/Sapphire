@@ -80,7 +80,7 @@ RSpec.describe 'Commenting' do
 
       within_modal do
         within '.comments_list' do
-          click_link id: 'feedback_comment_edit_submission_evaluation_1'
+          click_link id: "feedback_comment_edit_submission_evaluation_#{submission_evaluation.id}"
 
           expect(page).to have_selector(".feedback.edit", wait: 10)
           fill_in 'Feedback', with: 'this is an edited comment'
@@ -101,7 +101,7 @@ RSpec.describe 'Commenting' do
 
       within_modal do
         within '.comments_list' do
-          click_link id: 'feedback_comment_edit_submission_evaluation_1'
+          click_link id: "feedback_comment_edit_submission_evaluation_#{submission_evaluation.id}"
 
           expect(page).to have_selector(".feedback.edit", wait: 10)
           fill_in 'Feedback', with: ''
@@ -116,8 +116,9 @@ RSpec.describe 'Commenting' do
     end
   end
 
-  describe 'managing' do
+  describe 'deleting' do
     let!(:comment) { FactoryBot.create :feedback_comment, commentable: submission_evaluation }
+
     scenario 'deleting a comment', js: true do
       visit (submission_evaluation_path(submission_evaluation))
 
@@ -127,7 +128,7 @@ RSpec.describe 'Commenting' do
 
       within_modal do
         within '.comments_list' do
-          click_link id: 'feedback_comment_delete_submission_evaluation_1'
+          click_link id: "feedback_comment_delete_submission_evaluation_#{submission_evaluation.id}"
         end
       end
 

@@ -90,7 +90,8 @@ RSpec.feature 'Updating Student Groups' do
     expect(page).not_to have_content("Edit Student Group")
 
     within ".students-table" do
-      expect(page).to have_content(student.fullname)
+      expect(page).to have_content(student.forename)
+      expect(page).to have_content(student.surname)
     end
   end
 

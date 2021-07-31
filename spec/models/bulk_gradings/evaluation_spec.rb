@@ -168,7 +168,7 @@ RSpec.describe BulkGradings::Evaluation, :doing do
       let(:submission) { FactoryGirl.create(:submission, exercise: exercise) }
       let!(:exercise_registration) { FactoryGirl.create(:exercise_registration, exercise: exercise, term_registration: term_registration, submission: submission) }
       let(:rating) { ratings.second }
-      let(:evaluation) { rating.evaluations(true).for_submission(submission).first }
+      let(:evaluation) { rating.evaluations.reload.for_submission(submission).first }
 
       let(:bulk) { BulkGradings::Bulk.new(exercise: exercise, account: staff_account) }
       let(:item) { BulkGradings::Item.new(bulk: bulk, subject: term_registration, submission: submission) }

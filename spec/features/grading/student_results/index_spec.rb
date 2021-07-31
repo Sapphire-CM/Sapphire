@@ -42,7 +42,7 @@ RSpec.describe 'Viewing results' do
     let!(:rating_groups) { FactoryGirl.create_list(:rating_group, 2, :with_ratings, exercise: exercise, points: 12, max_points: 12, enable_range_points: false) }
 
     let(:rating_group) { rating_groups.last }
-    let(:rating) { rating_group.ratings(true).first }
+    let(:rating) { rating_group.ratings.reload.first }
 
     context 'results are published and an evaluation failed' do
       before :each do

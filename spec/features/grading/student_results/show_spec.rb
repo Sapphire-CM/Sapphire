@@ -51,7 +51,7 @@ RSpec.describe 'Viewing results' do
 
     let(:rating_group) { rating_groups.first }
     let(:other_rating_group) { rating_groups.second }
-    let(:rating) { rating_group.ratings(true).last }
+    let(:rating) { rating_group.ratings.reload.last }
 
     scenario 'visiting results page of submission without any wrongdoings' do
       visit term_result_path(term, exercise)

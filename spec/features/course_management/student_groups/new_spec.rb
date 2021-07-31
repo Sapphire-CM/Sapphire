@@ -81,7 +81,8 @@ RSpec.feature 'Adding Student Groups' do
     expect(page).to have_content("Test Group")
 
     within ".students-table" do
-      expect(page).to have_content(student.fullname)
+      expect(page).to have_content(student.forename)
+      expect(page).to have_content(student.surname)
     end
   end
 

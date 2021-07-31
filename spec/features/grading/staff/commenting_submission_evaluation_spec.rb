@@ -107,11 +107,9 @@ RSpec.describe 'Commenting' do
           fill_in 'Feedback', with: ''
 
           click_button 'Save'
-        end
-      end
 
-      within_modal do
-        expect(page).to have_content("can't be blank")
+          expect(page).to have_content("can't be blank")
+        end
       end
     end
   end

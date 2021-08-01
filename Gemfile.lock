@@ -396,9 +396,9 @@ GEM
       rack (~> 2.0)
       rack-protection (>= 1.5.0)
       redis (>= 3.3.5, < 4.2)
-    simple_form (3.5.1)
-      actionpack (> 4, < 5.2)
-      activemodel (> 4, < 5.2)
+    simple_form (5.0.3)
+      actionpack (>= 5.0)
+      activemodel (>= 5.0)
     simplecov (0.21.2)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -475,7 +475,7 @@ DEPENDENCIES
   charlock_holmes
   cocoon
   coderay
-  coffee-rails (~> 4.0)
+  coffee-rails
   consistency_fail
   css_parser
   d3-rails (~> 4.13.0)
@@ -529,7 +529,7 @@ DEPENDENCIES
   sass-rails
   shoulda-matchers (~> 3.1.1)
   sidekiq (~> 5.2.3)
-  simple_form (~> 3.0)
+  simple_form
   simplecov
   spring
   spring-commands-rspec

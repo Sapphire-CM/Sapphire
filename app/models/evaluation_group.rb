@@ -44,6 +44,7 @@ class EvaluationGroup < ActiveRecord::Base
 
   def self.create_for_submission_evaluation_and_rating_group(submission_evaluation, rating_group)
     submission_evaluation.evaluation_groups.create(rating_group: rating_group)
+    submission_evaluation.calc_results!
   end
 
   def update_result!

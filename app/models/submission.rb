@@ -116,7 +116,7 @@ class Submission < ActiveRecord::Base
 
   private
   def update_term_registration_points!
-    exercise_registrations.each do |exercise_registrations|
+    exercise_registrations.reload.each do |exercise_registrations|
       exercise_registrations.term_registration.update_points!
     end
   end

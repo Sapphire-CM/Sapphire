@@ -71,7 +71,7 @@ class RatingGroup < ActiveRecord::Base
   end
 
   def create_evaluation_groups
-    exercise.submission_evaluations.each do |se|
+    exercise.submission_evaluations.find_each do |se|
       EvaluationGroup.create_for_submission_evaluation_and_rating_group(se, self)
     end
   end

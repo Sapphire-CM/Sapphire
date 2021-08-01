@@ -24,11 +24,11 @@ class SubmissionEvaluation < ActiveRecord::Base
   has_many :evaluation_groups, dependent: :destroy
   has_many :evaluations, through: :evaluation_groups
 
-  has_many_comments :feedback
-  has_many_comments :internal_notes
-
   has_many :ratings, through: :evaluations
   has_many :rating_groups, through: :ratings
+
+  has_many_comments :feedback
+  has_many_comments :internal_notes
 
   validates :submission, presence: true
   validates :submission_id, uniqueness: true

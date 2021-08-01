@@ -37,7 +37,7 @@ class SubmissionEvaluation < ActiveRecord::Base
   scope :not_evaluated, lambda { where(evaluator: nil) }
 
   after_create :create_evaluation_groups
-  after_save :update_exercise_results, if: :evaluation_result_changed?
+  after_update :update_exercise_results, if: :saved_change_to_evaluation_result?
 
   def calc_results!
     calc_results

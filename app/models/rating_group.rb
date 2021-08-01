@@ -30,8 +30,8 @@ class RatingGroup < ActiveRecord::Base
   validate :min_max_points_range, :points_in_range
 
   after_create :create_evaluation_groups
-  after_save :update_exercise_points, if: lambda { |rg| rg.points_changed? || rg.max_points_changed? }
-  after_update :update_evaluation_group_results, if: lambda { |rating_group| rating_group.points_changed? || rating_group.min_points_changed? || rating_group.max_points_changed? || rating_group.global_changed? }
+  after_save :update_exercise_points, if: lambda { |rg| rg.saved_change_to_points? || rg.saved_change_to_max_points? }
+  after_update :update_evaluation_group_results, if: lambda { |rating_group| rating_group.saved_change_to_points? || rating_group.saved_change_to_min_points? || rating_group.saved_change_to_max_points? || rating_group.saved_change_to_global? }
 
   after_initialize do
     begin

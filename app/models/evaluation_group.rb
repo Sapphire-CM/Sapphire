@@ -24,8 +24,8 @@ class EvaluationGroup < ActiveRecord::Base
   before_create :calc_result
 
   after_create :create_evaluations
-  after_update :update_submission_evaluation_results, if: lambda { |eg| eg.points_changed? || eg.percent_changed? }
-  after_update :update_submission_evaluation_needs_review!, if: :needs_review_changed?
+  after_update :update_submission_evaluation_results, if: lambda { |eg| eg.saved_change_to_points? || eg.saved_change_to_percent? }
+  after_update :update_submission_evaluation_needs_review!, if: :saved_change_to_needs_review?
   after_destroy :update_submission_evaluation_results
 
   delegate :title, to: :rating_group

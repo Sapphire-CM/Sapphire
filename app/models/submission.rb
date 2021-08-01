@@ -59,7 +59,7 @@ class Submission < ActiveRecord::Base
   accepts_nested_attributes_for :exercise_registrations, allow_destroy: true, reject_if: :all_blank
 
   after_create :create_submission_evaluation!
-  after_update :update_term_registration_points!, if: :active_changed?
+  after_update :update_term_registration_points!, if: :saved_change_to_active?
 
   def self.find_by_account_and_exercise(account, exercise)
     for_account(account).find_by(exercise: exercise)

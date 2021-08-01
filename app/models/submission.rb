@@ -50,7 +50,7 @@ class Submission < ActiveRecord::Base
   scope :for_account, lambda { |account| joins(:term_registrations).where(term_registrations: { account_id: account.id }) }
   scope :unmatched, lambda { left_outer_joins(:exercise_registrations).where(exercise_registrations: { id: nil }) }
   scope :with_evaluation, lambda { joins(:submission_evaluation).merge(SubmissionEvaluation.evaluated) }
-  scope :ordered_by_student_group, lambda { references(:student_groups).joins(:student_group).order('student_groups.title ASC') }
+  scope :ordered_by_student_group, lambda { references(:student_groups).joins(:student_group).merge(StudentGroup.order(:title)) }
   scope :ordered_by_exercises, lambda { references(:exercises).joins(:exercise).merge(Exercise.order(:row_order)) }
 
   scope :active, lambda { where(active: true) }

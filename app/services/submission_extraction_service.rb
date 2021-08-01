@@ -57,27 +57,29 @@ class SubmissionExtractionService
   def extract_zip!
     self.created_assets = []
     self.errors = []
-    
-    Zip::File.open(submission_asset.file.to_s) do |zip_file|
-      filter_zip_entries(zip_file).each do |entry|
-        entry_name = utf8_filename(entry.name)
 
-        zip_path, filename = File.split(entry_name)
-        zip_path = '' if zip_path == '.'
+    Dir.mktmpdir do |extraction_dir_path|
+      Zip::File.open(submission_asset.file.to_s) do |zip_file|
+        filter_zip_entries(zip_file).each do |entry|
+          entry_name = utf8_filename(entry.name)
 
-        extraction_directory = File.join(Dir.tmpdir, zip_path)
-        FileUtils.mkdir_p extraction_directory
+          zip_path, filename = File.split(entry_name)
+          zip_path = '' if zip_path == '.'
 
-        destination = File.join extraction_directory, filename
-        zip_file.extract entry, destination
+          extraction_directory = File.join(extraction_dir_path, zip_path)
+          FileUtils.mkdir_p extraction_directory
 
-        asset_path = File.join(submission_asset.path, zip_path)
+          destination = File.join extraction_directory, filename
+          zip_file.extract entry, destination
 
-        new_submission_asset = submission.submission_assets.create(file: File.open(destination), path: asset_path, submitted_at: submission_asset.submitted_at, submitter: submitter)
-        unless new_submission_asset.valid?
-          self.errors << new_submission_asset
-        else
-          self.created_assets << new_submission_asset
+          asset_path = File.join(submission_asset.path, zip_path)
+
+          new_submission_asset = submission.submission_assets.create(file: File.open(destination), path: asset_path, submitted_at: submission_asset.submitted_at, submitter: submitter)
+          unless new_submission_asset.valid?
+            self.errors << new_submission_asset
+          else
+            self.created_assets << new_submission_asset
+          end
         end
       end
     end

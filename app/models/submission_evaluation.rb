@@ -17,7 +17,7 @@ class SubmissionEvaluation < ActiveRecord::Base
   include Commentable
 
   belongs_to :submission
-  belongs_to :evaluator, class_name: 'Account'
+  belongs_to :evaluator, optional: true, class_name: 'Account'
 
   has_one :student_group, through: :submission
 

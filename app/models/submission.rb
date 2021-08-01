@@ -18,9 +18,9 @@
 class Submission < ActiveRecord::Base
   belongs_to :exercise
   belongs_to :submitter, class_name: 'Account', foreign_key: 'submitter_id'
-  belongs_to :student_group
+  belongs_to :student_group, optional: true
 
-  belongs_to :exercise_attempt
+  belongs_to :exercise_attempt, optional: true
 
   has_one :submission_evaluation, dependent: :destroy
   has_one :term, through: :exercise

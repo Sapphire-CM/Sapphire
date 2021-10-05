@@ -8,7 +8,7 @@
 <%= cache [@submission, @directory.path, policy(@submission).update?] do %>
   <%= render "submission_tree_path", directory: @directory, submission: @submission %>
 
-  <%= content_tag :div, class: "submission-tree", data: { update_url: tree_directory_submission_path(@submission, path: @directory.path_without_root, format: :json) } do %>
+  <%= content_tag :div, class: "submission-tree", data: { update_url: tree_directory_submission_path(@submission, path: @directory.path_without_root.presence, format: :json) } do %>
     <% if @submission.submission_assets.any? %>
       <%= render "submission_directory", directory: @directory, submission: @submission %>
     <% else %>

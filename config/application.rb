@@ -32,6 +32,8 @@ module Sapphire
     config.autoload_paths += %W(#{config.root}/lib/sapphire)
     config.autoload_paths += %W(#{config.root}/lib/scanners)
 
+    config.eager_load_paths << Rails.root.join('lib')
+
     config.time_zone = 'Vienna'
 
     config.encoding = "utf-8"

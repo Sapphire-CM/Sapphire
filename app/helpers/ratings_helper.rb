@@ -22,7 +22,8 @@ module RatingsHelper
     when Ratings::VariablePointsDeductionRating, Ratings::VariableBonusPointsRating
       "#{rating.min_value} ... #{rating.max_value}"
     when Ratings::PerItemPointsDeductionRating, Ratings::PerItemPointsRating
-      "#{rating.min_value} ... #{rating.max_value} (× #{number_to_human rating.multiplication_factor})"
+      raise "Add number_to_human_size call back to show human readable file size" if Gem.loaded_specs["rails"].version >= Gem::Version.new('5.1.0')
+      "#{rating.min_value} ... #{rating.max_value} (× #{rating.multiplication_factor})"
     when Ratings::VariablePercentageDeductionRating
       "#{rating.min_value} ... #{rating.max_value} %"
     end

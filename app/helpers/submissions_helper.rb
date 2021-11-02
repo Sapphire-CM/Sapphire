@@ -109,8 +109,10 @@ module SubmissionsHelper
   end
 
   def filesize(number)
+    raise "Add number_to_human_size call back to show human readable file size" if Gem.loaded_specs["rails"].version >= Gem::Version.new('5.1.0')
+
     formatted_number = number_with_delimiter(number)
 
-    content_tag :span, raw("#{h(formatted_number)}&nbsp;bytes"), title: number_to_human_size(number)
+    content_tag :span, raw("#{h(formatted_number)}&nbsp;bytes")#, title: number_to_human_size(number)
   end
 end

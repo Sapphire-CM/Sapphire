@@ -12,11 +12,13 @@ module ExportsHelper
   end
 
   def download_link_title(export)
+    raise "Add number_to_human_size call back to show human readable file size" if Gem.loaded_specs["rails"].version >= Gem::Version.new('5.1.0')
+    
     file = export.file.to_s
 
     if File.exist? file
       size = File.size(file)
-      foundation_icon(:download) + " download (#{number_to_human_size size})"
+      foundation_icon(:download)# + " download (#{number_to_human_size size})"
     else
       'file missing'
     end

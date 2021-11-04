@@ -42,7 +42,7 @@ module Sapphire
 
     config.i18n.enforce_available_locales = true
 
-    config.action_mailer.merge!(config_for(:mailer).deep_symbolize_keys)
+    config.action_mailer.merge!(config_for(:mail).deep_symbolize_keys)
 
     config.assets.precompile += %w( jquery.js )
 

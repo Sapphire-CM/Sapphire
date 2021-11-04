@@ -9,9 +9,6 @@
 # Ignore database.yml because this file depends on the current setup
 /config/database.yml
 
-# Ignore mail.yml because it is only needed in production and depends on the current setup
-/config/mail.yml
-
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal
@@ -47,4 +44,3 @@
 
 # Ignore custom workspace startup script
 /startup.sh
-

@@ -1,0 +1,29 @@
+defaults:
+    perform_caching: false
+
+development_defaults:
+    default_url_options:
+        host: 'localhost:3000'
+
+production:
+    <<: *defaults
+    delivery_method: :smtp
+    smtp_settings:
+        address: 'localhost'
+        port: 444
+        enable_starttls_auto: false
+    default_url_options:
+        host: 'example.com'
+
+development:
+    delivery_method: :sendmail
+    <<: *defaults
+    <<: *development_defaults
+    raise_delivery_errors = false
+
+# The :test delivery method accumulates sent emails in the
+# ActionMailer::Base.deliveries array.
+test:
+    delivery_method: :test
+    <<: *defaults
+    <<: *development_defaults

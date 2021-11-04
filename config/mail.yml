@@ -1,7 +1,7 @@
-defaults:
+defaults: &defaults
     perform_caching: false
 
-development_defaults:
+development_defaults: &development_defaults
     default_url_options:
         host: 'localhost:3000'
 
@@ -19,7 +19,7 @@ development:
     delivery_method: :sendmail
     <<: *defaults
     <<: *development_defaults
-    raise_delivery_errors = false
+    raise_delivery_errors: false
 
 # The :test delivery method accumulates sent emails in the
 # ActionMailer::Base.deliveries array.

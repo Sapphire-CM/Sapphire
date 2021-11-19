@@ -1,7 +1,7 @@
-defaults:
+defaults: &defaults
   perform_caching: false
 
-development_defaults:
+development_defaults: &development_defaults
   default_url_options:
     host: 'localhost:3000'
 

@@ -2,7 +2,7 @@
 
 This project is intended to be used to evaluate students during a course-term based on submissions with a variety of ratings.
 
-[![Build Status](https://magnum.travis-ci.com/matthee/Sapphire.svg?token=pEdNnsdfG21w5iAAhDJf&branch=master)](https://magnum.travis-ci.com/matthee/Sapphire)
+[![Build Status](https://github.com/Sapphire-CM/Sapphire/actions/workflows/run_tests.yml/badge.svg)](https://github.com/Sapphire-CM/Sapphire/actions/workflows/run_tests.yml)
 
 ## Requirements
 

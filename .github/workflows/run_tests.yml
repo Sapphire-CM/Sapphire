@@ -1,4 +1,4 @@
-name: "Run Test Suite"
+name: "Tests"
 on: [push]
 jobs:
   test:

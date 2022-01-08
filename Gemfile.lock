@@ -239,7 +239,6 @@ GEM
     msgpack (1.4.2)
     multi_logger (0.2.0)
       railties
-    mysql2 (0.5.3)
     net-http-digest_auth (1.4.1)
     net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
@@ -492,7 +491,6 @@ DEPENDENCIES
   mail
   mechanize
   multi_logger
-  mysql2
   nntp-client!
   nokogiri
   parallel_tests

@@ -35,10 +35,10 @@ class Rating < ActiveRecord::Base
   validate :rating_type_validation
 
   after_create :create_evaluations
-  after_update :update_evaluations, if: lambda { |rating| rating.value_changed? || rating.max_value_changed? || rating.min_value_changed? || rating.multiplication_factor_changed? }
-  after_update :move_evaluations, if: lambda { |rating| rating.rating_group_id_changed? }
+  after_update :update_evaluations, if: lambda { |rating| rating.saved_change_to_value? || rating.saved_change_to_max_value? || rating.saved_change_to_min_value? || rating.saved_change_to_multiplication_factor? }
+  after_update :move_evaluations, if: lambda { |rating| rating.saved_change_to_rating_group_id? }
 
-  after_save :evaluations_need_review!, if: lambda { |rating| rating.title_changed? || rating.value_changed? || rating.max_value_changed? || rating.min_value_changed? || rating.multiplication_factor_changed? }
+  after_save :evaluations_need_review!, if: lambda { |rating| rating.saved_change_to_title? || rating.saved_change_to_value? || rating.saved_change_to_max_value? || rating.saved_change_to_min_value? || rating.saved_change_to_multiplication_factor? }
 
   scope :automated_ratings, lambda {
     scopes = [

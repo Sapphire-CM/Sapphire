@@ -28,11 +28,11 @@ class ExerciseRegistration < ActiveRecord::Base
   before_save :update_points_before_save
 
   after_create :mark_similar_as_inactive!, if: :active?
-  after_update :mark_similar_as_inactive!, if: [:active?, :active_changed?]
+  after_update :mark_similar_as_inactive!, if: [:active?, :saved_change_to_active?]
 
-  after_save :update_term_registration_points, if: lambda { |er| er.points_changed? || er.active_changed? }
-  after_save :update_submission_active, if: :active_changed?
-  after_update :update_points_of_changed_term_registrations, if: lambda { |exercise_registration| exercise_registration.term_registration_id_changed? }
+  after_save :update_term_registration_points, if: lambda { |er| er.saved_change_to_points? || er.saved_change_to_active? }
+  after_save :update_submission_active, if: :saved_change_to_active?
+  after_update :update_points_of_changed_term_registrations, if: lambda { |exercise_registration| exercise_registration.saved_change_to_term_registration_id? }
   after_destroy :update_term_registration_points
 
   scope :for_student, lambda { |student| joins(:term_registration).merge(TermRegistration.students.where(account: student)) }

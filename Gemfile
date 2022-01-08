@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~>5.0.7'
+gem 'rails', '~>5.1.7'
 
 gem 'pg'               # PostgreSQL database connector
 
@@ -10,7 +10,7 @@ gem 'jquery-mousewheel-rails'     # jquery MouseWheel support
 
 gem 'd3-rails', "~> 4.13.0"
 
-gem 'simple_form', '~> 3.0'       # forms
+gem 'simple_form'                 # forms
 gem 'devise',      '~> 4.0'       # user authentication
 # gem 'squeel',      '~> 1.2'       # easy DSL
 gem 'carrierwave'                 # fileuploads
@@ -23,7 +23,7 @@ gem 'email_validator'             # provides ActiveRecord validation for email a
 gem 'charlock_holmes'             # encoding detection for submitted submission assets
 
 gem 'sass-rails'                  # Use SCSS for stylesheets
-gem 'coffee-rails', "~> 4.0"      # Use CoffeeScript for .js.coffee assets and views
+gem 'coffee-rails'                # Use CoffeeScript for .js.coffee assets and views
 gem 'uglifier'                    # Use Uglifier as compressor for JavaScript assets
 gem 'foundation-icons-sass-rails', '~> 3.0'
 
@@ -43,7 +43,7 @@ gem 'rubyzip'                     # handling submission ZIP archives
 gem 'kramdown'
 
 gem 'cocoon'                      # for nested upload forms
-gem 'dropzonejs-rails', "~> 0.7.0" # Drag and drop support for file uploads
+gem 'dropzonejs-rails', "~>0.7.0" # Drag and drop support for file uploads
 
 gem 'sidekiq', '~>5.2.3'          # async jobs in background, used for imports
 
@@ -70,6 +70,7 @@ group :development, :test do
   gem 'bond'
   gem 'jist'
 
+  gem 'listen'
   gem 'mysql2'                    # MySQL database connector
   gem 'sqlite3', "~>1.3.0"        # sqlite3 database connector
   gem 'parallel_tests'            # Parallelize Tests

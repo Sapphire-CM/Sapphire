@@ -25,8 +25,8 @@ class TermRegistration < ActiveRecord::Base
 
   belongs_to :account
   belongs_to :term
-  belongs_to :tutorial_group
-  belongs_to :student_group
+  belongs_to :tutorial_group, optional: true
+  belongs_to :student_group, optional: true
 
   has_many :exercise_registrations, dependent: :destroy
   has_many :exercises, -> { uniq }, through: :exercise_registrations

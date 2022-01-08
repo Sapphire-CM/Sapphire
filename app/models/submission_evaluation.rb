@@ -17,18 +17,18 @@ class SubmissionEvaluation < ActiveRecord::Base
   include Commentable
 
   belongs_to :submission
-  belongs_to :evaluator, class_name: 'Account'
+  belongs_to :evaluator, optional: true, class_name: 'Account'
 
   has_one :student_group, through: :submission
 
   has_many :evaluation_groups, dependent: :destroy
   has_many :evaluations, through: :evaluation_groups
 
-  has_many_comments :feedback
-  has_many_comments :internal_notes
-
   has_many :ratings, through: :evaluations
   has_many :rating_groups, through: :ratings
+
+  has_many_comments :feedback
+  has_many_comments :internal_notes
 
   validates :submission, presence: true
   validates :submission_id, uniqueness: true
@@ -37,7 +37,7 @@ class SubmissionEvaluation < ActiveRecord::Base
   scope :not_evaluated, lambda { where(evaluator: nil) }
 
   after_create :create_evaluation_groups
-  after_save :update_exercise_results, if: :evaluation_result_changed?
+  after_update :update_exercise_results, if: :saved_change_to_evaluation_result?
 
   def calc_results!
     calc_results

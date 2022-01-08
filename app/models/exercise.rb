@@ -52,10 +52,10 @@ class Exercise < ActiveRecord::Base
   scope :solitary_exercises, lambda { where(group_submission: false) }
   scope :mandatory_exercises, lambda { where(enable_min_required_points: true) }
 
-  before_save :update_points, if: lambda { |exercise| exercise.enable_max_total_points_changed? || exercise.max_total_points_changed? }
+  before_save :update_points, if: lambda { |exercise| exercise.saved_change_to_enable_max_total_points? || exercise.saved_change_to_max_total_points? }
   after_create :ensure_result_publications
-  after_save :update_term_points, if: :points_changed?
-  after_save :recalculate_term_registrations_results, if: lambda { |exercise| exercise.enable_min_required_points_changed? || exercise.min_required_points_changed? || exercise.points_changed? }
+  after_save :update_term_points, if: :saved_change_to_points?
+  after_save :recalculate_term_registrations_results, if: lambda { |exercise| exercise.saved_change_to_enable_min_required_points? || exercise.saved_change_to_min_required_points? || exercise.saved_change_to_points? }
 
   accepts_nested_attributes_for :attempts, allow_destroy: true
 

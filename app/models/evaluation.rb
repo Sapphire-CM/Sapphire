@@ -31,8 +31,8 @@ class Evaluation < ActiveRecord::Base
   validate :validate_evaluation_type
 
   after_create :update_result!
-  after_update :update_result!, if: lambda { |evaluation| evaluation.value_changed? }
-  after_update :update_needs_review!, if: :needs_review_changed?
+  after_update :update_result!, if: lambda { |evaluation| evaluation.saved_change_to_value? }
+  after_update :update_needs_review!, if: :saved_change_to_needs_review?
 
   after_destroy :update_result!
   after_destroy :update_needs_review!

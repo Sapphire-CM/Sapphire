@@ -18,9 +18,9 @@
 class Submission < ActiveRecord::Base
   belongs_to :exercise
   belongs_to :submitter, class_name: 'Account', foreign_key: 'submitter_id'
-  belongs_to :student_group
+  belongs_to :student_group, optional: true
 
-  belongs_to :exercise_attempt
+  belongs_to :exercise_attempt, optional: true
 
   has_one :submission_evaluation, dependent: :destroy
   has_one :term, through: :exercise
@@ -50,7 +50,7 @@ class Submission < ActiveRecord::Base
   scope :for_account, lambda { |account| joins(:term_registrations).where(term_registrations: { account_id: account.id }) }
   scope :unmatched, lambda { left_outer_joins(:exercise_registrations).where(exercise_registrations: { id: nil }) }
   scope :with_evaluation, lambda { joins(:submission_evaluation).merge(SubmissionEvaluation.evaluated) }
-  scope :ordered_by_student_group, lambda { references(:student_groups).joins(:student_group).order('student_groups.title ASC') }
+  scope :ordered_by_student_group, lambda { references(:student_groups).joins(:student_group).merge(StudentGroup.order(:title)) }
   scope :ordered_by_exercises, lambda { references(:exercises).joins(:exercise).merge(Exercise.order(:row_order)) }
 
   scope :active, lambda { where(active: true) }
@@ -59,7 +59,7 @@ class Submission < ActiveRecord::Base
   accepts_nested_attributes_for :exercise_registrations, allow_destroy: true, reject_if: :all_blank
 
   after_create :create_submission_evaluation!
-  after_update :update_term_registration_points!, if: :active_changed?
+  after_update :update_term_registration_points!, if: :saved_change_to_active?
 
   def self.find_by_account_and_exercise(account, exercise)
     for_account(account).find_by(exercise: exercise)
@@ -116,7 +116,7 @@ class Submission < ActiveRecord::Base
 
   private
   def update_term_registration_points!
-    exercise_registrations.each do |exercise_registrations|
+    exercise_registrations.reload.each do |exercise_registrations|
       exercise_registrations.term_registration.update_points!
     end
   end

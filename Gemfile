@@ -12,7 +12,6 @@ gem 'd3-rails', "~> 4.13.0"
 
 gem 'simple_form', '~> 3.0'       # forms
 gem 'devise',      '~> 4.0'       # user authentication
-# gem 'squeel',      '~> 1.2'       # easy DSL
 gem 'carrierwave'                 # fileuploads
 gem 'kaminari'                    # pagination
 gem 'pundit'                      # authorization based on controller actions and policies
@@ -78,9 +77,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'spring'                    # application preloader for development environments
-  gem 'spring-commands-rspec'     # adding rspec command to spring
-  gem 'spring-commands-sidekiq'   # adding sidekiq command to spring
+  gem 'foreman'
 
   gem 'active_record-annotate'    # adds the corresponding schema.rb snippet to each model file
   gem 'puma'                # small development webserver

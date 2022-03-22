@@ -41,7 +41,7 @@ class SubmissionUpload
   end
 
   def archive_upload?
-    submission_asset.content_type == SubmissionAsset::Mime::ZIP
+    false # submission_asset.content_type == SubmissionAsset::Mime::ZIP
   end
 
   def schedule_extraction!

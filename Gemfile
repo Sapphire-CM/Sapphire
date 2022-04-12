@@ -10,7 +10,7 @@ gem 'jquery-mousewheel-rails'     # jquery MouseWheel support
 
 gem 'd3-rails', "~> 4.13.0"
 
-gem 'simple_form', '~> 3.0'       # forms
+gem 'simple_form', '~> 5.0'       # forms
 gem 'devise',      '~> 4.0'       # user authentication
 gem 'carrierwave'                 # fileuploads
 gem 'kaminari'                    # pagination

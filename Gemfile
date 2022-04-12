@@ -44,7 +44,7 @@ gem 'kramdown'
 gem 'cocoon'                      # for nested upload forms
 gem 'dropzonejs-rails', "~> 0.7.0" # Drag and drop support for file uploads
 
-gem 'sidekiq', '~>5.2.3'          # async jobs in background, used for imports
+gem 'sidekiq', '~>5.2.10'        # async jobs in background, used for imports
 
 gem 'writeexcel'                  # exporting excel spreadsheets
 gem 'multi_logger'                # custom log files

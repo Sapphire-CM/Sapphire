@@ -23,6 +23,28 @@ RSpec.describe StudentResultsController do
       expect(response).to have_http_status(:success)
       expect(assigns[:term_review].submission_reviews.map(&:exercise_registration)).to match_array(term_registration.exercise_registrations)
     end
+
+    context 'all results have been published' do
+      it 'shows the grading scale' do
+        get :index, term_id: term.id
+
+        expect(response).to render_template('_grade_distribution')
+      end
+    end
+
+    
+    context 'no results have been published' do
+      before :each do
+        exercise.result_publications.update_all published: false
+      end
+
+      it 'does not show the grading scale' do
+        get :index, term_id: term.id
+
+        expect(response.body).to include('Your provisional grade as well as the grading scale will be available, when the results for all exercises are published.')
+        expect(response).not_to render_template('_grade_distribution')
+      end
+    end
   end
 
   describe 'GET show' do

@@ -44,6 +44,7 @@
 <hr />
 <% if @term_review.all_results_published? %>
   <h4>Grade: <%= @term_review.grade %></h4>
+  <%= render 'student_results/grade_distribution' %>
 <% else %>
-  <h4>Your provisional grade will be available, when the results for all exercises are published.</h4>
+  <h4>Your provisional grade as well as the grading scale will be available, when the results for all exercises are published.</h4>
 <% end %>

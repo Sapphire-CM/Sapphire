@@ -16,24 +16,24 @@
     <table class='small-12'>
       <thead>
         <th>Exercise</th>
-        <th>Minimum Points</th>
-        <th>Maximum Points Possible</th>
+        <th class='text-right'>Minimum Points</th>
+        <th class='text-right'>Maximum Points Possible</th>
       </thead>
 
       <tbody>
         <% term.exercises.each do |exercise| %>
           <tr>
             <td><%= exercise.title %></td>
-            <td class='text-center'>
+            <td class='text-right'>
               <%= exercise.min_required_points if exercise.enable_min_required_points %>
             </td>
-            <td class='text-center'><%= exercise.achievable_points %></td>
+            <td class='text-right'><%= exercise.achievable_points %></td>
           </tr>
         <% end %>
         <tr>
           <td>Sum</td>
           <td>&nbsp;</td>
-          <td class='text-center'><%= term.achievable_points %></td>
+          <td class='text-right'><%= term.achievable_points %></td>
         </tr>
       </tbody>
     </table>

@@ -7,7 +7,9 @@ RSpec.describe GradingReviewsController do
   let(:term) { FactoryBot.create :term }
 
   describe 'GET #index' do
-    let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
+    let!(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+    let!(:student_group) { FactoryBot.create(:student_group, tutorial_group: tutorial_group) }
+    let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, term: term, student_group: student_group) }
     let!(:other_student_term_registration) { FactoryBot.create(:term_registration, :student) }
     let!(:tutor_term_registration) { FactoryBot.create(:term_registration, :tutor, term: term) }
     let!(:lecturer_term_registration) { FactoryBot.create(:term_registration, :lecturer, term: term) }

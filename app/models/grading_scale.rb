@@ -29,6 +29,13 @@ class GradingScale < ActiveRecord::Base
   scope :for_points, lambda { |points| where([arel_table[:min_points].lteq(points), arel_table[:max_points].gteq(points)].reduce(&:and)) }
   scope :grades, lambda { where(not_graded: false) }
 
+  def update_max_points(new_max_points)
+    if new_max_points != 0
+      self.max_points = new_max_points
+      self.save!
+    end
+  end
+
   private
 
   def validate_point_range

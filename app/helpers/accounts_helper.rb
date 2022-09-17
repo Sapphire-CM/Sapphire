@@ -21,14 +21,6 @@ module AccountsHelper
     "#{account.fullname} (#{account.matriculation_number})"
   end
 
-  def account_forname(account)
-    "#{account.forename}"
-  end
-
-  def account_surname(account)
-    "#{account.surname}"
-  end
-
   def account_edit_title(account)
     "Edit #{current_account == account ? 'your account' : "#{account.fullname}'s account"}"
   end

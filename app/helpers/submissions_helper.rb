@@ -51,16 +51,12 @@ module SubmissionsHelper
     end.join(", ").presence || content_tag(:em, 'unknown author')
   end
 
-  def submission_solitary_author_forename(submission)
-    submission.students.map do |student|
-      account_forname(student)
-    end.join(", ").presence || content_tag(:em, 'unknown author')
+  def submission_author_forenames(submission)
+    submission.students.map(&:forename).join(", ").presence || content_tag(:em, 'unknown author')
   end
 
-  def submission_solitary_author_surname(submission)
-    submission.students.map do |student|
-      account_surname(student)
-    end.join(", ").presence || content_tag(:em, 'unknown author')
+  def submission_author_surname(submission)
+    submission.students.map(&:surname).join(", ").presence || content_tag(:em, 'unknown author')
   end
 
   def submission_group_author(submission)

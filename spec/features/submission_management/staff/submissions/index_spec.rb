@@ -178,7 +178,8 @@ RSpec.feature 'Managing submissions as a staff member' do
           visit described_path
 
           within '.submission-list' do
-            expect(page).to have_content(student_account.fullname)
+            expect(page).to have_content(student_account.forename)
+            expect(page).to have_content(student_account.surname)
             expect(page).to have_content(student_account.matriculation_number)
             expect(page).to have_link(student_group.title)
             expect(page).to have_content("30")

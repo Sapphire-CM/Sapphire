@@ -55,7 +55,7 @@ module SubmissionsHelper
     submission.students.map(&:forename).join(", ").presence || content_tag(:em, 'unknown author')
   end
 
-  def submission_author_surname(submission)
+  def submission_author_surnames(submission)
     submission.students.map(&:surname).join(", ").presence || content_tag(:em, 'unknown author')
   end
 

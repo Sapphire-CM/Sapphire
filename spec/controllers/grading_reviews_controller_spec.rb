@@ -59,7 +59,7 @@ RSpec.describe GradingReviewsController do
       end
 
       it 'does not assign lecturers to @term_registrations' do
-        get :index, params: { term_id: term.id, q: lecturer_account.fullname, email: tutor_account.email}
+        get :index, params: { term_id: term.id, q: lecturer_account.fullname, email: lecturer_account.email}
 
         expect(response).to have_http_status(:success)
         expect(assigns(:term_registrations)).to match_array([])

@@ -22,7 +22,8 @@ RSpec.feature 'Grading Reviews Page' do
   end
 
   describe 'List' do
-    let(:student_account) { FactoryBot.create(:account, forename: 'Max', surname: 'Mustermann')}
+    let(:student_account) { FactoryBot.create(:account, forename: 'Max', surname: 'Mustermann', email: 'max.mustermann@student.tugraz.at')}
+    let(:student_group) { FactoryBot.create(:student_group_for_student, student: student_account)}
     let!(:term_registration) { FactoryBot.create(:term_registration, :student, term: term, account: student_account) }
     let!(:another_term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
     let!(:exercise) { FactoryBot.create(:exercise, title: 'My Exercise', term: term) }
@@ -44,6 +45,8 @@ RSpec.feature 'Grading Reviews Page' do
 
       within_main do
         expect(page).to have_content('Max Mustermann')
+        expect(page).to have_content('max.mustermann@student.tugraz.at')
+        expect(page).to have_content(student_group.title)
         expect(page).to have_link("Show")
       end
     end

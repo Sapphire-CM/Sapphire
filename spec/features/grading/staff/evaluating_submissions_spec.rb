@@ -15,8 +15,11 @@ RSpec.feature 'Evaluating submissions' do
   let!(:value_points_rating) { FactoryBot.create(:variable_points_deduction_rating, title: 'Value Points Rating', rating_group: variable_rating_group, min_value: -6, max_value: 0) }
   let!(:value_percent_rating) { FactoryBot.create(:variable_percentage_deduction_rating, title: 'Value Percent Rating', rating_group: variable_rating_group, min_value: -50, max_value: 0) }
 
+  let(:global_rating_group) { FactoryBot.create(:rating_group, title: 'Global rating group', exercise: exercise, points: 10, global: true) }
+
   let(:fixed_evaluation_group) { fixed_rating_group.evaluation_groups.find_by(submission_evaluation: submission.submission_evaluation) }
   let(:variable_evaluation_group) { variable_rating_group.evaluation_groups.find_by(submission_evaluation: submission.submission_evaluation) }
+  let(:global_evaluation_group) { global_rating_group.evaluation_groups.find_by(submission_evaluation: submission.submission_evaluation) }
 
   let(:submission_time) { Time.now - 10.minutes }
   let!(:submission) { FactoryBot.create(:submission, exercise: exercise, submitted_at: submission_time) }
@@ -52,6 +55,17 @@ RSpec.feature 'Evaluating submissions' do
       click_link('Evaluate')
 
       expect(page).to have_current_path(submission_evaluation_path(submission.submission_evaluation))
+    end
+  end
+
+  describe 'global flag' do
+    scenario 'global rating group has global flag', js: true do
+      visit submission_evaluation_path(submission)
+
+      within "#evaluation-group-#{global_evaluation_group.id}" do
+        expect(page).to have_css('fi-flag')
+      end
+
     end
   end
 

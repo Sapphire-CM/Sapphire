@@ -9,6 +9,11 @@
             <span id='<%= evaluation_group_title_id(evaluation_group) %>'>
               <%= evaluation_group_title evaluation_group %>
             </span>
+            <% if evaluation_group.rating_group.global? %>
+              <span data-tooltip class='has-tip' title='Global Rating Group'>
+                <%= foundation_icon(:flag) %>
+              </span>
+            <% end %>
           </h3>
         </div>
         <div class='small-3 columns text-right'>

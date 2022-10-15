@@ -93,8 +93,12 @@ class TermRegistration < ActiveRecord::Base
       exercise_registrations.active.all? { |exercise_registration| exercise_registration.minimum_points_reached? }
   end
 
+  def total_points_above_passing_grade?
+    self.points > term.grading_scales.grades.negative.max_points
+  end
+
   def positive_grade_possible?
-    all_minimum_points_reached? && exercise_registrations.any?
+    all_minimum_points_reached? && exercise_registrations.any? && total_points_above_passing_grade?
   end
 
   def welcomed?

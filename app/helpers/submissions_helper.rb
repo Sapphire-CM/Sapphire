@@ -51,6 +51,14 @@ module SubmissionsHelper
     end.join(", ").presence || content_tag(:em, 'unknown author')
   end
 
+  def submission_author_forenames(submission)
+    submission.students.map(&:forename).join(", ").presence || content_tag(:em, 'unknown author')
+  end
+
+  def submission_author_surnames(submission)
+    submission.students.map(&:surname).join(", ").presence || content_tag(:em, 'unknown author')
+  end
+
   def submission_group_author(submission)
     if submission.student_group_id?
       submission.student_group.title

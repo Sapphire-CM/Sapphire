@@ -3,7 +3,8 @@
     <thead>
       <tr>
         <% if exercise.solitary_submission? %>
-          <th>Student</th>
+          <th>Forename</th>
+          <th>Surname</th>
         <% end %>
         <th data-sort-default>Group</th>
         <% if exercise.enable_multiple_attempts? %>
@@ -20,7 +21,10 @@
       <tr<%= ' class="inactive"'.html_safe if submission.inactive? %>>
         <% if exercise.solitary_submission? %>
         <td>
-          <%= submission_solitary_author submission %>
+          <%= submission_author_forenames submission %>
+        </td>
+        <td>
+          <%= submission_author_surnames submission %>
         </td>
         <% end %>
 

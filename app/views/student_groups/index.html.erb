@@ -8,6 +8,7 @@
       <tr>
         <th>Name</th>
         <th>Topic</th>
+        <th>Keyword</th>
         <th>Tutorial Group</th>
         <th class='text-right'>Students</th>
         <th></th>
@@ -18,6 +19,7 @@
         <tr>
           <td><%= student_group.title %></td>
           <td><%= student_group.topic %></td>
+          <td><%= student_group.keyword %></td>
           <td><%= tutorial_group_title student_group.tutorial_group %></td>
           <td class='text-right'><%= student_group.students.length %></td>
           <td class='text-right'>

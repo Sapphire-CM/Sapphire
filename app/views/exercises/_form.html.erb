@@ -5,10 +5,10 @@
   <%= f.input :title %>
   <%= f.input :description, input_html: { rows: 3 } %>
 
-  <%= f.input :instructions_url %>
+  <%= f.input :instructions_url, label: "Instructions URL" %>
 
-  <%= f.input :deadline, as: :datetime_picker, label: "Submission" %>
-  <%= f.input :late_deadline, as: :datetime_picker, label: "Disable Submission (Late Deadline)" %>
+  <%= f.input :deadline, as: :datetime_picker, label: "Submission Deadline" %>
+  <%= f.input :late_deadline, as: :datetime_picker, label: "Late Submission Deadline" %>
 
   <%= f.input :visible_points, label: "Maximum Points shown in UI - (leave blank to use internal calculated points)" %>
 

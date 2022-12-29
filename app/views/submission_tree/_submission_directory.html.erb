@@ -9,6 +9,7 @@
       <th class='size'><%= SubmissionStructure::File.human_attribute_name(:size) %></th>
       <% if submission.modifiable_by_students? %>
         <th data-sort-disabled="true"></th>
+        <th data-sort-disabled="true"></th>
       <% end %>
     </tr>
   </thead>
@@ -23,6 +24,7 @@
         <td></td>
         <td class='size'><%= filesize directory.size %></td>
         <% if submission.modifiable_by_students? %>
+          <td></td>
           <td></td>
         <% end %>
       </tr>
@@ -62,6 +64,15 @@
             <% end %>
           </td>
         <% end %>
+
+        <% if submission.modifiable_by_students? %>
+          <td class='buttons'>
+            <% if entry.file? %>
+              <%= link_to foundation_icon(:pencil), rename_submission_asset_path(entry.submission_asset), class: "tiny button" %>
+            <% end %>
+          </td>
+        <% end %>
+
       </tr>
     <% end %>
   </tbody>

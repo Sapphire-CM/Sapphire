@@ -91,7 +91,13 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :submission_assets, only: [:show, :destroy]
+  resources :submission_assets, only: [:show, :destroy] do
+    member do
+      get "rename", controller: :submission_assets, as: "rename"
+    end
+  end
+  patch '/submission_assets/:id', to: 'submission_assets#update'
+
   resources :submission_viewers, only: [:show]
 
   resources :evaluations, only: :update do

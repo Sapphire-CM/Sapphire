@@ -6,7 +6,7 @@
 
   <% submission_assets[:updated].each do |change| %>
     <% if change[:file].is_a?(Array) %>
-      <li>Replaced <strong>'<%= submission_asset_file_change(change[:path], change[:file].first) %>'</strong> with <strong>'<%= submission_asset_file_change(change[:path], change[:file].last) %>'</strong></li>
+      <li>Renamed <strong>'<%= submission_asset_file_change(change[:path], change[:file].first) %>'</strong> to <strong>'<%= submission_asset_file_change(change[:path], change[:file].last) %>'</strong></li>
     <% else %>
       <li>Updated <strong>'<%= submission_asset_file_change(change[:path], change[:file]) %>'</strong></li>
     <% end %>

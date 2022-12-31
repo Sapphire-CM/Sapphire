@@ -13,6 +13,50 @@ class EventService
     Events::Submission::Created.create(submission_options(submission, true))
   end
 
+  def submission_asset_updated!(submission_asset)
+    submission = submission_asset.submission
+    event = Events::Submission::Updated.where(account: account).recent_for_submission(submission)
+
+    if event.blank?
+      event = Events::Submission::Updated.new(options(submission, submission_base_options(submission)))
+    end
+
+    submission_assets = event.submission_assets || {
+      added: [],
+      updated: [],
+      destroyed: []
+    }
+
+    # Check if the submission asset has changed
+    if submission_asset.previous_changes
+      # Iterate over the previous changes for the submission asset
+      submission_asset.previous_changes.each do |field, values|
+        # If the file field has changed, add the change to the updated array
+        if field == 'filename'
+          submission_assets[:updated] << {
+            file: values.map { |file| File.basename(file.to_s) },
+            path: submission_asset.path,
+            content_type: submission_asset.content_type
+          }
+        end
+      end
+    end
+
+    submission_assets.values.each do |assets|
+      assets.sort_by! { |description|
+        name = description[:name]
+        path = description[:path]
+
+        File.join(*([path, name].compact))
+      }
+    end
+
+    event.submission_assets = submission_assets
+    event.updated_at = Time.now
+    event.save
+    event
+  end
+
   def submission_extracted!(submission, zip_submission_asset, extracted_submission_assets)
     Events::Submission::Extracted.create(submission_extracted_options(submission, zip_submission_asset, extracted_submission_assets))
   end

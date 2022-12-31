@@ -18,7 +18,7 @@
     </thead>
     <tbody>
     <tr class='association-item'>
-      <td> <%= @submission_asset.filename %> </td>
+      <td> <%= link_to @submission_asset.filename, submission_asset_path(@submission_asset), target: "_blank" %> </td>
 
       <td> <%= f.input :filename %> </td>
     </tr>

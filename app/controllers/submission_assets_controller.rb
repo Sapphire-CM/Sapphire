@@ -42,8 +42,8 @@ class SubmissionAssetsController < ApplicationController
       event_service.submission_asset_updated!(@submission_asset)
       redirect_to tree_submission_path(@submission_asset.submission, path: @submission_asset.path), notice: "Successfully renamed submission file"
     else
-      set_context
-      render :rename
+      redirect_to tree_submission_path(@submission_asset.submission, path: @submission_asset.path),
+                  alert: "Error renaming submission file: Filename \"#{submission_asset_params[:filename]}\" already in use"
     end
   end
 

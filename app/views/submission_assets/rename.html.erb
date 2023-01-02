@@ -5,7 +5,7 @@
 
 <div class='row'>
   <div class='small-12 columns text-right'>
-    <%= link_to "Back to Files", tree_submission_path(@submission_asset.submission), class: "tiny button" %>
+    <%= link_to "Back to Files", tree_submission_path(@submission_asset.submission, path: @submission_asset.path), class: "tiny button" %>
   </div>
 </div>
 

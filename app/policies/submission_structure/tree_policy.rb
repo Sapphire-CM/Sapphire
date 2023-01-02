@@ -3,6 +3,14 @@ class SubmissionStructure::TreePolicy < TermBasedPolicy
     read_permissions?
   end
 
+  def rename_folders?
+    write_permissions?
+  end
+
+  def update_folder_name?
+    write_permissions?
+  end
+
   def directory?
     show?
   end

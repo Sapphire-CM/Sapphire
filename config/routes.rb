@@ -113,6 +113,7 @@ Rails.application.routes.draw do
   resources :submissions, only: [:show, :edit, :update] do
     member do
       get "blob(/*path)", controller: :submission_blob, action: :show, as: :blob
+      get "(/*path)/rename", controller: :submission_tree, as: "rename_folders", action: :rename_folders
       get "tree(/*path)", controller: :submission_tree, action: :show, as: :tree
       get "directory(/*path)", controller: :submission_tree, action: :directory, as: :tree_directory
       delete "tree(/*path)", controller: :submission_tree, action: :destroy
@@ -121,6 +122,9 @@ Rails.application.routes.draw do
     resource :folder, controller: :submission_folders, only: [:show, :new, :create]
     resource :upload, controller: :submission_uploads, only: [:new, :create]
   end
+
+  patch "/submissions/:id(/*path)/rename", to: 'submission_tree#update_folder_name'
+
 
   authenticate :account, lambda { |u| u.admin? } do
     mount Sidekiq::Web => '/sidekiq'

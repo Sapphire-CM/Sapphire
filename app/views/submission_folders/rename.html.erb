@@ -1,0 +1,79 @@
+<% title @submission.exercise.title, submission_author(@submission) %>
+
+<%= render "terms/sidebar", term: @term  %>
+<%= render "exercises/subnav", exercise: @exercise %>
+
+<div class='row'>
+  <div class='small-12 columns text-right'>
+    <%= link_to "Back to Files", tree_submission_path(@submission, @directory.parent.try(:path_without_root)), class: "tiny button" %>
+  </div>
+</div>
+
+<%= render "submission_tree_path", directory: @directory, submission: @submission %>
+
+<%= form_tag rename_folders_submission_path(@submission, @directory.path_without_root), method: :patch do %>
+  <table class='small-12'>
+    <thead>
+    <th>Previous folder name</th>
+    <th>Change folder name</th>
+    <td></td>
+    </thead>
+    <tbody>
+
+    <tr class='association-item'>
+      <div class="form-group">
+        <td> <%= @directory.name %> </td>
+        <td>
+          <%= label_tag :new_directory_name, "New Directory Name" %>
+          <%= text_field_tag :new_directory_name, nil, class: "form-control" %>
+        </td>
+      </div>
+    </tr>
+    <tr class='association-item'>
+      <th> Folder contents: </th>
+      <td></td>
+      <td></td>
+    </tr>
+    <% @directory.entries.sort_by(&:name).each do |entry| %>
+      <tr>
+        <td class='icon'>
+          <%= foundation_icon entry.icon %>
+
+          <% if entry.file? %>
+            <%= link_to entry.name, submission_asset_path(entry.submission_asset), target: "_blank" %>
+            <% if entry.submission_asset.archive? %>
+              &mdash; Extraction: <%= submission_asset_extraction_status(entry.submission_asset) %>
+              <% if entry.submission_asset.extraction_failed? %>
+                <%= content_tag :span, foundation_icon(:info), data: {tooltip: true}, title: "This ZIP archive could not be fully extracted. This usually happens when the zip contains one or more files are that already present in your submission." %>
+              <% end %>
+            <% end %>
+          <% else %>
+            <%= link_to entry.name, tree_submission_path(@submission, path: entry.path_without_root) %>
+          <% end %>
+        </td>
+        <% if @submission.modifiable_by_students? %>
+          <td class='buttons text-right'>
+            <% if entry.file? %>
+              <%= link_to foundation_icon(:x), submission_asset_path(entry.submission_asset), method: :delete, data: {confirm: "Are you sure, that you want to remove this file?"}, class: "tiny alert button float-right" %>
+            <% else %>
+              <%= link_to foundation_icon(:x), tree_submission_path(@submission, path: entry.path_without_root), method: :delete, data: {confirm: "Are you sure, that you want to remove the whole directory?"}, class: "tiny alert button float-right" %>
+            <% end %>
+          </td>
+        <% end %>
+        <% if @submission.modifiable_by_students? %>
+          <td class='buttons'>
+            <% if entry.file? %>
+              <%= link_to foundation_icon(:pencil), rename_submission_asset_path(entry.submission_asset), class: "tiny button" %>
+            <% else %>
+              <%= link_to foundation_icon(:pencil), rename_folders_submission_path(@submission, entry.path_without_root), class: "tiny button" %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <p> <%= submit_tag("Apply changes", class: "button" ) %></p>
+
+<% end %>

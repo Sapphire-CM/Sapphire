@@ -69,6 +69,8 @@
           <td class='buttons'>
             <% if entry.file? %>
               <%= link_to foundation_icon(:pencil), rename_submission_asset_path(entry.submission_asset), class: "tiny button" %>
+            <% else %>
+              <%= link_to foundation_icon(:pencil), rename_folders_submission_path(submission, entry.path_without_root), class: "tiny button" %>
             <% end %>
           </td>
         <% end %>

@@ -19,10 +19,33 @@ class SubmissionTreeController < ApplicationController
   end
 
   def rename_folders
-    render :'submission_folders/rename'
+
+    # Attempting to rename the root directory 'submission'
+    if @directory.parent == nil
+      redirect_to tree_submission_path(@submission), alert: "Renaming root folder not allowed."
+      return
+    end
+
+    if @directory.entries.any?
+      render :'submission_folders/rename'
+    else
+      # Attempting to rename a directory not yet created
+      redirect_to tree_submission_path(@submission),
+                  alert: "Can not rename folder '#{params[:path]}'. Folder '#{params[:path]}' not created yet."
+    end
+
   end
 
   def update_folder_name
+
+    # renaming the directory with the name it already has
+    if @directory.name == params[:new_directory_name]
+      redirect_to tree_submission_path(@submission, @directory.parent.try(:path_without_root)),
+                  notice: "Directory is already called '#{params[:path]}'."
+      return
+    end
+
+    # renaming the directory with a taken name
     if @directory.parent.entries.any? { |e| e.name == params[:new_directory_name] }
       redirect_to tree_submission_path(@submission, @directory.parent.try(:path_without_root)),
                   alert: "The folder name '#{params[:new_directory_name]}' is already in use. Renaming '#{params[:path]}' was not successful."
@@ -33,15 +56,25 @@ class SubmissionTreeController < ApplicationController
       or(@submission.submission_assets.where("path like ?", "#{params[:path]}/%"))
 
     submission_assets.each do |asset|
-      asset.path = asset.path.sub(File.basename(params[:path]), params[:new_directory_name])
-      asset.save
+      new_path = asset.path.sub(File.basename(params[:path]), params[:new_directory_name])
+      asset.path = new_path
     end
 
-    success = submission_assets.all? { |asset| asset.save }
+    success = submission_assets.all? do |asset|
+      asset.valid? && asset.save
+    end
+
+    if success
+      event_service.submission_folder_renamed!(
+        @submission,
+        params[:path],
+        params[:path].sub(File.basename(params[:path]), params[:new_directory_name]))
+    end
 
     if success
       redirect_to tree_submission_path(@submission, @directory.parent.try(:path_without_root)),
-                  notice: "Successfully renamed directory '#{params[:path]}' to '#{params[:new_directory_name]}'."
+                  notice:
+                    "Successfully renamed directory '#{params[:path]}' to '#{params[:path].sub(File.basename(params[:path]), params[:new_directory_name])}'."
     else
       redirect_to tree_submission_path(@submission, @directory.parent.try(:path_without_root)),
                   alert: "The folder name '#{params[:new_directory_name]}' is already in use. Renaming '#{params[:path]}' was not successful."

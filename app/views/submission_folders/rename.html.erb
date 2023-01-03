@@ -25,7 +25,7 @@
         <td> <%= @directory.name %> </td>
         <td>
           <%= label_tag :new_directory_name, "New Directory Name" %>
-          <%= text_field_tag :new_directory_name, nil, class: "form-control" %>
+          <%= text_field_tag :new_directory_name, @directory.name, class: "form-control" %>
         </td>
       </div>
     </tr>

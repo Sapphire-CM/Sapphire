@@ -6,7 +6,11 @@
 
   <% submission_assets[:updated].each do |change| %>
     <% if change[:file].is_a?(Array) %>
-      <li>Renamed <strong>'<%= submission_asset_file_change(change[:path], change[:file].first) %>'</strong> to <strong>'<%= submission_asset_file_change(change[:path], change[:file].last) %>'</strong></li>
+        <% if File.extname(change[:file].first).present? %>
+          <li>Renamed File <strong>'<%= submission_asset_file_change(change[:path], change[:file].first) %>'</strong> to <strong>'<%= submission_asset_file_change(change[:path], change[:file].last) %>'</strong></li>
+        <% else %>
+          <li>Renamed Folder <strong>'<%= submission_asset_file_change(change[:path], change[:file].first) %>'</strong> to <strong>'<%= submission_asset_file_change(change[:path], change[:file].last) %>'</strong></li>
+        <% end %>
     <% else %>
       <li>Updated <strong>'<%= submission_asset_file_change(change[:path], change[:file]) %>'</strong></li>
     <% end %>

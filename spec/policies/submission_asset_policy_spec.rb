@@ -10,6 +10,8 @@ RSpec.describe SubmissionAssetPolicy do
     describe 'member' do
       it { is_expected.to permit_authorization(:show) }
       it { is_expected.to permit_authorization(:destroy) }
+      it { is_expected.to permit_authorization(:rename) }
+      it { is_expected.to permit_authorization(:update) }
     end
   end
 
@@ -21,6 +23,8 @@ RSpec.describe SubmissionAssetPolicy do
     describe 'member' do
       it { is_expected.to permit_authorization(:show) }
       it { is_expected.to permit_authorization(:destroy) }
+      it { is_expected.to permit_authorization(:rename) }
+      it { is_expected.to permit_authorization(:update) }
     end
   end
 
@@ -32,6 +36,8 @@ RSpec.describe SubmissionAssetPolicy do
     describe 'member' do
       it { is_expected.to permit_authorization(:show) }
       it { is_expected.to permit_authorization(:destroy) }
+      it { is_expected.to permit_authorization(:rename) }
+      it { is_expected.to permit_authorization(:update) }
     end
   end
 
@@ -48,6 +54,8 @@ RSpec.describe SubmissionAssetPolicy do
       describe 'member' do
         it { is_expected.to permit_authorization(:show) }
         it { is_expected.to permit_authorization(:destroy) }
+        it { is_expected.to permit_authorization(:rename) }
+        it { is_expected.to permit_authorization(:update) }
       end
     end
 
@@ -55,6 +63,8 @@ RSpec.describe SubmissionAssetPolicy do
       describe 'member' do
         it { is_expected.not_to permit_authorization(:show) }
         it { is_expected.not_to permit_authorization(:destroy) }
+        it { is_expected.not_to permit_authorization(:rename) }
+        it { is_expected.not_to permit_authorization(:update) }
       end
     end
 
@@ -68,6 +78,8 @@ RSpec.describe SubmissionAssetPolicy do
 
         it { is_expected.to permit_authorization(:show) }
         it { is_expected.not_to permit_authorization(:destroy) }
+        it { is_expected.not_to permit_authorization(:rename) }
+        it { is_expected.not_to permit_authorization(:update) }
       end
     end
 
@@ -81,6 +93,8 @@ RSpec.describe SubmissionAssetPolicy do
 
         it { is_expected.to permit_authorization(:show) }
         it { is_expected.not_to permit_authorization(:destroy) }
+        it { is_expected.not_to permit_authorization(:rename) }
+        it { is_expected.not_to permit_authorization(:update) }
       end
     end
   end
@@ -93,6 +107,8 @@ RSpec.describe SubmissionAssetPolicy do
     describe 'member' do
       it { is_expected.not_to permit_authorization(:show) }
       it { is_expected.not_to permit_authorization(:destroy) }
+      it { is_expected.not_to permit_authorization(:rename) }
+      it { is_expected.not_to permit_authorization(:update) }
     end
   end
 
@@ -105,6 +121,8 @@ RSpec.describe SubmissionAssetPolicy do
     describe 'member' do
       it { is_expected.not_to permit_authorization(:show) }
       it { is_expected.not_to permit_authorization(:destroy) }
+      it { is_expected.not_to permit_authorization(:rename) }
+      it { is_expected.not_to permit_authorization(:update) }
     end
   end
 
@@ -117,6 +135,8 @@ RSpec.describe SubmissionAssetPolicy do
     describe 'member' do
       it { is_expected.not_to permit_authorization(:show) }
       it { is_expected.not_to permit_authorization(:destroy) }
+      it { is_expected.not_to permit_authorization(:rename) }
+      it { is_expected.not_to permit_authorization(:update) }
     end
   end
 end

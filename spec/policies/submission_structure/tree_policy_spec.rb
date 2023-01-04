@@ -18,10 +18,14 @@ RSpec.describe SubmissionStructure::TreePolicy do
 
   shared_examples "having write permissions" do
     it { is_expected.to permit_authorization(:destroy) }
+    it { is_expected.to permit_authorization(:rename_folders) }
+    it { is_expected.to permit_authorization(:update_folder_name) }
   end
 
   shared_examples "having no write permissions" do
     it { is_expected.not_to permit_authorization(:destroy) }
+    it { is_expected.not_to permit_authorization(:rename_folders) }
+    it { is_expected.not_to permit_authorization(:update_folder_name) }
   end
 
 

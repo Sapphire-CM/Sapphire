@@ -43,7 +43,7 @@ class SubmissionAssetsController < ApplicationController
       redirect_to tree_submission_path(@submission_asset.submission, path: @submission_asset.path), notice: "Successfully renamed submission file"
     else
       redirect_to tree_submission_path(@submission_asset.submission, path: @submission_asset.path),
-                  alert: "Error renaming submission file: Filename \"#{submission_asset_params[:filename]}\" already in use"
+                  alert: "Error renaming submission file: invalid filename"
     end
   end
 

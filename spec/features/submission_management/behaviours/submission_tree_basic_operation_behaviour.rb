@@ -303,4 +303,27 @@ RSpec.shared_examples "basic submission tree operations" do
       expect(page).to have_no_content("folder")
     end
   end
+
+  describe 'modifiable_by_students?' do
+    context 'when the submission is modifiable by students' do
+      let(:submission) { double(modifiable_by_students?: true) }
+
+      it 'renders the rename button' do
+        render
+
+        expect(rendered).to have_link(foundation_icon(:pencil), href: rename_submission_asset_path(entry.submission_asset))
+      end
+    end
+
+    context 'when the submission is not modifiable by students' do
+      let(:submission) { double(modifiable_by_students?: false) }
+
+      it 'does not render the rename button' do
+        render
+
+        expect(rendered).not_to have_link(foundation_icon(:pencil), href: rename_submission_asset_path(entry.submission_asset))
+      end
+    end
+  end
+
 end

@@ -110,4 +110,64 @@ RSpec.describe SubmissionTreeController, type: :controller do
 
   end
 
+  describe "PATCH #update_folder_name" do
+    let!(:submission_assets) do
+      assets = []
+      assets << top_level_asset
+      assets << sub_folder
+      assets << sub_folder_2
+      assets << subsub_folder
+      assets
+    end
+
+    let(:top_level_asset) { FactoryBot.create(:submission_asset, submission: submission, path:"", file: prepare_static_test_file("simple_submission.txt", rename_to: "tl-text-1.txt")) }
+    let(:sub_folder) { FactoryBot.create(:submission_asset, submission: submission, path: "sub-folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "text-2.txt")) }
+    let(:sub_folder_2) { FactoryBot.create(:submission_asset, submission: submission, path: "sub-folder-2", file: prepare_static_test_file("simple_submission.txt", rename_to: "text-2.txt")) }
+    let(:subsub_folder) { FactoryBot.create(:submission_asset, submission: submission, path: "sub-folder/subsub-folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "text-3.txt")) }
+
+    new_directory_name = "dummy_new_directory_name"
+
+    context "with valid params" do
+      it "renames the sub_folder and updates the submission assets with the new path" do
+        # Make request to rename directory
+        patch :update_folder_name, params: { id: submission.id, path: sub_folder.path, new_directory_name: new_directory_name }
+
+        expect(sub_folder.reload.path).to eq(new_directory_name)
+      end
+
+      it "redirects with a success notice after renaming the directory was successful" do
+        new_directory_name = "dummy_new_directory_name"
+
+        patch :update_folder_name, params: { id: submission.id, path: sub_folder.path, new_directory_name: new_directory_name }
+
+        expect(response).to redirect_to tree_submission_path(submission)
+        expect(flash[:notice]).to eq("Successfully renamed directory '#{sub_folder.path}' to '#{sub_folder.path.sub(File.basename(sub_folder.path), new_directory_name)}'.")
+      end
+
+    end
+
+    context "with invalid params" do
+      it "redirects with an alert if attempting to rename the directory with a taken name" do
+
+        new_directory_name = "sub-folder"
+
+        patch :update_folder_name, params: { id: submission.id, path: sub_folder_2.path, new_directory_name: new_directory_name}
+
+        # Expect a redirect and alert message
+        expect(response).to have_http_status(:redirect)
+        expect(flash[:alert]).to eq("The folder name 'sub-folder' is already in use. Renaming 'sub-folder-2' was not successful.")
+      end
+
+      it "redirects with an notice if renaming the directory with the name it already has" do
+        new_directory_name = "sub-folder"
+
+        patch :update_folder_name, params: { id: submission.id, path: sub_folder.path, new_directory_name: new_directory_name }
+
+        expect(response).to have_http_status(:redirect)
+        expect(flash[:notice]).to eq("Directory is already called 'sub-folder'.")
+      end
+    end
+  end
+
+
 end

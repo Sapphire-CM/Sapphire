@@ -71,6 +71,32 @@ RSpec.describe EventService do
       end
     end
 
+
+    describe "#submission_folder_renamed!" do
+      let(:account) { create(:account) }
+      let(:term) { create(:term) }
+      let(:event_service) { EventService.new(account, term) }
+      let(:submission) { FactoryBot.create(:submission, exercise: exercise, submitter: account) }
+      let(:pre_folder_name) { "old_folder" }
+      let(:post_folder_name) { "new_folder" }
+
+      context "when no events for the submission exist" do
+        it "creates a new submission updated event with the folder rename" do
+          event = event_service.submission_folder_renamed!(submission, pre_folder_name, post_folder_name)
+          expect(event).to be_a(Events::Submission::Updated)
+          expect(event).to be_persisted
+          expect(event.submission_assets[:updated]).to eq([{
+                                                             file: [pre_folder_name, post_folder_name],
+                                                             path: [],
+                                                             content_type: []
+                                                           }])
+        end
+      end
+    end
+
+
+
+
     describe '#submission_extracted!' do
       let(:zip_submission_asset) { FactoryBot.create(:submission_asset, submission: submission, path: 'zip/path', file: prepare_static_test_file('submission.zip')) }
       let(:extracted_submission_assets) do

@@ -114,55 +114,110 @@ RSpec.describe EventService do
     let(:zip_asset) { FactoryBot.create(:submission_asset, :zip, submission: submission) }
 
 
-  describe "#submission_folder_renamed!" do
-    let(:pre_folder_name) { "old_folder_name" }
-    let(:post_folder_name) { "new_folder_name" }
+    describe "#submission_folder_renamed!" do
+      let(:pre_folder_name) { "old_folder_name" }
+      let(:post_folder_name) { "new_folder_name" }
 
-    context "when there are no previous Events::Submission::Updated events for the given submission" do
-      it "creates a new event" do
-        expect { subject.submission_folder_renamed!(submission, pre_folder_name, post_folder_name) }.to change { Events::Submission::Updated.count }.by(1)
+      context "when there are no previous Events::Submission::Updated events for the given submission" do
+        it "creates a new event" do
+          expect { subject.submission_folder_renamed!(submission, pre_folder_name, post_folder_name) }.to change { Events::Submission::Updated.count }.by(1)
+        end
+
+        it "sets the submission_assets field to a hash containing the renamed folder" do
+          event = subject.submission_folder_renamed!(submission, pre_folder_name, post_folder_name)
+          expect(event.submission_assets).to eq({
+                                                  added: [],
+                                                  updated: [{ file: [pre_folder_name, post_folder_name], path: [], content_type: [] }],
+                                                  destroyed: []
+                                                })
+        end
+
+        it "sets the updated_at field to the current time" do
+          event = subject.submission_folder_renamed!(submission, pre_folder_name, post_folder_name)
+          expect(event.updated_at).to be_within(1.second).of(Time.now)
+        end
       end
 
-      it "sets the submission_assets field to a hash containing the renamed folder" do
-        event = subject.submission_folder_renamed!(submission, pre_folder_name, post_folder_name)
-        expect(event.submission_assets).to eq({
-                                                added: [],
-                                                updated: [{ file: [pre_folder_name, post_folder_name], path: [], content_type: [] }],
-                                                destroyed: []
-                                              })
-      end
+      context "when there is a previous Events::Submission::Updated event for the given submission" do
+        before do
+          Events::Submission::Updated.create(account: account, subject: submission, term: submission.exercise.term, updated_at: Time.now)
+        end
 
-      it "sets the updated_at field to the current time" do
-        event = subject.submission_folder_renamed!(submission, pre_folder_name, post_folder_name)
-        expect(event.updated_at).to be_within(1.second).of(Time.now)
+        it "does not create a new event" do
+          expect { subject.submission_folder_renamed!(submission, pre_folder_name, post_folder_name) }.not_to change { Events::Submission::Updated.count }
+        end
+
+        it "updates the submission_assets field to include the renamed folder" do
+          event = subject.submission_folder_renamed!(submission, pre_folder_name, post_folder_name)
+          expect(event.submission_assets).to eq({
+                                                  added: [],
+                                                  updated: [{ file: [pre_folder_name, post_folder_name], path: [], content_type: [] }],
+                                                  destroyed: []
+                                                })
+        end
+
+        it "sets the updated_at field to the current time" do
+          event = subject.submission_folder_renamed!(submission, pre_folder_name, post_folder_name)
+          expect(event.updated_at).to be_within(1.second).of(Time.now)
+        end
       end
     end
 
-    context "when there is a previous Events::Submission::Updated event for the given submission" do
+    describe "#submission_asset_updated!" do
+      let(:submission) { FactoryBot.create(:submission) }
+      let(:submission_asset) { FactoryBot.create(:submission_asset, :plain_text, submission: submission) }
+
+      let(:old_filename) { 'old_filename'}
+      let(:new_filename) { 'new_filename'}
+
       before do
-        Events::Submission::Updated.create(account: account, subject: submission, term: submission.exercise.term, updated_at: Time.now)
+        allow(submission_asset).to receive(:previous_changes).and_return({ 'filename' => [old_filename, new_filename] })
       end
 
-      it "does not create a new event" do
-        expect { subject.submission_folder_renamed!(submission, pre_folder_name, post_folder_name) }.not_to change { Events::Submission::Updated.count }
+      context "when there are no previous Events::Submission::Updated events for the given submission" do
+        it "creates a new event" do
+          expect { subject.submission_asset_updated!(submission_asset) }.to change { Events::Submission::Updated.count }.by(1)
+        end
+
+        it "for filename update sets the submission_assets field to a hash containing information about the updated asset" do
+          event = subject.submission_asset_updated!(submission_asset)
+          expect(event.submission_assets).to eq({
+                                                  added: [],
+                                                  updated: [{ file: [old_filename,new_filename], path: submission_asset.path, content_type: submission_asset.content_type }],
+                                                  destroyed: []
+                                                })
+        end
+
+        it "sets the updated_at field to the current time" do
+          event = subject.submission_asset_updated!(submission_asset)
+          expect(event.updated_at).to be_within(1.second).of(Time.now)
+        end
       end
 
-      it "updates the submission_assets field to include the renamed folder" do
-        event = subject.submission_folder_renamed!(submission, pre_folder_name, post_folder_name)
-        expect(event.submission_assets).to eq({
-                                                added: [],
-                                                updated: [{ file: [pre_folder_name, post_folder_name], path: [], content_type: [] }],
-                                                destroyed: []
-                                              })
-      end
+      context "when there is a previous Events::Submission::Updated event for the given submission" do
+        before do
+          Events::Submission::Updated.create(account: account, subject: submission, term: submission.exercise.term, updated_at: Time.now)
+        end
 
-      it "sets the updated_at field to the current time" do
-        event = subject.submission_folder_renamed!(submission, pre_folder_name, post_folder_name)
-        expect(event.updated_at).to be_within(1.second).of(Time.now)
+        it "does not create a new event" do
+          expect { subject.submission_asset_updated!(submission_asset) }.not_to change { Events::Submission::Updated.count }
+        end
+
+        it "updates the submission_assets field to include information about the updated asset" do
+          event = subject.submission_asset_updated!(submission_asset)
+          expect(event.submission_assets).to eq({
+                                                  added: [],
+                                                  updated: [{ file: [old_filename,new_filename], path: submission_asset.path, content_type: submission_asset.content_type }],
+                                                  destroyed: []
+                                                })
+        end
+
+        it "sets the updated_at field to the current time" do
+          event = subject.submission_asset_updated!(submission_asset)
+          expect(event.updated_at).to be_within(1.second).of(Time.now)
+        end
       end
     end
-  end
-
 
 
     describe '#submission_asset_destroyed!' do

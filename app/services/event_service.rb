@@ -49,23 +49,21 @@ class EventService
   end
 
   def submission_asset_updated!(submission_asset)
-    submission = submission_asset.submission
-    event = Events::Submission::Updated.where(account: account).recent_for_submission(submission)
-
-    if event.blank?
-      event = Events::Submission::Updated.new(options(submission, submission_base_options(submission)))
-    end
-
-    submission_assets = event.submission_assets || {
-      added: [],
-      updated: [],
-      destroyed: []
-    }
-
-    bob = submission_asset.previous_changes
-
     # Check if the submission asset has changed
     if submission_asset.previous_changes.any?
+      submission = submission_asset.submission
+      event = Events::Submission::Updated.where(account: account).recent_for_submission(submission)
+
+      if event.blank?
+        event = Events::Submission::Updated.new(options(submission, submission_base_options(submission)))
+      end
+
+      submission_assets = event.submission_assets || {
+        added: [],
+        updated: [],
+        destroyed: []
+      }
+
       # Iterate over the previous changes for the submission asset
       submission_asset.previous_changes.each do |field, values|
         # If the file field has changed, add the change to the updated array
@@ -75,18 +73,10 @@ class EventService
             path: submission_asset.path,
             content_type: submission_asset.content_type
           }
-          elsif field == 'path'
-          submission_assets[:updated] << {
-            file: values.map { |file| File.basename(file.to_s) },
-            path: submission_asset.path,
-            content_type: submission_asset.content_type
-          }
         end
       end
-    end
 
-    if submission_asset.previous_changes.any?
-      submission_assets.values.each do |assets|
+     submission_assets.values.each do |assets|
       assets.sort_by! { |description|
         name = description[:name]
         path = description[:path]
@@ -94,12 +84,12 @@ class EventService
         File.join(*([path, name].compact))
       }
       end
-    end
 
-    event.submission_assets = submission_assets
-    event.updated_at = Time.now
-    event.save
-    event
+      event.submission_assets = submission_assets
+      event.updated_at = Time.now
+      event.save
+      event
+    end
   end
 
   def submission_extracted!(submission, zip_submission_asset, extracted_submission_assets)

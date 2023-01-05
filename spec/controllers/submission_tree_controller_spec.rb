@@ -65,4 +65,49 @@ RSpec.describe SubmissionTreeController, type: :controller do
       delete :destroy, params: { id: submission.id, path: "test" }
     end
   end
+
+  describe 'GET #rename_folders' do
+
+    let!(:submission_assets) do
+      assets = []
+      assets << top_level_asset
+      assets << sub_folder
+      assets << subsub_folder
+      assets
+    end
+
+    let(:top_level_asset) { FactoryBot.create(:submission_asset, submission: submission, path:"", file: prepare_static_test_file("simple_submission.txt", rename_to: "tl-text-1.txt")) }
+    let(:sub_folder) { FactoryBot.create(:submission_asset, submission: submission, path: "sub-folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "text-2.txt")) }
+    let(:subsub_folder) { FactoryBot.create(:submission_asset, submission: submission, path: "sub-folder/subsub-folder", file: prepare_static_test_file("simple_submission.txt", rename_to: "text-3.txt")) }
+
+    context 'when attempting to rename the root folder' do
+      it 'does not update the root folder path' do
+        get :rename_folders, params: { id: submission.id, path: top_level_asset.path, new_directory_name: "dummy_new_directory_name" }
+        expect(top_level_asset.reload.path).to_not be_nil
+      end
+
+      it 'redirects to the submission_asset tree view with an alert' do
+        get :rename_folders, params: { id: submission.id, path: top_level_asset.path, new_directory_name: "dummy_new_directory_name" }
+        expect(response).to redirect_to tree_submission_path(submission)
+        expect(flash[:alert]).to eq("Renaming root folder not allowed.")
+      end
+    end
+
+    context 'when attempting to rename an empty directory aka. a directory not yet physically created' do
+      it 'does not update the root folder path' do
+        get :rename_folders, params: { id: submission.id, path: sub_folder.path, new_directory_name: "dummy_new_directory_name" }
+        expect(sub_folder.reload.path).to_not be_nil
+      end
+    end
+
+    context 'when attempting to rename a physically created directory' do
+      it 'renders the rename template' do
+        get :rename_folders, params: { id: submission.id, path: sub_folder.path, new_directory_name: "dummy_new_directory_name" }
+
+        expect(response).to render_template(:'submission_folders/rename')
+      end
+    end
+
+  end
+
 end

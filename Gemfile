@@ -57,6 +57,8 @@ gem 'autoprefixer-rails'          # automatically add vendor prefixes to CSS
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
+gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
+
 group :development, :test do
   gem 'pry'
   gem 'pry-rails'

@@ -11,9 +11,8 @@
 #   t.integer  :imported_student_groups
 #   t.datetime :created_at,                                  null: false
 #   t.datetime :updated_at,                                  null: false
+#   t.index [:import_id], name: :index_import_results_on_import_id, unique: true
 # end
-#
-# add_index :import_results, [:import_id], name: :index_import_results_on_import_id, unique: true
 
 class ImportResult < ActiveRecord::Base
   belongs_to :import

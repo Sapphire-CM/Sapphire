@@ -8,10 +8,9 @@
 #   t.integer  :evaluation_result
 #   t.boolean  :plagiarized,       default: false, null: false
 #   t.boolean  :needs_review,      default: false
+#   t.index [:evaluator_id], name: :index_submission_evaluations_on_evaluator_id
+#   t.index [:submission_id], name: :index_submission_evaluations_on_submission_id, unique: true
 # end
-#
-# add_index :submission_evaluations, [:evaluator_id], name: :index_submission_evaluations_on_evaluator_id
-# add_index :submission_evaluations, [:submission_id], name: :index_submission_evaluations_on_submission_id, unique: true
 
 class SubmissionEvaluation < ActiveRecord::Base
   include Commentable

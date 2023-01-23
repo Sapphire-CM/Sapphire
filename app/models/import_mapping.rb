@@ -8,9 +8,8 @@
 #   t.integer  :comment
 #   t.datetime :created_at,           null: false
 #   t.datetime :updated_at,           null: false
+#   t.index [:import_id], name: :index_import_mappings_on_import_id, unique: true
 # end
-#
-# add_index :import_mappings, [:import_id], name: :index_import_mappings_on_import_id, unique: true
 
 class ImportMapping < ActiveRecord::Base
   belongs_to :import

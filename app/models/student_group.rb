@@ -7,9 +7,8 @@
 #   t.string   :keyword
 #   t.string   :topic
 #   t.text     :description
+#   t.index [:tutorial_group_id], name: :index_student_groups_on_tutorial_group_id
 # end
-#
-# add_index :student_groups, [:tutorial_group_id], name: :index_student_groups_on_tutorial_group_id
 
 class StudentGroup < ActiveRecord::Base
   belongs_to :tutorial_group

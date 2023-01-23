@@ -8,12 +8,11 @@
 #   t.integer  :exercise_attempt_id
 #   t.boolean  :active,              default: true, null: false
 #   t.integer  :filesystem_size,     default: 0
+#   t.index [:exercise_attempt_id], name: :index_submissions_on_exercise_attempt_id
+#   t.index [:exercise_id], name: :index_submissions_on_exercise_id
+#   t.index [:student_group_id], name: :index_submissions_on_student_group_id
+#   t.index [:submitter_id], name: :index_submissions_on_submitter_id
 # end
-#
-# add_index :submissions, [:exercise_attempt_id], name: :index_submissions_on_exercise_attempt_id
-# add_index :submissions, [:exercise_id], name: :index_submissions_on_exercise_id
-# add_index :submissions, [:student_group_id], name: :index_submissions_on_student_group_id
-# add_index :submissions, [:submitter_id], name: :index_submissions_on_submitter_id
 
 class Submission < ActiveRecord::Base
   belongs_to :exercise

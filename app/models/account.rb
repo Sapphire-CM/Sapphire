@@ -20,10 +20,9 @@
 #   t.datetime :locked_at
 #   t.boolean  :admin,                       default: false, null: false
 #   t.boolean  :comment_markdown_preference, default: false
+#   t.index [:email], name: :index_accounts_on_email, unique: true
+#   t.index [:reset_password_token], name: :index_accounts_on_reset_password_token, unique: true
 # end
-#
-# add_index :accounts, [:email], name: :index_accounts_on_email, unique: true
-# add_index :accounts, [:reset_password_token], name: :index_accounts_on_reset_password_token, unique: true
 
 class Account < ActiveRecord::Base
   DEFAULT_PASSWORD = 'sapphire%{matriculation_number}'

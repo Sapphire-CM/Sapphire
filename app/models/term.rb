@@ -7,10 +7,9 @@
 #   t.integer  :row_order
 #   t.integer  :points,      default: 0
 #   t.integer  :status,      default: 0
+#   t.index [:course_id], name: :index_terms_on_course_id
+#   t.index [:title, :course_id], name: :index_terms_on_title_and_course_id, unique: true
 # end
-#
-# add_index :terms, [:course_id], name: :index_terms_on_course_id
-# add_index :terms, [:title, :course_id], name: :index_terms_on_title_and_course_id, unique: true
 
 class Term < ActiveRecord::Base
   include RankedModel

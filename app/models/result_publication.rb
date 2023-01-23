@@ -4,11 +4,10 @@
 #   t.boolean  :published,         default: false, null: false
 #   t.datetime :created_at,                        null: false
 #   t.datetime :updated_at,                        null: false
+#   t.index [:exercise_id, :tutorial_group_id], name: :index_result_publications_on_exercise_id_and_tutorial_group_id, unique: true
+#   t.index [:exercise_id], name: :index_result_publications_on_exercise_id
+#   t.index [:tutorial_group_id], name: :index_result_publications_on_tutorial_group_id
 # end
-#
-# add_index :result_publications, [:exercise_id, :tutorial_group_id], name: :index_result_publications_on_exercise_id_and_tutorial_group_id, unique: true
-# add_index :result_publications, [:exercise_id], name: :index_result_publications_on_exercise_id
-# add_index :result_publications, [:tutorial_group_id], name: :index_result_publications_on_tutorial_group_id
 
 class ResultPublication < ActiveRecord::Base
   belongs_to :exercise

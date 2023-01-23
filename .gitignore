@@ -3,6 +3,9 @@
 # Ignore bundler config
 /.bundle
 
+# Ignore .idea files
+/.idea
+
 # Ignore debugger history
 /.byebug_history
 

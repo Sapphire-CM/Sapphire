@@ -4,9 +4,8 @@
 #   t.datetime :updated_at, null: false
 #   t.string   :file
 #   t.integer  :status
+#   t.index [:term_id], name: :index_imports_on_term_id
 # end
-#
-# add_index :imports, [:term_id], name: :index_imports_on_term_id
 
 class Import < ActiveRecord::Base
   belongs_to :term

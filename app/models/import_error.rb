@@ -5,9 +5,8 @@
 #   t.string   :message
 #   t.datetime :created_at,       null: false
 #   t.datetime :updated_at,       null: false
+#   t.index [:import_result_id], name: :index_import_errors_on_import_result_id
 # end
-#
-# add_index :import_errors, [:import_result_id], name: :index_import_errors_on_import_result_id
 
 class ImportError < ActiveRecord::Base
   belongs_to :import_result

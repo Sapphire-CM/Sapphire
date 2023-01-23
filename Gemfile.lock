@@ -526,6 +526,7 @@ DEPENDENCIES
   timecop
   traceroute
   turbolinks (~> 2.5.3)
+  tzinfo-data
   uglifier
   whenever
   writeexcel

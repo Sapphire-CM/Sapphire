@@ -4,11 +4,12 @@
 #   t.integer  :term_id
 #   t.string   :file
 #   t.text     :properties
-#   t.datetime :created_at, null: false
-#   t.datetime :updated_at, null: false
+#   t.datetime :created_at,   null: false
+#   t.datetime :updated_at,   null: false
+#   t.integer  :requester_id
+#   t.index [:requester_id], name: :index_exports_on_requester_id
+#   t.index [:term_id], name: :index_exports_on_term_id
 # end
-#
-# add_index :exports, [:term_id], name: :index_exports_on_term_id
 
 class Export < ActiveRecord::Base
   include SerializedProperties

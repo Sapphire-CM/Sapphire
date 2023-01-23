@@ -4,9 +4,8 @@
 #   t.datetime :created_at,                 null: false
 #   t.datetime :updated_at,                 null: false
 #   t.boolean  :locked,      default: true, null: false
+#   t.index [:title], name: :index_courses_on_title, unique: true
 # end
-#
-# add_index :courses, [:title], name: :index_courses_on_title, unique: true
 
 class Course < ActiveRecord::Base
   has_many :terms, dependent: :destroy

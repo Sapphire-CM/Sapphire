@@ -8,10 +8,9 @@
 #   t.integer  :evaluation_group_id
 #   t.boolean  :checked_automatically, default: false, null: false
 #   t.boolean  :needs_review,          default: false
+#   t.index [:evaluation_group_id], name: :index_evaluations_on_evaluation_group_id
+#   t.index [:rating_id], name: :index_evaluations_on_rating_id
 # end
-#
-# add_index :evaluations, [:evaluation_group_id], name: :index_evaluations_on_evaluation_group_id
-# add_index :evaluations, [:rating_id], name: :index_evaluations_on_rating_id
 
 class Evaluation < ActiveRecord::Base
   include Commentable

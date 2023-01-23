@@ -4,9 +4,8 @@
 #   t.datetime :date
 #   t.datetime :created_at,  null: false
 #   t.datetime :updated_at,  null: false
+#   t.index [:exercise_id], name: :index_exercise_attempts_on_exercise_id
 # end
-#
-# add_index :exercise_attempts, [:exercise_id], name: :index_exercise_attempts_on_exercise_id
 
 class ExerciseAttempt < ActiveRecord::Base
   belongs_to :exercise, inverse_of: :attempts

@@ -10,10 +10,9 @@
 #   t.integer  :max_points
 #   t.boolean  :enable_range_points, default: false, null: false
 #   t.integer  :row_order
+#   t.index [:exercise_id], name: :index_rating_groups_on_exercise_id
+#   t.index [:title, :exercise_id], name: :index_rating_groups_on_title_and_exercise_id, unique: true
 # end
-#
-# add_index :rating_groups, [:exercise_id], name: :index_rating_groups_on_exercise_id
-# add_index :rating_groups, [:title, :exercise_id], name: :index_rating_groups_on_title_and_exercise_id, unique: true
 
 class RatingGroup < ActiveRecord::Base
   include RankedModel

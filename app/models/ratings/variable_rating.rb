@@ -12,9 +12,8 @@
 #   t.float    :multiplication_factor
 #   t.string   :automated_checker_identifier
 #   t.boolean  :bulk,                         default: false
+#   t.index [:rating_group_id], name: :index_ratings_on_rating_group_id
 # end
-#
-# add_index :ratings, [:rating_group_id], name: :index_ratings_on_rating_group_id
 
 class Ratings::VariableRating < Rating
   validates :min_value, presence: true

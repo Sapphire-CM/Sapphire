@@ -7,11 +7,10 @@
 #   t.integer  :max_points, default: 0,     null: false
 #   t.datetime :created_at,                 null: false
 #   t.datetime :updated_at,                 null: false
+#   t.index [:grade], name: :index_grading_scales_on_grade
+#   t.index [:term_id, :grade], name: :index_grading_scales_on_term_id_and_grade, unique: true
+#   t.index [:term_id], name: :index_grading_scales_on_term_id
 # end
-#
-# add_index :grading_scales, [:grade], name: :index_grading_scales_on_grade
-# add_index :grading_scales, [:term_id, :grade], name: :index_grading_scales_on_term_id_and_grade, unique: true
-# add_index :grading_scales, [:term_id], name: :index_grading_scales_on_term_id
 
 class GradingScale < ActiveRecord::Base
   belongs_to :term

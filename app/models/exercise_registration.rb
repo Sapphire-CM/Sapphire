@@ -7,11 +7,10 @@
 #   t.datetime :updated_at,                             null: false
 #   t.integer  :individual_subtractions
 #   t.boolean  :active,                  default: true, null: false
+#   t.index [:exercise_id], name: :index_exercise_registrations_on_exercise_id
+#   t.index [:submission_id], name: :index_exercise_registrations_on_submission_id
+#   t.index [:term_registration_id], name: :index_exercise_registrations_on_term_registration_id
 # end
-#
-# add_index :exercise_registrations, [:exercise_id], name: :index_exercise_registrations_on_exercise_id
-# add_index :exercise_registrations, [:submission_id], name: :index_exercise_registrations_on_submission_id
-# add_index :exercise_registrations, [:term_registration_id], name: :index_exercise_registrations_on_term_registration_id
 
 class ExerciseRegistration < ActiveRecord::Base
   belongs_to :exercise

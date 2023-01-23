@@ -10,15 +10,14 @@
 #   t.integer  :role,              default: 0
 #   t.integer  :student_group_id
 #   t.datetime :welcomed_at
+#   t.index [:account_id, :term_id], name: :index_term_registrations_on_account_id_and_term_id, unique: true
+#   t.index [:account_id], name: :index_term_registrations_on_account_id
+#   t.index [:points], name: :index_term_registrations_on_points
+#   t.index [:positive_grade], name: :index_term_registrations_on_positive_grade
+#   t.index [:student_group_id], name: :index_term_registrations_on_student_group_id
+#   t.index [:term_id], name: :index_term_registrations_on_term_id
+#   t.index [:tutorial_group_id], name: :index_term_registrations_on_tutorial_group_id
 # end
-#
-# add_index :term_registrations, [:account_id, :term_id], name: :index_term_registrations_on_account_id_and_term_id, unique: true
-# add_index :term_registrations, [:account_id], name: :index_term_registrations_on_account_id
-# add_index :term_registrations, [:points], name: :index_term_registrations_on_points
-# add_index :term_registrations, [:positive_grade], name: :index_term_registrations_on_positive_grade
-# add_index :term_registrations, [:student_group_id], name: :index_term_registrations_on_student_group_id
-# add_index :term_registrations, [:term_id], name: :index_term_registrations_on_term_id
-# add_index :term_registrations, [:tutorial_group_id], name: :index_term_registrations_on_tutorial_group_id
 
 class TermRegistration < ActiveRecord::Base
   include Roles

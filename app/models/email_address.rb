@@ -3,10 +3,9 @@
 #   t.integer  :account_id
 #   t.datetime :created_at, null: false
 #   t.datetime :updated_at, null: false
+#   t.index [:account_id], name: :index_email_addresses_on_account_id
+#   t.index [:email], name: :index_email_addresses_on_email, unique: true
 # end
-#
-# add_index :email_addresses, [:account_id], name: :index_email_addresses_on_account_id
-# add_index :email_addresses, [:email], name: :index_email_addresses_on_email, unique: true
 
 class EmailAddress < ActiveRecord::Base
   belongs_to :account

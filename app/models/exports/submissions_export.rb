@@ -4,11 +4,12 @@
 #   t.integer  :term_id
 #   t.string   :file
 #   t.text     :properties
-#   t.datetime :created_at, null: false
-#   t.datetime :updated_at, null: false
+#   t.datetime :created_at,   null: false
+#   t.datetime :updated_at,   null: false
+#   t.integer  :requester_id
+#   t.index [:requester_id], name: :index_exports_on_requester_id
+#   t.index [:term_id], name: :index_exports_on_term_id
 # end
-#
-# add_index :exports, [:term_id], name: :index_exports_on_term_id
 
 class Exports::SubmissionsExport < Export
   prop_accessor :base_path, :solitary_path, :group_path, :include_solitary_submissions, :include_group_submissions

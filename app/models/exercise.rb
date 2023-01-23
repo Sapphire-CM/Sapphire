@@ -21,10 +21,9 @@
 #   t.string   :instructions_url
 #   t.boolean  :enable_bulk_submission_management, default: false
 #   t.boolean  :enable_multiple_attempts,          default: false, null: false
+#   t.index [:term_id], name: :index_exercises_on_term_id
+#   t.index [:title, :term_id], name: :index_exercises_on_title_and_term_id, unique: true
 # end
-#
-# add_index :exercises, [:term_id], name: :index_exercises_on_term_id
-# add_index :exercises, [:title, :term_id], name: :index_exercises_on_title_and_term_id, unique: true
 
 class Exercise < ActiveRecord::Base
   include RankedModel

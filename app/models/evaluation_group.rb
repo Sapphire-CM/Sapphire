@@ -7,10 +7,9 @@
 #   t.datetime :updated_at,                               null: false
 #   t.integer  :status,                   default: 0,     null: false
 #   t.boolean  :needs_review,             default: false
+#   t.index [:rating_group_id], name: :index_evaluation_groups_on_rating_group_id
+#   t.index [:submission_evaluation_id], name: :index_evaluation_groups_on_submission_evaluation_id
 # end
-#
-# add_index :evaluation_groups, [:rating_group_id], name: :index_evaluation_groups_on_rating_group_id
-# add_index :evaluation_groups, [:submission_evaluation_id], name: :index_evaluation_groups_on_submission_evaluation_id
 
 class EvaluationGroup < ActiveRecord::Base
   belongs_to :rating_group

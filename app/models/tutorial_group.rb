@@ -4,10 +4,9 @@
 #   t.datetime :created_at,  null: false
 #   t.datetime :updated_at,  null: false
 #   t.text     :description
+#   t.index [:term_id], name: :index_tutorial_groups_on_term_id
+#   t.index [:title, :term_id], name: :index_tutorial_groups_on_title_and_term_id, unique: true
 # end
-#
-# add_index :tutorial_groups, [:term_id], name: :index_tutorial_groups_on_term_id
-# add_index :tutorial_groups, [:title, :term_id], name: :index_tutorial_groups_on_title_and_term_id, unique: true
 
 class TutorialGroup < ActiveRecord::Base
   belongs_to :term

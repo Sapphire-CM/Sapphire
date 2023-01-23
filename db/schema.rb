@@ -10,10 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210224093733) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20230123182451) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "email",                       default: "",    null: false
@@ -37,13 +34,13 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.datetime "locked_at"
     t.boolean  "admin",                       default: false, null: false
     t.boolean  "comment_markdown_preference", default: false
-    t.index ["email"], name: "index_accounts_on_email", unique: true, using: :btree
-    t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true, using: :btree
+    t.index ["email"], name: "index_accounts_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
   end
 
   create_table "comments", force: :cascade do |t|
-    t.integer  "commentable_id",                   null: false
     t.string   "commentable_type",                 null: false
+    t.integer  "commentable_id",                   null: false
     t.integer  "account_id",                       null: false
     t.integer  "term_id",                          null: false
     t.string   "name",                             null: false
@@ -51,8 +48,8 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.text     "content",                          null: false
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
-    t.index ["account_id"], name: "index_comments_on_account_id", using: :btree
-    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id", using: :btree
+    t.index ["account_id"], name: "index_comments_on_account_id"
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
   end
 
   create_table "courses", force: :cascade do |t|
@@ -61,7 +58,7 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.boolean  "locked",      default: true, null: false
-    t.index ["title"], name: "index_courses_on_title", unique: true, using: :btree
+    t.index ["title"], name: "index_courses_on_title", unique: true
   end
 
   create_table "email_addresses", force: :cascade do |t|
@@ -69,8 +66,8 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.integer  "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_email_addresses_on_account_id", using: :btree
-    t.index ["email"], name: "index_email_addresses_on_email", unique: true, using: :btree
+    t.index ["account_id"], name: "index_email_addresses_on_account_id"
+    t.index ["email"], name: "index_email_addresses_on_email", unique: true
   end
 
   create_table "evaluation_groups", force: :cascade do |t|
@@ -82,8 +79,8 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.datetime "updated_at",                               null: false
     t.integer  "status",                   default: 0,     null: false
     t.boolean  "needs_review",             default: false
-    t.index ["rating_group_id"], name: "index_evaluation_groups_on_rating_group_id", using: :btree
-    t.index ["submission_evaluation_id"], name: "index_evaluation_groups_on_submission_evaluation_id", using: :btree
+    t.index ["rating_group_id"], name: "index_evaluation_groups_on_rating_group_id"
+    t.index ["submission_evaluation_id"], name: "index_evaluation_groups_on_submission_evaluation_id"
   end
 
   create_table "evaluations", force: :cascade do |t|
@@ -96,21 +93,21 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.integer  "evaluation_group_id"
     t.boolean  "checked_automatically", default: false, null: false
     t.boolean  "needs_review",          default: false
-    t.index ["evaluation_group_id"], name: "index_evaluations_on_evaluation_group_id", using: :btree
-    t.index ["rating_id"], name: "index_evaluations_on_rating_id", using: :btree
+    t.index ["evaluation_group_id"], name: "index_evaluations_on_evaluation_group_id"
+    t.index ["rating_id"], name: "index_evaluations_on_rating_id"
   end
 
   create_table "events", force: :cascade do |t|
     t.string   "type"
-    t.integer  "subject_id",   null: false
     t.string   "subject_type", null: false
+    t.integer  "subject_id",   null: false
     t.integer  "account_id",   null: false
     t.integer  "term_id",      null: false
     t.text     "data"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.index ["account_id"], name: "index_events_on_account_id", using: :btree
-    t.index ["subject_type", "subject_id"], name: "index_events_on_subject_type_and_subject_id", using: :btree
+    t.index ["account_id"], name: "index_events_on_account_id"
+    t.index ["subject_type", "subject_id"], name: "index_events_on_subject_type_and_subject_id"
   end
 
   create_table "exercise_attempts", force: :cascade do |t|
@@ -119,7 +116,7 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.datetime "date"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["exercise_id"], name: "index_exercise_attempts_on_exercise_id", using: :btree
+    t.index ["exercise_id"], name: "index_exercise_attempts_on_exercise_id"
   end
 
   create_table "exercise_registrations", force: :cascade do |t|
@@ -131,9 +128,9 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.datetime "updated_at",                             null: false
     t.integer  "individual_subtractions"
     t.boolean  "active",                  default: true, null: false
-    t.index ["exercise_id"], name: "index_exercise_registrations_on_exercise_id", using: :btree
-    t.index ["submission_id"], name: "index_exercise_registrations_on_submission_id", using: :btree
-    t.index ["term_registration_id"], name: "index_exercise_registrations_on_term_registration_id", using: :btree
+    t.index ["exercise_id"], name: "index_exercise_registrations_on_exercise_id"
+    t.index ["submission_id"], name: "index_exercise_registrations_on_submission_id"
+    t.index ["term_registration_id"], name: "index_exercise_registrations_on_term_registration_id"
   end
 
   create_table "exercises", force: :cascade do |t|
@@ -159,8 +156,8 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.string   "instructions_url"
     t.boolean  "enable_bulk_submission_management", default: false
     t.boolean  "enable_multiple_attempts",          default: false, null: false
-    t.index ["term_id"], name: "index_exercises_on_term_id", using: :btree
-    t.index ["title", "term_id"], name: "index_exercises_on_title_and_term_id", unique: true, using: :btree
+    t.index ["term_id"], name: "index_exercises_on_term_id"
+    t.index ["title", "term_id"], name: "index_exercises_on_title_and_term_id", unique: true
   end
 
   create_table "exports", force: :cascade do |t|
@@ -169,9 +166,11 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.integer  "term_id"
     t.string   "file"
     t.text     "properties"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["term_id"], name: "index_exports_on_term_id", using: :btree
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "requester_id"
+    t.index ["requester_id"], name: "index_exports_on_requester_id"
+    t.index ["term_id"], name: "index_exports_on_term_id"
   end
 
   create_table "grading_scales", force: :cascade do |t|
@@ -183,9 +182,9 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.integer  "max_points", default: 0,     null: false
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.index ["grade"], name: "index_grading_scales_on_grade", using: :btree
-    t.index ["term_id", "grade"], name: "index_grading_scales_on_term_id_and_grade", unique: true, using: :btree
-    t.index ["term_id"], name: "index_grading_scales_on_term_id", using: :btree
+    t.index ["grade"], name: "index_grading_scales_on_grade"
+    t.index ["term_id", "grade"], name: "index_grading_scales_on_term_id_and_grade", unique: true
+    t.index ["term_id"], name: "index_grading_scales_on_term_id"
   end
 
   create_table "import_errors", force: :cascade do |t|
@@ -195,7 +194,7 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.string   "message"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
-    t.index ["import_result_id"], name: "index_import_errors_on_import_result_id", using: :btree
+    t.index ["import_result_id"], name: "index_import_errors_on_import_result_id"
   end
 
   create_table "import_mappings", force: :cascade do |t|
@@ -208,7 +207,7 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.integer  "comment"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
-    t.index ["import_id"], name: "index_import_mappings_on_import_id", unique: true, using: :btree
+    t.index ["import_id"], name: "index_import_mappings_on_import_id", unique: true
   end
 
   create_table "import_options", force: :cascade do |t|
@@ -224,7 +223,7 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
     t.boolean  "send_welcome_notifications", default: true, null: false
-    t.index ["import_id"], name: "index_import_options_on_import_id", unique: true, using: :btree
+    t.index ["import_id"], name: "index_import_options_on_import_id", unique: true
   end
 
   create_table "import_results", force: :cascade do |t|
@@ -240,7 +239,7 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.integer  "imported_student_groups"
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
-    t.index ["import_id"], name: "index_import_results_on_import_id", unique: true, using: :btree
+    t.index ["import_id"], name: "index_import_results_on_import_id", unique: true
   end
 
   create_table "imports", force: :cascade do |t|
@@ -249,7 +248,7 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.datetime "updated_at", null: false
     t.string   "file"
     t.integer  "status"
-    t.index ["term_id"], name: "index_imports_on_term_id", using: :btree
+    t.index ["term_id"], name: "index_imports_on_term_id"
   end
 
   create_table "rating_groups", force: :cascade do |t|
@@ -264,8 +263,8 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.integer  "max_points"
     t.boolean  "enable_range_points", default: false, null: false
     t.integer  "row_order"
-    t.index ["exercise_id"], name: "index_rating_groups_on_exercise_id", using: :btree
-    t.index ["title", "exercise_id"], name: "index_rating_groups_on_title_and_exercise_id", unique: true, using: :btree
+    t.index ["exercise_id"], name: "index_rating_groups_on_exercise_id"
+    t.index ["title", "exercise_id"], name: "index_rating_groups_on_title_and_exercise_id", unique: true
   end
 
   create_table "ratings", force: :cascade do |t|
@@ -282,7 +281,7 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.float    "multiplication_factor"
     t.string   "automated_checker_identifier"
     t.boolean  "bulk",                         default: false
-    t.index ["rating_group_id"], name: "index_ratings_on_rating_group_id", using: :btree
+    t.index ["rating_group_id"], name: "index_ratings_on_rating_group_id"
   end
 
   create_table "result_publications", force: :cascade do |t|
@@ -291,9 +290,9 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.boolean  "published",         default: false, null: false
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
-    t.index ["exercise_id", "tutorial_group_id"], name: "index_result_publications_on_exercise_id_and_tutorial_group_id", unique: true, using: :btree
-    t.index ["exercise_id"], name: "index_result_publications_on_exercise_id", using: :btree
-    t.index ["tutorial_group_id"], name: "index_result_publications_on_tutorial_group_id", using: :btree
+    t.index ["exercise_id", "tutorial_group_id"], name: "index_result_publications_on_exercise_id_and_tutorial_group_id", unique: true
+    t.index ["exercise_id"], name: "index_result_publications_on_exercise_id"
+    t.index ["tutorial_group_id"], name: "index_result_publications_on_tutorial_group_id"
   end
 
   create_table "services", force: :cascade do |t|
@@ -314,7 +313,7 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.string   "keyword"
     t.string   "topic"
     t.text     "description"
-    t.index ["tutorial_group_id"], name: "index_student_groups_on_tutorial_group_id", using: :btree
+    t.index ["tutorial_group_id"], name: "index_student_groups_on_tutorial_group_id"
   end
 
   create_table "submission_assets", force: :cascade do |t|
@@ -332,9 +331,9 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.integer  "filesystem_size",   default: 0
     t.integer  "extraction_status"
     t.integer  "submitter_id",                   null: false
-    t.index ["filename", "path", "submission_id"], name: "index_submission_assets_on_filename_and_path_and_submission_id", unique: true, using: :btree
-    t.index ["submission_id"], name: "index_submission_assets_on_submission_id", using: :btree
-    t.index ["submitter_id"], name: "index_submission_assets_on_submitter_id", using: :btree
+    t.index ["filename", "path", "submission_id"], name: "index_submission_assets_on_filename_and_path_and_submission_id", unique: true
+    t.index ["submission_id"], name: "index_submission_assets_on_submission_id"
+    t.index ["submitter_id"], name: "index_submission_assets_on_submitter_id"
   end
 
   create_table "submission_evaluations", force: :cascade do |t|
@@ -347,8 +346,8 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.integer  "evaluation_result"
     t.boolean  "plagiarized",       default: false, null: false
     t.boolean  "needs_review",      default: false
-    t.index ["evaluator_id"], name: "index_submission_evaluations_on_evaluator_id", using: :btree
-    t.index ["submission_id"], name: "index_submission_evaluations_on_submission_id", unique: true, using: :btree
+    t.index ["evaluator_id"], name: "index_submission_evaluations_on_evaluator_id"
+    t.index ["submission_id"], name: "index_submission_evaluations_on_submission_id", unique: true
   end
 
   create_table "submissions", force: :cascade do |t|
@@ -361,10 +360,10 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.integer  "exercise_attempt_id"
     t.boolean  "active",              default: true, null: false
     t.integer  "filesystem_size",     default: 0
-    t.index ["exercise_attempt_id"], name: "index_submissions_on_exercise_attempt_id", using: :btree
-    t.index ["exercise_id"], name: "index_submissions_on_exercise_id", using: :btree
-    t.index ["student_group_id"], name: "index_submissions_on_student_group_id", using: :btree
-    t.index ["submitter_id"], name: "index_submissions_on_submitter_id", using: :btree
+    t.index ["exercise_attempt_id"], name: "index_submissions_on_exercise_attempt_id"
+    t.index ["exercise_id"], name: "index_submissions_on_exercise_id"
+    t.index ["student_group_id"], name: "index_submissions_on_student_group_id"
+    t.index ["submitter_id"], name: "index_submissions_on_submitter_id"
   end
 
   create_table "term_registrations", force: :cascade do |t|
@@ -379,13 +378,13 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.integer  "role",              default: 0
     t.integer  "student_group_id"
     t.datetime "welcomed_at"
-    t.index ["account_id", "term_id"], name: "index_term_registrations_on_account_id_and_term_id", unique: true, using: :btree
-    t.index ["account_id"], name: "index_term_registrations_on_account_id", using: :btree
-    t.index ["points"], name: "index_term_registrations_on_points", using: :btree
-    t.index ["positive_grade"], name: "index_term_registrations_on_positive_grade", using: :btree
-    t.index ["student_group_id"], name: "index_term_registrations_on_student_group_id", using: :btree
-    t.index ["term_id"], name: "index_term_registrations_on_term_id", using: :btree
-    t.index ["tutorial_group_id"], name: "index_term_registrations_on_tutorial_group_id", using: :btree
+    t.index ["account_id", "term_id"], name: "index_term_registrations_on_account_id_and_term_id", unique: true
+    t.index ["account_id"], name: "index_term_registrations_on_account_id"
+    t.index ["points"], name: "index_term_registrations_on_points"
+    t.index ["positive_grade"], name: "index_term_registrations_on_positive_grade"
+    t.index ["student_group_id"], name: "index_term_registrations_on_student_group_id"
+    t.index ["term_id"], name: "index_term_registrations_on_term_id"
+    t.index ["tutorial_group_id"], name: "index_term_registrations_on_tutorial_group_id"
   end
 
   create_table "terms", force: :cascade do |t|
@@ -397,8 +396,8 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.integer  "row_order"
     t.integer  "points",      default: 0
     t.integer  "status",      default: 0
-    t.index ["course_id"], name: "index_terms_on_course_id", using: :btree
-    t.index ["title", "course_id"], name: "index_terms_on_title_and_course_id", unique: true, using: :btree
+    t.index ["course_id"], name: "index_terms_on_course_id"
+    t.index ["title", "course_id"], name: "index_terms_on_title_and_course_id", unique: true
   end
 
   create_table "tutorial_groups", force: :cascade do |t|
@@ -407,8 +406,8 @@ ActiveRecord::Schema.define(version: 20210224093733) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.text     "description"
-    t.index ["term_id"], name: "index_tutorial_groups_on_term_id", using: :btree
-    t.index ["title", "term_id"], name: "index_tutorial_groups_on_title_and_term_id", unique: true, using: :btree
+    t.index ["term_id"], name: "index_tutorial_groups_on_term_id"
+    t.index ["title", "term_id"], name: "index_tutorial_groups_on_title_and_term_id", unique: true
   end
 
 end

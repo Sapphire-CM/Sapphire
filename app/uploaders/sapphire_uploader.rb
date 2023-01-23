@@ -10,10 +10,11 @@ class SapphireUploader < CarrierWave::Uploader::Base
   end
 
   def move_to_cache
-    true
+    !Sapphire.running_on_windows?
   end
 
   def move_to_store
-    true
+    !Sapphire.running_on_windows?
   end
+
 end

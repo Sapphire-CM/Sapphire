@@ -106,12 +106,89 @@ RSpec.describe EventService do
     end
   end
 
+  describe '#submission_folder_renamed!' do
+    let(:term_registration) { FactoryBot.create(:term_registration, :student) }
+    let(:account) { term_registration.account }
+    let(:term) { term_registration.term }
+    let(:exercise) { FactoryBot.create(:exercise, term: term) }
+    let(:submission) { FactoryBot.create(:submission, exercise: exercise, submitter: account) }
+    let(:directory) { submission.tree.resolve("directory") }
+    let(:submission_folder_rename) { FactoryBot.create(:submission_folder_rename, submission: submission, directory: directory) }
+
+    it 'creates a new Events::Submission::Updated event if no previous event exists' do
+      expect do
+        expect(subject.submission_folder_renamed!(submission_folder_rename)).to be_a Events::Submission::Updated
+      end.to change(Events::Submission::Updated, :count).by(1)
+    end
+
+    it 'updates the existing Events::Submission::Updated event if it already exists' do
+      existing_event = Events::Submission::Updated.create(account: account, subject: submission, term: term, updated_at: Time.now - 15.minutes)
+
+      expect do
+        expect(subject.submission_folder_renamed!(submission_folder_rename)).to eq(existing_event)
+      end.not_to change(Events::Submission::Updated, :count)
+    end
+
+    it 'correctly sets up and returns the event' do
+      event = subject.submission_folder_renamed!(submission_folder_rename)
+
+      expect(event.submission_id).to eq(submission.id)
+      expect(event.exercise_id).to eq(submission.exercise.id)
+      expect(event.exercise_title).to eq(submission.exercise.title)
+
+      updated_assets = event.submission_assets[:updated]
+      expect(updated_assets.length).to eq(1)
+
+      updated_asset = updated_assets.first
+      expect(updated_asset[:file]).to eq([submission_folder_rename.path_old, submission_folder_rename.path_new])
+      expect(updated_asset[:path]).to eq([])
+      expect(updated_asset[:content_type]).to eq([])
+    end
+  end
+
+
   context 'submission asset events' do
     let(:exercise) { submission.exercise }
     let(:term) { exercise.term }
     let(:submission) { FactoryBot.create(:submission) }
     let(:submission_assets) { FactoryBot.create_list(:submission_asset, 3, :plain_text, submission: submission) }
     let(:zip_asset) { FactoryBot.create(:submission_asset, :zip, submission: submission) }
+
+    describe '#submission_asset_renamed!' do
+      let(:rename) { FactoryBot.create(:submission_asset_rename) }
+      let(:submission_asset) { rename.submission_asset }
+      let(:submission) { rename.submission }
+
+      it 'creates a new Events::Submission::Updated event if no previous event exists' do
+        expect do
+          expect(subject.submission_asset_renamed!(rename)).to be_a Events::Submission::Updated
+        end.to change(Events::Submission::Updated, :count).by(1)
+      end
+
+      it 'updates the existing Events::Submission::Updated event if it already exists' do
+        existing_event = Events::Submission::Updated.create(account: account, subject: submission, term: term, updated_at: Time.now - 15.minutes)
+
+        expect do
+          expect(subject.submission_asset_renamed!(rename)).to eq(existing_event)
+        end.not_to change(Events::Submission::Updated, :count)
+      end
+
+      it 'correctly sets up and returns the event' do
+        event = subject.submission_asset_renamed!(rename)
+
+        expect(event.submission_id).to eq(submission.id)
+        expect(event.exercise_id).to eq(submission.exercise.id)
+        expect(event.exercise_title).to eq(submission.exercise.title)
+
+        updated_assets = event.submission_assets[:updated]
+        expect(updated_assets.length).to eq(1)
+
+        updated_asset = updated_assets.first
+        expect(updated_asset[:file]).to eq([File.basename(rename.filename_old), File.basename(rename.new_filename)])
+        expect(updated_asset[:path]).to eq(submission_asset.path)
+        expect(updated_asset[:content_type]).to eq(submission_asset.content_type)
+      end
+    end
 
     describe '#submission_asset_destroyed!' do
       let(:now) { Time.now }

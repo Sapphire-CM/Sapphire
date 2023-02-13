@@ -1,0 +1,29 @@
+<% title @rename.submission_asset.exercise.title, submission_author(@submission_asset.submission) %>
+<%= render "terms/sidebar", term: @submission.term %>
+<%= render "exercises/subnav", exercise: @submission_asset.exercise %>
+
+<div class='row'>
+  <div class='small-12 columns text-right'>
+    <%= link_to "Back to Files", tree_submission_path(@submission_asset.submission, path: @submission_asset.path), class: "tiny button" %>
+  </div>
+</div>
+
+<%= simple_form_for :submission_asset_rename, method: :post, url: create_rename_submission_asset_path(@submission_asset) do |f| %>
+  <table class='small-12'>
+    <thead>
+    <th>Previous filename</th>
+    <th>Change filename</th>
+    <th></th>
+    </thead>
+    <tbody>
+    <tr class='association-item'>
+      <td> <%= link_to @submission_asset.filename, submission_asset_path(@submission_asset), target: "_blank" %> </td>
+
+      <td> <%= f.input :new_filename, input_html: { value: @submission_asset.filename } %>  </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <p><%= f.button :submit, "Apply changes" %></p>
+
+<% end %>

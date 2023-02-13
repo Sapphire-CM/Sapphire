@@ -91,7 +91,13 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :submission_assets, only: [:show, :destroy]
+  resources :submission_assets, only: [:show, :update, :destroy] do
+    member do
+      post 'rename', to: 'submission_assets_renames#create', as: :create_rename
+      get 'rename', to: 'submission_assets_renames#new', as: :new_rename
+    end
+  end
+
   resources :submission_viewers, only: [:show]
 
   resources :evaluations, only: :update do
@@ -114,6 +120,7 @@ Rails.application.routes.draw do
     resources :students, controller: "submissions/students"
     resource :folder, controller: :submission_folders, only: [:show, :new, :create]
     resource :upload, controller: :submission_uploads, only: [:new, :create]
+    resource :folder_rename, controller: :submission_folder_renames, only: [:new, :create]
   end
 
   authenticate :account, lambda { |u| u.admin? } do

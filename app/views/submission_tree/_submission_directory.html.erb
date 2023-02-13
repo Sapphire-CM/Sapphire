@@ -9,6 +9,7 @@
       <th class='size'><%= SubmissionStructure::File.human_attribute_name(:size) %></th>
       <% if submission.modifiable_by_students? %>
         <th data-sort-disabled="true"></th>
+        <th data-sort-disabled="true"></th>
       <% end %>
     </tr>
   </thead>
@@ -23,6 +24,7 @@
         <td></td>
         <td class='size'><%= filesize directory.size %></td>
         <% if submission.modifiable_by_students? %>
+          <td></td>
           <td></td>
         <% end %>
       </tr>
@@ -59,6 +61,15 @@
               <%= link_to foundation_icon(:x), submission_asset_path(entry.submission_asset), method: :delete, data: {confirm: "Are you sure, that you want to remove this file?"}, class: "tiny alert button" %>
             <% else %>
               <%= link_to foundation_icon(:x), tree_submission_path(submission, path: entry.path_without_root), method: :delete, data: {confirm: "Are you sure, that you want to remove the whole directory?"}, class: "tiny alert button" %>
+            <% end %>
+          </td>
+        <% end %>
+        <% if submission.modifiable_by_students? %>
+          <td class='buttons'>
+            <% if entry.file? %>
+              <%= link_to foundation_icon(:pencil), new_rename_submission_asset_path(entry.submission_asset), class: "tiny button" %>
+            <% else %>
+              <%= link_to foundation_icon(:pencil), new_submission_folder_rename_path(submission, entry.path_without_root), class: "tiny button" %>
             <% end %>
           </td>
         <% end %>

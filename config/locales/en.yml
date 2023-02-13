@@ -34,6 +34,16 @@ en:
         mtime: "Modified At"
         size: "Size"
         name: "Name"
+    errors:
+      models:
+        submission_folder_renames:
+          attributes:
+            directory:
+              root: "is the root directory and cannot be renamed"
+              not_created: "has no nodes and thus not created and cannot be renamed"
+            path_new:
+              same_as_previous: "has the same value as the previous name of the directory"
+              taken:  "is already taken"
   activerecord:
     models:
       exports/grading_export: Grading Export

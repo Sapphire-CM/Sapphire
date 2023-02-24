@@ -14,7 +14,10 @@
   </thead>
   <tbody>
     <% unless directory.root? %>
-      <tr data-sort-top="true">
+      <tr data-sort-top="true"
+          id="<%= directory.parent.path_without_root %>"
+          class='folder-entry'
+      >
         <td class='icon'></td>
         <td>
           <%= link_to "..", tree_submission_path(submission, path: directory.parent.path_without_root), title: "Goto parent folder" %>
@@ -29,13 +32,16 @@
     <% end %>
 
     <% directory.entries.sort_by(&:name).each do |entry| %>
-      <tr>
-        <td class='icon'>
+    <tr data-sort-top="true" draggable="true"
+        id="<%= entry.directory? ? entry.path_without_root : entry.submission_asset.id %>"
+        class="<%= entry.directory? ? 'folder-entry' : 'file-entry' %>"
+    >
+    <td class='icon'>
           <%= foundation_icon entry.icon %>
         </td>
         <td>
           <% if entry.file? %>
-            <%= link_to entry.name, submission_asset_path(entry.submission_asset), target: "_blank" %>
+            <%= link_to entry.name, submission_asset_path(entry.submission_asset), target: "_blank", draggable: false %>
             <% if entry.submission_asset.archive? %>
               &mdash; Extraction: <%= submission_asset_extraction_status(entry.submission_asset) %>
               <% if entry.submission_asset.extraction_failed? %>
@@ -56,9 +62,9 @@
         <% if submission.modifiable_by_students? %>
           <td class='buttons'>
             <% if entry.file? %>
-              <%= link_to foundation_icon(:x), submission_asset_path(entry.submission_asset), method: :delete, data: {confirm: "Are you sure, that you want to remove this file?"}, class: "tiny alert button" %>
+              <%= link_to foundation_icon(:x), submission_asset_path(entry.submission_asset), method: :delete, data: {confirm: "Are you sure, that you want to remove this file?"}, class: "tiny alert button", draggable: false %>
             <% else %>
-              <%= link_to foundation_icon(:x), tree_submission_path(submission, path: entry.path_without_root), method: :delete, data: {confirm: "Are you sure, that you want to remove the whole directory?"}, class: "tiny alert button" %>
+              <%= link_to foundation_icon(:x), tree_submission_path(submission, path: entry.path_without_root), method: :delete, data: {confirm: "Are you sure, that you want to remove the whole directory?"}, class: "tiny alert button", draggable: false %>
             <% end %>
           </td>
         <% end %>

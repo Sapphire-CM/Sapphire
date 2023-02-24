@@ -94,6 +94,8 @@ Rails.application.routes.draw do
   resources :submission_assets, only: [:show, :destroy]
   resources :submission_viewers, only: [:show]
 
+  post 'submission_assets/move' => 'submission_assets/moves#move'
+
   resources :evaluations, only: :update do
     resources :explanations, module: :evaluations
   end

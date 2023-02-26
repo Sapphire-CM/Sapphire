@@ -54,7 +54,8 @@ drop = (event) ->
   submissionId = sourceElement.id
 
   console.log targetElement
-
+  console.log submissionId
+  console.log targetPath
   # Check if the source element is a folder
   if targetElement.classList.contains 'folder-entry'
     if sourceElement.classList.contains 'file-entry'
@@ -72,6 +73,21 @@ drop = (event) ->
         error: (jqXHR, textStatus, errorThrown) ->
           console.log "Error moving folder: #{errorThrown}"
 
+    if sourceElement.classList.contains 'folder-entry'
+      $.ajax
+        type: 'POST'
+        url: targetElement.baseURI + '/move'
+        data:
+          submission_id: targetElement.baseURI.match(/\/submissions\/(\d+)\//)[1]
+          submission_asset_id: submissionId
+          target_path: targetPath
+        success: (data, textStatus, jqXHR) ->
+          if data.redirect_url
+            window.location.href = data.redirect_url
+          else
+            console.log "Folder moved successfully"
+        error: (jqXHR, textStatus, errorThrown) ->
+          console.log "Error moving folder: #{errorThrown}"
 # Get the element that is being dragged
 draggableElement = document.querySelector '.draggable'
 

@@ -49,7 +49,7 @@
               <% end %>
             <% end %>
           <% else %>
-            <%= link_to entry.name, tree_submission_path(submission, path: entry.path_without_root) %>
+            <%= link_to entry.name, tree_submission_path(submission, path: entry.path_without_root),  draggable: false%>
           <% end %>
         </td>
         <td class='modification-date' data-sort="<%= entry.mtime %>" data-sort-as="integer"><%= submission_tree_modification_date(entry.mtime) %></td>

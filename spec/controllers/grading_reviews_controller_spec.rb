@@ -7,7 +7,9 @@ RSpec.describe GradingReviewsController do
   let(:term) { FactoryBot.create :term }
 
   describe 'GET #index' do
-    let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, term: term) }
+    let!(:tutorial_group) { FactoryBot.create(:tutorial_group, term: term) }
+    let!(:student_group) { FactoryBot.create(:student_group, tutorial_group: tutorial_group) }
+    let!(:student_term_registration) { FactoryBot.create(:term_registration, :student, term: term, student_group: student_group) }
     let!(:other_student_term_registration) { FactoryBot.create(:term_registration, :student) }
     let!(:tutor_term_registration) { FactoryBot.create(:term_registration, :tutor, term: term) }
     let!(:lecturer_term_registration) { FactoryBot.create(:term_registration, :lecturer, term: term) }
@@ -34,28 +36,30 @@ RSpec.describe GradingReviewsController do
       let(:lecturer_account) { tutor_term_registration.account}
 
       it 'assigns student term registrations to @term_registrations' do
-        get :index, params: { term_id: term.id, q: student_account.fullname }
+        get :index, params: { term_id: term.id, q: student_account.fullname, email: student_account.email,
+                              student_group_title: student_group.title}
 
         expect(response).to have_http_status(:success)
         expect(assigns(:term_registrations)).to match_array([student_term_registration])
       end
 
       it 'does not assign students of other terms to @term_registrations' do
-        get :index, params: { term_id: term.id, q: other_student_account.fullname }
+        get :index, params: { term_id: term.id, q: other_student_account.fullname, email: student_account.email,
+                              student_group_title: student_group.title}
 
         expect(response).to have_http_status(:success)
         expect(assigns(:term_registrations)).to match_array([])
       end
 
       it 'does not assign tutors to @term_registrations' do
-        get :index, params: { term_id: term.id, q: tutor_account.fullname }
+        get :index, params: { term_id: term.id, q: tutor_account.fullname, email: tutor_account.email}
 
         expect(response).to have_http_status(:success)
         expect(assigns(:term_registrations)).to match_array([])
       end
 
       it 'does not assign lecturers to @term_registrations' do
-        get :index, params: { term_id: term.id, q: lecturer_account.fullname }
+        get :index, params: { term_id: term.id, q: lecturer_account.fullname, email: lecturer_account.email}
 
         expect(response).to have_http_status(:success)
         expect(assigns(:term_registrations)).to match_array([])

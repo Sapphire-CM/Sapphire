@@ -22,6 +22,8 @@
           <th>Surname</th>
           <th>Matr. No.</th>
           <th>Tutorial Group</th>
+          <th>Email</th>
+          <th>Student Group</th>
           <th></th>
         </tr>
       </thead>
@@ -32,6 +34,8 @@
           <td data-sort='<%= term_registration.account.surname %>'><%= highlight_search(term_registration.account.surname, params[:q]) %></td>
           <td data-sort='<%= term_registration.account.matriculation_number %>'><%= highlight_search(term_registration.account.matriculation_number, params[:q]) %></td>
           <td><%= tutorial_group_title(term_registration.tutorial_group) %></td>
+          <td data-sort='<%= term_registration.account.email %>'><%= highlight_search(term_registration.account.email, params[:q]) %></td>
+          <td><%= term_registration.student_group.title %></td>
           <td><%= link_to "Show", term_grading_review_path(current_term, term_registration), class: "small button" %></td>
         </tr>
         <% end %>

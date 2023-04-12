@@ -7,7 +7,7 @@
   <%= subnav_item(:widget, "Services", term_exercise_services_path(exercise.term, exercise), params[:controller] == "services")  if policy(ServicePolicy.term_policy_record(exercise.term)).index? %>
 
   <%= subnav_item(:list, "Submission", exercise_student_submission_path(exercise), params[:controller] == "submissions" || params[:controller] == "submission_tree") if current_account.student_of_term?(exercise.term) %>
-  <%= subnav_item(:megaphone, "Results", term_result_path(exercise.term, exercise), params[:controller] == "student_results") if policy(StudentResultsPolicy.term_policy_record(exercise.term)).index? %>
+  <%= subnav_item(:megaphone, "Results", term_result_path(exercise.term, exercise), params[:controller] == "student_results") if policy(StudentResultsPolicy.term_policy_record(exercise.term)).index? && GradingReview::SubmissionReview.find_by_account_and_exercise(current_account, exercise).published? %>
 
   <%= subnav_item(:pencil, "Administrate", edit_exercise_path(exercise), params[:controller] == "exercises" && params[:action] == "edit") if policy(exercise).edit? %>
 </dl>

@@ -66,8 +66,8 @@ RSpec.shared_examples "Exercise Sub Navigation" do |roles|
 
         within ".sub-nav" do
           expect(page).to have_link("Exercise", href: exercise_path(exercise))
-          expect(page).to have_text("Submission")
-          expect(page).to have_text("Results")
+          expect(page).to have_link("Submission", href: exercise_student_submission_path(exercise))
+          expect(page).to have_link("Results", href: term_result_path(exercise.term, exercise))
 
           expect(page).not_to have_link("Ratings", href: exercise_rating_groups_path(exercise))
           expect(page).not_to have_link("Submissions", href: exercise_submissions_path(exercise))
@@ -84,9 +84,9 @@ RSpec.shared_examples "Exercise Sub Navigation" do |roles|
 
         within ".sub-nav" do
           expect(page).to have_link("Exercise", href: exercise_path(exercise))
-          expect(page).to have_text("Submission")
+          expect(page).to have_link("Submission", href: exercise_student_submission_path(exercise))
 
-          expect(page).not_to have_text("Results")
+          expect(page).not_to have_link("Results", href: term_result_path(exercise.term, exercise))
           expect(page).not_to have_link("Ratings", href: exercise_rating_groups_path(exercise))
           expect(page).not_to have_link("Submissions", href: exercise_submissions_path(exercise))
           expect(page).not_to have_link("Publish Results", href: exercise_result_publications_path(exercise))
@@ -111,9 +111,9 @@ RSpec.shared_examples "Exercise Sub Navigation" do |roles|
 
         within ".sub-nav" do
           expect(page).to have_link("Exercise", href: exercise_path(exercise))
-          expect(page).to have_text("Submission")
+          expect(page).to have_link("Submission", href: exercise_student_submission_path(exercise))
 
-          expect(page).not_to have_text("Results")
+          expect(page).not_to have_link("Results", href: term_result_path(exercise.term, exercise))
           expect(page).not_to have_link("Ratings", href: exercise_rating_groups_path(exercise))
           expect(page).not_to have_link("Submissions", href: exercise_submissions_path(exercise))
           expect(page).not_to have_link("Publish Results", href: exercise_result_publications_path(exercise))
@@ -129,9 +129,9 @@ RSpec.shared_examples "Exercise Sub Navigation" do |roles|
 
         within ".sub-nav" do
           expect(page).to have_link("Exercise", href: exercise_path(exercise))
-          expect(page).to have_text("Submission")
+          expect(page).to have_link("Submission", href: exercise_student_submission_path(exercise))
 
-          expect(page).not_to have_text("Results")
+          expect(page).not_to have_link("Results", href: term_result_path(exercise.term, exercise))
           expect(page).not_to have_link("Ratings", href: exercise_rating_groups_path(exercise))
           expect(page).not_to have_link("Submissions", href: exercise_submissions_path(exercise))
           expect(page).not_to have_link("Publish Results", href: exercise_result_publications_path(exercise))

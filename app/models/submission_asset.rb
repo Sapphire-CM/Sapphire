@@ -184,7 +184,7 @@ class SubmissionAsset < ActiveRecord::Base
   end
 
   def archive?
-    Mime::ARCHIVES.include? self.content_type
+    false # Mime::ARCHIVES.include? self.content_type
   end
 
   def add_to_submission_filesize

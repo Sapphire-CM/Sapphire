@@ -134,6 +134,10 @@ class Exercise < ActiveRecord::Base
     rating_groups.sum(:points)
   end
 
+  def results_published_for_account?(current_account)
+    Submission.active.for_account(current_account).for_exercise(self).first.try(:result_published?)
+  end
+
   private
   def ensure_result_publications
     term.tutorial_groups.each do |tutorial_group|

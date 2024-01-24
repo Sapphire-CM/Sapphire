@@ -9,6 +9,11 @@ class SubmissionAssetPolicy < TermBasedPolicy
     modifiable?
   end
 
+  def move?
+    staff_permissions?(record.submission.exercise.term) ||
+      modifiable?
+  end
+
   private
   def modifiable?
     submission = record.submission

@@ -94,6 +94,8 @@ Rails.application.routes.draw do
   resources :submission_assets, only: [:show, :destroy]
   resources :submission_viewers, only: [:show]
 
+  post 'submission_assets/move' => 'submission_assets/moves#move'
+
   resources :evaluations, only: :update do
     resources :explanations, module: :evaluations
   end
@@ -110,6 +112,7 @@ Rails.application.routes.draw do
       get "tree(/*path)", controller: :submission_tree, action: :show, as: :tree
       get "directory(/*path)", controller: :submission_tree, action: :directory, as: :tree_directory
       delete "tree(/*path)", controller: :submission_tree, action: :destroy
+      post "tree(/*path)/move", controller: :submission_folder_moves, action: :move
     end
     resources :students, controller: "submissions/students"
     resource :folder, controller: :submission_folders, only: [:show, :new, :create]

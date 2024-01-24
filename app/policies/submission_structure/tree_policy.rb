@@ -7,6 +7,10 @@ class SubmissionStructure::TreePolicy < TermBasedPolicy
     show?
   end
 
+  def move?
+    write_permissions?
+  end
+
   def destroy?
     write_permissions?
   end

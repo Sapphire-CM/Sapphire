@@ -13,6 +13,76 @@ class EventService
     Events::Submission::Created.create(submission_options(submission, true))
   end
 
+  def submission_folder_renamed!(submission_folder_rename)
+    event = Events::Submission::Updated.where(account: account).recent_for_submission(submission_folder_rename.submission)
+
+    if event.blank?
+      event = Events::Submission::Updated.new(options(submission_folder_rename.submission, submission_base_options(submission_folder_rename.submission)))
+    end
+
+    submission_assets = event.submission_assets || {
+      added: [],
+      updated: [],
+      destroyed: []
+    }
+
+    submission_assets[:updated] << {
+      file: [submission_folder_rename.path_old, submission_folder_rename.path_new],
+      path: [],
+      content_type: []
+    }
+
+    submission_assets.values.each do |assets|
+      assets.sort_by! { |description|
+        name = description[:name]
+        path = description[:path]
+
+        File.join(*([path, name].compact))
+      }
+    end
+
+    event.submission_assets = submission_assets
+    event.updated_at = Time.now
+    event.save
+    event
+  end
+
+  def submission_asset_renamed!(rename)
+    submission_asset = SubmissionAsset.find(rename.submission_asset.id)
+    submission = rename.submission
+    event = Events::Submission::Updated.where(account: account).recent_for_submission(submission)
+
+    if event.blank?
+      event = Events::Submission::Updated.new(options(submission, submission_base_options(submission)))
+    end
+
+    submission_assets = event.submission_assets || {
+      added: [],
+      updated: [],
+      destroyed: []
+    }
+
+    submission_assets[:updated] << {
+      file: [File.basename(rename.filename_old), File.basename(rename.new_filename)],
+      path: submission_asset.path,
+      content_type: submission_asset.content_type
+    }
+
+    submission_assets.values.each do |assets|
+      assets.sort_by! { |description|
+        name = description[:name]
+        path = description[:path]
+
+        File.join(*([path, name].compact))
+      }
+    end
+
+    event.submission_assets = submission_assets
+    event.updated_at = Time.now
+    event.save
+    event
+  end
+
   def submission_extracted!(submission, zip_submission_asset, extracted_submission_assets)
     Events::Submission::Extracted.create(submission_extracted_options(submission, zip_submission_asset, extracted_submission_assets))
   end

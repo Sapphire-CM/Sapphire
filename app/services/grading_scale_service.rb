@@ -14,7 +14,14 @@ class GradingScaleService
     if grading_scale.not_graded
       @term_registrations.ungraded.length
     else
-      range = (grading_scale.min_points..grading_scale.max_points)
+      if grading_scale.grade == "1"
+        range = (grading_scale.min_points..Float::INFINITY)
+      elsif  grading_scale.grade == "5"
+        range = (-Float::INFINITY..grading_scale.max_points)
+      else
+        range = (grading_scale.min_points..grading_scale.max_points)
+      end
+
       tr = if grading_scale.positive
         @term_registrations.positive_grades.where(points: range) #{ (points >> my { range }) & sift(:positive_grades) }
       else
